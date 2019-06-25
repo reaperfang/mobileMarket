@@ -1,0 +1,301 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@font-face {
+  font-family: 'PingFangSC-Regular';
+  src: url('../assets/font/PingFangSCRegular.ttf'); //你的资源目录
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: PingFangSC-Regular, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  background:#F9FAFF;
+  font-size: 14px;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app{
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus{
+  outline: none;
+ }
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.block {
+  display: block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: block;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+/*列表样式*/
+ul, li, dl, dt, dd {
+  list-style:none;
+}
+
+code {
+  background: #eef1f6;
+  padding: 15px 16px;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 36px;
+  font-size: 15px;
+  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  a {
+    color: #337ab7;
+    cursor: pointer;
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+}
+
+//main-container全局样式
+.app-container {
+  padding: 20px 20px 20px 0;
+}
+
+.components-container {
+  margin: 30px 50px;
+  position: relative;
+}
+
+.pagination-container {
+  margin-top: 10px;
+}
+
+.sub-navbar {
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  transition: 600ms ease position;
+  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+  .subtitle {
+    font-size: 20px;
+    color: #fff;
+  }
+  &.draft {
+    background: #d0d0d0;
+  }
+  &.deleted {
+    background: #d0d0d0;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
+}
+
+/* 滚动条样式美化  fangyuan*/
+::-webkit-scrollbar-track-piece { //滚动条凹槽的颜色，还可以设置边框属性
+background-color:#f8f8f8;
+}
+::-webkit-scrollbar {//滚动条的宽度
+width:6px;
+height:6px;
+}
+::-webkit-scrollbar-thumb {//滚动条的设置
+background-color:#fdfcfc;
+background-clip:padding-box;
+min-height:28px;
+border-radius:7px;
+}
+::-webkit-scrollbar-thumb:hover {
+background-color:#bbb;
+}
+/* 滚动条样式美化 */
+
+/* 表格操作按钮样式 fangyuan*/
+.el-table .handal-btn {
+  margin-right: 8px;
+  color: rgba(87, 142, 250, 1);
+}
+
+/* 分页容器公共样式 fangyuan */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* 平铺列表块视图公共样式 n2,n3即为横向排几个 fangyuan*/
+ul.tile-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+
+  li {
+    margin-bottom: 20px;
+  }
+}
+
+ul.tile-list.n2 {
+  li {
+    margin-right: 1.3%;
+    width: 49%;
+
+    // padding: 20px;
+    &:nth-of-type(2n) {
+      margin-right: 0;
+    }
+  }
+}
+
+ul.tile-list.n3 {
+  li {
+    margin-right: 1.3%;
+    width: 32.4%;
+
+    // padding: 20px;
+    &:nth-of-type(3n) {
+          margin-right: 0;
+    }
+  }
+}
+
+ul.tile-list.n4 {
+  li {
+    margin-right: 2%;
+    width: 23.5%;
+
+    // padding: 20px;
+    &:nth-of-type(4n) {
+      margin-right: 0;
+    }
+  }
+}
+
+ul.tile-list.n5 {
+  li {
+    margin-right: 1.5%;
+    width: 18.8%;
+
+    // padding: 20px;
+    &:nth-of-type(5n) {
+      margin-right: 0;
+    }
+  }
+}
+
+/* 输入框前缀宽度  fangyuan */
+.el-select .el-input {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+
+/* 定制数据项表格样式 fangyuan */
+table.yuan-table{
+  tr{
+    div{
+      margin-bottom:15px;
+      td:nth-child(1){
+        // font-size:16px;
+        color:rgba(51,51,51,1);
+      }
+      td:nth-child(2){
+        text-indent: 24px;
+        color:rgba(153,153,153,1);
+        a{
+          color:rgb(64,158,255);
+          margin-left:24px;
+        }
+      }
+    }
+  }
+}
+
+/* 四级联动定制样式 fangyuan*/
+.area-cascader-wrapper{
+  .area-select{
+    width:100%!important;
+    .area-selected-trigger{
+      padding:0!important;
+      text-indent: 10px;
+    }
+  }
+}
+
+/* 取色器样式 */
+.m-colorPicker{
+  z-index:10;
+  .box{
+    width:230px!important;
+  }
+}
