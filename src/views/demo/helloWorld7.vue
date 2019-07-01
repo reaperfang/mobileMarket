@@ -10,17 +10,21 @@
         {{item.addressDetail}}
       </div>
     </el-card>
+    <el-card>
+      <h1>websocket测试demo</h1>
+      接收消息：{{socketValue}}
+    </el-card>
   </div>
 </template>
 
 <script>
-// import Websocket from "@/system/websocket.js";
 export default {
   name: 'HelloWorld7',
   data () {
     return {
       msg: '中企电商VUE框架',
-      data: null
+      data: null,
+      socketValue: ''
     }
   },
 
@@ -47,29 +51,21 @@ export default {
       })
 
       //长连接demo
-      // this.demoWebsocket = new Websocket({
-      //   type: "websocket1",
-      //   callbacks: {
-      //     onopen: () => {
-      //     },
-      //     onclose: () => {
-      //     },
-      //     onmessage: (error, res) => {
-      //       if (!error) {
-      //         if (!res || !(res instanceof Object)) {
-      //           console.error("数据格式错误");
-      //           return;
-      //         }
-      //       } else {
-      //         console.error(res);
-      //         _self.$notify.error({
-      //           title: "错误",
-      //           message: res
-      //         });
-      //       }
-      //     }
-      //   }
-      // });
+      this._apis.websocketDemo.getData({aaa:1}, {
+        onopen: () => {
+          console.log('opened');
+        },
+        onmessage: (res) => {
+          _self.socketValue = res;
+          console.log(res);
+        },
+        onclose: (onclose) => {
+          console.log('closed原因：' + onclose);
+        },
+        onerror: (error) => {
+          console.error(error);
+        }
+      });
     }
   }
 }

@@ -1,80 +1,101 @@
-import { config} from './config.js'
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import { Message, MessageBox } from "element-ui";
+import store from "@/store";
+import utils from "@/utils";
+import { getToken } from '@/system/auth'
+import md5 from 'md5'
+import appConfig from '@/system/appConfig';
+
 class Websocket {
 
-      constructor(params) {
-            this.type = params.type;
-            this.data = params.data;
-            this.callbacks = params.callbacks;
-            this.wsObj = {};
-            this.init();
-      }
-      /**
-    * 连接websocket
-    * 
-    * @memberof Http
-    */
-      init() {
-            let apiType = config[this.type]
-            const paramsUrl = this.data ? 'requestPath:' + this.urlReplace(apiType.paramsUrl, this.data) : 'requestPath:' + apiType.paramsUrl;
-            let url = this.getUrl(apiType.baseUrl);
-            this.createWsObj(url,paramsUrl);
-      }
+  static websocket(config) {
+    return new Websocket(config);
+  }
+  
+  constructor(config) {
+    this.systemRequest = 'head';
+    this.service = null;
+    this.onopen = config.methods.onopen;
+    this.onmessage = config.methods.onmessage;
+    this.onerror = config.methods.onerror;
+    this.onclose = config.methods.onclose;
+    this.init(config);
+  }
 
-      createWsObj(url,paramsUrl){
-            const _self = this;
-            this.wsObj = new ReconnectingWebSocket(url);
-            //连接成功建立的回调方法
-            this.wsObj.onopen = ()=>{
-                  _self.callbacks.onopen &&  _self.callbacks.onopen();
-                  _self.wsObj.send(paramsUrl);
-            };
-            //接收到消息的回调方法
-            this.wsObj.onmessage = (event)=>{
-                  var result = null;
-                  if (typeof event.data === 'string' && event.data !== '') {
-                        result = JSON.parse(event.data);
-                  } else if (event.data instanceof Object) {
-                        result = event.data;
-                  } else {
-                        _self.callbacks.onmessage &&  _self.callbacks.onmessage(true, '数据错误');
-                        return;
-                  }
-                  if (result.code === 2000) {
-                        _self.callbacks.onmessage &&  _self.callbacks.onmessage(false, result.data);
-                  } else {
-                        _self.callbacks.onmessage &&  _self.callbacks.onmessage(true, '连接错误,错误码:' + result.code);
-                  }
-            };
-            //连接关闭的回调方法
-            this.wsObj.onclose = ()=>{
-                  _self.callbacks.onclose &&  _self.callbacks.onclose();
-            };
-      }
+  init(config) {
+    const _self = this;
 
-      urlReplace(url, replaceObj) {
-            for (let filed in replaceObj) {
-                  url = url.indexOf(filed) >= 0 ? url.replace(filed, replaceObj[filed]) : url;
-            }
-            return url;
-      }
+    const url = this.setUrl(config);
+    this.service = new ReconnectingWebSocket(url);
+    //连接成功建立的回调方法
+    this.service.onopen = ()=>{
+        _self.onopen();
+        _self.service.send(url);
+    };
+    //接收到消息的回调方法
+    this.service.onmessage = (event)=>{
+        const res = event.data;
+        if(res){
+          _self.onmessage(res);
+        } else {
+          _self.onerror('error');
+        }
+    };
+    //连接关闭的回调方法
+    this.service.onclose = (event)=>{
+        _self.onclose(event.reason);
+    };
+  }
 
-      getUrl(baseUrl){
-            const env = process.env.NODE_ENV.trim();
-            let url = '';
-            if(env === 'development'){
-                  url = baseUrl;
-            }else{
-                  url = 'ws://' + window.location.host + baseUrl;
-            }
-            return url;
-      }
+  setUrl(config) {
+    return config.baseURL + config.url;
+  }
 
-      close(){
-            this.wsObj.close();
-            console.log(this.type,'已关闭');
+  // 根据后端接口重置请求
+  setRequestParams(config) {
+    const CONST = appConfig[this.systemRequest];
+    if(!CONST){
+      MessageBox.alert('请求参数错误', '警告', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+    }
+
+    //拼接参数head
+    let head = {
+      target: config.target,
+      accessToken: store.getters.token || '',
+      client: CONST.CLIENT,
+      version: CONST.VERSION,
+      requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
+      channel: CONST.CHANNEL,
+      key: CONST.KEY
+    };
+    head.value = md5(CONST.VALUE + head.target + head.requestTime);
+
+    //获取cid和shopInfoId
+    let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
+    let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId 
+    : '';
+
+      //拼接全部参数
+      if (config.method == "post") {
+        if(config.noCid){
+          config.data =`json=${encodeURI(JSON.stringify({ head, data: config.data}))}`;
+        }else{
+          config.data =`json=${encodeURI(JSON.stringify({ head, data: {...config.data,cid,shopInfoId}}))}`;
+        }
+      } else if (config.method == "get") {
+        if(config.noCid){
+          config.params = {json: {head, data: config.params}};
+        }else{
+          config.params = {json: {head, data: {...config.params,cid,shopInfoId}}};
+        }
       }
+      return config;
+    }
 
 }
 
-export default Websocket;
+
+export default Websocket.websocket;

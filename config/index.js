@@ -53,14 +53,7 @@ module.exports = {
         pathRewrite: {
           '^/upload_coupon_server': ''
         }
-      },
-      '/websocket-server/**': {
-        target: 'ws://10.12.40.171:5555/ws',//接口域名
-        changeOrigin: true,//是否跨域
-        pathRewrite: {
-          '^/websocket-server': ''//需要rewrite重写
-        }
-      },
+      }
     }
   },
 
