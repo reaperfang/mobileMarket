@@ -13,7 +13,7 @@
 
 <script>
 import utils from '@/utils';
-import demoChart from './components/demoChart';
+import demoChart from './bizComps/demoChart';
 export default {
   name: 'HelloWorld5',
   components: {demoChart},

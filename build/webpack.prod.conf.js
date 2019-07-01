@@ -55,7 +55,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true,
       favicon: resolve('favicon.ico'),
-      title: 'vue-element-admin',
+      title: 'bms',
       templateParameters: {
         BASE_URL: config.build.assetsPublicPath + config.build.assetsSubDirectory,
       },
@@ -119,8 +119,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         },
         commons: {
           name: 'chunk-commons',
-          test: resolve('src/components'), // 可自定义拓展你的规则
-          minChunks: 3, // 最小公用次数
+          test: resolve('src/bizComps'), // 可自定义拓展你的规则
+          minChunks: 2, // 最小公用次数
           priority: 5,
           reuseExistingChunk: true
         }

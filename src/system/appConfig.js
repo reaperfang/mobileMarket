@@ -1,5 +1,4 @@
 export default {
-      staticHost: 'https://test-m-aiyouyi.yun300.cn/',
       head: {
 		VERSION: "vsesion-1.0.0.1", // 版本号
 		CHANNEL: "新零售", // 渠道

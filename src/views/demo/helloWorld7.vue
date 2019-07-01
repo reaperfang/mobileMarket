@@ -6,12 +6,15 @@
     <!-- 接口数据请求demo -->
     <el-card>
       <h1>接口数据请求demo</h1>
-      
+      <div v-for="(item, key) of data" :key="key">
+        {{item.addressDetail}}
+      </div>
     </el-card>
   </div>
 </template>
 
 <script>
+// import Websocket from "@/system/websocket.js";
 export default {
   name: 'HelloWorld7',
   data () {
@@ -27,11 +30,46 @@ export default {
 
   methods:{
     fetch() {
-      this.$api.getList({id: 644}).then((response)=>{
+      const _self = this;
+
+      //获取列表demo
+      this._apis.demo.getList({}).then((response)=>{
         this.data = response;
       }).catch((error)=>{
         this.$message.error(error);
       })
+
+      //获取详情demo
+      this._apis.demo2.getDemoDetail({id: 644}).then((response)=>{
+        this.data = response;
+      }).catch((error)=>{
+        this.$message.error(error);
+      })
+
+      //长连接demo
+      // this.demoWebsocket = new Websocket({
+      //   type: "websocket1",
+      //   callbacks: {
+      //     onopen: () => {
+      //     },
+      //     onclose: () => {
+      //     },
+      //     onmessage: (error, res) => {
+      //       if (!error) {
+      //         if (!res || !(res instanceof Object)) {
+      //           console.error("数据格式错误");
+      //           return;
+      //         }
+      //       } else {
+      //         console.error(res);
+      //         _self.$notify.error({
+      //           title: "错误",
+      //           message: res
+      //         });
+      //       }
+      //     }
+      //   }
+      // });
     }
   }
 }
