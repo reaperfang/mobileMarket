@@ -3,9 +3,6 @@
 <script type='es6'>
 import Vue from 'vue';
 import appConfig from '@/system/appConfig';
-import VueAMap from "vue-amap";
-Vue.use(VueAMap);
-VueAMap.initAMapApiLoader(appConfig.map);
 export default {
   name: "mapBase",
   props:{
@@ -55,16 +52,11 @@ export default {
 
 
   mounted(){
-    const _self = this;
     if(!this.mapLoaded) {
-       /* 加载腾讯地图库,jsnp回调 */
-        this.$jsonp(appConfig.map.url,{
-          key: appConfig.map.key
-        }).then(()=>{
-          _self.init.call(_self);
-          _self.$store.commit('SET_MAP_STATE', true);
-        })
-    }else {
+      this._globalEvent.$on('mapLoaded', ()=>{
+        this.init();
+      });
+    }else{
       this.init();
     }
   },
