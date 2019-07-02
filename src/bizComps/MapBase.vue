@@ -2,14 +2,10 @@
 
 <script type='es6'>
 import Vue from 'vue';
+import appConfig from '@/system/appConfig';
 import VueAMap from "vue-amap";
 Vue.use(VueAMap);
-VueAMap.initAMapApiLoader({
-  key: '23b66fd8d7e808965bc6730567f49a3c',
-  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor','AMap.Geolocation'],
-  // 默认高德 sdk 版本为 1.4.4
-  v: '1.4.4'
-});
+VueAMap.initAMapApiLoader(appConfig.map);
 export default {
   name: "mapBase",
   props:{
@@ -35,7 +31,7 @@ export default {
     center:{  
       type: Array,
       default: ()=>{
-        return [39.9046900000,116.4071700000]
+        return appConfig.map.defaultCenter
       }
     }
   },
@@ -62,8 +58,8 @@ export default {
     const _self = this;
     if(!this.mapLoaded) {
        /* 加载腾讯地图库,jsnp回调 */
-        this.$jsonp('https://map.qq.com/api/js?v=2.exp',{
-          key: '7FYBZ-SKMKW-D5HR6-RUHRK-Z76EE-DNBYL'
+        this.$jsonp(appConfig.map.url,{
+          key: appConfig.map.key
         }).then(()=>{
           _self.init.call(_self);
           _self.$store.commit('SET_MAP_STATE', true);
