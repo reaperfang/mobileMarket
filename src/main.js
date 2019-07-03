@@ -22,7 +22,6 @@ Vue.config.productionTip = false
 
 /* 第三方 */
 import './thirdParty' 
-import '@/system/permission'
 
 /* 自定义全局变量或方法挂载 */
 Vue.prototype.$routeTo = utils.routeTo; //示例  routeTo('login', {a:1, b:2})
