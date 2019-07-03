@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "build:dep": "cross-env NODE_ENV=production env_config=dep node build/build.js",
     "build:dev": "cross-env NODE_ENV=development env_config=dev node build/build.js",
+    "build:test": "cross-env NODE_ENV=testing env_config=test node build/build.js",
     "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js"
   },
   "lint-staged": {},
@@ -30,6 +30,7 @@
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "promise-polyfill": "^8.1.0",
+    "reconnecting-websocket": "^4.1.10",
     "screenfull": "^4.2.0",
     "vcolorpicker": "^0.1.8",
     "vue": "^2.6.10",
@@ -95,7 +96,6 @@
     "svgo": "1.0.5",
     "uglifyjs-webpack-plugin": "1.2.7",
     "url-loader": "1.0.1",
-    "vue-amap": "^0.5.9",
     "vue-light-timeline": "^1.0.3",
     "vue-loader": "15.3.0",
     "vue-style-loader": "4.1.2",

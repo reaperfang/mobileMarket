@@ -18,7 +18,7 @@
 <script>
 import utils from '@/utils';
 import demoDialog from './dialogs/demoDialog';
-import CKEditor from '@/components/CKEditor';
+import CKEditor from '@/bizComps/CKEditor';
 export default {
   name: 'HelloWorld6',
   components: {demoDialog, CKEditor},

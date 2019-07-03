@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Layout from '@/components/layout/Layout'
+import Layout from '@/bizComps/layout/Layout'
 Vue.use(Router)
 import demoRouter from './demoRouter';
 import projectRouter from './projectRouter';
@@ -24,7 +24,7 @@ export const syncRouterMap = [ //同步路由表
     children: [
       {
         path: '/redirect/:path*',
-        component: () => import('@/components/redirect/index')
+        component: () => import('@/bizComps/redirect/index')
       }
     ]
   },
@@ -40,12 +40,12 @@ export const syncRouterMap = [ //同步路由表
   },
   {
     path: '/404',
-    component: () => import('@/components/errorPage/404'),
+    component: () => import('@/bizComps/errorPage/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/components/errorPage/401'),
+    component: () => import('@/bizComps/errorPage/401'),
     hidden: true
   }
 ]   

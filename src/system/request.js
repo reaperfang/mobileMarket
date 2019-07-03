@@ -29,7 +29,9 @@ class Ajax {
               return res;
             }
             return res.data;
-          }else {
+          } else if(res.errno === 0){
+            return res.data;;
+          } else {
             return Promise.reject(res.msg)
           }
       },
