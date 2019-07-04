@@ -150,7 +150,7 @@ if (config.testBuild.productionGzip) {
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
-      asset: '[path].gz[query]',
+      filename: '[path].gz[query]',   //解决bug https://segmentfault.com/q/1010000016302841/a-1020000016307819
       algorithm: 'gzip',
       test: new RegExp(
         '\\.(' + config.testBuild.productionGzipExtensions.join('|') + ')$'

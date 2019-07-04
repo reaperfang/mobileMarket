@@ -47,7 +47,7 @@ import '@/system/permission' // permission control
 
 
 new Vue({
-  el: '#app',
+  el: '#app', 
   router,
   store,
   render: h => h(App)
