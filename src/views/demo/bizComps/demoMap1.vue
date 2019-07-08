@@ -104,7 +104,6 @@ export default {
   #mapContainer {
     width: 100%;
     height: 100%;
-    margin: 0 auto;
   }
   .el-input{
     width: 600px;
@@ -114,7 +113,6 @@ export default {
     width: 600px;
     height: 300px;
     background: #f3f1f1;
-    margin: 0 auto;
     padding-top: 5px;
     text-align: left;
     .temp{

@@ -6,7 +6,7 @@
     <!-- 图表demo -->
     <el-card>
       <h1>图表</h1>
-      <demoChart :width="'900px'" :title="'测试图表'" style="margin: 0 auto;"></demoChart>
+      <demoChart :title="'测试图表'"></demoChart>
     </el-card>
   </div>
 </template>
@@ -26,27 +26,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hello{
-      text-align: center;
-}
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.el-card{
-  margin-bottom:20px;
-}
-.line-container::after{
-  left:1em;
-}
 </style>
