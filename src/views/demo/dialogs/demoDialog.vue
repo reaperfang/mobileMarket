@@ -1,9 +1,7 @@
 <!--富文本数据弹窗-->
 <template>
   <el-dialog title="富文本数据" :visible.sync="dialogFormVisible"  @close="close" :width="dialogWidth" class="gl-dialog">
-    <p>
-     {{data}}
-    </p>
+    <div v-html="data"></div>
   </el-dialog>
 </template>
 

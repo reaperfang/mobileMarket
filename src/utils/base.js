@@ -158,3 +158,48 @@ export function calcDate(dateObj, calcType, range) {
   }
   return tempDateObj
 }
+
+
+/**
+ * 动态加载css文件
+ *
+ * @export
+ * @param {*} doc
+ * @param {*} path
+ */
+export function asyncLoadCss(doc, path) {
+  return new Promise((resolve, reject) => {
+    let node = doc.createElement('link');
+    node.rel = 'stylesheet';
+    node.href = path;
+    doc.getElementsByTagName('head')[0].appendChild(node);
+    node.onload = function(){
+      resolve();
+    };
+    node.onerror = function(){
+      reject();
+    };
+  })
+}
+
+/**
+ * 动态加载js文件
+ *
+ * @export
+ * @param {*} doc
+ * @param {*} path
+ */
+export function asyncLoadJs(doc, path) {
+  return new Promise((resolve, reject) => {
+    let script = doc.createElement('script');
+    script.setAttribute("type", "text/javascript");
+    script.src = path;
+    doc.body.appendChild(script);
+    script.onload = function(){
+      resolve();
+    };
+    script.onerror = function(){
+      reject();
+    };
+  })
+}
