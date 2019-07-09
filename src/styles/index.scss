@@ -63,26 +63,6 @@ div:focus{
   float: left;
 }
 
-.pr-5 {
-  padding-right: 5px;
-}
-
-.pl-5 {
-  padding-left: 5px;
-}
-
-.block {
-  display: block;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.inlineBlock {
-  display: block;
-}
-
 .clearfix {
   &:after {
     visibility: hidden;
@@ -93,6 +73,7 @@ div:focus{
     height: 0;
   }
 }
+
 /*列表样式*/
 ul, li, dl, dt, dd {
   list-style:none;
@@ -115,40 +96,6 @@ code {
   }
 }
 
-//main-container全局样式
-.app-container {
-  padding: 20px 20px 20px 0;
-}
-
-.components-container {
-  margin: 30px 50px;
-  position: relative;
-}
-
-.pagination-container {
-  margin-top: 10px;
-}
-
-.sub-navbar {
-  height: 50px;
-  line-height: 50px;
-  position: relative;
-  width: 100%;
-  text-align: right;
-  padding-right: 20px;
-  transition: 600ms ease position;
-  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
-  .subtitle {
-    font-size: 20px;
-    color: #fff;
-  }
-  &.draft {
-    background: #d0d0d0;
-  }
-  &.deleted {
-    background: #d0d0d0;
-  }
-}
 
 .link-type,
 .link-type:focus {
@@ -252,14 +199,6 @@ ul.tile-list.n5 {
   }
 }
 
-/* 输入框前缀宽度  fangyuan */
-.el-select .el-input {
-  width: 130px;
-}
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
-
 /* 定制数据项表格样式 fangyuan */
 table.yuan-table{
   tr{
@@ -298,8 +237,4 @@ table.yuan-table{
   .box{
     width:230px!important;
   }
-}
-
-.el-card{
-  margin-bottom:20px;
 }
