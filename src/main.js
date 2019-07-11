@@ -23,7 +23,7 @@ import 'babel-polyfill';
 
 /* 第三方 */
 import Element from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import '@/assets/theme/index.css'
 Vue.use(Element, {
   size: Cookies.get('size') || 'small', // set element-ui default size
 })
