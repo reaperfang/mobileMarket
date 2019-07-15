@@ -29,7 +29,7 @@ Vue.use(Element, {
 })
 import vueJsonp from 'vue-jsonp';  //使用jsonp
 Vue.use(vueJsonp);
-import '@/bizComps/static/index.js';
+import '@/components/static/index.js';
 
 
 /* 自定义全局变量或方法挂载 */

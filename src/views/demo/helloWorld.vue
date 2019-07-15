@@ -21,10 +21,17 @@
 <script>
 export default {
   name: 'HelloWorld',
+  components: {},
   data () {
     return {
       msg: '中企电商VUE框架'
     }
+  },
+  created() {
+
+  },
+  methods: {
+
   }
 }
 </script>

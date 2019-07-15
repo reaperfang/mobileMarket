@@ -291,7 +291,7 @@ pre[data-line] .line-highlight[data-end]:after {
 &#x251C;&#x2500;&#x2500; src                                          
 &#x2502;&#xA0;&#xA0; &#x251C;&#x2500;&#x2500; api                                     // &#x63A5;&#x53E3;api&#xFF08;&#x5176;&#x4E2D;index.js&#x662F;&#x805A;&#x5408;&#x7D22;&#x5F15;&#x6587;&#x4EF6;&#xFF09;
 &#x2502;&#xA0;&#xA0; &#x251C;&#x2500;&#x2500; assets                                  // &#x9759;&#x6001;&#x6587;&#x4EF6;&#x76EE;&#x5F55;
-&#x2502;&#xA0;&#xA0; &#x251C;&#x2500;&#x2500; bizComps                              // &#x516C;&#x5171;&#x7EC4;&#x4EF6;&#x76EE;&#x5F55;&#xFF08;&#x5F88;&#x591A;&#x9875;&#x9762;&#x7EA7;&#x7684;&#x529F;&#x80FD;&#x7EC4;&#x4EF6;&#x7EE7;&#x627F;&#x81EA;&#x6B64;&#x76EE;&#x5F55;&#x4E0B;&#x7684;base&#x7EC4;&#x4EF6;&#xFF09;
+&#x2502;&#xA0;&#xA0; &#x251C;&#x2500;&#x2500; components                              // &#x516C;&#x5171;&#x7EC4;&#x4EF6;&#x76EE;&#x5F55;&#xFF08;&#x5F88;&#x591A;&#x9875;&#x9762;&#x7EA7;&#x7684;&#x529F;&#x80FD;&#x7EC4;&#x4EF6;&#x7EE7;&#x627F;&#x81EA;&#x6B64;&#x76EE;&#x5F55;&#x4E0B;&#x7684;base&#x7EC4;&#x4EF6;&#xFF09;
 &#x2502;&#xA0;&#xA0; &#x251C;&#x2500;&#x2500; config                                  // &#x9879;&#x76EE;&#x914D;&#x7F6E;&#x76EE;&#x5F55;
 &#x2502;&#xA0;&#xA0; &#x251C;&#x2500;&#x2500; router                                  // &#x8DEF;&#x7531;&#x76EE;&#x5F55;&#xFF08;&#x5176;&#x4E2D;index.js&#x662F;&#x805A;&#x5408;&#x7D22;&#x5F15;&#x6587;&#x4EF6;&#xFF0C;&#x6309;&#x9700;&#x6A21;&#x5757;&#x5316;&#x7684;&#x6DFB;&#x52A0;&#x4F60;&#x7684;&#x8DEF;&#x7531;&#x6587;&#x4EF6;&#xFF09;
 &#x2502;&#xA0;&#xA0; &#x251C;&#x2500;&#x2500; store                                   // &#x72B6;&#x6001;&#x7BA1;&#x7406;&#x76EE;&#x5F55;
@@ -309,7 +309,7 @@ pre[data-line] .line-highlight[data-end]:after {
 .
 </code></pre><h2 class="mume-header" id="%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6">&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x7B2C;&#x4E09;&#x65B9;&#x63D2;&#x4EF6;</h2>
 
-<p>&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#xFF1A; \src\bizComps\static\index.js</p>
+<p>&#x6587;&#x4EF6;&#x8DEF;&#x5F84;&#xFF1A; \src\components\static\index.js</p>
 <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token comment">//&#x6DFB;&#x52A0;&#x65F6;&#x95F4;&#x8F74;demo</span>
 <span class="token keyword">import</span> LightTimeline <span class="token keyword">from</span> <span class="token string">&apos;vue-light-timeline&apos;</span><span class="token punctuation">;</span>
 Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>LightTimeline<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -412,7 +412,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 <ul>
 <li>&#x5728;&#x76EE;&#x5F55;&#x4E2D;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x8DEF;&#x7531;&#x6A21;&#x5757;&#x6587;&#x4EF6;</li>
 </ul>
-<pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">import</span> Layout <span class="token keyword">from</span> <span class="token string">&apos;@/bizComps/layout/Layout&apos;</span>
+<pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">import</span> Layout <span class="token keyword">from</span> <span class="token string">&apos;@/components/layout/Layout&apos;</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span>
@@ -478,7 +478,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 </ul>
 <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">&apos;vue&apos;</span>
 <span class="token keyword">import</span> Router <span class="token keyword">from</span> <span class="token string">&apos;vue-router&apos;</span>
-<span class="token keyword">import</span> Layout <span class="token keyword">from</span> <span class="token string">&apos;@/bizComps/layout/Layout&apos;</span>
+<span class="token keyword">import</span> Layout <span class="token keyword">from</span> <span class="token string">&apos;@/components/layout/Layout&apos;</span>
 Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Router<span class="token punctuation">)</span>
 <span class="token keyword">import</span> demoRouter <span class="token keyword">from</span> <span class="token string">&apos;./demoRouter&apos;</span><span class="token punctuation">;</span>
  
@@ -494,14 +494,14 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 
 </pre><h2 class="mume-header" id="%E6%B7%BB%E5%8A%A0%E5%85%AC%E5%85%B1%E5%8A%9F%E8%83%BD%E7%BB%84%E4%BB%B6%E5%B9%B6%E4%BD%BF%E7%94%A8">&#x6DFB;&#x52A0;&#x516C;&#x5171;&#x529F;&#x80FD;&#x7EC4;&#x4EF6;&#x5E76;&#x4F7F;&#x7528;</h2>
 
-<p>&#x76EE;&#x5F55;&#x8DEF;&#x5F84;&#xFF1A; \src\bizComps</p>
+<p>&#x76EE;&#x5F55;&#x8DEF;&#x5F84;&#xFF1A; \src\components</p>
 <ul>
 <li>&#x5E26;base&#x7684;&#x7EC4;&#x4EF6;&#x662F;&#x57FA;&#x7840;&#x529F;&#x80FD;&#x7EC4;&#x4EF6;&#xFF0C;&#x4F7F;&#x7528;&#x6B64;&#x7C7B;&#x529F;&#x80FD;&#x7684;&#x4E1A;&#x52A1;&#x7EC4;&#x4EF6;&#x53EF;&#x4ECE;&#x6B64;&#x7C7B;&#x6587;&#x4EF6;&#x7EE7;&#x627F;&#x4EE5;&#x83B7;&#x5F97;&#x57FA;&#x672C;&#x80FD;&#x529B;&#xFF0C;&#x5728;&#x5404;&#x89C6;&#x56FE;&#x76EE;&#x5F55;&#x4E2D;&#x7684;&#x4E1A;&#x52A1;&#x7EC4;&#x4EF6;&#x4E2D;&#x53BB;&#x505A;&#x5177;&#x4F53;&#x7684;&#x5B9E;&#x73B0;</li>
 <li>layout&#x7EC4;&#x4EF6;&#x662F;&#x5E03;&#x5C40;&#x57FA;&#x7840;&#x7EC4;&#x4EF6;&#xFF0C;&#x90E8;&#x5206;&#x9875;&#x9762;&#x9AA8;&#x67B6;&#x57FA;&#x4E8E;&#x6B64;&#x5E03;&#x5C40;&#x7EC4;&#x4EF6;</li>
 <li>static&#x76EE;&#x5F55;&#x662F;&#x5BFC;&#x5165;&#x7B2C;&#x4E09;&#x65B9;&#x7EC4;&#x4EF6;&#x7684;&#x5165;&#x53E3;&#xFF0C;&#x9700;&#x6C42;&#x7684;&#x8BDD;&#x53EF;&#x4EE5;&#x53BB;&#x6DFB;&#x52A0;</li>
 </ul>
 <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token operator">&lt;</span>script type<span class="token operator">=</span><span class="token string">&apos;es6&apos;</span><span class="token operator">&gt;</span>
-<span class="token keyword">import</span> mapBase <span class="token keyword">from</span> <span class="token string">&quot;@/bizComps/MapBase&quot;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> mapBase <span class="token keyword">from</span> <span class="token string">&quot;@/components/MapBase&quot;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&quot;demoMap2&quot;</span><span class="token punctuation">,</span>
   <span class="token keyword">extends</span><span class="token punctuation">:</span> mapBase<span class="token punctuation">,</span>
@@ -534,7 +534,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 
 <p>&#x8DEF;&#x5F84;&#xFF1A;&#x4F60;&#x7684;&#x89C6;&#x56FE;&#x76EE;&#x5F55;</p>
 <ul>
-<li>&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;bizComps&#x6587;&#x4EF6;&#x5939;</li>
+<li>&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;components&#x6587;&#x4EF6;&#x5939;</li>
 <li>&#x65B0;&#x5EFA;&#x4F60;&#x7684;&#x4E1A;&#x52A1;&#x5B50;&#x7EC4;&#x4EF6;</li>
 <li>&#x5728;&#x4F60;&#x7684;&#x9875;&#x9762;vue&#x91CC;&#x9762;&#x5F15;&#x7528;&#x5373;&#x53EF;&#x4F7F;&#x7528;</li>
 </ul>
@@ -543,7 +543,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
 </pre><pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">&gt;</span>
 <span class="token keyword">import</span> utils <span class="token keyword">from</span> <span class="token string">&apos;@/utils&apos;</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> demoMap1 <span class="token keyword">from</span> <span class="token string">&apos;./bizComps/demoMap1&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> demoMap1 <span class="token keyword">from</span> <span class="token string">&apos;./components/demoMap1&apos;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&apos;HelloWorld3&apos;</span><span class="token punctuation">,</span>
   components<span class="token punctuation">:</span> <span class="token punctuation">{</span>demoMap1<span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -636,7 +636,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 <li>&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x4E1A;&#x52A1;&#x5730;&#x56FE;&#x7EC4;&#x4EF6;&#x6587;&#x4EF6;&#xFF0C;&#x653E;&#x5230;&#x5BF9;&#x5E94;&#x7684;views&#x7EC4;&#x4EF6;&#x4E2D;</li>
 <li>&#x7EE7;&#x627F;&#x516C;&#x5171;&#x7EC4;&#x4EF6;&#x4E2D;&#x7684;mapBase&#x7EC4;&#x4EF6;&#xFF0C;&#x83B7;&#x53D6;&#x57FA;&#x672C;&#x80FD;&#x529B;</li>
 </ul>
-<pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">import</span> mapBase <span class="token keyword">from</span> <span class="token string">&quot;@/bizComps/MapBase&quot;</span><span class="token punctuation">;</span>
+<pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token keyword">import</span> mapBase <span class="token keyword">from</span> <span class="token string">&quot;@/components/MapBase&quot;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&quot;demoMap2&quot;</span><span class="token punctuation">,</span>
   <span class="token keyword">extends</span><span class="token punctuation">:</span> mapBase<span class="token punctuation">,</span>
@@ -702,7 +702,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
 </pre><pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">&gt;</span>
 <span class="token keyword">import</span> utils <span class="token keyword">from</span> <span class="token string">&apos;@/utils&apos;</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> demoMap1 <span class="token keyword">from</span> <span class="token string">&apos;./bizComps/demoMap1&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> demoMap1 <span class="token keyword">from</span> <span class="token string">&apos;./components/demoMap1&apos;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&apos;HelloWorld3&apos;</span><span class="token punctuation">,</span>
   components<span class="token punctuation">:</span> <span class="token punctuation">{</span>demoMap1<span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -719,7 +719,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 <pre data-role="codeBlock" data-info="html" class="language-html">&#x7EC4;&#x4EF6;&#x8C03;&#x7528;
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>CKEditor</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>CKEditor</span><span class="token punctuation">&gt;</span></span>
 </pre><pre data-role="codeBlock" data-info="js" class="language-javascript">&#x7EC4;&#x4EF6;&#x5F15;&#x5165;
-<span class="token keyword">import</span> CKEditor <span class="token keyword">from</span> <span class="token string">&apos;@/bizComps/CKEditor&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> CKEditor <span class="token keyword">from</span> <span class="token string">&apos;@/components/CKEditor&apos;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&apos;HelloWorld6&apos;</span><span class="token punctuation">,</span>
   components<span class="token punctuation">:</span> <span class="token punctuation">{</span>CKEditor<span class="token punctuation">}</span>
@@ -743,7 +743,7 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
 <pre data-role="codeBlock" data-info="js" class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">&gt;</span>
 demoDialog<span class="token punctuation">.</span>vue
 
-<span class="token keyword">import</span> dialogBase <span class="token keyword">from</span> <span class="token string">&apos;@/bizComps/DialogBase&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> dialogBase <span class="token keyword">from</span> <span class="token string">&apos;@/components/DialogBase&apos;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">&apos;demoDialog&apos;</span><span class="token punctuation">,</span>
   <span class="token keyword">extends</span><span class="token punctuation">:</span> dialogBase<span class="token punctuation">,</span>
