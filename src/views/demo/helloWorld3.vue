@@ -22,8 +22,8 @@
 
 <script>
 import utils from '@/utils';
-import demoMap1 from './bizComps/demoMap1';
-import demoMap2 from './bizComps/demoMap2';
+import demoMap1 from './components/demoMap1';
+import demoMap2 from './components/demoMap2';
 export default {
   name: 'HelloWorld3',
   components: {demoMap1, demoMap2},

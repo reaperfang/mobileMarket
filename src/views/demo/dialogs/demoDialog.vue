@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import dialogBase from '@/bizComps/DialogBase';
+import dialogBase from '@/components/DialogBase';
 export default {
   name: 'demoDialog',
   extends: dialogBase,

@@ -17,7 +17,7 @@
 <script>
 import utils from '@/utils';
 import demoDialog from './dialogs/demoDialog';
-import RickEditor from '@/bizComps/RickEditor';
+import RickEditor from '@/components/RickEditor';
 export default {
   name: 'HelloWorld6',
   components: {demoDialog, RickEditor},
