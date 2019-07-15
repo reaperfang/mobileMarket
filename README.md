@@ -31,7 +31,7 @@ npm run build:prod   //正式环境打包
 ├── src                                          
 │   ├── api                                     // 接口api（其中index.js是聚合索引文件）
 │   ├── assets                                  // 静态文件目录
-│   ├── bizComps                              // 公共组件目录（很多页面级的功能组件继承自此目录下的base组件）
+│   ├── components                              // 公共组件目录（很多页面级的功能组件继承自此目录下的base组件）
 │   ├── config                                  // 项目配置目录
 │   ├── router                                  // 路由目录（其中index.js是聚合索引文件，按需模块化的添加你的路由文件）
 │   ├── store                                   // 状态管理目录
@@ -50,7 +50,7 @@ npm run build:prod   //正式环境打包
 ```
 
 ## 添加一个第三方插件
-文件路径： \src\bizComps\static\index.js
+文件路径： \src\components\static\index.js
 
 ```js
 //添加时间轴demo
@@ -162,7 +162,7 @@ this._apis.websocketDemo.getData({aaa:1}, {
 目录路径： \src\router
 * 在目录中添加一个路由模块文件
 ```js
-import Layout from '@/bizComps/layout/Layout'
+import Layout from '@/components/layout/Layout'
 
 export default [
   {
@@ -228,7 +228,7 @@ export default [
 ```js
 import Vue from 'vue'
 import Router from 'vue-router'
-import Layout from '@/bizComps/layout/Layout'
+import Layout from '@/components/layout/Layout'
 Vue.use(Router)
 import demoRouter from './demoRouter';
  
@@ -246,13 +246,13 @@ export default new Router({
 
 
 ## 添加公共功能组件并使用
-目录路径： \src\bizComps
+目录路径： \src\components
 * 带base的组件是基础功能组件，使用此类功能的业务组件可从此类文件继承以获得基本能力，在各视图目录中的业务组件中去做具体的实现
 * layout组件是布局基础组件，部分页面骨架基于此布局组件
 * static目录是导入第三方组件的入口，需求的话可以去添加
 ```js
 <script type='es6'>
-import mapBase from "@/bizComps/MapBase";
+import mapBase from "@/components/MapBase";
 export default {
   name: "demoMap2",
   extends: mapBase,
@@ -286,7 +286,7 @@ export default {
 
 ## 添加业务组件
 路径：你的视图目录
-* 新建一个bizComps文件夹
+* 新建一个components文件夹
 * 新建你的业务子组件
 * 在你的页面vue里面引用即可使用
 ```html
@@ -298,7 +298,7 @@ export default {
 ```js
 <script>
 import utils from '@/utils';
-import demoMap1 from './bizComps/demoMap1';
+import demoMap1 from './components/demoMap1';
 export default {
   name: 'HelloWorld3',
   components: {demoMap1},
@@ -408,7 +408,7 @@ let value = utils.percent(0.34546757, 3)
 * 创建一个业务地图组件文件，放到对应的views组件中
 * 继承公共组件中的mapBase组件，获取基本能力
 ```js
-import mapBase from "@/bizComps/MapBase";
+import mapBase from "@/components/MapBase";
 export default {
   name: "demoMap2",
   extends: mapBase,
@@ -480,7 +480,7 @@ searchCompleted(results) {
 ```js
 <script>
 import utils from '@/utils';
-import demoMap1 from './bizComps/demoMap1';
+import demoMap1 from './components/demoMap1';
 export default {
   name: 'HelloWorld3',
   components: {demoMap1},
@@ -506,7 +506,7 @@ export default {
 
 ```js
 组件引入
-import CKEditor from '@/bizComps/CKEditor';
+import CKEditor from '@/components/CKEditor';
 export default {
   name: 'HelloWorld6',
   components: {CKEditor}
@@ -534,7 +534,7 @@ export default {
 <script>
 demoDialog.vue
 
-import dialogBase from '@/bizComps/DialogBase';
+import dialogBase from '@/components/DialogBase';
 export default {
   name: 'demoDialog',
   extends: dialogBase,
