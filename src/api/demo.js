@@ -12,3 +12,13 @@ export function getList(data) {
   })
 }
 
+// 获取列表2
+export function getList2(data) {
+  return request({
+    target:'dsbfsdbfhsdbfhbsfd',
+    method: 'post',
+    baseURL: process.env.DATA_API,
+    data
+  })
+}
+
