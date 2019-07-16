@@ -96,6 +96,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.el-card{
+  border-radius: 0px!important;
+  border: none;
+}
 .guideBox{
   display: flex;
   .phoneBox{

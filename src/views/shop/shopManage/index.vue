@@ -33,4 +33,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-tabs{
+  // background:#fff;
+  padding:20px;
+  padding-bottom: 0;
+}
 </style>
