@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="logo-con">
+    <!-- <div class="logo-con">
       <img :src="require('@/assets/images/logo.png')" class="logo">
-    </div>
+    </div> -->
     <!-- <div class="shopName">商户名称</div> -->
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
@@ -17,30 +17,55 @@
       >
         <!-- background-color="#304156" text-color="#bfcbd9"
         active-text-color="#409EFF"-->
-        <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path"/>
+        <sidebar-item v-for="route in sidebarItems" :key="route.path" :item="route" :base-path="route.path"/>
       </el-menu>
     </el-scrollbar>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 
 export default {
   data() {
     return {
-      uniqueOpened: true
+      uniqueOpened: true,
+      sidebarItems: []
     }
   },
   components: { SidebarItem },
   computed: {
+    ...mapState({
+      current: state => state.menu.current,
+    }),
     ...mapGetters([
       'permission_routers',
+      'permission_routers_tree',
       'sidebar'
     ]),
     isCollapse() {
       return !this.sidebar.opened
+    },
+  },
+  created() {
+    this.setSidebarItems()
+  },
+  methods: {
+    setSidebarItems() {
+      let _permission_routers_tree = JSON.parse(JSON.stringify(this.permission_routers_tree))
+      let _path = _permission_routers_tree[this.current].path
+      let children = _permission_routers_tree[this.current].children
+
+      children.forEach(val => {
+        val.path = _path + '/' + val.path
+      })
+      this.sidebarItems = children
+    }
+  },
+  watch: {
+    current() {
+      this.setSidebarItems()
     }
   }
 }

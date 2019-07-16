@@ -14,7 +14,7 @@
 
     <el-submenu v-else ref="submenu" :index="resolvePath(item.path)">
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta.icon" :title="item.meta.title" />
+        <item v-if="item.meta" :title="item.meta.title" /><!-- :icon="item.meta.icon" -->
       </template>
 
       <template v-for="child in item.children" v-if="!child.hidden">
@@ -34,6 +34,13 @@
       </template>
     </el-submenu>
 
+  </div>
+  <div v-else>
+    <app-link :to="resolvePath(item.path)" :key="item.name">
+      <el-menu-item :index="resolvePath(item.path)">
+        <item v-if="item.meta" :icon="item.meta.icon" :title="item.meta.title" />
+      </el-menu-item>
+    </app-link>
   </div>
 </template>
 <style>

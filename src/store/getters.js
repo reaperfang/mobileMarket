@@ -5,6 +5,7 @@ const getters = {
   userInfo: state => state.userInfo || localStorage.getItem('userInfo'),
   roles: state => state.user.roles,
   permission_routers: state => state.permission.routers,
+  permission_routers_tree: state => state.permission.routers.filter(val => !val.hidden && val.children),
   addRouters: state => state.permission.addRouters,
   mapLoaded: state => state.app.mapLoaded
 }

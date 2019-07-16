@@ -1,5 +1,7 @@
 <template>
   <div class="navbar">
+    <div class="navbar-item">[ 新零售-电商豪华版 ] 剩余有效期</div>
+    <div class="navbar-item"></div>
     <div class="right-menu">
       <!-- <i class="el-icon-s-custom"/> -->
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
@@ -68,12 +70,13 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
-  height: 64px;
+  height: 60px;
   line-height: 64px;
   border-radius: 0px !important;
   background:#fff;
-  // border-bottom: 1px solid #ebeef5;
-  box-shadow:0px 10px 20px 0px rgba(229,239,255,1);
+  color: #92929B;
+  padding-left: 20px;
+  font-size:14px;
   .hamburger-container {
     line-height: 58px;
     height: 50px;
@@ -88,6 +91,7 @@ export default {
     vertical-align: top;
   }
   .right-menu {
+    display: none;
     float: right;
     height: 100%;
     margin-right: 20px;

@@ -1,14 +1,23 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
-        <router-view :key="key"/>
-      </keep-alive>
-    </transition>
+    <div class="content-box">
+      <div class="content-menu">
+        <sidebar class="sidebar-righter" />
+      </div>
+      <div class="content-main">
+        <transition name="fade-transform" mode="out-in">
+          <keep-alive :include="cachedViews">
+            <router-view :key="key"/>
+          </keep-alive>
+        </transition>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
+import Sidebar from './Sidebar'
+
 export default {
   name: 'AppMain',
   computed: {
@@ -18,19 +27,29 @@ export default {
     key() {
       return this.$route.fullPath
     }
+  },
+  components: {
+    Sidebar
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .app-main {
   /*84 = navbar + tags-view = 50 +34 */
   min-height: calc(100vh - 84px);
   width: 100%;
   position: relative;
   overflow: hidden;
-  margin-left: 20px;
-  padding: 20px;
+  .content-box {
+    display: flex;
+    .content-menu {
+      margin-right: 15px;
+    }
+    .content-main {
+      flex: 1;
+    }
+  }
 }
 </style>
 <style>

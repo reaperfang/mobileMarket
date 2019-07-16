@@ -4,10 +4,12 @@ import Layout from '@/components/layout/Layout'
 Vue.use(Router)
 import demo from './demo';
 import shop from './shop';
+import goods from './goods';
  
 export const asyncRouterMap = [  //异步路由表
+  ...goods,
 	...demo,
-  ...shop
+  ...shop,
 ]
 
 export const syncRouterMap = [ //同步路由表
