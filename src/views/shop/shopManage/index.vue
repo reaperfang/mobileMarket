@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background:rgb(242,242,249);">
     <el-tabs v-model="currentTab" @tab-click="handleClick">
       <el-tab-pane label="店铺主页" name="shopMain"></el-tab-pane>
       <el-tab-pane label="个人中心" name="personCenter"></el-tab-pane>
@@ -33,4 +33,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-tabs{
+  // background:#fff;
+  padding:20px;
+  padding-bottom: 0;
+}
 </style>

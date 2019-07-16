@@ -16,7 +16,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: PingFangSC-Regular, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-  background:#F9FAFF;
+  background:rgba(242,242,249,1);
   font-size: 14px;
 }
 
@@ -80,6 +80,15 @@ div:focus{
 /*列表样式*/
 ul, li, dl, dt, dd {
   list-style:none;
+}
+
+table{
+  font-size:14px;
+  .table-btn{
+    color:#655EFF;
+    margin-right:10px;
+    cursor: pointer;
+  }
 }
 
 code {
