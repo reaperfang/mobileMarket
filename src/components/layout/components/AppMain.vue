@@ -56,8 +56,7 @@ export default {
     }
     .content-main {
       flex: 1;
-      margin-left: 90px;
-      margin-top: 20px;
+      margin: 20px 20px 20px 90px;
       background-color: #fff;
     }
   }
