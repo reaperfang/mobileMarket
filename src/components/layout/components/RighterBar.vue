@@ -134,6 +134,7 @@ export default {
         border-radius: 15px;
         &.active {
           background-color: #f0efff;
+          color: #7f79ff;
         }
       }
       &:last-child {

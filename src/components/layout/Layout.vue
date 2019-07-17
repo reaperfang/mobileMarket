@@ -101,6 +101,7 @@ export default {
         &.active {
           border-left: 4px solid #655eff;
           background-color: #4b4c6c;
+          color: #fff;
         }
         i {
           margin-right: 9px;
