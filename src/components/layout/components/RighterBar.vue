@@ -156,5 +156,9 @@ export default {
       }
     }
   }
+  /deep/ .item a {
+    max-width: 100px;
+    display: inline-block;
+  }
 </style>
 
