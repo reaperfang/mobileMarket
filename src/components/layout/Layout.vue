@@ -91,6 +91,7 @@ export default {
       position: fixed;
       left: 0;
       top: 0;
+      z-index: 1000;
       color: #9596a9;
       font-size:16px;
       ul li {

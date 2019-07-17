@@ -2,7 +2,8 @@
   <section class="app-main">
     <div class="content-box">
       <div class="content-menu">
-        <sidebar class="sidebar-righter" />
+        <!-- <sidebar class="sidebar-righter" /> -->
+        <righter-bar></righter-bar>
       </div>
       <div class="content-main">
         <transition name="fade-transform" mode="out-in">
@@ -17,6 +18,7 @@
 
 <script>
 import Sidebar from './Sidebar'
+import RighterBar from './RighterBar'
 
 export default {
   name: 'AppMain',
@@ -29,7 +31,8 @@ export default {
     }
   },
   components: {
-    Sidebar
+    Sidebar,
+    RighterBar
   }
 }
 </script>
@@ -41,13 +44,19 @@ export default {
   width: 100%;
   position: relative;
   overflow: hidden;
+  margin-top: 60px;
   .content-box {
     display: flex;
     .content-menu {
       margin-right: 15px;
+      background-color: #fff;
+      width: 122px;
+      text-align: center;
+      height: 100%;
     }
     .content-main {
       flex: 1;
+      margin-left: 122px;
     }
   }
 }
