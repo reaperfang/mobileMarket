@@ -35,7 +35,10 @@ export default {
     }
   },
   created() {
-    console.log(this.$route)
+    let path = '/' + this.$route.path.split('/')[1]
+    let index = this.permission_routers_tree.findIndex(val => val.path == path)
+
+    this.menuHandler(index)
   },
   components: {
     Navbar,
@@ -73,7 +76,6 @@ export default {
     },
     menuHandler(index) {
       this.SETCURRENT(index)
-      console.log(this.$store.state.menu.current)
     }
   }
 }
