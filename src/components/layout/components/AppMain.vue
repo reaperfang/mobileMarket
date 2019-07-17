@@ -56,7 +56,9 @@ export default {
     }
     .content-main {
       flex: 1;
-      margin-left: 122px;
+      margin-left: 90px;
+      margin-top: 20px;
+      background-color: #fff;
     }
   }
 }
