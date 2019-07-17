@@ -37,7 +37,7 @@
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
             <span class="table-btn" @click="copyPage(scope.row)">复制</span>
-            <span class="table-btn" @click="_routeTo('edit')">编辑</span>
+            <span class="table-btn" @click="_routeTo('shopEditor')">编辑</span>
             <span class="table-btn" @click="deletePage(scope.row)">删除</span>
             <span class="table-btn" @click="spread(scope.row)">推广</span>
             <span class="table-btn" @click="setIndex(scope.row)">设为首页</span>
