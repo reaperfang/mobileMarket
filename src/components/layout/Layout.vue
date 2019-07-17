@@ -10,7 +10,7 @@
         <li :class="{active: index == current}" @click="menuHandler(index)" v-if="!item.hidden && item.children" 
           v-for="(item, index) in permission_routers_tree">
           <i :class="{[item.meta.icon]: true, 'el-icon-setting': true}"></i>
-          <span>{{item.name}}</span>
+          <span class="ellipsis">{{item.meta.title}}</span>
         </li>
       </ul>
     </div>
@@ -107,8 +107,6 @@ export default {
           margin-right: 9px;
         }
         span {
-          overflow:hidden;
-          text-overflow:ellipsis;
           padding-right: 5px;
         }
         &:first-child {

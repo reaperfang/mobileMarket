@@ -250,3 +250,9 @@ table.yuan-table{
     width:230px!important;
   }
 }
+
+.ellipsis {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
