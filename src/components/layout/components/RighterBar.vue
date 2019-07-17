@@ -5,7 +5,7 @@
         <template v-if="item.children">
           <h2>{{item.name}}</h2>
           <div v-for="child in item.children" class="item-child">
-            <router-link active-class="active" :to="resolvePath(item.path, child.path)">{{child.meta.title}}</router-link>
+            <router-link class="ellipsis" active-class="active" :to="resolvePath(item.path, child.path)">{{child.meta.title}}</router-link>
           </div>
         </template>
         <template v-else-if="item.tabTitle">
@@ -15,7 +15,7 @@
           </div>
         </template>
         <template v-else>
-          <router-link active-class="active" :to="resolvePath(item.path)">{{item.meta.title}}</router-link>
+          <router-link class="ellipsis" active-class="active" :to="resolvePath(item.path)">{{item.meta.title}}</router-link>
         </template>
       </div>
     </div>
