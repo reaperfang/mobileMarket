@@ -34,6 +34,9 @@ export default {
       
     }
   },
+  created() {
+    console.log(this.$route)
+  },
   components: {
     Navbar,
     Sidebar,
@@ -124,6 +127,7 @@ export default {
       }
       .logo{
         width: 60px;
+        height: 27px;
       }
     }
     .main-container {

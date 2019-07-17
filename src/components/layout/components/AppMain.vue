@@ -47,8 +47,8 @@ export default {
   margin-top: 60px;
   .content-box {
     display: flex;
+    height: 100%;
     .content-menu {
-      margin-right: 15px;
       background-color: #fff;
       width: 122px;
       text-align: center;
@@ -56,8 +56,7 @@ export default {
     }
     .content-main {
       flex: 1;
-      margin: 20px 20px 20px 90px;
-      background-color: #fff;
+      margin: 20px;
     }
   }
 }

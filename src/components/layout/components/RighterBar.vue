@@ -1,16 +1,16 @@
 <template>
   <div class="righter-bar">
     <div class="righter-bar-content">
-      <div v-for="item in sidebarItems" class="item">
+      <div v-if="!item.hidden" v-for="item in sidebarItems" class="item">
         <template v-if="item.children">
           <h2>{{item.name}}</h2>
-          <div v-for="child in item.children" class="item-child">
+          <div v-if="!child.hidden" v-for="child in item.children" class="item-child">
             <router-link class="ellipsis" active-class="active" :to="resolvePath(item.path, child.path)">{{child.meta.title}}</router-link>
           </div>
         </template>
         <template v-else-if="item.tabTitle">
           <h2>{{item.tabTitle}}</h2>
-          <div v-for="child in item.data" class="item-child">
+          <div v-if="!child.hidden" v-for="child in item.data" class="item-child">
             <router-link class="ellipsis" active-class="active" :to="resolvePath(child.path)">{{child.meta.title}}</router-link>
           </div>
         </template>
