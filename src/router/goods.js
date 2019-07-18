@@ -11,10 +11,10 @@ export default [
     },
     children: [
     	{
-        path: 'helloWorld',
-        component: () => import('@/views/demo/helloWorld'),
-        name: 'helloWorld',
-        meta: { title: 'elementUi', noCache: true, tabTitle: '商品管理' },
+        path: 'goodsList',
+        component: () => import('@/views/goods/goodsList'),
+        name: 'goodsList',
+        meta: { title: '商品列表', noCache: true, tabTitle: '商品管理' },
       },
     	{
         path: 'helloWorld2',
