@@ -171,8 +171,10 @@ export default {
     },
   },
   methods: {
+
+    /* 选中控件 */
     selectWidget(item) {
-      this.$store.dispatch('addComponent', item.name);
+      this.$store.dispatch('addComponent', item);
       this.$store.commit('setCurrentComponentName', item.name);
     }
   }
