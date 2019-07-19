@@ -99,7 +99,7 @@ export default {
   components: {}
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .wrapper{
   #mapContainer {
     width: 100%;
@@ -123,6 +123,9 @@ export default {
       overflow-y: auto;
     }
   }
+}
+.test{
+  color:red;
 }
 </style>
 

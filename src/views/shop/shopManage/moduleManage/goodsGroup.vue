@@ -1,6 +1,6 @@
 <template>
-  <div class="group-wrapper" :style="fontStyle" ref="groupWrapper">
-    <div class="view">
+  <div class="group-wrapper">
+    <div class="view" ref="groupWrapper" :style="fontStyle">
       <div class="phone-head">
         <img src="../../../../assets/images/shop/phone-head.png" alt="">
       </div>
@@ -206,7 +206,7 @@ export default {
       pageMargin: {padding: '10px 0 0 10px'},  //动态页面边距对象
       ruleForm: {
         groupStyle: 'left',  //分组样式
-        groupFont: 'bold',  //分组字体
+        groupFont: 'normal',  //分组字体
         groupImg: 'circleAngle',  //图片圆角
         pageMargin: 15,  //页面边距
         groupMargin: 20  //分组间距

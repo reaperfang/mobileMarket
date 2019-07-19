@@ -5,6 +5,7 @@ import permission from './modules/permission'
 import tagsView from './modules/tagsView'
 import user from './modules/user'
 import menu from './modules/menu'
+import decorate from './modules/decorate'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -15,7 +16,8 @@ const store = new Vuex.Store({
     permission,
     tagsView,
     user,
-    menu
+    menu,
+    decorate
   },
   getters
 })
