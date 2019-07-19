@@ -12,12 +12,12 @@ export default {
     return {
     }
   },
-  watch: {ß
+  watch: {
 
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
-    this.autoLogin()
+    
   },
   destroyed() {
     // window.removeEventListener('hashchange', this.afterQRScan)
