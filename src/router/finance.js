@@ -18,7 +18,7 @@ export default [
       },
       {
         path: 'revenueExpenditureDetails',
-        component: () => import('@/views/finance/revenueExpenditureDetail'),
+        component: () => import('@/views/finance/revenueExpenditureDetails'),
         name: 'revenueExpenditureDetails',
         meta: { title: '收支明细', noCache: true, tabTitle: '财务管理' },
       },

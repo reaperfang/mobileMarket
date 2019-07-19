@@ -5,11 +5,13 @@ Vue.use(Router)
 import demo from './demo';
 import shop from './shop';
 import goods from './goods';
+import finance from './finance';
  
 export const asyncRouterMap = [  //异步路由表
   ...goods,
 	...demo,
   ...shop,
+  ...finance
 ]
 
 export const syncRouterMap = [ //同步路由表
