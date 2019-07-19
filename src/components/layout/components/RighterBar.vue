@@ -156,6 +156,11 @@ export default {
       }
     }
   }
+  @media screen and (min-height: 900px) {
+    .righter-bar .righter-bar-content {
+      height: 800px;
+    }
+  }
   /deep/ .item a {
     max-width: 100px;
     display: inline-block;

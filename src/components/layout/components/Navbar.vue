@@ -47,13 +47,9 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'device'
-    ])
-  },
-  computed: {
-    'userInfo'() {
-      return this.$store.getters.userInfo
-    }
+      'device',
+      'userInfo'
+    ]),
   },
   methods: {
     toggleSideBar() {
