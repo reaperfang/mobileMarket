@@ -18,6 +18,17 @@ export default {
       }
     }
   },
+  watch: {
+    ruleForm: {
+      handler(newValue) {
+        this.$emit('change', {
+          type: this.$parent.currentComponentName,
+          data: newValue
+        });
+      },
+      deep: true
+    }
+  },
   created() {
 
   },

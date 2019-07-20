@@ -12,24 +12,75 @@ const importVue = (name, callback)=> {
 const decorate = {
 	state: {
 		currentComponentName: "base",
-		componentList: []
+		componentList: [],
+		dataList: []
 	},
 	mutations: {
-		setCurrentComponentName: (state, name) => {
-			state.currentComponentName = name;
+
+		/* 设置当前组件 */
+		setCurrentComponentName: (state, type) => {
+			state.currentComponentName = type;
 		},
 
+		/* 同步添加组件 */
 		addComponentSync: (state, component) => {
 			state.componentList.push(component);
-			console.log(state.componentList);
+			state.dataList.push({type: component.type});
+		},
+
+		/* 删除组件 */
+		deleteComponent(state, component) {
+			const tempComponentList = [...state.componentList];
+      for(let i=0;i<tempComponentList.length; i++) {
+        if(tempComponentList[i] === component ) {
+          const index = tempComponentList.indexOf(component);
+          if(index > -1) {
+						if(tempComponentList[index+1]) {
+							this.commit('setCurrentComponentName', tempComponentList[index+1].type);
+						}else{
+							this.commit('setCurrentComponentName', 'base');
+						}
+            tempComponentList.splice(index, 1);
+          }
+        }
+      }
+      state.componentList = tempComponentList;
+			this.commit('deleteData', component.name);
+		},
+
+		/* 删除一条数据 */
+		deleteData(state, type) {
+			const tempDataList = [...state.dataList];
+      for(let i=0;i<tempDataList.length; i++) {
+        if(tempDataList[i].type === type ) {
+          tempDataList.splice(i, 1);
+        }else{
+					break;
+				}
+      }
+      state.dataList = tempDataList;
+		},
+
+		/* 更新组件 */
+		updateComponent(state, params) {
+			const tempDataList = [...state.dataList];
+      for(let i=0;i<tempDataList.length; i++) {
+        if(tempDataList[i].type === params.type ) {
+					Object.assign(tempDataList[i], params.data )
+        }else{
+					break;
+				}
+      }
+      state.dataList = tempDataList;
 		}
 	},
 	actions: {
-		//添加组件
-		addComponent({ commit, state }, name) {
+
+		//异步添加组件
+		addComponent({ commit, state }, widget) {
 			if(!state.componentList.length) {
-				importVue(name, (loadedComponent)=>{
-					const component = Object.assign({}, loadedComponent.default, {type: name});
+				importVue(widget.name, (loadedComponent)=>{
+					const component = Object.assign({}, loadedComponent.default, {type: widget.name, title: widget.title});
 					commit("addComponentSync", component);
 				})
 				return;
@@ -42,9 +93,9 @@ const decorate = {
 			}
 
 			//判断是否已存在
-			if(!types.includes(name)){
-				importVue(name, (loadedComponent)=>{
-					const component = Object.assign({}, loadedComponent.default, {type: name});
+			if(!types.includes(widget.name)){
+				importVue(widget.name, (loadedComponent)=>{
+					const component = Object.assign({}, loadedComponent.default, {type: widget.name, title: widget.title});
 					commit("addComponentSync", component);
 				})
 			}

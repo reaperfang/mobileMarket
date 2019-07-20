@@ -50,6 +50,17 @@ export default {
   created() {
 
   },
+  watch: {
+    ruleForm: {
+      handler(newValue) {
+        this.$emit('change', {
+          type: this.$parent.currentComponentName,
+          data: newValue
+        });
+      },
+      deep: true
+    }
+  },
   methods: {
 
   }

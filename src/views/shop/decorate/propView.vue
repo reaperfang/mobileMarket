@@ -5,7 +5,7 @@
         <p class="state"></p>
       </div>
       <div class="block form">
-         <component :is='currentComponent' v-bind="editProps" @change='change'></component>
+         <component :is='currentComponent' v-bind="editProps" @change="propsChange"></component>
       </div>
     </div>
 </template>
@@ -19,6 +19,7 @@ export default {
     return {
       currentComponent: null,  //当前组件名称
       editProps: null,   //组件属性数据
+      utils
     }
   },
   computed:{
@@ -35,13 +36,19 @@ export default {
     this.loadPropTemplate();
   },
   methods: {
+
+    /* 动态加载属性模板 */
     loadPropTemplate() {
-      const filePath = `./props/property${utils.titleCase(this.currentComponentName)}.vue`;
-      import(filePath).then(loadedComponent => {
+      import(`./props/property${this.utils.titleCase(this.currentComponentName)}.vue`).then(loadedComponent => {
         this.currentComponent = loadedComponent.default
       }).catch(e => {
           console.log(e);
       })
+    },
+
+    /* 更新组件数据 */
+    propsChange(params) {
+      this.$store.commit('updateComponent', params);
     }
   }
 }
@@ -80,7 +87,7 @@ export default {
         }
       }
       &.form{
-        padding: 30px 0;
+        padding: 30px 20px;
         .slider-wrapper{
           width:100%;
           display:flex;

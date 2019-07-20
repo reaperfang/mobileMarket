@@ -1,6 +1,5 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
-    商品编辑表单页
     <div class="block form">
       <el-form-item label="活动名称">
         <el-input v-model="ruleForm.name"></el-input>
@@ -36,13 +35,27 @@ export default {
   data () {
     return {
       ruleForm: {
-        value:2
+        name: '',
+        region: '',
+        type: '',
+        desc: ''
       },
       rules: {}
     }
   },
   created() {
 
+  },
+  watch: {
+    ruleForm: {
+      handler(newValue) {
+        this.$emit('change', {
+          type: this.$parent.currentComponentName,
+          data: newValue
+        });
+      },
+      deep: true
+    }
   },
   methods: {
 
