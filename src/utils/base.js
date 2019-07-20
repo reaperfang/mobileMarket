@@ -216,3 +216,26 @@ export function titleCase(name) {
   });
   return str; 
 }
+
+/**
+ * 根据value值获取label
+ *
+ * @export
+ * @param {*} obj 
+ * @param {*} group
+ * @param {*} value
+ */
+export function getDictLabel(obj, group, value) {
+    const dictList = obj
+    const dict = dictList[group]
+    let rst = ''
+    if (dict && Array.isArray(dict)) {
+      for (let i = 0; i < dict.length; i++) {
+        if (dict[i].value === value) {
+          rst = dict[i].label
+          break
+        }
+      }
+    }
+    return rst
+  }

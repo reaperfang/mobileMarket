@@ -2,7 +2,7 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline" label-width="70px">
+      <el-form ref="form" :model="form" :inline="inline">
         <el-form-item>
           <el-select v-model="form.value1" placeholder="提现编号" style="width:124px;">
             <el-option label="提现编号" value="1"></el-option>
@@ -11,6 +11,16 @@
         </el-form-item>
         <el-form-item>
           <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
+        </el-form-item>
+        <el-form-item label="申请时间" style="margin-left:25px;">
+          <el-date-picker
+            v-model="form.value7"
+            type="datetimerange"
+            align="right"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :default-time="['12:00:00', '08:00:00']">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="form.value3" style="width:210px;">
@@ -23,16 +33,6 @@
         </el-form-item>
         <el-form-item label="客户ID">
           <el-input v-model="form.value5" placeholder="请输入" style="width:226px;"></el-input>
-        </el-form-item>
-        <el-form-item label="申请时间" style="margin-left:25px;">
-          <el-date-picker
-            v-model="form.value7"
-            type="datetimerange"
-            align="right"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
-          </el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button>重置</el-button>
