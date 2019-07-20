@@ -120,7 +120,7 @@ export default {
     position: fixed;
     left: 120px;
     top: 60px;
-    z-index: 10000;
+    z-index: 1000;
     background-color: #fff;
     width: 122px;
     height: 100%;
