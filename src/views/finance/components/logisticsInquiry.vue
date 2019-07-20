@@ -4,9 +4,9 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline" label-width="70px">
         <el-form-item>
-          <el-select v-model="form.value1" placeholder="交易流水号" style="width:124px;">
+          <el-select v-model="form.value1" placeholder="订单编号" style="width:124px;">
             <el-option
-              v-for="item in revenueExpenditureTerms"
+              v-for="item in fsTerms"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -16,42 +16,18 @@
         <el-form-item>
           <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
-        <el-form-item label="业务类型">
-          <el-select v-model="form.value3" style="width:210px;">
-            <el-option
-              v-for="item in rebusinessTypes"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="支付方式">
-          <el-select v-model="form.value4" style="width:210px;">
-            <el-option
-              v-for="item in payTypes"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="交易金额">
-          <el-input v-model="form.value5" placeholder="请输入" style="width:120px;"></el-input>
-          -
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.value6" placeholder="请输入" style="width:120px;"></el-input>
-        </el-form-item>
-        <el-form-item label="交易时间" style="margin-left:25px;">
+        <el-form-item label="查询时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.value7"
+            v-model="form.value3"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :default-time="['12:00:00', '08:00:00']">
           </el-date-picker>
+        </el-form-item>
+        <el-form-item label="快递公司">
+          <el-input v-model="form.value2" placeholder="请输入" style="width:200px;"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button>重置</el-button>
@@ -64,28 +40,24 @@
         <span>全部 <em>700</em> 项</span>
         <el-button>导出</el-button>
       </div>
-      <reTable style="margin-top:20px"></reTable>
+      <liTable style="margin-top:20px"></liTable>
     </div>
   </div>
 </template>
 
 <script>
-import reTable from './components/reTable'
+import liTable from './liTable'
 import financeCons from '@/system/constant/finance'
 export default {
-  name: 'revenueExpenditureDetails',
-  components:{ reTable },
+  name: 'logisticsInquiry',
+  components:{ liTable },
   data() {
     return {
       inline:true,
       form:{
         value1:1,
         value2:'',
-        value3:1,
-        value4:1,
-        value5:'',
-        value6:'',
-        value7:''
+        value3:'',
       },
     }
   },
@@ -93,15 +65,9 @@ export default {
 
   },
   computed:{
-    revenueExpenditureTerms(){
-      return financeCons.revenueExpenditureTerms;
+    fsTerms(){
+      return financeCons.fsTerms;
     },
-    rebusinessTypes(){
-      return financeCons.rebusinessTypes;
-    },
-    payTypes(){
-      return financeCons.payTypes;
-    }
   },
   created() {    
   },

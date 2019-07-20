@@ -5,7 +5,7 @@
       <div class="title">
         <div>
           <span class="name">概况分析</span>
-          <el-select v-model="svalue" placeholder="开店以来">
+          <el-select v-model="svalue" placeholder="开店以来" style="margin-left:10px;">
             <el-option
               v-for="item in surveyStatus"
               :key="item.value"
@@ -14,10 +14,23 @@
             </el-option>
           </el-select>
         </div>
-        <span class="data_note">
-          <i class="el-icon-warning-outline"></i>
-          查看数据说明
-        </span>
+        <el-popover
+          placement="top-start"
+          title="数据说明"
+          width="300"
+          trigger="hover">
+          <div>
+            <p>1、总收入即所有线上订单支付的总金额，含所有线上支付和线下支付的所有订单，支付完成后计入；</p>
+            <p>2、总支出即所有线上支出的总金额，含订单退款、客户ID提现的金额，退款成功或提现成功后计入；</p>
+            <p>3、实际收入 = 总收入 - 总支出；</p>
+            <p>4、每日数据为当日0时0分0秒到23时59分59秒的数据，今日数据为当日0点后的实时数据；</p>
+            <p>5、最近一周，最近一个月等数据中包含今日数据；</p>
+          </div>
+          <el-button slot="reference" class="data_note">
+            <i class="el-icon-warning-outline"></i>
+            查看数据说明
+          </el-button>
+        </el-popover>
       </div>
       <div class="data_statistics">
         <div class="item">
@@ -62,12 +75,12 @@
         </el-form-item>
         <el-form-item label="奖励方式">
           <el-select v-model="form.value4" style="width:200px;">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="积分" value="2"></el-option>
-            <el-option label="优惠券" value="3"></el-option>
-            <el-option label="红包" value="4"></el-option>
-            <el-option label="优惠码" value="5"></el-option>
-            <el-option label="赠品" value="6"></el-option>
+            <el-option
+              v-for="item in rewards"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
          <el-form-item label="时间">
@@ -109,7 +122,7 @@ export default {
         value1:'',
         value2:'',
         value3:'',
-        value4:'1'
+        value4:1
       },
       svalue:'',
     }
@@ -120,6 +133,9 @@ export default {
   computed:{
     surveyStatus(){
       return financeCons.surveyStatus;
+    },
+    rewards(){
+      return financeCons.rewards;
     }
   },
   created() {
@@ -160,6 +176,8 @@ export default {
       .data_note{
         color: #655EFF;
         font-size: 14px;
+        cursor: pointer;
+        border:none;
       }
     }
   .data_statistics{

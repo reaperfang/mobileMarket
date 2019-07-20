@@ -8,21 +8,12 @@
         </el-form-item>
         <el-form-item label="业务类型">
           <el-select v-model="form.value3" style="width:100px;">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="登陆" value="2"></el-option>
-            <el-option label="购买" value="3"></el-option>
-            <el-option label="复购" value="4"></el-option>
-            <el-option label="红包" value="5"></el-option>
-            <el-option label="互动" value="6"></el-option>
-            <el-option label="多人拼团" value="6"></el-option>
-            <el-option label="限时秒杀" value="6"></el-option>
-            <el-option label="评价" value="6"></el-option>
-            <el-option label="填写信息" value="6"></el-option>
-            <el-option label="签到" value="6"></el-option>
-            <el-option label="节日有礼" value="6"></el-option>
-            <el-option label="积分兑换" value="6"></el-option>
-            <el-option label="手动调整" value="6"></el-option>
-            <el-option label="清空" value="6"></el-option>
+            <el-option
+              v-for="item in idbusinessTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="获取时间" style="margin-left:25px;">
@@ -53,6 +44,7 @@
 
 <script>
 import idTable from './components/idTable'
+import financeCons from '@/system/constant/finance'
 export default {
   name: 'integralDetails',
   components:{ idTable },
@@ -61,13 +53,18 @@ export default {
       inline:true,
       form:{
         value2:'',
-        value3:'1',
+        value3:1,
         value7:''
       },
     }
   },
   watch: {
 
+  },
+  computed:{
+    idbusinessTypes(){
+      return financeCons.idbusinessTypes;
+    }
   },
   created() {
     

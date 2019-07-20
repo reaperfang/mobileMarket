@@ -8,12 +8,12 @@
         </el-form-item>
         <el-form-item label="交易类型">
           <el-select v-model="form.value3" style="width:100px;">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="订单收款" value="2"></el-option>
-            <el-option label="售后退款" value="3"></el-option>
-            <el-option label="申请提现" value="4"></el-option>
-            <el-option label="红包到账" value="5"></el-option>
-            <el-option label="提示失败" value="6"></el-option>
+            <el-option
+              v-for="item in transactionTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
@@ -44,6 +44,7 @@
 
 <script>
 import cbTable from './components/cbTable'
+import financeCons from '@/system/constant/finance'
 export default {
   name: 'revenueSituation',
   components:{ cbTable },
@@ -52,13 +53,18 @@ export default {
       inline:true,
       form:{
         value2:'',
-        value3:'1',
+        value3:1,
         value7:''
       },
     }
   },
   watch: {
 
+  },
+  computed:{
+    transactionTypes(){
+      return financeCons.transactionTypes;
+    },
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
