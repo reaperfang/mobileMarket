@@ -42,6 +42,7 @@ import '@/assets/icons'
 
 /* 自定义公共模块 */
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+import '@/styles/variables.scss'
 import '@/styles/index.scss' // global css
 import '@/system/permission' // permission control
 
