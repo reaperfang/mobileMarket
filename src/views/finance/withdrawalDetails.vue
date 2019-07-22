@@ -2,27 +2,19 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline" label-width="70px">
+      <el-form ref="form" :model="form" :inline="inline">
         <el-form-item>
           <el-select v-model="form.value1" placeholder="提现编号" style="width:124px;">
-            <el-option label="提现编号" value="1"></el-option>
-            <el-option label="交易流水号" value="2"></el-option>
+            <el-option
+              v-for="item in presentations"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="form.value3" style="width:210px;">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="待审核" value="2"></el-option>
-            <el-option label="成功" value="3"></el-option>
-            <el-option label="失败" value="4"></el-option>
-            <el-option label="处理中" value="5"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="客户ID">
-          <el-input v-model="form.value5" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="申请时间" style="margin-left:25px;">
           <el-date-picker
@@ -33,6 +25,19 @@
             end-placeholder="结束日期"
             :default-time="['12:00:00', '08:00:00']">
           </el-date-picker>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="form.value3" style="width:210px;">
+            <el-option
+              v-for="item in presentationStatus"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="客户ID">
+          <el-input v-model="form.value5" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button>重置</el-button>
@@ -55,6 +60,7 @@
 
 <script>
 import wdTable from './components/wdTable'
+import financeCons from '@/system/constant/finance'
 export default {
   name: 'revenueSituation',
   components:{ wdTable },
@@ -62,9 +68,9 @@ export default {
     return {
       inline:true,
       form:{
-        value1:'',
+        value1:1,
         value2:'',
-        value3:'1',
+        value3:1,
         value4:'1',
         value5:'',
         value6:'',
@@ -74,6 +80,14 @@ export default {
   },
   watch: {
 
+  },
+  computed:{
+    presentations(){
+      return financeCons.presentations;
+    },
+    presentationStatus(){
+      return financeCons.presentationStatus;
+    },
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)

@@ -4,9 +4,9 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline" label-width="70px">
         <el-form-item>
-          <el-select v-model="form.value1" placeholder="交易流水号" style="width:124px;">
+          <el-select v-model="form.value1" placeholder="订单编号" style="width:124px;">
             <el-option
-              v-for="item in revenueExpenditureTerms"
+              v-for="item in fsTerms"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -19,31 +19,17 @@
         <el-form-item label="业务类型">
           <el-select v-model="form.value3" style="width:210px;">
             <el-option
-              v-for="item in rebusinessTypes"
+              v-for="item in fsTypes"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="支付方式">
-          <el-select v-model="form.value4" style="width:210px;">
-            <el-option
-              v-for="item in payTypes"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="交易金额">
+        <el-form-item label="快递公司">
           <el-input v-model="form.value5" placeholder="请输入" style="width:120px;"></el-input>
-          -
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.value6" placeholder="请输入" style="width:120px;"></el-input>
-        </el-form-item>
-        <el-form-item label="交易时间" style="margin-left:25px;">
+        <el-form-item label="发货时间" style="margin-left:25px;">
           <el-date-picker
             v-model="form.value7"
             type="datetimerange"
@@ -64,17 +50,17 @@
         <span>全部 <em>700</em> 项</span>
         <el-button>导出</el-button>
       </div>
-      <reTable style="margin-top:20px"></reTable>
+      <fsTable style="margin-top:20px"></fsTable>
     </div>
   </div>
 </template>
 
 <script>
-import reTable from './components/reTable'
+import fsTable from './fsTable'
 import financeCons from '@/system/constant/finance'
 export default {
-  name: 'revenueExpenditureDetails',
-  components:{ reTable },
+  name: 'faceSheet',
+  components:{ fsTable },
   data() {
     return {
       inline:true,
@@ -82,7 +68,7 @@ export default {
         value1:1,
         value2:'',
         value3:1,
-        value4:1,
+        value4:'1',
         value5:'',
         value6:'',
         value7:''
@@ -93,14 +79,11 @@ export default {
 
   },
   computed:{
-    revenueExpenditureTerms(){
-      return financeCons.revenueExpenditureTerms;
+    fsTerms(){
+      return financeCons.fsTerms;
     },
-    rebusinessTypes(){
-      return financeCons.rebusinessTypes;
-    },
-    payTypes(){
-      return financeCons.payTypes;
+    fsTypes(){
+      return financeCons.fsTypes;
     }
   },
   created() {    
