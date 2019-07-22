@@ -40,12 +40,12 @@ const decorate = {
 						}else{
 							this.commit('setCurrentComponentName', 'base');
 						}
+						this.commit('deleteData', component.type);
             tempComponentList.splice(index, 1);
           }
         }
       }
       state.componentList = tempComponentList;
-			this.commit('deleteData', component.name);
 		},
 
 		/* 删除一条数据 */
@@ -55,7 +55,7 @@ const decorate = {
         if(tempDataList[i].type === type ) {
           tempDataList.splice(i, 1);
         }else{
-					break;
+					continue;
 				}
       }
       state.dataList = tempDataList;
@@ -68,7 +68,7 @@ const decorate = {
         if(tempDataList[i].type === params.type ) {
 					Object.assign(tempDataList[i], params.data )
         }else{
-					break;
+					continue;
 				}
       }
       state.dataList = tempDataList;
