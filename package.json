@@ -32,6 +32,7 @@
     "promise-polyfill": "^8.1.0",
     "reconnecting-websocket": "^4.1.10",
     "screenfull": "^4.2.0",
+    "uuid": "^3.3.2",
     "vcolorpicker": "^0.1.8",
     "vue": "^2.6.10",
     "vue-count-to": "^1.0.13",

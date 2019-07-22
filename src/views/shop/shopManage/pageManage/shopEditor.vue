@@ -6,8 +6,9 @@
     <div style="width:500px;">
       数据映射
       <ul>
-        <li v-for="(item,key) of dataList" :key="key">
-          <el-tag type="success">{{item.type}}</el-tag> <el-tag>{{item}}</el-tag>
+        <li v-for="(item,key) of componentDataIds" :key="key">
+          <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
+          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
       </ul>
     </div>
@@ -28,9 +29,12 @@ export default {
   mounted() {
   },
   computed: {
-    dataList() {
-      return this.$store.getters.dataList;
-    }
+    componentDataIds() {
+      return this.$store.getters.componentDataIds;
+    },
+    componentDataMap() {
+      return this.$store.getters.componentDataMap;
+    },
   },
   watch:{
 

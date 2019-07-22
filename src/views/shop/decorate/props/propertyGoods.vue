@@ -31,6 +31,7 @@
 <script>
 export default {
   name: 'propertyGoods',
+  props: ['data'],
   components: {},
   data () {
     return {
@@ -44,13 +45,15 @@ export default {
     }
   },
   created() {
-
+    if(this.data){
+      this.ruleForm = this.data;
+    }
   },
   watch: {
     ruleForm: {
       handler(newValue) {
         this.$emit('change', {
-          type: this.$parent.currentComponentName,
+          id: this.$parent.currentComponentId,
           data: newValue
         });
       },

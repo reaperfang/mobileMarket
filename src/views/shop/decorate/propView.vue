@@ -5,30 +5,36 @@
         <p class="state"></p>
       </div>
       <div class="block form">
-         <component :is='currentComponent' v-bind="editProps" @change="propsChange"></component>
+         <component :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
       </div>
     </div>
 </template>
 
 <script>
 import utils from '@/utils';
+const listManager = utils.listManager.default.getInstance();
 export default {
   name: 'propView', 
   components: {},
   data () {
     return {
       currentComponent: null,  //当前组件名称
-      editProps: null,   //组件属性数据
       utils
     }
   },
   computed:{
-    currentComponentName() {
-      return this.$store.getters.currentComponentName;
+    currentComponentId() {
+      return this.$store.getters.currentComponentId;
+    },
+    componentDataIds() {
+      return this.$store.getters.componentDataIds;
+    },
+    componentDataMap() {
+      return this.$store.getters.componentDataMap;
     }
   },
   watch: {
-    'currentComponentName'() {
+    'currentComponentId'(newValue, oldValue) {
       this.loadPropTemplate();
     }
   },
@@ -39,11 +45,17 @@ export default {
 
     /* 动态加载属性模板 */
     loadPropTemplate() {
-      import(`./props/property${this.utils.titleCase(this.currentComponentName)}.vue`).then(loadedComponent => {
-        this.currentComponent = loadedComponent.default
-      }).catch(e => {
-          console.log(e);
-      })
+      const currentComponentData = this.componentDataMap[this.currentComponentId];
+      if(currentComponentData){
+        import(`./props/property${this.utils.titleCase(currentComponentData.type)}.vue`).then(loadedComponent => {
+          this.currentComponent = '';
+          this.$nextTick(()=>{  //清除缓存组件以后下一帧处理
+            this.currentComponent = loadedComponent.default
+          })
+        }).catch(e => {
+            console.log(e);
+        })
+      }
     },
 
     /* 更新组件数据 */
