@@ -40,7 +40,7 @@
           <el-input v-model="form.memberInfoId" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -50,7 +50,7 @@
         <span>全部 <em>700</em> 项</span>
         <span>
           <el-button type="primary">批量审批</el-button>
-          <el-button>导出</el-button>
+          <el-button icon="document" @click='exportToExcel()'>导出</el-button>
         </span>
       </div>
       <wdTable style="margin-top:20px"></wdTable>
@@ -59,6 +59,8 @@
 </template>
 
 <script>
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import wdTable from './components/wdTable'
 import financeCons from '@/system/constant/finance'
 export default {
@@ -75,6 +77,16 @@ export default {
         value6:'',
         value7:''
       },
+      dataList:[
+        {
+          cashoutSn:'123213',
+          memberInfoId:'123123',
+          amount:'123123',
+          status:'1',
+          tradeDetailSn:'123213213',
+          applyTime:'2019-05-23'
+        },
+      ],
     }
   },
   watch: {
@@ -97,6 +109,27 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+      
+    },
+    //导出
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/excel/Export2Excel.js');
+            const tHeader = ['提现编号','客户ID', '提现金额（元）', '状态', '交易流水号','申请时间'];
+            const filterVal = ['cashoutSn','memberInfoId', 'amount', 'status', 'tradeDetailSn','applyTime'];
+            const list = this.dataList;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '提现明细列表');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    },
   }
 }
 </script>

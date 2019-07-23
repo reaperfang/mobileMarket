@@ -54,7 +54,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -124,6 +124,10 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+      
+    },
     //导出
     exportToExcel() {
         //excel数据导出
@@ -131,11 +135,11 @@ export default {
             const {
                 export_json_to_excel
             } = require('@/excel/Export2Excel.js');
-            const tHeader = ['序号','省份', '投资总额', '收益总额', '主要投资项目','投资周期', '投资人数', '投资年变化率','备注'];
-            const filterVal = ['index','provinces', 'orderMoney', 'incomeMoney', 'payType','orderPeriod', 'orderPersonConunt', 'orderYearRate', 'remarks'];
+            const tHeader = ['交易流水号','收支类型', '业务类型', '关联单据编号', '支付方式','微信流水号', '交易金额（元）', '开票','交易时间'];
+            const filterVal = ['tradeDetailSn','tradeType', 'businessType', 'relationSn', 'payType','wechatTradeSn', 'amount', 'isInvoice', 'tradeTime'];
             const list = this.dataList;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '列表excel');
+            export_json_to_excel(tHeader, data, '收支明细列表');
         })
     },
     formatJson(filterVal, jsonData) {
