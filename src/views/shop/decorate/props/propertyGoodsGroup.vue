@@ -48,13 +48,15 @@ export default {
     }
   },
   created() {
-
+    if(this.data && this.data.data){
+      this.ruleForm = this.data;
+    }
   },
   watch: {
     ruleForm: {
       handler(newValue) {
         this.$emit('change', {
-          type: this.$parent.currentComponentName,
+          id: this.$parent.currentComponentId,
           data: newValue
         });
       },

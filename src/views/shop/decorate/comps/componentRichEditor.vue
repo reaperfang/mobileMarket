@@ -1,12 +1,11 @@
 <template>
-<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
-    <p>componentRichEditor</p>
-</el-form>
+<p>componentRichEditor, {{componentDataMap[data.id].data}}</p>
 </template>
 
 <script>
 export default {
   name: 'componentRichEditor',
+  props:['data'],
   components: {},
   data () {
     return {
@@ -16,6 +15,11 @@ export default {
       rules: {
 
       }
+    }
+  },
+  computed: {
+    componentDataMap() {
+      return this.$store.getters.componentDataMap;
     }
   },
   created() {

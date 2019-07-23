@@ -6,7 +6,7 @@
     <div class="phone-body">
        <vuedraggable 
         class="drag-wrap"
-        :list='componentList'
+        :list='componentDataIds'
         :group='{
             name: "group"
         }'
@@ -17,12 +17,12 @@
         :move='onMoveHandler'>
           <div 
           class="component_wrapper" 
-          v-for="(item, key) of componentList" 
+          v-for="(item, key) of componentDataIds" 
           @click="selectComponent(item)" 
           @dragstart.self="selectItem = item" 
           @dragend.self="selectItem = {}">
-            <component :is='item' :key="key"></component>
-            {{item.title}}
+            <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)"></component>
+            {{getComponentData(item).title}}
             <i class="delete-btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
           </div>
     </vuedraggable>
@@ -32,7 +32,9 @@
 
 <script>
 import utils from '@/utils';
+import widget from '@/system/constant/widget';
 import vuedraggable from "vuedraggable";
+const listManager = utils.listManager.default.getInstance();
 export default {
   name: 'editView',
   components: {vuedraggable},
@@ -47,46 +49,60 @@ export default {
       drag: false,
       disable: false,
       selectItem: {},
+      allTemplateLoaded: false,
+      templateList: {}  //模板对象列表
     }
   },
   computed:{
-    currentComponentName() {
-      return this.$store.getters.currentComponentName;
+    currentComponentId() {
+      return this.$store.getters.currentComponentId;
     },
-    componentList() {
-      return this.$store.getters.componentList;
-    }
-  },
-  watch: {
-    componentList: {
-      handler(newValue) {
-        console.log(newValue);
-      },
-      deep: true
+    componentDataIds() {
+      return this.$store.getters.componentDataIds;
+    },
+    componentDataMap() {
+      return this.$store.getters.componentDataMap;
     }
   },
   created() {
-
+    this.loadTemplateLists();
   },
   methods: {
 
-    /* 动态加载组件模板 */
-    loadCompTemplate() {
-      import(`./comps/component${this.utils.titleCase(this.currentComponentName)}.vue`).then(loadedComponent => {
-        this.currentComponent = loadedComponent.default
-      }).catch(e => {
+    /* 获取组件数据 */
+    getComponentData(id) {
+      return this.componentDataMap[id];
+    },
+
+    //加载模板列表
+    loadTemplateLists() {
+      let loadedLength = 0;
+      const widgetList = widget.getWidgetList();
+      for(let item of widgetList) {
+        import(`./comps/component${this.utils.titleCase(item)}.vue`).then(loadedComponent => {
+          this.templateList[item] = loadedComponent.default;
+          loadedLength ++;
+          if(loadedLength >= widgetList.length) {
+            this.allTemplateLoaded = true;
+          }
+        }).catch(e => {
           console.log(e);
-      })
+          loadedLength ++;
+          if(loadedLength >= widgetList.length) {
+            this.allTemplateLoaded = true;
+          }
+        })
+      }
     },
 
     //选中此组件
-    selectComponent(component) {
-      this.$store.commit('setCurrentComponentName', component.type);
+    selectComponent(id) {
+      this.$store.commit('setCurrentComponentId', id);
     },
 
     //删除组件
-    deleteComponent(component) {
-      this.$store.commit('deleteComponent', component)
+    deleteComponent(id) {
+      this.$store.commit('deleteComponent', id)
     },
 
     onMoveHandler(evt, originalEvent) {
@@ -103,7 +119,6 @@ export default {
     onEndHandler() {
         this.drag = false;
         this.disable = false;
-        console.log(this.componentList);
     }
   }
 }

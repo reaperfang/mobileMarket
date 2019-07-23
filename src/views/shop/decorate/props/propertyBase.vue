@@ -65,7 +65,7 @@ export default {
     ruleForm: {
       handler(newValue) {
         this.$emit('change', {
-          type: this.$parent.currentComponentName,
+          id: this.$parent.currentComponentId,
           data: newValue
         });
       },
