@@ -1,5 +1,5 @@
 <template>
-  <div class="module view">
+  <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
     <div class="phone-head">
       <img :src="require('@/assets/images/shop/phone-head.png')" alt="">
     </div>
@@ -62,6 +62,9 @@ export default {
     },
     componentDataMap() {
       return this.$store.getters.componentDataMap;
+    },
+    baseInfo() {
+      return this.$store.getters.baseInfo;
     }
   },
   created() {

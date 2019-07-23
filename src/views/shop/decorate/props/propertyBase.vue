@@ -16,7 +16,10 @@
       </el-select>
     </el-form-item>
     <el-form-item label="背景颜色" prop="pageBackground">
-      <el-input v-model="ruleForm.pageBackground"></el-input>
+      <div style="display:flex;">
+        <el-input v-model="ruleForm.pageBackground"></el-input>
+        <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
+      </div>
     </el-form-item>
    <div class="block button">
     <el-button type="primary">保存并生效</el-button>
@@ -29,6 +32,7 @@
 <script>
 export default {
   name: 'propertyGoods',
+  props: ['data'],
   components: {},
   data () {
     return {
@@ -59,13 +63,15 @@ export default {
     }
   },
   created() {
-
+    if(this.data){
+      this.ruleForm = this.data;
+    }
   },
   watch: {
     ruleForm: {
       handler(newValue) {
         this.$emit('change', {
-          id: this.$parent.currentComponentId,
+          type: 'base',
           data: newValue
         });
       },
