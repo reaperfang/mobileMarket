@@ -40,7 +40,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -48,7 +48,7 @@
     <div class="under_part">
       <div class="total">
         <span>全部 <em>700</em> 项</span>
-        <el-button>导出</el-button>
+        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <fsTable style="margin-top:20px"></fsTable>
     </div>
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import fsTable from './fsTable'
 import financeCons from '@/system/constant/finance'
 export default {
@@ -72,6 +74,16 @@ export default {
         value6:'',
         value7:''
       },
+      dataList:[
+        {
+          expressSn:'1213',
+          expressCompany:'中通',
+          businessType:'1',
+          relationSn:'232323',
+          createUserName:'张三',
+          createTime:'2019-07-22'
+        }
+      ],
     }
   },
   watch: {
@@ -91,6 +103,27 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+      
+    },
+    //导出
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/excel/Export2Excel.js');
+            const tHeader = ['快递单号','快递公司', '业务类型', '关联单据编号', '操作人','操作时间'];
+            const filterVal = ['expressSn','expressCompany', 'businessType', 'relationSn', 'createUserName','createTime'];
+            const list = this.dataList;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '电子面单列表');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    },
   }
 }
 </script>

@@ -80,7 +80,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -88,7 +88,7 @@
     <div class="under_part">
       <div class="total">
         <span>全部 <em>700</em> 项</span>
-        <el-button>导出</el-button>
+        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <sgsTable style="margin-top:20px"></sgsTable>
     </div>
@@ -96,6 +96,8 @@
 </template>
 
 <script>
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import sgsTable from './components/sgsTable'
 import financeCons from '@/system/constant/finance'
 export default {
@@ -111,6 +113,7 @@ export default {
         value4:1
       },
       svalue:'',
+      dataList:[],
     }
   },
   watch: {
@@ -133,6 +136,27 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+
+    },
+    //导出
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/excel/Export2Excel.js');
+            const tHeader = ['消息内容','消息类型', '是否拆分', '消息数量', '状态','发送时间'];
+            const filterVal = ['expressSn','expressCompany', 'businessType', 'relationSn', 'createUserName','createTime'];
+            const list = this.dataList;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '短信群发列表');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    },
   }
 }
 </script>

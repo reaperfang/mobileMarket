@@ -27,7 +27,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -35,7 +35,7 @@
     <div class="under_part">
       <div class="total">
         <span>全部 <em>700</em> 项</span>
-        <el-button>导出</el-button>
+        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <cbTable style="margin-top:20px"></cbTable>
     </div>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import cbTable from './components/cbTable'
 import financeCons from '@/system/constant/finance'
 export default {
@@ -56,6 +58,17 @@ export default {
         businessType:1,
         tradeTime:''
       },
+      dataList:[
+        {
+          tradeDetailSn:'',
+          relationSn:'',
+          memberInfoId:'',
+          businessType:'',
+          changeAmount:'',
+          surplusAmount:'',
+          tradeTime:''
+        },
+      ],
     }
   },
   watch: {
@@ -75,6 +88,27 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+      
+    },
+    //导出
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/excel/Export2Excel.js');
+            const tHeader = ['交易流水号','关联单据编号', '客户ID', '交易类型', '变动金额（元）','剩余金额（元）', '交易时间'];
+            const filterVal = ['tradeDetailSn','relationSn', 'memberInfoId', 'businessType', 'changeAmount','surplusAmount', 'tradeTime'];
+            const list = this.dataList;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '客户余额列表');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    },
   }
 }
 </script>

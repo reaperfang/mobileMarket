@@ -14,7 +14,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -22,7 +22,7 @@
     <div class="under_part">
       <div class="total">
         <span>全部 <em>700</em> 项</span>
-        <el-button>导出</el-button>
+        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <drTable style="margin-top:20px"></drTable>
     </div>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import drTable from './components/drTable'
 export default {
   name: 'revenueSituation',
@@ -40,6 +42,20 @@ export default {
       form:{
         value1:''
       },
+      dataList:[
+        {
+          accountDate:'2019-02-23',
+          income:'12',
+          expend:'2',
+          realIncome:'10',
+        },
+        {
+          accountDate:'2019-02-23',
+          income:'12',
+          expend:'2',
+          realIncome:'10',
+        },
+      ],
     }
   },
   watch: {
@@ -54,6 +70,27 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+      
+    },
+    //导出
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/excel/Export2Excel.js');
+            const tHeader = ['日期','收入（元）', '支出（元）', '总收入（元）'];
+            const filterVal = ['accountDate','income', 'expend', 'realIncome'];
+            const list = this.dataList;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '每日营收列表');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    },
   }
 }
 </script>
