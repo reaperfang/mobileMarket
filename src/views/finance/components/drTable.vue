@@ -8,23 +8,34 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="name1"
+        prop="accountDate"
         label="日期"
         sortable>
       </el-table-column>
       <el-table-column
-        prop="name2"
+        prop="income"
         label="收入（元）">
       </el-table-column>
       <el-table-column
-        prop="name3"
+        prop="expend"
         label="支出（元）">
       </el-table-column>
       <el-table-column
-        prop="name4"
+        prop="realIncome"
         label="总收入（元）">
       </el-table-column>
     </el-table>
+    <div class="page_styles">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
+        layout="sizes, prev, pager, next"
+        :total="100">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -35,7 +46,20 @@ export default {
   extends: TableBase,
   data() {
     return {
-      dataList:[],
+      dataList:[
+        {
+          accountDate:'2019-02-23',
+          income:'12',
+          expend:'2',
+          realIncome:'10',
+        },
+        {
+          accountDate:'2019-02-23',
+          income:'12',
+          expend:'2',
+          realIncome:'10',
+        },
+      ],
     };
   },
   created() {

@@ -8,35 +8,46 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="name1"
+        prop="scoreDetailSn"
         label="积分流水号">
       </el-table-column>
       <el-table-column
-        prop="name2"
+        prop="memberInfoId"
         label="客户ID">
       </el-table-column>
       <el-table-column
-        prop="name3"
+        prop="businessTypeId"
         label="业务类型">
       </el-table-column>
       <el-table-column
-        prop="name4"
+        prop="changeScore"
         label="变动积分">
       </el-table-column>
       <el-table-column
-        prop="name5"
+        prop="surplusScore"
         label="剩余积分">
       </el-table-column>
       <el-table-column
-        prop="name6"
+        prop="changeTime"
         label="交易时间"
         sortable>
       </el-table-column>
       <el-table-column
-        prop="name7"
+        prop="remarks"
         label="备注">
       </el-table-column>
     </el-table>
+    <div class="page_styles">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
+        layout="sizes, prev, pager, next"
+        :total="100">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -47,7 +58,17 @@ export default {
   extends: TableBase,
   data() {
     return {
-      dataList:[],
+      dataList:[
+        {
+          scoreDetailSn:'123213123',
+          memberInfoId:'124',
+          businessTypeId:'1',
+          changeScore:'12',
+          surplusScore:'10',
+          changeTime:'2019-02-05',
+          remarks:'备注'
+        },
+      ],
     };
   },
   created() {

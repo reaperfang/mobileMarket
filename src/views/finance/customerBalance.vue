@@ -4,10 +4,10 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline" label-width="90px">
         <el-form-item label="交易流水号">
-          <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.relationSn" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="交易类型">
-          <el-select v-model="form.value3" style="width:100px;">
+          <el-select v-model="form.businessType" style="width:100px;">
             <el-option
               v-for="item in transactionTypes"
               :key="item.value"
@@ -18,7 +18,7 @@
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.value7"
+            v-model="form.tradeTime"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
@@ -52,9 +52,9 @@ export default {
     return {
       inline:true,
       form:{
-        value2:'',
-        value3:1,
-        value7:''
+        relationSn:'',
+        businessType:1,
+        tradeTime:''
       },
     }
   },

@@ -108,7 +108,7 @@ export default {
         value1:'',
         value2:'',
         value3:'',
-        value4:'1'
+        value4:1
       },
       svalue:'',
     }

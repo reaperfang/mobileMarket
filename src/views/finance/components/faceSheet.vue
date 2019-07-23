@@ -4,7 +4,7 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline" label-width="70px">
         <el-form-item>
-          <el-select v-model="form.value1" placeholder="订单编号" style="width:124px;">
+          <el-select v-model="form.searchType" placeholder="订单编号" style="width:124px;">
             <el-option
               v-for="item in fsTerms"
               :key="item.value"
@@ -14,10 +14,10 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="form.value3" style="width:210px;">
+          <el-select v-model="form.businessType" style="width:210px;">
             <el-option
               v-for="item in fsTypes"
               :key="item.value"
@@ -27,7 +27,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="快递公司">
-          <el-input v-model="form.value5" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input v-model="form.expressCompany" placeholder="请输入" style="width:120px;"></el-input>
         </el-form-item>
         <el-form-item label="发货时间" style="margin-left:25px;">
           <el-date-picker
@@ -65,11 +65,10 @@ export default {
     return {
       inline:true,
       form:{
-        value1:1,
-        value2:'',
-        value3:1,
-        value4:'1',
-        value5:'',
+        searchType:1,
+        searchValue:'',
+        businessType:1,
+        expressCompany:'',
         value6:'',
         value7:''
       },

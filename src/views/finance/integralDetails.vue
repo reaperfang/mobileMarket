@@ -4,10 +4,10 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline">
         <el-form-item label="客户ID">
-          <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.memberInfoId" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="form.value3" style="width:100px;">
+          <el-select v-model="form.businessTypeId" style="width:100px;">
             <el-option
               v-for="item in idbusinessTypes"
               :key="item.value"
@@ -52,8 +52,8 @@ export default {
     return {
       inline:true,
       form:{
-        value2:'',
-        value3:1,
+        memberInfoId:'',
+        businessTypeId:1,
         value7:''
       },
     }

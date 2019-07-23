@@ -8,35 +8,46 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="name1"
+        prop="tradeDetailSn"
         label="交易流水号">
       </el-table-column>
       <el-table-column
-        prop="name2"
+        prop="relationSn"
         label="关联单据编号">
       </el-table-column>
       <el-table-column
-        prop="name3"
+        prop="memberInfoId"
         label="客户ID">
       </el-table-column>
       <el-table-column
-        prop="name4"
+        prop="businessType"
         label="交易类型">
       </el-table-column>
       <el-table-column
-        prop="name5"
+        prop="changeAmount"
         label="变动金额（元）">
       </el-table-column>
       <el-table-column
-        prop="name6"
+        prop="surplusAmount"
         label="剩余金额（元）">
       </el-table-column>
       <el-table-column
-        prop="name7"
+        prop="tradeTime"
         label="交易时间"
         sortable>
       </el-table-column>
     </el-table>
+    <div class="page_styles">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
+        layout="sizes, prev, pager, next"
+        :total="100">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -47,7 +58,17 @@ export default {
   extends: TableBase,
   data() {
     return {
-      dataList:[],
+      dataList:[
+        {
+          tradeDetailSn:'',
+          relationSn:'',
+          memberInfoId:'',
+          businessType:'',
+          changeAmount:'',
+          surplusAmount:'',
+          tradeTime:''
+        },
+      ],
     };
   },
   created() {

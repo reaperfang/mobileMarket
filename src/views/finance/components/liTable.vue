@@ -8,27 +8,38 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="name1"
+        prop="expressSn"
         label="快递单号">
       </el-table-column>
       <el-table-column
-        prop="name2"
+        prop="expressCompany"
         label="快递公司">
       </el-table-column>
       <el-table-column
-        prop="name3"
+        prop="relationSn"
         label="关联单据编号">
       </el-table-column>
       <el-table-column
-        prop="name4"
+        prop="createUserName"
         label="操作人">
       </el-table-column>
       <el-table-column
-        prop="name5"
+        prop="createTime"
         label="查询时间"
         sortable>
       </el-table-column>
     </el-table>
+    <div class="page_styles">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
+        layout="sizes, prev, pager, next"
+        :total="100">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -39,7 +50,15 @@ export default {
   extends: TableBase,
   data() {
     return {
-      dataList:[],
+      dataList:[
+        {
+         expressSn:'1111',
+         expressCompany:'中通',
+         relationSn:'12132323',
+         createUserName:'张三',
+         createTime:'2019-05-26'
+        }
+      ],
     };
   },
   created() {

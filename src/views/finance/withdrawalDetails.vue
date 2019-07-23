@@ -4,7 +4,7 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline">
         <el-form-item>
-          <el-select v-model="form.value1" placeholder="提现编号" style="width:124px;">
+          <el-select v-model="form.searchType" placeholder="提现编号" style="width:124px;">
             <el-option
               v-for="item in presentations"
               :key="item.value"
@@ -14,7 +14,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="申请时间" style="margin-left:25px;">
           <el-date-picker
@@ -27,7 +27,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="form.value3" style="width:210px;">
+          <el-select v-model="form.status" style="width:210px;">
             <el-option
               v-for="item in presentationStatus"
               :key="item.value"
@@ -37,7 +37,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="客户ID">
-          <el-input v-model="form.value5" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.memberInfoId" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button>重置</el-button>
@@ -68,11 +68,10 @@ export default {
     return {
       inline:true,
       form:{
-        value1:1,
-        value2:'',
-        value3:1,
-        value4:'1',
-        value5:'',
+        searchType:1,
+        searchValue:'',
+        status:1,
+        memberInfoId:'',
         value6:'',
         value7:''
       },
