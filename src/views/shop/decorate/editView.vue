@@ -1,7 +1,8 @@
 <template>
   <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
     <div class="phone-head">
-      <img :src="require('@/assets/images/shop/phone-head.png')" alt="">
+      <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
+      <span>{{baseInfo.pageTitle || '请在右侧设置页面名称'}}</span>
     </div>
     <div class="phone-body">
        <vuedraggable 
@@ -34,7 +35,6 @@
 import utils from '@/utils';
 import widget from '@/system/constant/widget';
 import vuedraggable from "vuedraggable";
-const listManager = utils.listManager.default.getInstance();
 export default {
   name: 'editView',
   components: {vuedraggable},
@@ -42,14 +42,14 @@ export default {
     return {
       utils,
       dragOptions: {
-          animation: 200,
+          animation: 300,
           group: "description",
           ghostClass: "ghost"
       },
       drag: false,
       disable: false,
       selectItem: {},
-      allTemplateLoaded: false,
+      allTemplateLoaded: false,  //所有模板加载结束
       templateList: {}  //模板对象列表
     }
   },
@@ -140,8 +140,16 @@ export default {
       text-align: center;
       line-height: 64px;
       background: #fff;
+      position:relative;
       img{
         width:100%;
+      }
+      span{
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-40%);
+        font-size:18px;
       }
     }
     .phone-body {

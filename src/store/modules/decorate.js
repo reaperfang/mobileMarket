@@ -4,7 +4,13 @@ const decorate = {
 	state: {
 		currentComponentId: "",  //当前组件id
 		basePropertyShow: true,  //基础属性显示开关
-		baseInfo: null,  //店铺装修页面基础信息
+		baseInfo: {  //店铺装修页面基础信息
+			pageName: '',
+			pageTitle: '',
+			pageDesc: '',
+			pageClassify: '1',
+			pageBackground: ''
+		},  
 		componentDataIds: [],  //组件列表id序列
 		componentDataMap: {}   //组件数据集合映射
 	},

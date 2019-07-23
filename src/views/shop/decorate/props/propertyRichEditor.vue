@@ -47,26 +47,37 @@ export default {
     }
   },
   created() {
-    if(this.data){
-      this.ruleForm = this.data;
-    }
+    this.initRuleForm();
   },
-
   watch: {
     ruleForm: {
       handler(newValue) {
-        this.$emit('change', {
-          id: this.$parent.currentComponentId,
-          data: newValue
-        });
+        this.emitChangeRuleForm(newValue);
       },
       deep: true
     }
   },
 
   methods: {
+
+    /* 富文本内容更新 */
     editorValueUpdate(html) {
       this.ruleForm.richValue = html;
+    },
+
+    /* 初始化表单数据 */
+    initRuleForm() {
+      if(this.data){
+        this.ruleForm = this.data;
+      }
+    },
+
+    /* 发送数据改变事件 */
+    emitChangeRuleForm(newValue) {
+      this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: newValue
+      });
     }
   }
 }
