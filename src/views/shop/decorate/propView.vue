@@ -7,11 +7,15 @@
         <p class="title" v-else>
           页面信息
         </p>
-        <p class="state"></p>
       </div>
       <div class="block form">
          <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo"></component>
          <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
+      </div>
+      <div class="block button">
+        <el-button type="primary">保存并生效</el-button>
+        <el-button>保    存</el-button>
+        <el-button @click="_routeTo('preview')">预    览</el-button>
       </div>
     </div>
 </template>

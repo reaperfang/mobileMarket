@@ -21,11 +21,6 @@
         <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
       </div>
     </el-form-item>
-   <div class="block button">
-    <el-button type="primary">保存并生效</el-button>
-    <el-button>保    存</el-button>
-    <el-button>预    览  </el-button>
-  </div>
   </el-form>
 </template>
 
@@ -63,23 +58,32 @@ export default {
     }
   },
   created() {
-    if(this.data){
-      this.ruleForm = this.data;
-    }
+    this.initRuleForm();
   },
   watch: {
     ruleForm: {
       handler(newValue) {
-        this.$emit('change', {
-          type: 'base',
-          data: newValue
-        });
+        this.emitChangeRuleForm(newValue);
       },
       deep: true
     }
   },
   methods: {
 
+    /* 初始化表单数据 */
+    initRuleForm() {
+      if(this.data){
+        this.ruleForm = this.data;
+      }
+    },
+
+    /* 发送数据改变事件 */
+    emitChangeRuleForm(newValue) {
+      this.$emit('change', {
+        type: 'base',
+        data: newValue
+      });
+    }
   }
 }
 </script>
