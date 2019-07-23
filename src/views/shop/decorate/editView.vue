@@ -19,6 +19,7 @@
           <div 
           class="component_wrapper" 
           v-for="(item, key) of componentDataIds" 
+          :class="{'actived': item === currentComponentId}"
           @click="selectComponent(item)" 
           @dragstart.self="selectItem = item" 
           @dragend.self="selectItem = {}">
@@ -157,10 +158,14 @@ export default {
         background:#fff;
         min-height:50px;
         line-height:50px;
-        border:1px solid #d6d6d6;
         text-align:center;
         position:relative;
+        border:1px solid #eee;
+        border-bottom:none;
         cursor:pointer;
+        &.actived{
+          border:2px dashed rgba(101,94,255,1);
+        }
         i{
           width:20px;
           height:20px;
