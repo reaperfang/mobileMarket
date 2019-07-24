@@ -35,6 +35,13 @@ export default [
                 meta: { title: '支付方式', noCache: true, tabTitle: '资产设置' }
             },
             {
+                path: 'wxSet',
+                component: () => import('@/views/set/wxSet'),
+                name: 'wxSet',
+                meta: { title: '设置微信支付信息', noCache: true, tabTitle: '资产设置' },
+                hidden: true
+            },
+            {
                 path: 'withdrawSet',
                 component: () => import('@/views/set/withdrawSet'),
                 name: 'withdrawSet',

@@ -1,23 +1,25 @@
 /*消息设置 */
 <template>
-    <div style="background:rgb(242,242,249);">
-    <el-tabs v-model="currentTab" @tab-click="handleClick">
-      <el-tab-pane label="买家通知" name="faceSheet"></el-tab-pane>
-      <el-tab-pane label="商家通知" name="logisticsInquiry"></el-tab-pane>
+  <div>
+    <el-tabs v-model="currentTab" @tab-click="handleClick" class="tabs">
+      <el-tab-pane label="买家通知" name="buyer"></el-tab-pane>
+      <el-tab-pane label="商家通知" name="seller"></el-tab-pane>
     </el-tabs>
     <component :is="currentTab"></component>
   </div>   
 </template>
 
 <script>
+import buyer from "./components/buyer";
+import seller from "./components/seller";
 export default {
   name: 'messageSet',
   data() {
     return {
-      currentTab: 'faceSheet'
+      currentTab: 'buyer'
     }
   },
-  components: {},
+  components: {buyer, seller},
   watch: {
     
   },
@@ -40,5 +42,13 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
+.tabs{
+  background:#fff; 
+  padding:10px 20px;
+}
+.main{
+  width: 100%;
+  padding: 20px;
+  background: #fff;
+}
 </style>
