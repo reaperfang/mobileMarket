@@ -1,10 +1,10 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="文案">
+      <el-form-item label="文案" prop="words">
         <el-input
           placeholder="请输入文案"
-          v-model="textarea">
+          v-model="ruleForm.words">
         </el-input>
       </el-form-item>
     </div>
@@ -18,6 +18,7 @@ export default {
   data () {
     return {
       ruleForm: {
+        words: ''
       },
       rules: {
 
@@ -43,6 +44,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+       this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */

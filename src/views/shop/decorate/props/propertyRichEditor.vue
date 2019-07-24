@@ -9,7 +9,7 @@
     <el-form-item label="页面边距">
       <el-checkbox v-model="ruleForm.remainPageMargin">保留边距</el-checkbox>
     </el-form-item>
-    <el-form-item label="页面边距">
+    <el-form-item label="">
       <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.richValue"></RichEditor>
     </el-form-item>
   </el-form>
@@ -70,6 +70,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+       this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */

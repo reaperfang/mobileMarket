@@ -1,25 +1,26 @@
 <template>
-<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
-    <p>componentNotice</p>
-</el-form>
+    <div>
+       <el-tag type="danger" v-for="(item, key) in componentDataMap[data.id].data">{{key}}：{{item}}</el-tag>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'componentNotice',
+  props:['data'],
   components: {},
   data () {
     return {
-      ruleForm: {
-       
-      },
-      rules: {
-
-      }
+     
     }
   },
   created() {
 
+  },
+  computed: {
+    componentDataMap() {
+      return this.$store.getters.componentDataMap;
+    }
   },
   methods: {
   }

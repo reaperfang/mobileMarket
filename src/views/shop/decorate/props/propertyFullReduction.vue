@@ -1,18 +1,18 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="显示标题">
+      <el-form-item label="显示标题" prop="title">
         <el-input
           placeholder="请输入标题"
-          v-model="textarea">
+          v-model="ruleForm.title">
         </el-input>
       </el-form-item>
-      <el-form-item label="选择活动">
+      <el-form-item label="选择活动" prop="promotion">
         <el-button type="primary" plain>选择活动</el-button>
-        最多添加30个商品
+        最多可选5个活动
       </el-form-item>
-      <el-form-item label="展示样式">
-        <el-radio-group v-model="radio2">
+      <el-form-item label="展示样式" prop="displayStyle">
+        <el-radio-group v-model="ruleForm.displayStyle">
           <el-radio :label="1">样式1</el-radio>
           <el-radio :label="2">样式2</el-radio>
           <el-radio :label="3">样式3</el-radio>
@@ -29,16 +29,13 @@ export default {
   data () {
     return {
       ruleForm: {
+        title: '',
+        promotion: '',
+        displayStyle: 1
       },
       rules: {
 
-      },
-
-      //上传相关
-      dialogImageUrl: '',
-      dialogVisible: false,
-      disabled: false
-
+      }
     }
   },
   created() {
@@ -59,6 +56,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+       this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */

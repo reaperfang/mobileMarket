@@ -1,7 +1,7 @@
 <template>
-<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
-    <p>componentGoods, {{componentDataMap[data.id].data}}</p>
-</el-form>
+    <div>
+        <el-tag type="danger" v-for="(item, key) in componentDataMap[data.id].data">{{key}}：{{item}}</el-tag>
+    </div>
 </template>
 
 <script>
@@ -11,12 +11,7 @@ export default {
   components: {},
   data () {
     return {
-      ruleForm: {
-       
-      },
-      rules: {
-
-      }
+      
     }
   },
   created() {

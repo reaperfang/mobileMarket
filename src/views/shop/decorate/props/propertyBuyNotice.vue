@@ -1,33 +1,37 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="购买公告">
-        <el-radio-group v-model="ruleForm.source">
+      <el-form-item label="购买公告" prop="buyType">
+        <el-radio-group v-model="ruleForm.buyType">
           <el-radio :label="1">真实购买公告</el-radio>
           <el-radio :label="2">模拟购买公告</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="背景颜色" prop="pageBackground">
+      <el-form-item label="间隔时间" v-if="ruleForm.buyType === 2">
+        <el-input v-model="ruleForm.intervalStart"></el-input> - 
+        <el-input v-model="ruleForm.intervalEnd"></el-input>秒
+      </el-form-item>
+      <el-form-item label="背景颜色" prop="backgroundColor">
         <div style="display:flex;">
-          <el-input v-model="ruleForm.pageBackground"></el-input>
-          <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
+          <el-input v-model="ruleForm.backgroundColor"></el-input>
+          <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
-      <el-form-item label="文字颜色" prop="pageBackground">
+      <el-form-item label="文字颜色" prop="fontColor">
         <div style="display:flex;">
-          <el-input v-model="ruleForm.pageBackground"></el-input>
-          <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
+          <el-input v-model="ruleForm.fontColor"></el-input>
+          <colorPicker  v-model="ruleForm.fontColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
-      <el-form-item label="公告商品">
-        <el-radio-group v-model="ruleForm.source">
+      <el-form-item label="公告商品" prop="goodsType">
+        <el-radio-group v-model="ruleForm.goodsType">
           <el-radio :label="1">商品</el-radio>
           <el-radio :label="2">商品分组</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="商品">
+      <el-form-item label="商品" prop="goods">
         <el-upload
           action="#"
           list-type="picture-card"
@@ -74,6 +78,13 @@ export default {
   data () {
     return {
       ruleForm: {
+        buyType: 1,
+        intervalStart: 10,
+        intervalEnd: 60,
+        backgroundColor: '',
+        fontColor: '',
+        goodsType: 1,
+        goods: ''
       },
       rules: {
 
@@ -99,6 +110,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+      this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */

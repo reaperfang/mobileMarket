@@ -1,23 +1,23 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="文案">
+      <el-form-item label="公告" prop="notice">
         <el-input
-          placeholder="请输入文案"
-          v-model="textarea">
+          placeholder="请填写内容，如果过长，将会在手机上滚动显示"
+          v-model="ruleForm.notice">
         </el-input>
       </el-form-item>
-      <el-form-item label="背景颜色" prop="pageBackground">
+      <el-form-item label="背景颜色" prop="backgroundColor">
         <div style="display:flex;">
-          <el-input v-model="ruleForm.pageBackground"></el-input>
-          <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
+          <el-input v-model="ruleForm.backgroundColor"></el-input>
+          <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
-      <el-form-item label="文字颜色" prop="pageBackground">
+      <el-form-item label="文字颜色" prop="fontColor">
         <div style="display:flex;">
-          <el-input v-model="ruleForm.pageBackground"></el-input>
-          <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
+          <el-input v-model="ruleForm.fontColor"></el-input>
+          <colorPicker  v-model="ruleForm.fontColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
@@ -32,6 +32,9 @@ export default {
   data () {
     return {
       ruleForm: {
+        notice: '',
+        backgroundColor: '',
+        fontColor: ''
       },
       rules: {
 
@@ -57,6 +60,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+       this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */

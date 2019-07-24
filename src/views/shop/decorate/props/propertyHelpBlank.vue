@@ -1,10 +1,10 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="空白高度" prop="groupStyle">
+      <el-form-item label="空白高度" prop="blankHeight">
           <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.pageMargin"></el-slider>
-            <span>{{ruleForm.pageMargin}}像素</span>
+            <el-slider v-model="ruleForm.blankHeight"></el-slider>
+            <span>{{ruleForm.blankHeight}}像素</span>
           </div>
         </el-form-item>
     </div>
@@ -18,6 +18,7 @@ export default {
   data () {
     return {
       ruleForm: {
+        blankHeight: 10
       },
       rules: {
 
@@ -43,6 +44,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+       this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */
