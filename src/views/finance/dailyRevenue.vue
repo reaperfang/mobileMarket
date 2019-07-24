@@ -5,12 +5,13 @@
       <el-form ref="form" :model="form" :inline="inline">
         <el-form-item label="日期" style="margin-bottom:0px;">
           <el-date-picker
-            v-model="form.value1"
-            type="datetimerange"
+            v-model="timeValue"
+            type="daterange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :default-time="['12:00:00', '08:00:00']"
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import utils from "@/utils";
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import drTable from './components/drTable'
@@ -38,10 +40,14 @@ export default {
   components:{ drTable },
   data() {
     return {
-      inline:true,
-      form:{
-        value1:''
+      pickerNowDateBefore: {
+          disabledDate: (time) => {
+                return time.getTime() > new Date();
+              }
       },
+      inline:true,
+      form:{},
+      timeValue:'',
       dataList:[
         {
           accountDate:'2019-02-23',
@@ -59,7 +65,10 @@ export default {
     }
   },
   watch: {
-
+    timeValue(){
+      let time = utils.formatDate(this.timeValue[0], "yyyy-MM-dd")
+      console.log('11111111',time)
+    }
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)

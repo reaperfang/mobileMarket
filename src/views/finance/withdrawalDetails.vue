@@ -23,7 +23,8 @@
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :default-time="['12:00:00', '08:00:00']"
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="状态">
@@ -68,6 +69,11 @@ export default {
   components:{ wdTable },
   data() {
     return {
+      pickerNowDateBefore: {
+          disabledDate: (time) => {
+                return time.getTime() > new Date();
+              }
+      },
       inline:true,
       form:{
         searchType:1,

@@ -45,12 +45,13 @@
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.value7"
+            v-model="timeValue"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :default-time="['12:00:00', '08:00:00']"
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -70,6 +71,7 @@
 </template>
 
 <script>
+import utils from "@/utils";
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import reTable from './components/reTable'
@@ -79,7 +81,13 @@ export default {
   components:{ reTable },
   data() {
     return {
+      pickerNowDateBefore: {
+          disabledDate: (time) => {
+                return time.getTime() > new Date();
+              }
+      },
       inline:true,
+      timeValue:'',
       form:{
         searchType:1,
         searchValue:'',
@@ -99,13 +107,29 @@ export default {
           wechatTradeSn:'123231',
           amount:'123231',
           isInvoice:'123231',
-          tradeTime:'123231'
+          tradeTime:'2019-02-14'
+        },
+        {
+          tradeDetailSn:'123231',
+          tradeType:'123231',
+          businessType:'123231',
+          relationSn:'123231',
+          payWay:'123231',
+          wechatTradeSn:'123231',
+          amount:'123231',
+          isInvoice:'123231',
+          tradeTime:'2019-02-15'
         },
       ]
     }
   },
   watch: {
-
+    timeValue(){
+      let time1 = utils.formatDate(this.timeValue[0], "yyyy-MM-dd hh:mm:ss")
+      let time2 = utils.formatDate(this.timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      console.log('11111111',time1)
+      console.log('22222222',time2)
+    }
   },
   computed:{
     revenueExpenditureTerms(){

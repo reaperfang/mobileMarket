@@ -23,7 +23,8 @@
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :default-time="['12:00:00', '08:00:00']"
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -43,6 +44,7 @@
 </template>
 
 <script>
+import utils from "@/utils";
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import idTable from './components/idTable'
@@ -52,6 +54,11 @@ export default {
   components:{ idTable },
   data() {
     return {
+      pickerNowDateBefore: {
+        disabledDate: (time) => {
+          return time.getTime() > new Date();
+        }
+      },
       inline:true,
       form:{
         memberInfoId:'',

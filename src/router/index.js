@@ -6,12 +6,17 @@ import demo from './demo';
 import shop from './shop';
 import goods from './goods';
 import finance from './finance';
+import set from './set';
+import intelligentOperation from './intelligentOperation'
 import client from './client';
  
 export const asyncRouterMap = [  //异步路由表
   ...goods,
 	...demo,
   ...shop,
+  ...intelligentOperation,
+  ...finance,
+  ...set,
   ...finance,
   ...client
 ]
