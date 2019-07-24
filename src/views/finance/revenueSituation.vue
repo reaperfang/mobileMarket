@@ -60,11 +60,11 @@
           请选择时间段：
           <el-date-picker
             v-model="timeValue"
-            type="datetimerange"
-            align="right"
+            type="daterange"
+            range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </div>
       </div>
@@ -95,20 +95,29 @@
 </template>
 
 <script>
+import utils from "@/utils";
 import financeChart from './components/financeChart';
 export default {
   name: 'revenueSituation',
   data() {
     return {
+      pickerNowDateBefore: {
+          disabledDate: (time) => {
+                return time.getTime() > new Date();
+              }
+      },
       timeValue:''
     }
   },
   components: {financeChart},
   watch: {
-
+    timeValue(){
+      let time = utils.formatDate(this.timeValue[0], "yyyy-MM-dd")
+      console.log('11111111',time)
+    }
   },
   created() {
-    
+
   },
   destroyed() {
     
