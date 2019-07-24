@@ -16,6 +16,12 @@ export default [
         name: 'goodsList',
         meta: { title: '商品列表', noCache: true, tabTitle: '商品管理' },
       },
+      {
+        path: 'addGoods',
+        component: () => import('@/views/goods/addGoods'),
+        name: 'addGoods',
+        meta: { title: '新建商品', noCache: true, tabTitle: '商品管理' },
+      },
     	{
         path: 'helloWorld2',
         component: () => import('@/views/demo/helloWorld2'),

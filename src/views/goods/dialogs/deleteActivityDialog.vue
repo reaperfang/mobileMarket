@@ -28,7 +28,7 @@ export default {
             }
         },
         contentText() {
-            return '是否确认删除？'
+            return '当前商品正在参与营销活动，活动有效期内商品不得“删除”。'
         }
     },
     props: {

@@ -1,5 +1,5 @@
 <template>
-    <zdialog :visible.sync="visible" @submit="submit" title="立即删除" :hasCancel="hasCancel">
+    <zdialog :visible.sync="visible" @submit="submit" title="批量删除">
         <i class="el-icon-warning"></i>
         <p class="content-text">{{contentText}}</p>
     </zdialog>
@@ -28,7 +28,7 @@ export default {
             }
         },
         contentText() {
-            return '是否确认删除？'
+            return '是否确认批量删除？'
         }
     },
     props: {

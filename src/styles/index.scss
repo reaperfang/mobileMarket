@@ -256,3 +256,16 @@ table.yuan-table{
   text-overflow:ellipsis;
   white-space: nowrap;
 }
+
+.fcc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-container {
+  color: $contentColor;
+  font-size: 14px;
+  padding: 18px 21px;
+}
+

@@ -1,5 +1,5 @@
 <template>
-    <zdialog :visible.sync="visible" @submit="submit" title="立即删除" :hasCancel="hasCancel">
+    <zdialog :visible.sync="visible" @submit="submit" title="转移商品">
         <i class="el-icon-warning"></i>
         <p class="content-text">{{contentText}}</p>
     </zdialog>
@@ -28,7 +28,7 @@ export default {
             }
         },
         contentText() {
-            return '是否确认删除？'
+            return '是否将此分类其下的全部商品转移到其他分类中？'
         }
     },
     props: {
