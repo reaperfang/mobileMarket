@@ -20,7 +20,7 @@ export default [
                 path: 'messageSet',
                 component: () => import('@/views/set/messageSet'),
                 name: 'messageSet',
-                meta: { title: '信息设置', noCache: true, tabTitle: '通用设置' }
+                meta: { title: '消息设置', noCache: true, tabTitle: '通用设置' }
             },
             {
                 path: 'tradeSet',

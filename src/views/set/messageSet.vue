@@ -1,8 +1,12 @@
-/*信息设置 */
+/*消息设置 */
 <template>
-    <div>
-        
-    </div>    
+    <div style="background:rgb(242,242,249);">
+    <el-tabs v-model="currentTab" @tab-click="handleClick">
+      <el-tab-pane label="买家通知" name="faceSheet"></el-tab-pane>
+      <el-tab-pane label="商家通知" name="logisticsInquiry"></el-tab-pane>
+    </el-tabs>
+    <component :is="currentTab"></component>
+  </div>   
 </template>
 
 <script>
@@ -10,7 +14,7 @@ export default {
   name: 'messageSet',
   data() {
     return {
-      
+      currentTab: 'faceSheet'
     }
   },
   components: {},
@@ -24,7 +28,9 @@ export default {
     
   },
   methods: {
-    
+    handleClick(comp) {
+      this.currentTab = comp.name;
+    }
   }
 }
 </script>

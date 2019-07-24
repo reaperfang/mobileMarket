@@ -15,10 +15,9 @@ export const asyncRouterMap = [  //异步路由表
 	...demo,
   ...shop,
   ...intelligentOperation,
+  ...client,
   ...finance,
   ...set,
-  ...finance,
-  ...client
 ]
 
 export const syncRouterMap = [ //同步路由表

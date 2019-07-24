@@ -28,8 +28,9 @@
                 ——
                 <el-input v-model="form.name5" placeholder="如输入手机号，不填区号" style="width:190px;"></el-input>
             </el-form-item>
-            <el-form-item label="联系地址:" prop="name6">
-                <el-input v-model="form.name6"></el-input>
+            <el-form-item label="联系地址:" prop="address">
+                <el-cascader :options="area" v-model="form.address" expand-trigger="hover"/>
+                <el-input v-model="form.addressDetail" style="width: 70%;" placeholder="详细地址"/>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+// import { listArea } from '@/api/area'
 export default {
   name: 'shopInfo',
   data() {
@@ -63,11 +65,12 @@ export default {
           name5:[
             { required: true, message: '请输入电话号码', trigger: 'blur' },
           ],
-          name6:[
+          address:[
             { required: true, message: '请输入电话号码', trigger: 'blur' },
           ],
         },
         imageUrl: '',
+        area: [],
     }
   },
   components: {},
@@ -81,6 +84,12 @@ export default {
     
   },
   methods: {
+    init(){
+        // listArea({}).then(response => {
+        //     this.area = response.data.data.children
+        // })
+    },
+
     handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
     },
