@@ -1,14 +1,28 @@
 <template>
-<div>propertyArticleAD</div>
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="空白高度" prop="groupStyle">
+          <div class="slider-wrapper">
+            <el-slider v-model="ruleForm.pageMargin"></el-slider>
+            <span>{{ruleForm.pageMargin}}像素</span>
+          </div>
+        </el-form-item>
+    </div>
+  </el-form>
 </template>
 
 <script>
 export default {
-  name: 'propertyArticleAD',
+  name: 'propertyHelpBlank',
   components: {},
   data () {
     return {
-      
+      ruleForm: {
+      },
+      rules: {
+
+      },
+
     }
   },
   created() {
@@ -42,5 +56,16 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.slider-wrapper{
+  width:100%;
+  display:flex;
+  justify-content: space-between;
+  .el-slider{
+    width:66%;
+  }
+  span{
+    margin-right:20px;
+  }
+}
 </style>

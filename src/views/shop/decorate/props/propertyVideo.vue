@@ -1,14 +1,39 @@
 <template>
-<div>propertyArticleAD</div>
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="视频">
+        <el-radio-group v-model="ruleForm.source">
+          <el-radio :label="1">选择视频</el-radio>
+          <el-radio :label="2">粘贴视频地址(小程序v2.15及以上版本支持)</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="" v-if="ruleForm.source === 1">
+        <el-button type="primary" plain>从视频库选择视频</el-button>
+      </el-form-item>
+      <el-form-item label="" v-if="ruleForm.source === 2">
+        <el-input  v-model="input" placeholder="此处粘贴视频播放地址"></el-input>
+        仅支持.mp4格式的播放地址
+      </el-form-item>
+      <el-form-item label="封面图">
+        <el-button type="primary" plain>选择封面图</el-button>
+        建议图片宽高比16:9
+      </el-form-item>
+    </div>
+  </el-form>
 </template>
 
 <script>
 export default {
-  name: 'propertyArticleAD',
+  name: 'propertyVideo',
   components: {},
   data () {
     return {
-      
+      ruleForm: {
+        source: 1,
+      },
+      rules: {
+
+      }
     }
   },
   created() {
@@ -42,5 +67,25 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.slider-wrapper{
+  width:100%;
+  display:flex;
+  justify-content: space-between;
+  .el-slider{
+    width:66%;
+  }
+  span{
+    margin-right:20px;
+  }
+}
+.el-upload{
+  width:80px!important;
+  height:80px!important;
+  line-height:90px!important;
+}
+.el-upload-list__item{
+  width:80px!important;
+  height:80px!important;
+}
 </style>
