@@ -262,3 +262,27 @@ table.yuan-table{
   text-align: center;
   margin-top: 20px;
 }
+
+/* 店铺装修中的滑动条样式 */
+.slider-wrapper{
+  width:100%;
+  display:flex;
+  justify-content: space-between;
+  .el-slider{
+    width:66%;
+  }
+  span{
+    margin-right:20px;
+  }
+}
+
+/* 上传器加号框样式 */
+.el-upload{
+  width:80px!important;
+  height:80px!important;
+  line-height:90px!important;
+}
+.el-upload-list__item{
+  width:80px!important;
+  height:80px!important;
+}

@@ -1,13 +1,14 @@
 <template>
     <div>
-       <el-tag type="danger" v-for="(item, key) in componentDataMap[data.id].data">{{key}}：{{item}}</el-tag>
+       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
     </div>
 </template>
 
 <script>
+import componentMixin from './componentMixin.js';
 export default {
   name: 'componentDiscount',
-  props:['data'],
+  mixins:[componentMixin],
   components: {},
   data () {
     return {
@@ -18,9 +19,7 @@ export default {
 
   },
   computed: {
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    }
+    
   },
   methods: {
   }

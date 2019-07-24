@@ -16,10 +16,11 @@
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 import RichEditor from '@/components/RichEditor';
 export default {
   name: 'propertyRichEditor',
-  props: ['data'],
+  mixins: [propertyMixin],
   components: {RichEditor},
   data () {
     return {
@@ -46,17 +47,6 @@ export default {
       }
     }
   },
-  created() {
-    this.initRuleForm();
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.emitChangeRuleForm(newValue);
-      },
-      deep: true
-    }
-  },
 
   methods: {
 
@@ -65,24 +55,6 @@ export default {
       this.ruleForm.richValue = html;
     },
 
-    /* 初始化表单数据 */
-    initRuleForm() {
-      if(this.data){
-        this.ruleForm = this.data;
-      }
-       this.$emit('change', {
-        id: this.$parent.currentComponentId,
-        data: this.ruleForm
-      });
-    },
-
-    /* 发送数据改变事件 */
-    emitChangeRuleForm(newValue) {
-      this.$emit('change', {
-        id: this.$parent.currentComponentId,
-        data: newValue
-      });
-    }
   }
 }
 </script>
