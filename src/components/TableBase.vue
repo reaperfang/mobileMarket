@@ -17,7 +17,7 @@ export default {
       },
       tableData: [],
       multipleSelection: [],
-      currentRow: null,
+      currentPage: null,
       date: [utils.calcDate(new Date(), '-', 30), new Date()],
     }
   },
@@ -30,6 +30,7 @@ export default {
   },
 
   methods: {
+    fetch(){},
 
     //分页大小改变
     handleSizeChange(val) {

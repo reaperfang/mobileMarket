@@ -4,7 +4,7 @@
         <div class="widget-title">{{item.title}}</div>
         <div class="widget-list">
           <ul class="tile-list n3">
-            <li v-for="(item2, key2) of item.list" :key="key2" @click="selectWidget(item2)">
+            <li v-for="(item2, key2) of item.list" :key="key2" @click="addComponent(item2)">
               <i :class="item2.iconClass"></i>
               <p>{{item2.title}}</p>
             </li>
@@ -15,167 +15,28 @@
 </template>
 
 <script>
+import widget from '@/system/constant/widget';
 export default {
   name: 'widgetView',
   components: {},
   data () {
     return {
-      widgetList: {
-
-        //基础组件
-        baseWidget: {
-          title:'基础组件',
-          list: [
-            {
-              name: 'richEditor',
-              iconClass: 'rich-editor',
-              title: '富文本'
-            },
-            {
-              name: 'goods',
-              iconClass: 'goods',
-              title: '商品'
-            },
-            {
-              name: 'goodsGroup',
-              iconClass: 'goods-group',
-              title: '商品分组'
-            },
-            {
-              name: 'articleAD',
-              iconClass: 'article-ad',
-              title: '图文广告'
-            },
-            {
-              name: 'cube',
-              iconClass: 'cube',
-              title: '魔方'
-            },
-            {
-              name: 'articleNav',
-              iconClass: 'article-nav',
-              title: '图文导航'
-            },
-            {
-              name: 'text',
-              iconClass: 'text',
-              title: '文本'
-            },
-            {
-              name: 'title',
-              iconClass: 'title',
-              title: '标题'
-            }
-          ]
-        },
-
-        //营销组件
-        saleWidget: {
-          title: '营销组件',
-          list: [
-            {
-              name: 'coupon',
-              iconClass: 'coupon',
-              title: '优惠券'
-            },
-            {
-              name: 'multiPerson',
-              iconClass: 'multi-person',
-              title: '多人拼团'
-            },
-            {
-              name: 'secondkill',
-              iconClass: 'second-kill',
-              title: '限时秒杀'
-            },
-            {
-              name: 'discount',
-              iconClass: 'discount',
-              title: '限时折扣'
-            },
-            {
-              name: 'discountPackage',
-              iconClass: 'discountPackage',
-              title: '优惠套餐'
-            },
-            {
-              name: 'fullReduction',
-              iconClass: 'full-reduction',
-              title: '满减满折'
-            },
-            {
-              name: 'nyuan',
-              iconClass: 'nyuan',
-              title: 'N元N件'
-            }
-          ]
-        },
-
-
-        //其他组件
-        otherWidget: {
-          title: '其他组件',
-          list: [
-            {
-              name: 'shopInfo',
-              iconClass: 'shop-info',
-              title: '店铺信息'
-            },
-            {
-              name: 'enterShop',
-              iconClass: 'enter-shop',
-              title: '进入店铺'
-            },
-            {
-              name: 'goodsSearch',
-              iconClass: 'goods-search',
-              title: '商品搜索'
-            },
-            {
-              name: 'notice',
-              iconClass: 'notice',
-              title: '公告'
-            },
-            {
-              name: 'helpLine',
-              iconClass: 'help-line',
-              title: '辅助线'
-            },
-            {
-              name: 'video',
-              iconClass: 'video',
-              title: '视频'
-            },
-            {
-              name: 'helpBlank',
-              iconClass: 'help-blank',
-              title: '辅助空白'
-            },
-            {
-              name: 'buyNotice',
-              iconClass: 'buy-notice',
-              title: '购买公告'
-            }
-          ]
-        },
-
-      }
+     widgetList: widget.widgetList
     }
   },
   created() {
-
+    this.$store.commit('showBaseProperty');
   },
   computed: {
-    currentComponentName() {
-      return this.$store.getters.currentComponentName;
+    currentComponentId() {
+      return this.$store.getters.currentComponentId;
     },
   },
   methods: {
 
     /* 选中控件 */
-    selectWidget(item) {
-      this.$store.dispatch('addComponent', item);
-      this.$store.commit('setCurrentComponentName', item.name);
+    addComponent(item) {
+      this.$store.commit('addComponent', item);
     }
   }
 }
@@ -191,6 +52,8 @@ export default {
   }
   .widget{
     width: 220px;
+    height: 835px;
+    overflow-y: auto;
     .widget-title{
       height:40px;
       line-height:22px;

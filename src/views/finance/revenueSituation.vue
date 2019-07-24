@@ -4,10 +4,23 @@
     <div class="top_part">
       <div class="title">
         <span class="name">当日营收</span>
-        <span class="data_note">
-          <i class="el-icon-warning-outline"></i>
-          查看数据说明
-        </span>
+        <el-popover
+          placement="top-start"
+          title="数据说明"
+          width="300"
+          trigger="hover">
+          <div>
+            <p>1、总收入即所有线上订单支付的总金额，含所有线上支付和线下支付的所有订单，支付完成后计入；</p>
+            <p>2、总支出即所有线上支出的总金额，含订单退款、客户ID提现的金额，退款成功或提现成功后计入；</p>
+            <p>3、实际收入 = 总收入 - 总支出；</p>
+            <p>4、每日数据为当日0时0分0秒到23时59分59秒的数据，今日数据为当日0点后的实时数据；</p>
+            <p>5、最近一周，最近一个月等数据中包含今日数据；</p>
+          </div>
+          <el-button slot="reference" class="data_note">
+            <i class="el-icon-warning-outline"></i>
+            查看数据说明
+          </el-button>
+        </el-popover>
       </div>
       <div class="data_statistics">
         <div class="item">
@@ -32,7 +45,7 @@
             <i class="el-icon-top red"></i>
           </span>
         </div>
-        <span class="details">收支明细</span>
+        <span class="details" @click="_routeTo('revenueExpenditureDetails')">收支明细</span>
       </div>
     </div>
     <div class="under_part">
@@ -47,11 +60,11 @@
           请选择时间段：
           <el-date-picker
             v-model="timeValue"
-            type="datetimerange"
-            align="right"
+            type="daterange"
+            range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </div>
       </div>
@@ -82,20 +95,29 @@
 </template>
 
 <script>
+import utils from "@/utils";
 import financeChart from './components/financeChart';
 export default {
   name: 'revenueSituation',
   data() {
     return {
+      pickerNowDateBefore: {
+          disabledDate: (time) => {
+                return time.getTime() > new Date();
+              }
+      },
       timeValue:''
     }
   },
   components: {financeChart},
   watch: {
-
+    timeValue(){
+      let time = utils.formatDate(this.timeValue[0], "yyyy-MM-dd")
+      console.log('11111111',time)
+    }
   },
   created() {
-    
+
   },
   destroyed() {
     
@@ -135,6 +157,8 @@ export default {
       .data_note{
         color: #655EFF;
         font-size: 14px;
+        cursor: pointer;
+        border:none;
       }
     }
   .data_statistics{

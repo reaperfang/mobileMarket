@@ -5,46 +5,57 @@
       :data="dataList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-      :default-sort = "{prop: 'date', order: 'descending'}"
+      :default-sort = "{prop: 'tradeTime', order: 'descending'}"
       >
       <el-table-column
-        prop="name1"
+        prop="tradeDetailSn"
         label="交易流水号">
       </el-table-column>
       <el-table-column
-        prop="name2"
+        prop="tradeType"
         label="收支类型">
       </el-table-column>
       <el-table-column
-        prop="name3"
+        prop="businessType"
         label="业务类型">
       </el-table-column>
       <el-table-column
-        prop="name4"
+        prop="relationSn"
         label="关联单据编号">
       </el-table-column>
       <el-table-column
-        prop="name5"
+        prop="payWay"
         label="支付方式">
       </el-table-column>
       <el-table-column
-        prop="name6"
+        prop="wechatTradeSn"
         label="微信流水号">
       </el-table-column>
       <el-table-column
-        prop="name7"
+        prop="amount"
         label="交易金额（元）">
       </el-table-column>
       <el-table-column
-        prop="name8"
+        prop="isInvoice"
         label="开票">
       </el-table-column>
       <el-table-column
-        prop="name9"
+        prop="tradeTime"
         label="交易时间"
         sortable>
       </el-table-column>
     </el-table>
+    <div class="page_styles">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
+        layout="sizes, prev, pager, next"
+        :total="100">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -55,7 +66,30 @@ export default {
   extends: TableBase,
   data() {
     return {
-      dataList:[],
+      dataList:[
+        {
+          tradeDetailSn:'111111',
+          tradeType:'123231',
+          businessType:'123231',
+          relationSn:'123231',
+          payWay:'123231',
+          wechatTradeSn:'123231',
+          amount:'123231',
+          isInvoice:'123231',
+          tradeTime:'2019-02-14'
+        },
+        {
+          tradeDetailSn:'2222222',
+          tradeType:'123231',
+          businessType:'123231',
+          relationSn:'123231',
+          payWay:'123231',
+          wechatTradeSn:'123231',
+          amount:'123231',
+          isInvoice:'123231',
+          tradeTime:'2019-02-15'
+        },
+      ],
     };
   },
   created() {
@@ -67,3 +101,7 @@ export default {
   components: {}
 };
 </script>
+<style lang="scss">
+
+</style>
+

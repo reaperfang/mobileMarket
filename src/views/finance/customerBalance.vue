@@ -4,30 +4,31 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline" label-width="90px">
         <el-form-item label="交易流水号">
-          <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.relationSn" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="交易类型">
-          <el-select v-model="form.value3" style="width:100px;">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="订单收款" value="2"></el-option>
-            <el-option label="售后退款" value="3"></el-option>
-            <el-option label="申请提现" value="4"></el-option>
-            <el-option label="红包到账" value="5"></el-option>
-            <el-option label="提示失败" value="6"></el-option>
+          <el-select v-model="form.businessType" style="width:100px;">
+            <el-option
+              v-for="item in transactionTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.value7"
+            v-model="form.tradeTime"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :default-time="['12:00:00', '08:00:00']"
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -35,7 +36,7 @@
     <div class="under_part">
       <div class="total">
         <span>全部 <em>700</em> 项</span>
-        <el-button>导出</el-button>
+        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <cbTable style="margin-top:20px"></cbTable>
     </div>
@@ -43,22 +44,47 @@
 </template>
 
 <script>
+import utils from "@/utils";
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import cbTable from './components/cbTable'
+import financeCons from '@/system/constant/finance'
 export default {
   name: 'revenueSituation',
   components:{ cbTable },
   data() {
     return {
+      pickerNowDateBefore: {
+        disabledDate: (time) => {
+          return time.getTime() > new Date();
+        }
+      },
       inline:true,
       form:{
-        value2:'',
-        value3:'1',
-        value7:''
+        relationSn:'',
+        businessType:1,
+        tradeTime:''
       },
+      dataList:[
+        {
+          tradeDetailSn:'',
+          relationSn:'',
+          memberInfoId:'',
+          businessType:'',
+          changeAmount:'',
+          surplusAmount:'',
+          tradeTime:''
+        },
+      ],
     }
   },
   watch: {
 
+  },
+  computed:{
+    transactionTypes(){
+      return financeCons.transactionTypes;
+    },
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
@@ -69,6 +95,27 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+      
+    },
+    //导出
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/excel/Export2Excel.js');
+            const tHeader = ['交易流水号','关联单据编号', '客户ID', '交易类型', '变动金额（元）','剩余金额（元）', '交易时间'];
+            const filterVal = ['tradeDetailSn','relationSn', 'memberInfoId', 'businessType', 'changeAmount','surplusAmount', 'tradeTime'];
+            const list = this.dataList;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '客户余额列表');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    },
   }
 }
 </script>

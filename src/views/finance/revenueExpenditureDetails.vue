@@ -4,51 +4,58 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline" label-width="70px">
         <el-form-item>
-          <el-select v-model="form.value1" placeholder="交易流水号" style="width:124px;">
-            <el-option label="交易流水号" value="1"></el-option>
-            <el-option label="关联单据编号" value="2"></el-option>
-            <el-option label="微信流水号" value="3"></el-option>
+          <el-select v-model="form.searchType" placeholder="交易流水号" style="width:124px;">
+            <el-option
+              v-for="item in revenueExpenditureTerms"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="form.value3" style="width:210px;">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="订单收款" value="2"></el-option>
-            <el-option label="退款付款" value="3"></el-option>
-            <el-option label="退还奖励" value="4"></el-option>
-            <el-option label="快递结算" value="5"></el-option>
-            <el-option label="短信结算" value="6"></el-option>
+          <el-select v-model="form.businessType" style="width:210px;">
+            <el-option
+              v-for="item in rebusinessTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="支付方式">
-          <el-select v-model="form.value4" style="width:210px;">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="微信支付" value="2"></el-option>
-            <el-option label="线下支付" value="3"></el-option>
+          <el-select v-model="form.payWay" style="width:210px;">
+            <el-option
+              v-for="item in payTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="交易金额">
-          <el-input v-model="form.value5" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input v-model="form.amountMin" placeholder="请输入" style="width:120px;"></el-input>
           -
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.value6" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input v-model="form.amountMax" placeholder="请输入" style="width:120px;"></el-input>
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.value7"
+            v-model="timeValue"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']">
+            :default-time="['12:00:00', '08:00:00']"
+            :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -56,7 +63,7 @@
     <div class="under_part">
       <div class="total">
         <span>全部 <em>700</em> 项</span>
-        <el-button>导出</el-button>
+        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <reTable style="margin-top:20px"></reTable>
     </div>
@@ -64,26 +71,76 @@
 </template>
 
 <script>
+import utils from "@/utils";
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import reTable from './components/reTable'
+import financeCons from '@/system/constant/finance'
 export default {
-  name: 'revenueSituation',
+  name: 'revenueExpenditureDetails',
   components:{ reTable },
   data() {
     return {
+      pickerNowDateBefore: {
+          disabledDate: (time) => {
+                return time.getTime() > new Date();
+              }
+      },
       inline:true,
+      timeValue:'',
       form:{
-        value1:'',
-        value2:'',
-        value3:'1',
-        value4:'1',
-        value5:'',
-        value6:'',
+        searchType:1,
+        searchValue:'',
+        businessType:1,
+        payWay:1,
+        amountMin:'',
+        amountMax:'',
         value7:''
       },
+      dataList:[
+        {
+          tradeDetailSn:'123231',
+          tradeType:'123231',
+          businessType:'123231',
+          relationSn:'123231',
+          payWay:'123231',
+          wechatTradeSn:'123231',
+          amount:'123231',
+          isInvoice:'123231',
+          tradeTime:'2019-02-14'
+        },
+        {
+          tradeDetailSn:'123231',
+          tradeType:'123231',
+          businessType:'123231',
+          relationSn:'123231',
+          payWay:'123231',
+          wechatTradeSn:'123231',
+          amount:'123231',
+          isInvoice:'123231',
+          tradeTime:'2019-02-15'
+        },
+      ]
     }
   },
   watch: {
-
+    timeValue(){
+      let time1 = utils.formatDate(this.timeValue[0], "yyyy-MM-dd hh:mm:ss")
+      let time2 = utils.formatDate(this.timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      console.log('11111111',time1)
+      console.log('22222222',time2)
+    }
+  },
+  computed:{
+    revenueExpenditureTerms(){
+      return financeCons.revenueExpenditureTerms;
+    },
+    rebusinessTypes(){
+      return financeCons.rebusinessTypes;
+    },
+    payTypes(){
+      return financeCons.payTypes;
+    }
   },
   created() {    
   },
@@ -91,6 +148,27 @@ export default {
   },
   methods: {
     onSubmit(){},
+    //重置
+    resetForm(){
+      
+    },
+    //导出
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/excel/Export2Excel.js');
+            const tHeader = ['交易流水号','收支类型', '业务类型', '关联单据编号', '支付方式','微信流水号', '交易金额（元）', '开票','交易时间'];
+            const filterVal = ['tradeDetailSn','tradeType', 'businessType', 'relationSn', 'payType','wechatTradeSn', 'amount', 'isInvoice', 'tradeTime'];
+            const list = this.dataList;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '收支明细列表');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    },
   }
 }
 </script>

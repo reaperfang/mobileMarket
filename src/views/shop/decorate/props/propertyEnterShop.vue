@@ -1,35 +1,31 @@
 <template>
-<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
-    <p>propertyEnterShop</p>
-</el-form>
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="文案" prop="words">
+        <el-input
+          placeholder="请输入文案"
+          v-model="ruleForm.words">
+        </el-input>
+      </el-form-item>
+    </div>
+  </el-form>
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 export default {
   name: 'propertyEnterShop',
+  mixins: [propertyMixin],
   components: {},
   data () {
     return {
       ruleForm: {
-       
+        words: ''
       },
       rules: {
 
-      }
-    }
-  },
-  created() {
-
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.$emit('change', {
-          type: this.$parent.currentComponentName,
-          data: newValue
-        });
       },
-      deep: true
+
     }
   },
   methods: {
@@ -37,5 +33,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 </style>

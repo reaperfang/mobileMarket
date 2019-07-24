@@ -6,7 +6,7 @@
     <!-- 富文本编辑器demo -->
     <el-card>
       <h1>富文本编辑器(已成功集成秀米编辑器)&nbsp;<el-button type="primary" @click="currentDialog='demoDialog'">点击查看富文本内容(实时)</el-button></h1>
-      <RickEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></RickEditor>
+      <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></RichEditor>
     </el-card>
 
      <!-- 动态弹窗 -->
@@ -17,10 +17,10 @@
 <script>
 import utils from '@/utils';
 import demoDialog from './dialogs/demoDialog';
-import RickEditor from '@/components/RickEditor';
+import RichEditor from '@/components/RichEditor';
 export default {
   name: 'HelloWorld6',
-  components: {demoDialog, RickEditor},
+  components: {demoDialog, RichEditor},
   data () {
     return {
       msg: '中企电商VUE框架',

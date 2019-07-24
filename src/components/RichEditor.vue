@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <vue-ueditor-wrap ref="editor" v-model="value" :config="myConfig" @ready="ready" :init="init"></vue-ueditor-wrap>
+    <vue-ueditor-wrap ref="editor" v-model="richValue" :config="myConfig" @ready="ready" :init="init"></vue-ueditor-wrap>
   </div>
 </template>
 <script>
@@ -11,8 +11,12 @@ import VueUeditorWrap from 'vue-ueditor-wrap' // ES6 Module
 Vue.component('vue-ueditor-wrap', VueUeditorWrap)
 import utils from '@/utils';
 export default {
-  name: 'RickEditor',
+  name: 'RichEditor',
   props: {
+    richValue:{
+      type: String,
+      default: ''
+    },
     //配置
     myConfig:{  
       type: Object,
@@ -34,7 +38,6 @@ export default {
   },
   data() {
     return {
-      value: '',
       editor:null,//编辑器实例
     }
   },
@@ -43,7 +46,7 @@ export default {
   },
 
   watch: {
-    value(newValue, oldValue) {
+    richValue(newValue, oldValue) {
         this.$emit('editorValueUpdate', newValue);
     }
   },

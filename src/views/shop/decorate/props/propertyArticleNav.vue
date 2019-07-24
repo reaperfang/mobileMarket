@@ -1,38 +1,20 @@
 <template>
-<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
-    <p>propertyArticleNav</p>
-</el-form>
+<div>propertyArticleAD</div>
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 export default {
   name: 'propertyArticleNav',
+  mixins: [propertyMixin],
   components: {},
   data () {
     return {
-      ruleForm: {
-       
-      },
-      rules: {
-
-      }
+      
     }
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.$emit('change', {
-          type: this.$parent.currentComponentName,
-          data: newValue
-        });
-      },
-      deep: true
-    }
-  },
-  created() {
-
   },
   methods: {
+
   }
 }
 </script>

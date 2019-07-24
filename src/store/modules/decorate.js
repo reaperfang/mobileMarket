@@ -1,106 +1,89 @@
-import utils from "@/utils";
-const titleCase = utils.titleCase;
-const importVue = (name, callback)=> {
-	import(`@/views/shop/decorate/comps/component${titleCase(name)}.vue`).then(loadedComponent => {
-		callback(loadedComponent);
-	})
-	.catch(e => {
-		console.error(e);
-	});
-}
+import uuid from 'uuid/v4';
 
 const decorate = {
 	state: {
-		currentComponentName: "base",
-		componentList: [],
-		dataList: []
+		currentComponentId: "",  //当前组件id
+		basePropertyShow: true,  //基础属性显示开关
+		baseInfo: {  //店铺装修页面基础信息
+			pageName: '',
+			pageTitle: '',
+			pageDesc: '',
+			pageClassify: '1',
+			pageBackground: ''
+		},  
+		componentDataIds: [],  //组件列表id序列
+		componentDataMap: {}   //组件数据集合映射
 	},
 	mutations: {
-
-		/* 设置当前组件 */
-		setCurrentComponentName: (state, type) => {
-			state.currentComponentName = type;
+		/* 设置当前组件id */
+		setCurrentComponentId: (state, id) => {
+			state.basePropertyShow = false;
+			state.currentComponentId = id;
 		},
 
-		/* 同步添加组件 */
-		addComponentSync: (state, component) => {
-			state.componentList.push(component);
-			state.dataList.push({type: component.type});
+		showBaseProperty: (state) => {
+			state.basePropertyShow = true;
+		},
+
+		hideBaseProperty: (state) => {
+			state.basePropertyShow = false;
+		},
+
+		/* 添加组件数据 */
+		addComponent: (state, component) => {
+			const id = uuid();
+			state.componentDataIds.push(id);
+			state.componentDataMap[id] = {
+				id,
+				type: component.type,
+				title: component.title,
+				data: null   //默认必须是null，否则首次渲染模板会出错!
+			};
+
+			state.basePropertyShow = false;
+			state.currentComponentId = id;
 		},
 
 		/* 删除组件 */
-		deleteComponent(state, component) {
-			const tempComponentList = [...state.componentList];
-      for(let i=0;i<tempComponentList.length; i++) {
-        if(tempComponentList[i] === component ) {
-          const index = tempComponentList.indexOf(component);
-          if(index > -1) {
-						if(tempComponentList[index+1]) {
-							this.commit('setCurrentComponentName', tempComponentList[index+1].type);
-						}else{
-							this.commit('setCurrentComponentName', 'base');
-						}
-            tempComponentList.splice(index, 1);
-          }
-        }
-      }
-      state.componentList = tempComponentList;
-			this.commit('deleteData', component.name);
-		},
+		deleteComponent(state, id) {
+			//删除数据列表中对应项
+			const tempcomponentDataMap = {...state.componentDataMap};
+			delete tempcomponentDataMap[id];
+			state.componentDataMap = tempcomponentDataMap;
 
-		/* 删除一条数据 */
-		deleteData(state, type) {
-			const tempDataList = [...state.dataList];
-      for(let i=0;i<tempDataList.length; i++) {
-        if(tempDataList[i].type === type ) {
-          tempDataList.splice(i, 1);
-        }else{
-					break;
-				}
-      }
-      state.dataList = tempDataList;
+			//删除顺序列表中对应项
+			const index = state.componentDataIds.indexOf(id);
+			const prevId = state.componentDataIds[index-1];
+			const nextId = state.componentDataIds[index+1];
+			if(nextId) {
+				this.commit("setCurrentComponentId", nextId);
+			}else if(prevId){
+				this.commit("setCurrentComponentId", prevId);
+			}else{
+				state.basePropertyShow = true;
+			}
+			state.componentDataIds.splice(index, 1);
+
 		},
 
 		/* 更新组件 */
 		updateComponent(state, params) {
-			const tempDataList = [...state.dataList];
-      for(let i=0;i<tempDataList.length; i++) {
-        if(tempDataList[i].type === params.type ) {
-					Object.assign(tempDataList[i], params.data )
-        }else{
-					break;
+
+			//对基础信息组件特殊处理
+			if(params.type && params.type === 'base') {
+				state.baseInfo = params.data;
+			}else{
+				//对列表组件处理
+				const tempcomponentDataMap = {...state.componentDataMap};
+				const componentData = tempcomponentDataMap[params.id];
+				if(componentData){
+					componentData['data'] = params.data;
+					state.componentDataMap = tempcomponentDataMap;
 				}
-      }
-      state.dataList = tempDataList;
+			}
 		}
 	},
-	actions: {
-
-		//异步添加组件
-		addComponent({ commit, state }, widget) {
-			if(!state.componentList.length) {
-				importVue(widget.name, (loadedComponent)=>{
-					const component = Object.assign({}, loadedComponent.default, {type: widget.name, title: widget.title});
-					commit("addComponentSync", component);
-				})
-				return;
-			}
-
-			//收集组件名称
-			let types = [];
-			for(let i=0;i<state.componentList.length; i++) {
-				types.push(state.componentList[i].type);
-			}
-
-			//判断是否已存在
-			if(!types.includes(widget.name)){
-				importVue(widget.name, (loadedComponent)=>{
-					const component = Object.assign({}, loadedComponent.default, {type: widget.name, title: widget.title});
-					commit("addComponentSync", component);
-				})
-			}
-		}
-	}
+	actions: {}
 };
 
 export default decorate;

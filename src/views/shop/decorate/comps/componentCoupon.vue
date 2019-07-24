@@ -1,25 +1,25 @@
 <template>
-<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
-    <p>componentCoupon</p>
-</el-form>
+    <div>
+       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
+    </div>
 </template>
 
 <script>
+import componentMixin from './componentMixin.js';
 export default {
   name: 'componentCoupon',
+  mixins:[componentMixin],
   components: {},
   data () {
     return {
-      ruleForm: {
-       
-      },
-      rules: {
-
-      }
+      
     }
   },
   created() {
 
+  },
+  computed: {
+    
   },
   methods: {
   }
