@@ -52,6 +52,8 @@ export default {
   }
   .widget{
     width: 220px;
+    height: 835px;
+    overflow-y: auto;
     .widget-title{
       height:40px;
       line-height:22px;

@@ -134,6 +134,8 @@ export default {
  }
  .view {
     width: 374px;
+    height: 835px;
+    overflow-y: auto;
     border: 1px solid #e2e1e1;
     .phone-head {
       width: 100%;

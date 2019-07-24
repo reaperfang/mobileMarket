@@ -93,6 +93,8 @@ export default {
   }
   .props{
     width:346px;
+    height: 835px;
+    overflow-y: auto;
     .block{
       &.header{
         padding:10px;

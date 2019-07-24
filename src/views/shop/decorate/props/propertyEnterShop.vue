@@ -1,14 +1,28 @@
 <template>
-<div>propertyArticleAD</div>
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="文案">
+        <el-input
+          placeholder="请输入文案"
+          v-model="textarea">
+        </el-input>
+      </el-form-item>
+    </div>
+  </el-form>
 </template>
 
 <script>
 export default {
-  name: 'propertyArticleAD',
+  name: 'propertyEnterShop',
   components: {},
   data () {
     return {
-      
+      ruleForm: {
+      },
+      rules: {
+
+      },
+
     }
   },
   created() {
@@ -42,5 +56,25 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.slider-wrapper{
+  width:100%;
+  display:flex;
+  justify-content: space-between;
+  .el-slider{
+    width:66%;
+  }
+  span{
+    margin-right:20px;
+  }
+}
+.el-upload{
+  width:80px!important;
+  height:80px!important;
+  line-height:90px!important;
+}
+.el-upload-list__item{
+  width:80px!important;
+  height:80px!important;
+}
 </style>
