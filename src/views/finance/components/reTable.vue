@@ -5,7 +5,7 @@
       :data="dataList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-      :default-sort = "{prop: 'date', order: 'descending'}"
+      :default-sort = "{prop: 'tradeTime', order: 'descending'}"
       >
       <el-table-column
         prop="tradeDetailSn"
@@ -68,7 +68,7 @@ export default {
     return {
       dataList:[
         {
-          tradeDetailSn:'123231',
+          tradeDetailSn:'111111',
           tradeType:'123231',
           businessType:'123231',
           relationSn:'123231',
@@ -76,7 +76,18 @@ export default {
           wechatTradeSn:'123231',
           amount:'123231',
           isInvoice:'123231',
-          tradeTime:'123231'
+          tradeTime:'2019-02-14'
+        },
+        {
+          tradeDetailSn:'2222222',
+          tradeType:'123231',
+          businessType:'123231',
+          relationSn:'123231',
+          payWay:'123231',
+          wechatTradeSn:'123231',
+          amount:'123231',
+          isInvoice:'123231',
+          tradeTime:'2019-02-15'
         },
       ],
     };

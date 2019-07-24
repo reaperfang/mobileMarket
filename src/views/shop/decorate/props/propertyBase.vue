@@ -7,7 +7,7 @@
       <el-input v-model="ruleForm.pageTitle" placeholder="请输入页面标题"></el-input>
     </el-form-item>
     <el-form-item label="页面描述" prop="pageDesc">
-      <el-input v-model="ruleForm.pageDesc" placeholder="请输入页面介绍" type="textarea"></el-input>
+      <el-input v-model="ruleForm.pageDesc" placeholder="请输入页面描述" type="textarea"></el-input>
     </el-form-item>
     <el-form-item label="页面分类" prop="pageClassify">
       <el-select v-model="ruleForm.pageClassify" placeholder="请选择分类">
@@ -25,9 +25,10 @@
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 export default {
-  name: 'propertyGoods',
-  props: ['data'],
+  name: 'propertyBase',
+  mixins: [propertyMixin],
   components: {},
   data () {
     return {
@@ -57,17 +58,6 @@ export default {
       },
     }
   },
-  created() {
-    this.initRuleForm();
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.emitChangeRuleForm(newValue);
-      },
-      deep: true
-    }
-  },
   methods: {
 
     /* 初始化表单数据 */
@@ -75,6 +65,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+      this.$emit('change', {
+        type: 'base',
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */

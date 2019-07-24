@@ -1,46 +1,38 @@
 <template>
-<div>propertyArticleAD</div>
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="文案" prop="words">
+        <el-input
+          placeholder="请输入文案"
+          v-model="ruleForm.words">
+        </el-input>
+      </el-form-item>
+    </div>
+  </el-form>
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 export default {
-  name: 'propertyArticleAD',
+  name: 'propertyEnterShop',
+  mixins: [propertyMixin],
   components: {},
   data () {
     return {
-      
-    }
-  },
-  created() {
-    this.initRuleForm();
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.emitChangeRuleForm(newValue);
+      ruleForm: {
+        words: ''
       },
-      deep: true
+      rules: {
+
+      },
+
     }
   },
   methods: {
-
-    /* 初始化表单数据 */
-    initRuleForm() {
-      if(this.data){
-        this.ruleForm = this.data;
-      }
-    },
-
-    /* 发送数据改变事件 */
-    emitChangeRuleForm(newValue) {
-      this.$emit('change', {
-        id: this.$parent.currentComponentId,
-        data: newValue
-      });
-    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 </style>

@@ -1,46 +1,38 @@
 <template>
-<div>propertyArticleAD</div>
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="空白高度" prop="blankHeight">
+          <div class="slider-wrapper">
+            <el-slider v-model="ruleForm.blankHeight"></el-slider>
+            <span>{{ruleForm.blankHeight}}像素</span>
+          </div>
+        </el-form-item>
+    </div>
+  </el-form>
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 export default {
-  name: 'propertyArticleAD',
+  name: 'propertyHelpBlank',
+  mixins: [propertyMixin],
   components: {},
   data () {
     return {
-      
-    }
-  },
-  created() {
-    this.initRuleForm();
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.emitChangeRuleForm(newValue);
+      ruleForm: {
+        blankHeight: 10
       },
-      deep: true
+      rules: {
+
+      },
+
     }
   },
   methods: {
-
-    /* 初始化表单数据 */
-    initRuleForm() {
-      if(this.data){
-        this.ruleForm = this.data;
-      }
-    },
-
-    /* 发送数据改变事件 */
-    emitChangeRuleForm(newValue) {
-      this.$emit('change', {
-        id: this.$parent.currentComponentId,
-        data: newValue
-      });
-    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 </style>

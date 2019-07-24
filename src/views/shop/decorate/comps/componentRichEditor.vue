@@ -1,23 +1,26 @@
+
 <template>
-<div v-if="componentDataMap[data.id] && componentDataMap[data.id].data" v-html="componentDataMap[data.id].data.richValue"></div>
+    <div>
+      <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
+      <div v-html="currentComponentData.data.richValue"></div>
+    </div>
 </template>
 
 <script>
+import componentMixin from './componentMixin.js';
 export default {
   name: 'componentRichEditor',
-  props:['data'],
+  mixins:[componentMixin],
   components: {},
   data () {
     return {
     }
   },
-  computed: {
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    }
-  },
   created() {
 
+  },
+  computed: {
+    
   },
   methods: {
   }

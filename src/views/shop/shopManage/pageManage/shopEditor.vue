@@ -11,7 +11,7 @@
       <ul>
         <li v-for="(item,key) of componentDataIds" :key="key">
           <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
-          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
+          <el-tag type="success">{{item}}</el-tag>
         </li>
       </ul>
     </div>

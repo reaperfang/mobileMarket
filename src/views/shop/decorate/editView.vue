@@ -19,11 +19,12 @@
           <div 
           class="component_wrapper" 
           v-for="(item, key) of componentDataIds" 
+          :class="{'actived': item === currentComponentId}"
           @click="selectComponent(item)" 
           @dragstart.self="selectItem = item" 
           @dragend.self="selectItem = {}">
+            {{getComponentData(item).title}}组件
             <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)"></component>
-            {{getComponentData(item).title}}
             <i class="delete-btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
           </div>
     </vuedraggable>
@@ -133,6 +134,8 @@ export default {
  }
  .view {
     width: 374px;
+    height: 835px;
+    overflow-y: auto;
     border: 1px solid #e2e1e1;
     .phone-head {
       width: 100%;
@@ -157,10 +160,14 @@ export default {
         background:#fff;
         min-height:50px;
         line-height:50px;
-        border:1px solid #d6d6d6;
         text-align:center;
         position:relative;
+        border:1px solid #eee;
+        border-bottom:none;
         cursor:pointer;
+        &.actived{
+          border:2px dashed rgba(101,94,255,1);
+        }
         i{
           width:20px;
           height:20px;
