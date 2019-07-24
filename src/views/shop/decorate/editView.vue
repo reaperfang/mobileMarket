@@ -23,8 +23,8 @@
           @click="selectComponent(item)" 
           @dragstart.self="selectItem = item" 
           @dragend.self="selectItem = {}">
+            {{getComponentData(item).title}}组件
             <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)"></component>
-            {{getComponentData(item).title}}
             <i class="delete-btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
           </div>
     </vuedraggable>

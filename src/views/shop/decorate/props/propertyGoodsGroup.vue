@@ -1,38 +1,38 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="商品分组">
+      <el-form-item label="商品分组" prop="source">
         最多添加15个商品分组
         <el-button type="info" plain>添加商品分组</el-button>
       </el-form-item>
-      <el-form-item label="全部分组">
+      <el-form-item label="全部分组" prop="showAllGroup">
         全部分组为商品的集合分组，增加消费者逛的体验
-        <el-radio-group v-model="radio">
+        <el-radio-group v-model="ruleForm.showAllGroup">
           <el-radio :label="1">展示</el-radio>
           <el-radio :label="2">不展示</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="展示模板">
-        <el-radio-group v-model="radio2">
+      <el-form-item label="展示模板" prop="showTemplate">
+        <el-radio-group v-model="ruleForm.showTemplate">
           <el-radio :label="1">顶部菜单</el-radio>
           <el-radio :label="2">左侧菜单</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="菜单样式">
-        <el-radio-group v-model="radio3">
+      <el-form-item label="菜单样式" prop="menuStyle">
+        <el-radio-group v-model="ruleForm.menuStyle">
           <el-radio :label="1">样式1</el-radio>
           <el-radio :label="2">样式2</el-radio>
           <el-radio :label="2">样式3</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="菜单位置">
-        <el-radio-group v-model="radio4">
+      <el-form-item label="菜单位置" prop="menuPosition">
+        <el-radio-group v-model="ruleForm.menuPosition">
           <el-radio :label="1">正常模式</el-radio>
           <el-radio :label="2">滚动至顶部固定</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="列表样式">
-        <el-radio-group v-model="radio5">
+      <el-form-item label="列表样式" prop="listStyle">
+        <el-radio-group v-model="ruleForm.listStyle">
           <el-radio :label="1">大图模式</el-radio>
           <el-radio :label="2">一行两个</el-radio>
           <el-radio :label="3">一行三个</el-radio>
@@ -44,58 +44,58 @@
     </div>
 
     <div class="block form">
-        <el-form-item label="页面边距" prop="groupStyle">
+        <el-form-item label="页面边距" prop="pageMargin">
           <div class="slider-wrapper">
             <el-slider v-model="ruleForm.pageMargin"></el-slider>
             <span>{{ruleForm.pageMargin}}像素</span>
           </div>
         </el-form-item>
-        <el-form-item label="商品间距" prop="groupFont">
+        <el-form-item label="商品间距" prop="goodsMargin">
             <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.groupMargin"></el-slider>
-            <span>{{ruleForm.groupMargin}}像素</span>
+            <el-slider v-model="ruleForm.goodsMargin"></el-slider>
+            <span>{{ruleForm.goodsMargin}}像素</span>
             </div>
         </el-form-item>
     </div>
 
 
     <div class="block form">
-      <el-form-item label="商品样式">
-        <el-radio-group v-model="radio6">
+      <el-form-item label="商品样式" prop="goodsStyle">
+        <el-radio-group v-model="ruleForm.goodsStyle">
           <el-radio :label="1">无边白底</el-radio>
           <el-radio :label="2">卡片投影</el-radio>
           <el-radio :label="3">描边白底</el-radio>
           <el-radio :label="4">无边透明底</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="商品倒角">
-        <el-radio-group v-model="radio7">
+      <el-form-item label="商品倒角" prop="goodsChamfer">
+        <el-radio-group v-model="ruleForm.goodsChamfer">
           <el-radio :label="1">直角</el-radio>
           <el-radio :label="2">圆角</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="图片比例">
-        <el-radio-group v-model="radio8">
+      <el-form-item label="图片比例" prop="goodsRatio">
+        <el-radio-group v-model="ruleForm.goodsRatio">
           <el-radio :label="1">3:2</el-radio>
           <el-radio :label="2">3:2</el-radio>
           <el-radio :label="3">3:4</el-radio>
           <el-radio :label="4">16:9</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="图片填充">
-        <el-radio-group v-model="radio9">
+      <el-form-item label="图片填充" prop="goodsFill">
+        <el-radio-group v-model="ruleForm.goodsFill">
           <el-radio :label="1">填充</el-radio>
           <el-radio :label="2">周边留白</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="文本样式">
-        <el-radio-group v-model="radio10">
+      <el-form-item label="文本样式" prop="textStyle">
+        <el-radio-group v-model="ruleForm.textStyle">
           <el-radio :label="1">常规体</el-radio>
           <el-radio :label="2">加粗体</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="文本对齐">
-        <el-radio-group v-model="radio11">
+      <el-form-item label="文本对齐" prop="textAlign">
+        <el-radio-group v-model="ruleForm.textAlign">
           <el-radio :label="1">左对齐</el-radio>
           <el-radio :label="2">居中对齐</el-radio>
         </el-radio-group>
@@ -104,22 +104,22 @@
 
     
     <div class="block form">
-      <el-form-item label="商品样式">
-        <el-checkbox-group v-model="checkList">
+      <el-form-item label="显示内容" prop="showContents">
+        <el-checkbox-group v-model="ruleForm.showContents">
           <el-checkbox label="1">商品名称</el-checkbox>
           <el-checkbox label="2">商品价格</el-checkbox>
           <el-checkbox label="3">商品描述</el-checkbox>
           <el-checkbox label="4">购买按钮</el-checkbox>
         </el-checkbox-group>
-        <el-radio-group v-model="radio8">
-          <el-radio :label="1">样式一</el-radio>
-          <el-radio :label="2">样式二</el-radio>
-          <el-radio :label="3">样式三</el-radio>
-          <el-radio :label="4">样式四</el-radio>
-          <el-radio :label="5">样式五</el-radio>
-          <el-radio :label="6">样式六</el-radio>
-          <el-radio :label="7">样式七</el-radio>
-          <el-radio :label="8">样式八</el-radio>
+        <el-radio-group v-model="ruleForm.buttonStyle">
+          <el-radio :label="1">样式1</el-radio>
+          <el-radio :label="2">样式2</el-radio>
+          <el-radio :label="3">样式3</el-radio>
+          <el-radio :label="4">样式4</el-radio>
+          <el-radio :label="5">样式5</el-radio>
+          <el-radio :label="6">样式6</el-radio>
+          <el-radio :label="7">样式7</el-radio>
+          <el-radio :label="8">样式8</el-radio>
         </el-radio-group>
       </el-form-item>
     </div>
@@ -127,70 +127,42 @@
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 export default {
   name: 'propertyGoodsGroup',
+  mixins: [propertyMixin],
   components: {},
   data () {
     return {
       ruleForm: {
+        source: 1,
+        showAllGroup: 1,
+        showTemplate: 1,
+        menuStyle: 1,
+        menuPosition: 1,
+        listStyle: 1,
+        pageMargin: 15,
+        goodsMargin: 10,
+        goodsStyle: 1,
+        goodsChamfer: 1,
+        goodsRatio: 1,
+        goodsFill: 1,
+        textStyle: 1,
+        textAlign: 1,
+        showContents: [],
+        buttonStyle: 1
       },
       rules: {
 
-      },
-      checkList: []
+      }
 
-    }
-  },
-  created() {
-    this.initRuleForm();
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.emitChangeRuleForm(newValue);
-      },
-      deep: true
     }
   },
   methods: {
-
-    /* 初始化表单数据 */
-    initRuleForm() {
-      if(this.data){
-        this.ruleForm = this.data;
-      }
-    },
-
-    /* 发送数据改变事件 */
-    emitChangeRuleForm(newValue) {
-      this.$emit('change', {
-        id: this.$parent.currentComponentId,
-        data: newValue
-      });
-    }
   }
 }
 </script>
 
 <style lang="scss">
-.slider-wrapper{
-  width:100%;
-  display:flex;
-  justify-content: space-between;
-  .el-slider{
-    width:66%;
-  }
-  span{
-    margin-right:20px;
-  }
-}
-.el-upload{
-  width:80px!important;
-  height:80px!important;
-  line-height:90px!important;
-}
-.el-upload-list__item{
-  width:80px!important;
-  height:80px!important;
-}
+
 </style>

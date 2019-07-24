@@ -173,13 +173,13 @@
         <div class="block form">
           <el-form-item label="页面边距" prop="groupStyle">
             <div class="slider-wrapper">
-             <el-slider v-model="ruleForm.pageMargin"></el-slider>
+             <el-slider v-model="ruleForm.pageMargin" :min="0" :max="20"></el-slider>
              <span>{{ruleForm.pageMargin}}像素</span>
             </div>
           </el-form-item>
           <el-form-item label="分组间距" prop="groupFont">
              <div class="slider-wrapper">
-              <el-slider v-model="ruleForm.groupMargin"></el-slider>
+              <el-slider v-model="ruleForm.groupMargin" :min="0" :max="50"></el-slider>
               <span>{{ruleForm.groupMargin}}像素</span>
              </div>
           </el-form-item>
@@ -203,7 +203,7 @@ export default {
   data() {
     return {
       fontStyle: {fontWeight: 500},  //动态字体样式对象
-      pageMargin: {padding: '10px 0 0 10px'},  //动态页面边距对象
+      pageMargin: {padding: '10px'},  //动态页面边距对象
       ruleForm: {
         groupStyle: 'left',  //分组样式
         groupFont: 'normal',  //分组字体
@@ -240,7 +240,7 @@ export default {
 
     /* 监听页面边距改变 */
     'ruleForm.pageMargin'(newValue) {
-      this.pageMargin = {padding: `${newValue}px 0 0 ${newValue}px`};
+      this.pageMargin = {padding: `${newValue}px`};
     },
 
     /* 监听分组边距改变 */
@@ -431,17 +431,6 @@ ul.nav {
     }
     &.form{
       padding: 30px 0;
-      .slider-wrapper{
-        width:100%;
-        display:flex;
-        justify-content: space-between;
-        .el-slider{
-          width:66%;
-        }
-        span{
-          margin-right:20px;
-        }
-      }
     }
     &.button{
       padding: 30px 0;

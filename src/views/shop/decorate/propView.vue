@@ -119,17 +119,6 @@ export default {
       }
       &.form{
         padding: 30px 20px;
-        .slider-wrapper{
-          width:100%;
-          display:flex;
-          justify-content: space-between;
-          .el-slider{
-            width:66%;
-          }
-          span{
-            margin-right:20px;
-          }
-        }
       }
       &.button{
         padding: 30px 0;

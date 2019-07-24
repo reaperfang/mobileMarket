@@ -9,17 +9,18 @@
     <el-form-item label="页面边距">
       <el-checkbox v-model="ruleForm.remainPageMargin">保留边距</el-checkbox>
     </el-form-item>
-    <el-form-item label="页面边距">
+    <el-form-item label="">
       <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.richValue"></RichEditor>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 import RichEditor from '@/components/RichEditor';
 export default {
   name: 'propertyRichEditor',
-  props: ['data'],
+  mixins: [propertyMixin],
   components: {RichEditor},
   data () {
     return {
@@ -46,17 +47,6 @@ export default {
       }
     }
   },
-  created() {
-    this.initRuleForm();
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.emitChangeRuleForm(newValue);
-      },
-      deep: true
-    }
-  },
 
   methods: {
 
@@ -65,20 +55,6 @@ export default {
       this.ruleForm.richValue = html;
     },
 
-    /* 初始化表单数据 */
-    initRuleForm() {
-      if(this.data){
-        this.ruleForm = this.data;
-      }
-    },
-
-    /* 发送数据改变事件 */
-    emitChangeRuleForm(newValue) {
-      this.$emit('change', {
-        id: this.$parent.currentComponentId,
-        data: newValue
-      });
-    }
   }
 }
 </script>

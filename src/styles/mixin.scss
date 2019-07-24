@@ -58,3 +58,9 @@
     border-bottom: $transparent-border-style;
   }
 }
+
+@mixin fcc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

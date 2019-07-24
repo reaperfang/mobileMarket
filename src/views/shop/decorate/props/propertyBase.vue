@@ -25,9 +25,10 @@
 </template>
 
 <script>
+import propertyMixin from './propertyMixin.js';
 export default {
-  name: 'propertyGoods',
-  props: ['data'],
+  name: 'propertyBase',
+  mixins: [propertyMixin],
   components: {},
   data () {
     return {
@@ -57,17 +58,6 @@ export default {
       },
     }
   },
-  created() {
-    this.initRuleForm();
-  },
-  watch: {
-    ruleForm: {
-      handler(newValue) {
-        this.emitChangeRuleForm(newValue);
-      },
-      deep: true
-    }
-  },
   methods: {
 
     /* 初始化表单数据 */
@@ -75,6 +65,10 @@ export default {
       if(this.data){
         this.ruleForm = this.data;
       }
+      this.$emit('change', {
+        type: 'base',
+        data: this.ruleForm
+      });
     },
 
     /* 发送数据改变事件 */
