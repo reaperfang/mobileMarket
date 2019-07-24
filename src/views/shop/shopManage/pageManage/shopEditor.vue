@@ -4,7 +4,10 @@
     <editView></editView>
     <propView></propView>
     <div style="width:500px;">
-      数据映射
+      页面基础数据：
+      <el-tag type="primary">{{baseInfo}}</el-tag>
+      <hr>
+      组件数据映射：
       <ul>
         <li v-for="(item,key) of componentDataIds" :key="key">
           <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
@@ -29,6 +32,9 @@ export default {
   mounted() {
   },
   computed: {
+    baseInfo() {
+      return this.$store.getters.baseInfo;
+    },
     componentDataIds() {
       return this.$store.getters.componentDataIds;
     },

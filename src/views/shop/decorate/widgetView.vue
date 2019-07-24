@@ -25,7 +25,7 @@ export default {
     }
   },
   created() {
-
+    this.$store.commit('showBaseProperty');
   },
   computed: {
     currentComponentId() {

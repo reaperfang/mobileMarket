@@ -1,7 +1,5 @@
 <template>
-<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
-    <p>propertyArticleAD</p>
-</el-form>
+<div>propertyArticleAD</div>
 </template>
 
 <script>
@@ -10,29 +8,36 @@ export default {
   components: {},
   data () {
     return {
-      ruleForm: {
-       
-      },
-      rules: {
-
-      }
+      
     }
+  },
+  created() {
+    this.initRuleForm();
   },
   watch: {
     ruleForm: {
       handler(newValue) {
-        this.$emit('change', {
-          id: this.$parent.currentComponentId,
-          data: newValue
-        });
+        this.emitChangeRuleForm(newValue);
       },
       deep: true
     }
   },
-  created() {
-
-  },
   methods: {
+
+    /* 初始化表单数据 */
+    initRuleForm() {
+      if(this.data){
+        this.ruleForm = this.data;
+      }
+    },
+
+    /* 发送数据改变事件 */
+    emitChangeRuleForm(newValue) {
+      this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: newValue
+      });
+    }
   }
 }
 </script>

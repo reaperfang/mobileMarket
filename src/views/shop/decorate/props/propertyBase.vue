@@ -7,7 +7,7 @@
       <el-input v-model="ruleForm.pageTitle" placeholder="请输入页面标题"></el-input>
     </el-form-item>
     <el-form-item label="页面描述" prop="pageDesc">
-      <el-input v-model="ruleForm.pageDesc" placeholder="请输入页面介绍" type="textarea"></el-input>
+      <el-input v-model="ruleForm.pageDesc" placeholder="请输入页面描述" type="textarea"></el-input>
     </el-form-item>
     <el-form-item label="页面分类" prop="pageClassify">
       <el-select v-model="ruleForm.pageClassify" placeholder="请选择分类">
@@ -16,19 +16,18 @@
       </el-select>
     </el-form-item>
     <el-form-item label="背景颜色" prop="pageBackground">
-      <el-input v-model="ruleForm.pageBackground"></el-input>
+      <div style="display:flex;">
+        <el-input v-model="ruleForm.pageBackground"></el-input>
+        <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
+      </div>
     </el-form-item>
-   <div class="block button">
-    <el-button type="primary">保存并生效</el-button>
-    <el-button>保    存</el-button>
-    <el-button>预    览  </el-button>
-  </div>
   </el-form>
 </template>
 
 <script>
 export default {
   name: 'propertyGoods',
+  props: ['data'],
   components: {},
   data () {
     return {
@@ -59,21 +58,32 @@ export default {
     }
   },
   created() {
-
+    this.initRuleForm();
   },
   watch: {
     ruleForm: {
       handler(newValue) {
-        this.$emit('change', {
-          id: this.$parent.currentComponentId,
-          data: newValue
-        });
+        this.emitChangeRuleForm(newValue);
       },
       deep: true
     }
   },
   methods: {
 
+    /* 初始化表单数据 */
+    initRuleForm() {
+      if(this.data){
+        this.ruleForm = this.data;
+      }
+    },
+
+    /* 发送数据改变事件 */
+    emitChangeRuleForm(newValue) {
+      this.$emit('change', {
+        type: 'base',
+        data: newValue
+      });
+    }
   }
 }
 </script>

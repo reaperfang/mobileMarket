@@ -11,7 +11,7 @@ import VueUeditorWrap from 'vue-ueditor-wrap' // ES6 Module
 Vue.component('vue-ueditor-wrap', VueUeditorWrap)
 import utils from '@/utils';
 export default {
-  name: 'RickEditor',
+  name: 'RichEditor',
   props: {
     richValue:{
       type: String,

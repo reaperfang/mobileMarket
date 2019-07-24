@@ -1,21 +1,32 @@
 <template>
   <div class="module props">
       <div class="block header">
-        <p class="title">页面编辑</p>
-        <p class="state"></p>
+        <p class="title" v-if="this.componentDataMap[this.currentComponentId]">
+          {{this.componentDataMap[this.currentComponentId].title}}
+        </p>
+        <p class="title" v-else>
+          页面信息
+        </p>
       </div>
       <div class="block form">
-         <component :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
+         <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo"></component>
+         <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
+      </div>
+      <div class="block button">
+        <el-button type="primary">保存并生效</el-button>
+        <el-button>保    存</el-button>
+        <el-button @click="_routeTo('preview')">预    览</el-button>
       </div>
     </div>
 </template>
 
 <script>
 import utils from '@/utils';
+import propertyBase from './props/propertyBase';
 const listManager = utils.listManager.default.getInstance();
 export default {
   name: 'propView', 
-  components: {},
+  components: {propertyBase},
   data () {
     return {
       currentComponent: null,  //当前组件名称
@@ -31,6 +42,12 @@ export default {
     },
     componentDataMap() {
       return this.$store.getters.componentDataMap;
+    },
+    basePropertyShow() {
+      return this.$store.getters.basePropertyShow;
+    },
+    baseInfo() {
+      return this.$store.getters.baseInfo;
     }
   },
   watch: {

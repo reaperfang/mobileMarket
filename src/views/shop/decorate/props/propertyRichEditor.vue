@@ -10,17 +10,17 @@
       <el-checkbox v-model="ruleForm.remainPageMargin">保留边距</el-checkbox>
     </el-form-item>
     <el-form-item label="页面边距">
-      <RickEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.richValue"></RickEditor>
+      <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.richValue"></RichEditor>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-import RickEditor from '@/components/RickEditor';
+import RichEditor from '@/components/RichEditor';
 export default {
   name: 'propertyRichEditor',
   props: ['data'],
-  components: {RickEditor},
+  components: {RichEditor},
   data () {
     return {
       editorData: '',  //富文本数据
@@ -47,26 +47,37 @@ export default {
     }
   },
   created() {
-    if(this.data){
-      this.ruleForm = this.data;
-    }
+    this.initRuleForm();
   },
-
   watch: {
     ruleForm: {
       handler(newValue) {
-        this.$emit('change', {
-          id: this.$parent.currentComponentId,
-          data: newValue
-        });
+        this.emitChangeRuleForm(newValue);
       },
       deep: true
     }
   },
 
   methods: {
+
+    /* 富文本内容更新 */
     editorValueUpdate(html) {
       this.ruleForm.richValue = html;
+    },
+
+    /* 初始化表单数据 */
+    initRuleForm() {
+      if(this.data){
+        this.ruleForm = this.data;
+      }
+    },
+
+    /* 发送数据改变事件 */
+    emitChangeRuleForm(newValue) {
+      this.$emit('change', {
+        id: this.$parent.currentComponentId,
+        data: newValue
+      });
     }
   }
 }

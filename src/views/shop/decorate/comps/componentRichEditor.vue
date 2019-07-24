@@ -1,5 +1,5 @@
 <template>
-<p>componentRichEditor, {{componentDataMap[data.id].data}}</p>
+<div v-if="componentDataMap[data.id] && componentDataMap[data.id].data" v-html="componentDataMap[data.id].data.richValue"></div>
 </template>
 
 <script>
@@ -9,12 +9,6 @@ export default {
   components: {},
   data () {
     return {
-      ruleForm: {
-       
-      },
-      rules: {
-
-      }
     }
   },
   computed: {
