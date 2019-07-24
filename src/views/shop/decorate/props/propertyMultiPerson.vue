@@ -162,6 +162,7 @@
 <script>
 export default {
   name: 'propertyMultiPerson',
+  props: ['data'],
   components: {},
   data () {
     return {

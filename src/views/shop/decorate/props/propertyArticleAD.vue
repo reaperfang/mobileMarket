@@ -5,6 +5,7 @@
 <script>
 export default {
   name: 'propertyArticleAD',
+  props: ['data'],
   components: {},
   data () {
     return {

@@ -148,6 +148,7 @@
 <script>
 export default {
   name: 'propertyDiscountPackage',
+  props: ['data'],
   components: {},
   data () {
     return {

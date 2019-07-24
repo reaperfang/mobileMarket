@@ -4,7 +4,8 @@
 
 <script>
 export default {
-  name: 'propertyArticleAD',
+  name: 'propertyCube',
+  props: ['data'],
   components: {},
   data () {
     return {

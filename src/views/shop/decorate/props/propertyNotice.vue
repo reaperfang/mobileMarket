@@ -28,6 +28,7 @@
 <script>
 export default {
   name: 'propertyNotice',
+  props: ['data'],
   components: {},
   data () {
     return {

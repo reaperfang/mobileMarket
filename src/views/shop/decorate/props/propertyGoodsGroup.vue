@@ -129,6 +129,7 @@
 <script>
 export default {
   name: 'propertyGoodsGroup',
+  props: ['data'],
   components: {},
   data () {
     return {

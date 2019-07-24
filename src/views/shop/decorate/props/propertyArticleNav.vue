@@ -4,7 +4,8 @@
 
 <script>
 export default {
-  name: 'propertyArticleAD',
+  name: 'propertyArticleNav',
+  props: ['data'],
   components: {},
   data () {
     return {

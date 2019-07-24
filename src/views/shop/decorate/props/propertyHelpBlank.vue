@@ -14,6 +14,7 @@
 <script>
 export default {
   name: 'propertyHelpBlank',
+  props: ['data'],
   components: {},
   data () {
     return {

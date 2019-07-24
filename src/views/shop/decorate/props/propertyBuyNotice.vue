@@ -74,6 +74,7 @@
 <script>
 export default {
   name: 'propertyBuyNotice',
+  props: ['data'],
   components: {},
   data () {
     return {

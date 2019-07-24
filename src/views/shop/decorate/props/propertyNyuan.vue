@@ -148,6 +148,7 @@
 <script>
 export default {
   name: 'propertyNyuan',
+  props: ['data'],
   components: {},
   data () {
     return {

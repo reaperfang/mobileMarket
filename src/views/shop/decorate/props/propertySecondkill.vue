@@ -148,6 +148,7 @@
 <script>
 export default {
   name: 'propertySecondkill',
+  props: ['data'],
   components: {},
   data () {
     return {

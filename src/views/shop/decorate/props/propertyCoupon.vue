@@ -38,6 +38,7 @@
 <script>
 export default {
   name: 'propertyCoupon',
+  props: ['data'],
   components: {},
   data () {
     return {

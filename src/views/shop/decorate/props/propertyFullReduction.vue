@@ -25,6 +25,7 @@
 <script>
 export default {
   name: 'propertyFullReduction',
+  props: ['data'],
   components: {},
   data () {
     return {

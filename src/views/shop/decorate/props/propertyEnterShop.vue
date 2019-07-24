@@ -14,6 +14,7 @@
 <script>
 export default {
   name: 'propertyEnterShop',
+  props: ['data'],
   components: {},
   data () {
     return {

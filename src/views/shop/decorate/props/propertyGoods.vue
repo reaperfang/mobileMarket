@@ -148,6 +148,7 @@
 <script>
 export default {
   name: 'propertyGoods',
+  props: ['data'],
   components: {},
   data () {
     return {

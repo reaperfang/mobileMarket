@@ -21,6 +21,7 @@
 <script>
 export default {
   name: 'propertyShopInfo',
+  props: ['data'],
   components: {},
   data () {
     return {

@@ -50,6 +50,7 @@
 <script>
 export default {
   name: 'propertyText',
+  props: ['data'],
   components: {},
   data () {
     return {

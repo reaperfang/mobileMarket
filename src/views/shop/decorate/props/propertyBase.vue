@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: 'propertyGoods',
+  name: 'propertyBase',
   props: ['data'],
   components: {},
   data () {

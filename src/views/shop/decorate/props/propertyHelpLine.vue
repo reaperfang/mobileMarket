@@ -28,6 +28,7 @@
 <script>
 export default {
   name: 'propertyHelpLine',
+  props: ['data'],
   components: {},
   data () {
     return {
