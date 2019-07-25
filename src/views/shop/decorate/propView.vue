@@ -13,8 +13,8 @@
          <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
       </div>
       <div class="block button">
-        <el-button type="primary">保存并生效</el-button>
-        <el-button>保    存</el-button>
+        <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
+        <el-button @click="saveData">保    存</el-button>
         <el-button @click="_routeTo('preview')">预    览</el-button>
       </div>
     </div>
@@ -78,6 +78,32 @@ export default {
     /* 更新组件数据 */
     propsChange(params) {
       this.$store.commit('updateComponent', params);
+    },
+    
+    /* 保存数据 */
+    saveData() {
+      const resultData = this.collectData();
+      console.log(JSON.stringify({...resultData}));
+    },
+
+    /* 保存并生效数据 */
+    saveAndApplyData() {
+      const resultData = this.collectData();
+      console.log(JSON.stringify({...resultData}));
+    },
+
+    /* 收集数据 */
+    collectData() {
+      let result = {};
+      result['pageInfo'] = this.baseInfo;
+      result['components'] = [];
+      for(let item of this.componentDataIds) {
+        const componentData = this.componentDataMap[item];
+        if(componentData) {
+          result.components.push(componentData);
+        }
+      }
+      return result;
     }
   }
 }
