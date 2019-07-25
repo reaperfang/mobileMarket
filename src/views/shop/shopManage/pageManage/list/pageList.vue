@@ -16,7 +16,7 @@
         </el-form-item>
       </el-form>
       <div class="btns">
-        <el-button type="primary">新建页面</el-button>
+        <el-button type="primary" @click="_routeTo('shopEditor')">新建页面</el-button>
         <el-button type="primary" plain>批量改分类</el-button>
         <el-button type="warning" plain>批量删除</el-button>
       </div>
@@ -37,7 +37,7 @@
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
             <span class="table-btn" @click="copyPage(scope.row)">复制</span>
-            <span class="table-btn" @click="_routeTo('shopEditor')">编辑</span>
+            <span class="table-btn" @click="_routeTo('shopEditor', {pageId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deletePage(scope.row)">删除</span>
             <span class="table-btn" @click="spread(scope.row)">推广</span>
             <span class="table-btn" @click="setIndex(scope.row)">设为首页</span>
@@ -62,6 +62,7 @@
 
 <script>
 import tableBase from '@/components/TableBase';
+import uuid from 'uuid/v4';
 export default {
   name: 'pageList',
   extends: tableBase,
@@ -99,6 +100,7 @@ export default {
     fetch() {
       this.tableList = [
         {
+          id: uuid(),
           name: '店铺首页',
           title: '页面标题展示',
           classify: '常用页面',
@@ -107,6 +109,7 @@ export default {
           createTime: '2016-09-21  08:50:08'
         },
         {
+          id: uuid(),
           name: '店铺首页2',
           title: '页面标题展示',
           classify: '常用页面',
@@ -115,6 +118,7 @@ export default {
           createTime: '2016-09-21  08:50:08'
         },
         {
+          id: uuid(),
           name: '店铺首页3',
           title: '页面标题展示',
           classify: '常用页面',
@@ -123,6 +127,7 @@ export default {
           createTime: '2016-09-21  08:50:08'
         },
         {
+          id: uuid(),
           name: '店铺首页4',
           title: '页面标题展示',
           classify: '常用页面',
@@ -131,6 +136,7 @@ export default {
           createTime: '2016-09-21  08:50:08'
         },
         {
+          id: uuid(),
           name: '店铺首页5',
           title: '页面标题展示',
           classify: '常用页面',

@@ -1,29 +1,22 @@
 <template>
-    <div>
-       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
-    </div>
+  <div>
+    <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
+  </div>
 </template>
 
 <script>
-import componentMixin from './componentMixin.js';
+import componentMixin from "./componentMixin.js";
 export default {
-  name: 'componentFullReduction',
-  mixins:[componentMixin],
+  name: "componentFullReduction",
+  mixins: [componentMixin],
   components: {},
-  data () {
-    return {
-      
-    }
+  data() {
+    return {};
   },
-  created() {
-
-  },
-  computed: {
-    
-  },
-  methods: {
-  }
-}
+  created() {},
+  computed: {},
+  methods: {}
+};
 </script>
 
 <style lang="scss" scoped>
