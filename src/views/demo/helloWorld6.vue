@@ -5,12 +5,12 @@
 
     <!-- 富文本编辑器demo -->
     <el-card>
-      <h1>富文本编辑器(已成功集成秀米编辑器)&nbsp;<el-button type="primary" @click="currentDialog='demoDialog'">点击查看富文本内容(实时)</el-button></h1>
+      <h1>富文本编辑器(已成功集成秀米编辑器)&nbsp;<el-button type="primary" @click="dialogVisible=true; currentDialog='demoDialog'">点击查看富文本内容(实时)</el-button></h1>
       <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></RichEditor>
     </el-card>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :data="editorData" @dialogClose="dialogClose" :refresh="fetch"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="editorData"></component>
   </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
     return {
       msg: '中企电商VUE框架',
       currentDialog: '',  //当前弹窗
+      dialogVisible: false,
       editorData: '',  //富文本数据
       myConfig: {
           // 编辑器不自动被内容撑高

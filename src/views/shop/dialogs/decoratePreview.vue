@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    :title="(baseInfo.pageName || '页面名称') + '预览'"
-    :visible.sync="dialogFormVisible"
-    @close="close"
-    class="preview_dialog"
-  >
+  <DialogBase :visible.sync="visible" width="816px" :title="(baseInfo.pageName || '页面名称') + '预览'">
     <div class="preview_wrapper">
       <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
         <div class="phone-head">
@@ -37,26 +32,39 @@
         </div>
       </div>
     </div>
-  </el-dialog>
+  </DialogBase>
 </template>
 
 <script>
-import dialogBase from "@/components/DialogBase";
+import DialogBase from "@/components/DialogBase";
 import utils from "@/utils";
 import widget from "@/system/constant/widget";
 export default {
   name: "decoratePreview",
-  extends: dialogBase,
-  props: ["data"],
+  components: {DialogBase},
+  props: {
+      data: {},
+      dialogVisible: {
+          type: Boolean,
+          required: true
+      },
+  },
   data() {
     return {
-      dialogWidth: '816px',
       utils,
       allTemplateLoaded: false,
       templateList: {} //模板对象列表
     };
   },
   computed: {
+    visible: {
+      get() {
+          return this.dialogVisible
+      },
+      set(val) {
+          this.$emit('update:dialogVisible', val)
+      }
+    },
     currentComponentId() {
       return this.$store.getters.currentComponentId;
     },
@@ -107,12 +115,12 @@ export default {
 
 <style lang="scss">
 
-.preview_dialog .el-dialog__header{
-  background:rgb(241,240,255);
-}
-.preview_dialog .el-dialog__body {
-  padding: 0 !important;
-  height:717px;
+// .preview_dialog .el-dialog__header{
+//   background:rgb(241,240,255);
+// }
+// .preview_dialog .el-dialog__body {
+//   padding: 0 !important;
+//   height:717px;
   .preview_wrapper {
     display: flex;
     flex-direction: row;
@@ -188,5 +196,5 @@ export default {
       }
     }
   }
-}
+// }
 </style>

@@ -15,10 +15,10 @@
       <div class="block button">
         <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
         <el-button @click="saveData">保    存</el-button>
-        <el-button @click="currentDialog='decoratePreview'">预    览</el-button>
+        <el-button @click="dialogVisible=true; currentDialog='decoratePreview'">预    览</el-button>
       </div>
       <!-- 动态弹窗 -->
-      <component :is="currentDialog" @dialogClose="dialogClose"></component>
+      <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
     </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
   data () {
     return {
       currentComponent: null,  //当前组件名称
+      dialogVisible: false,
       currentDialog: '',
       utils
     }
@@ -107,10 +108,6 @@ export default {
         }
       }
       return result;
-    },
-
-    dialogClose() {
-      this.currentDialog = '';
     }
   }
 }

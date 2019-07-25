@@ -1,14 +1,14 @@
 <template>
-    <zdialog :visible.sync="visible" width="500px" :showFooter="showFooter" title="编辑售卖价">
+    <DialogBase :visible.sync="visible" width="500px" :showFooter="showFooter" title="编辑售卖价">
         <zform class="zform" :ruleForm="ruleForm" :rules="rules" :formItems="formItems" label-width="100px" :data="$data" @submit="submit">
             <template v-slot:name>
                 <span style="color: red;">{{ruleForm.name}}</span>
             </template>
         </zform>
-    </zdialog>
+    </DialogBase>
 </template>
 <script>
-import Zdialog from '@/components/Dialog'
+import DialogBase from '@/components/DialogBase'
 import Zform from '@/components/Form'
 
 export default {
@@ -80,7 +80,7 @@ export default {
         }
     },
     components: {
-        Zdialog,
+        DialogBase,
         Zform
     }
 }
