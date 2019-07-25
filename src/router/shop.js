@@ -47,6 +47,13 @@ export default [
 				meta: { title: "页面模板", noCache: true }
 			},
 			{
+				path: "templateEdit",
+				component: () => import("@/views/shop/shopManage/template/templateEdit"),
+				name: "templateEdit",
+				meta: { title: "模板多页面装修", noCache: true },
+				hidden: true
+			},
+			{
 				path: "ADManageIndex",
 				component: () => import("@/views/shop/shopManage/startingAD/ADManageIndex"),
 				name: "ADManageIndex",

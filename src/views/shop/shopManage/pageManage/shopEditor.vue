@@ -7,7 +7,7 @@
       页面基础数据：
       <el-tag type="primary">{{baseInfo}}</el-tag>
       <hr />组件数据映射：
-      <ul>
+      <ul style="height:770px;overflow-y:auto;">
         <li v-for="(item,key) of componentDataIds" :key="key">
           <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
           <el-tag type="success">{{item}}</el-tag>
