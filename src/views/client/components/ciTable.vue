@@ -42,7 +42,7 @@
       <el-table-column
         prop="operator"
         label="操作人"
-        sortable>
+      >
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">

@@ -56,7 +56,7 @@
                         :value="item.value">
                     </el-option>
                 </el-select>
-                <el-button type="primary">查 询</el-button>
+                <el-button type="primary" class="marL20">查 询</el-button>
                 <el-button>重 置</el-button>
             </div>
             <ciTable style="margin-top: 68px"></ciTable>
