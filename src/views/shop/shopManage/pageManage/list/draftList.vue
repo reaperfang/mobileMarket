@@ -39,7 +39,7 @@
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
             <span class="table-btn" @click="copyPage(scope.row)">复制</span>
-            <span class="table-btn" @click="_routeTo('edit')">编辑</span>
+            <span class="table-btn" @click="_routeTo('shopEditor', {pageId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deletePage(scope.row)">删除</span>
             <span class="table-btn" @click="setIndex(scope.row)">设为首页</span>
           </template>
@@ -63,6 +63,7 @@
 
 <script>
 import tableBase from '@/components/TableBase';
+import uuid from 'uuid/v4';
 export default {
   name: 'draftList',
   extends: tableBase,
@@ -77,24 +78,43 @@ export default {
   },
   methods: {
 
-    /* 复制页面 */
+   /* 复制页面 */
     copyPage(item) {
-
+      this.$confirm('确定复制此页面吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          
+        })
     },
 
     /* 删除页面 */
     deletePage(item) {
-
+       this.$confirm('确定删除此页面吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          
+        })
     },
 
     /* 设为首页 */
     setIndex(item) {
-
+       this.$confirm('确定将此页面设为首页吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          
+        })
     },
 
     fetch() {
       this.tableList = [
         {
+          id: uuid(),
           name: '店铺首页',
           title: '页面标题展示',
           classify: '常用页面',
@@ -105,6 +125,7 @@ export default {
           account: '就开始电'
         },
         {
+          id: uuid(),
           name: '店铺首页2',
           title: '页面标题展示',
           classify: '常用页面',
@@ -115,6 +136,7 @@ export default {
           account: '就开始电'
         },
         {
+          id: uuid(),
           name: '店铺首页3',
           title: '页面标题展示',
           classify: '常用页面',
@@ -125,6 +147,7 @@ export default {
           account: '就开始电'
         },
         {
+          id: uuid(),
           name: '店铺首页4',
           title: '页面标题展示',
           classify: '常用页面',
@@ -135,6 +158,7 @@ export default {
           account: '就开始电'
         },
         {
+          id: uuid(),
           name: '店铺首页5',
           title: '页面标题展示',
           classify: '常用页面',

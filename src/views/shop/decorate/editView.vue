@@ -1,6 +1,6 @@
 <template>
   <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
-    <div class="phone-head">
+    <div class="phone-head" @click="clickTitle">
       <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
       <span>{{baseInfo.pageTitle || '请在右侧设置页面名称'}}</span>
     </div>
@@ -18,7 +18,8 @@
         :move='onMoveHandler'>
           <div 
           class="component_wrapper" 
-          v-for="(item, key) of componentDataIds" 
+          v-for="(item, key) of componentDataIds"
+          :key="key" 
           :class="{'actived': item === currentComponentId}"
           @click="selectComponent(item)" 
           @dragstart.self="selectItem = item" 
@@ -123,6 +124,10 @@ export default {
     onEndHandler() {
         this.drag = false;
         this.disable = false;
+    },
+
+    clickTitle() {
+       this.$store.commit('showBaseProperty');
     }
   }
 }
@@ -134,8 +139,6 @@ export default {
  }
  .view {
     width: 374px;
-    height: 835px;
-    overflow-y: auto;
     border: 1px solid #e2e1e1;
     .phone-head {
       width: 100%;
@@ -156,6 +159,8 @@ export default {
       }
     }
     .phone-body {
+      height: 765px;
+      overflow-y: auto;
       .component_wrapper{
         background:#fff;
         min-height:50px;
