@@ -1,7 +1,7 @@
 <!--物流对账-->
 <template>
-  <div style="background:rgb(242,242,249);">
-    <el-tabs v-model="currentTab" @tab-click="handleClick">
+  <div>
+    <el-tabs v-model="currentTab" @tab-click="handleClick" class="tabs">
       <el-tab-pane label="电子面单" name="faceSheet"></el-tab-pane>
       <el-tab-pane label="物流查询" name="logisticsInquiry"></el-tab-pane>
     </el-tabs>
@@ -43,5 +43,8 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
+.tabs{
+  background:#fff; 
+  padding:10px 20px;
+}
 </style>

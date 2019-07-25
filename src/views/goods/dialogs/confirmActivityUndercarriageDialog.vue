@@ -1,5 +1,5 @@
 <template>
-    <zdialog :visible.sync="visible" @submit="submit" title="立即删除" :hasCancel="hasCancel">
+    <zdialog :visible.sync="visible" @submit="submit" title="立即下架" :hasCancel="hasCancel">
         <i class="el-icon-warning"></i>
         <p class="content-text">{{contentText}}</p>
     </zdialog>
@@ -10,7 +10,7 @@ import zdialog from '@/components/Dialog'
 export default {
     data() {
         return {
-            
+            hasCancel: false
         }
     },
     methods: {
@@ -28,7 +28,7 @@ export default {
             }
         },
         contentText() {
-            return '是否确认删除？'
+            return '当前商品正在参与营销活动， 活动有效期内商品不得“下架”。'
         }
     },
     props: {

@@ -1,4 +1,4 @@
-/*店铺信息 */
+/*微信设置 */
 <template>
     <div class="shopInfo">
         <h1>基本信息</h1>
@@ -42,7 +42,7 @@
 <script>
 // import { listArea } from '@/api/area'
 export default {
-  name: 'shopInfo',
+  name: 'wxSet',
   data() {
     return {
       form: {
@@ -108,44 +108,6 @@ export default {
   }
 }
 </script>
-
 <style rel="stylesheet/scss" lang="scss">
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-</style>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-.shopInfo{
-   width: 100%;
-   height: 100%;
-   background: #fff; 
-   padding: 20px;
-   h1{
-       font-size:14px;
-       color: #3D434A;
-       font-weight:500;
-       margin-bottom: 30px;
-     }
-}
 </style>
