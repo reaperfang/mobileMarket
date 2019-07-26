@@ -1,4 +1,4 @@
-/* 批量导入客户列表 */
+/* 会员等级列表 */
 <template>
   <div>
     <el-table
@@ -9,50 +9,43 @@
       >
       <el-table-column
         type="selection"
-        prop="choose"
-        label="选择">
+      >
       </el-table-column>
       <el-table-column
-        prop="importTime"
-        label="导入时间">
+        prop="tagName"
+        label="等级排序">
       </el-table-column>
       <el-table-column
-        prop="channel"
-        label="渠道">
+        prop="tagType"
+        label="等级名称">
       </el-table-column>
       <el-table-column
         prop="importNum"
-        label="导入数量">
+        label="说明">
       </el-table-column>
       <el-table-column
-        prop="successNum"
-        label="导入成功数"
-      >
+        prop="tagCondition"
+        label="等级条件">
       </el-table-column>
       <el-table-column
-        prop="failNum"
-        label="导入失败数"
-      >
+        prop="tagCondition"
+        label="升级奖励">
       </el-table-column>
-      <el-table-column
-        prop="buyTime"
-        label="购买次数"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="operator"
-        label="操作人"
-      >
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+            <el-switch></el-switch>
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <div class="btns clearfix">
-                <span>添加标签</span>
-                <span>修改身份等级</span>
-            </div>
+            <span class="edit_span">编辑</span>
         </template>
       </el-table-column>
     </el-table>
+    <div class="single_check">
+        <el-checkbox v-model="checked"></el-checkbox>
+        <el-button class="other_btn">批量禁用</el-button>
+    </div>
     <div class="page_styles">
       <el-pagination
         @size-change="handleSizeChange"
@@ -86,6 +79,7 @@ export default {
             operator:""
         },
       ],
+      checked: false
     };
   },
   created() {
@@ -98,13 +92,21 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-/deep/ .cell{
-            .btns{
-                span{
-                    color: #655EFF;
-                    margin-right: 5px;
-                }
-            }
-        }
-
+.edit_span{
+    color: #655EFF;
+    .edit_i{
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-right: 8px;
+        background: url("../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
+    }
+}
+.single_check{
+    padding: 10px 0 0 14px;
+}
+.other_btn{
+    color: #655EFF;
+    border-color: #655EFF;
+}
 </style>

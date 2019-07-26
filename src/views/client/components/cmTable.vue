@@ -1,4 +1,4 @@
-/* 批量导入客户列表 */
+/* 获取积分规则列表 */
 <template>
   <div>
     <el-table
@@ -8,48 +8,19 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        type="selection"
-        prop="choose"
-        label="选择">
+        prop="tagName"
+        label="获取积分场景">
       </el-table-column>
       <el-table-column
-        prop="importTime"
-        label="导入时间">
-      </el-table-column>
-      <el-table-column
-        prop="channel"
-        label="渠道">
-      </el-table-column>
-      <el-table-column
-        prop="importNum"
-        label="导入数量">
-      </el-table-column>
-      <el-table-column
-        prop="successNum"
-        label="导入成功数"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="failNum"
-        label="导入失败数"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="buyTime"
-        label="购买次数"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="operator"
-        label="操作人"
-      >
+        prop="tagType"
+        label="状态">
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <div class="btns clearfix">
-                <span>添加标签</span>
-                <span>修改身份等级</span>
-            </div>
+            <span class="edit_span">
+                <i class="edit_i"></i>
+                查看&编辑
+            </span>
         </template>
       </el-table-column>
     </el-table>
@@ -76,7 +47,6 @@ export default {
     return {
       dataList:[
         {
-            choose: true,
             importTime:"",
             channel:"",
             importNum:"",
@@ -98,13 +68,15 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-/deep/ .cell{
-            .btns{
-                span{
-                    color: #655EFF;
-                    margin-right: 5px;
-                }
-            }
-        }
+.edit_span{
+    color: #655EFF;
+    .edit_i{
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-right: 8px;
+        background: url("../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
+    }
+}
 
 </style>

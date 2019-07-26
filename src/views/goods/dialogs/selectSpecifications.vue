@@ -1,5 +1,5 @@
 <template>
-    <zdialog :visible.sync="visible" @submit="submit" title="选择规格" :showFooter="showFooter">
+    <DialogBase :visible.sync="visible" @submit="submit" title="选择规格" :showFooter="showFooter">
         <!-- <ul>
             <li v-for="(item, index) in specData" :key="index">
                 <el-select v-model="value" placeholder="请选择">
@@ -12,10 +12,10 @@
                 </el-select>
             </li>
         </ul> -->
-    </zdialog>
+    </DialogBase>
 </template>
 <script>
-import zdialog from '@/components/Dialog'
+import DialogBase from '@/components/DialogBase'
 
 export default {
     data() {
@@ -62,7 +62,7 @@ export default {
         },
     },
     components: {
-        zdialog
+        DialogBase
     }
 }
 </script>

@@ -41,23 +41,35 @@ export default [
 				hidden: true
 			},
 			{
-				path: "preview",
-				component: () => import("@/views/shop/shopManage/pageManage/preview"),
-				name: "preview",
-				meta: { title: "预览页", noCache: true },
-				hidden: true
-			},
-			{
 				path: "templateManageIndex",
 				component: () => import("@/views/shop/shopManage/template/templateManageIndex"),
 				name: "templateManageIndex",
 				meta: { title: "页面模板", noCache: true }
 			},
 			{
+				path: "templateEdit",
+				component: () => import("@/views/shop/shopManage/template/templateEdit"),
+				name: "templateEdit",
+				meta: { title: "模板多页面装修", noCache: true },
+				hidden: true
+			},
+			{
 				path: "ADManageIndex",
 				component: () => import("@/views/shop/shopManage/startingAD/ADManageIndex"),
 				name: "ADManageIndex",
 				meta: { title: "启动广告", noCache: true }
+			},
+			{
+				path: "shopNav",
+				component: () => import("@/views/shop/shopManage/shopNav"),
+				name: "shopNav",
+				meta: { title: "店铺导航", noCache: true }
+			},
+			{
+				path: "shopStyle",
+				component: () => import("@/views/shop/shopManage/shopStyle"),
+				name: "shopStyle",
+				meta: { title: "店铺风格", noCache: true }
 			}
 		]
 	}

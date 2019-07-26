@@ -10,31 +10,29 @@
 </template>
 
 <script>
-import pageList from './list/pageList';
-import classifyList from './list/classifyList';
-import draftList from './list/draftList';
+import pageList from "./list/pageList";
+import classifyList from "./list/classifyList";
+import draftList from "./list/draftList";
 export default {
-  name: 'pageManageIndex',
-  components: {pageList, classifyList, draftList},
-  data () {
+  name: "pageManageIndex",
+  components: { pageList, classifyList, draftList },
+  data() {
     return {
-      currentTab: 'pageList'
-    }
+      currentTab: "pageList"
+    };
   },
-  created() {
-
-  },
+  created() {},
   methods: {
     handleClick(comp) {
       this.currentTab = comp.name;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.el-tabs{
-  background:#fff;
-  padding:20px;
+.el-tabs {
+  background: #fff;
+  padding: 20px;
 }
 </style>

@@ -1,0 +1,1219 @@
+{
+    "custom1": {
+        "pageInfo": {
+            "pageName": "我的小页面",
+            "pageTitle": "源源的装修项目",
+            "pageDesc": "很多描述哈哈哈哈",
+            "pageClassify": "2",
+            "pageBackground": "#adadad"
+        },
+        "components": [
+            {
+                "id": "42e97943-5687-4563-8ca8-cebd8292997d",
+                "type": "richEditor",
+                "title": "富文本",
+                "data": {
+                    "mainTitle": "",
+                    "titleTemplate": 1,
+                    "displayPosition": 1,
+                    "subTitle": "",
+                    "backgroundColor": "",
+                    "navName": "",
+                    "linkTo": "",
+                    "richValue": "<section style=\"box-sizing: border-box; font-style: normal; font-weight: 400; text-align: justify; font-size: 16px;\"><section style=\"text-align: left; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; background-color: rgb(255, 255, 255); box-sizing: border-box;\"><section style=\"position: static; height: 1.5em; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"mix-blend-mode: screen; background-position: 50% 50%; background-repeat: no-repeat; background-size: cover; background-attachment: scroll; height: 100%; opacity: 0.7; background-image: url(&quot;http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/6ffc0e5132045628efa4801d0c91f170-sz_151489.gif&quot;); position: static; box-sizing: border-box;\"><section style=\"box-sizing: border-box;\"></section></section></section><section style=\"margin: -1.5em 0px 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"text-align: justify; color: rgb(213, 182, 123); letter-spacing: 2px; padding: 0px; box-sizing: border-box;\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">▲ 点击蓝字关注我们</strong></p></section></section></section></section><section style=\"text-align: left; font-size: 14px; color: rgb(62, 62, 62); letter-spacing: 1.8px; line-height: 1.8; padding: 0px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\"><span style=\"font-family: line-through; box-sizing: border-box;\">*文字更改方式见“扫描效果”的说明</span></p></section><section style=\"text-align: center; font-size: 32px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; background-color: rgb(255, 255, 255); box-sizing: border-box;\"><section style=\"position: static; height: 1.5em; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"mix-blend-mode: screen; background-position: 50% 50%; background-repeat: no-repeat; background-size: cover; background-attachment: scroll; height: 100%; opacity: 0.7; background-image: url(&quot;http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/6ffc0e5132045628efa4801d0c91f170-sz_151489.gif&quot;); position: static; box-sizing: border-box;\"><section style=\"box-sizing: border-box;\"></section></section></section><section style=\"margin: -1.5em 0px 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"text-align: justify; font-size: 38px; color: rgb(213, 182, 123); box-sizing: border-box;\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">扫描效果</strong></p></section></section></section></section><section style=\"text-align: center; font-size: 14px; line-height: 1.8; letter-spacing: 1.8px; padding: 0px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\">*点击文字下方区域选中更改</p><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\">*请使用<span style=\"border-radius: 4px; padding: 1px 4px; margin: 0px 4px; background-color: rgb(213, 182, 123); color: rgb(255, 255, 255); box-sizing: border-box;\">定位</span><span style=\"background-color: rgba(255, 255, 255, 0); box-sizing: border-box;\">中的</span><span style=\"border-radius: 4px; padding: 1px 4px; margin: 0px 4px; background-color: rgb(213, 182, 123); color: rgb(255, 255, 255); box-sizing: border-box;\">缩放</span>调整文字大小</p><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\">*请使用<span style=\"border-radius: 4px; padding: 1px 4px; margin: 0px 4px; background-color: rgb(213, 182, 123); color: rgb(255, 255, 255); box-sizing: border-box;\">定位</span><span style=\"background-color: rgba(255, 255, 255, 0); box-sizing: border-box;\">中的</span><span style=\"border-radius: 4px; padding: 1px 4px; margin: 0px 4px; background-color: rgb(213, 182, 123); color: rgb(255, 255, 255); box-sizing: border-box;\">对齐</span>调整文字对齐</p></section><section style=\"text-align: left; margin: 10px 0% -40px; transform: translate3d(1px, 0px, 0px); -webkit-transform: translate3d(1px, 0px, 0px); -moz-transform: translate3d(1px, 0px, 0px); -o-transform: translate3d(1px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 70px; height: 60px; vertical-align: top; overflow: hidden; box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.8647887\" data-w=\"355\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/e3f2e8686be791e08ff206124ced9223-sz_32981.png\"/></section></section></section></section><section style=\"margin: 0px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); overflow: hidden; background-image: linear-gradient(270deg, rgb(74, 171, 217) 0%, rgb(198, 241, 167) 100%); padding: 5px; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-width: 1px; border-radius: 100px; border-style: solid; border-color: rgb(255, 255, 255); overflow: hidden; background-color: rgba(255, 255, 255, 0); padding: 0px; box-sizing: border-box;\"><section style=\" transform: translate3d(1px, 0px, 0px); -webkit-transform: translate3d(1px, 0px, 0px); -moz-transform: translate3d(1px, 0px, 0px); -o-transform: translate3d(1px, 0px, 0px); margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"text-align: center; color: rgb(255, 255, 255); line-height: 2; letter-spacing: 2px; padding: 0px; box-sizing: border-box;\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">点击蓝字关注我们<br style=\"box-sizing: border-box;\"/></strong></p></section></section></section></section></section></section><section style=\"margin: 10px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-width: 0px; border-radius: 8px; border-style: none; border-color: rgb(62, 62, 62); overflow: hidden; background-image: linear-gradient(270deg, rgb(74, 171, 217) 0%, rgb(198, 241, 167) 100%); padding: 5px; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-width: 1px; border-radius: 4px; border-style: solid; border-color: rgb(255, 255, 255); overflow: hidden; background-color: rgba(255, 255, 255, 0); padding: 0px; box-sizing: border-box;\"><section style=\" transform: translate3d(1px, 0px, 0px); -webkit-transform: translate3d(1px, 0px, 0px); -moz-transform: translate3d(1px, 0px, 0px); -o-transform: translate3d(1px, 0px, 0px); margin: 10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"text-align: center; color: rgb(255, 255, 255); font-size: 14px; line-height: 1.8; letter-spacing: 1.8px; padding: 0px 10px; box-sizing: border-box;\"><p style=\"text-align: justify; white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><span style=\"text-shadow: rgba(95, 186, 203, 0.5) 0.766044px 0.642788px 0px; box-sizing: border-box;\">垃圾分类是对垃圾收集处置传统方式的改革，是对垃圾进行有效处置的一种科学管理方法。人们面对日益增长的垃圾产量和环境状况恶化的局面，如何通过垃圾分类管理，最大限度地实现垃圾资源利用，减少垃圾处置量，改善生存环境质量，是当前世界各国共同关注的迫切问题之一。</span></p></section></section><section style=\"text-align: right; margin: -120px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 130px; height: 130px; vertical-align: top; overflow: hidden; box-sizing: border-box;\"><section style=\"text-align: center; margin-top: 10px; margin-bottom: 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.8649351\" data-w=\"385\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/0c89fc8f6acc52861c29dd7cc0e710c3-sz_22032.png\"/></section></section></section></section></section></section></section></section><section style=\"margin: 10px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-width: 0px; border-radius: 8px; border-style: none; border-color: rgb(62, 62, 62); overflow: hidden; background-image: linear-gradient(270deg, rgb(74, 171, 217) 0%, rgb(198, 241, 167) 100%); padding: 5px; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-width: 1px; border-radius: 4px; border-style: solid; border-color: rgb(255, 255, 255); overflow: hidden; background-color: rgba(255, 255, 255, 0); padding: 10px; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; vertical-align: bottom; width: 70%; line-height: 0; letter-spacing: 0px; box-sizing: border-box;\"><section style=\"color: rgb(255, 255, 255); line-height: 1.5; letter-spacing: 2px; padding: 0px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><span style=\"box-sizing: border-box;\">为什么</span></p><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><span style=\"font-size: 20px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">要进行垃圾分类？</strong></span></p></section><section style=\"text-align: left; margin: 10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; border-top: 3px solid rgb(255, 255, 255); border-top-left-radius: 0px; padding: 0px; line-height: 0; letter-spacing: 0px; box-sizing: border-box;\"><section style=\"margin: 5px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"text-align: justify; font-size: 12px; color: rgb(255, 255, 255); box-sizing: border-box;\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><br style=\"box-sizing: border-box;\"/></p></section></section></section></section></section><section style=\"display: inline-block; vertical-align: bottom; width: 30%; box-sizing: border-box;\"><section style=\"text-align: right; margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 85px; height: 80px; vertical-align: top; overflow: hidden; box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.8647887\" data-w=\"355\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/e3f2e8686be791e08ff206124ced9223-sz_32981.png\"/></section></section></section></section></section></section><section style=\" transform: translate3d(1px, 0px, 0px); -webkit-transform: translate3d(1px, 0px, 0px); -moz-transform: translate3d(1px, 0px, 0px); -o-transform: translate3d(1px, 0px, 0px); margin: 10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"text-align: center; color: rgb(255, 255, 255); font-size: 14px; line-height: 1.8; letter-spacing: 1.8px; padding: 0px; box-sizing: border-box;\"><p style=\"text-align: justify; white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><span style=\"text-shadow: rgba(95, 186, 203, 0.5) 0.766044px 0.642788px 0px; box-sizing: border-box;\">垃圾分类是对垃圾收集处置传统方式的改革，是对垃圾进行有效处置的一种科学管理方法。人们面对日益增长的垃圾产量和环境状况恶化的局面，如何通过垃圾分类管理，最大限度地实现垃圾资源利用，减少垃圾处置量，改善生存环境质量，是当前世界各国共同关注的迫切问题之一。</span></p></section></section></section></section></section></section><section style=\"text-align: center; margin: 10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.6666667\" data-w=\"1080\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/f5e251059612a33ed2a5d8ae5d0f9065-sz_466002.jpg?x-oss-process=style/xmorient\"/></section></section><section style=\"margin: -70px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; background-image: linear-gradient(0deg, rgb(74, 171, 217) 0%, rgba(74, 171, 217, 0) 100%); box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; vertical-align: bottom; width: 50%; box-sizing: border-box;\"><section style=\" transform: translate3d(10px, 0px, 0px); -webkit-transform: translate3d(10px, 0px, 0px); -moz-transform: translate3d(10px, 0px, 0px); -o-transform: translate3d(10px, 0px, 0px); margin: 0px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-left: 2px solid rgb(255, 255, 255); border-bottom-left-radius: 0px; box-sizing: border-box;\"><section style=\"line-height: 1; letter-spacing: 2px; padding: 0px 5px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\"><span style=\"font-size: 32px; color: rgb(255, 255, 255); box-sizing: border-box;\">15.</span></strong><br style=\"box-sizing: border-box;\"/></p></section><section style=\"color: rgb(255, 255, 255); letter-spacing: 2px; padding: 0px 8px; line-height: 1; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\">July</p></section></section></section></section><section style=\"display: inline-block; vertical-align: bottom; width: 50%; box-sizing: border-box;\"><section style=\"text-align: right; margin: -10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 85px; height: 80px; vertical-align: top; overflow: hidden; background-position: 50% 50%; background-repeat: no-repeat; background-size: contain; background-attachment: scroll; background-image: url(&quot;http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/e3f2e8686be791e08ff206124ced9223-sz_32981.png&quot;); box-sizing: border-box;\"><section style=\"margin: 55px 0% 0px; transform: translate3d(-20px, 0px, 0px); -webkit-transform: translate3d(-20px, 0px, 0px); -moz-transform: translate3d(-20px, 0px, 0px); -o-transform: translate3d(-20px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"font-size: 12px; color: rgb(255, 255, 255); padding: 0px; letter-spacing: 0px; box-sizing: border-box;\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\"><span style=\"background-color: rgb(101, 215, 242); box-sizing: border-box;\">&nbsp; 2019.7&nbsp;&nbsp;</span></p></section></section></section></section></section></section></section></section><section style=\"margin: 10px 0% -80px; opacity: 0.99; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; background-image: linear-gradient(rgb(74, 171, 217) 0%, rgba(74, 171, 217, 0) 100%); box-sizing: border-box;\"><section style=\"text-align: left; margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 300px; height: 80px; vertical-align: top; overflow: hidden; box-sizing: border-box;\"><section style=\" transform: translate3d(10px, 0px, 0px); -webkit-transform: translate3d(10px, 0px, 0px); -moz-transform: translate3d(10px, 0px, 0px); -o-transform: translate3d(10px, 0px, 0px); margin: 10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-left: 2px solid rgb(255, 255, 255); border-bottom-left-radius: 0px; box-sizing: border-box;\"><section style=\"text-align: justify; line-height: 1; letter-spacing: 2px; padding: 0px 5px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\"><span style=\"font-size: 32px; color: rgb(255, 255, 255); box-sizing: border-box;\">15.</span></strong><br style=\"box-sizing: border-box;\"/></p></section><section style=\"text-align: justify; color: rgb(255, 255, 255); letter-spacing: 2px; padding: 0px 8px; line-height: 1; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\">July</p></section></section></section></section></section></section></section><section style=\"text-align: center; margin: 0px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.6666667\" data-w=\"1080\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/acf79f1db165a5722cc5b5d90b95d832-sz_305656.jpg?x-oss-process=style/xmorient\"/></section></section><section style=\"text-align: center; margin: 10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); overflow: hidden; background-image: linear-gradient(0deg, rgb(74, 171, 217) 0%, rgb(198, 241, 167) 100%); padding: 5px; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 70px; height: 70px; vertical-align: top; overflow: hidden; border-width: 1px; border-radius: 100px; border-style: solid; border-color: rgb(255, 255, 255); background-color: rgba(255, 255, 255, 0); box-sizing: border-box;\"><section style=\"margin: 10px 0% 0px; transform: translate3d(-3px, 0px, 0px); -webkit-transform: translate3d(-3px, 0px, 0px); -moz-transform: translate3d(-3px, 0px, 0px); -o-transform: translate3d(-3px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"color: rgb(255, 255, 255); font-size: 32px; line-height: 1; letter-spacing: 0px; box-sizing: border-box;\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\"><em style=\"box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">01</strong></em></p></section></section></section></section></section></section><section style=\"text-align: center; margin: -55px 0% 10px; transform: translate3d(20px, 0px, 0px); -webkit-transform: translate3d(20px, 0px, 0px); -moz-transform: translate3d(20px, 0px, 0px); -o-transform: translate3d(20px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 70px; height: 60px; vertical-align: top; overflow: hidden; box-sizing: border-box;\"><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.8647887\" data-w=\"355\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/e3f2e8686be791e08ff206124ced9223-sz_32981.png\"/></section></section></section></section><section style=\"text-align: center; transform: translate3d(-6px, 0px, 0px); -webkit-transform: translate3d(-6px, 0px, 0px); -moz-transform: translate3d(-6px, 0px, 0px); -o-transform: translate3d(-6px, 0px, 0px); margin: 10px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; box-sizing: border-box;\"><section style=\"margin: 0px 0%; transform: translate3d(12px, 0px, 0px); -webkit-transform: translate3d(12px, 0px, 0px); -moz-transform: translate3d(12px, 0px, 0px); -o-transform: translate3d(12px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); box-sizing: border-box;\"><section style=\"text-align: left; margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 40px; height: 40px; vertical-align: top; overflow: hidden; background-color: rgba(0, 0, 0, 0); box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.9489489\" data-w=\"333\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/5a59e2b980611a5a9b51eed9921b3793-sz_34718.png\"/></section></section></section></section></section><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); padding: 0px 0px 0px 7px; line-height: 0; box-sizing: border-box;\"><section style=\"margin: 0px 0%; text-align: left; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><span style=\"display: inline-block; font-weight: bold; line-height: 1; text-shadow: rgb(101, 215, 242) -1px 0px, rgb(101, 215, 242) 0px 1px, rgb(101, 215, 242) 1px 0px, rgb(101, 215, 242) 0px -1px, rgb(101, 215, 242) -1px 1px, rgb(101, 215, 242) -1px -1px, rgb(101, 215, 242) 1px 1px, rgb(101, 215, 242) 1px -1px; font-size: 18px; color: rgb(255, 255, 255); padding: 0px; letter-spacing: 3px; text-align: center; box-sizing: border-box;\" title=\"\" opera-tn-ra-cell=\"_$.pages:0.layers:0.comps:14.col1:0.col2:0.txt1\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\">可回收垃圾</p></span></section></section></section><section style=\"text-align: left; margin: -30px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 130px; height: 50px; vertical-align: top; overflow: hidden; background-color: rgba(0, 0, 0, 0); box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" data-ratio=\"0.37\" data-w=\"300\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/9f491711961437eed6d67116e1cd905a-sz_33402.png\"/></section></section></section></section></section></section><section style=\"margin: 10px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; box-sizing: border-box;\"><section style=\"text-align: left; transform: translate3d(15px, 0px, 0px); -webkit-transform: translate3d(15px, 0px, 0px); -moz-transform: translate3d(15px, 0px, 0px); -o-transform: translate3d(15px, 0px, 0px); margin: 0px 0% -18px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; box-sizing: border-box;\"><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); box-sizing: border-box;\"><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 30px; height: 30px; vertical-align: top; overflow: hidden; background-color: rgba(0, 0, 0, 0); box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; width: 100%; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; width: 100%; box-sizing: border-box;\" data-ratio=\"0.9489489\" data-w=\"333\" _width=\"100%\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/5a59e2b980611a5a9b51eed9921b3793-sz_34718.png\"/></section></section></section></section></section><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); padding: 0px 0px 0px 7px; line-height: 0; box-sizing: border-box;\"><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><span style=\"display: inline-block; font-weight: bold; line-height: 1; text-shadow: rgb(101, 215, 242) -1px 0px, rgb(101, 215, 242) 0px 1px, rgb(101, 215, 242) 1px 0px, rgb(101, 215, 242) 0px -1px, rgb(101, 215, 242) -1px 1px, rgb(101, 215, 242) -1px -1px, rgb(101, 215, 242) 1px 1px, rgb(101, 215, 242) 1px -1px; color: rgb(208, 246, 255); padding: 0px; letter-spacing: 3px; text-align: center; box-sizing: border-box;\" title=\"\" opera-tn-ra-cell=\"_$.pages:0.layers:0.comps:15.col1:0.col1:0.col2:0.txt1\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\">为什么要进行垃圾分类？</p></span></section></section></section></section></section><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; box-sizing: border-box;\"><section style=\"display: flex; box-sizing: border-box;\"><section style=\"width: 7px; border-width: 2px 0px 2px 2px; border-style: solid; border-color: rgb(101, 215, 242); border-image: initial; border-radius: 7px 0px 0px 7px; box-sizing: border-box;\"></section><section style=\"flex: 1 1 0%; box-sizing: border-box;\"><section style=\"padding: 25px 10px 5px; box-sizing: border-box;\"><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"font-size: 14px; color: rgb(107, 107, 107); line-height: 1.8; letter-spacing: 1.8px; padding: 0px; box-sizing: border-box;\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\">垃圾分类是对垃圾收集处置传统方式的改革，是对垃圾进行有效处置的一种科学管理方法。人们面对日益增长的垃圾产量和环境状况恶化的局面，如何通过垃圾分类管理，最大限度地实现垃圾资源利用，减少垃圾处置量，改善生存环境质量，是当前世界各国共同关注的迫切问题之一。</p></section></section></section></section></section></section></section><section style=\"text-align: left; transform: translate3d(7px, 0px, 0px); -webkit-transform: translate3d(7px, 0px, 0px); -moz-transform: translate3d(7px, 0px, 0px); -o-transform: translate3d(7px, 0px, 0px); margin: -11px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 7px; height: 7px; vertical-align: top; overflow: hidden; border-width: 2px; border-radius: 10px; border-style: solid; border-color: rgb(101, 215, 242); line-height: 0; letter-spacing: 0px; box-sizing: border-box;\"><section style=\"text-align: justify; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><br style=\"box-sizing: border-box;\"/></p></section></section></section></section></section><section style=\"margin: 10px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0% -12px; transform: translate3d(1px, 0px, 0px); -webkit-transform: translate3d(1px, 0px, 0px); -moz-transform: translate3d(1px, 0px, 0px); -o-transform: translate3d(1px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; box-shadow: rgb(0, 0, 0) 0px 0px 0px; background-color: rgb(255, 255, 255); box-sizing: border-box;\"><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><span style=\"display: inline-block; font-weight: bold; line-height: 1; text-shadow: rgb(101, 215, 242) -1px 0px, rgb(101, 215, 242) 0px 1px, rgb(101, 215, 242) 1px 0px, rgb(101, 215, 242) 0px -1px, rgb(101, 215, 242) -1px 1px, rgb(101, 215, 242) -1px -1px, rgb(101, 215, 242) 1px 1px, rgb(101, 215, 242) 1px -1px; color: rgb(208, 246, 255); padding: 0px 10px; letter-spacing: 3px; box-sizing: border-box;\" title=\"\" opera-tn-ra-cell=\"_$.pages:0.layers:0.comps:16.col1:0.col1:0.txt1\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\">为什么要进行垃圾分类？</p></span></section></section></section><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; vertical-align: top; border-width: 1px; border-radius: 10px; border-style: solid; border-color: rgb(101, 215, 242); overflow: hidden; padding: 20px 15px 10px; box-sizing: border-box;\"><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"font-size: 14px; color: rgb(107, 107, 107); line-height: 1.8; letter-spacing: 1.8px; padding: 0px; box-sizing: border-box;\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\">垃圾分类是对垃圾收集处置传统方式的改革，是对垃圾进行有效处置的一种科学管理方法。人们面对日益增长的垃圾产量和环境状况恶化的局面，如何通过垃圾分类管理，最大限度地实现垃圾资源利用，减少垃圾处置量，改善生存环境质量，是当前世界各国共同关注的迫切问题之一。</p></section></section></section></section><section style=\"text-align: right; margin: -20px 0% 0px; transform: translate3d(-10px, 0px, 0px); -webkit-transform: translate3d(-10px, 0px, 0px); -moz-transform: translate3d(-10px, 0px, 0px); -o-transform: translate3d(-10px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 30px; height: 30px; vertical-align: top; overflow: hidden; background-color: rgb(255, 255, 255); box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0% 10px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; width: 100%; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; max-width: 100%; width: 100%; box-sizing: border-box;\" data-ratio=\"0.9489489\" data-w=\"333\" _width=\"100%\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/5a59e2b980611a5a9b51eed9921b3793-sz_34718.png\"/></section></section></section></section></section></section><section style=\"text-align: center; color: rgb(251, 152, 144); line-height: 2; letter-spacing: 2px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">下述哪些是有害垃圾？</strong></p></section><section style=\"text-align: center; font-size: 14px; letter-spacing: 2px; padding: 0px; line-height: 2; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"box-sizing: border-box;\"><span style=\"color: rgb(107, 107, 107); box-sizing: border-box;\">点击下方</span><strong style=\"box-sizing: border-box;\"></strong><section style=\"display: inline-block; height: 30px; width: 30px; color: white; background-color: rgb(251, 152, 144); border-radius: 15px; line-height: 30px; box-sizing: border-box;\"><span style=\"font-size: 17px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">?</strong></span></section><strong style=\"box-sizing: border-box;\"><span style=\"color: rgb(107, 107, 107); box-sizing: border-box;\"></span></strong><span style=\"color: rgb(107, 107, 107); box-sizing: border-box;\">查看答案</span></section></section><section style=\"margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; vertical-align: top; width: 50%; box-sizing: border-box;\"><section style=\"text-align: right; transform: translate3d(-10px, 0px, 0px); -webkit-transform: translate3d(-10px, 0px, 0px); -moz-transform: translate3d(-10px, 0px, 0px); -o-transform: translate3d(-10px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; background-color: rgba(249, 76, 60, 0.2); border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); overflow: hidden; line-height: 0; padding: 4px 4px 4px 10px; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); letter-spacing: 0px; line-height: 1; box-sizing: border-box;\"><section style=\"text-align: justify; color: rgb(107, 107, 107); line-height: 1.3; letter-spacing: 2px; padding: 0px 10px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">废水银</strong></p><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">温度计</strong></p></section></section><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); border-width: 0px; border-radius: 0px; border-style: none; border-color: rgb(62, 62, 62); box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 50px; height: 50px; vertical-align: top; overflow: hidden; border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; height: 50px; vertical-align: top; overflow-y: auto; box-sizing: border-box;-webkit-overflow-scrolling: touch;\"><section style=\"overflow-x: hidden; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 50px; height: 50px; vertical-align: top; overflow: hidden; background-color: rgb(251, 152, 144); padding: 6px; border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); box-sizing: border-box;\"><section style=\"margin: 5px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; width: 85%; box-sizing: border-box;\"><section style=\"vertical-align: middle; max-width: 100%; width: 100%; background-image: url(&quot;http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/6ecb5c10794c4fd3d945141882cee26b-sz_2993.png&quot;); background-repeat: no-repeat; background-size: 100%; display: inline-block; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; opacity: 0; width: auto; height: auto; box-sizing: border-box;\" data-ratio=\"1\" data-w=\"500\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/6ecb5c10794c4fd3d945141882cee26b-sz_2993.png\"/></section></section></section></section></section></section></section><section style=\"box-sizing: border-box; margin-top: -50px; height: 50px;\"><section class=\"top-div\" style=\"height: 100%; box-sizing: border-box;\"><svg class=\"svg-layout-content root-svg\" width=\"100%\" height=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" style=\"box-sizing: border-box; transform: rotateZ(0deg); -webkit-transform: rotateZ(0deg); -moz-transform: rotateZ(0deg); -o-transform: rotateZ(0deg); width: 100%;\" opacity=\"1\"><animate class=\"init-width-animation\" attributename=\"width\" style=\"box-sizing: border-box;\" fill=\"freeze\" to=\"100.00%\" from=\"100.00%\" begin=\"0s\" duration=\"0.01\"></animate><animate attributename=\"width\" style=\"box-sizing: border-box;\" fill=\"freeze\" to=\"0\" from=\"1\" duration=\"0.01\" begin=\"click + 0.5s\"></animate><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\" style=\"box-sizing: border-box;\"><svg class=\"rect-content\" width=\"100%\" height=\"100%\" style=\"box-sizing: border-box;\"><rect width=\"100%\" height=\"100%\" style=\"box-sizing: border-box; opacity: 1; fill: rgb(251, 152, 144);\" x=\"0%\"></rect></svg><svg style=\"width: 100%; height: 100%; box-sizing: border-box;\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><text x=\"50%\" y=\"50%\" fill=\"#000000\" style=\"stroke: rgb(0, 0, 0); stroke-width: 1; font-size: 32px; text-anchor: middle; box-sizing: border-box;\"></text></svg><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0%\" y=\"0%\" viewbox=\"0 0 500 500\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" xml:space=\"preserve\" class=\"svg-content\" width=\"100%\" height=\"100%\"><path style=\"fill: none; box-sizing: border-box;\" d=\"M-26.72,548.22\"></path><path style=\"fill: none; box-sizing: border-box;\" d=\"M500,500c-166.67,0-333.33,0-500,0C0,333.33,0,166.67,0,0c166.67,0,333.33,0,500,0  C500,166.67,500,333.33,500,500z M222.78,300.27c0,4-0.09,8,0.02,12c0.32,11.53,9.61,20.61,20.91,20.52  c11.11-0.09,20.19-8.98,20.58-20.34c0.19-5.66,0.25-11.34,0-16.99c-0.21-4.68,1.17-8.61,4.53-11.69c5.03-4.6,10.24-9.01,15.42-13.44  c10.49-8.98,21.76-17.2,31.39-27.03c30.18-30.78,30.98-75.57,12.24-105.59c-14.18-22.71-35.65-34.1-61.54-38.44  c-48.81-8.18-94.96,23.06-104.72,71.57c-1.52,7.55-1.88,15.67-0.96,23.3c1.14,9.51,11.82,16.5,21.48,15.64  c10.83-0.96,18.58-9.29,19.24-20.67c1.79-30.99,23.43-50.74,53.74-49.05c29.46,1.64,46.79,21.81,42.87,50.1  c-1.77,12.78-9.18,22.39-18.63,30.43c-10.28,8.73-21.1,16.83-31.47,25.46C230.96,260.11,220.16,277.12,222.78,300.27z   M265.09,380.41c0.27-12.26-9.13-22.27-21.18-22.55c-12.42-0.29-22.57,9.31-22.8,21.55c-0.22,11.81,9.72,22.18,21.56,22.49  C254.54,402.21,264.83,392.35,265.09,380.41z\"></path><path style=\"fill: rgb(255, 255, 255); box-sizing: border-box;\" d=\"M222.78,300.27c-2.63-23.16,8.18-40.16,25.08-54.22c10.37-8.63,21.19-16.72,31.47-25.46  c9.45-8.03,16.86-17.64,18.63-30.43c3.92-28.29-13.41-48.45-42.87-50.1c-30.31-1.69-51.95,18.06-53.74,49.05  c-0.66,11.38-8.41,19.7-19.24,20.67c-9.65,0.86-20.33-6.13-21.48-15.64c-0.92-7.64-0.56-15.75,0.96-23.3  c9.76-48.51,55.91-79.76,104.72-71.57c25.89,4.34,47.36,15.73,61.54,38.44c18.74,30.02,17.94,74.8-12.24,105.59  c-9.63,9.82-20.9,18.05-31.39,27.03c-5.18,4.44-10.39,8.84-15.42,13.44c-3.36,3.08-4.74,7.01-4.53,11.69  c0.25,5.65,0.19,11.33,0,16.99c-0.38,11.36-9.47,20.25-20.58,20.34c-11.3,0.09-20.59-8.99-20.91-20.52  C222.69,308.27,222.78,304.27,222.78,300.27z\"></path><path style=\"fill: rgb(255, 255, 255); box-sizing: border-box;\" d=\"M265.09,380.41c-0.26,11.93-10.55,21.8-22.42,21.5c-11.84-0.31-21.78-10.68-21.56-22.49  c0.23-12.24,10.38-21.84,22.8-21.55C255.96,358.15,265.35,368.15,265.09,380.41z\"></path></svg></svg><animate attributename=\"opacity\" style=\"box-sizing: border-box;\" fill=\"freeze\" dur=\"0.5\" begin=\"click\" from=\"1\" to=\"0\"></animate></svg></section></section></section></section></section></section></section></section></section></section><section style=\"display: inline-block; vertical-align: top; width: 50%; box-sizing: border-box;\"><section style=\"text-align: left; transform: translate3d(10px, 0px, 0px); -webkit-transform: translate3d(10px, 0px, 0px); -moz-transform: translate3d(10px, 0px, 0px); -o-transform: translate3d(10px, 0px, 0px); position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; min-width: 10%; max-width: 100%; vertical-align: top; background-color: rgba(249, 76, 60, 0.2); border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); overflow: hidden; line-height: 0; padding: 4px 4px 4px 10px; box-sizing: border-box;\"><section style=\"text-align: right; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); letter-spacing: 0px; line-height: 1; box-sizing: border-box;\"><section style=\"text-align: justify; color: rgb(107, 107, 107); line-height: 1.3; letter-spacing: 2px; padding: 0px 10px; box-sizing: border-box;\" powered-by=\"xiumi.us\"><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">罐头</strong></p><p style=\"white-space: normal; margin: 0px; padding: 0px; box-sizing: border-box;\"><strong style=\"box-sizing: border-box;\">盒子</strong></p></section></section><section style=\"display: inline-block; vertical-align: middle; width: auto; background-color: rgba(255, 255, 255, 0); border-width: 0px; border-radius: 0px; border-style: none; border-color: rgb(62, 62, 62); box-sizing: border-box;\"><section style=\"text-align: center; margin: 0px 0%; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 50px; height: 50px; vertical-align: top; overflow: hidden; border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 100%; height: 50px; vertical-align: top; overflow-y: auto; box-sizing: border-box;-webkit-overflow-scrolling: touch;\"><section style=\"overflow-x: hidden; box-sizing: border-box;\"><section style=\"position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"display: inline-block; width: 50px; height: 50px; vertical-align: top; overflow: hidden; background-color: rgb(251, 152, 144); padding: 6px; border-width: 0px; border-radius: 100px; border-style: none; border-color: rgb(62, 62, 62); box-sizing: border-box;\"><section style=\"margin: 3px 0% 0px; position: static; box-sizing: border-box;\" powered-by=\"xiumi.us\"><section style=\"max-width: 100%; vertical-align: middle; display: inline-block; line-height: 0; width: 85%; box-sizing: border-box;\"><section style=\"vertical-align: middle; max-width: 100%; width: 100%; background-image: url(&quot;http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/18605987b5cab79be51b05a4d24320ac-sz_2801.png&quot;); background-repeat: no-repeat; background-size: 100%; display: inline-block; box-sizing: border-box;\"><img class=\"raw-image\" style=\"vertical-align: middle; opacity: 0; width: auto; height: auto; box-sizing: border-box;\" data-ratio=\"1\" data-w=\"500\" src=\"http://statics.xiumi.us/stc/images/templates-assets/tpl-paper/image/18605987b5cab79be51b05a4d24320ac-sz_2801.png\"/></section></section></section></section></section></section></section><section style=\"box-sizing: border-box; margin-top: -50px; height: 50px;\"><section class=\"top-div\" style=\"height: 100%; box-sizing: border-box;\"><svg class=\"svg-layout-content root-svg\" width=\"100%\" height=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" style=\"box-sizing: border-box; transform: rotateZ(0deg); -webkit-transform: rotateZ(0deg); -moz-transform: rotateZ(0deg); -o-transform: rotateZ(0deg); width: 100%;\" opacity=\"1\"><animate class=\"init-width-animation\" attributename=\"width\" style=\"box-sizing: border-box;\" fill=\"freeze\" to=\"100.00%\" from=\"100.00%\" begin=\"0s\" duration=\"0.01\"></animate><animate attributename=\"width\" style=\"box-sizing: border-box;\" fill=\"freeze\" to=\"0\" from=\"1\" duration=\"0.01\" begin=\"click + 0.5s\"></animate><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\" style=\"box-sizing: border-box;\"><svg class=\"rect-content\" width=\"100%\" height=\"100%\" style=\"box-sizing: border-box;\"><rect width=\"100%\" height=\"100%\" style=\"box-sizing: border-box; opacity: 1; fill: rgb(251, 152, 144);\" x=\"0%\"></rect></svg><svg style=\"width: 100%; height: 100%; box-sizing: border-box;\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><text x=\"50%\" y=\"50%\" fill=\"#000000\" style=\"stroke: rgb(0, 0, 0); stroke-width: 1; font-size: 32px; text-anchor: middle; box-sizing: border-box;\"></text></svg><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0%\" y=\"0%\" viewbox=\"0 0 500 500\" style=\"vertical-align: middle; max-width: 100%; box-sizing: border-box;\" xml:space=\"preserve\" class=\"svg-content\" width=\"100%\" height=\"100%\"><path style=\"fill: none; box-sizing: border-box;\" d=\"M-26.72,548.22\"></path><path style=\"fill: none; box-sizing: border-box;\" d=\"M500,500c-166.67,0-333.33,0-500,0C0,333.33,0,166.67,0,0c166.67,0,333.33,0,500,0  C500,166.67,500,333.33,500,500z M222.78,300.27c0,4-0.09,8,0.02,12c0.32,11.53,9.61,20.61,20.91,20.52  c11.11-0.09,20.19-8.98,20.58-20.34c0.19-5.66,0.25-11.34,0-16.99c-0.21-4.68,1.17-8.61,4.53-11.69c5.03-4.6,10.24-9.01,15.42-13.44  c10.49-8.98,21.76-17.2,31.39-27.03c30.18-30.78,30.98-75.57,12.24-105.59c-14.18-22.71-35.65-34.1-61.54-38.44  c-48.81-8.18-94.96,23.06-104.72,71.57c-1.52,7.55-1.88,15.67-0.96,23.3c1.14,9.51,11.82,16.5,21.48,15.64  c10.83-0.96,18.58-9.29,19.24-20.67c1.79-30.99,23.43-50.74,53.74-49.05c29.46,1.64,46.79,21.81,42.87,50.1  c-1.77,12.78-9.18,22.39-18.63,30.43c-10.28,8.73-21.1,16.83-31.47,25.46C230.96,260.11,220.16,277.12,222.78,300.27z   M265.09,380.41c0.27-12.26-9.13-22.27-21.18-22.55c-12.42-0.29-22.57,9.31-22.8,21.55c-0.22,11.81,9.72,22.18,21.56,22.49  C254.54,402.21,264.83,392.35,265.09,380.41z\"></path><path style=\"fill: rgb(255, 255, 255); box-sizing: border-box;\" d=\"M222.78,300.27c-2.63-23.16,8.18-40.16,25.08-54.22c10.37-8.63,21.19-16.72,31.47-25.46  c9.45-8.03,16.86-17.64,18.63-30.43c3.92-28.29-13.41-48.45-42.87-50.1c-30.31-1.69-51.95,18.06-53.74,49.05  c-0.66,11.38-8.41,19.7-19.24,20.67c-9.65,0.86-20.33-6.13-21.48-15.64c-0.92-7.64-0.56-15.75,0.96-23.3  c9.76-48.51,55.91-79.76,104.72-71.57c25.89,4.34,47.36,15.73,61.54,38.44c18.74,30.02,17.94,74.8-12.24,105.59  c-9.63,9.82-20.9,18.05-31.39,27.03c-5.18,4.44-10.39,8.84-15.42,13.44c-3.36,3.08-4.74,7.01-4.53,11.69  c0.25,5.65,0.19,11.33,0,16.99c-0.38,11.36-9.47,20.25-20.58,20.34c-11.3,0.09-20.59-8.99-20.91-20.52  C222.69,308.27,222.78,304.27,222.78,300.27z\"></path><path style=\"fill: rgb(255, 255, 255); box-sizing: border-box;\" d=\"M265.09,380.41c-0.26,11.93-10.55,21.8-22.42,21.5c-11.84-0.31-21.78-10.68-21.56-22.49  c0.23-12.24,10.38-21.84,22.8-21.55C255.96,358.15,265.35,368.15,265.09,380.41z\"></path></svg></svg><animate attributename=\"opacity\" style=\"box-sizing: border-box;\" fill=\"freeze\" dur=\"0.5\" begin=\"click\" from=\"1\" to=\"0\"></animate></svg></section></section></section></section></section></section></section></section></section></section></section></section><p><br/></p>"
+                }
+            },
+            {
+                "id": "cf480125-a0a4-4ac8-ba8f-cd97074180b7",
+                "type": "goods",
+                "title": "商品",
+                "data": {
+                    "source": 1,
+                    "goods": "",
+                    "goodsGroup": "",
+                    "showNumber": 0,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "533f10c2-432a-44a2-80f9-a3bd30e8d1fd",
+                "type": "goodsGroup",
+                "title": "商品分组",
+                "data": {
+                    "source": 1,
+                    "showAllGroup": 1,
+                    "showTemplate": 1,
+                    "menuStyle": 1,
+                    "menuPosition": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "65240aa6-bb8c-4b98-a7c1-1c2282debffa",
+                "type": "articleAD",
+                "title": "图文广告"
+            },
+            {
+                "id": "9907c59f-7f98-4bfc-a9b0-d9216e52476e",
+                "type": "cube",
+                "title": "魔方"
+            },
+            {
+                "id": "c620ca25-1ea2-4f69-bfea-f685426e0b91",
+                "type": "articleNav",
+                "title": "图文导航"
+            },
+            {
+                "id": "6ec0ecd9-de4f-4ca4-8b3b-726cff39e3d0",
+                "type": "title",
+                "title": "标题",
+                "data": {
+                    "mainTitle": "",
+                    "titleTemplate": 1,
+                    "displayPosition": 1,
+                    "subTitle": "",
+                    "backgroundColor": "",
+                    "navName": "",
+                    "linkTo": ""
+                }
+            },
+            {
+                "id": "f4dfb81a-7eb4-4ee0-a60b-05320addde63",
+                "type": "text",
+                "title": "文本",
+                "data": {
+                    "textContent": "",
+                    "fontSize": 1,
+                    "fontColor": "#000",
+                    "backgroundColor": "#fff",
+                    "displayStyle": 1,
+                    "linkAddress": "http://www.baidu.com",
+                    "showDivider": true
+                }
+            },
+            {
+                "id": "937b3555-6ead-4b06-b421-e0c4614c8a76",
+                "type": "coupon",
+                "title": "优惠券",
+                "data": {
+                    "addType": 1,
+                    "couponStyle": 1,
+                    "couponColor": 1,
+                    "hideScrambled": true
+                }
+            },
+            {
+                "id": "00086fba-8cdd-4ad0-81fa-a176840b67eb",
+                "type": "multiPerson",
+                "title": "多人拼团",
+                "data": {
+                    "source": 1,
+                    "goods": "",
+                    "showNumber": "",
+                    "sortRule": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "hideSaledGoods": true,
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "17a826a0-e978-4338-8ef4-4ae1997f429e",
+                "type": "secondkill",
+                "title": "限时秒杀",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "6773ec66-5270-469a-b57d-13d79939aec1",
+                "type": "fullReduction",
+                "title": "满减满折",
+                "data": {
+                    "title": "",
+                    "promotion": "",
+                    "displayStyle": 1
+                }
+            },
+            {
+                "id": "d91e9c5e-5245-4cb9-8a25-0a1ca7fb534c",
+                "type": "discountPackage",
+                "title": "优惠套餐",
+                "data": {
+                    "package": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "d5ef5fb1-66ea-4b6e-bf7b-66c24ac4a20f",
+                "type": "discount",
+                "title": "限时折扣",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "6064d724-940f-41d7-89aa-c6bb6d76f54f",
+                "type": "nyuan",
+                "title": "N元N件",
+                "data": {
+                    "promotion": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "87714e85-6d50-4015-9ecb-e971a835c239",
+                "type": "shopInfo",
+                "title": "店铺信息",
+                "data": {
+                    "displayStyle": 1,
+                    "backgroundImage": ""
+                }
+            },
+            {
+                "id": "833ad4ac-975c-4ae7-b632-ebac7010d72b",
+                "type": "enterShop",
+                "title": "进入店铺",
+                "data": {
+                    "words": ""
+                }
+            },
+            {
+                "id": "3f1c0428-20a5-46f0-82ff-b85e2dde1a8e",
+                "type": "goodsSearch",
+                "title": "商品搜索"
+            },
+            {
+                "id": "7affe212-0599-40d4-8396-348d207b1bf3",
+                "type": "video",
+                "title": "视频",
+                "data": {
+                    "videoUrl": "",
+                    "coverUrl": ""
+                }
+            },
+            {
+                "id": "d31bcff4-af1e-4a95-bcef-be06772f4364",
+                "type": "helpLine",
+                "title": "辅助线",
+                "data": {
+                    "lineColor": "",
+                    "lineMargin": 2,
+                    "lineStyle": 1
+                }
+            },
+            {
+                "id": "27b5f66a-0a04-45da-baee-f973a44cffc4",
+                "type": "notice",
+                "title": "公告",
+                "data": {
+                    "notice": "",
+                    "backgroundColor": "",
+                    "fontColor": ""
+                }
+            },
+            {
+                "id": "5227d93a-47e0-4145-bd99-1d5923716dc0",
+                "type": "helpBlank",
+                "title": "辅助空白",
+                "data": {
+                    "blankHeight": 10
+                }
+            },
+            {
+                "id": "665f4d64-a17c-487b-9cc0-7e5c588493b9",
+                "type": "buyNotice",
+                "title": "购买公告",
+                "data": {
+                    "buyType": 1,
+                    "intervalStart": 10,
+                    "intervalEnd": 60,
+                    "backgroundColor": "",
+                    "fontColor": "",
+                    "goodsType": 1,
+                    "goods": ""
+                }
+            },
+            {
+                "id": "98a117e6-429a-43ec-b6c4-9d7367815a47",
+                "type": "goods",
+                "title": "商品",
+                "data": {
+                    "source": 1,
+                    "goods": "",
+                    "goodsGroup": "",
+                    "showNumber": 0,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "642c36e0-c44f-4e9a-b878-6b6373d44001",
+                "type": "goodsGroup",
+                "title": "商品分组",
+                "data": {
+                    "source": 1,
+                    "showAllGroup": 1,
+                    "showTemplate": 1,
+                    "menuStyle": 1,
+                    "menuPosition": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "00afea30-16d0-48e3-b960-349fa6555731",
+                "type": "articleNav",
+                "title": "图文导航"
+            },
+            {
+                "id": "abbc08b8-9a35-4325-b25b-1606f67499ff",
+                "type": "cube",
+                "title": "魔方"
+            },
+            {
+                "id": "3f34d673-ed6c-4773-833e-8e873ba8f7be",
+                "type": "articleAD",
+                "title": "图文广告"
+            },
+            {
+                "id": "48883252-aca1-4400-ac8d-91ca6d10b6b7",
+                "type": "text",
+                "title": "文本",
+                "data": {
+                    "textContent": "",
+                    "fontSize": 1,
+                    "fontColor": "#000",
+                    "backgroundColor": "#fff",
+                    "displayStyle": 1,
+                    "linkAddress": "http://www.baidu.com",
+                    "showDivider": true
+                }
+            },
+            {
+                "id": "6b4e8d8e-0052-4a9d-aa22-e174a379036f",
+                "type": "title",
+                "title": "标题",
+                "data": {
+                    "mainTitle": "",
+                    "titleTemplate": 1,
+                    "displayPosition": 1,
+                    "subTitle": "",
+                    "backgroundColor": "",
+                    "navName": "",
+                    "linkTo": ""
+                }
+            },
+            {
+                "id": "681c5d3e-9786-40b1-b563-e36b44961cf5",
+                "type": "coupon",
+                "title": "优惠券",
+                "data": {
+                    "addType": 1,
+                    "couponStyle": 1,
+                    "couponColor": 1,
+                    "hideScrambled": true
+                }
+            },
+            {
+                "id": "84f59fb3-2399-4a1d-b89b-99d7e53af0ee",
+                "type": "multiPerson",
+                "title": "多人拼团",
+                "data": {
+                    "source": 1,
+                    "goods": "",
+                    "showNumber": "",
+                    "sortRule": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "hideSaledGoods": true,
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "b140edbc-4cd5-4f05-929e-412f88bbdd81",
+                "type": "secondkill",
+                "title": "限时秒杀",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "13fe225d-2da1-40b4-87db-5ef05620dd43",
+                "type": "fullReduction",
+                "title": "满减满折",
+                "data": {
+                    "title": "",
+                    "promotion": "",
+                    "displayStyle": 1
+                }
+            },
+            {
+                "id": "4833cf71-48fb-49fc-8306-2c25e7786e4f",
+                "type": "discountPackage",
+                "title": "优惠套餐",
+                "data": {
+                    "package": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "fb9a172d-ab94-4605-a2ae-f3db5cf4ac86",
+                "type": "discount",
+                "title": "限时折扣",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "2e94b4b7-468f-45ba-818a-53620edfaa2c",
+                "type": "nyuan",
+                "title": "N元N件",
+                "data": {
+                    "promotion": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "12ed70d0-67c1-4197-9766-c0259d9795f7",
+                "type": "shopInfo",
+                "title": "店铺信息",
+                "data": {
+                    "displayStyle": 1,
+                    "backgroundImage": ""
+                }
+            },
+            {
+                "id": "7e6e3706-de65-415f-a414-cc9e7eac8d5f",
+                "type": "enterShop",
+                "title": "进入店铺",
+                "data": {
+                    "words": ""
+                }
+            },
+            {
+                "id": "4f8bc6ab-d98a-4bd6-86b2-7115276fb359",
+                "type": "goodsSearch",
+                "title": "商品搜索"
+            },
+            {
+                "id": "84b29510-e42d-4a44-a5b9-be7af7dc33f9",
+                "type": "video",
+                "title": "视频",
+                "data": {
+                    "videoUrl": "",
+                    "coverUrl": ""
+                }
+            },
+            {
+                "id": "ece520be-68a8-4baa-9b10-410a6458d5fd",
+                "type": "helpLine",
+                "title": "辅助线",
+                "data": {
+                    "lineColor": "",
+                    "lineMargin": 2,
+                    "lineStyle": 1
+                }
+            },
+            {
+                "id": "1e4f70ae-93aa-4000-a90d-621be3d7fef0",
+                "type": "notice",
+                "title": "公告",
+                "data": {
+                    "notice": "",
+                    "backgroundColor": "",
+                    "fontColor": ""
+                }
+            },
+            {
+                "id": "35455d59-cac7-450f-b81f-e7d0ab6e5d1b",
+                "type": "helpBlank",
+                "title": "辅助空白",
+                "data": {
+                    "blankHeight": 10
+                }
+            },
+            {
+                "id": "28b71164-b467-4835-88b9-86c62bcbb198",
+                "type": "buyNotice",
+                "title": "购买公告",
+                "data": {
+                    "buyType": 1,
+                    "intervalStart": 10,
+                    "intervalEnd": 60,
+                    "backgroundColor": "",
+                    "fontColor": "",
+                    "goodsType": 1,
+                    "goods": ""
+                }
+            }
+        ]
+    },
+    "custom2": {
+        "pageInfo": {
+            "pageName": "我的小页面",
+            "pageTitle": "源源的装修项目",
+            "pageDesc": "很多描述哈哈哈哈",
+            "pageClassify": "2",
+            "pageBackground": "#adadad"
+        },
+        "components": [
+            {
+                "id": "533f10c2-432a-44a2-80f9-a3bd30e8d1fd",
+                "type": "goodsGroup",
+                "title": "商品分组",
+                "data": {
+                    "source": 1,
+                    "showAllGroup": 1,
+                    "showTemplate": 1,
+                    "menuStyle": 1,
+                    "menuPosition": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "65240aa6-bb8c-4b98-a7c1-1c2282debffa",
+                "type": "articleAD",
+                "title": "图文广告"
+            },
+            {
+                "id": "9907c59f-7f98-4bfc-a9b0-d9216e52476e",
+                "type": "cube",
+                "title": "魔方"
+            },
+            {
+                "id": "c620ca25-1ea2-4f69-bfea-f685426e0b91",
+                "type": "articleNav",
+                "title": "图文导航"
+            },
+            {
+                "id": "6ec0ecd9-de4f-4ca4-8b3b-726cff39e3d0",
+                "type": "title",
+                "title": "标题",
+                "data": {
+                    "mainTitle": "",
+                    "titleTemplate": 1,
+                    "displayPosition": 1,
+                    "subTitle": "",
+                    "backgroundColor": "",
+                    "navName": "",
+                    "linkTo": ""
+                }
+            },
+            {
+                "id": "f4dfb81a-7eb4-4ee0-a60b-05320addde63",
+                "type": "text",
+                "title": "文本",
+                "data": {
+                    "textContent": "",
+                    "fontSize": 1,
+                    "fontColor": "#000",
+                    "backgroundColor": "#fff",
+                    "displayStyle": 1,
+                    "linkAddress": "http://www.baidu.com",
+                    "showDivider": true
+                }
+            },
+            {
+                "id": "937b3555-6ead-4b06-b421-e0c4614c8a76",
+                "type": "coupon",
+                "title": "优惠券",
+                "data": {
+                    "addType": 1,
+                    "couponStyle": 1,
+                    "couponColor": 1,
+                    "hideScrambled": true
+                }
+            },
+            {
+                "id": "00086fba-8cdd-4ad0-81fa-a176840b67eb",
+                "type": "multiPerson",
+                "title": "多人拼团",
+                "data": {
+                    "source": 1,
+                    "goods": "",
+                    "showNumber": "",
+                    "sortRule": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "hideSaledGoods": true,
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "17a826a0-e978-4338-8ef4-4ae1997f429e",
+                "type": "secondkill",
+                "title": "限时秒杀",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "6773ec66-5270-469a-b57d-13d79939aec1",
+                "type": "fullReduction",
+                "title": "满减满折",
+                "data": {
+                    "title": "",
+                    "promotion": "",
+                    "displayStyle": 1
+                }
+            },
+            {
+                "id": "d91e9c5e-5245-4cb9-8a25-0a1ca7fb534c",
+                "type": "discountPackage",
+                "title": "优惠套餐",
+                "data": {
+                    "package": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "d5ef5fb1-66ea-4b6e-bf7b-66c24ac4a20f",
+                "type": "discount",
+                "title": "限时折扣",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "6064d724-940f-41d7-89aa-c6bb6d76f54f",
+                "type": "nyuan",
+                "title": "N元N件",
+                "data": {
+                    "promotion": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "87714e85-6d50-4015-9ecb-e971a835c239",
+                "type": "shopInfo",
+                "title": "店铺信息",
+                "data": {
+                    "displayStyle": 1,
+                    "backgroundImage": ""
+                }
+            },
+            {
+                "id": "833ad4ac-975c-4ae7-b632-ebac7010d72b",
+                "type": "enterShop",
+                "title": "进入店铺",
+                "data": {
+                    "words": ""
+                }
+            },
+            {
+                "id": "3f1c0428-20a5-46f0-82ff-b85e2dde1a8e",
+                "type": "goodsSearch",
+                "title": "商品搜索"
+            },
+            {
+                "id": "7affe212-0599-40d4-8396-348d207b1bf3",
+                "type": "video",
+                "title": "视频",
+                "data": {
+                    "videoUrl": "",
+                    "coverUrl": ""
+                }
+            },
+            {
+                "id": "d31bcff4-af1e-4a95-bcef-be06772f4364",
+                "type": "helpLine",
+                "title": "辅助线",
+                "data": {
+                    "lineColor": "",
+                    "lineMargin": 2,
+                    "lineStyle": 1
+                }
+            },
+            {
+                "id": "27b5f66a-0a04-45da-baee-f973a44cffc4",
+                "type": "notice",
+                "title": "公告",
+                "data": {
+                    "notice": "",
+                    "backgroundColor": "",
+                    "fontColor": ""
+                }
+            },
+            {
+                "id": "5227d93a-47e0-4145-bd99-1d5923716dc0",
+                "type": "helpBlank",
+                "title": "辅助空白",
+                "data": {
+                    "blankHeight": 10
+                }
+            },
+            {
+                "id": "665f4d64-a17c-487b-9cc0-7e5c588493b9",
+                "type": "buyNotice",
+                "title": "购买公告",
+                "data": {
+                    "buyType": 1,
+                    "intervalStart": 10,
+                    "intervalEnd": 60,
+                    "backgroundColor": "",
+                    "fontColor": "",
+                    "goodsType": 1,
+                    "goods": ""
+                }
+            },
+            {
+                "id": "98a117e6-429a-43ec-b6c4-9d7367815a47",
+                "type": "goods",
+                "title": "商品",
+                "data": {
+                    "source": 1,
+                    "goods": "",
+                    "goodsGroup": "",
+                    "showNumber": 0,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "642c36e0-c44f-4e9a-b878-6b6373d44001",
+                "type": "goodsGroup",
+                "title": "商品分组",
+                "data": {
+                    "source": 1,
+                    "showAllGroup": 1,
+                    "showTemplate": 1,
+                    "menuStyle": 1,
+                    "menuPosition": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "00afea30-16d0-48e3-b960-349fa6555731",
+                "type": "articleNav",
+                "title": "图文导航"
+            },
+            {
+                "id": "abbc08b8-9a35-4325-b25b-1606f67499ff",
+                "type": "cube",
+                "title": "魔方"
+            },
+            {
+                "id": "3f34d673-ed6c-4773-833e-8e873ba8f7be",
+                "type": "articleAD",
+                "title": "图文广告"
+            },
+            {
+                "id": "48883252-aca1-4400-ac8d-91ca6d10b6b7",
+                "type": "text",
+                "title": "文本",
+                "data": {
+                    "textContent": "",
+                    "fontSize": 1,
+                    "fontColor": "#000",
+                    "backgroundColor": "#fff",
+                    "displayStyle": 1,
+                    "linkAddress": "http://www.baidu.com",
+                    "showDivider": true
+                }
+            },
+            {
+                "id": "6b4e8d8e-0052-4a9d-aa22-e174a379036f",
+                "type": "title",
+                "title": "标题",
+                "data": {
+                    "mainTitle": "",
+                    "titleTemplate": 1,
+                    "displayPosition": 1,
+                    "subTitle": "",
+                    "backgroundColor": "",
+                    "navName": "",
+                    "linkTo": ""
+                }
+            },
+            {
+                "id": "681c5d3e-9786-40b1-b563-e36b44961cf5",
+                "type": "coupon",
+                "title": "优惠券",
+                "data": {
+                    "addType": 1,
+                    "couponStyle": 1,
+                    "couponColor": 1,
+                    "hideScrambled": true
+                }
+            },
+            {
+                "id": "84f59fb3-2399-4a1d-b89b-99d7e53af0ee",
+                "type": "multiPerson",
+                "title": "多人拼团",
+                "data": {
+                    "source": 1,
+                    "goods": "",
+                    "showNumber": "",
+                    "sortRule": 1,
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "hideSaledGoods": true,
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "b140edbc-4cd5-4f05-929e-412f88bbdd81",
+                "type": "secondkill",
+                "title": "限时秒杀",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "13fe225d-2da1-40b4-87db-5ef05620dd43",
+                "type": "fullReduction",
+                "title": "满减满折",
+                "data": {
+                    "title": "",
+                    "promotion": "",
+                    "displayStyle": 1
+                }
+            },
+            {
+                "id": "4833cf71-48fb-49fc-8306-2c25e7786e4f",
+                "type": "discountPackage",
+                "title": "优惠套餐",
+                "data": {
+                    "package": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "fb9a172d-ab94-4605-a2ae-f3db5cf4ac86",
+                "type": "discount",
+                "title": "限时折扣",
+                "data": {
+                    "goods": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1
+                }
+            },
+            {
+                "id": "2e94b4b7-468f-45ba-818a-53620edfaa2c",
+                "type": "nyuan",
+                "title": "N元N件",
+                "data": {
+                    "promotion": "",
+                    "listStyle": 1,
+                    "pageMargin": 15,
+                    "goodsMargin": 10,
+                    "goodsStyle": 1,
+                    "goodsChamfer": 1,
+                    "goodsRatio": 1,
+                    "goodsFill": 1,
+                    "textStyle": 1,
+                    "textAlign": 1,
+                    "showContents": [],
+                    "buttonStyle": 1,
+                    "hideSaledGoods": true,
+                    "hideEndGoods": false,
+                    "hideType": 1
+                }
+            },
+            {
+                "id": "12ed70d0-67c1-4197-9766-c0259d9795f7",
+                "type": "shopInfo",
+                "title": "店铺信息",
+                "data": {
+                    "displayStyle": 1,
+                    "backgroundImage": ""
+                }
+            },
+            {
+                "id": "7e6e3706-de65-415f-a414-cc9e7eac8d5f",
+                "type": "enterShop",
+                "title": "进入店铺",
+                "data": {
+                    "words": ""
+                }
+            },
+            {
+                "id": "4f8bc6ab-d98a-4bd6-86b2-7115276fb359",
+                "type": "goodsSearch",
+                "title": "商品搜索"
+            },
+            {
+                "id": "84b29510-e42d-4a44-a5b9-be7af7dc33f9",
+                "type": "video",
+                "title": "视频",
+                "data": {
+                    "videoUrl": "",
+                    "coverUrl": ""
+                }
+            },
+            {
+                "id": "ece520be-68a8-4baa-9b10-410a6458d5fd",
+                "type": "helpLine",
+                "title": "辅助线",
+                "data": {
+                    "lineColor": "",
+                    "lineMargin": 2,
+                    "lineStyle": 1
+                }
+            },
+            {
+                "id": "1e4f70ae-93aa-4000-a90d-621be3d7fef0",
+                "type": "notice",
+                "title": "公告",
+                "data": {
+                    "notice": "",
+                    "backgroundColor": "",
+                    "fontColor": ""
+                }
+            },
+            {
+                "id": "35455d59-cac7-450f-b81f-e7d0ab6e5d1b",
+                "type": "helpBlank",
+                "title": "辅助空白",
+                "data": {
+                    "blankHeight": 10
+                }
+            },
+            {
+                "id": "28b71164-b467-4835-88b9-86c62bcbb198",
+                "type": "buyNotice",
+                "title": "购买公告",
+                "data": {
+                    "buyType": 1,
+                    "intervalStart": 10,
+                    "intervalEnd": 60,
+                    "backgroundColor": "",
+                    "fontColor": "",
+                    "goodsType": 1,
+                    "goods": ""
+                }
+            }
+        ]
+    },
+    "custom3": {
+    "pageInfo": {
+        "pageName": "",
+        "pageTitle": "",
+        "pageDesc": "",
+        "pageClassify": "1",
+        "pageBackground": ""
+    },
+    "components": [
+        {
+            "id": "25407fba-948c-4da5-bbc7-699eaf55f472",
+            "type": "nyuan",
+            "title": "N元N件",
+            "data": {
+                "source": 1,
+                "goods": "",
+                "goodsGroup": "",
+                "showNumber": 0,
+                "listStyle": 1,
+                "pageMargin": 15,
+                "goodsMargin": 10,
+                "goodsStyle": 1,
+                "goodsChamfer": 1,
+                "goodsRatio": 1,
+                "goodsFill": 1,
+                "textStyle": 1,
+                "textAlign": 1,
+                "showContents": [],
+                "buttonStyle": 1
+            }
+        },
+        {
+            "id": "8126fa1f-f435-4cfe-93f6-01b3d13f109a",
+            "type": "video",
+            "title": "视频",
+            "data": {
+                "videoUrl": "",
+                "coverUrl": ""
+            }
+        }
+    ]
+}
+}

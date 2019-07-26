@@ -200,7 +200,7 @@
 </template>
 <script>
 import SelectSpecifications from '@/views/goods/dialogs/selectSpecifications'
-import RickEditor from '@/components/RichEditor';
+import RichEditor from '@/components/RichEditor';
 
 export default {
     data() {
@@ -280,7 +280,7 @@ export default {
     },
     components: {
         SelectSpecifications,
-        RickEditor
+        RichEditor
     }
 }
 </script>

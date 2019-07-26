@@ -24,10 +24,19 @@
                     </el-form-item>
                     <el-form-item>
                         <div class="input_wrap marL">
-                            <el-button type="primary">上传文件</el-button>
-                            <el-button>下载导入模板</el-button>
+                            <!-- <el-button type="primary">上传文件</el-button> -->
+                            <el-upload
+                                class="upload-block"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-preview="handlePreview"
+                                :on-remove="handleRemove"
+                                multiple
+                                :file-list="fileList">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">支持文件格式：.csv .xsl ，单个文件不能超过10M</div>
+                            </el-upload>
+                            <el-button class="download_btn">下载导入模板</el-button>
                         </div>
-                        <p class="c_support">支持文件格式：.csv .xsl ，单个文件不能超过10M</p>
                     </el-form-item>
                 </el-form>
             </div>
@@ -56,7 +65,7 @@
                         :value="item.value">
                     </el-option>
                 </el-select>
-                <el-button type="primary">查 询</el-button>
+                <el-button type="primary" class="marL20">查 询</el-button>
                 <el-button>重 置</el-button>
             </div>
             <ciTable style="margin-top: 68px"></ciTable>
@@ -64,6 +73,8 @@
     </div>
 </template>
 <script type="es6">
+import Blob from '@/excel/Blob'
+import Export2Excel from '@/excel/Export2Excel.js'
 import clientCont from '@/system/constant/client';
 import ciTable from './components/ciTable';
 export default {
@@ -78,12 +89,23 @@ export default {
                 {label: '渠道1',value: 1},
                 {label: '渠道2',value: 2}
             ],
-            value1:""
+            value1:"",
+            //上传参数
+            fileList: []
         }
     },
     computed: {
         memberLabels() {
             return clientCont.memberLabels
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        },
+        beforeRemove(file, fileList) {
+            return this.$confirm(`确定移除 ${ file.name }？`);
         }
     }
 }
@@ -91,6 +113,17 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 /deep/.el-form-item__label{
     width: 100px;
+}
+/deep/ .el-upload{
+    line-height: 0 !important;
+    height: 30px !important;
+}
+/deep/ .el-upload__tip{
+    font-size: 12px;
+    color: #92929B;
+}
+/deep/ .el-upload-list__item{
+    width: 300px !important;
 }
 .c_container{
     background-color: #fff;
@@ -103,10 +136,19 @@ export default {
         border-bottom: 1px dashed #D3D3D3;
         .form_container{
             .input_wrap{
+                position: relative;
                 display: inline-block;
                 width: 202px;
                 &.marL{
                     margin-left: 100px;
+                }
+                .upload-block{
+                    width: 300px;
+                }
+                .download_btn{
+                    position: absolute;
+                    right: 0;
+                    top: 0;
                 }
             }
             .c_support{

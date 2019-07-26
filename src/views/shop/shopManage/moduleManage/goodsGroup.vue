@@ -287,11 +287,11 @@ ul.nav {
     color: #92929b;
     cursor: pointer;
     &:hover{
-      color:#000;
+      color:rgb(252,65,70);
       transition:all 0.4s;
     }
     &:first-child{
-      color:#000;
+      color:rgb(252,65,70);
       transition:all 0.4s;
       position:relative;
       &:after{
@@ -382,17 +382,16 @@ ul.nav {
         width: 100%;
         display: flex;
         justify-content: space-between;
+        padding:0 10px;
         li{
-          padding: 4px;
+          padding: 0 4px;
           text-align: center;
           line-height: 30px;
+          border-radius:6px;
+          font-size:14px;
           &:first-child{
-            &:after{
-              width: 100%;
-              height: 2px;
-              bottom: 0px;
-              left: 0;
-            }
+            border:1px solid rgb(252,65,70);;
+            color:rgb(252,65,70);
           }
         }
       }

@@ -1,10 +1,10 @@
 <template>
-    <zdialog :visible.sync="visible" @submit="submit" title="批量下架" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="批量下架" :hasCancel="hasCancel">
         <p class="content-text">{{contentText}}</p>
-    </zdialog>
+    </DialogBase>
 </template>
 <script>
-import zdialog from '@/components/Dialog'
+import DialogBase from '@/components/DialogBase'
 
 export default {
     data() {
@@ -40,7 +40,7 @@ export default {
         },
     },
     components: {
-        zdialog
+        DialogBase
     }
 }
 </script>
