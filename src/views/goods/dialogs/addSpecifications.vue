@@ -1,11 +1,10 @@
 <template>
-    <zdialog :visible.sync="visible" title="选择规格" :showFooter="showFooter">
-        <el-cascader
-            :options="options"
-            :props="props"
-            @change="handleChange"
-            clearable>
-        </el-cascader>
+    <zdialog :visible.sync="visible" title="新增规格" :showFooter="showFooter">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="活动名称" prop="name">
+                <el-input v-model="ruleForm.name"></el-input>
+            </el-form-item>
+        </el-form>
 
         <div style="margin-top: 10px;">
             <el-button @click="submit" type="primary">确认</el-button>
@@ -19,23 +18,14 @@ export default {
     data() {
         return {
             showFooter: false,
-            props: { multiple: true },
-            options: [{
-                value: '颜色',
-                label: '颜色',
-                children: [
-                { value: '红色', label: '红色' },
-                { value: '黄色', label: '黄色' },
-                ]
-            }, {
-                value: '尺寸',
-                label: '尺寸',
-                children: [
-                { value: 'L', label: 'L' },
-                { value: 'XL', label: 'XL' },
-                ]
-            }],
-            arr: []
+            ruleForm: {
+                name: '',
+            },
+            rules: {
+                name: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
+            }
         }
     },
     methods: {
