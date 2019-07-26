@@ -164,7 +164,7 @@
                     <el-radio-group v-model="ruleForm.time">
                         <el-radio :label="1">放入仓库</el-radio>
                         <el-radio :label="2">立即上架</el-radio>
-                        <el-radio :label="3">定时上架</el-radio>
+                        <span @click="timelyShelvingHandler"><el-radio :label="3">定时上架</el-radio></span>
                     </el-radio-group>
                 </div>
             </el-form-item>
@@ -262,6 +262,7 @@ import SelectSpecifications from '@/views/goods/dialogs/selectSpecifications'
 import AddSpecifications from '@/views/goods/dialogs/addSpecifications'
 import RichEditor from '@/components/RichEditor';
 import ChoosingGoodsDialog from '@/views/goods/dialogs/choosingGoodsDialog'
+import TimelyShelvingDialog from '@/views/goods/dialogs/timelyShelvingDialog'
 
 export default {
     data() {
@@ -328,6 +329,10 @@ export default {
         }
     },
     methods: {
+        timelyShelvingHandler() {
+            this.currentDialog = 'TimelyShelvingDialog'
+            this.dialogVisible = true
+        },
         increase() {
             this.ruleForm.number++
         },
@@ -380,6 +385,10 @@ export default {
                 }))
                 this.specArr = _results
                 console.log(_results)
+            }
+
+            if(this.currentDialog == 'ChoosingGoodsDialog') {
+                this.tableData.push(arr)
             }
         },
         editorValueUpdate(value) {
@@ -450,7 +459,9 @@ export default {
     components: {
         SelectSpecifications,
         AddSpecifications,
-        RichEditor
+        RichEditor,
+        ChoosingGoodsDialog,
+        TimelyShelvingDialog
     }
 }
 </script>
