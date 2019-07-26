@@ -3,7 +3,7 @@
     <div class="main">
         <div class="pay_item">
           <div class="left_cont">
-            <img src="@/assets/images/logo.png"/>
+            <img src="@/assets/images/set/set-pay1.png"/>
             <div class="note">
               <h3>微信支付</h3>
               <p>资金结算至店铺余额，结算微信会扣除对应的交易手续费</p>
@@ -20,7 +20,7 @@
         </div>
         <div class="pay_item">
           <div class="left_cont">
-            <img src="@/assets/images/logo.png"/>
+            <img src="@/assets/images/set/set-pay2.png"/>
             <div class="note">
               <h3>微信支付</h3>
               <p>资金结算至店铺余额，结算微信会扣除对应的交易手续费</p>
@@ -36,7 +36,7 @@
         </div>
         <div class="pay_item">
           <div class="left_cont">
-            <img src="@/assets/images/logo.png"/>
+            <img src="@/assets/images/set/set-pay3.png"/>
             <div class="note">
               <h3>微信支付</h3>
               <p>资金结算至店铺余额，结算微信会扣除对应的交易手续费</p>
