@@ -141,45 +141,18 @@
       </el-form-item>
       <el-form-item label="图片间隙" prop="imgMargin">
         <div class="slider-wrapper">
-          <el-slider v-model="ruleForm.imgMargin"></el-slider>
+          <el-slider v-model="ruleForm.imgMargin" :min="0" :max="30"></el-slider>
           <span>{{ruleForm.imgMargin}}像素</span>
         </div>
       </el-form-item>
-      <el-form-item label="添加图片" prop="images">
-        <el-upload
-        action="#"
-        list-type="picture-card"
-        :auto-upload="false">
-          <i slot="default" class="el-icon-plus"></i>
-          <div slot="file" slot-scope="{file}">
-            <img
-              class="el-upload-list__item-thumbnail"
-              :src="file.url" alt=""
-            >
-            <span class="el-upload-list__item-actions">
-              <span
-                class="el-upload-list__item-preview"
-                @click="handlePictureCardPreview(file)"
-              >
-                <i class="el-icon-zoom-in"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleDownload(file)"
-              >
-                <i class="el-icon-download"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleRemove(file)"
-              >
-                <i class="el-icon-delete"></i>
-              </span>
-            </span>
-          </div>
-        </el-upload>
+      <el-form-item label="添加图片" prop="">
+        <div class="img_preview">
+          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
+          <span>更换图片</span>
+        </div>
+        <div class="add_button">
+          <i class="inner"></i>
+        </div>
       </el-form-item>
       <el-form-item label="跳转链接" prop="pageLink">
          <el-input
@@ -202,9 +175,7 @@ export default {
     return {
       ruleForm: {
         templateType: 1,
-        layout: '',
-        imgMargin: 2,
-        images: []
+        imgMargin: 2
       },
       rules: {},
       blockType: 1
@@ -550,6 +521,47 @@ ul.template_type{
   }
   p{
     color:rgba(211,211,211,1);
+  }
+}
+
+.add_button{
+  border:2px dashed rgb(211,211,211);
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+  width: 80px;
+  height: 80px;
+  &:hover{
+    transition: all 0.4s;
+    border:2px dashed #655EFF;
+  }
+  .inner{
+    display:block;
+    width:16px;
+    height:16px;
+    background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
+  }
+}
+.img_preview{
+  width:80px;
+  height:80px;
+  position: relative;
+  img{
+    width:100%;
+    height:100%;
+  }
+  span{
+    display:block;
+    width:100%;
+    text-align:center;
+    position:absolute;
+    bottom:0;
+    height:20px;
+    line-height:20px;
+    background:rgb(124, 124, 124);
+    color:#fff;
   }
 }
 </style>

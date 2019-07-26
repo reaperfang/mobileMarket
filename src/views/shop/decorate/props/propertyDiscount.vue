@@ -144,21 +144,21 @@ export default {
       goodsList: [
         {
           id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564732729&di=560c43696f5326ac5421932df1c0b951&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F01%2F20150701154731_2aeHi.jpeg',
+          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
           title: '这是商品标题',
           desc: '这是商品描述',
           price: 20
         },
         {
           id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564732729&di=560c43696f5326ac5421932df1c0b951&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F01%2F20150701154731_2aeHi.jpeg',
+          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
           title: '这是商品标题2',
           desc: '这是商品描述2',
           price: 37
         },
         {
           id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564732729&di=560c43696f5326ac5421932df1c0b951&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F01%2F20150701154731_2aeHi.jpeg',
+          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
           title: '这是商品标题2',
           desc: '这是商品描述2',
           price: 78

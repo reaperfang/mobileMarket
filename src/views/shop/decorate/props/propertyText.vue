@@ -18,14 +18,14 @@
       </el-form-item>
       <el-form-item label="文字颜色" prop="fontColor">
         <div class="color_block">
-          <el-input v-model="ruleForm.fontColor"></el-input>
+          <el-input v-model="ruleForm.fontColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.fontColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
       <el-form-item label="背景颜色" prop="backgroundColor">
         <div class="color_block">
-          <el-input v-model="ruleForm.backgroundColor"></el-input>
+          <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
@@ -37,7 +37,7 @@
           <el-radio :label="3">居右</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="链接" prop="linkAddress">
+      <el-form-item label="跳转链接" prop="linkAddress">
         <el-button type="text">选择跳转到的页面</el-button>
       </el-form-item>
       <el-form-item label="更多设置" prop="showDivider">
