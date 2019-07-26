@@ -7,7 +7,7 @@
       <el-input v-model="ruleForm.pageTitle" placeholder="请输入页面标题"></el-input>
     </el-form-item>
     <el-form-item label="页面描述" prop="pageDesc">
-      <el-input v-model="ruleForm.pageDesc" placeholder="请输入页面描述" type="textarea"></el-input>
+      <el-input v-model="ruleForm.pageDesc" placeholder="请输入页面描述" type="textarea" :rows="5"></el-input>
     </el-form-item>
     <el-form-item label="页面分类" prop="pageClassify">
       <el-select v-model="ruleForm.pageClassify" placeholder="请选择分类">
@@ -16,7 +16,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="背景颜色" prop="pageBackground">
-      <div style="display:flex;">
+      <div class="color_block">
         <el-input v-model="ruleForm.pageBackground"></el-input>
         <colorPicker  v-model="ruleForm.pageBackground"></colorPicker >
       </div>
@@ -82,5 +82,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 </style>

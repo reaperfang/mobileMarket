@@ -8,7 +8,17 @@
         </el-input>
       </el-form-item>
       <el-form-item label="选择活动" prop="promotion">
-        <el-button type="primary" plain>选择活动</el-button>
+        <div class="goods_list">
+          <ul>
+            <li v-for="(item, key) of goodsList" :key="key">
+              <img :src="item.url" alt="">
+              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
+            </li>
+            <li class="add_button">
+              <i class="inner"></i>
+            </li>
+          </ul>
+        </div>
         最多可选5个活动
       </el-form-item>
       <el-form-item label="展示样式" prop="displayStyle">
@@ -24,6 +34,7 @@
 
 <script>
 import propertyMixin from './propertyMixin.js';
+import uuid from 'uuid/v4';
 export default {
   name: 'propertyFullReduction',
   mixins: [propertyMixin],
@@ -37,14 +48,114 @@ export default {
       },
       rules: {
 
-      }
+      },
+      goodsList: [
+        {
+          id: uuid(),
+          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564732729&di=560c43696f5326ac5421932df1c0b951&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F01%2F20150701154731_2aeHi.jpeg',
+          title: '这是活动标题',
+          desc: '这是活动描述',
+          price: 20
+        },
+        {
+          id: uuid(),
+          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564732729&di=560c43696f5326ac5421932df1c0b951&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F01%2F20150701154731_2aeHi.jpeg',
+          title: '这是活动标题2',
+          desc: '这是活动描述2',
+          price: 37
+        },
+        {
+          id: uuid(),
+          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564732729&di=560c43696f5326ac5421932df1c0b951&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F01%2F20150701154731_2aeHi.jpeg',
+          title: '这是活动标题2',
+          desc: '这是活动描述2',
+          price: 78
+        }
+      ]
+    }
+  },
+  created() {
+    this.convertGoodsId();
+  },
+  watch: {
+    goodsList: {
+      handler(newValue) {
+        this.convertGoodsId();
+      },
+      deep: true
     }
   },
   methods: {
+
+    /* 删除项 */
+    deleteItem(item) {
+      const tempGoodsList = [...this.goodsList];
+      for(let i=0;i<tempGoodsList.length;i++) {
+        if(item === tempGoodsList[i]) {
+          tempGoodsList.splice(i, 1);
+        }
+      }
+      this.goodsList = tempGoodsList;
+    },
+
+    /* 转换商品id */
+    convertGoodsId() {
+      const array = [];
+      for(let item of this.goodsList) {
+        array.push(item.id);
+      }
+      this.ruleForm.goods = array.join(',');
+    }
   }
 }
 </script>
 
 <style lang="scss">
-
+.goods_list{
+  background:rgb(247,247,249);
+  ul{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    li{
+      width:80px;
+      height:80px;
+      margin-right:20px;
+      margin-bottom:20px;
+      position:relative;
+      &.add_button{
+        border:2px dashed rgb(211,211,211);
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        cursor:pointer;
+        &:hover{
+          transition: all 0.4s;
+          border:2px dashed #655EFF;
+        }
+        .inner{
+          display:block;
+          width:16px;
+          height:16px;
+          background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
+        }
+      }
+      img{
+        width:100%;
+        height:100%;
+      }
+      i.delete_btn{
+        width:20px;
+        height:20px;
+        border-radius:50%;
+        background:url('../../../../assets/images/shop/editor/delete.png') no-repeat 0 0;
+        position:absolute;
+        top:0;
+        right:0;
+        cursor:pointer;
+      }
+    }
+  }
+}
 </style>

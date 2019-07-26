@@ -73,7 +73,6 @@ const decorate = {
 
 		/* 更新组件数据 */
 		updateComponent(state, params) {
-
 			//对基础信息组件特殊处理
 			if (params.type && params.type === 'base') {
 				state.baseInfo = params.data;
