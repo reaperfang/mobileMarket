@@ -9,38 +9,38 @@
       >
       <el-table-column
         type="selection"
-        prop="clientId"
+        prop="memberSn"
         label="客户ID">
       </el-table-column>
       <el-table-column
-        prop="clientInfo"
+        prop="nickname"
         label="客户信息">
       </el-table-column>
       <el-table-column
-        prop="clientPhone"
+        prop="phone"
         label="手机号">
       </el-table-column>
       <el-table-column
-        prop="identity"
+        prop="memberType"
         label="身份">
       </el-table-column>
       <el-table-column
-        prop="integral"
+        prop="score"
         label="积分"
         sortable>
       </el-table-column>
       <el-table-column
-        prop="accumulateSum"
+        prop="totalDealMoney"
         label="累计消费金额"
         sortable>
       </el-table-column>
       <el-table-column
-        prop="buyTime"
+        prop="dealTimes"
         label="购买次数"
         sortable>
       </el-table-column>
       <el-table-column
-        prop="unitPrice"
+        prop="perUnitPrice"
         label="客单价（元）"
         sortable>
       </el-table-column>
@@ -79,13 +79,13 @@ export default {
       dataList:[
         {
           clientId:'',
-          clientInfo:'',
-          clientPhone:'',
-          identity:'',
-          integral:'',
-          accumulateSum:'',
-          buyTime:'',
-          unitPrice:''
+          nickname:'',
+          phone:'',
+          memberType:'',
+          score:'',
+          totalDealMoney:'',
+          dealTimes:'',
+          perUnitPrice:''
         },
       ],
     };

@@ -61,6 +61,19 @@ export default [
         name: 'levelInfo',
         hidden: true,
         meta: { title: '会员等级', noCache: true, tabTitle: '会员权益' }
+      },
+      {
+        path: 'cardManage',
+        component: () => import('@/views/client/cardManage'),
+        name: 'cardManage',
+        meta: { title: '会员卡', noCache: true, tabTitle: '会员权益' }
+      },
+      {
+        path: 'createCard',
+        component: () => import('@/views/client/createCard'),
+        name: 'createCard',
+        hidden: true,
+        meta: { title: '会员卡', noCache: true, tabTitle: '会员权益' }
       }
     ]
 	}
