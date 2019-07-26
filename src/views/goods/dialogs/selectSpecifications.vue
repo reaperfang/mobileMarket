@@ -1,5 +1,5 @@
 <template>
-    <zdialog :visible.sync="visible" title="选择规格" :showFooter="showFooter">
+    <DialogBase :visible.sync="visible" @submit="submit" title="选择规格" :showFooter="showFooter">
         <el-cascader
             :options="options"
             :props="props"
@@ -10,10 +10,10 @@
         <div style="margin-top: 10px;">
             <el-button @click="submit" type="primary">确认</el-button>
         </div>
-    </zdialog>
+    </DialogBase>
 </template>
 <script>
-import zdialog from '@/components/Dialog'
+import DialogBase from '@/components/DialogBase'
 
 export default {
     data() {
@@ -70,7 +70,7 @@ export default {
         },
     },
     components: {
-        zdialog
+        DialogBase
     }
 }
 </script>

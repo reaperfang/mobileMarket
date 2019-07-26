@@ -27,7 +27,7 @@
         <el-table-column prop="account" label="操作账号"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
-            <span class="table-btn" @click="_routeTo('edit')">编辑</span>
+            <span class="table-btn" @click="_routeTo('shopEditor', {pageId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deleteClassify(scope.row)">删除</span>
             <span class="table-btn" @click="link(scope.row)">链接</span>
           </template>
@@ -51,6 +51,7 @@
 
 <script>
 import tableBase from '@/components/TableBase';
+import uuid from 'uuid/v4';
 export default {
   name: 'classifyList',
   extends: tableBase,
@@ -67,7 +68,13 @@ export default {
 
     /* 删除分类 */
     deleteClassify(item) {
-
+      this.$confirm('确定删除此分类吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          
+        })
     },
 
     /* 链接 */
@@ -78,6 +85,7 @@ export default {
     fetch() {
       this.tableList = [
         {
+          id: uuid(),
           name: '店铺首页',
           number: 5515,
           createTime: '2016-09-21  08:50:08',
@@ -86,6 +94,7 @@ export default {
           browse: 123321,
         },
         {
+          id: uuid(),
           name: '店铺首页',
           number: 5515,
           createTime: '2016-09-21  08:50:08',
@@ -94,6 +103,7 @@ export default {
           browse: 123321,
         },
         {
+          id: uuid(),
           name: '店铺首页',
           number: 5515,
           createTime: '2016-09-21  08:50:08',
@@ -102,6 +112,7 @@ export default {
           browse: 123321,
         },
         {
+          id: uuid(),
           name: '店铺首页',
           number: 5515,
           createTime: '2016-09-21  08:50:08',
@@ -110,6 +121,7 @@ export default {
           browse: 123321,
         },
         {
+          id: uuid(),
           name: '店铺首页',
           number: 5515,
           createTime: '2016-09-21  08:50:08',

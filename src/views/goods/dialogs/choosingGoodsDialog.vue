@@ -5,7 +5,7 @@
     </zdialog>
 </template>
 <script>
-import zdialog from '@/components/Dialog'
+import zdialog from '@/components/DialogBase'
 
 export default {
     data() {

@@ -1,21 +1,37 @@
 <!--富文本数据弹窗-->
 <template>
-  <el-dialog title="富文本数据" :visible.sync="dialogFormVisible"  @close="close" :width="dialogWidth" class="gl-dialog">
-    <div v-html="data"></div>
-  </el-dialog>
+  <DialogBase :visible.sync="visible" title="富文本数据">
+     <div v-html="data"></div>
+  </DialogBase>
 </template>
 
 <script>
-import dialogBase from '@/components/DialogBase';
+import DialogBase from '@/components/DialogBase';
 export default {
   name: 'demoDialog',
-  extends: dialogBase,
-  props: ['data'],
+  components: {DialogBase},
+  props: {
+      data: {},
+      dialogVisible: {
+          type: Boolean,
+          required: true
+      },
+  },
   data() {
     return {
       
     }
   },
+   computed: {
+        visible: {
+            get() {
+                return this.dialogVisible
+            },
+            set(val) {
+                this.$emit('update:dialogVisible', val)
+            }
+        }
+    },
   methods: {
      
   }

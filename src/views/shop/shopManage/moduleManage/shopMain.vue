@@ -30,7 +30,7 @@
                   </div>
                 </div>
                 <div class="btn">
-                  <el-button type="primary" size="mini" style="float:right;">一键装修</el-button>
+                  <el-button type="primary" size="mini" style="float:right;" @click="_routeTo('templateManageIndex')">一键装修</el-button>
                 </div>
               </div>
               <div class="person" style="margin-top:91px;">
@@ -52,7 +52,7 @@
                   </div>
                 </div>
                 <div class="btn">
-                  <el-button type="primary" size="mini" style="float:right;">自定义页面</el-button>
+                  <el-button type="primary" size="mini" style="float:right;" @click="_routeTo('pageManageIndex')">自定义页面</el-button>
                 </div>
               </div>
               <div class="person" style="margin-top:91px;">
@@ -64,11 +64,11 @@
         <div>
           <h4>店铺装修方法</h4>
           <p>方法一: 最快捷的方法</p>
-          <p>直接在 <el-button @click="$emit('changePage', 'shopTemplate')" type="text">店铺模板</el-button> 中选用配套店铺模版进行“一键装修”</p>
+          <p>直接在 <el-button @click="_routeTo('templateManageIndex')" type="text">店铺模板</el-button> 中选用配套店铺模版进行“一键装修”</p>
           <p style="margin-top: 25px">方法二: 最个性化的方法</p>
-          <p>在 <el-button type="text">页面管理</el-button> 中进行页面创建或编辑</p>
-          <p>在 <el-button type="text">店铺导航</el-button> 中设置店铺导航形式、名称、链接</p>
-          <p>在 <el-button type="text">店铺风格</el-button> 中可以设置店铺整体的颜色方案这样可以创建出最个性化的店铺</p>
+          <p>在 <el-button type="text" @click="_routeTo('pageManageIndex')">页面管理</el-button> 中进行页面创建或编辑</p>
+          <p>在 <el-button type="text" @click="_routeTo('shopNav')">店铺导航</el-button> 中设置店铺导航形式、名称、链接</p>
+          <p>在 <el-button type="text" @click="_routeTo('shopStyle')">店铺风格</el-button> 中可以设置店铺整体的颜色方案这样可以创建出最个性化的店铺</p>
         </div>
       </section>
     </el-card>

@@ -15,21 +15,25 @@
       <div class="block button">
         <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
         <el-button @click="saveData">保    存</el-button>
-        <el-button @click="_routeTo('preview')">预    览</el-button>
+        <el-button @click="dialogVisible=true; currentDialog='decoratePreview'">预    览</el-button>
       </div>
+      <!-- 动态弹窗 -->
+      <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
     </div>
 </template>
 
 <script>
 import utils from '@/utils';
 import propertyBase from './props/propertyBase';
-const listManager = utils.listManager.default.getInstance();
+import decoratePreview from '../dialogs/decoratePreview';
 export default {
   name: 'propView', 
-  components: {propertyBase},
+  components: {propertyBase, decoratePreview},
   data () {
     return {
       currentComponent: null,  //当前组件名称
+      dialogVisible: false,
+      currentDialog: '',
       utils
     }
   },
@@ -90,6 +94,7 @@ export default {
     saveAndApplyData() {
       const resultData = this.collectData();
       console.log(JSON.stringify({...resultData}));
+      this._routeTo('pageManageIndex');
     },
 
     /* 收集数据 */

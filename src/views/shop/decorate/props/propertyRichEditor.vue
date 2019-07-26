@@ -1,7 +1,7 @@
 <template>
 <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
     <el-form-item label="背景颜色">
-      <div style="display:flex;">
+      <div class="color_block">
         <el-input v-model="ruleForm.backgroundColor"></el-input>
         <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
       </div>
@@ -39,7 +39,7 @@ export default {
       },
       ruleForm: {
         backgroundColor: 'red',
-        remainPageMargin: 0,
+        remainPageMargin: true,
         richValue: ''
       },
       rules: {

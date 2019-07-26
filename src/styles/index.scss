@@ -284,8 +284,23 @@ table.yuan-table{
 .marL20{
   margin-left: 20px;
 }
+.marL105{
+  margin-left: 105px;
+}
+.marT10{
+  margin-top: 10px;
+}
 .marT20{
   margin-top: 20px;
+}
+.marR50{
+  margin-right: 50px;
+}
+.marR20{
+  margin-right: 20px;
+}
+.marR100{
+  margin-right: 100px;
 }
 .padR40{
   padding-right: 40px;
@@ -321,4 +336,18 @@ table.yuan-table{
 .el-upload-list__item{
   width:80px!important;
   height:80px!important;
+}
+
+.color_block{
+  display:flex;
+  .el-input{
+    width:120px!important;
+  }
+  .colorBtn{
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-top: 2px;
+    width: 25px !important;
+    height: 25px !important;
+  }
 }
