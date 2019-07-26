@@ -94,6 +94,7 @@ export default {
     saveAndApplyData() {
       const resultData = this.collectData();
       console.log(JSON.stringify({...resultData}));
+      this._routeTo('pageManageIndex');
     },
 
     /* 收集数据 */

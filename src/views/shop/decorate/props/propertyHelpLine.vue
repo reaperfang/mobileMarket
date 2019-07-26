@@ -2,7 +2,7 @@
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
       <el-form-item label="颜色" prop="lineColor">
-        <div style="display:flex;">
+        <div class="color_block">
           <el-input v-model="ruleForm.lineColor"></el-input>
           <colorPicker  v-model="ruleForm.lineColor"></colorPicker >
           <el-button type="text">重置</el-button>
