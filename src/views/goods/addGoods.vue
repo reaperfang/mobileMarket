@@ -25,7 +25,7 @@
                     class="p_imgsCon">
                     <i class="el-icon-plus"></i>
                 </el-upload>
-                <span class="material">素材库</span>
+                <span @click="currentDialog = 'LibraryDialog'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
             </el-form-item>
             <el-form-item label="商品分类" prop="productCategoryInfoId">
@@ -263,6 +263,7 @@ import AddSpecifications from '@/views/goods/dialogs/addSpecifications'
 import RichEditor from '@/components/RichEditor';
 import ChoosingGoodsDialog from '@/views/goods/dialogs/choosingGoodsDialog'
 import TimelyShelvingDialog from '@/views/goods/dialogs/timelyShelvingDialog'
+import LibraryDialog from '@/views/goods/dialogs/libraryDialog'
 
 export default {
     data() {
@@ -461,7 +462,8 @@ export default {
         AddSpecifications,
         RichEditor,
         ChoosingGoodsDialog,
-        TimelyShelvingDialog
+        TimelyShelvingDialog,
+        LibraryDialog
     }
 }
 </script>
@@ -546,10 +548,6 @@ $blue: #655EFF;
 /deep/ .el-upload-list--picture-card .el-upload-list__item {
     width: 66px;
     height: 66px;
-}
-.description {
-    color: #92929B;
-    font-size: 12px;
 }
 .input-number {
     span {

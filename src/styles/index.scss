@@ -339,3 +339,45 @@ table.yuan-table{
   border-color: #655EFF;
   color: #655EFF;
 }
+/* 店铺装修中的滑动条样式 */
+.slider-wrapper{
+  width:100%;
+  display:flex;
+  justify-content: space-between;
+  .el-slider{
+	width:66%;
+  }
+  span{
+	margin-right:20px;
+  }
+}
+
+/* 上传器加号框样式 */
+.el-upload{
+  width:80px!important;
+  height:80px!important;
+  line-height:90px!important;
+}
+.el-upload-list__item{
+  width:80px!important;
+  height:80px!important;
+}
+
+.color_block{
+  display:flex;
+  .el-input{
+    width:120px!important;
+  }
+  .colorBtn{
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-top: 2px;
+    width: 25px !important;
+    height: 25px !important;
+  }
+}
+
+.description {
+  color: #92929B;
+  font-size: 12px;
+}
