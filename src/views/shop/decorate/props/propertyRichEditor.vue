@@ -1,8 +1,9 @@
 <template>
 <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :inline="true">
+  <div class="block form">
     <el-form-item label="背景颜色">
-      <div style="display:flex;">
-        <el-input v-model="ruleForm.backgroundColor"></el-input>
+      <div class="color_block">
+        <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
         <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
       </div>
     </el-form-item>
@@ -12,6 +13,7 @@
     <el-form-item label="">
       <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.richValue"></RichEditor>
     </el-form-item>
+    </div>
   </el-form>
 </template>
 
@@ -31,7 +33,7 @@ export default {
           // 初始容器高度
           initialFrameHeight: 500,
           // 初始容器宽度
-          initialFrameWidth: 326,
+          initialFrameWidth: 306,
           // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
           serverUrl: 'http://35.201.165.105:8000/controller.php',
           // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
@@ -39,7 +41,7 @@ export default {
       },
       ruleForm: {
         backgroundColor: 'red',
-        remainPageMargin: 0,
+        remainPageMargin: true,
         richValue: ''
       },
       rules: {

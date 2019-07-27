@@ -7,8 +7,9 @@ import shop from './shop';
 import goods from './goods';
 import finance from './finance';
 import set from './set';
-import intelligentOperation from './intelligentOperation'
+import intelligentOperation from './intelligentOperation';
 import client from './client';
+import datum from './datum';
  
 export const asyncRouterMap = [  //异步路由表
   ...goods,
@@ -16,8 +17,9 @@ export const asyncRouterMap = [  //异步路由表
   ...shop,
   ...intelligentOperation,
   ...client,
+  ...datum,
   ...finance,
-  ...set,
+  ...set
 ]
 
 export const syncRouterMap = [ //同步路由表

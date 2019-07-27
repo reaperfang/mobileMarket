@@ -1,9 +1,5 @@
 <template>
     <div class="c_container">
-        <!-- <div>
-            <el-button type="primary" round class="primary_btn">积分通用规则</el-button>
-            <el-button round>获取积分规则</el-button>
-        </div> -->
         <el-tabs v-model="activeName">
             <el-tab-pane label="积分通用规则" name="first">
                 <p class="c_title">积分使用规则：</p>
@@ -123,7 +119,7 @@ export default {
     }
     .btn_cont{
         text-align: center;
-        margin-top: 20px;
+        margin: 20px 0;
     }
     .primary_btn{
         background:rgba(101,94,255,0.1);

@@ -12,15 +12,15 @@
         <el-input v-model="ruleForm.intervalEnd"></el-input>秒
       </el-form-item>
       <el-form-item label="背景颜色" prop="backgroundColor">
-        <div style="display:flex;">
-          <el-input v-model="ruleForm.backgroundColor"></el-input>
+        <div class="color_block">
+          <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
       <el-form-item label="文字颜色" prop="fontColor">
-        <div style="display:flex;">
-          <el-input v-model="ruleForm.fontColor"></el-input>
+        <div class="color_block">
+          <el-input v-model="ruleForm.fontColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.fontColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
@@ -32,40 +32,16 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="商品" prop="goods">
-        <el-upload
-          action="#"
-          list-type="picture-card"
-          :auto-upload="false">
-            <i slot="default" class="el-icon-plus"></i>
-            <div slot="file" slot-scope="{file}">
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="file.url" alt=""
-              >
-              <span class="el-upload-list__item-actions">
-                <span
-                  class="el-upload-list__item-preview"
-                  @click="handlePictureCardPreview(file)"
-                >
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleDownload(file)"
-                >
-                  <i class="el-icon-download"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
-        </el-upload>
+         <el-form-item label="" prop="goods">
+        <div class="img_preview">
+          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
+          <span>选择封面图</span>
+        </div>
+        <div class="add_button">
+          <i class="inner"></i>
+        </div>
+        建议图片宽高比16:9
+      </el-form-item>
       </el-form-item>
     </div>
   </el-form>
@@ -100,13 +76,44 @@ export default {
 </script>
 
 <style lang="scss">
-.el-upload{
-  width:80px!important;
-  height:80px!important;
-  line-height:90px!important;
+.add_button{
+  border:2px dashed rgb(211,211,211);
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+  width: 80px;
+  height: 80px;
+  &:hover{
+    transition: all 0.4s;
+    border:2px dashed #655EFF;
+  }
+  .inner{
+    display:block;
+    width:16px;
+    height:16px;
+    background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
+  }
 }
-.el-upload-list__item{
-  width:80px!important;
-  height:80px!important;
+.img_preview{
+  width:80px;
+  height:80px;
+  position: relative;
+  img{
+    width:100%;
+    height:100%;
+  }
+  span{
+    display:block;
+    width:100%;
+    text-align:center;
+    position:absolute;
+    bottom:0;
+    height:20px;
+    line-height:20px;
+    background:rgb(124, 124, 124);
+    color:#fff;
+  }
 }
 </style>

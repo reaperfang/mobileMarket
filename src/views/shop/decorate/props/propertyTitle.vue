@@ -21,8 +21,8 @@
         <el-input placeholder="请输入标题" v-model="ruleForm.subTitle"></el-input>
       </el-form-item>
       <el-form-item label="背景颜色" prop="backgroundColor">
-        <div style="display:flex;">
-          <el-input v-model="ruleForm.backgroundColor"></el-input>
+        <div class="color_block">
+          <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>

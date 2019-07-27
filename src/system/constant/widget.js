@@ -24,7 +24,7 @@ export default {
             {
               type: 'articleAD',
               iconClass: 'article-ad',
-              title: '图文广告'
+              title: '图片广告'
             },
             {
               type: 'cube',

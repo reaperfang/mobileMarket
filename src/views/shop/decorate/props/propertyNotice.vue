@@ -8,15 +8,15 @@
         </el-input>
       </el-form-item>
       <el-form-item label="背景颜色" prop="backgroundColor">
-        <div style="display:flex;">
-          <el-input v-model="ruleForm.backgroundColor"></el-input>
+        <div class="color_block">
+          <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
       <el-form-item label="文字颜色" prop="fontColor">
-        <div style="display:flex;">
-          <el-input v-model="ruleForm.fontColor"></el-input>
+        <div class="color_block">
+          <el-input v-model="ruleForm.fontColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.fontColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>

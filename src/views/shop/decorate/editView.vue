@@ -1,10 +1,10 @@
 <template>
   <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
-    <div class="phone-head" @click="clickTitle">
+    <div class="phone-head" @click="clickTitle(null)" title="点击编辑页面信息">
       <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
-      <span>{{baseInfo.pageTitle || '请在右侧设置页面名称'}}</span>
+      <span>{{baseInfo.pageTitle || '页面标题'}}</span>
     </div>
-    <div class="phone-body">
+    <div class="phone-body" @click="clickTitle($event)">
        <vuedraggable 
         class="drag-wrap"
         :list='componentDataIds'
@@ -24,9 +24,9 @@
           @click="selectComponent(item)" 
           @dragstart.self="selectItem = item" 
           @dragend.self="selectItem = {}">
-            {{getComponentData(item).title}}组件
             <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)"></component>
-            <i class="delete-btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
+            {{getComponentData(item).title}}组件
+            <i class="delete_btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
           </div>
     </vuedraggable>
     </div>
@@ -126,8 +126,11 @@ export default {
         this.disable = false;
     },
 
-    clickTitle() {
+    clickTitle(event) {
+      if(!event || (event.target.className.indexOf('phone-head') > -1 || event.target.className.indexOf('phone-body') > -1)) {
+       this.$store.commit('setCurrentComponentId', '');
        this.$store.commit('showBaseProperty');
+      }
     }
   }
 }
@@ -147,6 +150,7 @@ export default {
       line-height: 64px;
       background: #fff;
       position:relative;
+      cursor:pointer;
       img{
         width:100%;
       }
@@ -165,7 +169,6 @@ export default {
         background:#fff;
         min-height:50px;
         line-height:50px;
-        text-align:center;
         position:relative;
         border:1px solid #eee;
         border-bottom:none;

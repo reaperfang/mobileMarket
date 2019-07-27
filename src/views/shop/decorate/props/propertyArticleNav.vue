@@ -1,5 +1,79 @@
 <template>
-<div>propertyArticleAD</div>
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="选择模板" prop="templateType">
+        <ul class="tile-list n3 template_type">
+          <li @click="selectTemplate(1)" :class="{'active': ruleForm.templateType === 1}">
+            <div class="type1">
+              <div class="fill_block"></div>
+              <div class="fill_block"></div>
+              <div class="fill_block"></div>
+            </div>
+            <p>图片导航</p>
+          </li>
+          <li @click="selectTemplate(2)" :class="{'active': ruleForm.templateType === 2}">
+            <div class="type2">
+              <div class="fill_block">导航</div>
+              <div class="fill_block">导航</div>
+            </div>
+            <p>文字导航</p>
+          </li>
+        </ul>
+      </el-form-item>
+      <el-form-item label="滑动设置" prop="slideType">
+        <el-radio-group v-model="ruleForm.slideType">
+          <el-radio :label="1">固定</el-radio>
+          <el-radio :label="2">横向滑动</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="背景颜色" prop="backgroundColor">
+        <div class="color_block">
+          <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
+          <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
+          <el-button type="text">重置</el-button>
+        </div>
+      </el-form-item>
+      <el-form-item label="文字颜色" prop="fontColor">
+        <div class="color_block">
+          <el-input v-model="ruleForm.fontColor" :disabled="true"></el-input>
+          <colorPicker  v-model="ruleForm.fontColor"></colorPicker >
+          <el-button type="text">重置</el-button>
+        </div>
+      </el-form-item>
+    </div>
+    <div class="block form">
+      添加图片
+      <ul class="item_list">
+        <li v-for="(item, key) of ruleForm.itemList" :key="key">
+          <div class="left">
+            <div v-if="item.url" class="img_preview">
+              <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
+              <span>更换图片</span>
+            </div>
+            <div v-else class="add_button">
+              <i class="inner"></i>
+            </div>
+          </div>
+          <div class="right">
+            <p>
+              <span>图片标题</span>
+              <el-input v-model="item.title"></el-input>
+            </p>
+            <p>
+              <span>跳转链接</span>
+              <el-button type="text">选择跳转到的页面</el-button>
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+
+    <div class="block form">
+      <el-button type="info" plain style="width:100%" @click="addNav">添加页面</el-button>
+      <p style="margin-top:10px;color:rgb(211,211,211)">最多添加 10 个导航，拖动选中的导航可对其排序小程序 v2.3.1 及以上版本支持</p>
+    </div>
+  </el-form>
 </template>
 
 <script>
@@ -10,14 +84,160 @@ export default {
   components: {},
   data () {
     return {
-      
+      ruleForm: {
+        templateType: 1,
+        slideType: 1,
+        backgroundColor: '#ccc',
+        fontColor: '#000',
+        itemList: [
+          {
+            title: '导航',
+            url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg'
+          },
+          {
+            title: '导航',
+            url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg'
+          }
+        ]
+      },
+      rules: {}
     }
   },
   methods: {
+    selectTemplate(templateType) {
+      this.ruleForm.templateType = templateType;
+      this.blockType = 1;
+    },
 
+    addNav() {
+      this.ruleForm.itemList.push({
+        title: '导航',
+        url: ''
+      });
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+ul.template_type{
+  li{
+    width:100px;
+    // height:100px;
+    border:1px solid rgb(228,227,235);
+    padding:10px;
+    box-sizing: border-box;
+    cursor:pointer;
+    &.active{
+      border:1px solid #655EFF;
+    }
+    .fill_block{
+      height:100%;
+      background:rgb(230,228,255);
+      margin-right:2px;
+      color:rgb(188,187,255);
+      width: 50%;
+      height: 15px;
+      margin-top: 3px;
+      line-height: 15px;
+      font-size: 12px;
+      text-align: center;
+      &:last-child{
+        margin-right:0;
+      }
+    }
+    .type1{
+      display:flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .fill_block{
+        width:33.3%;
+        height: 20px;
+        background:rgb(230,228,255) url('../../../../assets/images/shop/editor/pic.png') no-repeat 2px 3px;
+      }
+    }
+    .type2{
+      display:flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .fill_block{
+        width: 50%;
+        height: 19px;
+        line-height: 20px;
+      }
+    }
+    p{
+      margin-top:6px;
+      text-align:center;
+    }
+  }
+}
+
+ul.item_list{
+  margin-top:20px;
+  li{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom:20px;
+    .left{
+      margin-right:20px;
+    }
+    .right{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      p{
+        span{
+
+        }
+        .el-input{
+          width: 130px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+
+.add_button{
+  border:2px dashed rgb(211,211,211);
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+  width: 80px;
+  height: 80px;
+  &:hover{
+    transition: all 0.4s;
+    border:2px dashed #655EFF;
+  }
+  .inner{
+    display:block;
+    width:16px;
+    height:16px;
+    background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
+  }
+}
+.img_preview{
+  width:80px;
+  height:80px;
+  position: relative;
+  img{
+    width:100%;
+    height:100%;
+  }
+  span{
+    display:block;
+    width:100%;
+    text-align:center;
+    position:absolute;
+    bottom:0;
+    height:20px;
+    line-height:20px;
+    background:rgb(124, 124, 124);
+    color:#fff;
+  }
+}
 </style>

@@ -1,9 +1,18 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="商品分组" prop="source">
+      <el-form-item label="商品分组" prop="goodsGroups">
         最多添加15个商品分组
         <el-button type="info" plain>添加商品分组</el-button>
+        <div class="goods_groups">
+          <el-tag
+            v-for="tag in ruleForm.goodsGroups"
+            :key="tag.name"
+            closable
+            type="primary" @close="deleteGoodsGroup(tag)">
+            {{tag.name}}
+          </el-tag>
+        </div>
       </el-form-item>
       <el-form-item label="全部分组" prop="showAllGroup">
         全部分组为商品的集合分组，增加消费者逛的体验
@@ -111,7 +120,7 @@
           <el-checkbox label="3">商品描述</el-checkbox>
           <el-checkbox label="4">购买按钮</el-checkbox>
         </el-checkbox-group>
-        <el-radio-group v-model="ruleForm.buttonStyle">
+        <el-radio-group v-if="ruleForm.showContents.includes('4')" v-model="ruleForm.buttonStyle">
           <el-radio :label="1">样式1</el-radio>
           <el-radio :label="2">样式2</el-radio>
           <el-radio :label="3">样式3</el-radio>
@@ -135,7 +144,13 @@ export default {
   data () {
     return {
       ruleForm: {
-        source: 1,
+        goodsGroups: [
+          { name: '标签一', type: '' },
+          { name: '标签二', type: 'success' },
+          { name: '标签三', type: 'info' },
+          { name: '标签四', type: 'warning' },
+          { name: '标签五', type: 'danger' }
+        ],
         showAllGroup: 1,
         showTemplate: 1,
         menuStyle: 1,
@@ -159,10 +174,23 @@ export default {
     }
   },
   methods: {
+    deleteGoodsGroup(item) {
+      const tempGoodsGroups = [...this.ruleForm.goodsGroups];
+      for(let i=0;i<tempGoodsGroups.length;i++) {
+        if(item === tempGoodsGroups[i]) {
+          tempGoodsGroups.splice(i, 1);
+        }
+      }
+      this.ruleForm.goodsGroups = tempGoodsGroups;
+    }
   }
 }
 </script>
 
 <style lang="scss">
-
+.goods_groups{
+  .el-tag{
+    margin-right:5px!important;
+  }
+}
 </style>
