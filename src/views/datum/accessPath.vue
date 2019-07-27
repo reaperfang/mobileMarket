@@ -24,7 +24,7 @@
                         <el-button class="active_btn fr" round>浏览量/访问量</el-button>
                     </div>
                     <div class="chart_container">
-                        <pfChart :title="'测试图表'"></pfChart>
+                        <apChart :title="'测试图表'"></apChart>
                     </div>
                 </div>
             </el-tab-pane>
@@ -34,9 +34,9 @@
     </div>
 </template>
 <script>
-import pfChart from './components/pfChart'
+import apChart from './components/apChart'
 export default {
-    components: { pfChart },
+    components: { apChart },
     data() {
         return {
             activeName: "first", 
@@ -58,6 +58,7 @@ export default {
             span{
                 color: #655EFF;
                 margin-left: 20px;
+                cursor: pointer;
             }
         }
         .btn_tabs{
