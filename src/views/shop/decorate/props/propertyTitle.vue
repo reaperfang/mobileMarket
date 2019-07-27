@@ -35,18 +35,22 @@
       </el-form-item>
       <el-form-item label="链接到" prop="linkTo">
         <el-input placeholder="" v-model="ruleForm.linkTo"></el-input>
-        <el-button type="primary" plain>修改</el-button>
+        <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">修改</el-button>
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';
+import dialogSelectJumpPage from '../../dialogs/dialogSelectJumpPage';
 export default {
   name: 'propertyTitle',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectJumpPage},
   data () {
     return {
       ruleForm: {
@@ -60,7 +64,9 @@ export default {
       },
       rules: {
 
-      }
+      },
+      dialogVisible: false,
+      currentDialog: '',
     }
   },
   methods: {

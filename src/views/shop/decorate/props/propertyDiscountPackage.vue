@@ -8,7 +8,7 @@
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
-            <li class="add_button">
+            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectPackage'">
               <i class="inner"></i>
             </li>
           </ul>
@@ -119,16 +119,20 @@
         </el-radio-group>
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';
+import dialogSelectPackage from '../../dialogs/dialogSelectPackage';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyDiscountPackage',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectPackage},
   data () {
     return {
       ruleForm: {
@@ -151,6 +155,8 @@ export default {
       rules: {
 
       },
+      dialogVisible: false,
+      currentDialog: '',
       goodsList: [
         {
           id: uuid(),
@@ -214,51 +220,4 @@ export default {
 </script>
 
 <style lang="scss">
-.goods_list{
-  background:rgb(247,247,249);
-  ul{
-    display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    li{
-      width:80px;
-      height:80px;
-      margin-right:20px;
-      margin-bottom:20px;
-      position:relative;
-      &.add_button{
-        border:2px dashed rgb(211,211,211);
-        display:flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        cursor:pointer;
-        &:hover{
-          transition: all 0.4s;
-          border:2px dashed #655EFF;
-        }
-        .inner{
-          display:block;
-          width:16px;
-          height:16px;
-          background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
-        }
-      }
-      img{
-        width:100%;
-        height:100%;
-      }
-      i.delete_btn{
-        width:20px;
-        height:20px;
-        border-radius:50%;
-        background:url('../../../../assets/images/shop/editor/delete.png') no-repeat 0 0;
-        position:absolute;
-        top:0;
-        right:0;
-        cursor:pointer;
-      }
-    }
-  }
-}
 </style>

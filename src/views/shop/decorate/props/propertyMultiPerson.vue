@@ -14,7 +14,7 @@
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
-            <li class="add_button">
+            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
               <i class="inner"></i>
             </li>
           </ul>
@@ -22,7 +22,11 @@
       </el-form-item>
       <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
-        最多显示30个
+        最多显示30个  
+      </el-form-item>
+      <el-form-item label="" v-if="ruleForm.source === 2" prop="showAllBtns">
+        <el-checkbox v-model="ruleForm.showAllBtns">查看全部按钮</el-checkbox>
+        <el-button type="text" @click="dialogVisible=true; currentDialog='dialogMultiPersonDemo'">查看示例</el-button>
       </el-form-item>
       <el-form-item label="排序规则" v-if="ruleForm.source === 2" prop="sortRule">
         <el-select v-model="ruleForm.sortRule" placeholder="请选择排序规则">
@@ -132,22 +136,28 @@
         只展示活动进行中的拼团商品
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';
+import dialogSelectGoods from '../../dialogs/dialogSelectGoods';
+import dialogMultiPersonDemo from '../../dialogs/dialogMultiPersonDemo';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyMultiPerson',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectGoods, dialogMultiPersonDemo},
   data () {
     return {
       ruleForm: {
         source: 1,
         goods: '',
         showNumber: '',
+        showAllBtns: true,
         sortRule: 1,
         listStyle: 1,
         pageMargin: 15,
@@ -165,6 +175,8 @@ export default {
       rules: {
 
       },
+      dialogVisible: false,
+      currentDialog: '',
       goodsList: [
         {
           id: uuid(),
@@ -227,51 +239,4 @@ export default {
 </script>
 
 <style lang="scss">
-.goods_list{
-  background:rgb(247,247,249);
-  ul{
-    display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    li{
-      width:80px;
-      height:80px;
-      margin-right:20px;
-      margin-bottom:20px;
-      position:relative;
-      &.add_button{
-        border:2px dashed rgb(211,211,211);
-        display:flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        cursor:pointer;
-        &:hover{
-          transition: all 0.4s;
-          border:2px dashed #655EFF;
-        }
-        .inner{
-          display:block;
-          width:16px;
-          height:16px;
-          background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
-        }
-      }
-      img{
-        width:100%;
-        height:100%;
-      }
-      i.delete_btn{
-        width:20px;
-        height:20px;
-        border-radius:50%;
-        background:url('../../../../assets/images/shop/editor/delete.png') no-repeat 0 0;
-        position:absolute;
-        top:0;
-        right:0;
-        cursor:pointer;
-      }
-    }
-  }
-}
 </style>

@@ -421,11 +421,11 @@ ul.nav {
           display:block;
           width:2px;
           height:100%;
-          background:#655EFF;
+          background:$globalMainColor;
         }
       }
       .state{
-        color:#655EFF;
+        color:$globalMainColor;
       }
     }
     &.form{

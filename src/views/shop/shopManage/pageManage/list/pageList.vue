@@ -57,19 +57,24 @@
         </el-pagination>
       </div>
     </div>
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </div>
 </template>
 
 <script>
 import tableBase from '@/components/TableBase';
 import uuid from 'uuid/v4';
+import dialogPopularize from '../../../dialogs/dialogPopularize';
 export default {
   name: 'pageList',
   extends: tableBase,
-  components: {},
+  components: {dialogPopularize},
   data () {
     return {
-      tableList:[]
+      tableList:[],
+      dialogVisible: false,
+      currentDialog: '',
     }
   },
   created() {
@@ -101,7 +106,8 @@ export default {
 
     /* 推广 */
     spread(item) {
-
+       this.dialogVisible=true; 
+       this.currentDialog='dialogPopularize';
     },
 
     /* 设为首页 */
