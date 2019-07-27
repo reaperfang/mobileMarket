@@ -38,21 +38,25 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="跳转链接" prop="linkAddress">
-        <el-button type="text">选择跳转到的页面</el-button>
+        <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
       </el-form-item>
       <el-form-item label="更多设置" prop="showDivider">
         <el-checkbox v-model="ruleForm.showDivider">显示底部分割线</el-checkbox>
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';
+import dialogSelectJumpPage from '../../dialogs/dialogSelectJumpPage';
 export default {
   name: 'propertyText',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectJumpPage},
   data () {
     return {
       ruleForm: {
@@ -67,6 +71,8 @@ export default {
       rules: {
 
       },
+      dialogVisible: false,
+      currentDialog: '',
 
     }
   },

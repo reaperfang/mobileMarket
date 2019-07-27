@@ -1,0 +1,334 @@
+/* 店铺装修中的滑动条样式 */
+.slider-wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+
+	.el-slider {
+		width: 66%;
+	}
+
+	span {
+		margin-right: 20px;
+	}
+}
+
+/* 上传器加号框样式 */
+.el-upload {
+	width: 80px !important;
+	height: 80px !important;
+	line-height: 90px !important;
+}
+
+.el-upload-list__item {
+	width: 80px !important;
+	height: 80px !important;
+}
+
+/* 模块公共样式 */
+.module {
+	margin-right: 20px;
+
+	.block {
+		margin-bottom: 10px;
+		background: #fff;
+	}
+}
+
+/* 添加图片、视频、活动等按钮样式 */
+.add_button {
+	border: 2px dashed rgb(211, 211, 211);
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	width: 80px;
+	height: 80px;
+
+	&:hover {
+		transition: all 0.4s;
+		border: 2px dashed $globalMainColor;
+	}
+
+	.inner {
+		display: block;
+		width: 16px;
+		height: 16px;
+		background: url("../../../assets/images/shop/editor/icon_+.png")
+			no-repeat 0 0;
+	}
+}
+
+/* 上传块图片预览样式 */
+.img_preview {
+	width: 80px;
+	height: 80px;
+	position: relative;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
+
+	span {
+		display: block;
+		width: 100%;
+		text-align: center;
+		position: absolute;
+		bottom: 0;
+		height: 20px;
+		line-height: 20px;
+		background: rgb(124, 124, 124);
+		color: #fff;
+	}
+}
+
+/* 类商品列表样式 */
+.goods_list {
+	background: rgb(247, 247, 249);
+
+	ul {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		li {
+			width: 80px;
+			height: 80px;
+			margin-right: 20px;
+			margin-bottom: 20px;
+			position: relative;
+
+			&.add_button {
+				border: 2px dashed rgb(211, 211, 211);
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				cursor: pointer;
+
+				&:hover {
+					transition: all 0.4s;
+					border: 2px dashed $globalMainColor;
+				}
+
+				.inner {
+					display: block;
+					width: 16px;
+					height: 16px;
+					background: url("../../../assets/images/shop/editor/icon_+.png")
+						no-repeat 0 0;
+				}
+			}
+
+			img {
+				width: 100%;
+				height: 100%;
+			}
+
+			i.delete_btn {
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: url("../../../assets/images/shop/editor/delete.png")
+					no-repeat 0 0;
+				position: absolute;
+				top: 0;
+				right: 0;
+				cursor: pointer;
+			}
+		}
+	}
+}
+
+/* 魔方公共样式 */
+ul.cube {
+	li {
+		box-sizing: border-box;
+
+		.fill_block {
+			background: rgb(230, 228, 255);
+			height: 100%;
+			margin-right: 2px;
+			cursor: pointer;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+
+		.type1 {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.fill_block {
+				width: 50%;
+			}
+		}
+
+		.type2 {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.fill_block {
+				width: 33.3%;
+			}
+		}
+
+		.type3 {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.fill_block {
+				width: 25%;
+			}
+		}
+
+		.type4 {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			flex-wrap: wrap;
+
+			.fill_block {
+				width: calc(50% - 1px);
+				height: 50%;
+				margin-bottom: 2px;
+
+				&:nth-child(2n) {
+					margin-right: 0;
+				}
+			}
+		}
+
+		.type5 {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.fill_block1,
+			.fill_block2 {
+				width: calc(50% - 1px);
+				height: 100%;
+			}
+
+			.fill_block3,
+			.fill_block4 {
+				height: 50%;
+			}
+
+			.fill_block2 {
+				background: #fff;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+			}
+
+			.fill_block3 {
+				margin-right: 0;
+				margin-bottom: 2px;
+			}
+
+			.fill_block4 {
+				margin-bottom: 0;
+			}
+		}
+
+		.type6 {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+
+			.fill_block1,
+			.fill_block2 {
+				width: 100%;
+				height: 100%;
+				margin-right: 0;
+				margin-bottom: 2px;
+			}
+
+			.fill_block3,
+			.fill_block4 {
+				width: 50%;
+			}
+
+			.fill_block2 {
+				background: #fff;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+
+			.fill_block3 {
+				margin-right: 0;
+				margin-right: 2px;
+				height: auto;
+			}
+
+			.fill_block4 {
+				margin-bottom: 0;
+				height: auto;
+			}
+		}
+
+		.type7 {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.fill_block1,
+			.fill_block2 {
+				width: calc(50% - 1px);
+				height: 100%;
+			}
+
+			.fill_block3,
+			.fill_block4 {
+				height: 50%;
+			}
+
+			.fill_block2 {
+				background: #fff;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+			}
+
+			.fill_block3 {
+				margin-right: 0;
+				margin-bottom: 2px;
+			}
+
+			.fill_block4 {
+				margin-bottom: 0;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				background: #fff;
+
+				.fill_block5 {
+					width: 50%;
+					height: 100%;
+					margin-right: 2px;
+				}
+
+				.fill_block6 {
+					width: 50%;
+					height: 100%;
+					margin-right: 0;
+				}
+			}
+		}
+	}
+}

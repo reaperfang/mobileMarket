@@ -1,6 +1,6 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName">
             <el-tab-pane label="全部" name="first">
                 <div class="pane_container">
                     <div class="p_line">
@@ -18,7 +18,7 @@
                         <span>最近30天</span>
                     </div>
                     <div class="btn_tabs clearfix">
-                        <el-button class="fr" round>访问来源</el-button>
+                        <el-button class="fr marL10" round>访问来源</el-button>
                         <el-button class="fr" round>到店时段</el-button>
                         <el-button class="fr" round>访问次数</el-button>
                         <el-button class="active_btn fr" round>浏览量/访问量</el-button>
@@ -68,6 +68,7 @@ export default {
             }
         }
         .chart_container{
+            padding-top: 20px;
             border-top: 1px dashed #D3D3D3;
         }
     }

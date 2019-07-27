@@ -10,9 +10,9 @@
       <el-form-item label="" v-if="source === 1" prop="videoUrl">
         <div class="img_preview">
           <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
-          <span>更换图片</span>
+          <span @click="dialogVisible=true; currentDialog='dialogSelectVideo'">选择视频</span>
         </div>
-        <div class="add_button">
+        <div class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectVideo'">
           <i class="inner"></i>
         </div>
         建议视频宽高比16：9
@@ -30,23 +30,28 @@
       <el-form-item label="" v-if="coverType === 2" prop="coverUrl">
         <div class="img_preview">
           <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
-          <span>选择封面图</span>
+          <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">选择封面图</span>
         </div>
-        <div class="add_button">
+        <div class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
           <i class="inner"></i>
         </div>
         建议图片宽高比16:9
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';
+import dialogSelectVideo from '../../dialogs/dialogSelectVideo';
+import dialogSelectImageMaterial from '../../dialogs/dialogSelectImageMaterial';
 export default {
   name: 'propertyVideo',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectVideo, dialogSelectImageMaterial},
   data () {
     return {
       source: 1,
@@ -57,7 +62,9 @@ export default {
       },
       rules: {
 
-      }
+      },
+      dialogVisible: false,
+      currentDialog: '',
     }
   },
   methods: {
@@ -67,45 +74,5 @@ export default {
 </script>
 
 <style lang="scss">
-.add_button{
-  border:2px dashed rgb(211,211,211);
-  display:flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  cursor:pointer;
-  width: 80px;
-  height: 80px;
-  &:hover{
-    transition: all 0.4s;
-    border:2px dashed #655EFF;
-  }
-  .inner{
-    display:block;
-    width:16px;
-    height:16px;
-    background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
-  }
-}
-.img_preview{
-  width:80px;
-  height:80px;
-  position: relative;
-  img{
-    width:100%;
-    height:100%;
-  }
-  span{
-    display:block;
-    width:100%;
-    text-align:center;
-    position:absolute;
-    bottom:0;
-    height:20px;
-    line-height:20px;
-    background:rgb(124, 124, 124);
-    color:#fff;
-  }
-}
 
 </style>

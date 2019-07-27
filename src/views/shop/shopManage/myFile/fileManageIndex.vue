@@ -1,5 +1,7 @@
 <template>
-  <p>文件管理首页</p>
+  <p>文件管理首页
+
+  </p>
 </template>
 
 <script>
