@@ -137,9 +137,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .module{
-    margin-right:20px;
- }
+@import './decorate.scss';
  .view {
     width: 374px;
     border: 1px solid #e2e1e1;
@@ -174,7 +172,7 @@ export default {
         border-bottom:none;
         cursor:pointer;
         &.actived{
-          border:2px dashed rgba(101,94,255,1);
+          border:2px dashed $globalMainColor;
         }
         i{
           width:20px;

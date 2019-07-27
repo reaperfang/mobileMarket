@@ -43,13 +43,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .module{
-    margin-right:20px;
-  }
-  .block{
-    margin-bottom:10px;
-    background:#fff;
-  }
+@import './decorate.scss';
   .widget{
     width: 220px;
     height: 835px;

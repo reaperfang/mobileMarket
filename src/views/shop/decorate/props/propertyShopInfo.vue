@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';;
 export default {
   name: 'propertyShopInfo',
   mixins: [propertyMixin],
@@ -48,46 +48,5 @@ export default {
 </script>
 
 <style lang="scss">
-.add_button{
-  border:2px dashed rgb(211,211,211);
-  display:flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  cursor:pointer;
-  width: 80px;
-  height: 80px;
-  &:hover{
-    transition: all 0.4s;
-    border:2px dashed #655EFF;
-  }
-  .inner{
-    display:block;
-    width:16px;
-    height:16px;
-    background:url('../../../../assets/images/shop/editor/icon_+.png') no-repeat 0 0;
-  }
-}
-.img_preview{
-  width:80px;
-  height:80px;
-  position: relative;
-  img{
-    width:100%;
-    height:100%;
-  }
-  span{
-    display:block;
-    width:100%;
-    text-align:center;
-    position:absolute;
-    bottom:0;
-    height:20px;
-    line-height:20px;
-    background:rgb(124, 124, 124);
-    color:#fff;
-  }
-}
-</style>
 
 </style>

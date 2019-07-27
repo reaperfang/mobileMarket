@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';;
 export default {
   name: 'propertyText',
   mixins: [propertyMixin],

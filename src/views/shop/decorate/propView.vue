@@ -10,8 +10,6 @@
       </div>
       <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo"></component>
       <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
-      <!-- <div class="block form">
-      </div> -->
       <div class="block button">
         <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
         <el-button @click="saveData">保    存</el-button>
@@ -115,13 +113,7 @@ export default {
 </script>
 
 <style lang="scss">
- .module{
-    margin-right:20px;
-  }
-  .block{
-    margin-bottom:10px;
-    background:#fff;
-  }
+@import './decorate.scss';
   .props{
     width:346px;
     height: 835px;
@@ -141,11 +133,11 @@ export default {
             display:block;
             width:2px;
             height:100%;
-            background:#655EFF;
+            background:$globalMainColor;
           }
         }
         .state{
-          color:#655EFF;
+          color:$globalMainColor;
         }
       }
       &.form{
