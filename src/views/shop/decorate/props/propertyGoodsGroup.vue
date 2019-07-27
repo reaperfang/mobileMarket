@@ -3,7 +3,7 @@
     <div class="block form">
       <el-form-item label="商品分组" prop="goodsGroups">
         最多添加15个商品分组
-        <el-button type="info" plain>添加商品分组</el-button>
+        <el-button type="info" plain @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
         <div class="goods_groups">
           <el-tag
             v-for="tag in ruleForm.goodsGroups"
@@ -132,15 +132,19 @@
         </el-radio-group>
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './mixin';;
+import propertyMixin from './mixin';
+import dialogSelectGoodsGroup from '../../dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyGoodsGroup',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectGoodsGroup},
   data () {
     return {
       ruleForm: {
@@ -169,7 +173,9 @@ export default {
       },
       rules: {
 
-      }
+      },
+      dialogVisible: false,
+      currentDialog: '',
 
     }
   },

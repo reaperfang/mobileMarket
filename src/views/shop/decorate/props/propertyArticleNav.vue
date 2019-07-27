@@ -48,9 +48,9 @@
           <div class="left">
             <div v-if="item.url" class="img_preview">
               <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
-              <span>更换图片</span>
+              <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
             </div>
-            <div v-else class="add_button">
+            <div v-else class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
               <i class="inner"></i>
             </div>
           </div>
@@ -61,7 +61,7 @@
             </p>
             <p>
               <span>跳转链接</span>
-              <el-button type="text">选择跳转到的页面</el-button>
+              <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
             </p>
           </div>
         </li>
@@ -73,15 +73,20 @@
       <el-button type="info" plain style="width:100%" @click="addNav">添加页面</el-button>
       <p style="margin-top:10px;color:rgb(211,211,211)">最多添加 10 个导航，拖动选中的导航可对其排序小程序 v2.3.1 及以上版本支持</p>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './mixin';;
+import propertyMixin from './mixin';
+import dialogSelectJumpPage from '../../dialogs/dialogSelectJumpPage';
+import dialogSelectImageMaterial from '../../dialogs/dialogSelectImageMaterial';
 export default {
   name: 'propertyArticleNav',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectJumpPage, dialogSelectImageMaterial},
   data () {
     return {
       ruleForm: {
@@ -100,7 +105,9 @@ export default {
           }
         ]
       },
-      rules: {}
+      rules: {},
+      dialogVisible: false,
+      currentDialog: '',
     }
   },
   methods: {

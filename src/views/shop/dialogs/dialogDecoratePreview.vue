@@ -40,7 +40,7 @@ import DialogBase from "@/components/DialogBase";
 import utils from "@/utils";
 import widget from "@/system/constant/widget";
 export default {
-  name: "decoratePreview",
+  name: "dialogDecoratePreview",
   components: {DialogBase},
   props: {
       data: {},

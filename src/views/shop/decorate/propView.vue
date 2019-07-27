@@ -13,7 +13,7 @@
       <div class="block button">
         <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
         <el-button @click="saveData">保    存</el-button>
-        <el-button @click="dialogVisible=true; currentDialog='decoratePreview'">预    览</el-button>
+        <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
       </div>
       <!-- 动态弹窗 -->
       <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
@@ -23,10 +23,10 @@
 <script>
 import utils from '@/utils';
 import propertyBase from './props/propertyBase';
-import decoratePreview from '../dialogs/decoratePreview';
+import dialogDecoratePreview from '../dialogs/dialogDecoratePreview';
 export default {
   name: 'propView', 
-  components: {propertyBase, decoratePreview},
+  components: {propertyBase, dialogDecoratePreview},
   data () {
     return {
       currentComponent: null,  //当前组件名称

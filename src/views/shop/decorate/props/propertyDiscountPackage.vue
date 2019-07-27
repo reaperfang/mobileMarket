@@ -8,7 +8,7 @@
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
-            <li class="add_button">
+            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectPackage'">
               <i class="inner"></i>
             </li>
           </ul>
@@ -119,16 +119,20 @@
         </el-radio-group>
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './mixin';;
+import propertyMixin from './mixin';
+import dialogSelectPackage from '../../dialogs/dialogSelectPackage';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyDiscountPackage',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectPackage},
   data () {
     return {
       ruleForm: {
@@ -151,6 +155,8 @@ export default {
       rules: {
 
       },
+      dialogVisible: false,
+      currentDialog: '',
       goodsList: [
         {
           id: uuid(),

@@ -14,14 +14,14 @@
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
-            <li class="add_button">
+            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
               <i class="inner"></i>
             </li>
           </ul>
         </div>
       </el-form-item>
       <el-form-item label="商品分组" v-if="ruleForm.source === 2" prop="goodsGroup">
-        <el-button type="text">从商品分组中选择</el-button>
+        <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">从商品分组中选择</el-button>
       </el-form-item>
       <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
@@ -119,16 +119,21 @@
         </el-radio-group>
       </el-form-item>
     </div>
+    
+    <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
 import propertyMixin from './mixin';;
 import uuid from 'uuid/v4';
+import dialogSelectGoods from '../../dialogs/dialogSelectGoods';
+import dialogSelectGoodsGroup from '../../dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyGoods',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectGoods, dialogSelectGoodsGroup},
   data () {
     return {
       ruleForm: {
@@ -151,6 +156,8 @@ export default {
       rules: {
 
       },
+      dialogVisible: false,
+      currentDialog: '',
       goodsList: [
         {
           id: uuid(),
