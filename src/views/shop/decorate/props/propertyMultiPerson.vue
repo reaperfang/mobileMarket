@@ -12,7 +12,7 @@
           <ul>
             <li v-for="(item, key) of goodsList" :key="key">
               <img :src="item.url" alt="">
-              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
+              <i class="delete_btn" @click.stop="deleteMultiPerson(item)"></i>
             </li>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
               <i class="inner"></i>
@@ -138,7 +138,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"  @dialogDataSelected="dialogDataSelected"></component>
   </el-form>
 </template>
 
@@ -177,29 +177,7 @@ export default {
       },
       dialogVisible: false,
       currentDialog: '',
-      goodsList: [
-        {
-          id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
-          title: '这是商品标题',
-          desc: '这是商品描述',
-          price: 20
-        },
-        {
-          id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
-          title: '这是商品标题2',
-          desc: '这是商品描述2',
-          price: 37
-        },
-        {
-          id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
-          title: '这是商品标题2',
-          desc: '这是商品描述2',
-          price: 78
-        }
-      ]
+      goodsList: []
     }
   },
   created() {
@@ -215,8 +193,8 @@ export default {
   },
   methods: {
 
-    /* 删除项 */
-    deleteItem(item) {
+    /* 删除多人拼团 */
+    deleteMultiPerson(item) {
       const tempGoodsList = [...this.goodsList];
       for(let i=0;i<tempGoodsList.length;i++) {
         if(item === tempGoodsList[i]) {
@@ -233,7 +211,12 @@ export default {
         array.push(item.id);
       }
       this.ruleForm.goods = array.join(',');
-    }
+    },
+
+    /* 弹窗选中了商品 */
+    dialogDataSelected(goods) {
+      this.goodsList = goods;
+    },
   }
 }
 </script>

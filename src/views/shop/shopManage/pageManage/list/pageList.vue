@@ -180,16 +180,4 @@ export default {
   padding:20px;
   padding-top:0;
 }
-.table{
-  margin-top:20px;
-  background:#fff;
-  padding:20px;
-  p{
-    margin-bottom:20px;
-  }
-}
-thead th{
-  background: rgba(230,228,255,1)!important;
-  color:#837DFF!important;
-}
 </style>

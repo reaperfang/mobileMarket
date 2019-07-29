@@ -337,3 +337,23 @@ ul.cube {
 		}
 	}
 }
+
+
+/* 表格公共样式 */
+.inline-head{
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.table{
+  margin-top:20px;
+  background:#fff;
+  padding:20px;
+  p{
+    margin-bottom:20px;
+  }
+}
+thead th{
+  background: rgba(230,228,255,1)!important;
+  color:#837DFF!important;
+}

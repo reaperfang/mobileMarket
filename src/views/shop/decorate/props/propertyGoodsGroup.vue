@@ -2,15 +2,14 @@
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
       <el-form-item label="商品分组" prop="goodsGroups">
-        最多添加15个商品分组
-        <el-button type="info" plain @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
+        <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
         <div class="goods_groups">
           <el-tag
             v-for="tag in ruleForm.goodsGroups"
-            :key="tag.name"
+            :key="tag.title"
             closable
-            type="primary" @close="deleteGoodsGroup(tag)">
-            {{tag.name}}
+            type="success" @close="deleteGoodsGroup(tag)">
+            {{tag.title}}
           </el-tag>
         </div>
       </el-form-item>
@@ -134,7 +133,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
   </el-form>
 </template>
 
@@ -148,13 +147,7 @@ export default {
   data () {
     return {
       ruleForm: {
-        goodsGroups: [
-          { name: '标签一', type: '' },
-          { name: '标签二', type: 'success' },
-          { name: '标签三', type: 'info' },
-          { name: '标签四', type: 'warning' },
-          { name: '标签五', type: 'danger' }
-        ],
+        goodsGroups: [],
         showAllGroup: 1,
         showTemplate: 1,
         menuStyle: 1,
@@ -180,6 +173,8 @@ export default {
     }
   },
   methods: {
+
+    /* 删除商品分组 */
     deleteGoodsGroup(item) {
       const tempGoodsGroups = [...this.ruleForm.goodsGroups];
       for(let i=0;i<tempGoodsGroups.length;i++) {
@@ -188,6 +183,11 @@ export default {
         }
       }
       this.ruleForm.goodsGroups = tempGoodsGroups;
+    },
+
+    /* 弹窗选中了商品分组 */
+    dialogGoodsGroupSelected(goodsGroup) {
+      this.ruleForm.goodsGroups = goodsGroup;
     }
   }
 }
