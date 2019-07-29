@@ -16,22 +16,36 @@
         </div>
       </div>
       <div class="bottom_part">
-        
+        <saTable></saTable>
       </div>
     </div>    
 </template>
 
 <script>
+import saTable from './components/saTable'
 export default {
   name: 'subaccountManage',
   data() {
     return {
       form:{
-        name:''
+        name:'',
+        tableData: [{
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }]
       }
     }
   },
-  components: {},
+  components: {saTable},
   watch: {
     
   },
@@ -43,7 +57,10 @@ export default {
   },
   methods: {
     submit(){},
-    reset(){}
+    reset(){},
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    }
   }
 }
 </script>
