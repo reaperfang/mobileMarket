@@ -311,6 +311,9 @@ table.yuan-table{
 .marT20{
   margin-top: 20px;
 }
+.marR10{
+  margin-right: 10px;
+}
 .marR50{
   margin-right: 50px;
 }
@@ -338,6 +341,16 @@ table.yuan-table{
 .border_btn{
   border-color: #655EFF;
   color: #655EFF;
+}
+.minor_btn{
+  background-color: #E6E4FF;
+  color: #655EFF;
+  border: none;
+}
+.yellow_btn{
+  background-color: #FFF8EA;
+  color: #FFB723;
+  border: none;
 }
 /* 店铺装修中的滑动条样式 */
 .slider-wrapper{

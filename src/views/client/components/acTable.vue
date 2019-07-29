@@ -78,7 +78,7 @@ export default {
     return {
       dataList:[
         {
-          clientId:'',
+          memberSn:'',
           nickname:'',
           phone:'',
           memberType:'',

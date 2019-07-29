@@ -122,7 +122,7 @@
                             <el-form-item label="上次消费时间：">
                                 <div class="input_wrap2">
                                     <el-date-picker
-                                        v-model="form.minLast"
+                                        v-model="form.lastPayTimeStart"
                                         type="date"
                                         placeholder="选择日期">
                                     </el-date-picker>
@@ -130,7 +130,7 @@
                                 <span>至</span>
                                 <div class="input_wrap2">
                                     <el-date-picker
-                                        v-model="form.maxLast"
+                                        v-model="form.lastPayTimeEnd"
                                         type="date"
                                         placeholder="选择日期">
                                     </el-date-picker>
