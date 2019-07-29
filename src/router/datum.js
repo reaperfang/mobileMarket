@@ -39,6 +39,24 @@ export default [
         component: () => import('@/views/datum/commodityTransaction'),
         name: 'commodityTransaction',
         meta: { title: '商品交易', noCache: true, tabTitle: '交易' }
+      },
+      {
+        path: 'purchaseOrder',
+        component: () => import('@/views/datum/purchaseOrder'),
+        name: 'purchaseOrder',
+        meta: { title: '订单交易', noCache: true, tabTitle: '交易' }
+      },
+      {
+        path: 'perPrice',
+        component: () => import('@/views/datum/perPrice'),
+        name: 'perPrice',
+        meta: { title: '客单价', noCache: true, tabTitle: '智能运营' }
+      },
+      {
+        path: 'memberAnalysis',
+        component: () => import('@/views/datum/memberAnalysis'),
+        name: 'memberAnalysis',
+        meta: { title: '会员分析', noCache: true, tabTitle: '智能运营' }
       }
     ]
 	}
