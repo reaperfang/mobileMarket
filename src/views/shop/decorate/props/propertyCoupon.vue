@@ -7,7 +7,7 @@
           <el-radio :label="2">自动获取</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-button type="info" plain>添加优惠券(最多添加10张优惠券)</el-button>
+      <el-button type="info" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">添加优惠券(最多添加10张优惠券)</el-button>
       <el-form-item label="样式" prop="couponStyle">
         <el-radio-group v-model="ruleForm.couponStyle">
           <el-radio :label="1">样式1</el-radio>
@@ -32,15 +32,19 @@
         <p>当页面无可显示的优惠券时，优惠券区块将隐藏</p>
       </el-form-item>
     </div>
+
+     <!-- 动态弹窗 -->
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './propertyMixin.js';
+import propertyMixin from './mixin';
+import dialogSelectCoupon from '../../dialogs/dialogSelectCoupon';
 export default {
   name: 'propertyCoupon',
   mixins: [propertyMixin],
-  components: {},
+  components: {dialogSelectCoupon},
   data () {
     return {
       ruleForm: {
@@ -51,7 +55,9 @@ export default {
       },
       rules: {
 
-      }
+      },
+      dialogVisible: false,
+      currentDialog: '',
     }
   },
   methods: {

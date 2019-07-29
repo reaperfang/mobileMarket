@@ -244,6 +244,21 @@ table.yuan-table{
 }
 
 /* 取色器样式 */
+.color_block {
+	display: flex;
+
+	.el-input {
+		width: 120px !important;
+	}
+
+	.colorBtn {
+		margin-left: 20px;
+		margin-right: 10px;
+		margin-top: 2px;
+		width: 25px !important;
+		height: 25px !important;
+	}
+}
 .m-colorPicker{
   z-index:10;
   .box{
@@ -360,4 +375,9 @@ table.yuan-table{
     width: 25px !important;
     height: 25px !important;
   }
+}
+
+.description {
+  color: #92929B;
+  font-size: 12px;
 }
