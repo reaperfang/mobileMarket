@@ -28,11 +28,11 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="" v-if="coverType === 2" prop="coverUrl">
-        <div class="img_preview">
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
-          <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">选择封面图</span>
+        <div v-if="ruleForm.coverUrl" class="img_preview">
+          <img :src="ruleForm.coverUrl" alt="">
+          <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
         </div>
-        <div class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
+        <div v-else class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
           <i class="inner"></i>
         </div>
         建议图片宽高比16:9
@@ -40,7 +40,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </el-form>
 </template>
 
@@ -68,7 +68,10 @@ export default {
     }
   },
   methods: {
-
+    /* 弹框选中图片 */
+    imageSelected(dialogData) {
+      this.ruleForm.coverUrl= dialogData.src;
+    }
   }
 }
 </script>

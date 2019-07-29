@@ -152,13 +152,13 @@
         </div>
       </el-form-item>
       <el-form-item label="添加图片" prop="">
-        <div class="img_preview">
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
+        <!-- <div v-if="item.url" class="img_preview">
+          <img :src="item.url" alt="">
           <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
         </div>
-        <div class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
+        <div v-else class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
           <i class="inner"></i>
-        </div>
+        </div> -->
       </el-form-item>
       <el-form-item label="跳转链接" prop="pageLink">
          <el-input
@@ -170,7 +170,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </el-form>
 </template>
 
@@ -196,14 +196,22 @@ export default {
     }
   },
   methods: {
+
+    /* 选中模板 */
     selectTemplate(templateType) {
       this.ruleForm.templateType = templateType;
       this.blockType = 1;
     },
   
+    /* 选中具体布局中的一块 */
     selectLayout(templateType, blockType) {
       this.ruleForm.templateType = templateType;
       this.blockType = blockType;
+    },
+
+    /* 弹框选中图片 */
+    imageSelected(dialogData) {
+      console.log(dialogData);
     }
   }
 }

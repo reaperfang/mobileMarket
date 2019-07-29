@@ -1,7 +1,43 @@
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'选择图片'">
-    <div class="material_wrapper">
-        <vue-waterfall-easy :imgsArr="imgsArr" @scrollReachBottom="getData" :maxCols="3" @click="clickFn"></vue-waterfall-easy>
+  <DialogBase :visible.sync="visible" width="816px" :title="'选择图片'" @submit="submit">
+    <div class="material_head">
+      <div class="select">
+        <el-select v-model="ruleForm.group" placeholder="">
+          <el-option label="全部" :value="1"></el-option>
+          <el-option label="文章配图" :value="2"></el-option>
+          <el-option label="封面配图" :value="3"></el-option>
+        </el-select>
+      </div>
+      <el-upload
+        class="upload-demo"
+        action="http://35.201.165.105:8000/controller.php?action=uploadimage"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :on-success="handleSuccess"
+        :on-error="handleError"
+        :before-remove="beforeRemove"
+        :on-change="handleChange"
+        :before-upload="beforeUpload"
+        :name="'upfile'"
+        @clearFiles="clearUploadFiles"
+        multiple
+        :on-exceed="handleExceed"
+        :file-list="fileList">
+      <el-button size="small" type="primary">上传新图片</el-button>
+      <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+    </el-upload>
+    </div>
+    <div class="material_wrapper" ref="materialWrapper" v-loading="loading" :style="{'overflow-y': loading ? 'hidden' : 'auto'}">
+        <waterfall :col='3' :width="250" :gutterWidth="10"  :data="imgsArr" :isTransition="false" >
+          <template >
+            <div class="cell-item" v-for="(item,key) in imgsArr" :key="key" @click="selectImg($event, item)">
+              <img :src="item.src" alt="加载错误" @load="loadImg($event, item)" @error="loadError($event, item)"/> 
+              <div class="item-body">
+                  <div class="item-desc">{{item.title}}</div>
+              </div>
+            </div>
+          </template>
+        </waterfall>
     </div>
   </DialogBase>
 </template>
@@ -9,10 +45,9 @@
 <script>
 import DialogBase from "@/components/DialogBase";
 import utils from "@/utils";
-import vueWaterfallEasy from 'vue-waterfall-easy'
 export default {
   name: "dialogSelectImageMaterial",
-  components: {DialogBase, vueWaterfallEasy},
+  components: {DialogBase},
   props: {
       data: {},
       dialogVisible: {
@@ -22,8 +57,14 @@ export default {
   },
   data() {
     return {
+      loading: true,
       selectedItem: null,
-      imgsArr: [],
+      imgsArr: [], //维护的图片数据
+      fileList: [],  //用来显示进度条的列表
+      ruleForm: {
+        group: 1
+      },
+      uploadState: []   //本次上传状态列表
     };
   },
   computed: {
@@ -37,72 +78,215 @@ export default {
     }
   },
   created() {
-    setTimeout(() =>{
-       this.imgsArr = [
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564229835398&di=f35f6f00777401d5730264a0439f14d1&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F8a4d724c08e2c0b3ba7cac66a034282ef4687b5522d93-Ju140H_fw658',
-           title: '图片名称'
-         },
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564229836311&di=290d55f87a8d37bb02e455dda9bbe2ef&imgtype=0&src=http%3A%2F%2Fpic21.nipic.com%2F20120524%2F3279059_162841695000_2.jpg',
-           title: '图片名称'
-         },
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564824603&di=76d095a4f97b22e770e62a13a3676967&imgtype=jpg&er=1&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20150313%2Fpenjianshuicaichuangyibeijing_3933054.jpg',
-           title: '图片名称'
-         },
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564229883528&di=4ec0e86b13a2c8fee35bb25ac758edb2&imgtype=0&src=http%3A%2F%2Fi6.hexunimg.cn%2F2014-06-13%2F165651125.jpg',
-           title: '图片名称'
-         },
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564229883526&di=e8b177a716982285ad0bc43b038e3801&imgtype=0&src=http%3A%2F%2Fpic9.nipic.com%2F20100913%2F4652065_140247055894_2.jpg',
-           title: '图片名称'
-         },
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564229883525&di=ba342429f3be8dd35c44831e1206e1b4&imgtype=0&src=http%3A%2F%2Fimg01.tooopen.com%2FDowns%2Fimages%2F2010%2F4%2F20%2Fsy_20100420175911204047.jpg',
-           title: '图片名称'
-         },
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564229883523&di=dcc5de9cdadba3c24b54fd9e0d84416d&imgtype=0&src=http%3A%2F%2Fimg3.redocn.com%2Ftupian%2F20140715%2Fheisepaochechuangyihaibaosheji_2735041.jpg',
-           title: '图片名称'
-         },
-         {
-           href: 'http://www.baidu.com',
-           src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564229947039&di=6a1e44ec8912f1925109007ea5a25b41&imgtype=0&src=http%3A%2F%2Fimg.juimg.com%2Ftuku%2Fyulantu%2F110320%2F1781-1103200S04279.jpg',
-           title: '图片名称'
-         },
-       ]
-    },500)
+    this.imgsArr = [
+      {
+        loaded: false,
+        href: 'http://www.baidu.com',
+        src: 'https://lfyfly.github.io/vue-waterfall-easy/demo/static/img/1.jpg',
+        title: '图片名称'
+      }
+    ]
   },
   methods: {
 
-    /* 加载数据 */
-    getData() {
+    /**************************** 上传相关  开始 *******************************/
 
+    /* 移除上传队列中的某一条钩子 */
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
     },
 
-    clickFn(event, { index, value }) {
-        // 阻止a标签跳转
-        event.preventDefault()
-        // 只有当点击到图片时才进行操作
-        if (event.target.tagName.toLowerCase() == 'img') {
-          this.selectedItem = value;
+    /* 上传预览钩子 */
+    handlePreview(file) {
+      console.log(file);
+    },
+
+    /* 上传执行钩子 */
+    handleExceed(files, fileList) {
+      // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+
+    /* 移除上传队列中的某一条前的钩子 */
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${ file.name }？`);
+    },
+
+    /* 上传按钮改变钩子 */
+    handleChange(file, fileList) {
+      if(file.status === 'ready' && !this.uploadState.includes(file)) {
+        this.uploadState.push(file);
+      }
+    },
+
+    /* 上传前钩子 */
+    beforeUpload(file) {
+      if(!file) {
+        this.loading = false;
+      }else{
+        this.loading = true;
+      }
+    },
+
+    /* 上传成功钩子 */
+    handleSuccess(response, file, fileList) {
+      this.allImgUploaded();
+      this.imgsArr.push({
+        loaded: false,
+        href: '',
+        title: response.original,
+        src: `http://35.201.165.105:8000${response.url}`
+      })
+    },
+
+    /* 上传失败钩子 */
+    handleError(error, file, fileList) {
+      this.allImgUploaded();
+      this.imgsArr.push({
+        loaded: false,
+        href: '',
+        title: response.original,
+        src: ``
+      })
+    },
+
+     /* 检测全部图片上传结束 */
+    allImgUploaded() {
+      let bAllUploaded = true;
+      for(let item of this.uploadState){
+        if(item.status !== 'success'){
+          bAllUploaded = false;
+          break;
         }
       }
+
+      if(bAllUploaded) {
+        this.clearUploadFiles();
+      }
+    },
+
+    /* 清除上传进度条 */
+    clearUploadFiles() {
+      this.uploadState = [];
+      const allProgress = document.querySelectorAll('.el-upload-list__item');
+      for(let item of allProgress) {
+        item.parentNode.removeChild(item);
+      }
+    },
+    /**************************** 上传相关  结束 *******************************/
+
+
+
+    /**************************** 瀑布流相关  开始 *******************************/
+
+    /* 选中图片 */
+    selectImg(event, item) {
+      this.selectedItem = item;
+
+      const imgs = this.$refs.materialWrapper.querySelectorAll('.cell-item');
+      for(let item of imgs) {
+        item.className = 'cell-item';
+      };
+      event.currentTarget.className = 'cell-item img_active';
+    },
+
+
+    /* 成功加载图片 */
+    loadImg(event, item) {
+      this.$set(item, 'loaded', true);
+      this.allImgLoaded();
+    },
+
+    /* 图片加载失败 */
+    loadError(event, item) {
+      this.$set(item, 'loaded', true);  //只要加载了都算成功，用来后面统计
+      this.allImgLoaded();
+    },
+
+    /* 检测全部图片加载结束 */
+    allImgLoaded() {
+      let loadedLength = 0;
+      for(let item of this.imgsArr){
+        if(item.loaded){
+          loadedLength ++;
+        }
+      }
+
+      if(loadedLength === this.imgsArr.length) {
+        this.loading = false;
+      }
+    },
+
+    scroll(scrollData){
+        console.log(scrollData)
+    },
+    switchCol(col){
+        this.col = col
+        console.log(this.col)
+    },
+    loadmore(index){
+        this.data = this.data.concat(this.data)
+    },
+
+    /**************************** 瀑布流相关  结束 *******************************/
+
+    /* 向父组件提交选中的数据 */
+    submit() {
+      this.$emit('imageSelected',  this.selectedItem);
+    },
+
+
   }
 };
 </script>
 
 <style lang="scss">
+.material_head{
+  margin-bottom:20px;
+    .select{
+      display: flex;
+      padding-left: 5px;
+    }
+    .upload-demo{
+      width:100%;
+      position:relative;
+      .el-upload{
+        position: absolute;
+        right: 20px;
+        top: -65px;
+      }
+      .el-upload-list{
+        .el-upload-list__item {
+            width: 100% !important;
+            height: 30px !important;
+            text-align: left;
+            background: #f1efef;
+        }
+      }
+    }
+}
 .material_wrapper{
-  height:600px;
+  height:400px;
+  overflow-y: auto;
+
+  .cell-item {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #efeaea;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    img{
+      max-width: 100%;
+    }
+    .item-body{
+      padding:10px 0;
+    }
+  }
+  .img_active{
+    border: 2px dashed $globalMainColor!important;
+  }
 }
 </style>

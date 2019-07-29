@@ -70,7 +70,13 @@ export default [
 				component: () => import("@/views/shop/shopManage/shopStyle"),
 				name: "shopStyle",
 				meta: { title: "店铺风格", noCache: true }
-			}
+			},
+			{
+				path: "fileManageIndex",
+				component: () => import("@/views/shop/shopManage/myFile/fileManageIndex"),
+				name: "fileManageIndex",
+				meta: { title: "我的文件", noCache: true }
+			},
 		]
 	}
 ];

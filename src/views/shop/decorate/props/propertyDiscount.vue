@@ -8,7 +8,7 @@
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
-            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
+            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
               <i class="inner"></i>
             </li>
           </ul>
@@ -114,18 +114,18 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </el-form>
 </template>
 
 <script>
 import propertyMixin from './mixin';
-import dialogSelectImageMaterial from '../../dialogs/dialogSelectImageMaterial';
+import dialogSelectGoods from '../../dialogs/dialogSelectGoods';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyDiscount',
   mixins: [propertyMixin],
-  components: {dialogSelectImageMaterial},
+  components: {dialogSelectGoods},
   data () {
     return {
       ruleForm: {
@@ -203,6 +203,12 @@ export default {
         array.push(item.id);
       }
       this.ruleForm.goods = array.join(',');
+    },
+
+    /* 弹框选中图片 */
+    imageSelected(dialogData) {
+      this.currentNav.title= dialogData.title,
+      this.currentNav.url= dialogData.src;
     }
   }
 }

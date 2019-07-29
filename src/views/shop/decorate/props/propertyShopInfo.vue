@@ -11,11 +11,11 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="背景图片" prop="backgroundImage">
-        <div class="img_preview">
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg" alt="">
+        <div class="img_preview" v-if="ruleForm.backgroundImage">
+          <img :src="ruleForm.backgroundImage" alt="">
           <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
         </div>
-        <div class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
+        <div class="add_button" v-if="!ruleForm.backgroundImage" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
           <i class="inner"></i>
         </div>
         建议尺寸：750*370，尺寸不匹配时，图片将被压缩或拉伸以铺满四周
@@ -23,7 +23,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </el-form>
 </template>
 
@@ -49,6 +49,11 @@ export default {
     }
   },
   methods: {
+
+    /* 弹框选中图片 */
+    imageSelected(dialogData) {
+      this.ruleForm.backgroundImage = dialogData.src;
+    }
   }
 }
 </script>
