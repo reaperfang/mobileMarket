@@ -64,22 +64,26 @@ export default {
         {
             id: "01",
             text: "下单人数",
-            num: 8
+            num: 8,
+            unit: "人"
         },
         {
             id: "02",
             text: "下单订单数",
-            num: 8
+            num: 8,
+            unit: "单"
         },
         {
             id: "03",
             text: "下单（总）金额",
-            num: 8
+            num: 8,
+            unit: "元"
         },
         {
             id: "04",
             text: "访问下单转化率",
-            num: 8
+            num: 8,
+            unit: "%"
         }
     ],
     //订单交易-交易总况（未支付）
@@ -87,17 +91,20 @@ export default {
         {
             id: "01",
             text: "未支付人数",
-            num: 7
+            num: 7,
+            unit: "人"
         },
         {
             id: "02",
             text: "未支付订单数",
-            num: 7
+            num: 7,
+            unit: "单"
         },
         {
             id: "03",
             text: "未支付订单总金额",
-            num: 7
+            num: 7,
+            unit: "元"
         }
     ],
     //订单交易-交易总况（支付）
@@ -105,22 +112,26 @@ export default {
         {
             id: "01",
             text: "支付人数",
-            num: 7
+            num: 7,
+            unit: "人"
         },
         {
             id: "02",
             text: "支付订单数",
-            num: 7
+            num: 7,
+            unit: "单"
         },
         {
             id: "03",
             text: "订单支付（总）金额",
-            num: 7
+            num: 200,
+            unit: "元"
         },
         {
             id: "04",
             text: "下单支付转化率",
-            num: 7
+            num: 7,
+            unit: "%"
         }
     ],
     //订单交易-复购率及转化率
@@ -137,7 +148,7 @@ export default {
             url: require("@/assets/images/datum/c_10.png"),
             color: "#FF7777",
             text: "店铺支付转化率",
-            num: 43
+            num: 46
         }
     ]
 }
