@@ -12,7 +12,7 @@
                             </div>
                             <div v-for="item in placeOrderData" :key="item.id">
                                 <span class="marR10">{{item.text}}</span>
-                                <span class="addMainColor">{{item.num}}</span>
+                                <span class="addMainColor">{{item.num}}{{item.unit}}</span>
                             </div>
                         </div>
                         <div class="order_line">
@@ -22,7 +22,7 @@
                             </div>
                             <div v-for="item in nonPaymentData" :key="item.id">
                                 <span class="marR10">{{item.text}}</span>
-                                <span class="addMainColor">{{item.num}}</span>
+                                <span class="addMainColor">{{item.num}}{{item.unit}}</span>
                             </div>
                         </div>
                         <div class="order_line">
@@ -32,7 +32,7 @@
                             </div>
                             <div v-for="item in paymentData" :key="item.id">
                                 <span class="marR10">{{item.text}}</span>
-                                <span class="addMainColor">{{item.num}}</span>
+                                <span class="addMainColor">{{item.num}}{{item.unit}}</span>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                             <img :src="item.url" alt="" class="fl">
                             <div class="fr">
                                 <p>{{item.text}}</p>
-                                <p :style="{color: item.color}">43</p>
+                                <p :style="{color: item.color}">{{item.num}}%</p>
                             </div>
                         </div>
                     </div>

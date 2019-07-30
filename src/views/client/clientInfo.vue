@@ -135,6 +135,7 @@
 </template>
 <script type="es6">
 import clientCont from '@/system/constant/client';
+import {test} from '@/api/client';
 export default {
     data() {
         return {
@@ -153,7 +154,13 @@ export default {
     computed: {
         memberLabels() {
             return clientCont.memberLabels
+        },
+        test() {
+            return test
         }
+    },
+    mounted() {
+        console.log(test)
     }
 }
 </script>
