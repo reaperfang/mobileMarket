@@ -5,7 +5,7 @@
   <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转链接</el-button>
   {{ruleForm.imgList}}
    <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
 </div>
 </template>
 
@@ -31,7 +31,12 @@ export default {
     /* 弹框选中图片 */
     imageSelected(dialogData) {
       this.ruleForm.imgList.push(dialogData);
-    }
+    },
+
+    /* 弹窗选中了跳转链接 */
+    dialogDataSelected(jumpLink) {
+      console.log(jumpLink);
+    },
   }
 }
 </script>
