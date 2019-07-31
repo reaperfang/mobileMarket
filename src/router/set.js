@@ -57,7 +57,7 @@ export default [
                 path: 'createAccount',
                 component: () => import('@/views/set/createAccount'),
                 name: 'createAccount',
-                meta: { title: '新建子账号', noCache: true, tabTitle: '资产设置' },
+                meta: { title: '新建子账号', noCache: true, tabTitle: '权限管理' },
                 hidden: true
             },
             {
@@ -66,6 +66,13 @@ export default [
                 name: 'roleManage',
                 meta: { title: '角色管理', noCache: true, tabTitle: '权限管理' }
             },
+            {
+                path: 'createRole',
+                component: () => import('@/views/set/createRole'),
+                name: 'createRole',
+                meta: { title: '新建角色', noCache: true, tabTitle: '权限管理' },
+                hidden: true
+            }
         ]
     }
 ]
