@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="allUserList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
@@ -13,7 +13,7 @@
         label="客户ID">
       </el-table-column>
       <el-table-column
-        prop="nickname"
+        prop="nickName"
         label="客户信息">
       </el-table-column>
       <el-table-column
@@ -48,8 +48,8 @@
         <template slot-scope="scope">
             <div class="btns clearfix">
                 <span class="s1">详情</span>
-                <span class="s2">删除</span>
-                <span class="s3">标签</span>
+                <span class="s2" @click="handelDelete(scope.row.memberSn)">删除</span>
+                <span class="s3" @click="addTag(scope.row.cid)">标签</span>
                 <span class="s4">加入黑名单</span>
             </div>
         </template>
@@ -70,6 +70,7 @@
 </template>
 
 <script type='es6'>
+import clientApi from '@/api/client';
 import TableBase from "@/components/TableBase";
 export default {
   name: "acTable",
@@ -90,11 +91,21 @@ export default {
       ],
     };
   },
-  created() {
-
+  computed: {
+    allUserList() {
+      return clientApi.allUserList
+    }
+  },
+  mounted() {
+    //console.log(this.allUserList);
   },
   methods: {
-    
+    handelDelete(id) {
+      this.$emit('delete',id);
+    },
+    addTag(cid) {
+      this.$emit('addTag',cid);
+    }
   },
   components: {}
 };
@@ -110,6 +121,7 @@ export default {
                     padding-top: 22px;
                     text-align: center;
                     margin-right: 5px;
+                    cursor: pointer;
                     &.s1{
                         color:#655EFF;
                         background: url('../../../assets/images/client/icon_info.png') 0 0 no-repeat;

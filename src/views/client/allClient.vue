@@ -8,8 +8,9 @@
                     <el-col :span="4">
                         <el-form-item>
                             <el-select v-model="form.memberSn" placeholder="用户ID">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+                                <el-option label="昵称" value="shanghai"></el-option>
+                                <el-option label="用户ID" value="beijing"></el-option>
+                                <el-option label="手机号" value="beijing"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -25,9 +26,11 @@
                     </el-checkbox-group>
                 </el-form-item>
                 <el-form-item label="客户标签：" class="relaPosition">
-                    <el-checkbox-group v-model="form.memberLabels">
-                        <el-checkbox v-for="item in clientSignOps" :label="item" :key="item" border>{{item}}</el-checkbox>
-                    </el-checkbox-group>
+                    <div class="group_container">
+                        <el-checkbox-group v-model="form.memberLabels" style="width: 506px">
+                            <el-checkbox v-for="item in clientSignOps" :label="item" :key="item" border>{{item}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>
                     <el-button type="primary" class="absoPosition">添 加</el-button>
                     <img src="../../assets/images/client/icon_down.png" alt="" class="down_img">
                 </el-form-item>
@@ -152,40 +155,46 @@
                 <el-button type="primary">导入</el-button>
                 <el-button>导出</el-button>
             </div>
-            <acTable></acTable>
+            <acTable @delete="handleDelete" @addTag="addTag"></acTable>
         </div>
     </div>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
 <script>
 import clientCont from '@/system/constant/client';
 import acTable from './components/acTable';
+import deleteUserDialog from './dialogs/deleteUserDialog';
+import addTagDialog from './dialogs/addTagDialog';
 export default {
   name: 'allClient',
-  components: { acTable },
+  components: { acTable, deleteUserDialog, addTagDialog },
   data() {
     return {
       form: {
-            memberSn:"",
-            nickName:"",
-            memberType:['非会员客户'],
-            memberLabels: ['年轻用户'],
-            channelId: ['小程序'],
-            status: ['正常'],
-            scoreMin:"",
-            scoreMax:"",
-            totalDealMoneyMin:"",
-            totalDealMoneyMax:"",
-            dealTimesMin:"",
-            dealTimesMax:"",
-            perUnitPriceMin:"",
-            perUnitPriceMax:"",
-            becameCustomerTimeStart:"",
-            becameCustomerTimeEnd:"",
-            lastPayTimeStart:"",
-            lastPayTimeEnd:""
-        },
+        memberSn:"",
+        nickName:"",
+        memberType:['非会员客户'],
+        memberLabels: ['年轻用户'],
+        channelId: ['小程序'],
+        status: ['正常'],
+        scoreMin:"",
+        scoreMax:"",
+        totalDealMoneyMin:"",
+        totalDealMoneyMax:"",
+        dealTimesMin:"",
+        dealTimesMax:"",
+        perUnitPriceMin:"",
+        perUnitPriceMax:"",
+        becameCustomerTimeStart:"",
+        becameCustomerTimeEnd:"",
+        lastPayTimeStart:"",
+        lastPayTimeEnd:""
+      },
         showFold: true,
+        currentDialog:"",
+        dialogVisible: false,
+        currentData:{}
     }
   },
   watch: {
@@ -215,6 +224,16 @@ export default {
   methods: {
     handleMore() {
         this.showFold = !this.showFold;
+    },
+    handleDelete(id) {
+        this.dialogVisible = true;
+        this.currentDialog = "deleteUserDialog";
+        this.currentData.userId = id;
+    },
+    addTag(cid) {
+        console.log(cid);
+        this.dialogVisible = true;
+        this.currentDialog = "addTagDialog";
     }
   }
 }
@@ -257,12 +276,12 @@ export default {
             position: relative;
             .absoPosition{
                 position: absolute;
-                left: 612px;
+                left: 562px;
                 top: 0;
             }
             .down_img{
                 position: absolute;
-                left: 510px;
+                left: 524px;
                 top: 5px;
             }
             .more{
