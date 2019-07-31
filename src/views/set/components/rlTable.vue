@@ -1,4 +1,4 @@
-/* 子账号列表 */
+/* 角色列表 */
 <template>
   <div>
     <el-table
@@ -14,28 +14,23 @@
       </el-table-column>
       <el-table-column
         prop="cashoutSn"
-        label="姓名">
+        label="角色名称">
       </el-table-column>
       <el-table-column
         prop="memberInfoId"
-        label="角色">
+        label="角色描述">
       </el-table-column>
       <el-table-column
         prop="amount"
-        label="手机号">
+        label="包含人数">
       </el-table-column>
       <el-table-column
         prop="status"
-        label="添加人">
+        label="创建人">
       </el-table-column>
       <el-table-column
         prop="tradeDetailSn"
         label="创建时间">
-      </el-table-column>
-      <el-table-column
-        prop="applyTime"
-        label="初始密码"
-        sortable>
       </el-table-column>
       <el-table-column
       label="操作">
@@ -63,7 +58,7 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "reTable",
+  name: "rlTable",
   extends: TableBase,
   data() {
     return {
@@ -73,8 +68,7 @@ export default {
           memberInfoId:'123123',
           amount:'123123',
           status:'1',
-          tradeDetailSn:'123213213',
-          applyTime:'2019-05-23'
+          tradeDetailSn:'123213213'
         },
       ],
       multipleSelection: [],
