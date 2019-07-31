@@ -1,12 +1,104 @@
 <template>
-<div>propertyArticleAD
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+    <div class="block form">
+      <el-form-item label="选择模板" prop="templateType">
+        <ul class="tile-list n3 template_type">
+          <li @click="selectTemplate(1)" :class="{'active': ruleForm.templateType === 1}">
+            <div class="type1">
+              第一种
+            </div>
+            <p>一行一个</p>
+          </li>
+          <li @click="selectTemplate(2)" :class="{'active': ruleForm.templateType === 2}">
+            <div class="type2">
+              第二种
+            </div>
+            <p>轮播海报</p>
+          </li>
+          <li @click="selectTemplate(3)" :class="{'active': ruleForm.templateType === 3}">
+            <div class="type2">
+              第三种
+            </div>
+            <p>大图横向滑动</p>
+          </li>
+          <li @click="selectTemplate(4)" :class="{'active': ruleForm.templateType === 4}">
+            <div class="type2">
+              第四种
+            </div>
+            <p>小图横向滑动</p>
+          </li>
+          <li @click="selectTemplate(5)" :class="{'active': ruleForm.templateType === 5}">
+            <div class="type2">
+              第五种
+            </div>
+            <p>导航横向滑动</p>
+          </li>
+        </ul>
+      </el-form-item>
+    </div>
 
-  <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">选择图片</el-button>
-  <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转链接</el-button>
-  {{ruleForm.imgList}}
+    <div class="block form">
+      <ul class="item_list">
+        <li v-for="(item, key) of ruleForm.itemList" :key="key">
+          <div class="left">
+            <div v-if="item.url" class="img_preview">
+              <img :src="item.url" alt="">
+              <span @click="dialogVisible=true; currentAD=item; currentDialog='dialogSelectImageMaterial'">更换图片</span>
+            </div>
+            <div v-else class="add_button" @click="dialogVisible=true; currentAD=item; currentDialog='dialogSelectImageMaterial'">
+              <i class="inner"></i>
+            </div>
+          </div>
+          <div class="right">
+            <p>
+              <span>图片标题</span>
+              <el-input v-model="item.title"></el-input>
+            </p>
+            <p>
+              <span>跳转链接</span>
+              <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
+            </p>
+          </div>
+        </li>
+      </ul>
+      <el-button type="info" plain style="width:100%" @click="addNav">添加一个背景图</el-button>
+      <p style="margin-top:10px;color:rgb(211,211,211)">建议宽度305像素</p>
+    </div>
+
+     <div class="block form">
+        <el-form-item label="页面边距" prop="pageMargin">
+          <div class="slider-wrapper">
+            <el-slider v-model="ruleForm.pageMargin"></el-slider>
+            <span>{{ruleForm.pageMargin}}像素</span>
+          </div>
+        </el-form-item>
+        <el-form-item label="图片间距" prop="imgMargin">
+            <div class="slider-wrapper">
+            <el-slider v-model="ruleForm.imgMargin"></el-slider>
+            <span>{{ruleForm.imgMargin}}像素</span>
+            </div>
+        </el-form-item>
+    </div>
+
+    <div class="block form">
+      <el-form-item label="图片样式" prop="imgStyle">
+        <el-radio-group v-model="ruleForm.imgStyle">
+          <el-radio :label="1">常规</el-radio>
+          <el-radio :label="2">投影</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="图片倒角"  prop="imgChamfer">
+        <el-radio-group v-model="ruleForm.imgChamfer">
+          <el-radio :label="1">直角</el-radio>
+          <el-radio :label="2">圆角</el-radio>
+        </el-radio-group>
+      </el-form-item>
+    </div>
+
+
    <!-- 动态弹窗 -->
     <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
-</div>
+  </el-form>
 </template>
 
 <script>
@@ -22,15 +114,37 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       ruleForm: {
-        imgList: []
+        templateType: 1,
+        pageMargin: 10,
+        imgMargin: 10,
+        imgStyle: 1,
+        imgChamfer: 1,
+        itemList: [{
+          title: '',
+          url: ''
+        }],
       },
-      rules: {}
+      rules: {},
+      currentAD: null  //当前操作的图文导航 
     }
   },
   methods: {
+
+    selectTemplate(templateType) {
+      this.ruleForm.templateType = templateType;
+    },
+
+    addNav() {
+      this.ruleForm.itemList.push({
+        title: '图片广告',
+        url: ''
+      });
+    },
+
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.imgList.push(dialogData);
+      this.currentAD.title= dialogData.title,
+      this.currentAD.url= dialogData.src;
     },
 
     /* 弹窗选中了跳转链接 */
@@ -42,4 +156,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ul.template_type{
+  li{
+    width:65px;
+    border:1px solid rgb(228,227,235);
+    padding:10px;
+    box-sizing: border-box;
+    margin-right: 10px;
+    cursor:pointer;
+    &.active{
+      border:1px solid $globalMainColor;
+    }
+    p{
+      margin-top:6px;
+      text-align:center;
+    }
+  }
+}
+
+ul.item_list{
+  margin-top:20px;
+  li{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom:20px;
+    .left{
+      margin-right:20px;
+    }
+    .right{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      p{
+        span{
+
+        }
+        .el-input{
+          width: 130px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
 </style>

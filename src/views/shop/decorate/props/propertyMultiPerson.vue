@@ -138,7 +138,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"  @dialogDataSelected="dialogDataSelected"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"  @dialogDataSelected="dialogDataSelected" @dialogClosed="dialogClosed"></component>
   </el-form>
 </template>
 
@@ -217,6 +217,11 @@ export default {
     dialogDataSelected(goods) {
       this.goodsList = goods;
     },
+
+    /* 关闭案例弹窗 */
+    dialogClosed() {
+      this.currentDialog = '';
+    }
   }
 }
 </script>

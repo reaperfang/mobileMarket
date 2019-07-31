@@ -10,7 +10,7 @@
       <ul style="height:770px;overflow-y:auto;">
         <li v-for="(item,key) of componentDataIds" :key="key">
           <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
-          <el-tag type="success">{{item}}</el-tag>
+          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
       </ul>
     </div>
