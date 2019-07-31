@@ -3,6 +3,9 @@
     <div class="main">
         <h1>创建子账号</h1>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+            <el-form-item label="店铺名称:" prop="shopName">
+                <el-input v-model="form.shopName" style="width:182px;" placeholder="10个汉字"></el-input>
+            </el-form-item>
             <el-form-item label="人员名称:" prop="name">
                 <el-input v-model="form.name" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item>
@@ -29,13 +32,13 @@
 </template>
 
 <script>
-import { Script } from 'vm';
 // import { listArea } from '@/api/area'
 export default {
   name: 'createAccount',
   data() {
     return {
       form: {
+          shopName:'',
           name: '',
           phone: '',
           role: ['运营']
@@ -55,6 +58,9 @@ export default {
           }
       ],
       rules:{
+        shopName: [
+          { required: true, message: '请输入商铺名称', trigger: 'blur' }
+        ],
         name: [
           { required: true, message: '请输入人员名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
