@@ -47,10 +47,10 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
             <div class="btns clearfix">
-                <span class="s1">详情</span>
+                <span class="s1" @click="removeBlack(scope.row.memberSn)">详情</span>
                 <span class="s2" @click="handelDelete(scope.row.memberSn)">删除</span>
                 <span class="s3" @click="addTag(scope.row.cid)">标签</span>
-                <span class="s4">加入黑名单</span>
+                <span class="s4" @click="addBlackList(scope.row.cid)">加入黑名单</span>
             </div>
         </template>
       </el-table-column>
@@ -105,6 +105,9 @@ export default {
     },
     addTag(cid) {
       this.$emit('addTag',cid);
+    },
+    addBlackList(cid) {
+      this.$emit('addBlackList');
     }
   },
   components: {}

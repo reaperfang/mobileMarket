@@ -27,12 +27,12 @@
                 </el-form-item>
                 <el-form-item label="客户标签：" class="relaPosition">
                     <div class="group_container">
-                        <el-checkbox-group v-model="form.memberLabels" style="width: 506px">
+                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px', height: showMoreTag ?'78px':'37px', overflow: showMoreTag ? 'block':'hidden'}">
                             <el-checkbox v-for="item in clientSignOps" :label="item" :key="item" border>{{item}}</el-checkbox>
                         </el-checkbox-group>
                     </div>
                     <el-button type="primary" class="absoPosition">添 加</el-button>
-                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img">
+                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag">
                 </el-form-item>
                 <el-form-item label="客户渠道：" class="relaPosition">
                     <el-checkbox-group v-model="form.channelId">
@@ -155,7 +155,7 @@
                 <el-button type="primary">导入</el-button>
                 <el-button>导出</el-button>
             </div>
-            <acTable @delete="handleDelete" @addTag="addTag"></acTable>
+            <acTable @delete="handleDelete" @addTag="addTag" @addBlackList="addBlackList"></acTable>
         </div>
     </div>
     <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
@@ -166,9 +166,10 @@ import clientCont from '@/system/constant/client';
 import acTable from './components/acTable';
 import deleteUserDialog from './dialogs/deleteUserDialog';
 import addTagDialog from './dialogs/addTagDialog';
+import addBlackDialog from './dialogs/addBlackDialog';
 export default {
   name: 'allClient',
-  components: { acTable, deleteUserDialog, addTagDialog },
+  components: { acTable, deleteUserDialog, addTagDialog, addBlackDialog },
   data() {
     return {
       form: {
@@ -192,6 +193,7 @@ export default {
         lastPayTimeEnd:""
       },
         showFold: true,
+        showMoreTag: false,
         currentDialog:"",
         dialogVisible: false,
         currentData:{}
@@ -231,14 +233,23 @@ export default {
         this.currentData.userId = id;
     },
     addTag(cid) {
-        console.log(cid);
         this.dialogVisible = true;
         this.currentDialog = "addTagDialog";
+    },
+    addBlackList() {
+        this.dialogVisible = true;
+        this.currentDialog = "addBlackDialog";
+    },
+    extendTag() {
+        this.showMoreTag = !this.showMoreTag;
     }
   }
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+/deep/ .el-checkbox.is-bordered + .el-checkbox.is-bordered{
+    margin-bottom: 10px;
+}
 /deep/.el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner{
     display: none;
 }
