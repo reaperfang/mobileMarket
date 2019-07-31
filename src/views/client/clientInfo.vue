@@ -3,17 +3,17 @@
         <div class="c_top clearfix">
             <div class="c_top_l fl">
                 <p>基本信息：</p>
-                <img src="" alt="">
+                <img :src="clientInfoById.headIcon" alt="">
             </div>
             <div class="c_top_m fl">
-                <p style="margin-top: 0">客户ID: <span>0012</span></p>
+                <p style="margin-top: 0">客户ID: <span>{{clientInfoById.memberSn}}</span></p>
                 <p>微信公众号关注状态: <span>已关注</span></p>
-                <p>微信昵称: <span>小苗</span></p>
-                <p>手机号: <span>111111</span></p>
-                <p>客户渠道: <span>小程序</span></p>
-                <p>成为客户时间: <span>2018-01-01 12:00</span></p>
-                <p>成为会员时间: <span>2018-01-01 12:00</span></p>
-                <p>客户身份: <span class="addMainColor">变更</span></p>
+                <p>微信昵称: <span>{{clientInfoById.nickName}}</span></p>
+                <p>手机号: <span>{{clientInfoById.phone}}</span></p>
+                <p>客户渠道: <span>{{clientInfoById.channelName}}</span></p>
+                <p>成为客户时间: <span>{{clientInfoById.becameCustomerTime}}</span></p>
+                <p>成为会员时间: <span>{{clientInfoById.becameMemberTime}}</span></p>
+                <p>客户身份: <span class="addMainColor pointer">变更</span></p>
             </div>
             <div class="c_top_r fl">
                 <div class="c_title">
@@ -135,7 +135,7 @@
 </template>
 <script type="es6">
 import clientCont from '@/system/constant/client';
-import {test} from '@/api/client';
+import clientApi from '@/api/client';
 export default {
     data() {
         return {
@@ -155,12 +155,12 @@ export default {
         memberLabels() {
             return clientCont.memberLabels
         },
-        test() {
-            return test
+        clientInfoById() {
+            return clientApi.clientInfoById
         }
     },
     mounted() {
-        console.log(test)
+        console.log(this.clientInfoById);
     }
 }
 </script>
@@ -193,7 +193,7 @@ export default {
             }
         }
         .c_top_m{
-            width: 226px;
+            width: 240px;
             margin-left: 26px;
             p{
                 margin-top: 10px;

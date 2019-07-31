@@ -13,13 +13,13 @@ import datum from './datum';
 import profile from './profile';
  
 export const asyncRouterMap = [  //异步路由表
-  ...profile,
-  ...goods,
 	...demo,
+  ...profile,
   ...shop,
-  ...intelligentOperation,
+  ...goods,
   ...client,
   ...datum,
+  ...intelligentOperation,
   ...finance,
   ...set
 ]

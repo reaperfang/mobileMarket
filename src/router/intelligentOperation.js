@@ -11,10 +11,10 @@ export default [
         },
         children: [
             {
-                path: 'perTicketSales',
-                component: () => import('@/views/intelligentOperation/perTicketSales'),
-                name: 'perTicketSales',
-                meta: { title: '客单价', noCache: true, tabTitle: '客单价' }
+                path: 'perPrice',
+                component: () => import('@/views/intelligentOperation/perPrice'),
+                name: 'perPrice',
+                meta: { title: '客单价', noCache: true, tabTitle: '智能运营' }
             },
             {
                 path: 'memberInfo',
@@ -24,28 +24,29 @@ export default [
             },
             {
                 path: 'channel',
-                component: () => import('@/views/intelligentOperation/memberInfo'),
+                component: () => import('@/views/intelligentOperation/channel'),
                 name: 'channel',
                 meta: { title: '渠道转化', noCache: true, tabTitle: '会员分析' }
             },
             {
                 path: 'integral',
-                component: () => import('@/views/intelligentOperation/memberInfo'),
+                component: () => import('@/views/intelligentOperation/integral'),
                 name: 'integral',
                 meta: { title: '积分消耗', noCache: true, tabTitle: '会员分析' }
             },
             {
                 path: 'evaluate',
-                component: () => import('@/views/intelligentOperation/memberInfo'),
+                component: () => import('@/views/intelligentOperation/evaluate'),
                 name: 'evaluate',
                 meta: { title: '评价', noCache: true, tabTitle: '口碑分析' }
             },
             {
                 path: 'rightsProtection',
-                component: () => import('@/views/intelligentOperation/memberInfo'),
+                component: () => import('@/views/intelligentOperation/rightsProtection'),
                 name: 'rightsProtection',
                 meta: { title: '维权', noCache: true, tabTitle: '口碑分析' }
             },
+
         ]
     }
 ]
