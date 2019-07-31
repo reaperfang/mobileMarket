@@ -74,7 +74,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
   </el-form>
 </template>
 
@@ -121,7 +121,12 @@ export default {
     imageSelected(dialogData) {
       this.currentNav.title= dialogData.title,
       this.currentNav.url= dialogData.src;
-    }
+    },
+
+    /* 弹窗选中了跳转链接 */
+    dialogDataSelected(jumpLink) {
+      console.log(jumpLink);
+    },
   }
 }
 </script>

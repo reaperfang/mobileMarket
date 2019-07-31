@@ -10,8 +10,10 @@ import set from './set';
 import intelligentOperation from './intelligentOperation';
 import client from './client';
 import datum from './datum';
+import profile from './profile';
  
 export const asyncRouterMap = [  //异步路由表
+  ...profile,
   ...goods,
 	...demo,
   ...shop,
