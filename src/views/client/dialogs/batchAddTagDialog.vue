@@ -1,6 +1,7 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="加标签" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="批量加标签" :hasCancel="hasCancel">
         <div class="c_container">
+            <p>当前选中共20个客户，批量添加以下标签：</p>
             <el-checkbox-group
                 v-model="checkedItems"
                 :max="5">
@@ -14,7 +15,7 @@ import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
     props: ['data'],
-    name: "addTagDialog",
+    name: "batchAddTagDialog",
     data() {
         return {
             hasCancel: true,

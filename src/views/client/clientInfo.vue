@@ -137,6 +137,7 @@
 import clientCont from '@/system/constant/client';
 import clientApi from '@/api/client';
 export default {
+    name: 'clientInfo',
     data() {
         return {
             form: {

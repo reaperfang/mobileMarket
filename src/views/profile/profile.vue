@@ -71,6 +71,7 @@
 <script>
 import profileCont from '@/system/constant/profile'
 export default {
+    name: 'profile',
     data() {
         return {
 

@@ -26,6 +26,7 @@
 <script type="es6">
 import clTable from './components/clTable';
 export default {
+    name:'clientLabel',
     components: { clTable },
     data() {
         return {

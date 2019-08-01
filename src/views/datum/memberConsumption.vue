@@ -27,6 +27,7 @@
 <script>
 import mcTable from './components/mcTable'
 export default {
+    name: 'memberConsumption',
     components: { mcTable },
     data() {
         return {

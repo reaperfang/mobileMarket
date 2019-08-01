@@ -69,6 +69,7 @@ import ip1Chart from './components/ip1Chart';
 import ip2Chart from './components/ip2Chart';
 import ip3Chart from './components/ip3Chart';
 export default {
+    name: 'identityProperty',
     components: { ip1Chart, ip2Chart, ip3Chart },
     data() {
         return {

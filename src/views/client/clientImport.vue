@@ -79,6 +79,7 @@ import clientCont from '@/system/constant/client';
 import ciTable from './components/ciTable';
 export default {
     components: { ciTable },
+    name: 'clientImport',
     data() {
         return {
             form: {

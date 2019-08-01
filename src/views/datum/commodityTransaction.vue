@@ -52,6 +52,7 @@ import datumCont from '@/system/constant/datum';
 import ct1Table from './components/ct1Table'
 import ct2Table from './components/ct2Table'
 export default {
+    name: 'commodityTransaction',
     components: { ct1Table, ct2Table },
     data() {
         return {

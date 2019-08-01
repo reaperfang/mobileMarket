@@ -109,6 +109,7 @@
 <script>
 import apChart from './components/apChart'
 export default {
+    name: 'accessPath',
     components: { apChart },
     data() {
         return {

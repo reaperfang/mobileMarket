@@ -39,6 +39,7 @@
 import cdTable from './components/cdTable';
 import lkTable from './components/lkTable';
 export default {
+    name: "cardManage",
     components: { cdTable, lkTable },
     data() {
         return {

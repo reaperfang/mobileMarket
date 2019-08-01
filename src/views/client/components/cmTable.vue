@@ -41,7 +41,7 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "acTable",
+  name: "cmTable",
   extends: TableBase,
   data() {
     return {

@@ -3,6 +3,7 @@
   <div>
     <el-table
       :data="allUserList"
+      ref="allClientTable"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
@@ -66,6 +67,13 @@
         :total="100">
       </el-pagination>
     </div>
+    <div class="a_line">
+      <el-checkbox v-model="checkAll" @change="handleChange"></el-checkbox>
+      <el-button type="primary" @click="batchDelete">批量删除</el-button>
+      <el-button class="border_btn" @click="batchAddTag">打标签</el-button>
+      <el-button class="border_btn" @click="batchAddBlack">加入黑名单</el-button>
+      <el-button class="border_btn">取消黑名单</el-button>
+    </div>
   </div>
 </template>
 
@@ -89,6 +97,7 @@ export default {
           perUnitPrice:''
         },
       ],
+      checkAll: false
     };
   },
   computed: {
@@ -103,11 +112,28 @@ export default {
     handelDelete(id) {
       this.$emit('delete',id);
     },
+    batchDelete() {
+      this.$emit('batchDelete');
+    },
+    batchAddTag() {
+      this.$emit('batchAddTag');
+    },
     addTag(cid) {
       this.$emit('addTag',cid);
     },
     addBlackList(cid) {
       this.$emit('addBlackList');
+    },
+    removeBlack(id) {
+      this.$emit('removeBlack');
+    },
+    batchAddBlack() {
+      this.$emit('batchAddBlack');
+    },
+    handleChange() {
+      this.allUserList.forEach(row => {
+        this.$refs.allClientTable.toggleRowSelection(row)
+      });
     }
   },
   components: {}
@@ -144,15 +170,7 @@ export default {
                 }
             }
         }
-.btns{
-    span{
-        display: block;
-        float:left;
-        height: 41px;
-        &.s1{
-            background: url('../../../assets/images/client/icon_info.png') 0 0 no-repeat;
-            
-        }
-    }
+.a_line{
+  padding-left: 17px;
 }
 </style>

@@ -20,10 +20,22 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item label="客户身份：">
+                <el-form-item label="客户身份：" class="relaPosition">
                     <el-checkbox-group v-model="form.memberType">
                         <el-checkbox v-for="item in clientStatusOps" :label="item" :key="item" border>{{item}}</el-checkbox>
                     </el-checkbox-group>
+                    <el-popover
+                        ref="popover"
+                        placement="right"
+                        width="400"
+                        v-model="popVisible"
+                        trigger="hover"
+                    >
+                        <p class="p_title">客户身份说明</p>
+                        <p class="p_over1">客户身份包括：非会员、会员。其中会员包括新会员和老会员。成为会员的条件和新、老会员的条件可进行配置。</p>
+                        <p class="p_over2">【查看/配置会员身份规则】</p>
+                    </el-popover>
+                    <img src="../../assets/images/client/icon_ask.png" alt="" v-popover:popover class="pop_img">
                 </el-form-item>
                 <el-form-item label="客户标签：" class="relaPosition">
                     <div class="group_container">
@@ -155,7 +167,7 @@
                 <el-button type="primary">导入</el-button>
                 <el-button>导出</el-button>
             </div>
-            <acTable @delete="handleDelete" @addTag="addTag" @addBlackList="addBlackList"></acTable>
+            <acTable @delete="handleDelete" @addTag="addTag" @addBlackList="addBlackList" @removeBlack="removeBlack" @batchDelete="batchDelete" @batchAddBlack="batchAddBlack" @batchAddTag="batchAddTag"></acTable>
         </div>
     </div>
     <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
@@ -167,9 +179,13 @@ import acTable from './components/acTable';
 import deleteUserDialog from './dialogs/deleteUserDialog';
 import addTagDialog from './dialogs/addTagDialog';
 import addBlackDialog from './dialogs/addBlackDialog';
+import removeBlackDialog from './dialogs/removeBlackDialog';
+import batchDeleteUserDialog from './dialogs/batchDeleteUserDialog';
+import batchAddBlackDialog from './dialogs/batchAddBlackDialog';
+import batchAddTagDialog from './dialogs/batchAddTagDialog';
 export default {
   name: 'allClient',
-  components: { acTable, deleteUserDialog, addTagDialog, addBlackDialog },
+  components: { acTable, deleteUserDialog, addTagDialog, addBlackDialog, removeBlackDialog, batchDeleteUserDialog, batchAddBlackDialog, batchAddTagDialog },
   data() {
     return {
       form: {
@@ -196,7 +212,8 @@ export default {
         showMoreTag: false,
         currentDialog:"",
         dialogVisible: false,
-        currentData:{}
+        currentData:{},
+        popVisible: false
     }
   },
   watch: {
@@ -239,6 +256,18 @@ export default {
     addBlackList() {
         this.dialogVisible = true;
         this.currentDialog = "addBlackDialog";
+    },
+    removeBlack() {
+        this.dialogVisible = true;
+        this.currentDialog = "removeBlackDialog";
+    },
+    batchDelete() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchDeleteUserDialog";
+    },
+    batchAddBlack() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchAddBlackDialog";
     },
     extendTag() {
         this.showMoreTag = !this.showMoreTag;
@@ -305,6 +334,11 @@ export default {
                     margin-left: 10px;
                 }
             }
+            .pop_img{
+                position: absolute;
+                left: 230px;
+                top: -7px;
+            }
         }
         .fold_part{
             .input_wrap{
@@ -324,5 +358,19 @@ export default {
             cursor: pointer;
         }
     }
+}
+.p_title{
+    height: 40px;
+    line-height: 40px;
+    background:rgba(101,94,255,0.09);
+    font-size: 18px;
+    padding-left: 10px;
+}
+.p_over1{
+    margin: 20px 0;
+}
+.p_over2{
+    cursor: pointer;
+    color: #6457FF;
 }
 </style>

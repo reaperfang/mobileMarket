@@ -43,6 +43,7 @@
 </template>
 <script>
 export default {
+    name: 'upgrade',
     data() {
         return {
 

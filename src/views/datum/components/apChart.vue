@@ -4,7 +4,7 @@ import chartBase from "@/components/ChartBase";
 // import chinaMap from "@/assets/js/chinaMap.js";
 // import worldMap from "@/assets/js/worldMap.js";
 export default {
-  name: "pfChart",
+  name: "apChart",
   extends: chartBase,
   data() {
     return {};

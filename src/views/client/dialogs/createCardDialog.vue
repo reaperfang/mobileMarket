@@ -29,6 +29,7 @@
 import DialogBase from '@/components/DialogBase'
 
 export default {
+    name: 'createCardDialog',
     data() {
         return {
             hasCancel: true,
