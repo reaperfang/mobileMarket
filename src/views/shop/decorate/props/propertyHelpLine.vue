@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       ruleForm: {
-        lineColor: '',
-        lineMargin: 2,
+        lineColor: 'rgb(229,229,229)',
+        lineMargin: 1,
         lineStyle: 1
       },
       rules: {

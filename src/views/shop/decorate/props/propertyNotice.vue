@@ -35,8 +35,8 @@ export default {
     return {
       ruleForm: {
         notice: '',
-        backgroundColor: '',
-        fontColor: ''
+        backgroundColor: 'rgb(255,248,233)',
+        fontColor: 'rgb(102,102,102)'
       },
       rules: {
 

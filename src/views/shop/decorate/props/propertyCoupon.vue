@@ -57,7 +57,7 @@ export default {
   data () {
     return {
       ruleForm: {
-        addType: 1,
+        addType: 2,
         couponStyle: 1,
         couponColor: 1,
         hideScrambled: true,

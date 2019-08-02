@@ -46,7 +46,7 @@ export default {
   data () {
     return {
       ruleForm: {
-        title: '',
+        title: '满减/满折',
         promotion: '',
         displayStyle: 1
       },

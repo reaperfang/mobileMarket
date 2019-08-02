@@ -68,13 +68,13 @@
      <div class="block form">
         <el-form-item label="页面边距" prop="pageMargin">
           <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.pageMargin"></el-slider>
+            <el-slider v-model="ruleForm.pageMargin" :min="0" :max="30"></el-slider>
             <span>{{ruleForm.pageMargin}}像素</span>
           </div>
         </el-form-item>
         <el-form-item label="图片间距" prop="imgMargin">
             <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.imgMargin"></el-slider>
+            <el-slider v-model="ruleForm.imgMargin" :min="0" :max="30"></el-slider>
             <span>{{ruleForm.imgMargin}}像素</span>
             </div>
         </el-form-item>

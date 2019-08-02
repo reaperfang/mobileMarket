@@ -140,7 +140,6 @@ export default {
 @import './decorate.scss';
  .view {
     width: 374px;
-    border: 1px solid #e2e1e1;
     .phone-head {
       width: 100%;
       height: 64px;
@@ -161,7 +160,7 @@ export default {
       }
     }
     .phone-body {
-      height: 765px;
+      height: 775px;
       overflow-y: auto;
       .component_wrapper{
         background:#fff;
