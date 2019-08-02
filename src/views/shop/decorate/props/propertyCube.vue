@@ -186,7 +186,7 @@ export default {
     return {
       ruleForm: {
         templateType: 1,
-        imgMargin: 2,
+        imgMargin: 0,
         pagePadding:0
       },
       rules: {},

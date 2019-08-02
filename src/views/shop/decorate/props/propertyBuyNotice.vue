@@ -77,8 +77,8 @@ export default {
         buyType: 1,
         intervalStart: 10,
         intervalEnd: 60,
-        backgroundColor: '',
-        fontColor: '',
+        backgroundColor: 'rgb(255,248,233)',
+        fontColor: 'rgb(102,102,102)',
         goodsType: 1,
         goods: '',
         goodsGroups: []
