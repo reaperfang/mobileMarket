@@ -135,13 +135,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .head-wrapper{
   background:#fff;
   padding:20px;
   padding-top:0;
 }
-.table{
+/deep/ .table{
   margin-top:20px;
   background:#fff;
   padding:20px;
@@ -149,7 +149,7 @@ export default {
     margin-bottom:20px;
   }
 }
-thead th{
+/deep/ thead th{
   background: rgba(230,228,255,1)!important;
   color:#837DFF!important;
 }

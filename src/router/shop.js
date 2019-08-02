@@ -60,6 +60,13 @@ export default [
 				meta: { title: "启动广告", noCache: true }
 			},
 			{
+				path: "createAD",
+				component: () => import("@/views/shop/shopManage/startingAD/createAD"),
+				name: "createAD",
+				meta: { title: "创建广告", noCache: true },
+				hidden: true
+			},
+			{
 				path: "shopNav",
 				component: () => import("@/views/shop/shopManage/shopNav"),
 				name: "shopNav",
