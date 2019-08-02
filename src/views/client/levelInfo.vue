@@ -134,7 +134,7 @@
     </div>
 </template>
 <script type="es6">
-import levelInfoDialog from './dialogs/levelInfoDialog'
+import levelInfoDialog from './dialogs/levelInfo/levelInfoDialog'
 export default {
     name: 'levelInfo',
     components: { levelInfoDialog },

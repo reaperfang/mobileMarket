@@ -56,6 +56,7 @@
 import pp1Chart from './components/pp1Chart';
 import ppTable from './components/ppTable';
 export default {
+    name: 'perPrice',
     components: { pp1Chart, ppTable },
     data() {
         return {

@@ -1,6 +1,6 @@
 /*账号信息 */
 <template>
-    <div class="shopInfo">
+    <div class="main">
         <el-form ref="form" :model="form" label-width="120px">
             <el-form-item label="登录账号:" prop="name">
                 17625412586
@@ -70,7 +70,7 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.shopInfo{
+.main{
    width: 100%;
    height: 100%;
    background: #fff; 

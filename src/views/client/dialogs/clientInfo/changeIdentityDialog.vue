@@ -1,17 +1,16 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="删除黑名单" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="变更客户身份" :hasCancel="hasCancel">
         <div class="c_container">
-            <p>ID:<span>0001</span></p>
-            <p>当前冻结：</p>
-            <div class="clearfix">
-                <p class="fl">优惠券：</p>
-                <div class="fl">
-                    <span>漏洞优惠券</span>
-                    <span>漏洞优惠券</span>
-                    <span>漏洞优惠券</span>
-                </div>
+            <p class="user_id">用户ID：0001</p>
+            <p class="user_id">当前身份：非会员身份</p>
+            <div class="s_cont">
+                <span>变更为：</span>
+                <el-select v-model="identities" style="margin-bottom: 10px">
+                    <el-option label="VIP1" value="1"></el-option>
+                    <el-option label="VIP2" value="2"></el-option>
+                    <el-option label="VIP3" value="3"></el-option>
+                </el-select>
             </div>
-            <p class="red">确定将该客户冻结权限全部解冻吗？</p>
         </div>
     </DialogBase>
 </template>
@@ -19,11 +18,12 @@
 import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
-    name: 'removeBlackDialog',
+    name: "changeIdentityDialog",
     props: ['data'],
     data() {
         return {
-            hasCancel: true
+            hasCancel: true,
+            identities:""
         }
     },
     methods: {
@@ -59,16 +59,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.c_container{
-    p{
-        text-align: left;
-        margin-bottom: 20px;
-        &.red{
-            text-align: center;
-            color: #F55858;
-            margin: 20px 0 5px 0;
-        }
-    }
+.user_id{
+    text-align: left;
+    padding: 0 0 21px 15px;
+}
+.s_cont{
+    text-align: left;
+    padding-left: 16px;
 }
 </style>
 

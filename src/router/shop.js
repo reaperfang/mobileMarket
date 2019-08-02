@@ -10,7 +10,7 @@ export default [
 		name: "shopManage",
 		meta: {
 			roles: ["shop"],
-			title: "店铺管理",
+			title: "店铺",
 			icon: "shop"
 		},
 		children: [

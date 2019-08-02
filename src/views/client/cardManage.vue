@@ -36,8 +36,8 @@
     </div>
 </template>
 <script type="es6">
-import cdTable from './components/cdTable';
-import lkTable from './components/lkTable';
+import cdTable from './components/cardManage/cdTable';
+import lkTable from './components/cardManage/lkTable';
 export default {
     name: "cardManage",
     components: { cdTable, lkTable },

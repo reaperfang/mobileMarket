@@ -1,6 +1,6 @@
 /*修改密码 */
 <template>
-    <div class="shopInfo">
+    <div class="main">
         <el-form ref="form" :model="form" label-width="120px">
             <el-form-item label="请输入旧密码:" prop="name">
                 <el-input v-model="form.nickName" style="width:200px;"></el-input>
@@ -60,7 +60,7 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.shopInfo{
+.main{
    width: 100%;
    height: 100%;
    background: #fff; 

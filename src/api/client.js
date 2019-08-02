@@ -37,7 +37,8 @@ export default {
         "levelInfoId": "1",
         "levelName": "vip1",
         "cardLevelInfoId": null,
-        "cardLevelName": "",
+        "cardLevelName": "金卡",
+        "couponNum": 5,
         "score": 100,
         "balance": 50,
         "frozenBalance": null,
@@ -173,7 +174,7 @@ export default {
             "labelCondition":"消费满100"
         },
         {
-            "id": "1",
+            "id": "2",
             "cid": "2",
             "tagName": "女强人",
             "tagType": 1,
@@ -202,7 +203,7 @@ export default {
             "labelCondition":"消费满100"
         },
         {
-            "id": "1",
+            "id": "3",
             "cid": "2",
             "tagName": "爱旅游",
             "tagType": 1,
@@ -231,7 +232,7 @@ export default {
             "labelCondition":"消费满100"
         },
         {
-            "id": "1",
+            "id": "4",
             "cid": "2",
             "tagName": "爱看书",
             "tagType": 1,
@@ -260,7 +261,7 @@ export default {
             "labelCondition":"消费满100"
         },
         {
-            "id": "1",
+            "id": "5",
             "cid": "2",
             "tagName": "多字多字多字",
             "tagType": 1,
@@ -289,7 +290,7 @@ export default {
             "labelCondition":"消费满100"
         },
         {
-            "id": "1",
+            "id": "6",
             "cid": "2",
             "tagName": "somethingsomething",
             "tagType": 1,
@@ -316,6 +317,96 @@ export default {
             "isProduct": 1,
             "enable": 2,
             "labelCondition":"消费满100"
+        }
+    ],
+    //根据标签id和商户id查询用户所属标签
+    tagsById: [
+        {
+            "id": "1",
+            "cid": "2",
+            "tagName": "年轻用户",
+            "tagType": 0,
+            "anyOrAllCondition": 1,
+            "isLastConsumeTime": 1,
+            "consumeTimeType": 0,
+            "consumeTimeValue": 12,
+            "consumeTimeUnit": 1,
+            "consumeTimeStart": 1,
+            "consumeTimeEnd": 1,
+            "isTotalConsumeTimes": 1,
+            "consumeTimesMin": 1,
+            "consumeTimesMax": 10,
+            "isTotalConsumeMoney": 1,
+            "consumeMoneyMin": 5,
+            "consumeMoneyMax": 20,
+            "isPreUnitPrice": 1,
+            "preUnitPriceMin": 10,
+            "preUnitPriceMax": 10,
+            "isTotalScore": 1,
+            "totalScoreMin": 10,
+            "totalScoreMax": 2,
+            "productInfoIds": "123123,123123",
+            "isProduct": 1,
+            "enable": 2,
+            "labelCondition":"积分满400"
+        },
+        {
+            "id": "2",
+            "cid": "2",
+            "tagName": "女性用户",
+            "tagType": 1,
+            "anyOrAllCondition": 1,
+            "isLastConsumeTime": 1,
+            "consumeTimeType": 0,
+            "consumeTimeValue": 12,
+            "consumeTimeUnit": 1,
+            "consumeTimeStart": 1,
+            "consumeTimeEnd": 1,
+            "isTotalConsumeTimes": 1,
+            "consumeTimesMin": 1,
+            "consumeTimesMax": 10,
+            "isTotalConsumeMoney": 1,
+            "consumeMoneyMin": 5,
+            "consumeMoneyMax": 20,
+            "isPreUnitPrice": 1,
+            "preUnitPriceMin": 10,
+            "preUnitPriceMax": 10,
+            "isTotalScore": 1,
+            "totalScoreMin": 10,
+            "totalScoreMax": 2,
+            "productInfoIds": "123123,123123",
+            "isProduct": 1,
+            "enable": 2,
+            "labelCondition":"积分满400"
+        },
+        {
+            "id": "3",
+            "cid": "2",
+            "tagName": "卡哇伊",
+            "tagType": 0,
+            "anyOrAllCondition": 1,
+            "isLastConsumeTime": 1,
+            "consumeTimeType": 0,
+            "consumeTimeValue": 12,
+            "consumeTimeUnit": 1,
+            "consumeTimeStart": 1,
+            "consumeTimeEnd": 1,
+            "isTotalConsumeTimes": 1,
+            "consumeTimesMin": 1,
+            "consumeTimesMax": 10,
+            "isTotalConsumeMoney": 1,
+            "consumeMoneyMin": 5,
+            "consumeMoneyMax": 20,
+            "isPreUnitPrice": 1,
+            "preUnitPriceMin": 10,
+            "preUnitPriceMax": 10,
+            "isTotalScore": 1,
+            "totalScoreMin": 10,
+            "totalScoreMax": 2,
+            "productInfoIds": "123123,123123",
+            "isProduct": 1,
+            "enable": 2,
+            "labelCondition":"积分满400"
         }
     ]
 }

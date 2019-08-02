@@ -1,4 +1,4 @@
-/* 会员等级列表 */
+/* 获取积分规则列表 */
 <template>
   <div>
     <el-table
@@ -8,44 +8,22 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        type="selection"
-      >
-      </el-table-column>
-      <el-table-column
         prop="tagName"
-        label="等级排序">
+        label="获取积分场景">
       </el-table-column>
       <el-table-column
         prop="tagType"
-        label="等级名称">
-      </el-table-column>
-      <el-table-column
-        prop="importNum"
-        label="说明">
-      </el-table-column>
-      <el-table-column
-        prop="tagCondition"
-        label="等级条件">
-      </el-table-column>
-      <el-table-column
-        prop="tagCondition"
-        label="升级奖励">
-      </el-table-column>
-      <el-table-column label="状态">
-        <template slot-scope="scope">
-            <el-switch></el-switch>
-        </template>
+        label="状态">
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <span class="edit_span">编辑</span>
+            <span class="edit_span">
+                <i class="edit_i"></i>
+                查看&编辑
+            </span>
         </template>
       </el-table-column>
     </el-table>
-    <div class="single_check">
-        <el-checkbox v-model="checked"></el-checkbox>
-        <el-button class="other_btn">批量禁用</el-button>
-    </div>
     <div class="page_styles">
       <el-pagination
         @size-change="handleSizeChange"
@@ -63,13 +41,12 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "cvTable",
+  name: "cmTable",
   extends: TableBase,
   data() {
     return {
       dataList:[
         {
-            choose: true,
             importTime:"",
             channel:"",
             importNum:"",
@@ -79,7 +56,6 @@ export default {
             operator:""
         },
       ],
-      checked: false
     };
   },
   created() {
@@ -99,14 +75,8 @@ export default {
         width: 14px;
         height: 14px;
         margin-right: 8px;
-        background: url("../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
+        background: url("../../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
     }
 }
-.single_check{
-    padding: 10px 0 0 14px;
-}
-.other_btn{
-    color: #655EFF;
-    border-color: #655EFF;
-}
+
 </style>
