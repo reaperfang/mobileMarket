@@ -1,7 +1,7 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="加入黑名单" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="批量加入黑名单" :hasCancel="hasCancel">
         <div class="c_container">
-            <p class="user_id">用户ID：0001</p>
+            <p class="user_id">满足以上搜索条件共20个客户</p>
             <div class="clearfix">
                 <p class="c_label fl">禁用选择：</p>
                 <el-checkbox v-model="blackCheck1" label="优惠券" class="fl marT10"></el-checkbox>
@@ -31,7 +31,7 @@
 import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
-    name: "addBlackDialog",
+    name: "batchAddBlackDialog",
     props: ['data'],
     data() {
         return {

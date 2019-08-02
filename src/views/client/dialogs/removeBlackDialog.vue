@@ -1,11 +1,17 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="加标签" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="删除黑名单" :hasCancel="hasCancel">
         <div class="c_container">
-            <el-checkbox-group
-                v-model="checkedItems"
-                :max="5">
-                <el-checkbox v-for="tag in tagNames" :label="tag" :key="tag">{{tag}}</el-checkbox>
-            </el-checkbox-group>
+            <p>ID:<span>0001</span></p>
+            <p>当前冻结：</p>
+            <div class="clearfix">
+                <p class="fl">优惠券：</p>
+                <div class="fl">
+                    <span>漏洞优惠券</span>
+                    <span>漏洞优惠券</span>
+                    <span>漏洞优惠券</span>
+                </div>
+            </div>
+            <p class="red">确定将该客户冻结权限全部解冻吗？</p>
         </div>
     </DialogBase>
 </template>
@@ -13,12 +19,11 @@
 import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
+    name: 'removeBlackDialog',
     props: ['data'],
-    name: "addTagDialog",
     data() {
         return {
-            hasCancel: true,
-            checkedItems:[]
+            hasCancel: true
         }
     },
     methods: {
@@ -34,13 +39,6 @@ export default {
             set(val) {
                 this.$emit('update:dialogVisible', val)
             }
-        },
-        tagNames() {
-            let arr = [];
-            clientApi.tagData.map((item) => {
-                arr.push(item.tagName)
-            })
-            return arr;
         }
     },
     mounted() {
@@ -61,14 +59,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-/deep/ .el-checkbox-group{
-    text-align: left;
-}
-/deep/ .el-checkbox{
-    margin-bottom: 9px;
-}
 .c_container{
-    padding: 0 30px;
+    p{
+        text-align: left;
+        margin-bottom: 20px;
+        &.red{
+            text-align: center;
+            color: #F55858;
+            margin: 20px 0 5px 0;
+        }
+    }
 }
 </style>
 

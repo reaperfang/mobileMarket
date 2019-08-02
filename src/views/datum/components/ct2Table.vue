@@ -71,7 +71,7 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "ct1Table",
+  name: "ct2Table",
   extends: TableBase,
   data() {
     return {

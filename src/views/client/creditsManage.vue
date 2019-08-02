@@ -70,6 +70,7 @@
 <script type="es6">
 import cmTable from './components/cmTable'
 export default {
+    name: 'creditsManage',
     components: { cmTable },
     data() {
         return {

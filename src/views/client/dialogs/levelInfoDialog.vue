@@ -58,6 +58,7 @@
 import DialogBase from '@/components/DialogBase'
 
 export default {
+    name: 'levelInfoDialog',
     data() {
         return {
             hasCancel: true,

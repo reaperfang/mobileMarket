@@ -14,6 +14,7 @@
 <script>
 import cvTable from './components/cvTable';
 export default {
+    name: 'clientLevel',
     components: { cvTable },
     data() {
         return {

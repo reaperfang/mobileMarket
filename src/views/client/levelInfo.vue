@@ -136,6 +136,7 @@
 <script type="es6">
 import levelInfoDialog from './dialogs/levelInfoDialog'
 export default {
+    name: 'levelInfo',
     components: { levelInfoDialog },
     data() {
         return {
