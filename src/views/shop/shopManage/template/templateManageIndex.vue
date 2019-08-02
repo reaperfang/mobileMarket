@@ -8,8 +8,6 @@
         <div class="info">
           <div class="top">
             <span>空白模板</span>
-            <i class="mini_program"></i>
-            <i class="wechat"></i>
           </div>
           <div class="bottom">
             <span class="price"></span>
@@ -113,16 +111,15 @@ export default {
             margin-right:30px;
           }
           i{
-            width:20px;
-            height:20px;
+            width:23px;
+            height:23px;
             border-radius:50%;
             margin-right:10px;
-            background:red;
             &.mini_program{
-
+              background:url('../../../../assets/images/shop/xiaochengxu.png') no-repeat 0 0;
             }
             &.wechat{
-
+              background:url('../../../../assets/images/shop/weixin.png') no-repeat 0 0;
             }
           }
         }
@@ -132,6 +129,7 @@ export default {
           margin-top:10px;
           .price{
             color:rgb(253,76,43);
+            font-weight:700;
           }
         }
       }
