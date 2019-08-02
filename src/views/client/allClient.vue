@@ -167,7 +167,7 @@
                 <el-button type="primary">导入</el-button>
                 <el-button>导出</el-button>
             </div>
-            <acTable @delete="handleDelete" @addTag="addTag" @addBlackList="addBlackList" @removeBlack="removeBlack" @batchDelete="batchDelete" @batchAddBlack="batchAddBlack" @batchAddTag="batchAddTag"></acTable>
+            <acTable @delete="handleDelete" @addTag="addTag" @addBlackList="addBlackList" @removeBlack="removeBlack" @batchDelete="batchDelete" @batchAddBlack="batchAddBlack" @batchAddTag="batchAddTag" @batchRemoveBlack="batchRemoveBlack"></acTable>
         </div>
     </div>
     <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
@@ -175,17 +175,18 @@
 </template>
 <script>
 import clientCont from '@/system/constant/client';
-import acTable from './components/acTable';
-import deleteUserDialog from './dialogs/deleteUserDialog';
-import addTagDialog from './dialogs/addTagDialog';
-import addBlackDialog from './dialogs/addBlackDialog';
-import removeBlackDialog from './dialogs/removeBlackDialog';
-import batchDeleteUserDialog from './dialogs/batchDeleteUserDialog';
-import batchAddBlackDialog from './dialogs/batchAddBlackDialog';
-import batchAddTagDialog from './dialogs/batchAddTagDialog';
+import acTable from './components/allClient/acTable';
+import deleteUserDialog from './dialogs/allClient/deleteUserDialog';
+import addTagDialog from './dialogs/allClient/addTagDialog';
+import addBlackDialog from './dialogs/allClient/addBlackDialog';
+import removeBlackDialog from './dialogs/allClient/removeBlackDialog';
+import batchDeleteUserDialog from './dialogs/allClient/batchDeleteUserDialog';
+import batchAddBlackDialog from './dialogs/allClient/batchAddBlackDialog';
+import batchAddTagDialog from './dialogs/allClient/batchAddTagDialog';
+import batchRemoveBlackDialog from './dialogs/allClient/batchRemoveBlackDialog';
 export default {
   name: 'allClient',
-  components: { acTable, deleteUserDialog, addTagDialog, addBlackDialog, removeBlackDialog, batchDeleteUserDialog, batchAddBlackDialog, batchAddTagDialog },
+  components: { acTable, deleteUserDialog, addTagDialog, addBlackDialog, removeBlackDialog, batchDeleteUserDialog, batchAddBlackDialog, batchAddTagDialog, batchRemoveBlackDialog },
   data() {
     return {
       form: {
@@ -268,6 +269,14 @@ export default {
     batchAddBlack() {
         this.dialogVisible = true;
         this.currentDialog = "batchAddBlackDialog";
+    },
+    batchAddTag() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchAddTagDialog";
+    },
+    batchRemoveBlack() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchRemoveBlackDialog";
     },
     extendTag() {
         this.showMoreTag = !this.showMoreTag;

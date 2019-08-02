@@ -1,16 +1,16 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="批量删除客户" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="批量解除黑名单" :hasCancel="hasCancel">
         <div class="c_container">
-            <img src="../../../assets/images/client/icon_cuowu.png" alt="" class="warn_img">
-            <p>确认确认批量删除选中的共 153 个客户吗？</p>
-            <p>删除后将彻底清除以上客户所有信息，且无法恢复</p>
+            <img src="../../../../assets/images/client/icon_cuowu.png" alt="" class="warn_img">
+            <p>满足以上搜索条件共20个客户</p>
+            <p>确定将以上客户冻结权限全部解冻吗？</p>
         </div>
     </DialogBase>
 </template>
 <script>
 import DialogBase from '@/components/DialogBase'
 export default {
-    name: 'batchDeleteUserDialog',
+    name: 'batchRemoveBlackDialog',
     props: ['data'],
     data() {
         return {

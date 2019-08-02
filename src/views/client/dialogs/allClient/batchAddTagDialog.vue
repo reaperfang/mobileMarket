@@ -1,7 +1,7 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="批量加标签" :hasCancel="hasCancel">
         <div class="c_container">
-            <p>当前选中共20个客户，批量添加以下标签：</p>
+            <p class="c_info">当前选中共20个客户，批量添加以下标签：</p>
             <el-checkbox-group
                 v-model="checkedItems"
                 :max="5">
@@ -70,6 +70,11 @@ export default {
 }
 .c_container{
     padding: 0 30px;
+    .c_info{
+        text-align: left;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
 }
 </style>
 

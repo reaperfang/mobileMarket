@@ -72,7 +72,7 @@
       <el-button type="primary" @click="batchDelete">批量删除</el-button>
       <el-button class="border_btn" @click="batchAddTag">打标签</el-button>
       <el-button class="border_btn" @click="batchAddBlack">加入黑名单</el-button>
-      <el-button class="border_btn">取消黑名单</el-button>
+      <el-button class="border_btn" @click="batchRemoveBlack">取消黑名单</el-button>
     </div>
   </div>
 </template>
@@ -130,6 +130,9 @@ export default {
     batchAddBlack() {
       this.$emit('batchAddBlack');
     },
+    batchRemoveBlack() {
+      this.$emit('batchRemoveBlack');
+    },
     handleChange() {
       this.allUserList.forEach(row => {
         this.$refs.allClientTable.toggleRowSelection(row)
@@ -153,19 +156,19 @@ export default {
                     cursor: pointer;
                     &.s1{
                         color:#655EFF;
-                        background: url('../../../assets/images/client/icon_info.png') 0 0 no-repeat;
+                        background: url('../../../../assets/images/client/icon_info.png') 0 0 no-repeat;
                     }
                     &.s2{
                         color:#F55858;
-                        background: url('../../../assets/images/client/icon_delete.png') 0 0 no-repeat;
+                        background: url('../../../../assets/images/client/icon_delete.png') 0 0 no-repeat;
                     }
                     &.s3{
                         color:#FD932B;
-                        background: url('../../../assets/images/client/icon_tag.png') 0 0 no-repeat;
+                        background: url('../../../../assets/images/client/icon_tag.png') 0 0 no-repeat;
                     }
                     &.s4{
                         color:#578EFA;
-                        background: url('../../../assets/images/client/icon_addblack.png') 17px 0 no-repeat;
+                        background: url('../../../../assets/images/client/icon_addblack.png') 17px 0 no-repeat;
                     }
                 }
             }

@@ -93,7 +93,7 @@ export default {
         width: 14px;
         height: 14px;
         margin-right: 8px;
-        background: url("../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
+        background: url("../../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
     }
 }
 
