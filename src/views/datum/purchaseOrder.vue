@@ -70,6 +70,7 @@
 <script>
 import datumCont from '@/system/constant/datum';
 export default {
+    name: 'purchaseOrder',
     data() {
         return {
             activeName: "first", 

@@ -3,7 +3,7 @@
     <div class="block form">
       <el-form-item label="空白高度" prop="blankHeight">
           <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.blankHeight"></el-slider>
+            <el-slider v-model="ruleForm.blankHeight" :min="10" :max="100"></el-slider>
             <span>{{ruleForm.blankHeight}}像素</span>
           </div>
         </el-form-item>
@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       ruleForm: {
-        blankHeight: 10
+        blankHeight: 30
       },
       rules: {
 

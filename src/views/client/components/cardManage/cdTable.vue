@@ -1,4 +1,4 @@
-/* 批量导入客户列表 */
+/* cardManage列表 */
 <template>
   <div>
     <el-table
@@ -14,41 +14,42 @@
       </el-table-column>
       <el-table-column
         prop="importTime"
-        label="导入时间">
+        label="会员卡等级">
       </el-table-column>
       <el-table-column
         prop="channel"
-        label="渠道">
+        label="名称">
       </el-table-column>
       <el-table-column
         prop="importNum"
-        label="导入数量">
+        label="状态">
       </el-table-column>
       <el-table-column
         prop="successNum"
-        label="导入成功数"
+        label="领取条件"
       >
       </el-table-column>
       <el-table-column
         prop="failNum"
-        label="导入失败数"
+        label="权益"
       >
       </el-table-column>
       <el-table-column
         prop="buyTime"
-        label="购买次数"
+        label="升级礼包"
       >
       </el-table-column>
       <el-table-column
         prop="operator"
-        label="操作人"
+        label="有效期"
       >
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
             <div class="btns clearfix">
-                <span>添加标签</span>
-                <span>修改身份等级</span>
+                <span>禁用</span>
+                <span>编辑</span>
+                <span>发卡</span>
             </div>
         </template>
       </el-table-column>
@@ -70,7 +71,7 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "acTable",
+  name: "cdTable",
   extends: TableBase,
   data() {
     return {

@@ -1,4 +1,4 @@
-/* cardManage列表 */
+/* 获取积分规则列表 */
 <template>
   <div>
     <el-table
@@ -8,49 +8,19 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        type="selection"
-        prop="choose"
-        label="选择">
+        prop="tagName"
+        label="获取积分场景">
       </el-table-column>
       <el-table-column
-        prop="importTime"
-        label="会员卡等级">
-      </el-table-column>
-      <el-table-column
-        prop="channel"
-        label="名称">
-      </el-table-column>
-      <el-table-column
-        prop="importNum"
+        prop="tagType"
         label="状态">
-      </el-table-column>
-      <el-table-column
-        prop="successNum"
-        label="领取条件"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="failNum"
-        label="权益"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="buyTime"
-        label="升级礼包"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="operator"
-        label="有效期"
-      >
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <div class="btns clearfix">
-                <span>禁用</span>
-                <span>编辑</span>
-                <span>发卡</span>
-            </div>
+            <span class="edit_span">
+                <i class="edit_i"></i>
+                查看&编辑
+            </span>
         </template>
       </el-table-column>
     </el-table>
@@ -71,13 +41,12 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "acTable",
+  name: "cmTable",
   extends: TableBase,
   data() {
     return {
       dataList:[
         {
-            choose: true,
             importTime:"",
             channel:"",
             importNum:"",
@@ -99,13 +68,15 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-/deep/ .cell{
-            .btns{
-                span{
-                    color: #655EFF;
-                    margin-right: 5px;
-                }
-            }
-        }
+.edit_span{
+    color: #655EFF;
+    .edit_i{
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-right: 8px;
+        background: url("../../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
+    }
+}
 
 </style>

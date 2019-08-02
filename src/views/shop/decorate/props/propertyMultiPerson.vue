@@ -51,13 +51,13 @@
     <div class="block form">
         <el-form-item label="页面边距" prop="pageMargin">
           <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.pageMargin"></el-slider>
+            <el-slider v-model="ruleForm.pageMargin" :min="0" :max="30"></el-slider>
             <span>{{ruleForm.pageMargin}}像素</span>
           </div>
         </el-form-item>
         <el-form-item label="商品间距" prop="goodsMargin">
             <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.goodsMargin"></el-slider>
+            <el-slider v-model="ruleForm.goodsMargin" :min="0" :max="30"></el-slider>
             <span>{{ruleForm.goodsMargin}}像素</span>
             </div>
         </el-form-item>
@@ -154,7 +154,7 @@ export default {
   data () {
     return {
       ruleForm: {
-        source: 1,
+        source: 2,
         goods: '',
         showNumber: '',
         showAllBtns: true,

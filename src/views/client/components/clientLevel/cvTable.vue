@@ -63,7 +63,7 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "acTable",
+  name: "cvTable",
   extends: TableBase,
   data() {
     return {
@@ -99,7 +99,7 @@ export default {
         width: 14px;
         height: 14px;
         margin-right: 8px;
-        background: url("../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
+        background: url("../../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
     }
 }
 .single_check{

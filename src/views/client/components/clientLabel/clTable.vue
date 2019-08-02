@@ -1,4 +1,4 @@
-/* 获取积分规则列表 */
+/* 客户标签列表 */
 <template>
   <div>
     <el-table
@@ -8,12 +8,29 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
+        type="selection"
+      >
+      </el-table-column>
+      <el-table-column
         prop="tagName"
-        label="获取积分场景">
+        label="标签名称">
       </el-table-column>
       <el-table-column
         prop="tagType"
-        label="状态">
+        label="标签类型">
+      </el-table-column>
+      <el-table-column
+        prop="importNum"
+        label="包含人数">
+      </el-table-column>
+      <el-table-column
+        prop="tagCondition"
+        label="标签条件">
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        label="创建时间"
+      >
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -41,12 +58,13 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "acTable",
+  name: "clTable",
   extends: TableBase,
   data() {
     return {
       dataList:[
         {
+            choose: true,
             importTime:"",
             channel:"",
             importNum:"",
@@ -75,7 +93,7 @@ export default {
         width: 14px;
         height: 14px;
         margin-right: 8px;
-        background: url("../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
+        background: url("../../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
     }
 }
 

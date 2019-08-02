@@ -34,7 +34,7 @@
       </el-form-item>
       <el-form-item label="框体高度" prop="borderHeight">
           <div class="slider-wrapper">
-            <el-slider v-model="ruleForm.borderHeight"></el-slider>
+            <el-slider v-model="ruleForm.borderHeight" :min="28" :max="40"></el-slider>
             <span>{{ruleForm.borderHeight}}像素</span>
           </div>
           小程序V2.17及以上版本支持
@@ -92,9 +92,9 @@ export default {
         hotWords: [],
         searchStyle: 1,
         borderHeight: 40,
-        backgroundColor: '#ddd',
-        borderColor: '#eee',
-        fontColor: '#000',
+        backgroundColor: '#ffffff',
+        borderColor: '#ffffff',
+        fontColor: 'rgb(153,153,153)',
         textPosition: 1,
         shoppingCartBtn: 1
       },

@@ -12,8 +12,9 @@
     </div>
 </template>
 <script>
-import cvTable from './components/cvTable';
+import cvTable from './components/clientLevel/cvTable';
 export default {
+    name: 'clientLevel',
     components: { cvTable },
     data() {
         return {

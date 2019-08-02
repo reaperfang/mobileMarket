@@ -1,4 +1,4 @@
-/* 客户标签列表 */
+/* 批量导入客户列表 */
 <template>
   <div>
     <el-table
@@ -9,35 +9,47 @@
       >
       <el-table-column
         type="selection"
-      >
+        prop="choose"
+        label="选择">
       </el-table-column>
       <el-table-column
-        prop="tagName"
-        label="标签名称">
+        prop="importTime"
+        label="导入时间">
       </el-table-column>
       <el-table-column
-        prop="tagType"
-        label="标签类型">
+        prop="channel"
+        label="渠道">
       </el-table-column>
       <el-table-column
         prop="importNum"
-        label="包含人数">
+        label="导入数量">
       </el-table-column>
       <el-table-column
-        prop="tagCondition"
-        label="标签条件">
+        prop="successNum"
+        label="导入成功数"
+      >
       </el-table-column>
       <el-table-column
-        prop="createTime"
-        label="创建时间"
+        prop="failNum"
+        label="导入失败数"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="buyTime"
+        label="购买次数"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="operator"
+        label="操作人"
       >
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <span class="edit_span">
-                <i class="edit_i"></i>
-                查看&编辑
-            </span>
+            <div class="btns clearfix">
+                <span>添加标签</span>
+                <span>修改身份等级</span>
+            </div>
         </template>
       </el-table-column>
     </el-table>
@@ -58,7 +70,7 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "acTable",
+  name: "ciTable",
   extends: TableBase,
   data() {
     return {
@@ -86,15 +98,13 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.edit_span{
-    color: #655EFF;
-    .edit_i{
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        margin-right: 8px;
-        background: url("../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
-    }
-}
+/deep/ .cell{
+            .btns{
+                span{
+                    color: #655EFF;
+                    margin-right: 5px;
+                }
+            }
+        }
 
 </style>

@@ -73,8 +73,9 @@
     </div>
 </template>
 <script type="es6">
-import createCardDialog from './dialogs/createCardDialog'
+import createCardDialog from './dialogs/createCard/createCardDialog'
 export default {
+    name: 'createCard',
     components: { createCardDialog },
     data() {
         return {

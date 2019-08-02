@@ -57,7 +57,7 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "acTable",
+  name: "lkTable",
   extends: TableBase,
   data() {
     return {

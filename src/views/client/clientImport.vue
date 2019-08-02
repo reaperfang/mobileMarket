@@ -76,9 +76,10 @@
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import clientCont from '@/system/constant/client';
-import ciTable from './components/ciTable';
+import ciTable from './components/clientImport/ciTable';
 export default {
     components: { ciTable },
+    name: 'clientImport',
     data() {
         return {
             form: {

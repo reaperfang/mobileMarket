@@ -109,6 +109,7 @@
 </template>
 <script type="es6">
 export default {
+    name: 'batchLead',
     data() {
         return {
             ruleForm: {

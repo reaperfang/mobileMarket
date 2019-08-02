@@ -173,13 +173,13 @@
         <div class="block form">
           <el-form-item label="页面边距" prop="groupStyle">
             <div class="slider-wrapper">
-             <el-slider v-model="ruleForm.pageMargin" :min="0" :max="20"></el-slider>
+             <el-slider v-model="ruleForm.pageMargin" :min="0" :max="30"></el-slider>
              <span>{{ruleForm.pageMargin}}像素</span>
             </div>
           </el-form-item>
           <el-form-item label="分组间距" prop="groupFont">
              <div class="slider-wrapper">
-              <el-slider v-model="ruleForm.groupMargin" :min="0" :max="50"></el-slider>
+              <el-slider v-model="ruleForm.groupMargin" :min="0" :max="30"></el-slider>
               <span>{{ruleForm.groupMargin}}像素</span>
              </div>
           </el-form-item>

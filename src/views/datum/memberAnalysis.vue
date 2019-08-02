@@ -123,6 +123,7 @@
 import maTable from './components/maTable';
 import ma2Table from './components/ma2Table';
 export default {
+    name: 'memberAnalysis',
     components: { maTable, ma2Table },
     data() {
         return {

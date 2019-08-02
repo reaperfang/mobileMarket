@@ -1,6 +1,7 @@
 <template>
     <div class="c_container">
         <div class="c_top clearfix">
+            <img src="../../assets/images/client/icon_addblack2.png" alt="" class="addBlack">
             <div class="c_top_l fl">
                 <p>基本信息：</p>
                 <img :src="clientInfoById.headIcon" alt="">
@@ -13,7 +14,7 @@
                 <p>客户渠道: <span>{{clientInfoById.channelName}}</span></p>
                 <p>成为客户时间: <span>{{clientInfoById.becameCustomerTime}}</span></p>
                 <p>成为会员时间: <span>{{clientInfoById.becameMemberTime}}</span></p>
-                <p>客户身份: <span class="addMainColor pointer">变更</span></p>
+                <p>客户身份: <span class="addMainColor pointer" @click="changeIdentity">变更</span></p>
             </div>
             <div class="c_top_r fl">
                 <div class="c_title">
@@ -24,7 +25,7 @@
                     <el-form ref="form" :model="form">
                         <el-form-item label="姓名：">
                             <div class="input_wrap">
-                                <el-input v-model="form.name" placeholder="请输入名字"></el-input>
+                                <el-input v-model="form.memberName" placeholder="请输入名字"></el-input>
                             </div>
                         </el-form-item>
                         <el-form-item label="姓别：">
@@ -41,7 +42,7 @@
                         </el-form-item>
                         <el-form-item label="微信号：">
                             <div class="input_wrap">
-                                <el-input v-model="form.wechat" placeholder="请输入名字"></el-input>
+                                <el-input v-model="form.wechatSn" placeholder="请输入名字"></el-input>
                             </div>
                         </el-form-item>
                         <el-form-item label="邮箱：">
@@ -51,20 +52,12 @@
                         </el-form-item>
                         <el-form-item label="地区：">
                             <div class="input_wrap">
-                                <div style="width: 32%; display: inline-block">
-                                    <el-input v-model="form.province" placeholder="省"></el-input>
-                                </div>
-                                <div style="width: 32%; display: inline-block">
-                                    <el-input v-model="form.city" placeholder="市"></el-input>
-                                </div>
-                                <div style="width: 31%; display: inline-block">
-                                    <el-input v-model="form.region" placeholder="县/区"></el-input>
-                                </div>
+                                <area-select type='all' v-model='form.selected' :data='$pcaa' :level='2' size="large"></area-select>
                             </div>
                         </el-form-item>
                         <el-form-item>
                             <div class="input_wrap">
-                                <el-input v-model="form.email" placeholder="详细地址"></el-input>
+                                <el-input v-model="form.address" placeholder="详细地址"></el-input>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -75,9 +68,14 @@
             <p>标签信息：</p>
             <div class="labels">
                 <div class="label_list">
-                    <p v-for="item in memberLabels" :key="item.id"><span>{{item.tag_name}}<img src="../../assets/images/client/icon_manual.png" alt=""></span><img src="../../assets/images/client/icon_remove.png" alt=""></p>
+                    <p v-for="(item, index) in userTag" :key="item.id">
+                        <span>{{item.tagName}}
+                            <img src="../../assets/images/client/icon_manual.png" alt="" v-if="item.tagType == 0">
+                            <img src="../../assets/images/client/icon_auto.png" alt="" v-if="item.tagType == 1">
+                        </span>
+                        <img src="../../assets/images/client/icon_remove.png" alt="" v-if="item.tagType == 0" @click="deleteTag(index)"></p>
                 </div>
-                <img src="../../assets/images/client/icon_add.png" alt="">
+                <img src="../../assets/images/client/icon_add.png" alt="" @click="addTag">
             </div>
         </div>
         <div class="c_mid">
@@ -85,17 +83,21 @@
             <div class="assets">
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_vip.png" alt="">
-                    <p>会员卡：<span>黄金卡</span></p>
-                    <span>变更</span>
+                    <p>会员卡：
+                        <span v-if="clientInfoById.memberType == 1">{{clientInfoById.cardLevelName}}</span>
+                        <span v-if="clientInfoById.memberType == 0">无</span>
+                    </p>
+                    <span v-if="clientInfoById.memberType == 1">变更</span>
+                    <span v-if="clientInfoById.memberType == 0">发放</span>
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p>余额：<span>5元</span></p>
-                    <span>变更</span>
+                    <p @click="showBalanceList" class="pointer">余额：<span>{{clientInfoById.balance}}元</span></p>
+                    <span @click="showAdjustBalance">变更</span>
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_coupon.png" alt="">
-                    <p>可用优惠券：<span>5张</span></p>
+                    <p >可用优惠券：<span class="pointer" @click="showDiscountCoupon">{{clientInfoById.couponNum}}张</span></p>
                     <span>变更</span>
                 </div>
                 <div class="assets_item">
@@ -131,36 +133,78 @@
                 </div>
             </div>
         </div>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @sendDiscount="sendDiscount"></component>
     </div>
 </template>
 <script type="es6">
 import clientCont from '@/system/constant/client';
 import clientApi from '@/api/client';
+import changeIdentityDialog from './dialogs/clientInfo/changeIdentityDialog';
+import addTagDialog from './dialogs/clientInfo/addTagDialog';
+import balanceListDialog from './dialogs/clientInfo/balanceListDialog';
+import adjustBalanceDialog from './dialogs/clientInfo/adjustBalanceDialog';
+import discountCouponDialog from './dialogs/clientInfo/discountCouponDialog';
+import issueCouponDialog from './dialogs/clientInfo/issueCouponDialog';
 export default {
+    name: 'clientInfo',
+    components: { changeIdentityDialog, addTagDialog, balanceListDialog, adjustBalanceDialog, discountCouponDialog, issueCouponDialog },
     data() {
         return {
             form: {
-                name: "",
+                memberName: "",
                 sex: '1',
                 birthday:"",
-                wechat:"",
+                wechatSn:"",
                 email:"",
-                province:"",
-                city:"",
-                region:""
-            }
+                selected: [],
+                address:""
+            },
+            currentDialog:"",
+            dialogVisible: false,
+            currentData:{},
+            userTag: []
+        }
+    },
+    methods: {
+        changeIdentity() {
+            this.dialogVisible = true;
+            this.currentDialog = "changeIdentityDialog";
+        },
+        deleteTag(index) {
+            this.memberLabels.splice(index,1);
+        },
+        addTag() {
+            this.dialogVisible = true;
+            this.currentDialog = "addTagDialog";
+        },
+        showBalanceList() {
+            this.dialogVisible = true;
+            this.currentDialog = "balanceListDialog";
+            this.currentData.balance = this.clientInfoById.balance;
+        },
+        showAdjustBalance() {
+            this.dialogVisible = true;
+            this.currentDialog = "adjustBalanceDialog";
+        },
+        showDiscountCoupon() {
+            this.dialogVisible = true;
+            this.currentDialog = "discountCouponDialog";
+        },
+        sendDiscount() {
+            this.dialogVisible = true;
+            this.currentDialog = "issueCouponDialog";
         }
     },
     computed: {
         memberLabels() {
-            return clientCont.memberLabels
+            return clientApi.tagsById;
         },
         clientInfoById() {
             return clientApi.clientInfoById
         }
     },
     mounted() {
-        console.log(this.clientInfoById);
+        this.userTag = this.memberLabels;
     }
 }
 </script>
@@ -172,6 +216,16 @@ export default {
 /deep/.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
     margin-bottom: 10px;
 }
+/deep/.area-select-wrap .area-select{
+    margin-left: 0;
+    margin-bottom: 10px;
+}
+/deep/.area-select .area-selected-trigger{
+    padding: 0px 20px 7px 12px;
+}
+/deep/.area-select.large{
+    width: 206px;
+}
 .c_container{
     background-color: #fff;
     padding: 13px 20px 44px 20px;
@@ -179,6 +233,12 @@ export default {
         padding-bottom: 15px;
         border-bottom: 1px dashed #D3D3D3;
         color: #3D434A;
+        position: relative;
+        .addBlack{
+            position: absolute;
+            left: 980px;
+            top: -3px;
+        }
         .c_top_l{
             p{
                 font-weight: bold;
@@ -284,6 +344,7 @@ export default {
                 display: block;
                 color: #655EFF;
                 margin-top: 5px;
+                cursor: pointer;
             }
             &.rb{
                 border-right: 1px dashed #DFDFDF;

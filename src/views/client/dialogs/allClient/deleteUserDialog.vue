@@ -1,23 +1,20 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="加标签" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="删除客户" :hasCancel="hasCancel">
         <div class="c_container">
-            <el-checkbox-group
-                v-model="checkedItems"
-                :max="5">
-                <el-checkbox v-for="tag in tagNames" :label="tag" :key="tag">{{tag}}</el-checkbox>
-            </el-checkbox-group>
+            <img src="../../../../assets/images/client/icon_cuowu.png" alt="" class="warn_img">
+            <p>确定删除客户ID: {{data.userId}} 吗？</p>
+            <p>删除后将彻底清除该客户所有信息，且无法恢复。</p>
         </div>
     </DialogBase>
 </template>
 <script>
-import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
+    name: 'deleteUserDialog',
     props: ['data'],
     data() {
         return {
-            hasCancel: true,
-            checkedItems:[]
+            hasCancel: true
         }
     },
     methods: {
@@ -33,17 +30,7 @@ export default {
             set(val) {
                 this.$emit('update:dialogVisible', val)
             }
-        },
-        tagNames() {
-            let arr = [];
-            clientApi.tagData.map((item) => {
-                arr.push(item.tagName)
-            })
-            return arr;
         }
-    },
-    mounted() {
-        
     },
     props: {
         data: {
@@ -60,15 +47,17 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-/deep/ .el-checkbox-group{
-    text-align: left;
-}
-/deep/ .el-checkbox{
-    margin-bottom: 9px;
-}
 .c_container{
-    padding: 0 30px;
+    .warn_img{
+        display: block;
+        margin: 0 auto 24px auto;
+    }
+    p{
+        font-size: 18px; 
+        margin-bottom: 5px;
+    }
 }
+
 </style>
 
 
