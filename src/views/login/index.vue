@@ -10,14 +10,14 @@
           <span class="svg-container svg-container_login">
             <img :src="require('@/assets/images/icon_username.png')">
           </span>
-          <el-input v-model="loginForm.userName" name="userName" type="text" placeholder="用户名" style="border:none;" />
+          <el-input v-model="loginForm.userName" name="userName" type="text" placeholder="用户名" style="border:none;"  class="login_input"/>
         </el-form-item>
 
         <el-form-item prop="password">
           <span class="svg-container">
             <img :src="require('@/assets/images/icon_password.png')">
           </span>
-          <el-input :type="passwordType" v-model="loginForm.password" name="password" placeholder="密码" @keyup.enter.native="handleLogin" />
+          <el-input :type="passwordType" v-model="loginForm.password" name="password" placeholder="密码" @keyup.enter.native="handleLogin" class="login_input"/>
           <span class="show-pwd" @click="showPwd">
             <svg-icon icon-class="eye" />
           </span>
@@ -42,6 +42,38 @@
         <el-button type="primary" @click="dialogVisible = false">立即创建</el-button>
         <el-button @click="dialogVisible = false">暂不创建</el-button>
       </span>
+    </el-dialog>
+    <el-dialog
+      title=""
+      :visible.sync="shopsDialog"
+      width="40%"
+      :before-close="handleClose"
+      style="margin-top:20vh;">
+      <span slot="title" class="dialog_title">
+        <a>返回官网</a> | <a>选择店铺</a>
+      </span>
+      <div class="content">
+        <div class="content_top">
+          <el-input placeholder="请输入店铺名称" v-model="shopName" class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" class="search"></el-button>
+          </el-input>
+          <el-button>创建店铺</el-button>
+        </div>
+        <div class="content_main">
+           <div>
+             <span>好利来海淀黄庄店</span>
+             <span>移动商城</span>
+           </div>
+           <div>
+             <span>好利来海淀黄庄店</span>
+             <span>移动商城</span>
+           </div>
+           <div>
+             <span>好利来海淀黄庄店</span>
+             <span>移动商城</span>
+           </div>
+        </div>
+      </div>
     </el-dialog>
   </div>
   <!-- <div>qwerttt</div> -->
@@ -81,7 +113,9 @@ export default {
       passwordType: 'password',
       loading: false,
       dialogVisible:false,
-      checked:false
+      shopsDialog:false,
+      checked:false,
+      shopName:'',
     }
   },
   watch: {
@@ -109,7 +143,8 @@ export default {
       }
     },
     handleLogin() {
-      this.dialogVisible = true
+      this.shopsDialog = true
+      // this.dialogVisible = true
       // this.$refs.loginForm.validate(valid => {
       //   if (valid && !this.loading) {
       //     this.loading = true
@@ -169,7 +204,7 @@ $light_block:#000;
 
 /* reset element-ui css */
 .login-container {
-  .el-input {
+  .login_input {
     display: inline-block;
     height: 47px;
     width: calc(100% - 30px);
@@ -300,4 +335,48 @@ $bg_white:#fff;
   text-align: center;
   color: red;
 }
+.dialog_title{
+  font-size: 14px;
+  color: #655EFF;
+}
+.input-with-select{
+  background-color: #fff;
+  width: 250px;
+  .search{
+    color: #655EFF;
+    font-weight: bold;
+  }
+}
+.content{
+  .content_top{
+    display: flex;
+    justify-content: space-between;
+  }
+  .content_main{
+    display:flex;
+    justify-content: space-between;
+    flex: 1;
+    margin:20px 0px 30px 0px;
+    div{
+      width: 143px;
+      height: 60px;
+      border-radius:4px;
+      background:rgba(101,94,255,1);
+      opacity:0.5;
+      span{
+        padding:10px;
+        height: 20px;
+        line-height: 20px;
+        display: block;
+        font-size: 14px;
+        color: #FFFFFF;
+        text-align: left;
+      }
+    }
+  }
+}
+/deep/ .el-dialog__body{
+  padding:10px 20px;
+}
+
 </style>
