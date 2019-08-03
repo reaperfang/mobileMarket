@@ -7,7 +7,7 @@ export default [
         name: 'set',
         meta: {
         title: '设置',
-        icon: 'el-icon-setting'
+        icon: 'icon_set'
         },
         children: [
             {

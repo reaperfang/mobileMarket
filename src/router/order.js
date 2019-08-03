@@ -7,7 +7,7 @@ export default [
     name: 'order',
     meta: {
       title: '订单',
-      icon: 'el-icon-setting'
+      icon: 'icon_order'
     },
     children: [
       {
