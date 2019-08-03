@@ -1,5 +1,4 @@
 <script>
-import '../decorate.scss';
 export default {
   name: "propertyMixin",
   props: ["data"],

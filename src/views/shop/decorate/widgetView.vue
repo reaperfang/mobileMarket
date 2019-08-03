@@ -43,7 +43,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './decorate.scss';
   .widget{
     width: 220px;
     height: 835px;

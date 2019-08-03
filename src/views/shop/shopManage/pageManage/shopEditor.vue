@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import widgetView from "../../decorate/widgetView";
-import editView from "../../decorate/editView";
-import propView from "../../decorate/propView";
+import widgetView from "@/views/shop/decorate/widgetView";
+import editView from "@/views/shop/decorate/editView";
+import propView from "@/views/shop/decorate/propView";
 import decorateDemo from "@/assets/json/decorateDemo.json";
 export default {
   name: "shopEditor",
