@@ -92,7 +92,7 @@ export default {
       let loadedLength = 0;
       const widgetList = widget.getWidgetList();
       for (let item of widgetList) {
-        import(`../decorate/comps/component${this.utils.titleCase(item)}.vue`)
+        import(`@/views/shop/decorate/comps/component${this.utils.titleCase(item)}.vue`)
           .then(loadedComponent => {
             this.templateList[item] = loadedComponent.default;
             loadedLength++;
@@ -114,52 +114,16 @@ export default {
 </script>
 
 <style lang="scss">
-
-// .preview_dialog .el-dialog__header{
-//   background:rgb(241,240,255);
-// }
-// .preview_dialog .el-dialog__body {
-//   padding: 0 !important;
-//   height:717px;
   .preview_wrapper {
     display: flex;
     flex-direction: row;
     justify-content: center;
     padding-top:20px;
     .module {
-      margin-right: 20px;
       &.view {
         width: 374px;
-        border: 1px solid #e2e1e1;
-        .phone-head {
-          width: 100%;
-          height: 64px;
-          text-align: center;
-          line-height: 64px;
-          background: #fff;
-          position: relative;
-          img {
-            width: 100%;
-          }
-          span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -40%);
-            font-size: 18px;
-          }
-        }
         .phone-body {
           height: 592px;
-          overflow-y: auto;
-          .component_wrapper {
-            background: #fff;
-            min-height: 50px;
-            line-height: 50px;
-            border: 1px solid #d6d6d6;
-            text-align: center;
-            position: relative;
-          }
         }
       }
     }

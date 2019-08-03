@@ -115,41 +115,14 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import './decorate.scss';
-  .props{
+<style lang="scss" scoped>
+.module{
+  &.props{
     width:346px;
-    // height: 835px;
-    // overflow-y: auto;
     form{
       height: 697px;
-      overflow-y: auto;
     }
     .block{
-      &.header{
-        padding:10px;
-        display:flex;
-        flex-direction: row;
-        justify-content: space-between;
-        .title{
-          text-indent:10px;
-          position:relative;
-          &:before{
-            content:"";
-            position:absolute;
-            display:block;
-            width:2px;
-            height:100%;
-            background:$globalMainColor;
-          }
-        }
-        .state{
-          color:$globalMainColor;
-        }
-      }
-      &.form{
-        padding: 30px 20px;
-      }
       &.button{
         width:346px;
         position:absolute;
@@ -170,4 +143,5 @@ export default {
       }
     }
   }
+}
 </style>

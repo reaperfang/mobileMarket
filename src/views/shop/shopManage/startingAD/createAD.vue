@@ -1,6 +1,6 @@
 <template>
   <div class="group-wrapper">
-    <div class="view" ref="groupWrapper" :style="fontStyle">
+    <div class="module view" ref="groupWrapper" :style="fontStyle">
       <div class="phone-head" @click="clickTitle(null)" title="点击编辑页面信息">
         <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
         <span>页面广告</span>
@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="props">
+    <div class="module props">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
         <div class="block header">
           <p class="title">启动设置</p>
@@ -76,7 +76,6 @@
 <script>
 import dialogSelectImageMaterial from '../../dialogs/dialogSelectImageMaterial';
 import dialogSelectJumpPage from '../../dialogs/dialogSelectJumpPage';
-import '../../decorate/decorate.scss';
 export default {
   name: 'shopIndex',
   components: {dialogSelectImageMaterial, dialogSelectJumpPage},
@@ -122,119 +121,83 @@ export default {
 .group-wrapper{
   display:flex;
   flex-direction: row;
-}
-.content {
-  padding: 10px 0 0 10px;
-  box-sizing: border-box;
-  width: 100%;
-  .wrapper {
-    background: #fff;
-    margin-bottom: 10px;
-    p {
-      background: rgba(247, 247, 247, 1);
-      padding: 10px;
-      margin-bottom: 20px;
-    }
-    ul.group {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      li {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-        cursor:pointer;
-        img {
-          width: 65px;
-          height: 65px;
-        }
-        span {
-          margin-top: 20px;
-        }
-      }
-    }
-  }
-}
-.view {
-  width: 374px;
-  border: 1px solid #e2e1e1;
-  .phone-head {
+  .content {
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
     width: 100%;
-    height: 64px;
-    text-align: center;
-    line-height: 64px;
-    background: #fff;
-    img{
-      width:100%;
-    }
-  }
-  .phone-body {
-    background: rgb(217,217,223);
-    width:100%;
-    height:100%;
-    position:relative;
-    .img_wrapper{ 
-      position:absolute;
-      top:50%;
-      left:50%;
-      transform: translate(-50%, -50%);
-      display:flex;
-      flex-direction: column;
-      width:calc(100% - 80px);
-      align-items: center;
-      img{
-        max-width: 100%;
+    .wrapper {
+      background: #fff;
+      margin-bottom: 10px;
+      p {
+        background: rgba(247, 247, 247, 1);
+        padding: 10px;
+        margin-bottom: 20px;
       }
-      i{
-        background: url('../../../../assets/images/shop/icon_close.png') no-repeat 0 0;
-        width:44px;
-        height:44px;
-        margin-top:22px;
-      }
-    }
-  }
-}
-.props{
-  margin-left:20px;
-  width:346px;
-  .block{
-    margin-bottom:10px;
-    background:#fff;
-    &.header{
-      padding:10px;
-      display:flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .title{
-        text-indent:10px;
-        position:relative;
-        &:before{
-          content:"";
-          position:absolute;
-          display:block;
-          width:2px;
-          height:100%;
-          background:$globalMainColor;
+      ul.group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        li {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 20px;
+          cursor:pointer;
+          img {
+            width: 65px;
+            height: 65px;
+          }
+          span {
+            margin-top: 20px;
+          }
         }
       }
-      .state{
-        color:$globalMainColor;
-      }
-    }
-    &.form{
-      padding: 30px 20px;
-    }
-    &.button{
-      padding: 30px 0;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
     }
   }
 }
 .upload_tips{
   color:rgba(211,211,211,1);
+}
+.module {
+  &.view {
+    width: 374px;
+    .phone-body {
+      background: rgb(217,217,223);
+      width:100%;
+      height:100%;
+      position:relative;
+      .img_wrapper{ 
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        display:flex;
+        flex-direction: column;
+        width:calc(100% - 80px);
+        align-items: center;
+        img{
+          max-width: 100%;
+        }
+        i{
+          background: url('../../../../assets/images/shop/icon_close.png') no-repeat 0 0;
+          width:44px;
+          height:44px;
+          margin-top:22px;
+        }
+      }
+    }
+  }
+  &.props{
+    width:346px;
+    .block{
+      &.button{
+        padding: 30px 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+  }
 }
 </style>
