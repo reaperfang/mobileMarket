@@ -253,21 +253,6 @@
 /deep/ .el-form-item__label {
     font-weight: normal;
 }
-.table-header {
-    display: flex;
-    align-items: center;
-    background: rgb(239, 238, 255);
-    height: 46px;
-    padding-left: 13px;
-    .item {
-        padding: 6px 21px;
-        border-radius:17px;
-        cursor: pointer;
-        &.active {
-            background: rgb(225, 223, 255);
-        }
-    }
-}
 .footer {
     margin-top: 10px;
 }

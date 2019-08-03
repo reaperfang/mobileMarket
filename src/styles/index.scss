@@ -381,3 +381,101 @@ table.yuan-table{
   color: #92929B;
   font-size: 12px;
 }
+
+.tc {
+  text-align: center;
+}
+
+.tr {
+  text-align: right;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  background: rgb(239, 238, 255);
+  height: 46px;
+  padding-left: 13px;
+  .item {
+      padding: 6px 21px;
+      border-radius:17px;
+      cursor: pointer;
+      &.active {
+          background: rgb(225, 223, 255);
+      }
+  }
+}
+
+.title-section {
+  border: 1px solid rgb(202, 207, 203);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  .title-section-header {
+      display: flex;
+      justify-content: space-between;
+      height: 60px;
+      line-height: 60px;
+      background-color: rgb(243, 244, 244);
+      border-radius: 5px 5px 0 0;
+      padding: 0 20px;
+  }
+  .content {
+      padding: 20px;
+  }
+}
+
+.row {
+  display: flex;
+  &.justify-between {
+      justify-content: space-between;
+  }
+  &.align-center {
+      align-items: center;
+  }
+  .col {
+      &.flex1 {
+          flex: 1;
+      }
+  }
+}
+
+.coupon-box {
+  .coupon {
+      display: flex;
+      .item {
+          border-radius: 5px;
+          background-color: #EC5D5D;
+          color: #fff;
+          padding: 7px 21px;
+          &.lefter {
+              border-right: 1px solid #b83f3f;
+              background-image: url(../assets/images/order/coupon-border-left.png);
+              background-position: left 3px;
+              background-repeat: repeat-y;
+          }
+          &.righter {
+              background-image: url(../assets/images/order/coupon-border-right.png);
+              background-position: right 3px;
+              background-repeat: repeat-y;
+              padding-left: 14px;
+              .limit {
+                  color: #f5aeae;
+              }
+          }
+      }
+  }
+  .coupon-code {
+      margin-top: 10px;
+      .coupon-code-header {
+          height: 30px;
+          line-height: 30px;
+          background-color: #C23333;
+          position: relative;
+          top: 3px;
+          text-align: left;
+          color: #fff;
+          font-size: 16px;
+          padding-left: 10px;
+      }
+  }
+} 

@@ -5,6 +5,7 @@ Vue.use(Router)
 import demo from './demo';
 import shop from './shop';
 import goods from './goods';
+import order from './order';
 import finance from './finance';
 import set from './set';
 import intelligentOperation from './intelligentOperation';
@@ -19,7 +20,8 @@ export const asyncRouterMap = [  //异步路由表
   ...client,
   ...datum,
   ...finance,
-  ...set
+  ...set,
+  ...order
 ]
 
 export const syncRouterMap = [ //同步路由表
