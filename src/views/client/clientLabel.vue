@@ -3,11 +3,11 @@
         <div class="c_line">
             <span>标签名称：</span>
             <div class="input_wrap">
-                <el-input v-model="labelName" placeholder="请输入标签名称"></el-input>
+                <el-input v-model="tagName" placeholder="请输入标签名称"></el-input>
             </div>
             <span class="marL20">标签类型：</span>
             <div class="input_wrap marR100">
-                <el-select v-model="labelType">
+                <el-select v-model="tagType">
                     <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -30,11 +30,11 @@ export default {
     components: { clTable },
     data() {
         return {
-            labelName:"",
-            labelType:"",
+            tagName:"",
+            tagType:"",
             options: [
-                {label: '渠道1',value: 1},
-                {label: '渠道2',value: 2}
+                {label: '手工',value: 0},
+                {label: '自动',value: 1}
             ],
         }
     },

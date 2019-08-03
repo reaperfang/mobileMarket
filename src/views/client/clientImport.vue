@@ -3,28 +3,28 @@
         <p class="c_title">批量导入：</p>
         <div class="c_top">
             <div class="form_container">
-                <el-form ref="form" :model="form">
-                    <el-form-item label="所属渠道：">
+                <el-form ref="ruleForm" :rules="rules" :model="ruleForm">
+                    <el-form-item label="所属渠道：" prop="channelId">
                         <div class="input_wrap">
-                            <el-select v-model="form.channel" placeholder="选择渠道">
+                            <el-select v-model="ruleForm.channelId" placeholder="选择渠道">
                                 <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in channelOptions"
+                                    :key="item.id"
+                                    :label="item.channerlName"
+                                    :value="item.id">
                                 </el-option>
                             </el-select>
                         </div>
+                        <span class="addMainColor pointer">新建</span>
                     </el-form-item>
-                    <el-form-item label="身份：">
+                    <el-form-item label="身份：" prop="memberType">
                         <div class="input_wrap">
-                            <el-radio v-model="form.identity" label="1">会员</el-radio>
-                            <el-radio v-model="form.identity" label="2">非会员</el-radio>
+                            <el-radio v-model="ruleForm.memberType" label="1">会员</el-radio>
+                            <el-radio v-model="ruleForm.memberType" label="0">非会员</el-radio>
                         </div>
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item label="上传文件：">
                         <div class="input_wrap marL">
-                            <!-- <el-button type="primary">上传文件</el-button> -->
                             <el-upload
                                 class="upload-block"
                                 action="https://jsonplaceholder.typicode.com/posts/"
@@ -50,22 +50,22 @@
             <div class="fr marR">
                 <span>导入时间：</span>
                 <el-date-picker
-                    v-model="value1"
+                    v-model="importTime"
                     type="daterange"
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期">
                 </el-date-picker>
-                <span>渠道：</span>
-                <el-select v-model="form.channel" placeholder="选择渠道">
+                <span class="marL20">渠道：</span>
+                <el-select v-model="channelId" placeholder="选择渠道">
                     <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="item in channelOptions"
+                        :key="item.id"
+                        :label="item.channerlName"
+                        :value="item.id">
                     </el-option>
                 </el-select>
-                <el-button type="primary" class="marL20">查 询</el-button>
+                <el-button type="primary" class="marL20" @click="handleCheck">查 询</el-button>
                 <el-button>重 置</el-button>
             </div>
             <ciTable style="margin-top: 68px"></ciTable>
@@ -76,37 +76,63 @@
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import clientCont from '@/system/constant/client';
+import clientApi from '@/api/client.js';
 import ciTable from './components/clientImport/ciTable';
+import utils from "@/utils";
 export default {
     components: { ciTable },
     name: 'clientImport',
     data() {
         return {
-            form: {
-                channel:"",
-                identity: "1"
+            ruleForm: {
+                channelId:"",
+                memberType: "1"
             },
-            options: [
-                {label: '渠道1',value: 1},
-                {label: '渠道2',value: 2}
-            ],
-            value1:"",
+            rules: {
+                channelId: [
+                    { required: true, message: "请选择渠道" }
+                ],
+                memberType: [
+                    { required: true, message: "请选择身份" }
+                ]
+            },
             //上传参数
-            fileList: []
+            fileList: [],
+            //查询导入记录所需要的参数：
+            importTime: '',
+            channelId:''
+        }
+    },
+    methods: {
+        handleCheck() {
+            console.log(this.importTimeStart);
         }
     },
     computed: {
         memberLabels() {
             return clientCont.memberLabels
         },
+        channelOptions() {
+            return clientApi.channelOptions
+        },
         handleRemove(file, fileList) {
-            console.log(file, fileList);
+            //console.log(file, fileList);
         },
         handlePreview(file) {
-            console.log(file);
+           // console.log(file);
         },
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${ file.name }？`);
+        },
+        importTimeStart() {
+            if(this.importTime) {
+                return this.importTime[0]
+            }
+        },
+        importTimeEnd() {
+            if(this.importTime) {
+                return this.importTime[1]
+            }
         }
     }
 }
@@ -131,6 +157,7 @@ export default {
     padding: 16px 20px;
     .c_title{
         color: #3D434A;
+        font-weight: 600;
     }
     .c_top{
         padding-top: 17px;
@@ -140,9 +167,6 @@ export default {
                 position: relative;
                 display: inline-block;
                 width: 202px;
-                &.marL{
-                    margin-left: 100px;
-                }
                 .upload-block{
                     width: 300px;
                 }

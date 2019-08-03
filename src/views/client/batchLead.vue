@@ -1,36 +1,39 @@
 <template>
     <div class="c_container">
-        <p class="c_title">批量导入：</p>
+        <p class="c_title">客户标签：</p>
         <div class="form_container">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-                <el-form-item label="标签名称：" prop="name">
+                <el-form-item label="标签名称：" prop="tagName">
                     <div class="input_wrap">
-                        <el-input v-model="ruleForm.name" placeholder="请输入标签名称"></el-input>
+                        <el-input v-model="ruleForm.tagName" placeholder="请输入标签名称"></el-input>
                     </div>
                 </el-form-item>
-                <el-form-item label="标签类型：" prop="type">
+                <el-form-item label="标签类型：" prop="tagType">
                     <div class="input_wrap">
-                        <el-radio v-model="ruleForm.type" label="1">手动</el-radio>
-                        <el-radio v-model="ruleForm.type" label="2">自动</el-radio>
+                        <el-radio v-model="ruleForm.tagType" label="1">手动</el-radio>
+                        <el-radio v-model="ruleForm.tagType" label="2">自动</el-radio>
                     </div>
                     <p class="label_warn">
                         手动标签：无筛选条件给客户定义标签<br>
                         自动标签：按照筛选条件自动为客户打标签，条件不符合自动删除和添加
                     </p>
                 </el-form-item>
-                <el-form-item label="满足条件：" prop="condition">
-                    <el-radio v-model="ruleForm.condition" label="1">满足任意一个被选中的条件即可</el-radio>
-                    <el-radio v-model="ruleForm.condition" label="2">必须满足所有条件</el-radio>
+                <el-form-item label="满足条件：" prop="anyOrAllCondition">
+                    <el-radio v-model="ruleForm.anyOrAllCondition" label="0">满足任意一个被选中的条件即可</el-radio>
+                    <el-radio v-model="ruleForm.anyOrAllCondition" label="1">必须满足所有条件</el-radio>
                 </el-form-item>
                 <el-form-item label="交易条件：">
-                    <el-checkbox v-model="ruleForm.lastTimeChecked">最后消费时间</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isLastConsumeTime">最后消费时间</el-checkbox>
                 </el-form-item>
-                <el-form-item label="交易条件：">
-                    <el-radio v-model="ruleForm.lastTimeRadio" label="1">最近</el-radio>
-                    <div class="input_wrap">
-                        <el-select v-model="ruleForm.lastTimeSelect" placeholder="请选择">
+                <el-form-item>
+                    <el-radio v-model="ruleForm.consumeTimeType" label="0">最近</el-radio>
+                    <div class="input_wrap3">
+                        <el-input v-model="ruleForm.consumeTimeValue"></el-input>
+                    </div>
+                    <div class="input_wrap2">
+                        <el-select v-model="ruleForm.consumeTimeUnit" placeholder="请选择">
                             <el-option
-                                v-for="item in options"
+                                v-for="item in unitOptions"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
@@ -39,10 +42,10 @@
                     </div>
                 </el-form-item>
                 <el-form-item>
-                    <el-radio v-model="ruleForm.lastTimeRadio" label="2">自定义</el-radio>
+                    <el-radio v-model="ruleForm.consumeTimeType" label="1">自定义</el-radio>
                     <div class="input_wrap">
                         <el-date-picker
-                            v-model="ruleForm.dataRange"
+                            v-model="ruleForm.consumeTime"
                             type="daterange"
                             range-separator="至"
                             start-placeholder="开始日期"
@@ -51,51 +54,51 @@
                     </div>
                 </el-form-item>
                 <el-form-item>
-                    <el-checkbox v-model="ruleForm.ljxfcs">累计消费次数</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isTotalConsumeTimes">累计消费次数</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.minTime"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeTimesMin"></el-input>
                     </div>
                     <span>次 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.maxTime"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeTimesMax"></el-input>
                     </div>
                     <span>次</span>
                 </el-form-item>
                 <el-form-item>
-                    <el-checkbox v-model="ruleForm.ljxfje">累计消费金额</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isTotalConsumeMoney">累计消费金额</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.minMoney"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeMoneyMin"></el-input>
                     </div>
                     <span>元 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.maxMoney"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeMoneyMax"></el-input>
                     </div>
                     <span>元</span>
                 </el-form-item>
                 <el-form-item>
-                    <el-checkbox v-model="ruleForm.ljxfcs">客单价</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isPreUnitPrice">客单价</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.minSingle"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.preUnitPriceMin"></el-input>
                     </div>
                     <span>元 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.maxSingle"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.preUnitPriceMax"></el-input>
                     </div>
                     <span>元</span>
                 </el-form-item>
                 <el-form-item label="资产条件：">
-                    <el-checkbox v-model="ruleForm.ljxfcs">累计获得积分</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isTotalScore">累计获得积分</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.minJf"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.totalScoreMin"></el-input>
                     </div>
                     <span>分 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.maxJf"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.totalScoreMax"></el-input>
                     </div>
                     <span>分</span>
                 </el-form-item>
                 <el-form-item label="资产条件：">
-                    <el-checkbox v-model="ruleForm.ljxfcs">商品条件</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isProduct">商品条件</el-checkbox>
                     <span>购买以下任意商品</span>
                     <span class="addMainColor marL20">选择商品</span>
                 </el-form-item>
@@ -113,15 +116,27 @@ export default {
     data() {
         return {
             ruleForm: {
-                name: "",
-                type: "1",
-                condition:"1",
-                lastTimeChecked: false,
-                lastTimeSelect:"",
-                dataRange:"",
-                ljxfcs: false,
-                ljxfje: false,
-                minTime:""
+                tagName: "",
+                tagType: "1",
+                anyOrAllCondition:"1",
+                isLastConsumeTime: false,
+                consumeTimeType: "0",
+                consumeTimeValue:"",
+                consumeTimeUnit: 0,
+                consumeTime:"",
+                isTotalConsumeTimes: true,
+                consumeTimesMin:"",
+                consumeTimesMax:"",
+                isTotalConsumeMoney: false,
+                consumeMoneyMin:"",
+                consumeMoneyMax:"",
+                isPreUnitPrice: true,
+                preUnitPriceMin:"",
+                preUnitPriceMax:"",
+                isTotalScore: false,
+                totalScoreMin:"",
+                totalScoreMax:"",
+                isProduct: true
             },
             rules: {
                 name: [
@@ -134,9 +149,10 @@ export default {
                     { required: true, message: '请选择满足条件', trigger: 'blur'}
                 ],
             },
-            options: [
-                {label: 'test1',value: 1},
-                {label: 'test2',value: 2}
+            unitOptions: [
+                { label: '天',value: 0 },
+                { label: '月',value: 1 },
+                { label: '年',value: 2 },
             ],
         }
     }
@@ -163,6 +179,10 @@ export default {
         }
         .input_wrap2{
             width: 100px;
+            display: inline-block;
+        }
+        .input_wrap3{
+            width: 60px;
             display: inline-block;
         }
     }
