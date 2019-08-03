@@ -10,7 +10,7 @@ export default [
 		name: "shopManage",
 		meta: {
 			roles: ["shop"],
-			title: "店铺管理",
+			title: "店铺",
 			icon: "shop"
 		},
 		children: [
@@ -58,6 +58,13 @@ export default [
 				component: () => import("@/views/shop/shopManage/startingAD/ADManageIndex"),
 				name: "ADManageIndex",
 				meta: { title: "启动广告", noCache: true }
+			},
+			{
+				path: "createAD",
+				component: () => import("@/views/shop/shopManage/startingAD/createAD"),
+				name: "createAD",
+				meta: { title: "创建广告", noCache: true },
+				hidden: true
 			},
 			{
 				path: "shopNav",

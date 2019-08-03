@@ -1,18 +1,34 @@
 <template>
-  <ul class="tile-list n5">
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-    <li>结婚的粉红色的不符合</li>
-  </ul>
+  <div class="shop_style_wrapper">
+    <h3>风格配色</h3>
+    <div class="style_btns">
+      <span>选择店铺整体配色： </span>
+      <ul class="style_list" ref="styleList">
+        <li v-for="(item, key) of styleList" :key="key" class="cell-item" @click="selectedStyle($event, item)">
+          <div class="style_block" v-for="(item2, key2) of item.colors" :key="key2" :style="{'backgroundColor': item2}"></div>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="demo_list tile-list n3" v-if="selectedItem" v-loading="loading">
+      <li>
+        <img :src="require('../../../assets/images/shop/style/goodsDetail'+ selectedItem.id +'.png')" alt="">
+        <p>商品详情</p>
+      </li>
+      <li>
+        <img :src="require('../../../assets/images/shop/style/shoppingCar'+ selectedItem.id +'.png')" alt="">
+        <p>购物车</p>
+      </li>
+      <li>
+        <img :src="require('../../../assets/images/shop/style/orderDetail'+ selectedItem.id +'.png')" alt="">
+        <p>订单详情</p>
+      </li>
+    </ul>
+
+    <div class="confirm_btn">
+      <el-button type="primary">保  存</el-button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -21,20 +37,145 @@ export default {
   components: {},
   data () {
     return {
+      loading: true,
+      styleList: [],
+      selectedItem: null  //当前选中的样式
     }
   },
   created() {
-
+    this.fetch();
   },
   methods: {
 
+    fetch() {
+      this.styleList = [
+        {
+          id: 1,
+          mainColor:'',
+          colors: ['rgba(251,68,67,1)', 'rgba(253,135,84,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 2,
+          colors: ['rgba(251,95,39,1)', 'rgba(253,146,37,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 3,
+          colors: ['rgba(252,87,124,1)', 'rgba(254,230,232,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 4,
+          colors: ['rgba(252,70,75,1)', 'rgba(85,85,85,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 5,
+          colors: ['rgba(251,197,44,1)', 'rgba(29,38,46,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 6,
+          colors: ['rgba(102,196,170,1)', 'rgba(221,242,236,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 7,
+          colors: ['rgba(8,187,7,1)', 'rgba(56,56,56,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 8,
+          colors: ['rgba(105,192,112,1)', 'rgba(225,245,226,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 9,
+          colors: ['rgba(75,144,226,1)', 'rgba(218,233,249,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 10,
+          colors: ['rgba(195,167,105,1)', 'rgba(243,238,225,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 11,
+          colors: ['rgba(51,51,51,1)', 'rgba(255,255,255,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          id: 12,
+          colors: ['rgba(136,76,255,1)', 'rgba(239,230,255,1)', 'rgba(255,255,255,1)'],
+        }
+      ];
+
+      this.selectedItem = this.styleList[0];
+      this.loading = false;
+    },
+
+    /* 选中风格 */
+    selectedStyle(event, item) {
+      this.selectedItem = item;
+
+      const styles = this.$refs.styleList.querySelectorAll('.cell-item');
+      for(let dom of styles) {
+        dom.className = 'cell-item';
+      };
+      event.currentTarget.className = 'cell-item style_active';
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  li{
-    background:red;
-    // margin-right:30px;
+.shop_style_wrapper{
+  background:#fff;
+  padding:20px;
+  height: 100%;
+  h3{
+    margin-bottom:20px;
   }
+  .style_btns{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    span{
+      color:rgba(68,67,75,1);
+    }
+    ul.style_list{
+      display:flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      li{
+        margin-right:20px;
+        display:flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        cursor:pointer;
+        border: 2px dashed transparent;
+        &.style_active{
+          border: 2px dashed $globalMainColor!important;
+        }
+        .style_block{
+          width:18px;
+          height:18px;
+        }
+      }
+    }
+  }
+  ul.demo_list{
+    height: calc(100% - 136px);
+    margin-top:33px;
+    li{
+      width: 252px;
+      margin-right: 28px;
+      img{
+        border: 1px solid #e8e7e7;
+        box-shadow: 5px 7px 17px rgba(0,0,0,0.1);
+        width:100%;
+      }
+      p{
+        margin-top:20px;
+        text-align:center;
+      }
+    }
+  }
+  .confirm_btn{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: 30px;
+  }
+}
 </style>

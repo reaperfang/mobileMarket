@@ -53,6 +53,7 @@
 <script>
 import ma2Table from './components/ma2Table';
 export default {
+    name: 'channel',
     components: { ma2Table },
     data() {
         return {

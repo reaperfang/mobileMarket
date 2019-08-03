@@ -67,6 +67,7 @@
 <script>
 import maTable from './components/maTable';
 export default {
+    name: 'memberInfo',
     components: { maTable },
     data() {
         return {
