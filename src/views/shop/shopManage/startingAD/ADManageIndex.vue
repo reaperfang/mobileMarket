@@ -9,7 +9,7 @@
       </el-switch>
     </div>
     <div class="ad_head_wrapper">
-      <el-form ref="form" :model="form" label-width="80px" :inline="true">
+      <el-form ref="ruleForm" :model="ruleForm" label-width="80px" :inline="true">
         <el-form-item label="" prop="ADType">
           <el-select v-model="ruleForm.ADType" placeholder="请选择广告类型">
             <el-option label="全部广告" :value="1"></el-option>
