@@ -6,7 +6,7 @@
                     <el-input v-model="formInline.orderNumber" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="商品名称">
-                    <el-input v-model="formInline.name" placeholder="请输入"></el-input>
+                    <el-input v-model="formInline.goodsName" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="订单状态">
                     <el-select v-model="formInline.orderState">
@@ -14,36 +14,24 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="评价星级">
-                    <el-select v-model="formInline.orderState">
+                    <el-select v-model="formInline.star">
                         <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderStateList" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="申请时间">
+                <el-form-item label="下单时间">
                     <el-date-picker
-                        v-model="formInline.applicationDate"
+                        v-model="formInline.orderDate"
                         type="daterange"
                         range-separator="-"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="售后类型">
-                    <el-select v-model="formInline.afterSalesType">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in afterSalesTypeList" :key="index"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="状态">
-                    <el-select v-model="formInline.orderState">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderStateList" :key="index"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">查询</el-button>
-                </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button>导出</el-button>
-                        <el-button>批量审核</el-button>
+                        <el-button class="border-button">批量审核</el-button>
+                        <el-button class="border-button">批量回复</el-button>
+                        <el-button @click="$router.push('/order/sensitiveWords')" class="border-button">敏感词设置</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
@@ -53,61 +41,74 @@
             </el-form>
         </div>
         <div class="content">
-            <p>已选择 {{multipleSelection.length}} 项，全部{{total}}项</p>
-            <el-table
-                ref="multipleTable"
-                :data="tableData"
-                tooltip-effect="dark"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-                <el-table-column
-                    type="selection"
-                    width="55">
-                </el-table-column>
-                <el-table-column
-                    prop="id"
-                    label="售后单编号"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="afterSalesType"
-                    label="售后类型"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="afterSalesType"
-                    label="售后类型"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="orderNumber"
-                    label="订单编号"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="orderNumber"
-                    label="订单编号"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="account"
-                    label="买家账号">
-                </el-table-column>
-                <el-table-column
-                    prop="state"
-                    label="状态">
-                </el-table-column>
-                <el-table-column
-                    prop="time"
-                    label="申请时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <span>查看</span>
-                        <span>同意</span>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <p class="statistics">已选择<span>{{multipleSelection.length}}</span>项，全部<span>{{total}}</span>项</p>
+            <div class="table-box">
+                <el-table
+                    ref="multipleTable"
+                    :data="tableData"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange"
+                    :header-cell-style="{background:'#ebeafa', color:'#655EFF'}">
+                    <el-table-column
+                        type="selection"
+                        width="55">
+                    </el-table-column>
+                    <el-table-column
+                        prop="tag"
+                        label="全部"
+                        width="120"
+                        :filters="[{ text: '精选', value: '精选' }, { text: '普通', value: '普通' }]"
+                        :filter-method="filterTag"
+                        filter-placement="bottom-end">
+                        <template slot-scope="scope">
+                            <el-tag color="#FF4B1C">{{scope.row.tag}}</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="star"
+                        label="评价星级"
+                        width="120"
+                        :filters="[{ text: '1星', value: '1' }, { text: '2星', value: '2' }, { text: '3星', value: '3' }, { text: '4星', value: '4' }, { text: '5星', value: '5' }]"
+                        :filter-method="filterStar"
+                        filter-placement="bottom-end">
+                        <template slot-scope="scope">
+                            {{scope.row.star}}星
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="goodsName"
+                        label="商品名称"
+                        width="120">
+                    </el-table-column>
+                    <el-table-column
+                        prop="orderNumber"
+                        label="订单编号">
+                    </el-table-column>
+                    <el-table-column
+                        prop="customerId"
+                        label="客户ID">
+                    </el-table-column>
+                    <el-table-column
+                        prop="orderState"
+                        label="状态">
+                    </el-table-column>
+                    <el-table-column
+                        prop="reply"
+                        label="回复">
+                    </el-table-column>
+                    <el-table-column
+                        prop="time"
+                        label="最新发货时间">
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <span @click="$router.push({ path: '/order/reviewsDetail?id=' +  scope.row.id})" class="blue">查看</span>
+                            <span class="blue">同意</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
         </div>
     </div>
@@ -119,14 +120,11 @@ export default {
     data() {
         return {
             formInline: {
-                orderNumber: '',
-                name: '',
-                orderState: '',
-                orderState: '',
-                goodsName: '',
-                orderTime: '',
-                applicationDate: '',
-                afterSalesType: ''
+                orderNumber: '', // 订单编号
+                goodsName: '', //  商品名称
+                orderState: '', //  订单状态
+                star: '', //   评价星级
+                orderDate: '', //  下单时间
             },
             orderStateList: [
                 {
@@ -158,25 +156,6 @@ export default {
                     value: '已关闭'
                 },
             ],
-            afterSalesTypeList: [
-                {
-                    label: '全部',
-                    value: ''
-                },
-                {
-                    label: '退货退款',
-                    value: '退货退款'
-                },
-                {
-                    label: '换货',
-                    value: '换货'
-                },
-                {
-                    label: '仅退款',
-                    value: '仅退款'
-                },
-            ],
-            orderStateList: [],
             multipleSelection: [],
             multipleTable: [
                 {}
@@ -186,6 +165,19 @@ export default {
                 page: 1,
                 limit: 20,
             },
+            tableData: [
+                {
+                    id: 1,
+                    tag: '精选',
+                    star: '5',
+                    goodsName: '商品名称',
+                    orderNumber: 1,
+                    customerId: 1,
+                    orderState: '审核通过',
+                    reply: '是',
+                    time: '2019'
+                }
+            ]
         }
     },
     methods: {
@@ -197,6 +189,12 @@ export default {
         },
         getList() {
 
+        },
+        filterTag(value, row) {
+            return row.tag === value;
+        },
+        filterStar(value, row) {
+            return row.star === value;
         }
     },
     components: {
@@ -223,15 +221,36 @@ export default {
     .content {
         background-color: #fff;
         padding: 20px;
+        margin-top: 20px;
         p {
             font-size: 16px;
             color: #B6B5C8;
             margin: 23px 0 20px 0;
+            span {
+                color: rgb(76, 75, 83);
+            }
+        }
+        .table-box {
+            margin-left: 60px;
         }
     }
 }
 /deep/ .el-input {
     width: auto;
+}
+/deep/ .el-table__column-filter-trigger .el-icon-arrow-down:before {
+    content: '';
+}
+/deep/ .el-table__column-filter-trigger {
+    margin-left: 8px;
+}
+/deep/ .el-table__column-filter-trigger .el-icon-arrow-down {
+    width: 10px;
+    height: 10px;
+    background: url(../../assets/images/order/filter.png);
+}
+/deep/ .el-tag {
+    color: #fff;
 }
 </style>
 

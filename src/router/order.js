@@ -64,6 +64,33 @@ export default [
         name: 'reviews',
         meta: { title: '评价管理', noCache: true, tabTitle: '订单处理' },
       },
+      {
+        path: 'reviewsDetail',
+        component: () => import('@/views/order/reviewsDetail'),
+        name: 'reviewsDetail',
+        hidden: true,
+        meta: { title: '评价详情', noCache: true, tabTitle: '订单处理' },
+      },
+      {
+        path: 'sensitiveWords',
+        component: () => import('@/views/order/sensitiveWords'),
+        name: 'sensitiveWords',
+        hidden: true,
+        meta: { title: '敏感词', noCache: true, tabTitle: '订单处理' },
+      },
+      {
+        path: 'quickDelivery',
+        component: () => import('@/views/order/quickDelivery'),
+        name: 'quickDelivery',
+        meta: { title: '快递发货', noCache: true, tabTitle: '物流配送' },
+      },
+      {
+        path: 'newTemplate',
+        component: () => import('@/views/order/newTemplate'),
+        name: 'newTemplate',
+        hidden: true,
+        meta: { title: '新建模板', noCache: true, tabTitle: '物流配送' },
+      },
     ]
   }
 ]

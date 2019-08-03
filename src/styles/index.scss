@@ -501,3 +501,37 @@ table.yuan-table{
       }
   }
 } 
+
+.blue {
+  color: $globalMainColor;
+}
+
+// 按钮
+.border-button {
+  color: $globalMainColor;
+  border: 1px solid $globalMainColor;
+}
+
+.orange {
+  color: $warningColor;
+}
+
+.operate-box {
+  span {
+    color: $globalMainColor;
+    margin-right: 20px;
+  }
+}
+
+.table-box {
+  .table-title {
+    color: #B6B5C8;
+    margin-bottom: 20px;
+    span {
+      color: rgb(75, 74, 82);
+    }
+  }
+  .table {
+    margin-left: 60px;
+  }
+}
