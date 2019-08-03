@@ -18,12 +18,12 @@ export const asyncRouterMap = [  //异步路由表
   ...profile,
   ...shop,
   ...goods,
+  ...order,
   ...client,
   ...datum,
   ...intelligentOperation,
   ...finance,
   ...set,
-  ...order
 ]
 
 export const syncRouterMap = [ //同步路由表
