@@ -203,7 +203,8 @@ export default {
   data() {
     return {
       fontStyle: {fontWeight: 500},  //动态字体样式对象
-      pageMargin: {padding: '10px'},  //动态页面边距对象
+      pageMargin: {padding: '15px'},  //动态页面边距对象
+      groupMargin: {marginBottom: '20px'},  //动态分组间距对象
       ruleForm: {
         groupStyle: 'left',  //分组样式
         groupFont: 'normal',  //分组字体
