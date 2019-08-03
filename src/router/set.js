@@ -57,6 +57,12 @@ export default [
                 path: 'shopManage',
                 component: () => import('@/views/set/shopManage'),
                 name: 'shopManage',
+                meta: { title: '店铺管理', noCache: true, tabTitle: '权限管理' }
+            },
+            {
+                path: 'shopDistribute',
+                component: () => import('@/views/set/shopDistribute'),
+                name: 'shopDistribute',
                 meta: { title: '店铺分配', noCache: true, tabTitle: '权限管理' }
             },
             {
