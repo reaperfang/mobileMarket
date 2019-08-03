@@ -11,9 +11,12 @@
       <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo"></component>
       <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
       <div class="block button">
-        <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
-        <el-button @click="saveData">保    存</el-button>
-        <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
+        <div class="help_blank"></div>
+        <div class="buttons">
+          <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
+          <el-button @click="saveData">保    存</el-button>
+          <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
+        </div>
       </div>
       <!-- 动态弹窗 -->
       <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
@@ -112,43 +115,33 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import './decorate.scss';
-  .props{
+<style lang="scss" scoped>
+.module{
+  &.props{
     width:346px;
-    height: 835px;
-    overflow-y: auto;
+    form{
+      height: 697px;
+    }
     .block{
-      &.header{
-        padding:10px;
-        display:flex;
-        flex-direction: row;
-        justify-content: space-between;
-        .title{
-          text-indent:10px;
-          position:relative;
-          &:before{
-            content:"";
-            position:absolute;
-            display:block;
-            width:2px;
-            height:100%;
-            background:$globalMainColor;
-          }
-        }
-        .state{
-          color:$globalMainColor;
-        }
-      }
-      &.form{
-        padding: 30px 20px;
-      }
       &.button{
-        padding: 30px 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+        width:346px;
+        position:absolute;
+        bottom:12px;
+        .help_blank{
+          height: 10px;
+          background: rgb(242,242,249);
+          width: 100%;
+        }
+        .buttons{
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          background:#fff;
+          padding-bottom: 30px;
+          margin-top: 30px;
+        }
       }
     }
   }
+}
 </style>

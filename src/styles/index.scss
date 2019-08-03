@@ -123,8 +123,8 @@ code {
 background-color:#f8f8f8;
 }
 ::-webkit-scrollbar {//滚动条的宽度
-width:6px;
-height:6px;
+width:0px;
+height:0px;
 }
 ::-webkit-scrollbar-thumb {//滚动条的设置
 background-color:#fdfcfc;
@@ -311,6 +311,9 @@ table.yuan-table{
 .marT20{
   margin-top: 20px;
 }
+.marR10{
+  margin-right: 10px;
+}
 .marR50{
   margin-right: 50px;
 }
@@ -319,6 +322,12 @@ table.yuan-table{
 }
 .marR100{
   margin-right: 100px;
+}
+.marB10{
+  margin-bottom: 10px;
+}
+.marB20{
+  margin-bottom: 20px;
 }
 .padR40{
   padding-right: 40px;
@@ -330,7 +339,10 @@ table.yuan-table{
   font-size: 12px;
 }
 .addMainColor{
-  color: #5B54E6;
+  color: #655EFF;
+}
+.pointer{
+  cursor: pointer;
 }
 .btn_container{
   margin: 20px 0 30px 0;
@@ -338,6 +350,16 @@ table.yuan-table{
 .border_btn{
   border-color: #655EFF;
   color: #655EFF;
+}
+.minor_btn{
+  background-color: #E6E4FF;
+  color: #655EFF;
+  border: none;
+}
+.yellow_btn{
+  background-color: #FFF8EA;
+  color: #FFB723;
+  border: none;
 }
 /* 店铺装修中的滑动条样式 */
 .slider-wrapper{

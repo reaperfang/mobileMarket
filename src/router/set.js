@@ -29,6 +29,12 @@ export default [
                 meta: { title: '交易设置', noCache: true, tabTitle: '通用设置' }
             },
             {
+                path: 'memberSet',
+                component: () => import('@/views/set/memberSet'),
+                name: 'memberSet',
+                meta: { title: '会员设置', noCache: true, tabTitle: '通用设置' }
+            },
+            {
                 path: 'payType',
                 component: () => import('@/views/set/payType'),
                 name: 'payType',
@@ -48,6 +54,12 @@ export default [
                 meta: { title: '提现设置', noCache: true, tabTitle: '资产设置' }
             },
             {
+                path: 'shopManage',
+                component: () => import('@/views/set/shopManage'),
+                name: 'shopManage',
+                meta: { title: '店铺分配', noCache: true, tabTitle: '权限管理' }
+            },
+            {
                 path: 'subaccountManage',
                 component: () => import('@/views/set/subaccountManage'),
                 name: 'subaccountManage',
@@ -57,7 +69,7 @@ export default [
                 path: 'createAccount',
                 component: () => import('@/views/set/createAccount'),
                 name: 'createAccount',
-                meta: { title: '新建子账号', noCache: true, tabTitle: '资产设置' },
+                meta: { title: '新建子账号', noCache: true, tabTitle: '权限管理' },
                 hidden: true
             },
             {
@@ -66,6 +78,13 @@ export default [
                 name: 'roleManage',
                 meta: { title: '角色管理', noCache: true, tabTitle: '权限管理' }
             },
+            {
+                path: 'createRole',
+                component: () => import('@/views/set/createRole'),
+                name: 'createRole',
+                meta: { title: '新建角色', noCache: true, tabTitle: '权限管理' },
+                hidden: true
+            }
         ]
     }
 ]

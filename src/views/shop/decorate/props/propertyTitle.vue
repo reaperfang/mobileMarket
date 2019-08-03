@@ -40,7 +40,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected"></component>
   </el-form>
 </template>
 
@@ -71,6 +71,10 @@ export default {
   },
   methods: {
 
+    /* 弹窗选中了跳转链接 */
+    dialogDataSelected(jumpLink) {
+      console.log(jumpLink);
+    },
   }
 }
 </script>

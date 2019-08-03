@@ -10,7 +10,7 @@
       <ul style="height:770px;overflow-y:auto;">
         <li v-for="(item,key) of componentDataIds" :key="key">
           <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
-          <el-tag type="success">{{item}}</el-tag>
+          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
       </ul>
     </div>
@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import widgetView from "../../decorate/widgetView";
-import editView from "../../decorate/editView";
-import propView from "../../decorate/propView";
+import widgetView from "@/views/shop/decorate/widgetView";
+import editView from "@/views/shop/decorate/editView";
+import propView from "@/views/shop/decorate/propView";
 import decorateDemo from "@/assets/json/decorateDemo.json";
 export default {
   name: "shopEditor",

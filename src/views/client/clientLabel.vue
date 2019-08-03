@@ -24,8 +24,9 @@
     </div>
 </template>
 <script type="es6">
-import clTable from './components/clTable';
+import clTable from './components/clientLabel/clTable';
 export default {
+    name:'clientLabel',
     components: { clTable },
     data() {
         return {

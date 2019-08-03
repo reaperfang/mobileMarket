@@ -68,8 +68,9 @@
     </div>
 </template>
 <script type="es6">
-import cmTable from './components/cmTable'
+import cmTable from './components/creditsManage/cmTable'
 export default {
+    name: 'creditsManage',
     components: { cmTable },
     data() {
         return {

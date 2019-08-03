@@ -1,6 +1,6 @@
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'查看示例'">
-    sdfsdhbfsdbfhb
+    示例图片
   </DialogBase>
 </template>
 

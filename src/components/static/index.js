@@ -24,3 +24,7 @@ Vue.prototype.$pcaa = pcaa;
 //时间轴
 import LightTimeline from 'vue-light-timeline';
 Vue.use(LightTimeline);
+
+//瀑布流
+import waterfall from 'vue-waterfall2'   //插件文档  https://github.com/AwesomeDevin/vue-waterfall2/blob/master/CHINESE-README.md
+Vue.use(waterfall)

@@ -39,6 +39,12 @@ export default [
         component: () => import('@/views/datum/commodityTransaction'),
         name: 'commodityTransaction',
         meta: { title: '商品交易', noCache: true, tabTitle: '交易' }
+      },
+      {
+        path: 'purchaseOrder',
+        component: () => import('@/views/datum/purchaseOrder'),
+        name: 'purchaseOrder',
+        meta: { title: '订单交易', noCache: true, tabTitle: '交易' }
       }
     ]
 	}

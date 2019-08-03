@@ -41,10 +41,11 @@
       label="操作">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button type="text" size="small">删除</el-button>
+          <el-button type="text" size="small" style="color:#FD4C2B">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-button style="margin-top:10px;">批量删除</el-button>
     <div class="page_styles">
       <el-pagination
         @size-change="handleSizeChange"

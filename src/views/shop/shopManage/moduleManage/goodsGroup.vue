@@ -1,6 +1,6 @@
 <template>
   <div class="group-wrapper">
-    <div class="view" ref="groupWrapper" :style="fontStyle">
+    <div class="module view" ref="groupWrapper" :style="fontStyle">
       <div class="phone-head">
         <img src="../../../../assets/images/shop/phone-head.png" alt="">
       </div>
@@ -143,7 +143,7 @@
         </div>
       </div>
     </div>
-    <div class="props">
+    <div class="module props">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <div class="block header">
           <p class="title">商品分组页设置</p>
@@ -173,13 +173,13 @@
         <div class="block form">
           <el-form-item label="页面边距" prop="groupStyle">
             <div class="slider-wrapper">
-             <el-slider v-model="ruleForm.pageMargin" :min="0" :max="20"></el-slider>
+             <el-slider v-model="ruleForm.pageMargin" :min="0" :max="30"></el-slider>
              <span>{{ruleForm.pageMargin}}像素</span>
             </div>
           </el-form-item>
           <el-form-item label="分组间距" prop="groupFont">
              <div class="slider-wrapper">
-              <el-slider v-model="ruleForm.groupMargin" :min="0" :max="50"></el-slider>
+              <el-slider v-model="ruleForm.groupMargin" :min="0" :max="30"></el-slider>
               <span>{{ruleForm.groupMargin}}像素</span>
              </div>
           </el-form-item>
@@ -275,167 +275,134 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-ul.nav {
-  width: 100%;
-  background: #fff;
-  li {
-    font-size: 15px;
-    padding: 4px;
-    text-align: center;
-    line-height: 30px;
-    margin-bottom: 0;
-    color: #92929b;
-    cursor: pointer;
-    &:hover{
-      color:rgb(252,65,70);
-      transition:all 0.4s;
-    }
-    &:first-child{
-      color:rgb(252,65,70);
-      transition:all 0.4s;
-      position:relative;
-      &:after{
-        content: "";
-        display: block;
-        background: #ff7068;
-        position: absolute;
-      }
-    }
-  }
-}
 .group-wrapper{
   display:flex;
   flex-direction: row;
-}
-.content {
-  padding: 10px 0 0 10px;
-  box-sizing: border-box;
-  width: 100%;
-  .wrapper {
+  ul.nav {
+    width: 100%;
     background: #fff;
-    margin-bottom: 10px;
-    p {
-      background: rgba(247, 247, 247, 1);
-      padding: 10px;
-      margin-bottom: 20px;
-    }
-    ul.group {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      li {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-        cursor:pointer;
-        img {
-          width: 65px;
-          height: 65px;
+    li {
+      font-size: 15px;
+      padding: 4px;
+      text-align: center;
+      line-height: 30px;
+      margin-bottom: 0;
+      color: #92929b;
+      cursor: pointer;
+      &:hover{
+        color:rgb(252,65,70);
+        transition:all 0.4s;
+      }
+      &:first-child{
+        color:rgb(252,65,70);
+        transition:all 0.4s;
+        position:relative;
+        &:after{
+          content: "";
+          display: block;
+          background: #ff7068;
+          position: absolute;
         }
-        span {
-          margin-top: 20px;
+      }
+    }
+  }
+  .content {
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
+    width: 100%;
+    .wrapper {
+      background: #fff;
+      margin-bottom: 10px;
+      p {
+        background: rgba(247, 247, 247, 1);
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+      ul.group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        li {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 20px;
+          cursor:pointer;
+          img {
+            width: 65px;
+            height: 65px;
+          }
+          span {
+            margin-top: 20px;
+          }
         }
       }
     }
   }
 }
-.view {
-  width: 374px;
-  border: 1px solid #e2e1e1;
-  .phone-head {
-    width: 100%;
-    height: 64px;
-    text-align: center;
-    line-height: 64px;
-    background: #fff;
-    img{
-      width:100%;
-    }
-  }
-  .phone-body {
-    .left-style {
-      display:flex;
-      flex-direction: row;
-      justify-content: space-between;
-      ul.nav{
-        width: 98px;
-        li{
-          margin-bottom: 10px;
-          &:first-child{
-            &:after{
-              width: 2px;
-              height: 40px;
-              top: 0;
-              left: 0;
+
+.module {
+  &.view {
+    width: 374px;
+    .phone-body {
+      height: 760px;
+      .left-style {
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        ul.nav{
+          width: 98px;
+          li{
+            margin-bottom: 10px;
+            &:first-child{
+              &:after{
+                width: 2px;
+                height: 40px;
+                top: 0;
+                left: 0;
+              }
             }
           }
         }
-      }
-      .content{
-        width:calc( 100% - 98px );
-      }
-    }
-    .top-style {
-      ul.nav{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding:0 10px;
-        li{
-          padding: 0 4px;
-          text-align: center;
-          line-height: 30px;
-          border-radius:6px;
-          font-size:14px;
-          &:first-child{
-            border:1px solid rgb(252,65,70);;
-            color:rgb(252,65,70);
-          }
+        .content{
+          width:calc( 100% - 98px );
         }
       }
-      .content{
-        width: 100%;
+      .top-style {
+        ul.nav{
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          padding:0 10px;
+          li{
+            padding: 0 4px;
+            text-align: center;
+            line-height: 30px;
+            border-radius:6px;
+            font-size:14px;
+            &:first-child{
+              border:1px solid rgb(252,65,70);;
+              color:rgb(252,65,70);
+            }
+          }
+        }
+        .content{
+          width: 100%;
+        }
       }
     }
   }
-}
-.props{
-  margin-left:20px;
-  width:346px;
-  .block{
-    margin-bottom:10px;
-    background:#fff;
-    &.header{
-      padding:10px;
-      display:flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .title{
-        text-indent:10px;
-        position:relative;
-        &:before{
-          content:"";
-          position:absolute;
-          display:block;
-          width:2px;
-          height:100%;
-          background:$globalMainColor;
-        }
+
+  &.props{
+    width:346px;
+    .block{
+      &.button{
+        padding: 30px 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
       }
-      .state{
-        color:$globalMainColor;
-      }
-    }
-    &.form{
-      padding: 30px 0;
-    }
-    &.button{
-      padding: 30px 0;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
     }
   }
 }

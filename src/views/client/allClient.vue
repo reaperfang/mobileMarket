@@ -8,8 +8,9 @@
                     <el-col :span="4">
                         <el-form-item>
                             <el-select v-model="form.memberSn" placeholder="用户ID">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+                                <el-option label="昵称" value="shanghai"></el-option>
+                                <el-option label="用户ID" value="beijing"></el-option>
+                                <el-option label="手机号" value="beijing"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -19,17 +20,31 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item label="客户身份：">
+                <el-form-item label="客户身份：" class="relaPosition">
                     <el-checkbox-group v-model="form.memberType">
                         <el-checkbox v-for="item in clientStatusOps" :label="item" :key="item" border>{{item}}</el-checkbox>
                     </el-checkbox-group>
+                    <el-popover
+                        ref="popover"
+                        placement="right"
+                        width="400"
+                        v-model="popVisible"
+                        trigger="hover"
+                    >
+                        <p class="p_title">客户身份说明</p>
+                        <p class="p_over1">客户身份包括：非会员、会员。其中会员包括新会员和老会员。成为会员的条件和新、老会员的条件可进行配置。</p>
+                        <p class="p_over2">【查看/配置会员身份规则】</p>
+                    </el-popover>
+                    <img src="../../assets/images/client/icon_ask.png" alt="" v-popover:popover class="pop_img">
                 </el-form-item>
                 <el-form-item label="客户标签：" class="relaPosition">
-                    <el-checkbox-group v-model="form.memberLabels">
-                        <el-checkbox v-for="item in clientSignOps" :label="item" :key="item" border>{{item}}</el-checkbox>
-                    </el-checkbox-group>
+                    <div class="group_container">
+                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px', height: showMoreTag ?'78px':'37px', overflow: showMoreTag ? 'block':'hidden'}">
+                            <el-checkbox v-for="item in clientSignOps" :label="item" :key="item" border>{{item}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>
                     <el-button type="primary" class="absoPosition">添 加</el-button>
-                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img">
+                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag">
                 </el-form-item>
                 <el-form-item label="客户渠道：" class="relaPosition">
                     <el-checkbox-group v-model="form.channelId">
@@ -122,7 +137,7 @@
                             <el-form-item label="上次消费时间：">
                                 <div class="input_wrap2">
                                     <el-date-picker
-                                        v-model="form.minLast"
+                                        v-model="form.lastPayTimeStart"
                                         type="date"
                                         placeholder="选择日期">
                                     </el-date-picker>
@@ -130,7 +145,7 @@
                                 <span>至</span>
                                 <div class="input_wrap2">
                                     <el-date-picker
-                                        v-model="form.maxLast"
+                                        v-model="form.lastPayTimeEnd"
                                         type="date"
                                         placeholder="选择日期">
                                     </el-date-picker>
@@ -152,40 +167,54 @@
                 <el-button type="primary">导入</el-button>
                 <el-button>导出</el-button>
             </div>
-            <acTable></acTable>
+            <acTable @delete="handleDelete" @addTag="addTag" @addBlackList="addBlackList" @removeBlack="removeBlack" @batchDelete="batchDelete" @batchAddBlack="batchAddBlack" @batchAddTag="batchAddTag" @batchRemoveBlack="batchRemoveBlack"></acTable>
         </div>
     </div>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
 <script>
 import clientCont from '@/system/constant/client';
-import acTable from './components/acTable';
+import acTable from './components/allClient/acTable';
+import deleteUserDialog from './dialogs/allClient/deleteUserDialog';
+import addTagDialog from './dialogs/allClient/addTagDialog';
+import addBlackDialog from './dialogs/allClient/addBlackDialog';
+import removeBlackDialog from './dialogs/allClient/removeBlackDialog';
+import batchDeleteUserDialog from './dialogs/allClient/batchDeleteUserDialog';
+import batchAddBlackDialog from './dialogs/allClient/batchAddBlackDialog';
+import batchAddTagDialog from './dialogs/allClient/batchAddTagDialog';
+import batchRemoveBlackDialog from './dialogs/allClient/batchRemoveBlackDialog';
 export default {
   name: 'allClient',
-  components: { acTable },
+  components: { acTable, deleteUserDialog, addTagDialog, addBlackDialog, removeBlackDialog, batchDeleteUserDialog, batchAddBlackDialog, batchAddTagDialog, batchRemoveBlackDialog },
   data() {
     return {
       form: {
-            memberSn:"",
-            nickName:"",
-            memberType:['非会员客户'],
-            memberLabels: ['年轻用户'],
-            channelId: ['小程序'],
-            status: ['正常'],
-            scoreMin:"",
-            scoreMax:"",
-            totalDealMoneyMin:"",
-            totalDealMoneyMax:"",
-            dealTimesMin:"",
-            dealTimesMax:"",
-            perUnitPriceMin:"",
-            perUnitPriceMax:"",
-            becameCustomerTimeStart:"",
-            becameCustomerTimeEnd:"",
-            lastPayTimeStart:"",
-            lastPayTimeEnd:""
-        },
+        memberSn:"",
+        nickName:"",
+        memberType:['非会员客户'],
+        memberLabels: ['年轻用户'],
+        channelId: ['小程序'],
+        status: ['正常'],
+        scoreMin:"",
+        scoreMax:"",
+        totalDealMoneyMin:"",
+        totalDealMoneyMax:"",
+        dealTimesMin:"",
+        dealTimesMax:"",
+        perUnitPriceMin:"",
+        perUnitPriceMax:"",
+        becameCustomerTimeStart:"",
+        becameCustomerTimeEnd:"",
+        lastPayTimeStart:"",
+        lastPayTimeEnd:""
+      },
         showFold: true,
+        showMoreTag: false,
+        currentDialog:"",
+        dialogVisible: false,
+        currentData:{},
+        popVisible: false
     }
   },
   watch: {
@@ -215,11 +244,50 @@ export default {
   methods: {
     handleMore() {
         this.showFold = !this.showFold;
+    },
+    handleDelete(id) {
+        this.dialogVisible = true;
+        this.currentDialog = "deleteUserDialog";
+        this.currentData.userId = id;
+    },
+    addTag(cid) {
+        this.dialogVisible = true;
+        this.currentDialog = "addTagDialog";
+    },
+    addBlackList() {
+        this.dialogVisible = true;
+        this.currentDialog = "addBlackDialog";
+    },
+    removeBlack() {
+        this.dialogVisible = true;
+        this.currentDialog = "removeBlackDialog";
+    },
+    batchDelete() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchDeleteUserDialog";
+    },
+    batchAddBlack() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchAddBlackDialog";
+    },
+    batchAddTag() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchAddTagDialog";
+    },
+    batchRemoveBlack() {
+        this.dialogVisible = true;
+        this.currentDialog = "batchRemoveBlackDialog";
+    },
+    extendTag() {
+        this.showMoreTag = !this.showMoreTag;
     }
   }
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+/deep/ .el-checkbox.is-bordered + .el-checkbox.is-bordered{
+    margin-bottom: 10px;
+}
 /deep/.el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner{
     display: none;
 }
@@ -257,12 +325,12 @@ export default {
             position: relative;
             .absoPosition{
                 position: absolute;
-                left: 612px;
+                left: 562px;
                 top: 0;
             }
             .down_img{
                 position: absolute;
-                left: 510px;
+                left: 524px;
                 top: 5px;
             }
             .more{
@@ -274,6 +342,11 @@ export default {
                 i{
                     margin-left: 10px;
                 }
+            }
+            .pop_img{
+                position: absolute;
+                left: 230px;
+                top: -7px;
             }
         }
         .fold_part{
@@ -294,5 +367,19 @@ export default {
             cursor: pointer;
         }
     }
+}
+.p_title{
+    height: 40px;
+    line-height: 40px;
+    background:rgba(101,94,255,0.09);
+    font-size: 18px;
+    padding-left: 10px;
+}
+.p_over1{
+    margin: 20px 0;
+}
+.p_over2{
+    cursor: pointer;
+    color: #6457FF;
 }
 </style>

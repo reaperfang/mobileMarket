@@ -137,40 +137,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './decorate.scss';
  .view {
     width: 374px;
-    border: 1px solid #e2e1e1;
-    .phone-head {
-      width: 100%;
-      height: 64px;
-      text-align: center;
-      line-height: 64px;
-      background: #fff;
-      position:relative;
-      cursor:pointer;
-      img{
-        width:100%;
-      }
-      span{
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%,-40%);
-        font-size:18px;
-      }
-    }
     .phone-body {
-      height: 765px;
-      overflow-y: auto;
+      height: 775px;
       .component_wrapper{
-        background:#fff;
-        min-height:50px;
-        line-height:50px;
-        position:relative;
-        border:1px solid #eee;
-        border-bottom:none;
-        cursor:pointer;
         &.actived{
           border:2px dashed $globalMainColor;
         }

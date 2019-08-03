@@ -36,6 +36,7 @@
 <script>
 import pfChart from './components/pfChart'
 export default {
+    name: 'passengerFlow',
     components: { pfChart },
     data() {
         return {

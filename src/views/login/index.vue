@@ -1,30 +1,82 @@
 <template>
   <div :style="{backgroundImage:'url('+require('@/assets/images/bg_login.png')+')', backgroundSize:'100% 100%'}" class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <div class="title-container">
-        <h3 class="title">用户登录</h3>
+      <img src="@/assets/images/chahua.png" alt="">
+      <div class="main">
+        <div class="title-container">
+          <h3 class="title">新零售客户营销系统</h3>
+        </div>
+        <el-form-item prop="userName">
+          <span class="svg-container svg-container_login">
+            <img :src="require('@/assets/images/icon_username.png')">
+          </span>
+          <el-input v-model="loginForm.userName" name="userName" type="text" placeholder="用户名" style="border:none;"  class="login_input"/>
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <img :src="require('@/assets/images/icon_password.png')">
+          </span>
+          <el-input :type="passwordType" v-model="loginForm.password" name="password" placeholder="密码" @keyup.enter.native="handleLogin" class="login_input"/>
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon icon-class="eye" />
+          </span>
+        </el-form-item>
+        <el-form-item class="remember">
+          <span>
+            <el-checkbox v-model="checked">记住用户名</el-checkbox>            
+          </span>
+          <span @click="_routeTo('profile/passwordChange')">修改密码</span>
+        </el-form-item>
+        <el-button :loading="loading" type="primary" class="btn-login" @click.native.prevent="handleLogin">登 录</el-button>
       </div>
-      <el-form-item prop="userName">
-        <span class="svg-container svg-container_login">
-          <img :src="require('@/assets/images/icon_username.png')">
-        </span>
-        <el-input v-model="loginForm.userName" name="userName" type="text" placeholder="用户名" style="border:none;" />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <img :src="require('@/assets/images/icon_password.png')">
-        </span>
-        <el-input :type="passwordType" v-model="loginForm.password" name="password" placeholder="密码" @keyup.enter.native="handleLogin" />
-        <!-- <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span> -->
-      </el-form-item>
-
-      <el-button :loading="loading" type="primary" class="btn-login" @click.native.prevent="handleLogin">登 录</el-button>
     </el-form>
-
+    <el-dialog
+      title="未创建店铺"
+      :visible.sync="dialogVisible"
+      width="40%"
+      :before-close="handleClose"
+      style="margin-top:20vh;">
+      <span class="content">对不起，您还没有创建店铺,请先创建店铺再登录</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">立即创建</el-button>
+        <el-button @click="dialogVisible = false">暂不创建</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title=""
+      :visible.sync="shopsDialog"
+      width="40%"
+      :before-close="handleClose"
+      style="margin-top:20vh;">
+      <span slot="title" class="dialog_title">
+        <a>返回官网</a> | <a>选择店铺</a>
+      </span>
+      <div class="content">
+        <div class="content_top">
+          <el-input placeholder="请输入店铺名称" v-model="shopName" class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" class="search"></el-button>
+          </el-input>
+          <el-button>创建店铺</el-button>
+        </div>
+        <div class="content_main">
+           <div>
+             <span>好利来海淀黄庄店</span>
+             <span>移动商城</span>
+           </div>
+           <div>
+             <span>好利来海淀黄庄店</span>
+             <span>移动商城</span>
+           </div>
+           <div>
+             <span>好利来海淀黄庄店</span>
+             <span>移动商城</span>
+           </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
+  <!-- <div>qwerttt</div> -->
 </template>
 
 <script>
@@ -59,7 +111,11 @@ export default {
         { min: 1, max: 8, message: '密码不能超过8位', trigger: 'blur' }]
       },
       passwordType: 'password',
-      loading: false
+      loading: false,
+      dialogVisible:false,
+      shopsDialog:false,
+      checked:false,
+      shopName:'',
     }
   },
   watch: {
@@ -87,29 +143,31 @@ export default {
       }
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid && !this.loading) {
-          this.loading = true
-          this.$store.dispatch('login', this.loginForm).then(() => {
-            this.loading = false
-            const userName = this.loginForm.userName
-            this.$router.push({ path: '/shop/decoration' })
-            // if (userName === 'admin') {
-            //   this.$router.push({ path: '/platform/admin' })
-            // } else {
-            //   this.$router.push({ path: '/shop/decoration' })
-            // }
-          }).catch(error => {
-            this.$notify.error({
-              title: '失败',
-              message: error
-            })
-            this.loading = false
-          })
-        } else {
-          return false
-        }
-      })
+      this.shopsDialog = true
+      // this.dialogVisible = true
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid && !this.loading) {
+      //     this.loading = true
+      //     this.$store.dispatch('login', this.loginForm).then(() => {
+      //       this.loading = false
+      //       const userName = this.loginForm.userName
+      //       this.$router.push({ path: '/shop/decoration' })
+      //       // if (userName === 'admin') {
+      //       //   this.$router.push({ path: '/platform/admin' })
+      //       // } else {
+      //       //   this.$router.push({ path: '/shop/decoration' })
+      //       // }
+      //     }).catch(error => {
+      //       this.$notify.error({
+      //         title: '失败',
+      //         message: error
+      //       })
+      //       this.loading = false
+      //     })
+      //   } else {
+      //     return false
+      //   }
+      // })
     },
     login(userName, password) {
       this.loading = true
@@ -132,6 +190,9 @@ export default {
         this.login('admin-lqx', '111111')
       }
     }
+  },
+  handleClose(){
+    this.dialogVisible = false
   }
 }
 </script>
@@ -143,7 +204,7 @@ $light_block:#000;
 
 /* reset element-ui css */
 .login-container {
-  .el-input {
+  .login_input {
     display: inline-block;
     height: 47px;
     width: calc(100% - 30px);
@@ -183,18 +244,34 @@ $light_blue:#3b89fe;
 $bg_white:#fff;
 
 .login-container {
-  position: fixed;
+  position: relative;
   height: 100%;
   width: 100%;
   .login-form {
     position: absolute;
     left: 0;
     right: 0;
-    width: 400px;
+    width: 814px;
     padding: 60px 40px;
     margin: 120px auto;
     border-radius:10px;
     background-color:$bg_white;
+    display: flex;
+    flex: 1;
+    .main{
+      margin-left: 30px;
+      width: 350px;
+      .remember{
+        clear: both;
+        padding: 0 10px;
+        span:nth-of-type(1){
+          float: left;
+        }
+        span:nth-of-type(2){
+          float: right;
+        }
+      }
+    }
   }
   .tips {
     font-size: 14px;
@@ -222,10 +299,11 @@ $bg_white:#fff;
   .title-container {
     position: relative;
     .title {
-      font-size: 30px;
+      font-size: 26px;
       font-weight: 400;
-      color: $light_blue;
+      color: $bg;
       margin: 0px auto 40px auto;
+      padding-left:10px; 
       // text-align: center;
       // font-weight: bold;
     }
@@ -248,4 +326,57 @@ $bg_white:#fff;
   color:$bg-white;
   margin-top:30px;
 }
+/deep/ .el-dialog__footer{
+  text-align: center;
+}
+.content{
+  width: 100%;
+  display:block;
+  text-align: center;
+  color: red;
+}
+.dialog_title{
+  font-size: 14px;
+  color: #655EFF;
+}
+.input-with-select{
+  background-color: #fff;
+  width: 250px;
+  .search{
+    color: #655EFF;
+    font-weight: bold;
+  }
+}
+.content{
+  .content_top{
+    display: flex;
+    justify-content: space-between;
+  }
+  .content_main{
+    display:flex;
+    justify-content: space-between;
+    flex: 1;
+    margin:20px 0px 30px 0px;
+    div{
+      width: 143px;
+      height: 60px;
+      border-radius:4px;
+      background:rgba(101,94,255,1);
+      opacity:0.5;
+      span{
+        padding:10px;
+        height: 20px;
+        line-height: 20px;
+        display: block;
+        font-size: 14px;
+        color: #FFFFFF;
+        text-align: left;
+      }
+    }
+  }
+}
+/deep/ .el-dialog__body{
+  padding:10px 20px;
+}
+
 </style>

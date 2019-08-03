@@ -46,7 +46,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected"></component>
   </el-form>
 </template>
 
@@ -61,10 +61,10 @@ export default {
     return {
       ruleForm: {
         textContent: "",
-        fontSize: 1,
-        fontColor: '#000',
-        backgroundColor: '#fff',
-        displayStyle: 1,
+        fontSize: 2,
+        fontColor: '#000000',
+        backgroundColor: '#ffffff',
+        displayStyle: 2,
         linkAddress: 'http://www.baidu.com',
         showDivider: true
       },
@@ -78,6 +78,10 @@ export default {
   },
   methods: {
 
+    /* 弹窗选中了跳转链接 */
+    dialogDataSelected(jumpLink) {
+      console.log(jumpLink);
+    },
   }
 }
 </script>

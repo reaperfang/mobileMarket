@@ -11,14 +11,16 @@ import set from './set';
 import intelligentOperation from './intelligentOperation';
 import client from './client';
 import datum from './datum';
+import profile from './profile';
  
 export const asyncRouterMap = [  //异步路由表
-  ...goods,
 	...demo,
+  ...profile,
   ...shop,
-  ...intelligentOperation,
+  ...goods,
   ...client,
   ...datum,
+  ...intelligentOperation,
   ...finance,
   ...set,
   ...order
@@ -28,7 +30,7 @@ export const syncRouterMap = [ //同步路由表
   {
     path: '',
     component: Layout,
-    //redirect: '/login',
+    // redirect: '/login',
     redirect: '/demo/helloWorld'
   },
   {

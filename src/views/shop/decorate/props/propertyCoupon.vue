@@ -7,7 +7,16 @@
           <el-radio :label="2">自动获取</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-button type="info" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">添加优惠券(最多添加10张优惠券)</el-button>
+      <el-form-item label="" prop="addType">
+        <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">添加优惠券(最多添加10张优惠券)</el-button>
+        <el-tag
+          v-for="tag in ruleForm.coupons"
+          :key="tag.title"
+          closable
+          type="success" @close="deleteCoupon(tag)">
+          {{tag.title}}
+        </el-tag>
+      </el-form-item>
       <el-form-item label="样式" prop="couponStyle">
         <el-radio-group v-model="ruleForm.couponStyle">
           <el-radio :label="1">样式1</el-radio>
@@ -34,7 +43,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected"></component>
   </el-form>
 </template>
 
@@ -48,10 +57,11 @@ export default {
   data () {
     return {
       ruleForm: {
-        addType: 1,
+        addType: 2,
         couponStyle: 1,
         couponColor: 1,
-        hideScrambled: true
+        hideScrambled: true,
+        coupons: []
       },
       rules: {
 
@@ -61,7 +71,22 @@ export default {
     }
   },
   methods: {
-  
+
+    /* 删除优惠券 */
+    deleteCoupon(item) {
+      const tempCoupons = [...this.ruleForm.coupons];
+      for(let i=0;i<tempCoupons.length;i++) {
+        if(item === tempCoupons[i]) {
+          tempCoupons.splice(i, 1);
+        }
+      }
+      this.ruleForm.coupons = tempCoupons;
+    },
+
+    /* 弹窗选中了优惠券 */
+    dialogDataSelected(coupons) {
+      this.ruleForm.coupons = coupons;
+    } 
   }
 }
 </script>

@@ -40,11 +40,11 @@ export default {
 <style lang="scss" scoped>
 .app-main {
   /*84 = navbar + tags-view = 50 +34 */
-  min-height: calc(100vh - 60px);
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  margin-top: 60px;
+    height: calc(100% - 60px);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-top: 60px;
   .content-box {
     display: flex;
     height: 100%;
@@ -57,6 +57,7 @@ export default {
     .content-main {
       flex: 1;
       margin: 20px;
+      overflow-y: scroll;
     }
   }
 }
