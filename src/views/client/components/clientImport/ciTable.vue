@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="channelList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
@@ -17,11 +17,11 @@
         label="导入时间">
       </el-table-column>
       <el-table-column
-        prop="channel"
+        prop="channerlName"
         label="渠道">
       </el-table-column>
       <el-table-column
-        prop="importNum"
+        prop="totalNum"
         label="导入数量">
       </el-table-column>
       <el-table-column
@@ -35,12 +35,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="buyTime"
-        label="购买次数"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="operator"
+        prop="operatorId"
         label="操作人"
       >
       </el-table-column>
@@ -69,6 +64,7 @@
 
 <script type='es6'>
 import TableBase from "@/components/TableBase";
+import clientApi from "@/api/client";
 export default {
   name: "ciTable",
   extends: TableBase,
@@ -78,15 +74,22 @@ export default {
         {
             choose: true,
             importTime:"",
-            channel:"",
-            importNum:"",
+            channerlName:"",
+            totalNum:"",
             successNum:"",
             failNum:"",
-            buyTime:"",
-            operator:""
+            operatorId:""
         },
       ],
     };
+  },
+  computed: {
+    channelList() {
+      return clientApi.channelList
+    }
+  },
+  mounted() {
+    console.log(this.channelList);
   },
   created() {
 
@@ -103,6 +106,7 @@ export default {
                 span{
                     color: #655EFF;
                     margin-right: 5px;
+                    cursor: pointer;
                 }
             }
         }

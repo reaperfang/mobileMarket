@@ -1,10 +1,10 @@
 <template>
     <div class="c_container">
         <div>
-            <span>状态</span>
+            <span class="marR10">状态</span>
             <el-select v-model="status" placeholder="全部">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+                <el-option label="禁用" value="0"></el-option>
+                <el-option label="启用" value="1"></el-option>
             </el-select>
             <el-button type="primary" class="marL20">查 询</el-button>
         </div>

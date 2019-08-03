@@ -57,6 +57,7 @@ export default {
     .content-main {
       flex: 1;
       margin: 20px;
+      overflow-y: auto;
     }
   }
 }
