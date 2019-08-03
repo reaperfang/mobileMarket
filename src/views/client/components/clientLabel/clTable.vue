@@ -2,8 +2,9 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="tagList"
       style="width: 100%"
+      ref="clientLabelTable"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
@@ -24,7 +25,7 @@
         label="包含人数">
       </el-table-column>
       <el-table-column
-        prop="tagCondition"
+        prop="labelCondition"
         label="标签条件">
       </el-table-column>
       <el-table-column
@@ -52,35 +53,38 @@
         :total="100">
       </el-pagination>
     </div>
+    <div class="a_line">
+      <el-checkbox v-model="checkAll" @change="handleChange"></el-checkbox>
+      <el-button type="primary">批量删除</el-button>
+    </div>
   </div>
 </template>
 
 <script type='es6'>
+import clientApi from '@/api/client'
 import TableBase from "@/components/TableBase";
 export default {
   name: "clTable",
   extends: TableBase,
   data() {
     return {
-      dataList:[
-        {
-            choose: true,
-            importTime:"",
-            channel:"",
-            importNum:"",
-            successNum:"",
-            failNum:"",
-            buyTime:"",
-            operator:""
-        },
-      ],
+      checkAll: false
     };
+  },
+  computed: {
+    tagList() {
+      return clientApi.tagList
+    }
   },
   created() {
 
   },
   methods: {
-    
+    handleChange() {
+      this.tagList.forEach(row => {
+        this.$refs.clientLabelTable.toggleRowSelection(row)
+      });
+    }
   },
   components: {}
 };
@@ -96,5 +100,7 @@ export default {
         background: url("../../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
     }
 }
-
+.a_line{
+  padding-left: 17px;
+}
 </style>

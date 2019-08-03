@@ -37,7 +37,6 @@ Vue.prototype._routeTo = utils.routeTo; //全局路由跳转快捷方式  routeT
 Vue.prototype._globalEvent = utils.eventHub.default;  //挂载全局事件对象，跨组件发通知,单例对象
 import api from '@/api';
 Vue.prototype._apis = api;
-import '@/assets/icons'
 
 
 /* 自定义公共模块 */

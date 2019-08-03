@@ -7,7 +7,7 @@ export default [
     name: 'client',
     meta: {
       title: '客户',
-      icon: 'el-icon-setting'
+      icon: 'icon_client'
     },
     children: [
       {

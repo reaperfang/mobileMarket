@@ -7,7 +7,7 @@ export default [
     name: 'profile',
     meta: {
       title: '概况',
-      icon: 'el-icon-setting'
+      icon: 'icon_profile'
     },
     children: [
       {

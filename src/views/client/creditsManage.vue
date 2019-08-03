@@ -62,9 +62,9 @@
                     </div>
                     <span>积分</span>
                 </div>
+                <cmTable></cmTable>
             </el-tab-pane>
         </el-tabs>
-        <cmTable></cmTable>
     </div>
 </template>
 <script type="es6">
@@ -108,6 +108,7 @@ export default {
     .c_title{
         color: #3D434A;
         margin: 16px 0;
+        font-weight: bold;
     }
     .c_warn{
         font-size: 12px;

@@ -18,14 +18,14 @@
         <div class="level_order"><span class="red">*</span>等级序号：VIP1<span class="l_warn">（等级序号为等级在系统的排序，不展示给用户）</span></div>
         <div class="form_container">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="right">
-                <el-form-item label="等级称谓：" prop="title">
+                <el-form-item label="等级称谓：" prop="name">
                     <div class="input_wrap">
-                        <el-input v-model="ruleForm.title" placeholder="请输入等级名称，比如普通会员"></el-input>
+                        <el-input v-model="ruleForm.name" placeholder="请输入等级名称，比如普通会员"></el-input>
                     </div>
                 </el-form-item>
-                <el-form-item label="等级称谓：">
+                <el-form-item label="等级说明：">
                     <div class="input_wrap">
-                        <el-input v-model="ruleForm.explain" placeholder="请输入等级名称，比如普通会员"></el-input>
+                        <el-input v-model="ruleForm.explain" placeholder="请输入等级描述"></el-input>
                     </div>
                 </el-form-item>
                 <div class="line"></div>
@@ -126,7 +126,7 @@
                 </el-form-item>
             </el-form>
         </div>
-        <div class="btn_container">
+        <div class="btn_container" style="text-align: center">
             <el-button type="primary">保 存</el-button>
             <el-button>返 回</el-button>
         </div>
@@ -142,7 +142,7 @@ export default {
         return {
             fileList: [],
             ruleForm:{
-                title: "",
+                name: "",
                 explain:"",
                 check1: false,
                 radio1: "1",
@@ -150,7 +150,7 @@ export default {
                 status: ""
             },
             rules: {
-                title: [
+                name: [
                     {required: true, message: '请输入等级称谓', trigger: 'blur' }
                 ]
             },

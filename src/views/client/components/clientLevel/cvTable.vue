@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="levelList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
@@ -12,23 +12,27 @@
       >
       </el-table-column>
       <el-table-column
-        prop="tagName"
+        prop="alias"
         label="等级排序">
       </el-table-column>
       <el-table-column
-        prop="tagType"
+        prop="name"
         label="等级名称">
       </el-table-column>
       <el-table-column
-        prop="importNum"
+        prop="explain"
         label="说明">
       </el-table-column>
       <el-table-column
-        prop="tagCondition"
+        prop="levelConditionId"
         label="等级条件">
       </el-table-column>
       <el-table-column
-        prop="tagCondition"
+        prop="rights"
+        label="等级权益">
+      </el-table-column>
+      <el-table-column
+        prop="upgradePackage"
         label="升级奖励">
       </el-table-column>
       <el-table-column label="状态">
@@ -61,26 +65,20 @@
 </template>
 
 <script type='es6'>
+import clientApi from '@/api/client';
 import TableBase from "@/components/TableBase";
 export default {
   name: "cvTable",
   extends: TableBase,
   data() {
     return {
-      dataList:[
-        {
-            choose: true,
-            importTime:"",
-            channel:"",
-            importNum:"",
-            successNum:"",
-            failNum:"",
-            buyTime:"",
-            operator:""
-        },
-      ],
       checked: false
     };
+  },
+  computed: {
+    levelList() {
+      return clientApi.levelList
+    }
   },
   created() {
 

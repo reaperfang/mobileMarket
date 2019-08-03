@@ -132,9 +132,15 @@ export default {
         color: #92929B;
         padding: 8px;
         border-radius: 15px;
+        padding-right:10px;
         &.active {
           background-color: #f0efff;
           color: #7f79ff;
+        }
+        &.active:after{
+          content:"\2713";
+          color: #7f79ff;
+          margin-left: 5px;
         }
       }
       &:last-child {
