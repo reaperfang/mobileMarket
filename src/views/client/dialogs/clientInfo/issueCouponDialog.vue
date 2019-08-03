@@ -7,7 +7,25 @@
           选择优惠券：
         </div>
         <div class="fl r_block">
-
+          <div class="sel_cont">
+            <el-select v-model="coupon" style="margin-bottom: 10px">
+              <el-option label="漏洞优惠券" value="1"></el-option>
+              <el-option label="优惠券1" value="2"></el-option>
+              <el-option label="优惠券2" value="3"></el-option>
+            </el-select>
+            <el-input-number v-model="num1" :min="1"></el-input-number>
+            <span class="marL20 addMainColor">删除</span>
+          </div>
+          <div class="sel_cont">
+            <el-select v-model="coupon" style="margin-bottom: 10px">
+              <el-option label="漏洞优惠券" value="1"></el-option>
+              <el-option label="优惠券1" value="2"></el-option>
+              <el-option label="优惠券2" value="3"></el-option>
+            </el-select>
+            <el-input-number v-model="num1" :min="1"></el-input-number>
+            <span class="marL20 addMainColor">删除</span>
+          </div>
+          <span class="add">添加</span>
         </div>
       </div>
     </div>
@@ -21,7 +39,8 @@ export default {
   name: "issueCouponDialog",
   data() {
     return {
-      hasCancel: true
+      hasCancel: true,
+      num1: 1
     };
   },
   methods: {
@@ -51,12 +70,28 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/deep/ .el-input-number--small .el-input-number__decrease, .el-input-number--small .el-input-number__increase{
+  background-color: #655EFF;
+  color: #fff;
+}
+/deep/ .el-input-number--small{
+  width: 110px;
+}
 .c_container {
     text-align: left;
     .l_block{
       width: 86px;
+      margin-top: 8px;
     }
-    
+    .r_block{
+      position: relative;
+      .add{
+        position: absolute;
+        right: -44px;
+        top: 8px;
+        color: #655EFF;
+      }
+    }
 }
 </style>
 
