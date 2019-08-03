@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="head-wrapper">
-      <el-form ref="form" :model="form" label-width="80px" :inline="true">
+      <el-form ref="ruleForm" :model="ruleForm" label-width="80px" :inline="true">
         <el-form-item label="" prop="classify">
           <el-select v-model="ruleForm.classify" placeholder="请选择分类">
             <el-option label="常用页面" value="1"></el-option>

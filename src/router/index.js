@@ -12,18 +12,21 @@ import intelligentOperation from './intelligentOperation';
 import client from './client';
 import datum from './datum';
 import profile from './profile';
+import apply from './apply';
+
  
 export const asyncRouterMap = [  //异步路由表
 	...demo,
   ...profile,
   ...shop,
   ...goods,
+  ...order,
   ...client,
   ...datum,
-  ...intelligentOperation,
+  // ...intelligentOperation,
   ...finance,
+  ...apply,
   ...set,
-  ...order
 ]
 
 export const syncRouterMap = [ //同步路由表

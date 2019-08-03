@@ -11,7 +11,7 @@ export default [
 		meta: {
 			roles: ["shop"],
 			title: "店铺",
-			icon: "shop"
+			icon: "icon_shop"
 		},
 		children: [
 			{

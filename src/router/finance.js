@@ -7,7 +7,7 @@ export default [
     name: 'finance',
     meta: {
       title: '财务',
-      icon: 'el-icon-setting'
+      icon: 'icon_finance'
     },
     children: [
       {

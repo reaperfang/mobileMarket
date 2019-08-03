@@ -1,13 +1,27 @@
-/*店铺管理 */
+/*店铺分配 */
 <template>
     <div class="main">
-        <el-form ref="form" :model="form" :rules="rules" label-width="120px" :inline="true" class="demo-form-inline">
-            <el-form-item label="店铺名称:" prop="shopName">
-                <el-input v-model="form.name" style="width:182px;" placeholder="全部"></el-input>
+        <h1>店铺分配</h1>
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+            <el-form-item label="管理员姓名:" prop="name">
+                <el-input v-model="form.name" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">查询</el-button>
-                <el-button>重置</el-button>
+            <el-form-item label="管理员手机号:" prop="phone">
+                <el-input v-model="form.phone" style="width:182px;" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="分配店铺:" prop="role">
+                <el-checkbox-group v-model="form.role" class="inline" @change="handleCheckedCitiesChange">
+                    <el-checkbox 
+                    v-for="item in options" 
+                    :label="item.label"
+                    :key="item.label">
+                    {{item.label}}
+                    </el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item class="mtb200">
+                <el-button type="primary" @click="onSubmit">保存</el-button>
+                <el-button @click="_routeTo('shopManage')">返回</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -16,11 +30,11 @@
 <script>
 // import { listArea } from '@/api/area'
 export default {
-  name: 'shopManage',
+  name: 'shopDistribute',
   data() {
     return {
       form: {
-          shopName: '',
+          name: '',
           phone: '',
           role: ['运营']
       },
@@ -79,5 +93,8 @@ export default {
 }
 .ml20{
     margin-left: 20px;
+}
+.mtb200{
+    margin: 200px 0;
 }
 </style>

@@ -8,8 +8,10 @@
           页面信息
         </p>
       </div>
-      <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo"></component>
-      <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]"></component>
+      <transition name="fade" :duration="{ enter: 200, leave: 100 }">
+        <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo" key="base"></component>
+        <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]" key="components"></component>
+      </transition>
       <div class="block button">
         <div class="help_blank"></div>
         <div class="buttons">

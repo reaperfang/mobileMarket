@@ -9,7 +9,7 @@
       <ul>
         <li :class="{active: index == current}" @click="menuHandler(index)" v-if="!item.hidden && item.children" 
           v-for="(item, index) in permission_routers_tree">
-          <i :class="{[item.meta.icon]: true, 'el-icon-setting': true}"></i>
+          <i class="icons" :class="{[item.meta.icon]: true}"></i>
           <span class="ellipsis">{{item.meta.title}}</span>
         </li>
       </ul>
@@ -17,6 +17,7 @@
     <div class="main-container">
       <navbar/>
       <!-- <tags-view/> -->
+      <!-- :class="{[item.meta.icon]: true, 'el-icon-setting': true}" -->
       <app-main/>
     </div>
   </div>
@@ -148,5 +149,45 @@ export default {
     height: 100%;
     position: absolute;
     z-index: 999;
+  }
+  .icons{
+    width: 18px;
+    height: 18px;
+  }
+  .icon_profile{
+    background: url('../../assets/images/icons/profile.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_shop{
+    background: url('../../assets/images/icons/shop.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_goods{
+    background: url('../../assets/images/icons/goods.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_order{
+    background: url('../../assets/images/icons/order.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_client{
+    background: url('../../assets/images/icons/client.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_datum{
+    background: url('../../assets/images/icons/datum.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_finance{
+    background: url('../../assets/images/icons/finance.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_apply{
+    background: url('../../assets/images/icons/apply.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_set{
+    background: url('../../assets/images/icons/set.png') no-repeat;
+    background-size: cover;
   }
 </style>

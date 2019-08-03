@@ -124,6 +124,9 @@ export default {
         width: 374px;
         .phone-body {
           height: 592px;
+          .component_wrapper{
+            cursor:text;
+          }
         }
       }
     }

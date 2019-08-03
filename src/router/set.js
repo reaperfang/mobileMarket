@@ -7,7 +7,7 @@ export default [
         name: 'set',
         meta: {
         title: '设置',
-        icon: 'el-icon-setting'
+        icon: 'icon_set'
         },
         children: [
             {
@@ -57,6 +57,12 @@ export default [
                 path: 'shopManage',
                 component: () => import('@/views/set/shopManage'),
                 name: 'shopManage',
+                meta: { title: '店铺管理', noCache: true, tabTitle: '权限管理' }
+            },
+            {
+                path: 'shopDistribute',
+                component: () => import('@/views/set/shopDistribute'),
+                name: 'shopDistribute',
                 meta: { title: '店铺分配', noCache: true, tabTitle: '权限管理' }
             },
             {

@@ -1,6 +1,6 @@
 <template>
   <div class="group-wrapper">
-    <div class="module view" ref="groupWrapper" :style="fontStyle">
+    <div class="module view" ref="groupWrapper">
       <div class="phone-head" @click="clickTitle(null)" title="点击编辑页面信息">
         <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
         <span>页面广告</span>
