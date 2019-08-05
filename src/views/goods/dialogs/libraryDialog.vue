@@ -8,7 +8,7 @@
                     <p><span>图片地址</span><span>复制</span></p>
                 </li>
             </ul>
-            <el-button class="upload">图片上传</el-button>
+            <el-button class="border-button upload">图片上传</el-button>
         </div>
     </DialogBase>
 </template>

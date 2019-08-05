@@ -31,6 +31,29 @@ import vueJsonp from 'vue-jsonp';  //使用jsonp
 Vue.use(vueJsonp);
 import '@/components/static/index.js';
 
+Vue.prototype.confirm = function({title, icon, text, cancel, width}) {
+  return new Promise((resolve, reject) => {
+    let str = ''
+
+    if(icon) {
+      str += '<i class="el-icon-warning"></i>'
+    }
+    str += `<p class="content-text">${text}</p>`
+
+    this.$confirm(str, title, {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      dangerouslyUseHTMLString: true,
+      width: width,
+      customClass: 'confirm confirm-big',
+    }).then(() => {
+      resolve()
+    }).catch((error) => {
+      reject(error)
+    });
+  })
+}
+
 
 /* 自定义全局变量或方法挂载 */
 Vue.prototype._routeTo = utils.routeTo; //全局路由跳转快捷方式  routeTo('login', {a:1, b:2})

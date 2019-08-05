@@ -4,9 +4,9 @@
             <el-row type="flex" align="center">
                 <el-col :span="12">
                     <div class="grid-content header-lefter">
-                        <el-button type="primary">新建商品</el-button>
-                        <el-button>批量改价</el-button>
-                        <span>导入记录</span>
+                        <el-button @click="$router.push('/goods/addGoods')" type="primary">新建商品</el-button>
+                        <el-button @click="$router.push('/goods/batchPriceChange')" class="border-button">批量改价</el-button>
+                        <span class="import-records">导入记录</span>
                     </div>
                 </el-col>
                 <el-col :span="12">
@@ -36,9 +36,10 @@
             <p class="download-box">导入规则：请先<a class="download" href="javascript:;">下载商品导入模板</a>，在模板中按要求填写商品信息，然后上传该文件</p>
         </section>
         <section>
-            <p>导入记录</p>
+            <p class="records">导入记录</p>
             <el-table
                 :data="tableData"
+                :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
                 style="width: 100%">
                 <el-table-column
                     prop="orderNumber"
@@ -160,6 +161,7 @@ export default {
             }
             .download-box {
                 margin-top: 10px;
+                text-align: center;
                 .download {
                     color: rgb(119, 113, 255);
                 }
@@ -174,6 +176,14 @@ export default {
     /deep/ .el-step__title.is-process {
         color: $contentColor;
         font-weight: normal;
+    }
+    .import-records {
+        color: $globalMainColor;
+        margin-left: 50px;
+    }
+    .records {
+        color: $globalMainColor;
+        margin-bottom: 23px;
     }
 </style>
 

@@ -3,7 +3,7 @@
         <div class="search">
             <div>
                 <el-button @click="currentDialog = 'AddTagDialog'; dialogVisible = true" type="primary">新建标签</el-button>
-                <el-button @click="moreManageHandler">批量管理</el-button>
+                <el-button class="border-button" @click="moreManageHandler">批量管理</el-button>
             </div>
             <el-form :inline="true" :model="formInline" class="form-inline">
                 <el-form-item label="搜索标签：">
@@ -22,6 +22,7 @@
         <el-table
             :data="list"
             ref="table"
+            :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
             style="width: 100%">
             <el-table-column
                 v-if="showTableCheck"
@@ -53,10 +54,10 @@
         <div class="table-footer">
             <el-button v-if="showTableCheck" @click="checkAllHandler">全选</el-button>
             <div v-if="showTableCheck" class="button-box">
-                <el-button>隐 藏</el-button>
-                <el-button>显 示</el-button>
-                <el-button>删 除</el-button>
-                <el-button>完 成</el-button>
+                <el-button class="border-button">隐 藏</el-button>
+                <el-button type="primary">显 示</el-button>
+                <el-button @click="deleteTags" class="delete-button">删 除</el-button>
+                <el-button type="primary">完 成</el-button>
             </div>
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit"></component>
@@ -107,6 +108,11 @@ export default {
                 this.$refs.table.toggleRowSelection(row);
             })
         },
+        deleteTags() {
+            this.confirm({title: '批量删除', icon: true, text: '删除后将不可恢复，确认删除所选标签吗？'}).then(() => {
+                
+            })
+        }
     },
     components: {
         AddTagDialog
@@ -144,10 +150,11 @@ export default {
     }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
     .tag {
-        .dialog-container {
-            text-align: left;
+        /deep/ .delete-button {
+            background-color: #F55858;
+            color: #fff;
         }
     }
 </style>

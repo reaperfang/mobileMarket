@@ -3,10 +3,10 @@
         <div class="search">
             <el-button @click="currentDialog = 'AddCategoryDialog'; dialogVisible = true" type="primary">新增商品分类</el-button>
             <el-form :inline="true" :model="formInline" class="form-inline">
-                <el-form-item label="搜索分类">
+                <el-form-item label="搜索分类：">
                     <el-input v-model="formInline.classify" placeholder="请输入分类名称..."></el-input>
                 </el-form-item>
-                <el-form-item label="分类状态">
+                <el-form-item label="分类状态：">
                     <el-select v-model="formInline.state" placeholder="所有状态">
                         <el-option :label="item.label" :value="item.value" v-for="(item, index) in items" :key="index"></el-option>
                     </el-select>
@@ -16,7 +16,7 @@
                 </el-form-item>
             </el-form>
         </div>
-        <div class="categoryTh">
+        <div class="categoryTh" style="background:'#ebeafa'; color:'#655EFF';">
 			<div class="treeRow th">
 			<span class="td">分类名称</span>
 			<span class="td">状态</span>
@@ -130,16 +130,20 @@ export default {
             );
         },
         change(node, data) {
-
+            this.currentDialog = 'AddCategoryDialog'
+            this.dialogVisible = true
         },
         addCategory(node, data) {
-
+            this.currentDialog = 'AddCategoryDialog'
+            this.dialogVisible = true
         },
         forbidden(node, data) {
 
         },
         delete(node, data) {
-
+            this.confirm({title: '立即删除', icon: true, text: '删除后此分类无法展示，确认删除吗？'}).then(() => {
+                
+            })
         },
         submit() {
 
@@ -173,7 +177,6 @@ export default {
 	border-bottom:1px solid #eee;
 	height:auto
 }
-.th{background:#fafafa}
 .th .td:first-child{padding-left:10px;}
 .treeRow{
 	overflow:hidden;
