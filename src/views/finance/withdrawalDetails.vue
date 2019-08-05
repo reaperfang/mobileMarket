@@ -48,7 +48,7 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <span>
           <el-button type="primary">批量审批</el-button>
           <el-button icon="document" @click='exportToExcel()'>导出</el-button>
@@ -56,6 +56,7 @@
       </div>
       <wdTable style="margin-top:20px"></wdTable>
     </div>
+    
   </div>
 </template>
 
@@ -93,6 +94,7 @@ export default {
           applyTime:'2019-05-23'
         },
       ],
+      total:700,
     }
   },
   watch: {
@@ -121,6 +123,7 @@ export default {
     },
     //导出
     exportToExcel() {
+
         //excel数据导出
         require.ensure([], () => {
             const {

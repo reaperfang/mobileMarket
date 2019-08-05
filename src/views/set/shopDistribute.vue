@@ -21,7 +21,7 @@
             </el-form-item>
             <el-form-item class="mtb200">
                 <el-button type="primary" @click="onSubmit">保存</el-button>
-                <el-button @click="_routeTo('shopManage')">返回</el-button>
+                <el-button @click="_routeTo('shopManages')">返回</el-button>
             </el-form-item>
         </el-form>
     </div>
