@@ -20,18 +20,21 @@ export default [
         path: 'orderDetail',
         component: () => import('@/views/order/orderDetail'),
         name: 'orderDetail',
+        hidden: true,
         meta: { title: '订单详情', noCache: true, tabTitle: '订单管理' },
       },
       {
         path: 'deliverGoods',
         component: () => import('@/views/order/deliverGoods'),
         name: 'deliverGoods',
+        hidden: true,
         meta: { title: '发货', noCache: true, tabTitle: '订单管理' },
       },
       {
         path: 'richLogistics',
         component: () => import('@/views/order/richLogistics'),
         name: 'richLogistics',
+        hidden: true,
         meta: { title: '自动发货', noCache: true, tabTitle: '订单管理' },
       },
       {
@@ -56,6 +59,7 @@ export default [
         path: 'printDistributionSheet',
         component: () => import('@/views/order/printDistributionSheet'),
         name: 'printDistributionSheet',
+        hidden: true,
         meta: { title: '打印配送单', noCache: true, tabTitle: '订单处理' },
       },
       {
@@ -79,6 +83,20 @@ export default [
         meta: { title: '敏感词', noCache: true, tabTitle: '订单处理' },
       },
       {
+        path: 'batchImportAndDelivery',
+        component: () => import('@/views/order/batchImportAndDelivery'),
+        name: 'batchImportAndDelivery',
+        hidden: true,
+        meta: { title: '批量导入发货', noCache: true, tabTitle: '订单处理' },
+      },
+      {
+        path: 'printingElectronicForm',
+        component: () => import('@/views/order/printingElectronicForm'),
+        name: 'printingElectronicForm',
+        hidden: true,
+        meta: { title: '打印电子面单', noCache: true, tabTitle: '订单处理' },
+      },
+      {
         path: 'quickDelivery',
         component: () => import('@/views/order/quickDelivery'),
         name: 'quickDelivery',
@@ -90,6 +108,19 @@ export default [
         name: 'newTemplate',
         hidden: true,
         meta: { title: '新建模板', noCache: true, tabTitle: '物流配送' },
+      },
+      {
+        path: 'electronicFaceSheet',
+        component: () => import('@/views/order/electronicFaceSheet'),
+        name: 'electronicFaceSheet',
+        meta: { title: '电子面单', noCache: true, tabTitle: '物流配送' },
+      },
+      {
+        path: 'newElectronicFaceSheet',
+        component: () => import('@/views/order/newElectronicFaceSheet'),
+        name: 'newElectronicFaceSheet',
+        hidden: true,
+        meta: { title: '新建电子面单', noCache: true, tabTitle: '物流配送' },
       },
     ]
   }

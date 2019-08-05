@@ -1,25 +1,10 @@
 <template>
-  <div class="quick-delivery">
-    <section class="operate">
-      <div class="row justify-between operate-top">
-        <div class="col">当前订单运费计费方式选择为</div>
-        <div class="col">
-          <span>您可以到交易设置中</span>
-          <span class="change-mode">更改订单运费计费方式</span>
-        </div>
-      </div>
-      <div class="radio-box">
-        <el-radio v-model="mode" label="1">组合运费（推荐）</el-radio>
-        <el-radio v-model="mode" label="2">按商品累加运费</el-radio>
-        <span class="blue">计费规则说明</span>
-      </div>
-      <el-button @click="$router.push('/order/newTemplate')" class="border-button new-template">新建模板</el-button>
-    </section>
+  <div class="electronic-face-sheet">
     <section class="search">
       <el-form :inline="true" :model="formInline" class="form-inline">
         <div class="row justify-between">
           <div class="col">
-            <el-form-item label="模板名称">
+            <el-form-item label="电子面单名称">
               <el-input v-model="formInline.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="创建时间">
@@ -39,6 +24,9 @@
               </el-form-item>
           </div>
         </div>
+        <div>
+            <el-button @click="$router.push('/order/newElectronicFaceSheet')" class="border-button">新建</el-button>
+        </div>
       </el-form>
     </section>
     <section class="table-box">
@@ -50,17 +38,13 @@
                 :header-cell-style="{background:'#ebeafa', color:'#655EFF'}">
                 <el-table-column
                     prop="name"
-                    label="模板名称"
+                    label="电子面单名称"
                     width="180">
                 </el-table-column>
                 <el-table-column
-                    prop="mode"
-                    label="计费方式"
+                    prop="expressCompany"
+                    label="快递公司"
                     width="180">
-                </el-table-column>
-                <el-table-column
-                    prop="quantity"
-                    label="应用商品数量">
                 </el-table-column>
                 <el-table-column
                     prop="time"
@@ -71,9 +55,8 @@
                     label="操作">
                     <template slot-scope="scope">
                         <div class="operate-box">
-                            <span @click="$router.push('/order/newTemplate?mode=look')">查看</span>
-                            <span @click="$router.push('/order/newTemplate?mode=copy')">复制</span>
-                            <span @click="$router.push('/order/newTemplate?mode=change')">修改</span>
+                            <span @click="$router.push('/order/newElectronicFaceSheet')">查看</span>
+                            <span @click="$router.push('/order/newElectronicFaceSheet')">修改</span>
                         </div>
                     </template>
                 </el-table-column>
@@ -89,7 +72,6 @@ import Pagination from '@/components/Pagination'
 export default {
   data() {
     return {
-      mode: "1",
       formInline: {
         name: "",
         time: ""
@@ -115,23 +97,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.quick-delivery {
+.electronic-face-sheet {
   section {
     background-color: #fff;
     padding: 20px;
     margin-bottom: 20px;
-    &.operate {
-      .change-mode {
-        color: $globalMainColor;
-        margin-left: 10px;
-      }
-      .operate-top {
-        margin-bottom: 10px;
-      }
-      .new-template {
-        margin-top: 20px;
-      }
-    }
     &.search {
         .resetting {
             margin-right: 7px;

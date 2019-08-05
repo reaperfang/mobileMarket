@@ -139,7 +139,7 @@
             <div class="footer">
                 <el-button>打印电子面单</el-button>
                 <el-button>打印配送单</el-button>
-                <el-button type="primary">发 货</el-button>
+                <el-button type="primary">确 定</el-button>
             </div>
         </div>
     </div>

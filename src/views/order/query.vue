@@ -51,20 +51,20 @@
                 </el-form-item>
             </el-form>
             <div>
-                <el-button>导出订单</el-button>
-                <el-button>批量导入发货</el-button>
-                <el-button>批量发货</el-button>
-                <el-button>批量补填物流</el-button>
+                <el-button class="border-button">导出订单</el-button>
+                <el-button class="border-button" @click="$router.push('/order/batchImportAndDelivery')">批量导入发货</el-button>
+                <el-button class="border-button" @click="$router.push('/order/deliverGoods')">批量发货</el-button>
+                <el-button class="border-button" @click="$router.push('/order/richLogistics')">批量补填物流</el-button>
             </div>
         </section>
         <section>
-            <p>已选择 {{checkedLength}} 项，全部{{total}}项</p>
-            <el-tabs v-model="activeName">
+            <p class="statistics">已选择<span>{{checkedLength}}</span>项，全部<span>{{total}}</span>项</p>
+            <el-tabs class="tabs" v-model="activeName">
                 <el-tab-pane label="商城订单" name="shop">
                     <shop></shop>
                 </el-tab-pane>
                 <el-tab-pane label="积分商城订单" name="integralShop">
-                    
+                    <integralShop></integralShop>
                 </el-tab-pane>
             </el-tabs>
         </section>
@@ -124,6 +124,17 @@ export default {
         section {
             background-color: #fff;
             padding: 20px;
+            margin-bottom: 20px;
+            border-radius:4px;
+            .statistics {
+                color: #e0dee8;
+                span {
+                    color: #aaa9ad;
+                }
+            }
+            .tabs {
+                margin-left: 60px;
+            }
         }
     }
     /deep/ .el-input {
