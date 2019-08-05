@@ -42,10 +42,10 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button>批量导入发货</el-button>
-                        <el-button>批量发货</el-button>
-                        <el-button>批量打印配送单</el-button>
-                        <el-button>批量打印电子面单</el-button>
+                        <el-button class="border-button" @click="$router.push('/order/batchImportAndDelivery')">批量导入发货</el-button>
+                        <el-button class="border-button" @click="$router.push('/order/deliverGoods')">批量发货</el-button>
+                        <el-button class="border-button" @click="$router.push('/order/printDistributionSheet')">批量打印配送单</el-button>
+                        <el-button class="border-button" @click="$router.push('/order/printingElectronicForm')">批量打印电子面单</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
@@ -94,7 +94,7 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span>查看</span>
+                        <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
                         <span>发货</span>
                     </template>
                 </el-table-column>
