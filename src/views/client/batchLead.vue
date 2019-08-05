@@ -100,7 +100,7 @@
                 <el-form-item label="资产条件：">
                     <el-checkbox v-model="ruleForm.isProduct">商品条件</el-checkbox>
                     <span>购买以下任意商品</span>
-                    <span class="addMainColor marL20">选择商品</span>
+                    <span class="addMainColor marL20 pointer" @click="chooseProduct">选择商品</span>
                 </el-form-item>
             </el-form>
         </div>
@@ -108,11 +108,14 @@
             <el-button type="primary">保 存</el-button>
             <el-button>取 消</el-button>
         </div>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
     </div>
 </template>
 <script type="es6">
+import chooseProductDialog from './dialogs/batchLead/chooseProductDialog';
 export default {
     name: 'batchLead',
+    components: { chooseProductDialog },
     data() {
         return {
             ruleForm: {
@@ -154,6 +157,15 @@ export default {
                 { label: '月',value: 1 },
                 { label: '年',value: 2 },
             ],
+            currentDialog: "",
+            dialogVisible: false,
+            currentData:{}
+        }
+    },
+    methods: {
+        chooseProduct() {
+            this.dialogVisible = true;
+            this.currentDialog = "chooseProductDialog";
         }
     }
 }

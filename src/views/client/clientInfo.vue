@@ -1,7 +1,7 @@
 <template>
     <div class="c_container">
         <div class="c_top clearfix">
-            <img src="../../assets/images/client/icon_addblack2.png" alt="" class="addBlack">
+            <span class="addBlack" @click="showAddBlack">加入黑名单</span>
             <div class="c_top_l fl">
                 <p>基本信息：</p>
                 <img :src="clientInfoById.headIcon" alt="">
@@ -145,9 +145,10 @@ import balanceListDialog from './dialogs/clientInfo/balanceListDialog';
 import adjustBalanceDialog from './dialogs/clientInfo/adjustBalanceDialog';
 import discountCouponDialog from './dialogs/clientInfo/discountCouponDialog';
 import issueCouponDialog from './dialogs/clientInfo/issueCouponDialog';
+import addBlackDialog from './dialogs/allClient/addBlackDialog';
 export default {
     name: 'clientInfo',
-    components: { changeIdentityDialog, addTagDialog, balanceListDialog, adjustBalanceDialog, discountCouponDialog, issueCouponDialog },
+    components: { changeIdentityDialog, addTagDialog, balanceListDialog, adjustBalanceDialog, discountCouponDialog, issueCouponDialog, addBlackDialog },
     data() {
         return {
             form: {
@@ -193,6 +194,10 @@ export default {
         sendDiscount() {
             this.dialogVisible = true;
             this.currentDialog = "issueCouponDialog";
+        },
+        showAddBlack() {
+            this.dialogVisible = true;
+            this.currentDialog = "addBlackDialog";
         }
     },
     computed: {
@@ -235,9 +240,16 @@ export default {
         color: #3D434A;
         position: relative;
         .addBlack{
+            display: block;
             position: absolute;
+            width: 70px;
+            height: 70px;
+            padding-top: 39px;
+            color: #655EFF;
+            background: url('../../assets/images/client/icon_addblack2.png') 11px 0 no-repeat;
             left: 980px;
             top: -3px;
+            cursor: pointer;
         }
         .c_top_l{
             p{

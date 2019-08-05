@@ -114,7 +114,7 @@ export default {
 			"memberType": 1,
 			"channelId": "1",
 			"channelName": "微信",
-			"status": 0,
+			"status": 2,
 			"memberName": "李四",
 			"sex": 1,
 			"birthday": "2019-07-16 10:23:45",
@@ -506,7 +506,8 @@ export default {
             "productInfoIds": "123123,123123",
             "isProduct": 1,
             "enable": 2,
-            "labelCondition":"标签条件描述"
+            "labelCondition":"标签条件描述",
+            "labelContains": 100
         },
         {
             "startIndex": 1,
@@ -547,7 +548,8 @@ export default {
             "productInfoIds": "123123,123123",
             "isProduct": 1,
             "enable": 2,
-            "labelCondition":"标签条件描述"
+            "labelCondition":"标签条件描述",
+            "labelContains": 20
         }
     ],
     //clientLevel-等级列表
@@ -615,6 +617,29 @@ export default {
             "upgradeRewardInfoId": 123123123,
             "giftProduct": 123123,
             "giftNumber": 1
+        }
+    ],
+    //creditManage-积分列表
+    creditList: [
+        {
+            sceneName: '登录',
+            status: '启用'
+        },
+        {
+            sceneName: '购买商品',
+            status: '启用'
+        },
+        {
+            sceneName: '复购商品',
+            status: '启用'
+        },
+        {
+            sceneName: '评价',
+            status: '启用'
+        },
+        {
+            sceneName: '签到',
+            status: '启用'
         }
     ]
 }

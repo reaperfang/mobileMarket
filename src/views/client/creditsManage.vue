@@ -15,7 +15,7 @@
                                 </div>
                                 <span>积分</span>
                                 <div style="width: 54px; display: inline-block">
-                                    <el-input v-model="yuan"></el-input>
+                                    <el-input v-model="ruleForm.yuan"></el-input>
                                 </div>
                                 <span>元</span>
                             </div>
