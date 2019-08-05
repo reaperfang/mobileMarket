@@ -37,7 +37,7 @@
           <el-radio :label="3">居右</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="跳转链接" prop="linkAddress">
+      <el-form-item label="跳转链接" prop="linkTo">
         <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
       </el-form-item>
       <el-form-item label="更多设置" prop="showDivider">
@@ -65,7 +65,7 @@ export default {
         fontColor: '#000000',
         backgroundColor: '#ffffff',
         displayStyle: 2,
-        linkAddress: 'http://www.baidu.com',
+        linkTo: 'http://www.baidu.com',
         showDivider: true
       },
       rules: {

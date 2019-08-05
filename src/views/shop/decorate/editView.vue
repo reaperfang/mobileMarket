@@ -30,6 +30,7 @@
           </div>
     </vuedraggable>
     </div>
+
   </div>
 </template>
 
@@ -37,6 +38,7 @@
 import utils from '@/utils';
 import widget from '@/system/constant/widget';
 import vuedraggable from "vuedraggable";
+
 export default {
   name: 'editView',
   components: {vuedraggable},

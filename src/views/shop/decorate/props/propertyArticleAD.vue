@@ -121,7 +121,8 @@ export default {
         imgChamfer: 1,
         itemList: [{
           title: '',
-          url: ''
+          url: '',
+          linkTo: ''
         }],
       },
       rules: {},
@@ -137,7 +138,8 @@ export default {
     addNav() {
       this.ruleForm.itemList.push({
         title: '图片广告',
-        url: ''
+        url: '',
+        linkTo: ''
       });
     },
 

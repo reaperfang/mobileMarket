@@ -10,7 +10,7 @@
       <el-form-item label="商品" v-if="ruleForm.source === 1" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of goodsList" :key="key">
+            <li v-for="(item, key) of ruleForm.goods" :key="key">
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteGoods(item)"></i>
             </li>
@@ -146,7 +146,7 @@ export default {
     return {
       ruleForm: {
         source: 1,
-        goods:'',
+        goods:[],
         goodsGroups: [],
         showNumber: 0,
         listStyle: 1,
@@ -165,46 +165,27 @@ export default {
 
       },
       dialogVisible: false,
-      currentDialog: '',
-      goodsList: []
+      currentDialog: ''
     }
   },
   created() {
-    this.convertGoodsId();
-  },
-  watch: {
-    goodsList: {
-      handler(newValue) {
-        this.convertGoodsId();
-      },
-      deep: true
-    }
   },
   methods: {
 
     /* 删除商品 */
     deleteGoods(item) {
-      const tempGoodsList = [...this.goodsList];
+      const tempGoodsList = [...this.ruleForm.goods];
       for(let i=0;i<tempGoodsList.length;i++) {
         if(item === tempGoodsList[i]) {
           tempGoodsList.splice(i, 1);
         }
       }
-      this.goodsList = tempGoodsList;
-    },
-
-    /* 转换商品id */
-    convertGoodsId() {
-      const array = [];
-      for(let item of this.goodsList) {
-        array.push(item.id);
-      }
-      this.ruleForm.goods = array.join(',');
+      this.ruleForm.goods = tempGoodsList;
     },
 
     /* 弹窗选中了商品 */
-    dialogDataSelected(goods) {
-      this.goodsList = goods;
+    dialogDataSelected(list) {
+      this.ruleForm.goods = list;
     },
 
     /* 弹窗选中了商品分组 */

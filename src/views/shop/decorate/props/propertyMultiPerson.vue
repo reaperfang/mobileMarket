@@ -1,16 +1,16 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="商品来源" prop="source">
-        <el-radio-group v-model="ruleForm.source">
+      <el-form-item label="商品来源" prop="addType">
+        <el-radio-group v-model="ruleForm.addType">
           <el-radio :label="1">手动添加</el-radio>
           <el-radio :label="2">自动获取</el-radio>
         </el-radio-group>
       </el-form-item>
-     <el-form-item label="选择商品" v-if="ruleForm.source === 1" prop="goods">
+     <el-form-item label="选择商品" v-if="ruleForm.addType === 1" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of goodsList" :key="key">
+            <li v-for="(item, key) of ruleForm.goods" :key="key">
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteMultiPerson(item)"></i>
             </li>
@@ -20,15 +20,15 @@
           </ul>
         </div>
       </el-form-item>
-      <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
+      <el-form-item label="显示个数" v-if="ruleForm.addType === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
         最多显示30个  
       </el-form-item>
-      <el-form-item label="" v-if="ruleForm.source === 2" prop="showAllBtns">
+      <el-form-item label="" v-if="ruleForm.addType === 2" prop="showAllBtns">
         <el-checkbox v-model="ruleForm.showAllBtns">查看全部按钮</el-checkbox>
         <el-button type="text" @click="dialogVisible=true; currentDialog='dialogMultiPersonDemo'">查看示例</el-button>
       </el-form-item>
-      <el-form-item label="排序规则" v-if="ruleForm.source === 2" prop="sortRule">
+      <el-form-item label="排序规则" v-if="ruleForm.addType === 2" prop="sortRule">
         <el-select v-model="ruleForm.sortRule" placeholder="请选择排序规则">
           <el-option label="1" value="销量越高越靠前"></el-option>
           <el-option label="2" value="浏览次数越多越靠前"></el-option>
@@ -154,8 +154,8 @@ export default {
   data () {
     return {
       ruleForm: {
-        source: 2,
-        goods: '',
+        addType: 2,
+        goods: [],
         showNumber: '',
         showAllBtns: true,
         sortRule: 1,
@@ -176,46 +176,28 @@ export default {
 
       },
       dialogVisible: false,
-      currentDialog: '',
-      goodsList: []
+      currentDialog: ''
     }
   },
   created() {
     this.convertGoodsId();
   },
-  watch: {
-    goodsList: {
-      handler(newValue) {
-        this.convertGoodsId();
-      },
-      deep: true
-    }
-  },
   methods: {
 
     /* 删除多人拼团 */
     deleteMultiPerson(item) {
-      const tempGoodsList = [...this.goodsList];
+      const tempGoodsList = [...this.ruleForm.goods];
       for(let i=0;i<tempGoodsList.length;i++) {
         if(item === tempGoodsList[i]) {
           tempGoodsList.splice(i, 1);
         }
       }
-      this.goodsList = tempGoodsList;
-    },
-
-    /* 转换商品id */
-    convertGoodsId() {
-      const array = [];
-      for(let item of this.goodsList) {
-        array.push(item.id);
-      }
-      this.ruleForm.goods = array.join(',');
+      this.ruleForm.goods = tempGoodsList;
     },
 
     /* 弹窗选中了商品 */
-    dialogDataSelected(goods) {
-      this.goodsList = goods;
+    dialogDataSelected(list) {
+      this.ruleForm.goods = list;
     },
 
     /* 关闭案例弹窗 */

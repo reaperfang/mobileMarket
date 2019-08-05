@@ -91,7 +91,8 @@ export default {
         fontColor: '#000',
         itemList: [{
           title: '',
-          url: ''
+          url: '',
+          linkTo: ''
         }],
       },
       rules: {},
@@ -109,7 +110,8 @@ export default {
     addNav() {
       this.ruleForm.itemList.push({
         title: '导航',
-        url: ''
+        url: '',
+        linkTo: ''
       });
     },
 

@@ -26,7 +26,7 @@
         </el-input>
         <el-button v-else class="button-new-tag" type="primary" size="small" @click="showInput">+ 添加热词</el-button>
       </el-form-item>
-      <el-form-item label="搜索样式" prop="searchStyle">
+      <el-form-item label="搜索样式" prop="borderStyle">
         <el-radio-group v-model="ruleForm.searchStyle">
           <el-radio :label="1">方形</el-radio>
           <el-radio :label="2">圆形</el-radio>
@@ -90,7 +90,7 @@ export default {
       currentDialog: '',
       ruleForm: {
         hotWords: [],
-        searchStyle: 1,
+        borderStyle: 1,
         borderHeight: 40,
         backgroundColor: '#ffffff',
         borderColor: '#ffffff',

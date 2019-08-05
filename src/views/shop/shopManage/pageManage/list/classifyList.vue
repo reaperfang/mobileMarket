@@ -10,7 +10,7 @@
         </el-form-item>
       </el-form>
       <div class="btns">
-        <el-button type="primary">新建分类</el-button>
+        <el-button type="primary" @click="_routeTo('classifyEditor')">新建分类</el-button>
       </div>
     </div>
     <div class="table">

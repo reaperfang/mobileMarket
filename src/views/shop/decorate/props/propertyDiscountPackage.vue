@@ -1,10 +1,10 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
     <div class="block form">
-      <el-form-item label="选择套餐" prop="package">
+      <el-form-item label="选择套餐" prop="packages">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of goodsList" :key="key">
+            <li v-for="(item, key) of ruleForm.packages" :key="key">
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deletePackage(item)"></i>
             </li>
@@ -136,7 +136,7 @@ export default {
   data () {
     return {
       ruleForm: {
-        package: '',
+        packages: '',
         listStyle: 1,
         pageMargin: 15,
         goodsMargin: 10,
@@ -156,47 +156,29 @@ export default {
 
       },
       dialogVisible: false,
-      currentDialog: '',
-      goodsList: []
+      currentDialog: ''
 
     }
   },
   created() {
     this.convertGoodsId();
   },
-  watch: {
-    goodsList: {
-      handler(newValue) {
-        this.convertGoodsId();
-      },
-      deep: true
-    }
-  },
   methods: {
 
     /* 删除优惠套餐 */
     deletePackage(item) {
-      const tempGoodsList = [...this.goodsList];
+      const tempGoodsList = [...this.ruleForm.packages];
       for(let i=0;i<tempGoodsList.length;i++) {
         if(item === tempGoodsList[i]) {
           tempGoodsList.splice(i, 1);
         }
       }
-      this.goodsList = tempGoodsList;
-    },
-
-    /* 转换商品id */
-    convertGoodsId() {
-      const array = [];
-      for(let item of this.goodsList) {
-        array.push(item.id);
-      }
-      this.ruleForm.goods = array.join(',');
+      this.ruleForm.packages = tempGoodsList;
     },
 
     /* 弹窗选中了商品 */
-    dialogDataSelected(goods) {
-      this.goodsList = goods;
+    dialogDataSelected(list) {
+      this.ruleForm.packages = list;
     },
   }
 }

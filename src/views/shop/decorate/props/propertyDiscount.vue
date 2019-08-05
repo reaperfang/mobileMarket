@@ -4,7 +4,7 @@
       <el-form-item label="选择商品" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of goodsList" :key="key">
+            <li v-for="(item, key) of ruleForm.goods" :key="key">
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteDiscount(item)"></i>
             </li>
@@ -146,46 +146,28 @@ export default {
 
       },
       dialogVisible: false,
-      currentDialog: '',
-      goodsList: []
+      currentDialog: ''
     }
   },
   created() {
     this.convertGoodsId();
   },
-  watch: {
-    goodsList: {
-      handler(newValue) {
-        this.convertGoodsId();
-      },
-      deep: true
-    }
-  },
   methods: {
 
     /* 删除限时折扣 */
     deleteDiscount(item) {
-      const tempGoodsList = [...this.goodsList];
+      const tempGoodsList = [...this.ruleForm.goods];
       for(let i=0;i<tempGoodsList.length;i++) {
         if(item === tempGoodsList[i]) {
           tempGoodsList.splice(i, 1);
         }
       }
-      this.goodsList = tempGoodsList;
-    },
-
-    /* 转换商品id */
-    convertGoodsId() {
-      const array = [];
-      for(let item of this.goodsList) {
-        array.push(item.id);
-      }
-      this.ruleForm.goods = array.join(',');
+      this.ruleForm.goods = tempGoodsList;
     },
 
     /* 弹窗选中了商品 */
-    dialogDataSelected(goods) {
-      this.goodsList = goods;
+    dialogDataSelected(list) {
+      this.ruleForm.goods = list;
     },
   }
 }
