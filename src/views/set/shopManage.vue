@@ -1,7 +1,7 @@
 /*店铺管理 */
 <template>
     <div class="main">
-        <el-form ref="form" :model="form" :rules="rules" label-width="120px" :inline="true" class="demo-form-inline">
+        <el-form ref="form" :model="form" :rules="rules" :inline="true" class="demo-form-inline">
             <el-form-item label="店铺名称:" prop="shopName">
                 <el-input v-model="form.name" style="width:182px;" placeholder="全部"></el-input>
             </el-form-item>
@@ -10,13 +10,17 @@
                 <el-button>重置</el-button>
             </el-form-item>
         </el-form>
+        <el-button type="primary" @click="_routeTo('shopDistribute')">店铺分配</el-button>
+        <smTable class="mt20"></smTable>
     </div>
 </template>
 
 <script>
+import smTable from './components/smTable'
 // import { listArea } from '@/api/area'
 export default {
-  name: 'shopManage',
+  name: 'shopManages',
+  components:{smTable},
   data() {
     return {
       form: {
@@ -77,7 +81,7 @@ export default {
 .inline{
     display: inline;
 }
-.ml20{
-    margin-left: 20px;
+.mt20{
+    margin-top: 20px;
 }
 </style>
