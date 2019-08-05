@@ -48,14 +48,15 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <span>
-          <el-button type="primary">批量审批</el-button>
+          <el-button type="primary" @click="batchCheck">批量审批</el-button>
           <el-button icon="document" @click='exportToExcel()'>导出</el-button>
         </span>
       </div>
       <wdTable style="margin-top:20px"></wdTable>
     </div>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @handleSubmit="handleSubmit"></component>
   </div>
 </template>
 
@@ -64,9 +65,13 @@ import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import wdTable from './components/wdTable'
 import financeCons from '@/system/constant/finance'
+import withdrawDialog from './dialogs/withdrawDialog'
+import auditSuccessDialog from './dialogs/auditSuccessDialog'
+import warnDialog from './dialogs/warnDialog'
+import waitAuditDialog from './dialogs/waitAuditDialog'
 export default {
   name: 'revenueSituation',
-  components:{ wdTable },
+  components:{ wdTable, withdrawDialog, auditSuccessDialog, warnDialog, waitAuditDialog },
   data() {
     return {
       pickerNowDateBefore: {
@@ -93,6 +98,10 @@ export default {
           applyTime:'2019-05-23'
         },
       ],
+      total:700,
+      currentDialog:"",
+      dialogVisible: false,
+      currentData:{}
     }
   },
   watch: {
@@ -121,6 +130,7 @@ export default {
     },
     //导出
     exportToExcel() {
+
         //excel数据导出
         require.ensure([], () => {
             const {
@@ -136,6 +146,15 @@ export default {
     formatJson(filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
     },
+    batchCheck() {
+      this.dialogVisible = true;
+      this.currentDialog = "waitAuditDialog";
+      this.currentData.text = "请选择需要审核的数据";
+    },
+    handleSubmit() {
+      this.dialogVisible = true;
+      this.currentDialog = "auditSuccessDialog";
+    }
   }
 }
 </script>

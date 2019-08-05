@@ -88,9 +88,10 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     ul li {
         margin: 10px 0;
+        text-align: center;
         .icon {
             font-size: 26px;
         }

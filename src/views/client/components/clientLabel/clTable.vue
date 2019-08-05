@@ -21,7 +21,7 @@
         label="标签类型">
       </el-table-column>
       <el-table-column
-        prop="importNum"
+        prop="labelContains"
         label="包含人数">
       </el-table-column>
       <el-table-column

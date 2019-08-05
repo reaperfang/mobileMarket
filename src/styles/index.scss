@@ -535,3 +535,48 @@ table.yuan-table{
     margin-left: 60px;
   }
 }
+
+.confirm {
+  width: 500px;
+  padding-bottom: 30px;
+}
+.confirm-big {
+  width: 523px;
+}
+.confirm .el-message-box__header {
+  background-color: rgb(241, 240, 255);
+  .el-message-box__title {
+      color: $contentColor
+  }
+}
+.confirm .el-message-box__content {
+  padding-top: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  .el-message-box__message {
+      text-align: center;
+      .el-icon-warning {
+          font-size: 60px;
+          color: rgb(245, 88, 88);
+      }
+      .content-text {
+          font-size: 18px;
+          margin-top: 20px;
+      }
+  }
+}
+.confirm .el-message-box__btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 33px;
+  button {
+      order: 1;
+  }
+  .el-button--primary {
+      order: 0;
+  }
+  .el-button:first-child {
+      display: none;
+  }
+}

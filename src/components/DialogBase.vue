@@ -65,9 +65,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .dialog-container {
-        text-align: center;
-    }
     /deep/ .el-dialog {
         border-radius: 10px;
     }

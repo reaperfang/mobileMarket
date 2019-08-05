@@ -1,18 +1,27 @@
 <template>
 <div class="app-container add-goods">
-    <header class="header">
+    <!-- <header class="header">
         <div :class="{active: index == 0}" @click="scrollTo(0)" class="item">基本信息</div>
         <div :class="{active: index == 1}" @click="scrollTo(1)" class="item">销售信息</div>
         <div :class="{active: index == 2}" @click="scrollTo(2)" class="item">物流/售后</div>
         <div :class="{active: index == 3}" @click="scrollTo(3)" class="item">详情描述</div>
-    </header>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="125px" class="demo-ruleForm">
+    </header> -->
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="138px" class="demo-ruleForm">
         <section class="form-section">
+            <h2>基本信息</h2>
             <el-form-item label="商品类目" prop="productCategoryInfoId">
-                <el-input v-model="ruleForm.productCategoryInfoId"></el-input>
+                <el-cascader
+                    :options="itemCatList"
+                    v-model="ruleForm.itemCat"
+                    @change="itemCatHandleChange">
+                </el-cascader>
+                <span class="category-display">您当前的选择是：食品 ＞ 休闲零食</span>
             </el-form-item>
             <el-form-item label="商品名称" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
+                <el-input v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
+            </el-form-item>
+            <el-form-item label="商品描述" prop="des">
+                <el-input type="textarea" v-model="ruleForm.des" maxlength="100" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品图片" prop="images">
                 <el-upload
@@ -24,6 +33,7 @@
                     :on-success="centerFileUrl"
                     class="p_imgsCon">
                     <i class="el-icon-plus"></i>
+                    <p style="line-height: 21px; margin-top: -39px; color: #92929B;">上传图片</p>
                 </el-upload>
                 <span @click="currentDialog = 'LibraryDialog'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
@@ -36,14 +46,14 @@
                         @change="handleChange">
                     </el-cascader>
                 </div>
-                <div class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
+                <div @click="currentDialog = 'AddCategoryDialog'; dialogVisible = true" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
             </el-form-item>
             <el-form-item label="商品标签" prop="productLabelId">
                 <div class="add-tag">
                     <div class="item">
                         <el-input v-model="ruleForm.productLabelId"></el-input>
                     </div>
-                    <div class="item tag">新增标签</div>
+                    <div @click="currentDialog = 'AddTagDialog'; dialogVisible = true" class="item tag">新增标签</div>
                     <div @mouseenter="imageVisible = true" @mouseleave="imageVisible = false" class="item example">查看样例</div>
                     <div v-show="imageVisible" class="item images">
                         <img src="../../assets/images/goods/example.png" alt="">
@@ -52,11 +62,14 @@
             </el-form-item>
         </section>
         <section class="form-section">
+            <h2>销售信息</h2>
             <el-form-item label="规格信息" prop="specifications">
-                <el-button @click="currentDialog = 'SelectSpecifications'; dialogVisible = true">选择规格</el-button>
+                <el-button class="border-button selection-specification" @click="currentDialog = 'SelectSpecifications'; dialogVisible = true">选择规格</el-button>
                 <template>
                     <el-table
+                    class="spec-information"
                     :data="specArr"
+                    :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
                     style="width: 100%">
                     <el-table-column
                         prop="label"
@@ -118,7 +131,7 @@
                     <el-checkbox v-model="ruleForm.residueStock">商品详情显示剩余库存</el-checkbox>
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
                 </div>
-                <el-button @click="currentDialog = 'AddSpecifications'; dialogVisible = true">新增规格</el-button>
+                <el-button class="border-button" @click="currentDialog = 'AddSpecifications'; dialogVisible = true">新增规格</el-button>
             </el-form-item>
             <el-form-item label="起售数量" prop="number">
                 <div class="input-number">
@@ -141,9 +154,10 @@
                         :value="item.value">
                     </el-option>
                 </el-select>
+                <el-button class="border-button new-units">新增单位</el-button>
                 <div style="margin-top: 21px;">
                     <el-checkbox v-model="ruleForm.other">其他</el-checkbox>
-                    <el-input v-model="ruleForm.otherUnit" placeholder="请输入内容"></el-input>
+                    <el-input v-model="ruleForm.otherUnit" placeholder="请输入计量单位"></el-input>
                 </div>
             </el-form-item>
             <el-form-item label="商品品牌" prop="brand">
@@ -158,6 +172,7 @@
             </el-form-item>
         </section>
         <section class="form-section">
+            <h2>物流/售后</h2>
             <el-form-item label="上架时间" prop="time">
                 <span>定时上架的商品在上架前请到“仓库中的宝贝”里编辑商品。</span>
                 <div>
@@ -217,14 +232,16 @@
             </el-form-item>
         </section>
         <section class="form-section">
+            <h2>详情描述</h2>
             <el-form-item label="是否显示关联商品" prop="associatedGoods">
                 <el-radio v-model="ruleForm.associatedGoods" label="1">否</el-radio>
                 <el-radio v-model="ruleForm.associatedGoods" label="2">是</el-radio>
-                <el-button @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
+                <el-button class="border-button" @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
             </el-form-item>
             <div class="associated-goods">
                 <el-table
                     :data="tableData"
+                    :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
                     style="width: 590px;">
                     <el-table-column
                         prop="name"
@@ -264,6 +281,8 @@ import RichEditor from '@/components/RichEditor';
 import ChoosingGoodsDialog from '@/views/goods/dialogs/choosingGoodsDialog'
 import TimelyShelvingDialog from '@/views/goods/dialogs/timelyShelvingDialog'
 import LibraryDialog from '@/views/goods/dialogs/libraryDialog'
+import AddCategoryDialog from '@/views/goods/dialogs/addCategoryDialog'
+import AddTagDialog from '@/views/goods/dialogs/addTagDialog'
 
 export default {
     data() {
@@ -291,7 +310,8 @@ export default {
                 freightSettings: '',
                 rights: '',
                 associatedGoods: '',
-                shippingTemplatesValue: ''
+                shippingTemplatesValue: '',
+                itemCat: ''
             },
             rules: {
                 productCategoryInfoId: [
@@ -302,6 +322,42 @@ export default {
                 ],
                 productCategoryInfoId: [
                     { required: true, message: '请输入', trigger: 'blur' },
+                ],
+                images: [
+                    { required: true, message: '请上传商品图片', trigger: 'blur' },
+                ],
+                quantitySold: [
+                    { required: true, message: '请上传商品图片', trigger: 'blur' },
+                ],
+                unitMeasurement: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                brand: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                time: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                dazhe: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                zhengsong: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                fapiao: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                cashOnDelivery: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                freightSettings: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                rights: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                associatedGoods: [
+                    { required: true, message: '请选择', trigger: 'blur' },
                 ],
             },
             uploadUrl: '#',
@@ -326,10 +382,14 @@ export default {
             index: 0,
             specArr: [],
             shippingTemplates: [],
-            tableData: []
+            tableData: [],
+            itemCatList: []
         }
     },
     methods: {
+        itemCatHandleChange(value) {
+
+        },
         timelyShelvingHandler() {
             this.currentDialog = 'TimelyShelvingDialog'
             this.dialogVisible = true
@@ -463,7 +523,9 @@ export default {
         RichEditor,
         ChoosingGoodsDialog,
         TimelyShelvingDialog,
-        LibraryDialog
+        LibraryDialog,
+        AddCategoryDialog,
+        AddTagDialog
     }
 }
 </script>
@@ -475,6 +537,7 @@ $blue: #655EFF;
 .prompt {
     color: $grayColor;
     font-size: 12px;
+    margin-top: -27px;
 }
 .blue {
     color: $blue;
@@ -493,6 +556,12 @@ $blue: #655EFF;
     padding: 18px 21px;
     padding-top: 2px;
     background-color: #fff;
+    section {
+        h2 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+    }
     .header {
         display: flex;
         align-items: center;
@@ -512,6 +581,9 @@ $blue: #655EFF;
     .material {
         color: $globalMainColor;
         cursor: pointer;
+        margin-left: -53px;
+        position: relative;
+        top: -54px;
     }
     .add-tag {
         display: flex;
@@ -535,6 +607,15 @@ $blue: #655EFF;
         border-bottom: 1px dashed #d3d3d3;
         padding-bottom: 30px;
         padding-top: 24px;
+        .new-units {
+            margin-left: 30px;
+        }
+        .category-display {
+            margin-left: 10px;
+        }
+        .selection-specification {
+            margin-bottom: 35px;
+        }
     }
 }
 /deep/ .el-input {
@@ -571,6 +652,23 @@ $blue: #655EFF;
 }
 /deep/ .el-radio-group {
     margin-right: 20px;
+}
+/deep/ .el-textarea {
+    width: auto;
+}
+/deep/ .spec-information thead th:nth-child(2) .cell,
+    /deep/ .spec-information thead th:nth-child(3) .cell,
+    /deep/ .spec-information thead th:nth-child(4) .cell,
+    /deep/ .spec-information thead th:nth-child(5) .cell {
+    position: relative;
+    &:before {
+        content: '*';
+        display: block;
+        color: #FD4C2B;
+        position: absolute;
+        left: 1px;
+        top: 2px;
+    }
 }
 </style>
 

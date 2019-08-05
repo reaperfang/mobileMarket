@@ -1,9 +1,9 @@
 <template>
     <div class="goods-list">
         <header class="header">
-            <div class="item">新建商品</div>
-            <div class="item">批量改价</div>
-            <div class="item">商品导入</div>
+            <div class="item pointer" @click="$router.push('/goods/addGoods')">新建商品</div>
+            <div class="item pointer" @click="$router.push('/goods/batchPriceChange')">批量改价</div>
+            <div class="item pointer" @click="$router.push('/goods/import')">商品导入</div>
         </header>
         <div class="search">
             <el-form :inline="true" :model="listQuery" class="demo-form-inline">
@@ -54,7 +54,7 @@
                     label="状态"
                     width="180">
                     <template slot-scope="scope">
-                        <span class="goods-state">{{scope.row.goodsState}}
+                        <span @click="upperAndLowerRacks(scope.row)" class="goods-state">{{scope.row.goodsState}}
                             <i :class="{grounding: scope.row.goodsState == '上架', undercarriage: scope.row.goodsState == '下架'}" class="i-bg"></i>
                         </span>
                     </template>
@@ -107,53 +107,9 @@
         <div class="footer">
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit"></component>
     </div>
 </template>
-<style lang="scss">
-    .confirm {
-        width: 500px;
-        padding-bottom: 30px;
-    }
-    .confirm-big {
-        width: 523px;
-    }
-    .confirm .el-message-box__header {
-        background-color: rgb(241, 240, 255);
-        .el-message-box__title {
-            color: $contentColor
-        }
-    }
-    .confirm .el-message-box__content {
-        padding-top: 30px;
-        padding-left: 10px;
-        padding-right: 10px;
-        .el-message-box__message {
-            text-align: center;
-            .el-icon-warning {
-                font-size: 60px;
-                color: rgb(245, 88, 88);
-            }
-            .content-text {
-                font-size: 18px;
-                margin-top: 20px;
-            }
-        }
-    }
-    .confirm .el-message-box__btns {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 33px;
-        button {
-            order: 1;
-        }
-        .el-button--primary {
-            order: 0;
-            margin-right: 30px;
-        }
-    }
-</style>
 <style lang="scss" scoped>
 .table-footer {
     display: flex;
@@ -306,9 +262,14 @@ export default {
         }
     },
     created() {
-        
+
     },
     methods: {
+        upperAndLowerRacks(row) {
+            this.confirm({title: '立即上架', icon: true, text: '是否确认上架？'}).then(() => {
+                
+            })
+        },
         moreManageHandler() {
             this.showTableCheck = true
         },
@@ -346,35 +307,25 @@ export default {
         },
         deleleHandler(row) {
             if(row.activity) {
-                this.$confirm('<i class="el-icon-warning"></i><p class="content-text">当前商品正在参与营销活动，活动有效期内商品不得“删除”。</p>', '立即删除', {
-                    confirmButtonText: '确认',
-                    cancelButtonText: '取消',
-                    dangerouslyUseHTMLString: true,
-                    width: '522px',
-                    customClass: 'confirm confirm-big',
-                    }).then(() => {
+                this.confirm({title: '立即删除', icon: true, text: '当前商品正在参与营销活动，活动有效期内商品不得“删除”。'}).then(() => {
                     
-                    }).catch(() => {
-                    
-                });
+                })
             } else {
-                this.$confirm('<i class="el-icon-warning"></i><p class="content-text">是否确认删除?</p>', '立即删除', {
-                    confirmButtonText: '确认',
-                    cancelButtonText: '取消',
-                    dangerouslyUseHTMLString: true,
-                    customClass: 'confirm',
-                    }).then(() => {
+                this.confirm({title: '立即删除', icon: true, text: '当前商品正在参与营销活动，活动有效期内商品不得“删除”。'}).then(() => {
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
                     });
-                    }).catch(() => {
+                }).catch(() => {
                     this.$message({
                         type: 'info',
                         message: '已取消删除'
                     });
-                });
+                })
             }
+        },
+        onSubmit() {
+
         }
     },
     components: {

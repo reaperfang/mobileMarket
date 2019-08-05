@@ -48,10 +48,11 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
             <div class="btns clearfix">
-                <span class="s1" @click="removeBlack(scope.row.memberSn)">详情</span>
+                <span class="s1" @click="_routeTo('clientInfo')">详情</span>
                 <span class="s2" @click="handelDelete(scope.row.memberSn)">删除</span>
                 <span class="s3" @click="addTag(scope.row.cid)">标签</span>
-                <span class="s4" @click="addBlackList(scope.row.cid)">加入黑名单</span>
+                <span class="s4" @click="addBlackList(scope.row.cid)" v-if="scope.row.status == 0">加入黑名单</span>
+                <span class="s5" @click="removeBlack(scope.row.memberSn)" v-if="scope.row.status == 2">解除黑名单</span>
             </div>
         </template>
       </el-table-column>
@@ -85,18 +86,6 @@ export default {
   extends: TableBase,
   data() {
     return {
-      dataList:[
-        {
-          memberSn:'',
-          nickname:'',
-          phone:'',
-          memberType:'',
-          score:'',
-          totalDealMoney:'',
-          dealTimes:'',
-          perUnitPrice:''
-        },
-      ],
       checkAll: false
     };
   },
@@ -169,6 +158,10 @@ export default {
                     &.s4{
                         color:#578EFA;
                         background: url('../../../../assets/images/client/icon_addblack.png') 17px 0 no-repeat;
+                    }
+                    &.s5{
+                        color:#578EFA;
+                        background: url('../../../../assets/images/client/icon_relieve.png') 17px 0 no-repeat;
                     }
                 }
             }

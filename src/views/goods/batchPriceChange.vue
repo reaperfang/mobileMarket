@@ -4,9 +4,8 @@
             <el-row type="flex" align="center">
                 <el-col :span="12">
                     <div class="grid-content header-lefter">
-                        <el-button type="primary">新建商品</el-button>
-                        <el-button>批量改价</el-button>
-                        <span>导入记录</span>
+                        <el-button @click="$router.push('/goods/addGoods')" type="primary">新建商品</el-button>
+                        <el-button @click="$router.push('/goods/batchPriceChange')" class="border-button">批量改价</el-button>
                     </div>
                 </el-col>
                 <el-col :span="12">
@@ -34,7 +33,7 @@
         <section>
             <div>
                 <el-button @click="moreManageHandler" type="primary">批量改价</el-button>
-                <el-button @click="isCategory = true; showTableCheck = true">类目改价</el-button>
+                <el-button class="border-button" @click="isCategory = true; showTableCheck = true">类目改价</el-button>
             </div>
             <div class="table-header">
                 <div :class="{active: state == 0}" @click="stateHandler(0)" class="item">出售中</div>
@@ -44,6 +43,7 @@
             <el-table
                 :data="list"
                 ref="table"
+                :header-cell-style="{color:'#655EFF'}"
                 style="width: 100%"
                 @selection-change="handleSelectionChange">
                 <el-table-column
@@ -189,6 +189,9 @@ export default {
             border-bottom: 1px dashed #d3d3d3;
             padding-top: 15px;
             padding-bottom: 22px;
+            &:last-child {
+                border: none;
+            }
         }
         .header {
             .header-righter {
