@@ -1,12 +1,28 @@
-/*待审核 */
+/* 处理中 */
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="提现详情" :hasCancel="hasCancel">
         <div class="c_container clearfix">
             <div class="c_top">
                 <p>客户ID：13128098</p>
                 <p>提现金额：<span>￥500.00</span></p>
-                <p>提现编号：43746374685348536</p>
-                <p class="c_status">待审核</p>
+                <p class="gray">提现编号：43746374685348536</p>
+                <div class="c_status">
+                    <p>处理中</p>
+                    <span>已审核通过，系统处理中</span>
+                    <span>操作人：店员1</span>
+                    <span>操作时间：2019-06-06 12:00:00</span>
+                </div>
+            </div>
+            <div class="c_steps clearfix">
+                <div class="c_step_l">
+                    <span class="c_green"></span>
+                    2019-06-01 10：56：23
+                </div>
+                <div class="c_step_r">
+                    <p>审核通过</p>
+                    <p>提现申请已通过商家审核，请等待提现到帐</p>
+                    <p>交易流水 8236876238</p>
+                </div>
             </div>
             <div class="c_steps clearfix">
                 <div class="c_step_l">
@@ -26,7 +42,7 @@
 import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
-    name: "waitAuditDialog",
+    name: "handleAuditDialog",
     props: ['data'],
     data() {
         return {
@@ -76,8 +92,9 @@ export default {
     .c_top{
         border-bottom: 1px solid #CACFCB;
         padding-bottom: 20px;
+        margin-bottom: 27px;
         position: relative;
-        p{
+        > p{
             font-size: 16px;
             margin-bottom: 10px;
             span{
@@ -86,17 +103,22 @@ export default {
             &.gray{
                 color: #9FA29F;
             }
-            &.c_status{
-                position: absolute;
-                color: #44434B;
-                font-size: 24px;
-                top: 0;
-                right: 56px;
+        }
+        .c_status{
+            position: absolute;
+            color: #44434B;
+            font-size: 24px;
+            top: 0;
+            right: 12px;
+            span{
+                display: block;
+                color: #9FA29F;
+                font-size: 12px;
+                margin-top: 5px;
             }
         }
     }
     .c_steps{
-        padding-top: 23px;
         .c_step_l{
             float: left;
             width: 200px;

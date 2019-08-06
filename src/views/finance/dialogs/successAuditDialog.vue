@@ -1,15 +1,41 @@
-/*待审核 */
+/* 成功 */
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="提现详情" :hasCancel="hasCancel">
         <div class="c_container clearfix">
             <div class="c_top">
                 <p>客户ID：13128098</p>
                 <p>提现金额：<span>￥500.00</span></p>
-                <p>提现编号：43746374685348536</p>
-                <p class="c_status">待审核</p>
+                <p class="gray">提现编号：43746374685348536</p>
+                <div class="c_status">
+                    <p>成功</p>
+                    <span>已审核通过，提现已到账。</span>
+                    <span>操作人：店员1</span>
+                    <span>操作时间：2019-06-06 12:00:00</span>
+                </div>
             </div>
             <div class="c_steps clearfix">
                 <div class="c_step_l">
+                    <span class="c_green"></span>
+                    2019-06-01 10：56：23
+                </div>
+                <div class="c_step_r">
+                    <p>提现到帐</p>
+                    <p>提现申请处理完成</p>
+                </div>
+            </div>
+            <div class="c_steps clearfix">
+                <div class="c_step_l gray">
+                    <span class="c_green"></span>
+                    2019-06-01 10：56：23
+                </div>
+                <div class="c_step_r">
+                    <p>审核通过</p>
+                    <p>提现申请已通过商家审核，请等待提现到帐</p>
+                    <p>交易流水号 8236876238</p>
+                </div>
+            </div>
+            <div class="c_steps clearfix">
+                <div class="c_step_l gray">
                     <span class="c_green"></span>
                     2019-06-01 10：56：23
                 </div>
@@ -26,7 +52,7 @@
 import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
-    name: "waitAuditDialog",
+    name: "handleAuditDialog",
     props: ['data'],
     data() {
         return {
@@ -71,32 +97,38 @@ export default {
     border: none;
     border-color: none;
 }
+.gray{
+    color: #9FA29F;
+}
 .c_container{
     text-align: left;
     .c_top{
         border-bottom: 1px solid #CACFCB;
         padding-bottom: 20px;
+        margin-bottom: 27px;
         position: relative;
-        p{
+        > p{
             font-size: 16px;
             margin-bottom: 10px;
             span{
                 color: #FD4C2B;
             }
-            &.gray{
+        }
+        .c_status{
+            position: absolute;
+            color: #44434B;
+            font-size: 24px;
+            top: 0;
+            right: 12px;
+            span{
+                display: block;
                 color: #9FA29F;
-            }
-            &.c_status{
-                position: absolute;
-                color: #44434B;
-                font-size: 24px;
-                top: 0;
-                right: 56px;
+                font-size: 12px;
+                margin-top: 5px;
             }
         }
     }
     .c_steps{
-        padding-top: 23px;
         .c_step_l{
             float: left;
             width: 200px;
@@ -116,13 +148,26 @@ export default {
         }
         .c_step_r{
             float: left;
+            width: 336px;
             p{
                 color: #9FA29F;
                 margin: 0 0 5px 32px;
+                overflow: hidden;
                 &:first-child{
                     color: #333;
                 }
             }
+        }
+    }
+    .c_bottom{
+        padding-top: 20px;
+        border-top: 1px solid #dadadc;
+        div:first-child{
+            width: 120px;
+        }
+        div:last-child{
+            width: 400px;
+            line-height:19px;
         }
     }
 }

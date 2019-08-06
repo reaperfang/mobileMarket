@@ -69,9 +69,13 @@ import withdrawDialog from './dialogs/withdrawDialog'
 import auditSuccessDialog from './dialogs/auditSuccessDialog'
 import warnDialog from './dialogs/warnDialog'
 import waitAuditDialog from './dialogs/waitAuditDialog'
+import auditingDialog from './dialogs/auditingDialog'
+import handleAuditDialog from './dialogs/handleAuditDialog'
+import failAuditDialog from './dialogs/failAuditDialog'
+import successAuditDialog from './dialogs/successAuditDialog'
 export default {
   name: 'revenueSituation',
-  components:{ wdTable, withdrawDialog, auditSuccessDialog, warnDialog, waitAuditDialog },
+  components:{ wdTable, withdrawDialog, auditSuccessDialog, warnDialog, waitAuditDialog, auditingDialog, handleAuditDialog, failAuditDialog, successAuditDialog },
   data() {
     return {
       pickerNowDateBefore: {
@@ -148,7 +152,7 @@ export default {
     },
     batchCheck() {
       this.dialogVisible = true;
-      this.currentDialog = "waitAuditDialog";
+      this.currentDialog = "successAuditDialog";
       this.currentData.text = "请选择需要审核的数据";
     },
     handleSubmit() {
