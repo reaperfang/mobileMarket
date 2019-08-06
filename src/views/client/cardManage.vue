@@ -20,13 +20,13 @@
                     </div>
                     <p class="c_warn">建议上传图片尺寸1000*630像素，不超过2M，格式支持JPG、PNG、JPEG</p>
                 </div>
-                <cdTable></cdTable>
+                <cdTable :cardList="cardList"></cdTable>
             </el-tab-pane>
             <el-tab-pane label="领卡记录" name="second">
                 <div class="c_line">
                     <span>卡名称：</span>
                     <div class="input_wrap">
-                        <el-select placeholder="全部">
+                        <el-select placeholder="全部" v-model="selected">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
@@ -55,7 +55,26 @@ export default {
     data() {
         return {
             activeName: 'first',
+            popVisible: false,
+            selected:"",
+            cardList: []
         }
+    },
+    methods: {
+        getCardList() {
+            let obj = {
+                "startIndex": 1,
+                "pageSize": 10
+            }
+            this._apis.client.getCardList(obj).then((response) => {
+                this.cardList = [].concat(response.list)
+            }).catch((error) => {
+                this.$message.error(error);
+            })
+        }
+    },
+    mounted() {
+        this.getCardList();
     }
 }
 </script>
