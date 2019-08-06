@@ -37,7 +37,8 @@ export default {
       currentComponent: null,  //当前组件名称
       dialogVisible: false,
       currentDialog: '',
-      utils
+      utils,
+      currentPageId: this.$route.query.pageId
     }
   },
   computed:{
@@ -90,7 +91,19 @@ export default {
     /* 保存数据 */
     saveData() {
       const resultData = this.collectData();
-      console.log(JSON.stringify({...resultData}));
+      this._apis.shop.editPageInfo(resultData).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '编辑成功！',
+          type: 'success'
+        });
+        this._routeTo('draftList');
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     },
 
     /* 保存并生效数据 */
@@ -102,15 +115,16 @@ export default {
 
     /* 收集数据 */
     collectData() {
-      let result = {};
-      result['pageInfo'] = this.baseInfo;
-      result['components'] = [];
+      let result = this.baseInfo;
+      result['id'] = this.currentPageId;
+      let pageData = [];
       for(let item of this.componentDataIds) {
         const componentData = this.componentDataMap[item];
         if(componentData) {
-          result.components.push(componentData);
+          pageData.push(componentData);
         }
       }
+      result['pageData'] = JSON.stringify(pageData);
       return result;
     }
   }

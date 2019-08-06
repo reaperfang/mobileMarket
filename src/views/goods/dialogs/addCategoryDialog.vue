@@ -4,8 +4,16 @@
             <el-form :model="basicForm" :rules="basicRules" ref="basicForm" label-width="140px" size="small">
                 <el-form-item label="上级分类：" prop="parentId">
                     <el-select placeholder="请选择上级分类" class="formInput" v-model="basicForm.parentId">
-                        <el-option label="顶级分类" value=" "></el-option>
-                        <el-option v-for="item in categoryData" :key="item.id" :label="item.categoryName" :value="item.id" :disabled="item.disabled"></el-option>
+                        <!-- <el-option label="顶级分类" value=" "></el-option>
+                        <el-option v-for="item in categoryData" :key="item.id" :label="item.categoryName" :value="item.id" :disabled="item.disabled"></el-option> -->
+                        <el-option label="顶级栏目" value="0" style="paddingLeft:1em"></el-option>
+                            <el-option
+                                v-for="item in data.flatArr"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
+                                :style="{paddingLeft:`${item.floor*1.2}em`}"
+                            ></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="分类名称：" prop="categoryName">
@@ -110,10 +118,21 @@ export default {
             libraryVisible: false
         }
     },
+    created() {
+        this.getCategoryDetail()
+        if(this.data.id) {
+            
+        }
+    },
     methods: {
         submit() {
             
-        }
+        },
+        getCategoryDetail() {
+            this._apis.goods.getCategoryDetail({id: this.data.id}).then(res => {
+                console.log(res)
+            })
+        },
     },
     computed: {
         visible: {

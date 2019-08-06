@@ -84,6 +84,7 @@ class Ajax {
       head.value = md5(CONST.VALUE + head.target + head.requestTime);
     }
 
+
     //获取cid和shopInfoId
     let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
     let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId 
@@ -123,6 +124,8 @@ class Ajax {
           case 'goods': //商品系统
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
           break;
+          case 'order': //订单系统
+            config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
           break;

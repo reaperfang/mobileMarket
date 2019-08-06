@@ -74,6 +74,7 @@
 import Pagination from '@/components/Pagination'
 import Shop from './components/shop'
 import IntegralShop from './components/integralShop'
+import { fetchOrderList } from "@/api/order";
 
 export default {
     data() {
@@ -103,6 +104,15 @@ export default {
             },
             activeName: 'shop'
         }
+    },
+    created() {
+        fetchOrderList()
+        .then(res => {
+            console.log(res)
+        })
+        .catch(error => {
+            
+        });
     },
     methods: {
       onSubmit() {

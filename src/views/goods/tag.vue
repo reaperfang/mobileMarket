@@ -5,12 +5,12 @@
         <el-button @click="currentDialog = 'AddTagDialog'; dialogVisible = true" type="primary">新建标签</el-button>
         <el-button class="border-button" @click="moreManageHandler">批量管理</el-button>
       </div>
-      <el-form :inline="true" :model="formInline" class="form-inline">
+      <el-form :inline="true" :model="listQuery" class="form-inline">
         <el-form-item label="搜索标签：">
-          <el-input v-model="formInline.classify" placeholder="请输入分类名称..."></el-input>
+          <el-input v-model="listQuery.name" placeholder="请输入标签名称..."></el-input>
         </el-form-item>
         <el-form-item label="标签状态：">
-          <el-select v-model="formInline.state" placeholder="所有状态">
+          <el-select v-model="listQuery.enable" placeholder="请选择标签状态">
             <el-option
               :label="item.label"
               :value="item.value"
@@ -20,7 +20,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">查询</el-button>
+          <el-button @click="getList" type="primary">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -29,65 +29,188 @@
       ref="table"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       style="width: 100%"
+      @selection-change="handleSelectionChange"
     >
       <el-table-column v-if="showTableCheck" type="selection" width="55"></el-table-column>
       <el-table-column prop="name" label="标签名称" width="180"></el-table-column>
-      <el-table-column prop="number" label="绑定商品数量" width="180"></el-table-column>
-      <el-table-column prop="state" label="状态"></el-table-column>
+      <el-table-column prop="productCount" label="绑定商品数量" width="180"></el-table-column>
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          <span>{{scope.row.enable | enableFilter}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <span class="operate-span blue" @click="change(scope.row)">修改</span>
-          <span class="operate-span blue" @click="hide(scope.row)">隐藏</span>
-          <span class="operate-span deleteColor" @click="deleteTag(scope.row)">删除</span>
+          <span class="operate-span blue pointer" @click="change(scope.row)">修改</span>
+          <span class="operate-span blue pointer" @click="hide(scope.row)">
+            {{scope.row.enable | operateEnable}}
+          </span>
+          <span class="operate-span deleteColor pointer" @click="deleteTag(scope.row)">删除</span>
         </template>
       </el-table-column>
     </el-table>
     <div class="table-footer">
-      <el-button v-if="showTableCheck" @click="checkAllHandler">全选</el-button>
-      <div v-if="showTableCheck" class="button-box">
-        <el-button class="border-button">隐 藏</el-button>
-        <el-button type="primary">显 示</el-button>
-        <el-button @click="deleteTags" class="delete-button">删 除</el-button>
-        <el-button type="primary">完 成</el-button>
+      <div class="row justify-between">
+        <div class="col">
+          <el-button v-if="showTableCheck" @click="checkAllHandler">全选</el-button>
+        </div>
+        <div class="col" v-if="showTableCheck">
+          <el-button @click="hideTags" class="border-button">隐 藏</el-button>
+          <el-button @click="showTags" type="primary">显 示</el-button>
+          <el-button @click="deleteTags" class="delete-button">删 除</el-button>
+          <el-button @click="showTableCheck = false" type="primary">完 成</el-button>
+        </div>
       </div>
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData"></component>
   </div>
 </template>
 <script>
 import AddTagDialog from "@/views/goods/dialogs/addTagDialog";
+import Pagination from '@/components/Pagination'
 import { fetchTagsList } from "@/api/goods";
 
 export default {
   data() {
     return {
-      formInline: {
-        classify: "",
-        state: ""
+      listQuery: {
+          startIndex: 1,
+          pageSize: 20,
+          name: '', // 标签名称
+          enable: '', // 标签状态
       },
-      items: [],
-      list: [{}],
+      items: [
+        {
+          label: '所有状态',
+          value: ''
+        },
+        {
+          label: '启用',
+          value: '1'
+        },
+        {
+          label: '禁用',
+          value: '0'
+        },
+      ],
+      list: [],
       multipleSelection: [],
       showTableCheck: false,
       currentDialog: "",
-      dialogVisible: ""
+      currentData: {},
+      dialogVisible: "",
+      total: 0
     };
   },
   created() {
-    fetchTagsList()
-      .then(res => {
-        console.log(res)
-      })
-      .catch(error => {
-        
-      });
+    this.getList()
+  },
+  filters: {
+    enableFilter(val) {
+      if(val == 1) {
+        return '启用'
+      } else if(val == 0) {
+        return '禁用'
+      } else {
+        return '全部'
+      }
+    },
+    operateEnable(val) {
+      if(val == 1) {
+        return '隐藏'
+      } else if(val == 0) {
+        return '显示'
+      }
+    }
   },
   methods: {
-    submit() {},
-    change(row) {},
-    hide(row) {},
-    deleteTag(row) {},
-    handleSelectionChange() {
+    hideTags() {
+      if(!this.multipleSelection.length) {
+        this.confirm({title: '批量隐藏', icon: true, text: '请选择想要批量隐藏的标签。'})
+        return
+      }
+      this.confirm({title: '批量隐藏', icon: true, text: '确认隐藏所选标签吗？'}).then(() => {
+          this._apis.goods
+          .enableTag({enable: 0, ids: this.multipleSelection.map(val => val.id)})
+          .then(res => {
+            this.getList()
+            this.$message({
+              message: '批量隐藏成功',
+              type: 'success'
+            });
+          })
+          .catch(error => {
+            
+          });
+      })
+    },
+    showTags() {
+      if(!this.multipleSelection.length) {
+        this.confirm({title: '批量显示', icon: true, text: '请选择想要批量显示的标签。'})
+        return
+      }
+      this.confirm({title: '批量显示', icon: true, text: '确认显示所选标签吗？'}).then(() => {
+          this._apis.goods
+          .enableTag({enable: 1, ids: this.multipleSelection.map(val => val.id)})
+          .then(res => {
+            this.getList()
+            this.$message({
+              message: '批量显示成功',
+              type: 'success'
+            });
+          })
+          .catch(error => {
+            
+          });
+      })
+    },
+    submit() {
+      this.getList()
+    },
+    change(row) {
+      this.currentDialog = 'AddTagDialog'
+      this.currentData = Object.assign({}, row, {editor: true})
+      this.dialogVisible = true
+    },
+    hide(row) {
+      let _enable = ''
+      let str = ''
+      if(row.enable == 1) {
+        _enable = 0
+        str = '隐藏'
+      } else if(row.enable == 0) {
+        _enable = 1
+        str = '显示'
+      }
+
+      this._apis.goods.enableTag({enable: _enable, ids: [row.id]}).then(() => {
+        this.getList()
+        this.$message({
+            message: `${str}成功`,
+            type: 'success'
+          });
+      }).catch(error => {
+
+      })
+    },
+    deleteTag(row) {
+      this.confirm({title: '立即删除', icon: true, text: '删除后将不可恢复，确认删除吗？'}).then(() => {
+          this._apis.goods
+          .deleteTag({ids: [row.id]})
+          .then(res => {
+            this.getList()
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+          })
+          .catch(error => {
+            
+          });
+      })
+    },
+    handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     moreManageHandler() {
@@ -100,15 +223,43 @@ export default {
       });
     },
     deleteTags() {
+      if(!this.multipleSelection.length) {
+        this.confirm({title: '批量删除', icon: true, text: '请选择想要批量删除的标签。'})
+        return
+      }
       this.confirm({
         title: "批量删除",
         icon: true,
         text: "删除后将不可恢复，确认删除所选标签吗？"
-      }).then(() => {});
+      }).then(() => {
+        console.log(this.multipleSelection)
+        this._apis.goods.deleteTag({ids: this.multipleSelection.map(val => val.id)}).then(() => {
+          this.getList()
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+        }).catch(error => {
+
+        })
+      });
+    },
+    async getList() {
+      try {
+        let res = await fetchTagsList(this.listQuery)
+
+        if(res) {
+          this.list = res.list
+          this.total = res.total
+        }
+      } catch(error) {
+
+      }
     }
   },
   components: {
-    AddTagDialog
+    AddTagDialog,
+    Pagination
   }
 };
 </script>
@@ -133,13 +284,13 @@ export default {
   margin-top: 23px;
 }
 .table-footer {
-  display: flex;
-  align-items: center;
   margin-top: 35px;
-  justify-content: space-between;
   button {
     margin-left: 0;
     margin-right: 28px;
+    &:last-child {
+      margin-right: 65px;
+    }
   }
 }
 </style>

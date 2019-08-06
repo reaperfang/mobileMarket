@@ -67,24 +67,37 @@ export default {
       const _self = this;
       const currentPageId = this.currentPageId;
       this.loading = true;
-      setTimeout(() => {
-        _self.loading = false;
-        if (decorateDemo[currentPageId]) {
-          _self.convertDecorateData(decorateDemo[currentPageId]);
-        }
-      }, 200);
+      this._apis.shop.getPageInfo({id: currentPageId}).then((response)=>{
+         this.loading = false;
+         this.convertDecorateData(response);
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     },
 
     /* 转换装修数据 */
     convertDecorateData(data) {
-      let baseInfo = data.pageInfo;
       let componentDataIds = [];
       let componentDataMap = {};
-      for (let item of data.components) {
+      let pageData = JSON.parse(data.pageData);
+      if(!Array.isArray(pageData)) {
+        return;
+      }
+      for (let item of pageData) {
         componentDataIds.push(item.id);
         componentDataMap[item.id] = item;
       }
-      this.$store.commit("setBaseInfo", baseInfo);
+      this.$store.commit("setBaseInfo", {
+        name: data.name,
+        title: data.title,
+        explain: data.explain,
+        pageCategoryInfoId: data.pageCategoryInfoId,
+        colorStyle: data.colorStyle,
+        pageKey: data.pageKey
+      });
       this.$store.commit("setComponentDataIds", componentDataIds);
       this.$store.commit("setComponentDataMap", componentDataMap);
     }

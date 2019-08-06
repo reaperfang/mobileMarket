@@ -11,9 +11,8 @@
         <el-input v-model="ruleForm.explain" placeholder="请输入页面描述" type="textarea" :rows="5"></el-input>
       </el-form-item>
       <el-form-item label="页面分类" prop="pageCategoryInfoId">
-        <el-select v-model="ruleForm.pageCategoryInfoId" placeholder="请选择分类">
-          <el-option label="未分类" :value="1"></el-option>
-          <el-option label="常用页面" :value="2"></el-option>
+        <el-select v-if="classifyList.length" v-model="ruleForm.pageCategoryInfoId" placeholder="请选择分类">
+          <el-option v-for="(item, key) of classifyList" :key="key" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="背景颜色" prop="colorStyle">
@@ -34,11 +33,12 @@ export default {
   components: {},
   data () {
     return {
+      classifyList: [],
       ruleForm: {
         name: '',
         title: '',
         explain: '',
-        pageCategoryInfoId: 1,
+        pageCategoryInfoId: '',
         colorStyle: '#fff',
         pageKey: '',
         status: 0
@@ -62,6 +62,9 @@ export default {
       },
     }
   },
+  created() {
+    this.getClassifyList();
+  },
   methods: {
 
     /* 初始化表单数据 */
@@ -80,6 +83,18 @@ export default {
       this.$emit('change', {
         type: 'base',
         data: newValue
+      });
+    },
+
+    //获取分类列表
+    getClassifyList() {
+      this._apis.shop.getClassifyList({startIndex: 1, pageSise: 100}).then((response)=>{
+        this.classifyList = response.list;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
       });
     }
   }

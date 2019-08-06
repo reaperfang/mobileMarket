@@ -12,7 +12,7 @@
           <el-input v-model="ruleForm.name" placeholder="请输入页面名称"></el-input>
         </el-form-item>
         <el-form-item label="">
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
       <div class="btns">
@@ -30,12 +30,11 @@
         </el-table-column>
         <el-table-column prop="name" label="页面名称"></el-table-column>
         <el-table-column prop="title" label="页面标题"></el-table-column>
-        <el-table-column prop="classify" label="所属分类"></el-table-column>
-        <el-table-column prop="visitor" label="访客数"></el-table-column>
-        <el-table-column prop="browse" label="浏览数"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" :width="'200px'"></el-table-column>
-        <el-table-column prop="editTime" label="编辑时间" :width="'200px'"></el-table-column>
-        <el-table-column prop="account" label="操作账号"></el-table-column>
+        <el-table-column prop="pageCategoryName" label="所属分类"></el-table-column>
+        <el-table-column prop="vv" label="访客数"></el-table-column>
+        <el-table-column prop="pv" label="浏览数"></el-table-column>
+        <el-table-column prop="updateTime" label="创建时间"></el-table-column>
+        <el-table-column prop="updateUserName" label="操作账号"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
             <span class="table-btn" @click="copyPage(scope.row)">复制</span>
@@ -70,7 +69,12 @@ export default {
   components: {},
   data () {
     return {
-      tableList:[]
+      tableList:[],
+       ruleForm: {
+        status: '1',
+        pageCategoryInfoId: '',
+        name: ''
+      }
     }
   },
   created() {
@@ -112,63 +116,15 @@ export default {
     },
 
     fetch() {
-      this.tableList = [
-        {
-          id: uuid(),
-          name: '店铺首页',
-          title: '页面标题展示',
-          classify: '常用页面',
-          visitor: 5515,
-          browse: 123321,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '就开始电'
-        },
-        {
-          id: uuid(),
-          name: '店铺首页2',
-          title: '页面标题展示',
-          classify: '常用页面',
-          visitor: 5515,
-          browse: 123321,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '就开始电'
-        },
-        {
-          id: uuid(),
-          name: '店铺首页3',
-          title: '页面标题展示',
-          classify: '常用页面',
-          visitor: 5515,
-          browse: 123321,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '就开始电'
-        },
-        {
-          id: uuid(),
-          name: '店铺首页4',
-          title: '页面标题展示',
-          classify: '常用页面',
-          visitor: 5515,
-          browse: 123321,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '就开始电'
-        },
-        {
-          id: uuid(),
-          name: '店铺首页5',
-          title: '页面标题展示',
-          classify: '常用页面',
-          visitor: 5515,
-          browse: 123321,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '就开始电'
-        }
-      ]
+      this._apis.shop.getPageList(this.ruleForm).then((response)=>{
+        this.tableList = response.list;
+        this.total = response.total;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     }
   }
 }
