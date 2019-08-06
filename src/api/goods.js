@@ -1,12 +1,12 @@
 import request from '@/system/request'
 
 
-// 获取列表
-export function fetchList(data) {
+// 获取标签列表
+export function fetchTagsList(data) {
   return request({
-    url: '',
-    method: '',
-    baseURL: process.env.DATA_API,
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-LABEL-PAGE-LIST-PROCESSOR',
     data
   })
 }

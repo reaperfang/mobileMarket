@@ -2,8 +2,8 @@ export default {
       head: {
 		VERSION: "vsesion-1.0.0.1", // 版本号
 		CHANNEL: "新零售", // 渠道
-		KEY:"134147627CD2", // 公钥，由Leader平台系统进行分配
-		VALUE:"EB24B602A9364B87AA967B7678676B84", // 私钥
+		KEY:"133C9CB27DA0", // 公钥，由Leader平台系统进行分配
+		VALUE:"FD4007DB87B245EEACA7DAD5D4A1CECD", // 私钥
 		CLIENT:7 //客户端
 	},
 	//地图参数配置
