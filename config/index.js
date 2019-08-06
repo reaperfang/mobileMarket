@@ -34,8 +34,15 @@ module.exports = {
 
     proxyTable: {
       '/data-server/**': {
+<<<<<<< HEAD
         //target: 'http://172.22.146.2:8080', // 订单 尹茂凯
         target: 'http://172.22.146.109:8080', // 商品 王浩
+=======
+        //target: 'http://172.22.146.31:8080',
+        //target: 'http://172.22.146.10:8080',
+        // target: 'http://172.22.146.109:8080',
+        target: 'http://172.22.146.133:8081',  //李雯廷
+>>>>>>> 38d9d04bf2718efeb78b2c7cedc1633c3ebe4965
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''

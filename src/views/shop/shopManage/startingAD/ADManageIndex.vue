@@ -10,20 +10,20 @@
     </div>
     <div class="ad_head_wrapper">
       <el-form ref="ruleForm" :model="ruleForm" label-width="80px" :inline="true">
-        <el-form-item label="" prop="ADType">
-          <el-select v-model="ruleForm.ADType" placeholder="请选择广告类型">
-            <el-option label="全部广告" :value="1"></el-option>
-            <el-option label="展示中" :value="2"></el-option>
-            <el-option label="已过期" :value="3"></el-option>
-            <el-option label="排期中" :value="4"></el-option>
-            <el-option label="停用" :value="5"></el-option>
+        <el-form-item label="" prop="status">
+          <el-select v-model="ruleForm.status" placeholder="请选择广告状态">
+            <el-option label="全部广告" :value="''"></el-option>
+            <el-option label="展示中" :value="0"></el-option>
+            <el-option label="已过期" :value="2"></el-option>
+            <el-option label="排期中" :value="1"></el-option>
+            <el-option label="停用" :value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="" prop="name">
           <el-input v-model="ruleForm.name" placeholder="请输入广告名称"></el-input>
         </el-form-item>
         <el-form-item label="">
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
       <div class="btns">
@@ -38,20 +38,20 @@
           type="selection"  
           width="55">
         </el-table-column>
-        <el-table-column prop="url" label="广告图">
+        <el-table-column prop="imagePath" label="广告图">
           <template slot-scope="scope">
             <div class="name_wrapper">
-              <img :src="scope.row.url" alt="加载错误">
+              <img :src="scope.row.imagePath">
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="广告名称"></el-table-column>
-        <el-table-column prop="visitor" label="访客数"></el-table-column>
-        <el-table-column prop="browse" label="浏览数"></el-table-column>
-        <el-table-column prop="showTime" label="展示时间" :width="'400px'"></el-table-column>
+        <el-table-column prop="name" label="广告名称"></el-table-column>
+        <el-table-column prop="vv" label="访客数"></el-table-column>
+        <el-table-column prop="pv" label="浏览数"></el-table-column>
+        <el-table-column prop="updateTime" label="展示时间" :width="'400px'"></el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="account" label="操作账号"></el-table-column>
+        <el-table-column prop="startTime" label="创建时间"></el-table-column>
+        <el-table-column prop="createUserName" label="操作账号"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
             <span class="table-btn" @click="stopAD(scope.row)">停用</span>
@@ -88,8 +88,9 @@ export default {
       tableList:[],
       ruleForm: {
         openAD: true,
-        ADType: 1,
-        name: ''
+        status: '',
+        name: '',
+        sort: 'desc'
       },
       rules: {}
     }
@@ -122,41 +123,15 @@ export default {
     },
 
     fetch() {
-      this.tableList = [
-        {
-          id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564738386683&di=cd021b8260860d8b6e1df10742e911e8&imgtype=jpg&src=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D671676918%2C3573661553%26fm%3D214%26gp%3D0.jpg',
-          title: '启动广告1',
-          visitor: 5515,
-          browse: 123321,
-          showTime: '2016-09-21  08:50:08 - 2016-09-22  08:50:08',
-          status: '展示中',
-          createTime: '2016-09-21  08:50:08',
-          account: 'fangyuan'
-        },
-        {
-          id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564738386683&di=cd021b8260860d8b6e1df10742e911e8&imgtype=jpg&src=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D671676918%2C3573661553%26fm%3D214%26gp%3D0.jpg',
-          title: '启动广告1',
-          visitor: 5515,
-          browse: 123321,
-          showTime: '2016-09-21  08:50:08 - 2016-09-22  08:50:08',
-          status: '展示中',
-          createTime: '2016-09-21  08:50:08',
-          account: 'fangyuan'
-        },
-        {
-          id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564738386683&di=cd021b8260860d8b6e1df10742e911e8&imgtype=jpg&src=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D671676918%2C3573661553%26fm%3D214%26gp%3D0.jpg',
-          title: '启动广告1',
-          visitor: 5515,
-          browse: 123321,
-          showTime: '2016-09-21  08:50:08 - 2016-09-22  08:50:08',
-          status: '展示中',
-          createTime: '2016-09-21  08:50:08',
-          account: 'fangyuan'
-        },
-      ]
+      this._apis.shop.getADList(this.ruleForm).then((response)=>{
+        this.tableList = response.list;
+        this.total = response.total;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     }
   }
 }

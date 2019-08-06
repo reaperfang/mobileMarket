@@ -6,7 +6,7 @@
           <el-input v-model="ruleForm.name" placeholder="请输入分类名称"></el-input>
         </el-form-item>
         <el-form-item label="">
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
       <div class="btns">
@@ -21,10 +21,9 @@
           width="55">
         </el-table-column>
         <el-table-column prop="name" label="分类名称"></el-table-column>
-        <el-table-column prop="number" label="页面数量"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="editTime" label="编辑时间"></el-table-column>
-        <el-table-column prop="account" label="操作账号"></el-table-column>
+        <el-table-column prop="pageNum" label="页面数量"></el-table-column>
+        <el-table-column prop="updateTime" label="创建/编辑时间"></el-table-column>
+        <el-table-column prop="updateUserName" label="操作账号"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
             <span class="table-btn" @click="_routeTo('shopEditor', {pageId: scope.row.id})">编辑</span>
@@ -58,7 +57,12 @@ export default {
   components: {},
   data () {
     return {
-      tableList:[]
+      tableList:[],
+      ruleForm: {
+        status: '1',
+        name: '',
+        dateSort: '0'
+      }
     }
   },
   created() {
@@ -83,53 +87,15 @@ export default {
     },
 
     fetch() {
-      this.tableList = [
-        {
-          id: uuid(),
-          name: '店铺首页',
-          number: 5515,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '金花松鼠的',
-          browse: 123321,
-        },
-        {
-          id: uuid(),
-          name: '店铺首页',
-          number: 5515,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '金花松鼠的',
-          browse: 123321,
-        },
-        {
-          id: uuid(),
-          name: '店铺首页',
-          number: 5515,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '金花松鼠的',
-          browse: 123321,
-        },
-        {
-          id: uuid(),
-          name: '店铺首页',
-          number: 5515,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '金花松鼠的',
-          browse: 123321,
-        },
-        {
-          id: uuid(),
-          name: '店铺首页',
-          number: 5515,
-          createTime: '2016-09-21  08:50:08',
-          editTime: '2016-09-21  08:50:08',
-          account: '金花松鼠的',
-          browse: 123321,
-        }
-      ]
+       this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
+        this.tableList = response.list;
+        this.total = response.total;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     }
   }
 }

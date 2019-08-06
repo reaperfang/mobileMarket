@@ -5,11 +5,13 @@ const decorate = {
 		currentComponentId: "",  //当前组件id
 		basePropertyShow: true,  //基础属性显示开关
 		baseInfo: {  //店铺装修页面基础信息
-			pageName: '',
-			pageTitle: '',
-			pageDesc: '',
-			pageClassify: '1',
-			pageBackground: ''
+			name: '',
+			title: '',
+			explain: '',
+			pageCategoryInfoId: '',
+			colorStyle: '',
+			pageKey: '',
+			status: '1'
 		},
 		componentDataIds: [],  //组件列表id序列
 		componentDataMap: {}   //组件数据集合映射
@@ -105,11 +107,13 @@ const decorate = {
 		//清除所有数据实现初始化
 		clearAllData(state) {
 			state.baseInfo = {
-				pageName: '',
-				pageTitle: '',
-				pageDesc: '',
-				pageClassify: '1',
-				pageBackground: ''
+				name: '',
+				title: '',
+				explain: '',
+				pageCategoryInfoId: '',
+				colorStyle: '',
+				pageKey: '',
+				status: '1'
 			};
 			state.componentDataIds = [];
 			state.componentDataMap = {};

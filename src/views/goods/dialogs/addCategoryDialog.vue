@@ -120,6 +120,9 @@ export default {
     },
     created() {
         this.getCategoryDetail()
+        if(this.data.id) {
+            
+        }
     },
     methods: {
         submit() {

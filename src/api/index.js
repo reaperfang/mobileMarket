@@ -4,6 +4,8 @@ import * as websocketDemo from "./websocketDemo"; //websocket测试demo
 import * as login from "./login"; //登录接口demo
 import * as goods from "./goods";
 import * as order from "./order";
+import * as client from "./client"; //客户接口
+import * as shop from "./shop"; //登录接口demo
 
 export default {
 	demo,
@@ -11,5 +13,7 @@ export default {
 	websocketDemo,
 	login,
 	goods,
-	order
+	order,
+	client,
+	shop
 };
