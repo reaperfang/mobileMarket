@@ -65,7 +65,8 @@ class Ajax {
     //拼接参数head
     let head = {
       target: config.target,
-      accessToken: store.getters.token || '',
+      // accessToken: store.getters.token || '',
+      accessToken: '7834a06f4bcc3d0fc54d7773d5e0149da53ebc9a86f3554ede92ef2ec13ed2e0',
       client: CONST.CLIENT,
       version: CONST.VERSION,
       requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -109,6 +110,9 @@ class Ajax {
           break;
           case 'monitor': //埋点项目
             config.baseURL = `${process.env.DATA_API}/monitor-web/monitor/api.do`;
+          break;
+          case 'decorate':  //装修接口
+            config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
           break;
         }
       }
