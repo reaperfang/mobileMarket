@@ -34,7 +34,7 @@ module.exports = {
 
     proxyTable: {
       '/data-server/**': {
-        // target: 'http://10.12.52.44:8100',
+        // target: 'http://172.22.146.109:8080',
         target: 'http://172.22.146.133:8081',  //李雯廷
         changeOrigin: true,
         pathRewrite: {

@@ -6,6 +6,17 @@
                     <div class="c_card">
                         <el-button size="mini" class="mini_1">待上传</el-button>
                         <el-button size="mini" class="mini_2">更改</el-button>
+                        <el-popover
+                            ref="popover"
+                            placement="right"
+                            width="400"
+                            v-model="popVisible"
+                            trigger="hover"
+                        >
+                            <p class="p_title">会员卡宣传图</p>
+                            <p class="p_over1">上传后将会出现在用户端的用户中心展示，更醒目地引导用户领取会员卡</p>
+                        </el-popover>
+                        <img src="../../assets/images/client/icon_ask.png" alt="" v-popover:popover class="pop_img">
                     </div>
                     <p class="c_warn">建议上传图片尺寸1000*630像素，不超过2M，格式支持JPG、PNG、JPEG</p>
                 </div>
@@ -80,6 +91,11 @@ export default {
             bottom: 6px;
             padding: 5px 16px;
         }
+        .pop_img{
+            position: absolute;
+            left: 210px;
+            top: 52px;
+        }
     }
     .c_warn{
         color: #92929B;
@@ -92,6 +108,20 @@ export default {
         display: inline-block;
         width: 182px;
     }
+}
+.p_title{
+    height: 40px;
+    line-height: 40px;
+    background:rgba(101,94,255,0.09);
+    font-size: 18px;
+    padding-left: 10px;
+}
+.p_over1{
+    margin: 20px 0;
+}
+.p_over2{
+    cursor: pointer;
+    color: #6457FF;
 }
 </style>
 
