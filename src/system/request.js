@@ -113,6 +113,9 @@ class Ajax {
           case 'goods': //商品系统
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
           break;
+          case 'decorate':  //装修接口
+            config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
+          break;
         }
       }
     }

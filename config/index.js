@@ -36,6 +36,8 @@ module.exports = {
       '/data-server/**': {
         //target: 'http://172.22.146.31:8080',
         //target: 'http://172.22.146.10:8080',
+        // target: 'http://172.22.146.109:8080',
+        target: 'http://172.22.146.133:8081',  //李雯廷
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
