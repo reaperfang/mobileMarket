@@ -56,7 +56,7 @@
       </div>
       <wdTable style="margin-top:20px"></wdTable>
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @handleSubmit="handleSubmit"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
 
@@ -152,12 +152,8 @@ export default {
     },
     batchCheck() {
       this.dialogVisible = true;
-      this.currentDialog = "successAuditDialog";
+      this.currentDialog = "withdrawDialog";
       this.currentData.text = "请选择需要审核的数据";
-    },
-    handleSubmit() {
-      this.dialogVisible = true;
-      this.currentDialog = "auditSuccessDialog";
     }
   }
 }

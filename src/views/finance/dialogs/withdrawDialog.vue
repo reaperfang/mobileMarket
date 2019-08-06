@@ -1,5 +1,6 @@
 /*提现审核 */
 <template>
+<div>
     <DialogBase :visible.sync="visible" @submit="submit" title="提现审核" :hasCancel="hasCancel">
         <div class="c_container">
             <div class="marB20">
@@ -14,23 +15,42 @@
             </el-input>
         </div>
     </DialogBase>
+    <el-dialog
+        title="提示"
+        :visible.sync="otherVisible"
+        width="30%"
+    >
+        <div class="other_cont">
+            <img src="../../../assets/images/finance/icon_success.png" alt="" style="display:block; margin: 0 auto">
+            <span>审核成功</span>
+        </div>
+        <span slot="footer" class="dialog-footer fcc">
+            <el-button type="primary" @click="otherVisible = false">我知道了</el-button>
+        </span>
+    </el-dialog>
+</div>
 </template>
 <script>
 import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
+import auditSuccessDialog from './auditSuccessDialog'
 export default {
     name: "withdrawDialog",
+    components: { auditSuccessDialog },
     props: ['data'],
     data() {
         return {
             hasCancel: true,
             checkRadio: '1',
-            textarea:""
+            textarea:"",
+            otherVisible: false,
+            currentDialog: "",
+            currentData:{}
         }
     },
     methods: {
         submit() {
-            this.$emit('handleSubmit')
+            this.otherVisible = true;
         }
     },
     computed: {
@@ -61,9 +81,33 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .el-dialog {
+        border-radius: 10px;
+    }
+/deep/ .el-dialog__header {
+    background: #f1f0ff;
+    border-radius: 10px 10px 0 0;
+}
+/deep/ .el-dialog__title {
+    color: #44434B;
+}
+/deep/ .el-dialog__body{
+    text-align: center;
+}
 .c_container{
     div{
         text-align: left;
+    }
+}
+.other_cont{
+    text-align: center;
+    img{
+        display: block;
+    }
+    span{
+        display: block;
+        font-size: 18px;
+        margin-top: 20px;
     }
 }
 </style>
