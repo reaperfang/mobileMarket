@@ -63,16 +63,27 @@ class Ajax {
     }
 
     //拼接参数head
-    let head = {
-      target: config.target,
-      accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d7febc88207d6b260030c838f8096fa0f',
-      client: CONST.CLIENT,
-      version: CONST.VERSION,
-      requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
-      channel: CONST.CHANNEL,
-      key: CONST.KEY
-    };
-    head.value = md5(CONST.VALUE + head.target + head.requestTime);
+    let head = {}
+    if(config.apiType == 'market'){
+      head = {
+        businessId:1,
+        tenantId:1,
+        merchantId:1,
+        loginUserId:1
+      };
+    }else{
+      head = {
+        target: config.target,
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dcb6787eb33eb12cb1c6fcad94dcaf01a',
+        client: CONST.CLIENT,
+        version: CONST.VERSION,
+        requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
+        channel: CONST.CHANNEL,
+        key: CONST.KEY
+      };
+      head.value = md5(CONST.VALUE + head.target + head.requestTime);
+    }
+
 
     //获取cid和shopInfoId
     let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
@@ -113,8 +124,13 @@ class Ajax {
           case 'goods': //商品系统
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
           break;
+          case 'order': //订单系统
+            config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
+          break;
+          case 'market':  //营销接口
+            config.baseURL = `${process.env.DATA_API}/api/v1/b`;
           break;
         }
       }

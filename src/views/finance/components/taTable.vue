@@ -1,4 +1,4 @@
-/* 收支明细列表 */
+/* 推客奖励列表 */
 <template>
   <div>
     <el-table
@@ -42,18 +42,26 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "cbTable",
+  name: "taTable",
   extends: TableBase,
+  props:['query'],
   data() {
     return {
       dataList:[],
     };
   },
   created() {
-
+    this.getList();
   },
   methods: {
-    
+    getList(){
+      // console.log('222222',this.query)
+      this._apis.finance.getList(this.query).then((response)=>{
+        // console.log('11111',response)
+      }).catch((error)=>{
+        this.$message.error(error);
+      })
+    }
   },
   components: {}
 };

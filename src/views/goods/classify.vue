@@ -33,7 +33,7 @@
 			:expand-on-click-node="false"
 			:render-content="renderContent">
 		</el-tree>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add" :data="currentData"></component>
     </div>
 </template>
 <script>
@@ -103,10 +103,53 @@ export default {
             }],
             currentDialog: '',
             dialogVisible: false,
-            add: true
+            add: true,
+            flatArr: []
         }
     },
+    created() {
+        this.getList()
+    },
     methods: {
+        transTreeData(data, pid) {
+            var result = [], temp;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].parentId == pid) {
+                    var obj = {"categoryName": data[i].name,"id": data[i].id, parentId: data[i].parentId};
+                    temp = this.transTreeData(data, data[i].id);
+                    if (temp.length > 0) {
+                        obj.childrenList = temp;
+                    }
+                    result.push(obj);
+                }
+            }
+            return result;
+        },
+        flatTreeArray(array = [], childrenKey = 'childrenList') {
+            var result = [];
+            let flat = (array = {}, childrenKey, floor) => {
+                array.forEach(item => {
+                let dataItem = {
+                    floor: floor,
+                    name: item.categoryName,
+                    id: item.id,
+                    parentId: item.parentId,
+                }
+                result.push(dataItem);
+
+                let childrenArr;
+                if (item.hasOwnProperty(childrenKey)) {
+                    childrenArr = item[childrenKey];
+                    delete item[childrenKey];
+                }
+                if (childrenArr && childrenArr.length > 0) {
+                    flat(childrenArr, childrenKey, floor + 1)
+                }
+                });
+            }
+            flat(array, childrenKey, 1);
+            return result;
+        },
         renderContent(h, { node, data, store }) {
             return (
                 <div class="treeRow">
@@ -130,7 +173,12 @@ export default {
             );
         },
         change(node, data) {
+            console.log(data)
             this.currentDialog = 'AddCategoryDialog'
+            this.currentData = {
+                id: data.id,
+                flatArr: this.flatArr
+            }
             this.dialogVisible = true
         },
         addCategory(node, data) {
@@ -147,6 +195,16 @@ export default {
         },
         submit() {
 
+        },
+        getList() {
+            this._apis.goods.fetchCategoryList().then((res) => {
+                let arr = this.transTreeData(res, 0)
+                
+                this.categoryData = arr
+                this.flatArr = this.flatTreeArray(JSON.parse(JSON.stringify(arr)))
+            }).catch(error => {
+
+            })
         }
     },
     components: {

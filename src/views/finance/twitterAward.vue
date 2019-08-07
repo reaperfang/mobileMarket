@@ -68,13 +68,13 @@
     <div class="top_part">
       <el-form ref="form" :model="form" :inline="inline" label-width="70px">
         <el-form-item label="客户ID">
-          <el-input v-model="form.value1" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="form.memberId" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
-        <el-form-item label="订单编号">
+        <!-- <el-form-item label="订单编号">
           <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="奖励方式">
-          <el-select v-model="form.value4" style="width:200px;">
+          <el-select v-model="form.presentType" style="width:200px;">
             <el-option
               v-for="item in rewards"
               :key="item.value"
@@ -85,7 +85,7 @@
         </el-form-item>
          <el-form-item label="时间">
           <el-date-picker
-            v-model="form.value3"
+            v-model="times"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
@@ -105,7 +105,7 @@
         <span>全部 <em>700</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
-      <taTable style="margin-top:20px"></taTable>
+      <taTable style="margin-top:20px" :query="form"></taTable>
     </div>
   </div>
 </template>
@@ -127,18 +127,24 @@ export default {
         }
       },
       inline:true,
+      times:'',
       form:{
-        value1:'',
-        value2:'',
-        value3:'',
-        value4:1
+        memberId:'',
+        presentType:1,
+        startTime:'',
+        stopTime:'',
+        pageSize:10,
+        pageNum:1
       },
       svalue:'',
       dataList:[],
     }
   },
   watch: {
-
+    times(){
+      this.form.startTime = utils.formatDate(this.times[0], "yyyy-MM-dd hh:mm:ss")
+      this.form.stopTime = utils.formatDate(this.times[1], "yyyy-MM-dd hh:mm:ss")
+    }
   },
   computed:{
     surveyStatus(){
