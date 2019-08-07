@@ -63,6 +63,16 @@ export function getPageInfo(data) {
   })
 }
 
+// 创建页面
+export function createPage(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 // 编辑页面数据
 export function editPageInfo(data) {
   return request({
@@ -73,4 +83,13 @@ export function editPageInfo(data) {
   })
 }
 
+// 获取分类数据
+export function getClassifyInfo(data) {
+  return request({
+    target: 'DECORATION-CATEGORY-INFO-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
 

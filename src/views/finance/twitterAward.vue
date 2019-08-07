@@ -5,7 +5,7 @@
       <div class="title">
         <div>
           <span class="name">概况分析</span>
-          <el-select v-model="svalue" placeholder="开店以来" style="margin-left:10px;">
+          <el-select v-model="flag" placeholder="开店以来" style="margin-left:10px;">
             <el-option
               v-for="item in surveyStatus"
               :key="item.value"
@@ -36,84 +36,41 @@
         <div class="item">
           <span class="money">累计发放红包</span>
           <span class="num">
-            <em>1000元</em>
+            <em>{{survey.hongbao}}元</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放积分</span>
           <span class="num">
-            <em>1000</em>
+            <em>{{survey.integrate}}</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放优惠券</span>
           <span class="num">
-            <em>100张</em>
+            <em>{{survey.coupon}}张</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放优惠码</span>
           <span class="num">
-            <em>100个</em>
+            <em>{{survey.couponCode}}个</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放赠品</span>
           <span class="num">
-            <em>100个</em>
+            <em>{{survey.gift}}个</em>
           </span>
         </div>
       </div>
     </div>
-    <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline" label-width="70px">
-        <el-form-item label="客户ID">
-          <el-input v-model="form.memberId" placeholder="请输入" style="width:226px;"></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="订单编号">
-          <el-input v-model="form.value2" placeholder="请输入" style="width:226px;"></el-input>
-        </el-form-item> -->
-        <el-form-item label="奖励方式">
-          <el-select v-model="form.presentType" style="width:200px;">
-            <el-option
-              v-for="item in rewards"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-         <el-form-item label="时间">
-          <el-date-picker
-            v-model="times"
-            type="datetimerange"
-            align="right"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']"
-            :picker-options="pickerNowDateBefore">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="under_part">
-      <div class="total">
-        <span>全部 <em>700</em> 项</span>
-        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
-      </div>
-      <taTable style="margin-top:20px" :query="form"></taTable>
-    </div>
+    <taTable style="margin-top:20px"></taTable>
   </div>
 </template>
 
 <script>
 import utils from "@/utils";
-import Blob from '@/excel/Blob'
-import Export2Excel from '@/excel/Export2Excel.js'
 import taTable from './components/taTable'
 import financeCons from '@/system/constant/finance'
 export default {
@@ -121,68 +78,33 @@ export default {
   components:{ taTable },
   data() {
     return {
-      pickerNowDateBefore: {
-        disabledDate: (time) => {
-          return time.getTime() > new Date();
-        }
+      flag:1,
+      survey:{
+        hongbao:0,
+        integrate:0,
+        coupon:0,
+        couponCode:0,
+        gift:0
       },
-      inline:true,
-      times:'',
-      form:{
-        memberId:'',
-        presentType:1,
-        startTime:'',
-        stopTime:'',
-        pageSize:10,
-        pageNum:1
-      },
-      svalue:'',
-      dataList:[],
     }
   },
-  watch: {
-    times(){
-      this.form.startTime = utils.formatDate(this.times[0], "yyyy-MM-dd hh:mm:ss")
-      this.form.stopTime = utils.formatDate(this.times[1], "yyyy-MM-dd hh:mm:ss")
-    }
-  },
+  watch: { },
   computed:{
     surveyStatus(){
       return financeCons.surveyStatus;
     },
-    rewards(){
-      return financeCons.rewards;
-    }
   },
   created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-    
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+    this.getSurvey();
   },
   methods: {
-    onSubmit(){},
-    //重置
-    resetForm(){
-      
-    },
-    //导出
-    exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['客户ID','奖励方式', '奖励内容', '时间'];
-            const filterVal = ['tradeDetailSn','tradeType', 'businessType', 'relationSn'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '推客奖励列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+    //概况
+    getSurvey(){
+      this._apis.finance.statisticsTa({flag:this.flag}).then((response)=>{
+        this.survey = response
+      }).catch((error)=>{
+        this.$message.error(error);
+      })
     },
   }
 }
@@ -241,31 +163,6 @@ export default {
         em{
           font-style: normal;
         }
-      }
-    }
-  }
-}
-.top_part{
-  width: 100%;
-  background: #fff;
-  border-radius: 3px;
-  margin-top: 20px;
-  padding: 15px 20px;
-}
-.under_part{
-  width: 100%;
-  background: #fff;
-  margin-top: 20px;
-  padding: 15px 20px;
-  .total{
-    display: flex;
-    justify-content: space-between;
-    span{
-      font-size: 16px;
-      color: #B6B5C8;
-      em{
-        font-style: normal;
-        color: #000;
       }
     }
   }

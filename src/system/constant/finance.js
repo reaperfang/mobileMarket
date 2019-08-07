@@ -71,6 +71,7 @@ export default {
     ],
     //推客奖励---奖励方式??????
     rewards:[
+        { value: 0, label: '全部' },
         { value: 1, label: '优惠券' },
         { value: 2, label: '优惠码' },
         { value: 3, label: '积分' },
@@ -79,10 +80,10 @@ export default {
     ],
     //推客奖励---概况分析??????
     surveyStatus:[
-        { value: 1, label: '开店以来' },
-        { value: 2, label: '近一周' },
-        { value: 3, label: '近一个月' },
-        { value: 4, label: '近三个月' }
+        { value: 1, label: '近一周' },
+        { value: 2, label: '近一个月' },
+        { value: 3, label: '近三个月' },
+        { value: 4, label: '开店以来' }
     ],
     //物流对账---电子面单（含第二个标签页的物流查询）---单号类型---------------
     fsTerms:[

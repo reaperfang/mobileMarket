@@ -85,7 +85,7 @@ export default {
       this.tableList = [
          {
           id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
+          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
           title: '优惠活动1',
           desc: '这是商品描述',
           createTime: '2019-08-23 12:44:23',
@@ -93,7 +93,7 @@ export default {
         },
         {
           id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
+          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
           title: '优惠活动2',
           desc: '这是商品描述2',
           createTime: '2019-08-23 12:44:23',
@@ -101,7 +101,7 @@ export default {
         },
         {
           id: uuid(),
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
+          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
           title: '优惠活动3',
           desc: '这是商品描述2',
           createTime: '2019-08-23 12:44:23',

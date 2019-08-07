@@ -19,12 +19,30 @@ class Ajax {
     return (this.instance = this.instance || new this());
   }
 
+  // request拦截器
+  requestGlobal(){
+    this.service.interceptors.request.use(
+      e => {
+        e.params = e.params || {}
+        // e.headers = e.headers || {}
+        e.headers = {
+          businessId:1,
+          tenantId:1,
+          merchantId:1,
+          loginUserId:1
+        }
+        return e
+      },
+      error => ({ status: 0, msg: error.message })
+    )
+  }
+
+  // respone拦截器
   initGlobal() {
-    // 响应拦截
     this.service.interceptors.response.use(
       response => {
         const res = response.data
-          if(res.status === 'success'){
+          if(res.status === 'success' || res.status === 200){
             if(res.accessToken){
               return res;
             }
@@ -48,11 +66,13 @@ class Ajax {
     this.setApiAddress(config);
     if(config.target){
       config = this.setRequestParams(config);
+    }else{
+      this.requestGlobal();
     }
     return this.service(config);
   }
 
-  // 根据后端接口重置请求
+  // 根据后端接口重置请求 -- 电商
   setRequestParams(config) {
     const CONST = appConfig[this.systemRequest];
     if(!CONST){
@@ -63,16 +83,7 @@ class Ajax {
     }
 
     //拼接参数head
-    let head = {}
-    if(config.apiType == 'market'){
-      head = {
-        businessId:1,
-        tenantId:1,
-        merchantId:1,
-        loginUserId:1
-      };
-    }else{
-      head = {
+    let head = {
         target: config.target,
         accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149df573b4ac907df80c76bde339478a6d5d',
         client: CONST.CLIENT,
@@ -82,8 +93,6 @@ class Ajax {
         key: CONST.KEY
       };
       head.value = md5(CONST.VALUE + head.target + head.requestTime);
-    }
-
 
     //获取cid和shopInfoId
     let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
@@ -129,8 +138,8 @@ class Ajax {
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
           break;
-          case 'market':  //营销接口
-            config.baseURL = `${process.env.DATA_API}/api/v1/b`;
+          case 'finance':  //财务接口
+            config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
           break;
         }
       }
