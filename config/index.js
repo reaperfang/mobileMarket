@@ -40,7 +40,8 @@ module.exports = {
         //target: 'http://172.22.146.10:8080',
         // target: 'http://172.22.146.109:8080',
         // target: 'http://172.22.146.133:8081',  //李雯廷
-        target: 'http://120.133.1.130:8012',//营销
+        // target: 'http://120.133.1.130:8012',//营销测试机
+        target:'http://172.22.146.124:8090',//许涛
 
         changeOrigin: true,
         pathRewrite: {
