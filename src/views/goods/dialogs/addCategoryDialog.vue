@@ -1,11 +1,9 @@
 <template>
     <div>
-        <DialogBase :visible.sync="visible" @submit="submit" :title="title" width="659px">
+        <DialogBase :visible.sync="visible" :title="title" width="659px" :showFooter="showFooter">
             <el-form :model="basicForm" :rules="basicRules" ref="basicForm" label-width="140px" size="small">
-                <el-form-item label="上级分类：" prop="parentId">
+                <!-- <el-form-item label="分类名称：" prop="parentId">
                     <el-select placeholder="请选择上级分类" class="formInput" v-model="basicForm.parentId">
-                        <!-- <el-option label="顶级分类" value=" "></el-option>
-                        <el-option v-for="item in categoryData" :key="item.id" :label="item.categoryName" :value="item.id" :disabled="item.disabled"></el-option> -->
                         <el-option label="顶级栏目" value="0" style="paddingLeft:1em"></el-option>
                             <el-option
                                 v-for="item in data.flatArr"
@@ -15,19 +13,30 @@
                                 :style="{paddingLeft:`${item.floor*1.2}em`}"
                             ></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="分类名称：" prop="categoryName">
-                    <el-input placeholder="请输入分类名称" class="formInput" v-model="basicForm.categoryName"></el-input>
+                </el-form-item> -->
+                <template v-if="data.add && data.level === 1">
+                    <el-form-item label="上级分类：">
+                        <span>第一级：{{data.categoryName}}</span>
+                    </el-form-item>
+                </template>
+                <template v-else-if="data.add && data.level === 2">
+                    <el-form-item label="上级分类：">
+                        <span>第一级：{{level1Title}}</span>
+                        <span style="margin-left: 20px;">第二级：{{data.categoryName}}</span>
+                    </el-form-item>
+                </template>
+                <el-form-item label="分类名称：" prop="name">
+                    <el-input placeholder="请输入分类名称" class="formInput" v-model="basicForm.name"></el-input>
                     <span class="description">仅支持展示最多5个字的文本标签</span>
                 </el-form-item>
-                <el-form-item label="状态：" prop="state">
-                    <el-radio v-model="basicForm.state" label="1">启用</el-radio>
-                    <el-radio v-model="basicForm.state" label="2">禁用</el-radio>
+                <el-form-item label="状态：" prop="enable">
+                    <el-radio v-model="basicForm.enable" :label="1">启用</el-radio>
+                    <el-radio v-model="basicForm.enable" :label="0">禁用</el-radio>
                 </el-form-item>
-                <el-form-item label="排序：" prop="sequence">
-                    <el-input class="formInput" v-model="basicForm.sequence"></el-input>
+                <el-form-item label="排序：" prop="sort">
+                    <el-input class="formInput" v-model="basicForm.sort"></el-input>
                 </el-form-item>
-                <el-form-item label="分类图片：" prop="imageUrl">
+                <el-form-item label="分类图片：" prop="image">
                     <ul class="upload-ul">
                         <li @click="currentDialog = 'LibraryDialog'; libraryVisible = true" class="upload">
                             <i class="el-icon-plus"><br /><span>上传图片</span></i>
@@ -39,6 +48,10 @@
                     </ul>
                 </el-form-item>
             </el-form>
+            <div class="footer">
+                <el-button @click="submit('basicForm')" type="primary">确认</el-button>
+                <el-button @click="visible = false">取消</el-button>
+            </div>
         </DialogBase>
         <component :is="currentDialog" :dialogVisible.sync="libraryVisible"></component>
     </div>
@@ -51,86 +64,100 @@ export default {
     data() {
         return {
             parentId:' ',
+            showFooter: false,
             basicForm: {
-                categoryName:'',
-                parentId:'',
-                templateId:'',
-                sequence:'',
-                keywords:'',
-                content:'',
-                imageId:'',
-                imageUrl:'',
-                state: ''
+                name:'',  // 分类名称
+                level: 1, // 分类级别
+                enable: 1, // 状态
+                sort: 0, // 分类顺序
+                parentId: 0, // 分类父ID
+                image:'image', // 分类图片
             },
             basicRules:{
-
+                name: [
+                    { required: true, message: '请输入分类名称', trigger: 'blur' },
+                    { max: 5, message: '最多支持5个字符', trigger: 'blur' }
+                ],
+                enable: [
+                    { required: true, message: '请选择状态', trigger: 'blur' },
+                ],
+                sort: [
+                    { required: true, message: '请输入分类排序', trigger: 'blur' },
+                ],
+                // image: [
+                //     { required: true, message: '请上传分类图片', trigger: 'blur' },
+                // ],
             },
-            categoryData: [{
-                "id": 54,
-                "appId": 138,
-                "parentId": 0,
-                "categoryName": "热卖单品",
-                "templateId": null,
-                "templateName": null,
-                "keywords": "",
-                "location": "1",
-                "sequence": null,
-                "content": null,
-                "summary": null,
-                "imageId": null,
-                "imageUrl": "",
-                "state": '上架',
-                "childrenList": [{
-                    "id": 56,
-                    "appId": 138,
-                    "parentId": 54,
-                    "categoryName": "热卖单品1",
-                    "templateId": 69,
-                    "templateName": null,
-                    "keywords": "",
-                    "location": "2",
-                    "sequence": null,
-                    "content": null,
-                    "summary": null,
-                    "imageId": null,
-                    "imageUrl": "",
-                    "childrenList": null,
-                    "state": '上架',
-                }]
-            }, {
-                "id": 55,
-                "appId": 138,
-                "parentId": 0,
-                "categoryName": "套装组合",
-                "templateId": null,
-                "templateName": null,
-                "keywords": "",
-                "location": "1",
-                "sequence": null,
-                "content": null,
-                "summary": null,
-                "imageId": null,
-                "imageUrl": "",
-                "childrenList": null,
-                "state": '上架',
-            }],
+            categoryData: [],
             currentDialog: '',
-            libraryVisible: false
+            libraryVisible: false,
+            level1Title: ''
         }
     },
     created() {
-        this.getCategoryDetail()
-        if(this.data.id) {
-            
+        if(this.data.editor) {
+            this.getCategoryDetail(this.data.id).then(res => {
+                console.log(res)
+                this.basicForm.name = res.name
+                this.basicForm.enable = res.enable
+                this.basicForm.sort = res.sort
+                this.basicForm.image = res.image
+                
+            })
+        }
+        if(this.data.add) {
+            if(this.data.level == 2) {
+                this.getCategoryDetail(this.data.parentId).then(res => {
+                    this.level1Title = res.name
+                })
+            }
         }
     },
     methods: {
-        submit() {
-            
+        submit(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let param = Object.assign({}, this.basicForm)
+
+                    if(this.data.add) {
+                        // 新增
+                        if(this.data.level === 0) { 
+                            // 新增一级分类
+                            param = Object.assign(param, {level: 1})
+                        } else if(this.data.level == 1) {
+                            // 新增二级分类
+                            param = Object.assign(param, {level: 2, parentId: this.data.id})
+                        } else if(this.data.level == 2) {
+                            // 新增三级分类
+                            param = Object.assign(param, {level: 3, parentId: this.data.id})
+                        }
+
+                        this._apis.goods.addCategory(param).then(res => {
+                            this.$emit('submit')
+                        }).catch(error => {
+
+                        })
+                    } else {
+                        let param = Object.assign({}, this.basicForm, {id: this.data.id})
+
+                        this._apis.goods.editorCategory(param).then(res => {
+                            this.$emit('submit')
+                        }).catch(error => {
+
+                        })
+                    }
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+            this.visible = false
         },
-        getCategoryDetail() {
-            this._apis.goods.getCategoryDetail({id: this.data.id}).then(res => {
-                console.log(res)
+        getCategoryDetail(id) {
+            return  new Promise((resolve, reject) => {
+                this._apis.goods.getCategoryDetail({id}).then(res => {
+                    resolve(res)
+                })
             })
         },
     },
@@ -144,10 +171,20 @@ export default {
             }
         },
         title() {
-            if(this.add) {
-                return '新增分类'
+            if(this.data.add) {
+                // 新增
+                if(this.data.level === 0) { 
+                    // 新增一级分类
+                    return '新增一级分类'
+                } else if(this.data.level == 1) {
+                    // 新增二级分类
+                    return '新增二级分类'
+                } else if(this.data.level == 2) {
+                    // 新增三级分类
+                    return '新增三级分类'
+                }
             } else {
-                return '编辑分类'
+                return '修改分类'
             }
         }
     },
@@ -212,6 +249,11 @@ export default {
                 }
             }
         }
+    }
+    .footer {
+        text-align: center;
+        margin-top: 60px;
+        margin-bottom: 40px;
     }
 </style>
 

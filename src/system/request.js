@@ -74,7 +74,7 @@ class Ajax {
     }else{
       head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dcb6787eb33eb12cb1c6fcad94dcaf01a',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149df573b4ac907df80c76bde339478a6d5d',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -95,13 +95,13 @@ class Ajax {
         if(config.noCid){
           config.data =`json=${encodeURI(JSON.stringify({ head, data: config.data}))}`;
         }else{
-          config.data =`json=${encodeURI(JSON.stringify({ head, data: {...config.data,cid,shopInfoId}}))}`;
+          config.data =`json=${encodeURI(JSON.stringify({ head, data: {...config.data,cid}}))}`;
         }
       } else if (config.method == "get") {
         if(config.noCid){
           config.params = {json: {head, data: config.params}};
         }else{
-          config.params = {json: {head, data: {...config.params,cid,shopInfoId}}};
+          config.params = {json: {head, data: {...config.params,cid}}};
         }
       }
       return config;
