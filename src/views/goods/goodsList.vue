@@ -8,20 +8,21 @@
         <div class="search">
             <el-form :inline="true" :model="listQuery" class="demo-form-inline">
                 <el-form-item label="商品名称">
-                    <el-input v-model="listQuery.goodsName" placeholder="请输入商品名称"></el-input>
+                    <el-input v-model="listQuery.name" placeholder="请输入商品名称"></el-input>
                 </el-form-item>
                 <el-form-item label="商品状态">
-                    <el-select v-model="listQuery.goodsState" placeholder="请选择商品状态">
-                    <el-option label="下架中" value="下架中"></el-option>
-                    <el-option label="上架中" value="上架中"></el-option>
+                    <el-select v-model="listQuery.status" placeholder="请选择商品状态">
+                    <el-option label="上架" :value="1"></el-option>
+                    <el-option label="下架" :value="0"></el-option>
+                    <el-option label="售罄" :value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="商品分类">
-                    <el-select v-model="listQuery.goodsClassify" placeholder="请选择商品分类">
-                        <el-option label="所有分类" value="所有分类"></el-option>
-                        <el-option :label="item.label" :value="item.value" 
-                            v-for="(item, index) in goodsClassifyList" :key="index"></el-option>
-                    </el-select>
+                    <el-cascader
+                        v-model="categoryValue"
+                        :options="categoryOptions"
+                        @change="handleChange">
+                    </el-cascader>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="getList" type="primary">查询</el-button>
@@ -30,9 +31,9 @@
         </div>
         <div>
             <div class="table-header">
-                <div :class="{active: state == 0}" @click="stateHandler(0)" class="item">出售中</div>
-                <div :class="{active: state == 1}" @click="stateHandler(1)" class="item">仓库中</div>
-                <div :class="{active: state == 2}" @click="stateHandler(2)" class="item">已售罄</div>
+                <div :class="{active: state === 1}" @click="stateHandler(1)" class="item">出售中</div>
+                <div :class="{active: state === 0}" @click="stateHandler(0)" class="item">仓库中</div>
+                <div :class="{active: state === 2}" @click="stateHandler(2)" class="item">已售罄</div>
             </div>
             <el-table
                 :data="list"
@@ -45,36 +46,37 @@
                     width="55">
                 </el-table-column>
                 <el-table-column
-                prop="goodsName"
+                prop="name"
                 label="商品名称"
                 width="180">
                 </el-table-column>
                 <el-table-column
-                    prop="goodsState"
                     label="状态"
                     width="180">
                     <template slot-scope="scope">
-                        <span @click="upperAndLowerRacks(scope.row)" class="goods-state">{{scope.row.goodsState}}
-                            <i :class="{grounding: scope.row.goodsState == '上架', undercarriage: scope.row.goodsState == '下架'}" class="i-bg"></i>
+                        <span @click="upperAndLowerRacks(scope.row)" class="goods-state">
+                            {{scope.row.status | statusFilter}}
+                            <i :class="{grounding: scope.row.status === 1, undercarriage: scope.row.status === 0}" class="i-bg"></i>
                         </span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                prop="goodsClassify"
-                label="商品分类">
+                    label="商品分类">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.categoryName}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="store"
                     label="库存">
                     <template slot-scope="scope">
-                        <span @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="store">{{scope.row.store}}<i @click="editorStore(scope.row)" class="i-bg"></i></span>
+                        <span @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="store">{{scope.row.goodsInfo.stock}}<i @click="editorStore(scope.row)" class="i-bg"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="price"
                     label="售卖价（元）">
                     <template slot-scope="scope">
-                        <span @click="(currentDialog = 'EditorPrice') && (dialogVisible = true) && (currentData = scope.row)" class="price">{{scope.row.price}}<i class="i-bg"></i></span>
+                        <span @click="(currentDialog = 'EditorPrice') && (dialogVisible = true) && (currentData = scope.row)" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
@@ -105,7 +107,7 @@
             </div>
         </div>
         <div class="footer">
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit"></component>
     </div>
@@ -223,6 +225,8 @@ import EditorStock from '@/views/goods/dialogs/editorStock'
 export default {
     data() {
         return {
+            categoryValue: [],
+            categoryOptions: [],
             multipleSelection: [],
             goodsClassifyList: [
                 {
@@ -230,29 +234,15 @@ export default {
                     value: '服饰'
                 }
             ],
-            list: [{
-                    goodsName: '小红花',
-                    goodsState: '上架',
-                    goodsClassify: '服饰',
-                    store: '100',
-                    price: '15',
-                    activity: true
-                }, {
-                    goodsName: '小红花小红花',
-                    goodsState: '下架',
-                    goodsClassify: '服饰',
-                    store: '100',
-                    price: '16',
-                    activity: false
-                }],
-            total: 50,
+            list: [],
+            total: 0,
             listLoading: true,
             listQuery: {
-                page: 1,
-                limit: 20,
-                goodsName: '好商品',
-                goodsState: '下架中',
-                goodsClassify: '服饰',
+                startIndex: 1,
+                pageSize: 20,
+                name: '',  // 商品名称
+                status: '', // 商品状态 0下架,1上架,2售罄
+                productCatalogInfoId: '', // 商品分类ID
             },
             currentDialog: '',
             dialogVisible: false,
@@ -262,9 +252,63 @@ export default {
         }
     },
     created() {
+        this.getList()
+        this.getCategoryList()
+    },
+    filters: {
+        statusFilter(val) {
+            if(val === 1) {
+                return '上架'
+            } else if(val === 0) {
+                return '下架'
+            } else if(val === 2) {
+                return '上架'
+            }
+        },
+        async productCatalogFilter(id) {
+            return 'sfsf'
+            // try {
+            //     let res = await this._apis.goods.getCategoryDetail({id})
 
+            //     if(res) {
+            //         return 'sfsf'
+            //     }
+            // } catch(error) {
+            //     return ''
+            // }
+
+        }
     },
     methods: {
+        transTreeData(data, pid) {
+            var result = [], temp;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].parentId == pid) {
+                    var obj = {"categoryName": data[i].name,"id": data[i].id, 
+                        parentId: data[i].parentId, level: data[i].level, sort: data[i].sort, 
+                        image: data[i].image, enable: data[i].enable, label: data[i].name, value: data[i].id};
+                    temp = this.transTreeData(data, data[i].id);
+                    if (temp.length > 0) {
+                        obj.children = temp;
+                    }
+                    result.push(obj);
+                }
+            }
+            return result;
+        },
+        getCategoryList() {
+            this._apis.goods.fetchCategoryList().then((res) => {
+                let arr = this.transTreeData(res, 0)
+                
+                this.categoryOptions = arr
+            }).catch(error => {
+
+            })
+        },
+        handleChange(value) {
+            let arr = [...value]
+            this.listQuery.productCatalogInfoId = arr.pop()
+        },
         upperAndLowerRacks(row) {
             this.confirm({title: '立即上架', icon: true, text: '是否确认上架？'}).then(() => {
                 
@@ -287,20 +331,41 @@ export default {
         },
         stateHandler(val) {
             this.state = val
-        },
-        async getList() {
-            try {
-                this.listLoading = true
-                let res = await this._apis.goods.fetchList(this.listQuery)
 
-                if(res) {
-                    this.list = res.data.list
-                    this.total = res.data.total
-                    this.listLoading = false
-                }
-            } catch(e) {
-                
-            }
+            let param = {status: val}
+
+            this.getList(param)
+        },
+        getList(param) {
+            //this.listLoading = true
+            let _param
+            
+            _param = Object.assign({}, this.listQuery, param)
+
+            this._apis.goods.fetchGoodsList(_param).then((res) => {
+                this.total = res.total
+                this.getCategoryName(res.list)
+            }).catch(error => {
+                //this.listLoading = false
+            })
+        },
+        getCategoryName(goodsList) {
+            let arr = []
+
+            goodsList.forEach(val => {
+                let id = val.productCatalogInfoId
+                let promise = this._apis.goods.getCategoryDetail({id}).then((res) => {
+                    val.categoryName = res.name
+                }).catch(error => {
+                    
+                })
+
+                arr.push(promise)
+            })
+
+            Promise.all(arr).then(values => {
+                this.list = goodsList
+            })
         },
         editorStore(row) {
 

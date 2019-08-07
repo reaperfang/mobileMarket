@@ -27,8 +27,12 @@
                     <span>卡名称：</span>
                     <div class="input_wrap">
                         <el-select placeholder="全部" v-model="selected">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                            <el-option
+                                v-for="item in cardNames"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id"
+                            ></el-option>
                         </el-select>
                     </div>
                     <span style="margin-left: 200px;">领取时间：</span>
@@ -57,7 +61,8 @@ export default {
             activeName: 'first',
             popVisible: false,
             selected:"",
-            cardList: []
+            cardList: [],
+            cardNames: []
         }
     },
     methods: {
@@ -67,14 +72,36 @@ export default {
                 "pageSize": 10
             }
             this._apis.client.getCardList(obj).then((response) => {
-                this.cardList = [].concat(response.list)
+                response.list.map((v) => {
+                    v.validity = "永久有效";
+                    v.isGray = true;
+                });
+                let i = response.list.findIndex((value,index,arr) => {
+                    return value.name == "";
+                });
+                this.$set(response.list[i], 'isGray', false);
+                this.cardList = [].concat(response.list);
             }).catch((error) => {
-                this.$message.error(error);
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getCardNames() {
+            this._apis.client.getCardNames({}).then((response) => {
+                this.cardNames = [].concat(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                })
             })
         }
     },
     mounted() {
         this.getCardList();
+        this.getCardNames();
     }
 }
 </script>

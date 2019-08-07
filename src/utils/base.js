@@ -116,6 +116,23 @@ export function formatDate(value, fmt) {
   return fmt;
 }
 
+/**
+ *计算日期
+ *
+ * @export
+ * @param {*} value
+ * @param {*} fmt
+ * @returns
+ */
+export function countDate(num){
+  let date1 = new Date();
+  let date2 = new Date(date1);
+  date2.setDate(date1.getDate()+num);
+  // let time2 = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
+  let time2 = this.formatDate(date2,"yyyy-MM-dd")
+  return time2;
+}
+
  /**
  *系统内部跳转
  *

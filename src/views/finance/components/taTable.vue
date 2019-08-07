@@ -1,68 +1,202 @@
 /* 推客奖励列表 */
 <template>
   <div>
-    <el-table
-      :data="dataList"
-      style="width: 100%"
-      :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-      :default-sort = "{prop: 'date', order: 'descending'}"
-      >
-      <el-table-column
-        prop="name1"
-        label="客户ID">
-      </el-table-column>
-      <el-table-column
-        prop="name2"
-        label="奖励方式">
-      </el-table-column>
-      <el-table-column
-        prop="name3"
-        label="奖励内容">
-      </el-table-column>
-      <el-table-column
-        prop="name4"
-        label="时间"
-        sortable>
-      </el-table-column>
-    </el-table>
-    <div class="page_styles">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
-        layout="sizes, prev, pager, next"
-        :total="100">
-      </el-pagination>
+    <div class="top_part">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline">
+        <el-form-item label="客户ID">
+          <el-input v-model="ruleForm.memberId" placeholder="请输入" style="width:226px;"></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="订单编号">
+          <el-input v-model="ruleForm.value2" placeholder="请输入" style="width:226px;"></el-input>
+        </el-form-item> -->
+        <el-form-item label="奖励方式">
+          <el-select v-model="ruleForm.presentType" style="width:200px;">
+            <el-option
+              v-for="item in rewards"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+         <el-form-item label="时间">
+          <el-date-picker
+            v-model="times"
+            type="datetimerange"
+            align="right"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :default-time="['12:00:00', '08:00:00']"
+            :picker-options="pickerNowDateBefore">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="resetForm">重置</el-button>
+          <el-button type="primary" @click="onSubmit">搜索</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="under_part">
+      <div class="total">
+        <span>全部 <em>{{total}}</em> 项</span>
+        <el-button icon="document" @click='exportToExcel()' class="mb10">导出</el-button>
+      </div>
+      <el-table
+        :data="dataList"
+        style="width: 100%"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'date', order: 'descending'}"
+        >
+        <el-table-column
+          prop="memberId"
+          label="客户ID">
+        </el-table-column>
+        <el-table-column
+          prop="presentType"
+          label="奖励方式">
+        </el-table-column>
+        <el-table-column
+          prop="presentContent"
+          label="奖励内容">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="时间"
+          sortable>
+        </el-table-column>
+      </el-table>
+      <div class="page_styles">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(ruleForm.pageNum) || 1"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize*1"
+          layout="sizes, prev, pager, next"
+          :total="total*1">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script type='es6'>
+import utils from "@/utils";
 import TableBase from "@/components/TableBase";
+import financeCons from '@/system/constant/finance'
 export default {
   name: "taTable",
   extends: TableBase,
-  props:['query'],
   data() {
     return {
+      pickerNowDateBefore: {
+        disabledDate: (time) => {
+          return time.getTime() > new Date();
+        }
+      },
       dataList:[],
+      total:0,
+      inline:true,
+      times:'',
+      ruleForm:{
+        memberId:'',
+        presentType:0,
+        startTime:'',
+        stopTime:'',
+        pageSize:10,
+        pageNum:1
+      },
     };
   },
-  created() {
-    this.getList();
-  },
-  methods: {
-    getList(){
-      // console.log('222222',this.query)
-      this._apis.finance.getList(this.query).then((response)=>{
-        // console.log('11111',response)
-      }).catch((error)=>{
-        this.$message.error(error);
-      })
+  watch: {
+    times(){
+      this.ruleForm.startTime = utils.formatDate(this.times[0], "yyyy-MM-dd hh:mm:ss")
+      this.ruleForm.stopTime = utils.formatDate(this.times[1], "yyyy-MM-dd hh:mm:ss")
     }
   },
-  components: {}
+  computed:{
+    rewards(){
+      return financeCons.rewards;
+    }
+  },
+  created() {
+    this.fetch();
+  },
+  methods: {
+    fetch(){
+      this._apis.finance.getListTa(this.ruleForm).then((response)=>{
+        this.dataList = response.list
+        this.total = response.total || 0
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    onSubmit(){
+      this.fetch();
+    },
+    //重置
+    resetForm(){
+      this.ruleForm = {
+        memberId:'',
+        presentType:0,
+        startTime:'',
+        stopTime:'',
+        pageNum:1,
+        pageSize:10,
+      }
+      this.times= ''
+    },
+     //当前页码改变
+    handleCurrentChange(pIndex=1) {
+      this.loading = true
+      this.ruleForm.pageNum = pIndex
+      this.fetch()
+    },
+//导出
+    exportToExcel(){
+      this._apis.finance.exportTa(this.ruleForm).then((response)=>{
+        window.location.href = response.url
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+  },
 };
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+.top_part{
+  width: 100%;
+  background: #fff;
+  border-radius: 3px;
+  margin-top: 20px;
+  padding: 15px 20px;
+}
+.under_part{
+  width: 100%;
+  background: #fff;
+  margin-top: 20px;
+  padding: 15px 20px;
+  .total{
+    display: flex;
+    justify-content: space-between;
+    span{
+      font-size: 16px;
+      color: #B6B5C8;
+      em{
+        font-style: normal;
+        color: #000;
+      }
+    }
+  }
+}
+.mb10{
+  margin-bottom: 10px;
+}
+</style>
+

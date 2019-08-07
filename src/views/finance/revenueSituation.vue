@@ -26,7 +26,7 @@
         <div class="item">
           <span class="money">总收入（元）</span>
           <span class="num">
-            <em>10000.00</em>
+            <em>{{surveyDay.income}}</em>
             <!-- <i class="el-icon-top red"></i> -->
             <i class="el-icon-bottom green"></i>
           </span>
@@ -34,14 +34,14 @@
         <div class="item">
           <span class="money">总支出（元）</span>
           <span class="num">
-            <em>5</em>
+            <em>{{surveyDay.expend}}</em>
             <i class="el-icon-top red"></i>
           </span>
         </div>
         <div class="item">
           <span class="money">实际收入（元）</span>
           <span class="num">
-            <em>150</em>
+            <em>{{surveyDay.realIncome}}</em>
             <i class="el-icon-top red"></i>
           </span>
         </div>
@@ -51,12 +51,12 @@
     <div class="under_part">
       <div class="title">
         <span class="name">趋势分析</span>
-        <ul>
-          <li class="active">最近7天</li>
-          <li>最近15天</li>
-          <li>最近30天</li>
-        </ul>
         <div class="time">
+          <el-radio-group v-model="days" class="mr20">
+            <el-radio-button label="7">最近7天</el-radio-button>
+            <el-radio-button label="15">最近15天</el-radio-button>
+            <el-radio-button label="30">最近30天</el-radio-button>
+          </el-radio-group>
           请选择时间段：
           <el-date-picker
             v-model="timeValue"
@@ -73,23 +73,23 @@
         <div class="item">
           <span class="money">总收入（元）</span>
           <span class="num">
-            <em>10000.00</em>
+            <em>{{survey.income}}</em>
           </span>
         </div>
         <div class="item">
           <span class="money">总支出（元）</span>
           <span class="num">
-            <em>5</em>
+            <em>{{survey.expend}}</em>
           </span>
         </div>
         <div class="item">
           <span class="money">实际收入（元）</span>
           <span class="num">
-            <em>150</em>
+            <em>{{survey.realIncome}}</em>
           </span>
         </div>
       </div>
-      <financeChart class="financeChart"></financeChart>
+      <financeChart class="financeChart" :dataList="dataList"></financeChart>
     </div>
   </div>
 </template>
@@ -102,28 +102,105 @@ export default {
   data() {
     return {
       pickerNowDateBefore: {
-          disabledDate: (time) => {
-                return time.getTime() > new Date();
-              }
+        disabledDate: (time) => {
+          return time.getTime() > new Date();
+        }
       },
-      timeValue:''
+      timeValue:['2019-06-05','2019-06-07'],
+      surveyDay:{
+        income:0,
+        expend:0,
+        realIncome:0
+      },
+      survey:{
+        income:0,
+        expend:0,
+        realIncome:0
+      },
+      dataList:[],
+      days:7
     }
   },
   components: {financeChart},
   watch: {
     timeValue(){
-      let time = utils.formatDate(this.timeValue[0], "yyyy-MM-dd")
-      console.log('11111111',time)
+      this.getDataDateRs()
+    },
+    days(){
+      this.getDataNumRs()
     }
   },
   created() {
-
-  },
-  destroyed() {
-    
+    this.init();
+    this.getSurveyDay();
   },
   methods: {
-    
+    //初始化数据
+    init(){
+      let date = new Date()
+      let endDate = utils.formatDate(date, "yyyy-MM-dd")
+      let startDate = utils.countDate(-7)
+      this.timeValue = [startDate,endDate]
+    },
+    //概况
+    getSurveyDay(){
+      this._apis.finance.getSurveyDayRs({}).then((response)=>{
+        this.surveyDay = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //时间段趋势
+    getDataDateRs(){
+      let queryDate = {
+        accountDateStart:this.timeValue[0],
+        accountDateEnd:this.timeValue[1]
+      }
+      this._apis.finance.getDataDateRs(queryDate).then((response)=>{
+        if(response){
+          this.survey.expend = response.expend
+          this.survey.income = response.income
+          this.survey.realIncome = response.realIncome
+          this.dataList = response.accountList
+        }else{
+          this.$notify.info({
+            title: '消息',
+            message: "查询结果集为空，没有可以显示的数据"
+          });
+          this.init()
+        }
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //最近天数趋势
+    getDataNumRs(){
+      this._apis.finance.getDataNumRs({recentDays:this.days}).then((response)=>{
+        if(response){
+          this.survey.expend = response.expend
+          this.survey.income = response.income
+          this.survey.realIncome = response.realIncome
+          this.dataList = response.accountList
+        }else{
+          this.$notify.info({
+            title: '消息',
+            message: "查询结果集为空，没有可以显示的数据"
+          });
+          this.days = 7
+        }
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
   }
 }
 </script>
@@ -265,6 +342,9 @@ export default {
 }
 .financeChart{
   margin-top: 30px;
+}
+.mr20{
+  margin-right: 20px;
 }
 
 </style>

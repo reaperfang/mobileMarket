@@ -7,16 +7,16 @@
                 <el-row>
                     <el-col :span="4">
                         <el-form-item>
-                            <el-select v-model="form.memberSn" placeholder="用户ID">
-                                <el-option label="昵称" value="shanghai"></el-option>
-                                <el-option label="用户ID" value="beijing"></el-option>
-                                <el-option label="手机号" value="beijing"></el-option>
+                            <el-select v-model="form.labelName" placeholder="用户ID">
+                                <el-option label="昵称" value="nickName"></el-option>
+                                <el-option label="用户ID" value="memberSn"></el-option>
+                                <el-option label="手机号" value="phone"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
                         <el-form-item>
-                            <el-input v-model="form.nickName" placeholder="昵称/姓名/手机号码/用户ID"><el-button slot="append" icon="el-icon-search"></el-button></el-input>
+                            <el-input v-model="form.labelValue" placeholder="昵称/姓名/手机号码/用户ID"><el-button slot="append" icon="el-icon-search"></el-button></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -39,8 +39,8 @@
                 </el-form-item>
                 <el-form-item label="客户标签：" class="relaPosition">
                     <div class="group_container">
-                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px', height: showMoreTag ?'78px':'37px', overflow: showMoreTag ? 'block':'hidden'}">
-                            <el-checkbox v-for="item in clientSignOps" :label="item" :key="item" border>{{item}}</el-checkbox>
+                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px', height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
+                            <el-checkbox v-for="item in labels" :label="item" :key="item" border>{{item}}</el-checkbox>
                         </el-checkbox-group>
                     </div>
                     <el-button type="primary" class="absoPosition">添 加</el-button>
@@ -77,12 +77,12 @@
                                 <div class="input_wrap">
                                     <el-input v-model="form.totalDealMoneyMin" placeholder="最小值"></el-input>
                                 </div>
-                                <span>分</span>
+                                <span>元</span>
                                 <span>-</span>
                                 <div class="input_wrap">
                                     <el-input v-model="form.totalDealMoneyMax" placeholder="最大值"></el-input>
                                 </div>
-                                <span>分</span>
+                                <span>元</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="6">
@@ -90,12 +90,12 @@
                                 <div class="input_wrap">
                                     <el-input v-model="form.dealTimesMin" placeholder="最小值"></el-input>
                                 </div>
-                                <span>分</span>
+                                <span>次</span>
                                 <span>-</span>
                                 <div class="input_wrap">
                                     <el-input v-model="form.dealTimesMax" placeholder="最大值"></el-input>
                                 </div>
-                                <span>分</span>
+                                <span>次</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -105,12 +105,12 @@
                                 <div class="input_wrap">
                                     <el-input v-model="form.perUnitPriceMin" placeholder="最小值"></el-input>
                                 </div>
-                                <span>分</span>
+                                <span>元</span>
                                 <span>-</span>
                                 <div class="input_wrap">
                                     <el-input v-model="form.perUnitPriceMax" placeholder="最大值"></el-input>
                                 </div>
-                                <span>分</span>
+                                <span>元</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -130,7 +130,6 @@
                                         placeholder="选择日期">
                                     </el-date-picker>
                                 </div>
-                                <span>分</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -150,7 +149,6 @@
                                         placeholder="选择日期">
                                     </el-date-picker>
                                 </div>
-                                <span>分</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -158,7 +156,7 @@
                 <el-form-item class="padR40 marT20">
                     <span class="shou" @click="handleMore">收起<i class="el-icon-arrow-up marL10"></i></span>
                     <el-button class="fr marL20">重置</el-button>
-                    <el-button type="primary" class="fr">查询</el-button>
+                    <el-button type="primary" class="fr" @click="getClientList">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -190,8 +188,8 @@ export default {
   data() {
     return {
       form: {
-        memberSn:"",
-        nickName:"",
+        labelName:"",
+        labelValue:"",
         memberType:['非会员客户'],
         memberLabels: ['年轻用户'],
         channelId: ['小程序'],
@@ -214,7 +212,8 @@ export default {
         currentDialog:"",
         dialogVisible: false,
         currentData:{},
-        popVisible: false
+        popVisible: false,
+        labels: []
     }
   },
   watch: {
@@ -228,7 +227,12 @@ export default {
         return clientCont.clientSignOps
     },
     clientChannelOps() {
-        return clientCont.clientChannelOps
+        //return clientCont.clientChannelOps
+        let arr = [];
+        clientCont.clientChannelOps.map((v) => {
+            arr.push(v.channerlName)
+        });
+        return arr;
     },
     clientStateOps() {
         return clientCont.clientStateOps
@@ -280,7 +284,37 @@ export default {
     },
     extendTag() {
         this.showMoreTag = !this.showMoreTag;
+    },
+    getLabels() {
+        this._apis.client.getLabels({cid:2, tagType:null}).then((response) => {
+            response.map((v) => {
+                this.labels.push(v.tagName);
+            })
+        }).catch((error) => {
+            this.$notify.error({
+                title: '错误',
+                message: error
+            });
+        })
+    },
+    getChannels() {
+        // this._apis.client.getChannels({}).then((response) => {
+        //     console.log(response);
+        // }).catch((error) => {
+        //     this.$notify.error({
+        //         title: '错误',
+        //         message: error
+        //     });
+        // })
+    },
+    getClientList() {
+        console.log(this.form);
+        
     }
+  },
+  mounted() {
+      this.getLabels();
+      this.getChannels();
   }
 }
 </script>

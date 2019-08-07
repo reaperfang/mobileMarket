@@ -1,14 +1,14 @@
 <template>
     <div class="classify">
         <div class="search">
-            <el-button @click="currentDialog = 'AddCategoryDialog'; dialogVisible = true" type="primary">新增商品分类</el-button>
+            <el-button @click="addLevel1Category" type="primary">新增商品分类</el-button>
             <el-form :inline="true" :model="formInline" class="form-inline">
                 <el-form-item label="搜索分类：">
                     <el-input v-model="formInline.classify" placeholder="请输入分类名称..."></el-input>
                 </el-form-item>
                 <el-form-item label="分类状态：">
                     <el-select v-model="formInline.state" placeholder="所有状态">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in items" :key="index"></el-option>
+                        <el-option :label="item.state" :value="item.value" v-for="(item, index) in items" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -52,70 +52,31 @@ export default {
                 children: 'childrenList',
                 label: 'categoryName'
             },
-            categoryData: [{
-                "id": 54,
-                "appId": 138,
-                "parentId": 0,
-                "categoryName": "热卖单品",
-                "templateId": null,
-                "templateName": null,
-                "keywords": "",
-                "location": "1",
-                "sequence": null,
-                "content": null,
-                "summary": null,
-                "imageId": null,
-                "imageUrl": "",
-                "state": '上架',
-                "childrenList": [{
-                    "id": 56,
-                    "appId": 138,
-                    "parentId": 54,
-                    "categoryName": "热卖单品1",
-                    "templateId": 69,
-                    "templateName": null,
-                    "keywords": "",
-                    "location": "2",
-                    "sequence": null,
-                    "content": null,
-                    "summary": null,
-                    "imageId": null,
-                    "imageUrl": "",
-                    "childrenList": null,
-                    "state": '上架',
-                }]
-            }, {
-                "id": 55,
-                "appId": 138,
-                "parentId": 0,
-                "categoryName": "套装组合",
-                "templateId": null,
-                "templateName": null,
-                "keywords": "",
-                "location": "1",
-                "sequence": null,
-                "content": null,
-                "summary": null,
-                "imageId": null,
-                "imageUrl": "",
-                "childrenList": null,
-                "state": '上架',
-            }],
+            categoryData: [],
             currentDialog: '',
             dialogVisible: false,
             add: true,
-            flatArr: []
+            flatArr: [],
+            currentData: ''
         }
     },
     created() {
         this.getList()
     },
     methods: {
+        onSubmit() {
+
+        },
+        addLevel1Category() {
+            this.currentDialog = 'AddCategoryDialog'
+            this.currentData = {level: 0, add: true}
+            this.dialogVisible = true
+        },
         transTreeData(data, pid) {
             var result = [], temp;
             for (var i = 0; i < data.length; i++) {
                 if (data[i].parentId == pid) {
-                    var obj = {"categoryName": data[i].name,"id": data[i].id, parentId: data[i].parentId};
+                    var obj = {"categoryName": data[i].name,"id": data[i].id, parentId: data[i].parentId, level: data[i].level, sort: data[i].sort, image: data[i].image, enable: data[i].enable};
                     temp = this.transTreeData(data, data[i].id);
                     if (temp.length > 0) {
                         obj.childrenList = temp;
@@ -151,50 +112,91 @@ export default {
             return result;
         },
         renderContent(h, { node, data, store }) {
-            return (
-                <div class="treeRow">
-                    <span class="td first">{data.categoryName}</span>
-                    <span class="td state">{data.state}</span>
-                    <span class="td operate">
-                        {
-                            <span class="blue" on-click={() => this.change(node, data)}>修改</span>
-                        }
-                        {
-                            <span class="blue" on-click={() => this.addCategory(node, data)}>新增子分类</span>
-                        }
-                        {
-                            <span class="blue" on-click={() => this.forbidden(node, data)}>禁用</span>
-                        }
-                        {
-                            <span class="deleteColor" on-click={() => this.delete(node, data)}>删除</span>
-                        }
-                    </span>
-                </div>
-            );
+            if(node.level < 3) {
+                return (
+                    <div class="treeRow">
+                        <span class="td first">{data.categoryName}</span>
+                        <span class="td state">{data.enable === 1 ? '启用' : '禁用' }</span>
+                        <span class="td operate">
+                            {
+                                <span class="blue" on-click={() => this.change(node, data)}>修改</span>
+                            }
+                            {
+                                <span class="blue" on-click={() => this.addCategory(node, data)}>新增子分类</span>
+                            }
+                            {
+                                <span class="blue" on-click={() => this.forbidden(node, data)}>{
+                                    node.data.enable === 1 ? '禁用' : '启用'
+                                }</span>
+                            }
+                            {
+                                <span class="deleteColor" on-click={() => this.delete(node, data)}>删除</span>
+                            }
+                        </span>
+                    </div>
+                )
+            } else {
+                return (
+                    <div class="treeRow">
+                        <span class="td first">{data.categoryName}</span>
+                        <span class="td state">{data.state}</span>
+                        <span class="td operate">
+                            {
+                                <span class="blue" on-click={() => this.change(node, data)}>修改</span>
+                            }
+                            {
+                                <span class="blue" on-click={() => this.forbidden(node, data)}>{
+                                    node.data.enable === 1 ? '禁用' : '启用'
+                                }</span>
+                            }
+                            {
+                                <span class="deleteColor" on-click={() => this.delete(node, data)}>删除</span>
+                            }
+                        </span>
+                    </div>
+                )
+            }
         },
         change(node, data) {
             console.log(data)
             this.currentDialog = 'AddCategoryDialog'
             this.currentData = {
                 id: data.id,
-                flatArr: this.flatArr
+                editor: true
             }
             this.dialogVisible = true
         },
         addCategory(node, data) {
+            console.log(node)
             this.currentDialog = 'AddCategoryDialog'
+            this.currentData = Object.assign({}, node.data, {add: true})
             this.dialogVisible = true
         },
         forbidden(node, data) {
+            let _enable
 
+            if(node.data.enable === 1) {
+                _enable = 0
+            } else {
+                _enable = 1
+            }
+            this._apis.goods.enableCategory({id: node.data.id, enable: _enable}).then((res) => {
+                this.getList()
+            }).catch(error => {
+
+            })
         },
         delete(node, data) {
             this.confirm({title: '立即删除', icon: true, text: '删除后此分类无法展示，确认删除吗？'}).then(() => {
-                
+                this._apis.goods.deleteCategory({id: node.data.id}).then((res) => {
+                    this.getList()
+                }).catch(error => {
+
+                })
             })
         },
         submit() {
-
+            this.getList()
         },
         getList() {
             this._apis.goods.fetchCategoryList().then((res) => {

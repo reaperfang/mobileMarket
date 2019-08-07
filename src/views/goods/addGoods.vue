@@ -20,8 +20,8 @@
             <el-form-item label="商品名称" prop="name">
                 <el-input v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
             </el-form-item>
-            <el-form-item label="商品描述" prop="des">
-                <el-input type="textarea" v-model="ruleForm.des" maxlength="100" show-word-limit></el-input>
+            <el-form-item label="商品描述" prop="description">
+                <el-input type="textarea" v-model="ruleForm.description" maxlength="100" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品图片" prop="images">
                 <el-upload
@@ -38,11 +38,11 @@
                 <span @click="currentDialog = 'LibraryDialog'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
             </el-form-item>
-            <el-form-item label="商品分类" prop="productCategoryInfoId">
+            <el-form-item label="商品分类" prop="productCatalogInfoId">
                 <div class="block" style="display: inline-block;margin-left: 5px">
                     <el-cascader
-                        :options="optionsTypeList"
-                        v-model="ruleForm.productCategoryInfoId"
+                        :options="categoryOptions"
+                        v-model="categoryValue"
                         @change="handleChange">
                     </el-cascader>
                 </div>
@@ -51,7 +51,14 @@
             <el-form-item label="商品标签" prop="productLabelId">
                 <div class="add-tag">
                     <div class="item">
-                        <el-input v-model="ruleForm.productLabelId"></el-input>
+                        <el-select v-model="ruleForm.productLabelId" placeholder="请选择">
+                            <el-option
+                                v-for="item in productLabelList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
                     </div>
                     <div @click="currentDialog = 'AddTagDialog'; dialogVisible = true" class="item tag">新增标签</div>
                     <div @mouseenter="imageVisible = true" @mouseleave="imageVisible = false" class="item example">查看样例</div>
@@ -183,7 +190,7 @@
                     </el-radio-group>
                 </div>
             </el-form-item>
-            <el-form-item label="会员打折" prop="dazhe">
+            <!-- <el-form-item label="会员打折" prop="dazhe">
                 <el-radio-group v-model="ruleForm.dazhe">
                     <el-radio :label="1">参与会员打折</el-radio>
                     <el-radio :label="2">不参与会员打折</el-radio>
@@ -194,7 +201,7 @@
                     <el-radio :label="1">赠送</el-radio>
                     <el-radio :label="2">不赠送</el-radio>
                 </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="开具发票" prop="fapiao">
                 <el-radio-group v-model="ruleForm.fapiao">
                     <el-radio :label="1">支持</el-radio>
@@ -287,13 +294,16 @@ import AddTagDialog from '@/views/goods/dialogs/addTagDialog'
 export default {
     data() {
         return {
+            categoryValue: [],
+            categoryOptions: [],
+            productLabelList: [], // 商品标签列表
             ruleForm: {
-                productCategoryInfoId: '',
-                name: '',
-                images: '',
-                productCategoryInfoId: '',
+                productCategoryInfoId: '123', // 商品类目id
+                name: '', // 商品名称
+                description: '', // 商品描述
+                images: 'images', // 商品图片
                 productCategoryInfoIds: '',
-                productLabelId: '',
+                productLabelId: '', // 商品标签
                 number: 0,
                 quantitySold: 0,
                 brand: '',
@@ -314,18 +324,15 @@ export default {
                 itemCat: ''
             },
             rules: {
-                productCategoryInfoId: [
-                    { required: true, message: '请输入', trigger: 'blur' },
-                ],
+                // productCategoryInfoId: [
+                //     { required: true, message: '请输入', trigger: 'blur' },
+                // ],
                 name: [
                     { required: true, message: '请输入', trigger: 'blur' },
                 ],
-                productCategoryInfoId: [
-                    { required: true, message: '请输入', trigger: 'blur' },
-                ],
-                images: [
-                    { required: true, message: '请上传商品图片', trigger: 'blur' },
-                ],
+                // images: [
+                //     { required: true, message: '请上传商品图片', trigger: 'blur' },
+                // ],
                 quantitySold: [
                     { required: true, message: '请上传商品图片', trigger: 'blur' },
                 ],
@@ -386,7 +393,47 @@ export default {
             itemCatList: []
         }
     },
+    created() {
+        this.getCategoryList()
+        this.getProductLabelList()
+    },
     methods: {
+        getProductLabelList() {
+            this._apis.goods.fetchAllTagsList().then(res => {
+                console.log(res)
+                this.productLabelList = res.list
+            }).catch(error => {
+
+            })
+        },
+        transTreeData(data, pid) {
+            var result = [], temp;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].parentId == pid) {
+                    var obj = {"categoryName": data[i].name,"id": data[i].id, 
+                        parentId: data[i].parentId, level: data[i].level, sort: data[i].sort, 
+                        image: data[i].image, enable: data[i].enable, label: data[i].name, value: data[i].id};
+                    temp = this.transTreeData(data, data[i].id);
+                    if (temp.length > 0) {
+                        obj.children = temp;
+                    }
+                    result.push(obj);
+                }
+            }
+            return result;
+        },
+        getCategoryList() {
+            this._apis.goods.fetchCategoryList().then((res) => {
+                let arr = this.transTreeData(res, 0)
+                
+                this.categoryOptions = arr
+            }).catch(error => {
+
+            })
+        },
+        handleChange(value) {
+            
+        },
         itemCatHandleChange(value) {
 
         },

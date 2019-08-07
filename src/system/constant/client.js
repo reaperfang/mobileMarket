@@ -5,7 +5,23 @@ export default {
     //客户标签
     clientSignOps: ['年轻用户','主力用户','常客','重点维护','标签','111','222','3333','44444'],
     //客户渠道
-    clientChannelOps: ['小程序','领取会员卡','微信H5'],
+    clientChannelOps: [
+        {
+            id:'0001',
+            cid: "2",
+            channerlName:"渠道一"
+        },
+        {
+            id:'0002',
+            cid: "2",
+            channerlName:"渠道二"
+        },
+        {
+            id:'0003',
+            cid: "3",
+            channerlName:"渠道三"
+        }
+    ],
     //客户状态
     clientStateOps: ['正常','黑名单'],
     //clientInfo 标签信息
