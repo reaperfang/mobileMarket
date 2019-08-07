@@ -1,14 +1,16 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="发放会员卡" :hasCancel="hasCancel">
         <div class="c_container">
-            <p class="user_id">会员卡：金卡</p>
+            <p class="user_id">会员卡：{{data.name}}</p>
             <div class="clearfix">
                 <p class="c_label fl">发放人群：</p>
-                <div class="fl">
-
+                <div class="fl tags_container">
+                    <el-checkbox-group v-model="checkList">
+                        <el-checkbox v-for="item in tags" :key="item.id" :label="item.tagName"></el-checkbox>
+                    </el-checkbox-group>
                 </div>
             </div> 
-            <p class="red">确定给女性用户、年轻用户发放会员卡：金卡吗？</p>
+            <p class="red">确定给女性用户、年轻用户发放会员卡：{{data.name}}吗？</p>
         </div>
     </DialogBase>
 </template>
@@ -21,21 +23,56 @@ export default {
     data() {
         return {
             hasCancel: true,
-            blackCheck1: false,
-            coupon:""
+            tags: [],
+            checkList: []
         }
     },
     methods: {
         submit() {
-            
+            let tagIds = [];
+            if(this.checkList.length !== 0) {
+                this.checkList.map((v) => {
+                    this.tags.map((item) => {
+                        if(item.tagName == v) {
+                            tagIds.push(item.id);
+                        }
+                    })
+                });
+                tagIds = tagIds.join(',');
+                let params = {
+                    memberLabelInfoIds: tagIds,
+                    cardLevelInfoId: this.data.id,
+                    cardLevel: this.data.level,
+                    name: this.data.name
+                }
+                this._apis.client.sendCard(params).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: '发卡成功',
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }else{
+                this.$notify.info({
+                    title: '提示',
+                    message: '请选择标签'
+                });
+            }
         },
         getLabels() {
-            console.log(1);
             let params = { cid: 2, tagType: null }
             this._apis.client.getLabels(params).then((response) => {
-                console.log(response);
+                this.tags = [].concat(response);
             }).catch((error) => {
-                this.$message.error(error);
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             })
         }
     },
@@ -50,7 +87,11 @@ export default {
         }
     },
     mounted() {
+        this.checkList = [];
         this.getLabels();
+    },
+    create() {
+        
     },
     props: {
         data: {
@@ -67,15 +108,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .el-checkbox{
+    margin-bottom: 10px;
+}
 .user_id{
     text-align: left;
     padding: 0 0 10px 15px;
 }
 .c_label{
-    width: 100px;
-    padding-top: 7px;
+    width: 70px;
 }
-
+.tags_container{
+    width: 464px;
+}
 .check_container{
     text-align: left;
     padding-left: 100px;

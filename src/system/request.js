@@ -74,7 +74,7 @@ class Ajax {
     }else{
       head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dcb6787eb33eb12cb1c6fcad94dcaf01a',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d2003c7958d823e0d50863ef2c5a6e54e',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
