@@ -12,7 +12,7 @@
         <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo" key="base"></component>
         <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]" key="components"></component>
       </transition>
-      <div class="block button">
+      <div class="block button" v-loading="loading">
         <div class="help_blank"></div>
         <div class="buttons">
           <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
@@ -38,7 +38,8 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       utils,
-      currentPageId: this.$route.query.pageId
+      currentPageId: this.$route.query.pageId,
+      loading: false
     }
   },
   computed:{
@@ -90,20 +91,41 @@ export default {
     
     /* 保存数据 */
     saveData() {
+      this.loading = true;
       const resultData = this.collectData();
-      this._apis.shop.editPageInfo(resultData).then((response)=>{
-        this.$notify({
-          title: '成功',
-          message: '编辑成功！',
-          type: 'success'
+      if(this.currentPageId) {
+        this._apis.shop.editPageInfo(resultData).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '编辑成功！',
+            type: 'success'
+          });
+          this._routeTo('pageManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
         });
-        this._routeTo('draftList');
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
+      }else{
+        this._apis.shop.createPage(resultData).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '创建成功！',
+            type: 'success'
+          });
+          this._routeTo('pageManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
         });
-      });
+      }
     },
 
     /* 保存并生效数据 */
@@ -124,7 +146,7 @@ export default {
           pageData.push(componentData);
         }
       }
-      result['pageData'] = JSON.stringify(pageData);
+      result['pageData'] = utils.compileStr(JSON.stringify(pageData));
       return result;
     }
   }

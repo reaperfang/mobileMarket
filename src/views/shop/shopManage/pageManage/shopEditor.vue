@@ -22,6 +22,7 @@ import widgetView from "@/views/shop/decorate/widgetView";
 import editView from "@/views/shop/decorate/editView";
 import propView from "@/views/shop/decorate/propView";
 import decorateDemo from "@/assets/json/decorateDemo.json";
+import utils from "@/utils";
 export default {
   name: "shopEditor",
   props: ["pageId"],
@@ -33,10 +34,9 @@ export default {
     };
   },
   created() {
+    this.$store.commit("clearAllData");
     if (this.currentPageId) {
       this.getDecorateInfo();
-    } else {
-      this.$store.commit("clearAllData");
     }
   },
   mounted() {},
@@ -53,11 +53,10 @@ export default {
   },
   watch: {
     pageId(newValue) {
+      this.$store.commit("clearAllData");
       if (newValue) {
         this.currentPageId = newValue;
         this.getDecorateInfo();
-      } else {
-        this.$store.commit("clearAllData");
       }
     }
   },
@@ -82,7 +81,7 @@ export default {
     convertDecorateData(data) {
       let componentDataIds = [];
       let componentDataMap = {};
-      let pageData = JSON.parse(data.pageData);
+      let pageData = JSON.parse(utils.uncompileStr(data.pageData));
       if(!Array.isArray(pageData)) {
         return;
       }
