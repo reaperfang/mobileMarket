@@ -1,8 +1,8 @@
 <template>
-  <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
+  <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.colorStyle}">
     <div class="phone-head" @click="clickTitle(null)" title="点击编辑页面信息">
       <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
-      <span>{{baseInfo.pageTitle || '页面标题'}}</span>
+      <span>{{baseInfo.name || '页面标题'}}</span>
     </div>
     <div class="phone-body" @click="clickTitle($event)">
        <vuedraggable 

@@ -46,7 +46,7 @@ export function setIndex(data) {
 // 删除页面
 export function deletePages(data) {
   return request({
-    target: 'DECORATION-FION-PAGE-INFO-PROCESSOR',
+    target: 'DECORATION-BATCH-DELETE-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data
@@ -87,6 +87,56 @@ export function editPageInfo(data) {
 export function getClassifyInfo(data) {
   return request({
     target: 'DECORATION-CATEGORY-INFO-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取广告数据
+export function getADInfo(data) {
+  return request({
+    target: 'DECORATION-ADVERTISE-INFO-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 创建广告
+export function createAD(data) {
+  return request({
+    target: 'DECORATION-ADVERTISE-INFO-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 编辑广告数据
+export function editADInfo(data) {
+  return request({
+    target: 'DECORATION-ADVERTISE-INFO-UPDATE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 停用广告
+export function stopAD(data) {
+  return request({
+    target: 'DECORATION-ADVERTISE-INFO-UPDATE-STATUS-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 删除广告
+export function deleteADs(data) {
+  return request({
+    target: 'DECORATION-ADVERTISE-INFO-BATCH-DELETE-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data

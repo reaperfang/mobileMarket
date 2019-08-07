@@ -79,16 +79,8 @@ export default {
 
     /* 转换装修数据 */
     convertDecorateData(data) {
-      let componentDataIds = [];
-      let componentDataMap = {};
-      let pageData = JSON.parse(utils.uncompileStr(data.pageData));
-      if(!Array.isArray(pageData)) {
-        return;
-      }
-      for (let item of pageData) {
-        componentDataIds.push(item.id);
-        componentDataMap[item.id] = item;
-      }
+
+      //还原页面基础信息
       this.$store.commit("setBaseInfo", {
         name: data.name,
         title: data.title,
@@ -97,6 +89,22 @@ export default {
         colorStyle: data.colorStyle,
         pageKey: data.pageKey
       });
+      
+      //还原组件列表
+      let componentDataIds = [];
+      let componentDataMap = {};
+      const string = utils.uncompileStr(data.pageData);
+      if(string.indexOf('id') < 0) {
+        return;
+      }
+      let pageData = JSON.parse(string);
+      if(!Array.isArray(pageData)) {
+        return;
+      }
+      for (let item of pageData) {
+        componentDataIds.push(item.id);
+        componentDataMap[item.id] = item;
+      }
       this.$store.commit("setComponentDataIds", componentDataIds);
       this.$store.commit("setComponentDataMap", componentDataMap);
     }

@@ -3,9 +3,9 @@
     <div class="head-wrapper">
       <el-form ref="ruleForm" :model="ruleForm" label-width="80px" :inline="true">
         <el-form-item label="" prop="pageCategoryInfoId">
-          <el-select v-model="ruleForm.pageCategoryInfoId" placeholder="请选择分类">
-            <el-option label="常用页面" value="1"></el-option>
-            <el-option label="其他页面" value="2"></el-option>
+          <el-select v-if="classifyList.length" v-model="ruleForm.pageCategoryInfoId" placeholder="请选择分类">
+            <el-option label="全部分类" value=""></el-option>
+            <el-option v-for="(item, key) of classifyList" :key="key" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="页面名称" prop="name">
@@ -28,7 +28,12 @@
           type="selection"  
           width="55">
         </el-table-column>
-        <el-table-column prop="name" label="页面名称"></el-table-column>
+        <el-table-column prop="name" label="页面名称">
+          <template slot-scope="scope">
+            {{scope.row.name}} 
+            <span class="index_page_flag" v-if="scope.row.isHomePage == 1">首页</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="title" label="页面标题"></el-table-column>
         <el-table-column prop="pageCategoryName" label="所属分类"></el-table-column>
         <el-table-column prop="vv" label="访客数"></el-table-column>
@@ -74,6 +79,7 @@ export default {
   data () {
     return {
       tableList:[],
+      classifyList: [],
       dialogVisible: false,
       currentDialog: '',
       ruleForm: {
@@ -84,6 +90,7 @@ export default {
     }
   },
   created() {
+    this.getClassifyList();
     this.fetch();
   },
   methods: {
@@ -106,7 +113,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this._apis.shop.deletePages([item.id]).then((response)=>{
+          this._apis.shop.deletePages({ids: [item.id]}).then((response)=>{
             this.$notify({
               title: '成功',
               message: '删除成功！',
@@ -135,12 +142,13 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this._apis.shop.setIndex(item.id).then((response)=>{
+          this._apis.shop.setIndex({id: item.id}).then((response)=>{
             this.$notify({
               title: '成功',
               message: '设置成功！',
               type: 'success'
             });
+            this.fetch();
           }).catch((error)=>{
             this.$notify.error({
               title: '错误',
@@ -154,6 +162,19 @@ export default {
       this._apis.shop.getPageList(this.ruleForm).then((response)=>{
         this.tableList = response.list;
         this.total = response.total;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    },
+
+    
+    //获取分类列表
+    getClassifyList() {
+      this._apis.shop.getClassifyList({startIndex: 1, pageSise: 100}).then((response)=>{
+        this.classifyList = response.list;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
@@ -182,5 +203,11 @@ export default {
 /deep/ thead th{
   background: rgba(230,228,255,1)!important;
   color:#837DFF!important;
+}
+.index_page_flag{
+  color:rgba(182,130,255,1);
+  padding:0px 5px;
+  border:1px solid rgba(182,130,255,1);
+  font-size:12px;
 }
 </style>

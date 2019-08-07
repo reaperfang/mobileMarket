@@ -107,7 +107,19 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.stopAD({id: item.id}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '停用成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 
@@ -118,7 +130,19 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.deleteADs({advertiseIds: [item.id]}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '删除成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 

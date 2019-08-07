@@ -48,6 +48,19 @@ export default {
   methods: {
 
     fetch() {
+
+      // this.loading = true;
+      // this._apis.shop.getShopStyle({}).then((response)=>{
+      //   this.ruleForm = response;
+      //   this.loading = false;
+      // }).catch((error)=>{
+      //   this.$notify.error({
+      //     title: '错误',
+      //     message: error
+      //   });
+      //   this.loading = false;
+      // });
+
       this.styleList = [
         {
           id: 1,

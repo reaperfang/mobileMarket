@@ -3,9 +3,9 @@
     <div class="head-wrapper">
       <el-form ref="ruleForm" :model="ruleForm" label-width="80px" :inline="true">
         <el-form-item label="" prop="classify">
-          <el-select v-model="ruleForm.classify" placeholder="请选择分类">
-            <el-option label="常用页面" value="1"></el-option>
-            <el-option label="其他页面" value="2"></el-option>
+          <el-select v-if="classifyList.length" v-model="ruleForm.pageCategoryInfoId" placeholder="请选择分类">
+            <el-option label="全部分类" value=""></el-option>
+            <el-option v-for="(item, key) of classifyList" :key="key" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="页面名称" prop="name">
@@ -70,6 +70,7 @@ export default {
   data () {
     return {
       tableList:[],
+      classifyList: [],
        ruleForm: {
         status: '1',
         pageCategoryInfoId: '',
@@ -78,6 +79,7 @@ export default {
     }
   },
   created() {
+    this.getClassifyList();
     this.fetch();
   },
   methods: {
@@ -119,6 +121,19 @@ export default {
       this._apis.shop.getPageList(this.ruleForm).then((response)=>{
         this.tableList = response.list;
         this.total = response.total;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    },
+
+    
+    //获取分类列表
+    getClassifyList() {
+      this._apis.shop.getClassifyList({startIndex: 1, pageSise: 100}).then((response)=>{
+        this.classifyList = response.list;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',

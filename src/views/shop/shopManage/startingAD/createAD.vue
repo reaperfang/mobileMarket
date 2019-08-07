@@ -7,12 +7,12 @@
       </div>
       <div class="phone-body">
         <div class="img_wrapper">
-          <img :src="ruleForm.adImg" alt="">
+          <img :src="ruleForm.imagePath" alt="">
           <i></i>
         </div>
       </div>
     </div>
-    <div class="module props">
+    <div class="module props" v-loading="loading">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
         <div class="block header">
           <p class="title">启动设置</p>
@@ -26,35 +26,37 @@
               <el-radio :label="3">微页面分类</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="广告名称" prop="adName">
-             <el-input v-model="ruleForm.adName" placeholder="请输入广告标题"></el-input>
+          <el-form-item label="广告名称" prop="name">
+             <el-input v-model="ruleForm.name" placeholder="请输入广告名称"></el-input>
           </el-form-item>
-          <el-form-item label="广告图片" prop="adImg">
-            <div class="img_preview" v-if="ruleForm.adImg">
-              <img :src="ruleForm.adImg" alt="">
+          <el-form-item label="广告图片" prop="imagePath">
+            <div class="img_preview" v-if="ruleForm.imagePath">
+              <img :src="ruleForm.imagePath" alt="">
               <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
             </div>
-            <div class="add_button" v-if="!ruleForm.adImg" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
+            <div class="add_button" v-if="!ruleForm.imagePath" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
               <i class="inner"></i>
             </div>
             <span class="upload_tips">建议尺寸:640 * 350 , 请将所有广告图片尺寸保持一致，图片只能选择一张</span>
           </el-form-item>
-          <el-form-item label="广告链接" prop="adLink">
+          <el-form-item label="广告链接" prop="advertiseUrl">
             <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
           </el-form-item>
           <el-form-item label="展示时间" prop="">
             <div>
               <el-date-picker
-                v-model="ruleForm.showTimeStart"
+                v-model="ruleForm.startTime"
                 type="date"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择日期">
               </el-date-picker>
             </div>
             至
             <div>
               <el-date-picker
-                v-model="ruleForm.showTimeEnd"
+                v-model="ruleForm.endTime"
                 type="date"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择日期">
               </el-date-picker>
             </div>
@@ -81,27 +83,30 @@ export default {
   components: {dialogSelectImageMaterial, dialogSelectJumpPage},
   data () {
     return {
-      id: this.$route.query.ADId || '',
+      currentADId: this.$route.query.ADId || '',
       dialogVisible: false,
       currentDialog: '',
+      loading: false,
       ruleForm: {
         showPage: 1,
-        adName: '',
-        adImg: '',
-        adLink: '',
-        showTimeStart: '',
-        showTimeEnd: '',
+        name: '',
+        imagePath: '',
+        advertiseUrl: '',
+        startTime: '',
+        endTime: '',
       },
       rules: {}
     }
   },
   created() {
-
+    if(this.currentADId) {
+      this.getADdetail(); 
+    }
   },
   methods: {
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.adImg= dialogData.src;
+      this.ruleForm.imagePath= dialogData.src;
     },
 
     /* 弹窗选中了跳转链接 */
@@ -109,9 +114,57 @@ export default {
       console.log(jumpLink);
     },
 
+    /* 获取广告详情 */
+    getADdetail() {
+      this.loading = true;
+      this._apis.shop.getADInfo({id: this.currentADId}).then((response)=>{
+        this.ruleForm = response;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
+
     /* 保存图片广告数据 */
     saveData() {
-      console.log(this.id, this.ruleForm);
+      this.loading = true;
+      if(this.currentADId) {
+        this._apis.shop.editADInfo(this.ruleForm).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '编辑成功！',
+            type: 'success'
+          });
+          this._routeTo('ADManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
+      }else{
+        this._apis.shop.createAD(this.ruleForm).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '创建成功！',
+            type: 'success'
+          });
+          this._routeTo('ADManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
+      }
     }
   }
 }
