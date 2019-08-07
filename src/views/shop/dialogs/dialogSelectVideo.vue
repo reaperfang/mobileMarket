@@ -77,7 +77,7 @@ export default {
       this.videoList = [
          {
           id: uuid(),
-          videoUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564155770253&di=f38112c9d66f6693432e18152abe5aa7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201203%2F05%2F20120305205212_MNNcA.jpeg',
+          videoUrl: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
           title: '美丽的天空之境',
           desc: '这是商品描述',
           createTime: '08-23',
@@ -85,7 +85,7 @@ export default {
         },
         {
           id: uuid(),
-          videoUrl: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3145803195,449702013&fm=26&gp=0.jpg',
+          videoUrl: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
           title: '美丽的天空之境2',
           desc: '这是商品描述2',
           createTime: '08-23',
@@ -93,7 +93,7 @@ export default {
         },
         {
           id: uuid(),
-          videoUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564572685339&di=ff049acfab811f03c18bdd703062a3b1&imgtype=0&src=http%3A%2F%2Fpic167.nipic.com%2Ffile%2F20180531%2F26934386_161955347000_2.jpg',
+          videoUrl: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
           title: '美丽的天空之境3',
           desc: '这是商品描述2',
           createTime: '08-23',

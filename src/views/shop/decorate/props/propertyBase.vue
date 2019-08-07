@@ -65,6 +65,18 @@ export default {
   created() {
     this.getClassifyList();
   },
+  watch: {
+    data: {
+      handler(newValue) {
+        this.ruleForm = this.data;
+        this.$emit('change', {
+          type: 'base',
+          data: this.ruleForm
+        });
+      },
+      deep: true
+    }
+  },
   methods: {
 
     /* 初始化表单数据 */

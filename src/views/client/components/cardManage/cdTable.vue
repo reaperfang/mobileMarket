@@ -43,20 +43,20 @@
       <el-table-column
         label="状态">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.enable" @change="changeSwitch($event,scope)"></el-switch>
+          <el-switch v-model="scope.row.enable" @change="changeSwitch($event,scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
             <div class="btns clearfix">
-                <span v-if="scope.row.name">编辑</span>
+                <span v-if="scope.row.name" @click="goToEdit(scope.row)">编辑</span>
                 <span v-if="scope.row.name" @click="sendCard(scope.row)">发卡</span>
-                <span v-if="!scope.row.name">待配置</span>
+                <span v-if="!scope.row.name" :style="{color: scope.row.isGray ? '#eee':'#655EFF'}" @click="handleConfig(scope.row.isGray)">待配置</span>
             </div>
         </template>
       </el-table-column>
     </el-table>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" v-if="hackReset"></component>
   </div>
 </template>
 <script type='es6'>
@@ -71,36 +71,58 @@ export default {
     return {
       currentDialog: "",
       dialogVisible: false,
-      currentData: {}
+      currentData: {},
+      hackReset: false
     };
   },
   methods: {
-    getCardList() {
-      this.cardList.map((v) => {
-        v.validity = "永久有效";
-      });
-    },
-    changeSwitch(event,scope) {
-      console.log(event);
+    changeSwitch(event,row) {
+      let enable = event ? 0:1;
+      this._apis.client.toggleStatus({id:row.id, enable: enable}).then((response) => {
+        this.$notify({
+          title: '成功',
+          message: "切换成功",
+          type: 'success'
+        });
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
     sendCard(row) {
+      this.hackReset = false;
+      this.$nextTick(() => {
+        this.hackReset = true;
+      })
       this.dialogVisible = true;
       this.currentDialog = "sendCardDialog";
+      this.currentData.name = row.name;
+      this.currentData.id = row.id;
+      this.currentData.level = row.level;
     },
-    test() {
-      this.dialogVisible = true;
-      this.currentDialog = "sendCardDialog";
+    getFirstConfig() {
+      let i = this.cardList.findIndex((value,index,arr) => {
+        return value.name == "";
+      });
+      this.$set(this.cardList[i], 'isGray', false);
+    },
+    handleConfig(isGray) {
+      console.log(isGray);
+    },
+    goToEdit(row) {
+      this._routeTo('createCard',{cardData:row});
     }
   },
   computed: {
     
   },
   created() {
-
+    
   },
   mounted() {
-    this.getCardList();
-    //console.log(this.cardList);
+    
   }
 };
 </script>
@@ -109,7 +131,7 @@ export default {
             .btns{
                 span{
                     color: #655EFF;
-                    margin-right: 5px;
+                    margin-right: 15px;
                     cursor: pointer;
                 }
             }
