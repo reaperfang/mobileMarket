@@ -58,7 +58,23 @@ export function getDataNumRs(data) {
 }
 
 //收支明细 -------
+export function getListRe(data) {
+    return request({
+      target: 'FINANCIAL-TRADE-RECORD-PAGE-PROCESSOR',
+      method: 'post',
+      apiType: 'finance',
+      data
+    })
+}
 
+export function exportTaRe(data) {
+    return request({
+      target: 'FINANCIAL-TRADE-EXPORT-PROCESSOR',
+      method: 'post',
+      apiType: 'finance',
+      data
+    })
+}
 
 
 
