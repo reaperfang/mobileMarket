@@ -57,7 +57,52 @@ export function getCardNames(data) {
 //客户渠道下拉
 export function getChannels(data) {
     return request({
-        target:'MEMBER-SOURCECHANNELADD-PROCESSOR',
+        target:'MEMBER-SOURCECHANNELLIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//客户列表
+export function getMemberList(data) {
+    return request({
+        target:'MEMBER-INFO-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//删除客户
+export function deleteMember(data) {
+    return request({
+        target:'MEMBER-INFO-DEL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//打标签
+export function markLabel(data) {
+    return request({
+        target:'MEMBER-INFO-MARKLABEL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//批量删除
+export function batchDeleteMember(data) {
+    return request({
+        target:'MEMBER-INFO-DEL-BATCH-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//批量打标签
+export function batchMarkLabel(data) {
+    return request({
+        target:'MEMBER-INFO-MARKLABELBATCH-PROCESSOR',
         method: 'post',
         apiType: 'member',
         data
