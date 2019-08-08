@@ -77,7 +77,19 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.deleteClassifys({ids: [item.id]}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '删除成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 

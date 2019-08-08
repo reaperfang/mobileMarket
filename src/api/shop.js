@@ -23,6 +23,16 @@ export function getClassifyList(data) {
   })
 }
 
+// 批量删除分类
+export function deleteClassifys(data) {
+  return request({
+    target: '',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 // 启动广告列表
 export function getADList(data) {
   return request({
@@ -47,6 +57,16 @@ export function setIndex(data) {
 export function deletePages(data) {
   return request({
     target: 'DECORATION-BATCH-DELETE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 复制页面
+export function copyPage(data) {
+  return request({
+    target: '',
     method: 'post',
     apiType: 'decorate',
     data

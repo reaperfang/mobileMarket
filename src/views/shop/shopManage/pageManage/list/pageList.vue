@@ -102,7 +102,19 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.copyPage({id: item.id}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '复制成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 
