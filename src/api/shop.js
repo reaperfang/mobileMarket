@@ -146,7 +146,7 @@ export function editADInfo(data) {
 // 停用广告
 export function stopAD(data) {
   return request({
-    target: 'DECORATION-ADVERTISE-INFO-UPDATE-STATUS-PROCESSOR',
+    target: '',
     method: 'post',
     apiType: 'decorate',
     data

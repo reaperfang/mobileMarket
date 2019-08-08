@@ -64,7 +64,6 @@ export default {
       this.styleList = [
         {
           id: 1,
-          mainColor:'',
           colors: ['rgba(251,68,67,1)', 'rgba(253,135,84,1)', 'rgba(255,255,255,1)'],
         },
         {

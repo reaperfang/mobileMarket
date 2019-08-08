@@ -14,8 +14,8 @@
           <el-select v-model="ruleForm.status" placeholder="请选择广告状态">
             <el-option label="全部广告" :value="''"></el-option>
             <el-option label="展示中" :value="0"></el-option>
-            <el-option label="已过期" :value="2"></el-option>
             <el-option label="排期中" :value="1"></el-option>
+            <el-option label="已过期" :value="2"></el-option>
             <el-option label="停用" :value="3"></el-option>
           </el-select>
         </el-form-item>
@@ -54,7 +54,9 @@
         <el-table-column prop="createUserName" label="操作账号"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
-            <span class="table-btn" @click="stopAD(scope.row)">停用</span>
+            <span class="table-btn" v-if="scope.row.status === 3" @click="startAD(scope.row)">启用</span>
+            <span class="table-btn" v-else-if="scope.row.status === 0 || scope.row.status === 1" @click="stopAD(scope.row)">停用</span>
+            <span class="table-btn" v-else>---</span>
             <span class="table-btn" @click="_routeTo('createAD', {ADId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deleteAD(scope.row)">删除</span>
           </template>
@@ -99,6 +101,29 @@ export default {
     this.fetch();
   },
   methods: {
+
+    /* 启用广告 */
+    startAD(item) {
+      this.$confirm('确定停用此广告吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this._apis.shop.startAD({id: item.id}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '启用成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
+        })
+    },
 
     /* 停用广告 */
     stopAD(item) {
