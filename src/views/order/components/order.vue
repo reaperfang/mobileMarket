@@ -14,50 +14,50 @@
             <div class="item">操作</div>
         </div>
         <div class="order-container">
-            <div class="container-item" v-for="(order, index) in orderList" :key="index">
+            <div class="container-item" v-for="(order, index) in list" :key="index">
                 <div class="container-item-header">
                     <div class="item">
-                        <el-checkbox v-model="order.checked"></el-checkbox>
-                        <span>订单编号：{{order.number}}/下单时间：{{order.orderTime}}</span>
+                        <el-checkbox @change="checkedChange" v-model="order.checked"></el-checkbox>
+                        <span>订单编号：{{order.code}}/下单时间：{{order.createTime}}</span>
                     </div>
                     <div class="item righter">
-                        <span>订单类型：{{order.orderMode}}</span>
-                        <span>客户：{{order.customer}}</span>
-                        <span>订单来源：{{order.origin}}</span>
+                        <span>订单类型：{{order.orderType}}</span>
+                        <span>客户：{{order.receivedName}}</span>
+                        <span>订单来源：{{order.channelName}}</span>
                     </div>
                 </div>
                 <div class="container-item-content">
                     <div class="item goods">
                         <ul>
-                            <li class="goods-li" v-for="(goods, index) in order.goodsList" :key="index">
+                            <li class="goods-li" v-for="(goods, index) in order.orderItem" :key="index">
                                 <div class="row justify-between align-center goods-box">
                                     <div class="col">
                                         <div class="row align-center">
                                             <div class="col image-box">
-                                                <img src="../../../assets/images/order/apple.png" alt="">
+                                                <img :src="goods.goodsImage" alt="">
                                             </div>
                                             <div class="col">
                                                 <p>{{goods.goodsName}}</p>
-                                                <p>{{goods.spec}}</p>
+                                                <p>{{goods.goodsSpecs}}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        {{goods.quantity}}
+                                        {{goods.goodsCount}}
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                     <div class="item">
-                        <p class="pay-amount">实付：¥{{order.payAmount}}</p>
-                        <p class="payment-mode">{{order.paymentMode}}</p>
+                        <p class="pay-amount">实收：¥{{order.actualMoney}}</p>
+                        <p class="payment-mode">{{order.channelName}}</p>
                     </div>
-                    <div class="item">{{order.receiver}}/{{order.mobile}}</div>
-                    <div class="item">{{order.shippingMethod}}</div>
-                    <div class="item">{{order.state}}</div>
+                    <div class="item">{{order.receivedName}}/{{order.receivedPhone}}</div>
+                    <div class="item">{{order.deliveryWay}}</div>
+                    <div class="item">{{order.orderStatus}}</div>
                     <div class="item operate">
-                        <div @click="$router.push('/order/orderDetail')">查看详情</div>
+                        <div @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</div>
                         <div class="delivery">发货信息</div>
                     </div>
                 </div>
@@ -99,6 +99,18 @@ export default {
                 }
             ]
         }
+    },
+    methods: {
+        checkedChange() {
+            let len = this.list.filter(val => val.checked).length
+
+            this._globalEvent.$emit('checkedLength', len)
+        }
+    },
+    props: {
+        list: {
+            type: Array
+        }
     }
 }
 </script>
@@ -122,6 +134,7 @@ export default {
             .container-item {
                 border: 1px solid rgb(202, 207, 203);
                 border-radius:10px;
+                margin-bottom: 20px;
                 .container-item-header {
                     display: flex;
                     justify-content: space-between;
