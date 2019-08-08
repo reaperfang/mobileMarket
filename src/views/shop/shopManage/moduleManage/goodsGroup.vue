@@ -186,8 +186,8 @@
         </div>
 
         <div class="block button">
-          <el-button type="primary">保存并生效</el-button>
-          <el-button>保    存</el-button>
+          <el-button type="primary" @click="submit">保存并生效</el-button>
+          <el-button @click="submit">保    存</el-button>
           <el-button>预    览  </el-button>
         </div>
 
@@ -269,6 +269,41 @@ export default {
         }else if(value === 'circleAngle') {
           imgs[i].style.borderRadius = '10px';
         }
+      }
+    },
+
+    submit() {
+      this.loading = true;
+      if(this.currentPageId) {
+        this._apis.shop.editShopGroup(this.ruleForm).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '编辑成功！',
+            type: 'success'
+          });
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
+      }else{
+        this._apis.shop.createShopGroup(this.ruleForm).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '创建成功！',
+            type: 'success'
+          });
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
       }
     }
   }

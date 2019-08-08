@@ -66,7 +66,7 @@ export function deletePages(data) {
 // 复制页面
 export function copyPage(data) {
   return request({
-    target: '',
+    target: 'DECORATION-PAGEINFO-COPY-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data

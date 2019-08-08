@@ -19,8 +19,8 @@
           <p class="state">生效中</p>
         </div>
         <div class="block form">
-          <el-form-item label="出现样式" prop="showPage">
-            <el-radio-group v-model="ruleForm.showPage">
+          <el-form-item label="出现样式" prop="pageInfoIds">
+            <el-radio-group v-model="ruleForm.pageInfoIds">
               <el-radio :label="1">首页</el-radio>
               <el-radio :label="2">微页面</el-radio>
               <el-radio :label="3">微页面分类</el-radio>
@@ -88,7 +88,7 @@ export default {
       currentDialog: '',
       loading: false,
       ruleForm: {
-        showPage: 1,
+        pageInfoIds: 1,
         name: '',
         imagePath: '',
         advertiseUrl: '',
