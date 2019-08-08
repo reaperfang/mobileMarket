@@ -186,8 +186,8 @@
         </div>
 
         <div class="block button">
-          <el-button type="primary" @click="submit">保存并生效</el-button>
-          <el-button @click="submit">保    存</el-button>
+          <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
+          <el-button @click="save">保    存</el-button>
           <el-button>预    览  </el-button>
         </div>
 
@@ -214,6 +214,9 @@ export default {
       },
       rules: {}
     };
+  },
+  created() {
+    this.fetch();
   },
   mounted() {
     this.setFont();
@@ -272,39 +275,57 @@ export default {
       }
     },
 
-    submit() {
+    fetch() {
       this.loading = true;
-      if(this.currentPageId) {
-        this._apis.shop.editShopGroup(this.ruleForm).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '编辑成功！',
-            type: 'success'
-          });
-          this.loading = false;
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
-          this.loading = false;
+      this._apis.shop.getGoodsGroup({}).then((response)=>{
+        const pageData = JSON.parse(response.pageData);
+        if(pageData && pageData.groupStyle) {
+          this.ruleForm = pageData;
+        }
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
         });
-      }else{
-        this._apis.shop.createShopGroup(this.ruleForm).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '创建成功！',
-            type: 'success'
-          });
-          this.loading = false;
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
-          this.loading = false;
+        this.loading = false;
+      });
+    },
+
+    /* 保存并生效 */
+    saveAndApply() {
+      this.submit({
+        status: '0',
+        pageKey: '',
+        pageData: JSON.stringify(this.ruleForm)
+      });
+    },
+
+    /* 保存 */
+    save() {
+       this.submit({
+        status: '1',
+        pageKey: '',
+        pageData: JSON.stringify(this.ruleForm)
+      });
+    },
+
+    submit(params) {
+      this.loading = true;
+      this._apis.shop.editGoodsGroup(params).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '编辑成功！',
+          type: 'success'
         });
-      }
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     }
   }
 };

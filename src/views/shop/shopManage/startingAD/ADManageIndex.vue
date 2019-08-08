@@ -45,13 +45,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="广告名称"></el-table-column>
+        <el-table-column prop="name" label="广告名称" :width="'200px'"></el-table-column>
         <el-table-column prop="vv" label="访客数"></el-table-column>
         <el-table-column prop="pv" label="浏览数"></el-table-column>
         <el-table-column prop="updateTime" label="展示时间" :width="'400px'"></el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
-        <el-table-column prop="startTime" label="创建时间"></el-table-column>
-        <el-table-column prop="createUserName" label="操作账号"></el-table-column>
+        <el-table-column prop="startTime" label="创建时间"  :width="'200px'"></el-table-column>
+        <el-table-column prop="createUserName" label="操作账号"  :width="'150px'"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
             <span class="table-btn" v-if="scope.row.status === 3" @click="startAD(scope.row)">启用</span>
@@ -109,18 +109,9 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this._apis.shop.startAD({id: item.id}).then((response)=>{
-            this.$notify({
-              title: '成功',
-              message: '启用成功！',
-              type: 'success'
-            });
-            this.fetch();
-          }).catch((error)=>{
-            this.$notify.error({
-              title: '错误',
-              message: error
-            });
+          this.startStopAD({
+            id: item.id,
+            status: '1'
           });
         })
     },
@@ -132,20 +123,28 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this._apis.shop.stopAD({id: item.id}).then((response)=>{
-            this.$notify({
-              title: '成功',
-              message: '停用成功！',
-              type: 'success'
-            });
-            this.fetch();
-          }).catch((error)=>{
-            this.$notify.error({
-              title: '错误',
-              message: error
-            });
+          this.startStopAD({
+            id: item.id,
+            status: '3'
           });
         })
+    },
+
+    /* 启停广告 */
+    startStopAD(params) {
+      this._apis.shop.stopAndStopAD(params).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '操作成功！',
+          type: 'success'
+        });
+        this.fetch();
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     },
 
     /* 删除广告 */
@@ -220,8 +219,8 @@ export default {
     flex-direction: row;
     align-items: center;
     img{
-      width:50px;
-      height:30px;
+      width:40px;
+      height:50px;
       margin-right:10px;
     }
 }

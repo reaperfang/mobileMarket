@@ -77,7 +77,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this._apis.shop.deleteClassifys({ids: [item.id]}).then((response)=>{
+          this._apis.shop.deleteClassifys({id: item.id}).then((response)=>{
             this.$notify({
               title: '成功',
               message: '删除成功！',

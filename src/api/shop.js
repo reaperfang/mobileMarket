@@ -23,10 +23,20 @@ export function getClassifyList(data) {
   })
 }
 
-// 批量删除分类
+// 下拉分类列表
+export function selectAllClassify(data) {
+  return request({
+    target: 'DECORATION-CATEGORY-SELECT-ALL-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 删除分类
 export function deleteClassifys(data) {
   return request({
-    target: '',
+    target: 'DECORATION-CATEGORY-INFO-DELETE-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data
@@ -143,10 +153,10 @@ export function editADInfo(data) {
   })
 }
 
-// 停用广告
-export function stopAD(data) {
+// 启停广告
+export function stopAndStopAD(data) {
   return request({
-    target: '',
+    target: 'DECORATION-ADVERTISE-INFO-UPDATE-STATUS-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data
@@ -157,6 +167,66 @@ export function stopAD(data) {
 export function deleteADs(data) {
   return request({
     target: 'DECORATION-ADVERTISE-INFO-BATCH-DELETE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取店铺风格
+export function getShopStyle(data) {
+  return request({
+    target: 'DECORATION-PAGE-COLOR-STYLE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 设置店铺风格
+export function setShopStyle(data) {
+  return request({
+    target: 'DECORATION-PAGE-COLOR-STYLE-SAVEP-ROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取商品分组页面数据
+export function getGoodsGroup(data) {
+  return request({
+    target: 'DECORATION-PAGEINFO-COMMODITY-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 编辑商品分组页面数据
+export function editGoodsGroup(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-COMMODITY-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取店铺导航数据
+export function getShopNav(data) {
+  return request({
+    target: 'DECORATION-PAGE-NAVIGATION-CONFIG-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 编辑店铺导航数据
+export function editShopNav(data) {
+  return request({
+    target: 'DECORATION-PAGE-NAVIGATION-CONFIG-SAVE-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data
