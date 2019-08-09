@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-tabs v-model="currentTab">
-      <el-tab-pane label="店铺导航" name="h5Nav"></el-tab-pane>
-      <el-tab-pane label="小程序导航" name="miniProgramNav"></el-tab-pane>
+    <el-tabs v-model="navigation_type">
+      <el-tab-pane label="店铺导航" name="0"></el-tab-pane>
+      <el-tab-pane label="小程序导航" name="1"></el-tab-pane>
     </el-tabs>
     <div class="on_off">
       <p>店铺的各个页面可以通过导航串联起来。通过精心设置的导航，方便买家在栏目间快速切换，引导买家前往你期望的页面。  </p>
@@ -13,41 +13,41 @@
       </el-switch>
     </div>
     <div class="group-wrapper">
+
+      <!-- 预览区 -->
       <div class="module view" ref="groupWrapper">
+
+        <!-- 手机头部 -->
         <div class="phone-head">
           <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt />
-          <span>{{baseInfo.pageTitle || '页面标题'}}</span>
+          <span>页面标题</span>
         </div>
+
+        <!-- 手机中部 -->
         <div class="phone-body">
-          <div class="component_wrapper" v-for="(item, key) of componentDataIds" :key="key">
-            <component
-              v-if="allTemplateLoaded"
-              :is="templateList[getComponentData(item).type]"
-              :key="key"
-              :data="getComponentData(item)"
-            ></component>
-            {{getComponentData(item).title}}
-          </div>
+          <img :src="require('../../../assets/images/shop/shopNav.png')" alt="">
         </div>
+
+        <!-- 手机底部 -->
         <div class="phone-footer">
           <ul class="navs type1" v-if="ruleForm.navStyle.id == 1">
-            <li v-for="(item, key) in ruleForm.navList" :class="{'active': item.active}" :key="key" @click="selectNav(item)">
-              <img :src="item.navIcon" alt="">
-              <span>{{item.navName}}</span>
+            <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
+              <img :src="ruleForm.navMap[item].navIcon" alt="">
+              <span>{{ruleForm.navMap[item].navName}}</span>
             </li>
           </ul>
           <ul class="navs type2" v-if="ruleForm.navStyle.id == 2">
-            <li v-for="(item, key) in ruleForm.navList" :class="{'active': item.active}" :key="key" @click="selectNav(item)">
-              <img :src="item.navIcon" alt="">
+            <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
+              <img :src="navMap[item].navIcon" alt="">
             </li>
           </ul>
           <ul class="navs type3" v-if="ruleForm.navStyle.id == 3">
             <div class="keyboard">
               <i class="el-icon-platform-eleme"></i>
             </div>
-            <li v-for="(item, key) in ruleForm.navList" :class="{'active': item.active}" :key="key" @click="selectNav(item)">
+            <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
               <i class="el-icon-notebook-2"></i>
-              <span>{{item.navName}}</span>
+              <span>{{ruleForm.navMap[item].navName}}</span>
             </li>
           </ul>
           <ul class="navs type4" v-if="ruleForm.navStyle.id == 4">
@@ -59,11 +59,13 @@
           </div>
         </div>
       </div>
+
+      <!-- 右侧属性区 -->
       <div class="module props">
         <el-form :model="currentNav" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
           <div class="block header">
             <p class="title">导航设置</p>
-            <p class="state">生效中</p>
+            <p class="state" @click="deleteNav" style="cursor:pointer;">删除导航</p>
           </div>
           <div class="block form">
             <el-form-item label="导航名称" prop="navName">
@@ -79,27 +81,30 @@
               </div>
               建议尺寸：750*370，尺寸不匹配时，图片将被压缩或拉伸以铺满四周
             </el-form-item>
-            <el-form-item label="导航链接" prop="navLinkType">
+            <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '0'">
               <el-radio-group v-model="currentNav.navLinkType">
                 <el-radio :label="1">系统链接</el-radio>
                 <el-radio :label="2">自定义链接</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="" prop="navLinkUrl">
+            <el-form-item label="" prop="navLinkUrl" v-if="navigation_type === '0'">
               <div v-if="currentNav.navLinkType == 1">
                 <span>链接地址：</span>
                 <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
-                  <el-option label="首页" :value="1"></el-option>
-                  <el-option label="购物车" :value="2"></el-option>
-                  <el-option label="个人中心" :value="3"></el-option>
-                  <el-option label="微页面" :value="4"></el-option>
-                  <el-option label="微页面分类" :value="5"></el-option>
-                  <el-option label="商品" :value="6"></el-option>
-                  <el-option label="商品分类" :value="7"></el-option>
-                  <el-option label="营销活动" :value="8"></el-option>
+                  <el-option label="首页" value="1"></el-option>
+                  <el-option label="购物车" value="2"></el-option>
+                  <el-option label="个人中心" value="3"></el-option>
+                  <el-option label="全部商品" value="4"></el-option>
+                  <el-option label="全部分类" value="5"></el-option>
+                  <el-option label="微信客服" value="6"></el-option>
+                  <el-option label="微页面" value="7"></el-option>
+                  <el-option label="微页面分类" value="8"></el-option>
+                  <el-option label="指定商品" value="9"></el-option>
+                  <el-option label="指定商品分类" value="10"></el-option>
+                  <el-option label="营销活动" value="11"></el-option>
                 </el-select>
               </div>
-              <div v-else>
+              <div v-else >
                 <span>链接地址：</span>
                 <el-input style="width:150px" v-model="currentNav.customNavLinkUrl" placeholder="请输入链接地址"></el-input>
               </div>
@@ -111,14 +116,29 @@
                 {{tag.title}}
               </el-tag> -->
             </el-form-item>
+            <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '1'">
+              <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
+                <el-option label="首页" value="1"></el-option>
+                <el-option label="购物车" value="2"></el-option>
+                <el-option label="个人中心" value="3"></el-option>
+                <el-option label="全部商品" value="4"></el-option>
+                <el-option label="全部分类" value="5"></el-option>
+                <el-option label="微信客服" value="6"></el-option>
+                <el-option label="微页面" value="7"></el-option>
+                <el-option label="微页面分类" value="8"></el-option>
+                <el-option label="指定商品" value="9"></el-option>
+                <el-option label="指定商品分类" value="10"></el-option>
+                <el-option label="营销活动" value="11"></el-option>
+              </el-select>
+            </el-form-item>
           </div>
 
 
-          <div class="block header">
+          <div class="block header" v-if="navigation_type === '0'">
             <p class="title">全局设置</p>
             <p class="state"></p>
           </div>
-          <div class="block form">
+          <div class="block form" v-if="navigation_type === '0'">
             <el-form-item label="导航风格" prop="navStyle">
               公众号样式
               <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectNavTemplate'">修改</el-button>
@@ -134,17 +154,46 @@
             </el-form-item>
           </div>
 
+          <div class="block header" v-if="navigation_type === '1'">
+            <p class="title">导航样式设置</p>
+            <p class="state"></p>
+          </div>
+          <div class="block form" v-if="navigation_type === '1'">
+            <el-form-item label="背景颜色" prop="backgroundColor">
+              <div class="color_block">
+                <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
+                <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
+                <el-button type="text">重置</el-button>
+              </div>
+            </el-form-item>
+            <el-form-item label="选中文字颜色" prop="activeColor">
+              <div class="color_block">
+                <el-input v-model="ruleForm.activeColor" :disabled="true"></el-input>
+                <colorPicker  v-model="ruleForm.activeColor"></colorPicker >
+                <el-button type="text">重置</el-button>
+              </div>
+            </el-form-item>
+            <el-form-item label="未选中文字颜色" prop="unactiveColor">
+              <div class="color_block">
+                <el-input v-model="ruleForm.unactiveColor" :disabled="true"></el-input>
+                <colorPicker  v-model="ruleForm.unactiveColor"></colorPicker >
+                <el-button type="text">重置</el-button>
+              </div>
+            </el-form-item>
+          </div>
+
           <div class="block button">
             <div class="help_blank"></div>
             <div class="buttons">
-              <el-button @click="saveAndApplyData">保存并启用</el-button>
-              <el-button @click="saveData">暂    存</el-button>
+              <el-button @click="saveAndApply">保存并启用</el-button>
+              <el-button @click="save">暂    存</el-button>
               <el-button @click="resetData">重    置</el-button>
             </div>
           </div>
 
         </el-form>
       </div>
+        <!-- {{ruleForm}} -->
       <!-- 动态弹窗 -->
       <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
     </div>
@@ -155,8 +204,6 @@
 import dialogSelectImageMaterial from '../dialogs/dialogSelectImageMaterial';
 import dialogSelectNavTemplate from '../dialogs/dialogSelectNavTemplate';
 import utils from "@/utils";
-import widget from "@/system/constant/widget";
-import decorateDemo from "@/assets/json/decorateDemo.json";
 import uuid from 'uuid/v4';
 export default {
   name: 'shopNav',
@@ -165,79 +212,36 @@ export default {
     return {
       dialogVisible: false,
       currentDialog: '',
-      currentTab: 'h5Nav',  //导航类型
+      navigation_type: '0',  //导航类型
       utils,
-      allTemplateLoaded: false,
-      templateList: {}, //模板对象列表
       ruleForm: {
         openNav: true,   //系统-是否打开导航
         navStyle: {id:1},  //系统-全局导航样式
         applyPage: ['1','2','3'],  //系统-应用页面
-        navList: {}
+        navIds: [],
+        navMap: {}
       },
       rules: {},
-      currentNav: null,  //当前导航对象
-      navLength: 0  //导航个数
+      currentNav: null  //当前导航对象
     }
   },
   computed: {
-    currentComponentId() {
-      return this.$store.getters.currentComponentId;
-    },
-    componentDataIds() {
-      return this.$store.getters.componentDataIds;
-    },
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    },
-    baseInfo() {
-      return this.$store.getters.baseInfo;
-    }
   },
   watch: {
     currentNav: {
       handler(newValue) {
-        if(this.ruleForm.navList[newValue.id]) {
-          this.ruleForm.navList[newValue.id] = newValue;
+        if(this.ruleForm.navMap[newValue.id]) {
+          this.ruleForm.navMap[newValue.id] = newValue;
         }
       },
       depp: true
     }
   },
   created() {
-    this.convertDecorateData(decorateDemo['custom1']);
-    this.loadTemplateLists();
-    this.initNavList();
+    this.initnavMap();
+    this.fetch();
   },
   methods: {
-
-     /* 获取装修组件数据 */
-    getComponentData(id) {
-      return this.componentDataMap[id];
-    },
-
-    /*  加载装修模板列表 */
-    loadTemplateLists() {
-      let loadedLength = 0;
-      const widgetList = widget.getWidgetList();
-      for (let item of widgetList) {
-        import(`@/views/shop/decorate/comps/component${this.utils.titleCase(item)}.vue`)
-          .then(loadedComponent => {
-            this.templateList[item] = loadedComponent.default;
-            loadedLength++;
-            if (loadedLength >= widgetList.length) {
-              this.allTemplateLoaded = true;
-            }
-          })
-          .catch(e => {
-            console.log(e);
-            loadedLength++;
-            if (loadedLength >= widgetList.length) {
-              this.allTemplateLoaded = true;
-            }
-          });
-      }
-    },
 
      /* 弹框选中图片 */
     imageSelected(dialogData) {
@@ -250,79 +254,136 @@ export default {
     },
 
     /* 初始化导航列表 */
-    initNavList() {
+    initnavMap() {
       for(let i=0;i<3;i++) {
         let navObj = this.createNav();
-        this.ruleForm.navList[navObj.id] = navObj;
+        this.ruleForm.navIds.push(navObj.id);
+        this.ruleForm.navMap[navObj.id] = navObj;
       }
-      this.selectNav(this.ruleForm.navList[Object.keys(this.ruleForm.navList)[0]]);
+      this.selectNav(this.ruleForm.navIds[0]);
     },
 
     /* 创建导航 */
     createNav() {
-      this.navLength ++;
+      let num = this.ruleForm.navIds.length;
+      num ++;
       return {
         id: uuid(),
-        navName: `导航${this.navLength}`,
+        navName: `导航${num}`,
         navIcon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564824709390&di=f171260fec0b461843d15c732ef5ba92&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2F201306%2F18%2F122658rt90n2d2zy4qnn0q.jpg',
         navLinkType: 1,
-        systemNavLinkUrl: 1,
+        systemNavLinkUrl: '1',
         customNavLinkUrl: '',
         active: false
       };
     },
 
     /* 选中一个导航来编辑 */
-    selectNav(item) {
-      this.currentNav = item;
+    selectNav(id) {
+      this.currentNav = this.ruleForm.navMap[id];
       let curentActiveNav = null;
-      for(let k in this.ruleForm.navList) {
-        if(this.ruleForm.navList[k].active) {
-          curentActiveNav = this.ruleForm.navList[k];
+      for(let k in this.ruleForm.navMap) {
+        if(this.ruleForm.navMap[k].active) {
+          curentActiveNav = this.ruleForm.navMap[k];
         }
       }
       if(curentActiveNav){
         this.$set(curentActiveNav, 'active', false);
       }
-      this.$set(item, 'active', true);
+      this.$set(this.ruleForm.navMap[id], 'active', true);
     },
 
     /* 添加一个新导航 */
     addNav() {
-      if(this.navLength < 5) {
+      if(this.ruleForm.navIds.length < 5) {
         let navObj = this.createNav();
-        this.ruleForm.navList[navObj.id] = navObj;
-        this.selectNav(navObj);
+        this.ruleForm.navIds.push(navObj.id);
+        this.ruleForm.navMap[navObj.id] = navObj;
+        this.selectNav(navObj.id);
       }
     },
 
-    /* 保存并启用 */
-    saveAndApplyData() {
+    /* 删除当前导航 */
+    deleteNav() {
+      if(this.ruleForm.navIds.length <= 1) {
+        return;
+      }
+      const id = this.currentNav.id;
+      const index = this.ruleForm.navIds.indexOf(id);
 
+      //删除顺序列表中对应项
+			const prevId = this.ruleForm.navIds[index - 1];
+			const nextId = this.ruleForm.navIds[index + 1];
+			if (nextId) {
+				this.selectNav(nextId);
+			} else if (prevId) {
+				this.selectNav(prevId);
+			}
+
+      if(index > -1) {
+        this.ruleForm.navIds.splice(index, 1);
+      }
+      if(this.ruleForm.navMap[id]) {
+        delete this.ruleForm.navMap[id];
+      }
     },
 
-    /* 暂存 */
-    saveData() {
+    fetch() {
+      this.loading = true;
+      this._apis.shop.getShopNav({}).then((response)=>{
+        const navigation_json = JSON.parse(response.navigation_json);
+        if(navigation_json && navigation_json.navStyle) {
+          this.ruleForm = navigation_json;
+        }
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
 
+    /* 保存并启用 */
+    saveAndApply() {
+      this.submit({
+        navigationKey: '',
+        navigation_type: this.navigation_type,
+        navigation_json: JSON.stringify(this.ruleForm)
+      });
+    },
+
+    /* 保存 */
+    save() {
+       this.submit({
+        navigationKey: '',
+        navigation_type: this.navigation_type,
+        navigation_json: JSON.stringify(this.ruleForm)
+      });
+    },
+
+    submit(params) {
+      this.loading = true;
+      this._apis.shop.editShopNav(params).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '编辑成功！',
+          type: 'success'
+        });
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     },
 
     /* 重置 */
     resetData() {
 
-    },
-
-      /* 转换装修数据 */
-    convertDecorateData(data) {
-      let baseInfo = data.pageInfo;
-      let componentDataIds = [];
-      let componentDataMap = {};
-      for (let item of data.components) {
-        componentDataIds.push(item.id);
-        componentDataMap[item.id] = item;
-      }
-      this.$store.commit("setBaseInfo", baseInfo);
-      this.$store.commit("setComponentDataIds", componentDataIds);
-      this.$store.commit("setComponentDataMap", componentDataMap);
     }
   }
 }
@@ -383,7 +444,7 @@ export default {
   &.view {
     width: 374px;
     .phone-body {
-      height: 586px;
+      height: 550px;
       .component_wrapper{
         cursor:text;
       }

@@ -132,8 +132,8 @@ export default {
     
     //获取分类列表
     getClassifyList() {
-      this._apis.shop.getClassifyList({startIndex: 1, pageSise: 100}).then((response)=>{
-        this.classifyList = response.list;
+      this._apis.shop.selectAllClassify({}).then((response)=>{
+        this.classifyList = response;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',

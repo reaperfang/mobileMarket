@@ -19,11 +19,11 @@
           <p class="state">生效中</p>
         </div>
         <div class="block form">
-          <el-form-item label="出现样式" prop="showPage">
-            <el-radio-group v-model="ruleForm.showPage">
-              <el-radio :label="1">首页</el-radio>
-              <el-radio :label="2">微页面</el-radio>
-              <el-radio :label="3">微页面分类</el-radio>
+          <el-form-item label="出现页面" prop="type">
+            <el-radio-group v-model="ruleForm.type">
+              <el-radio :label="0">首页</el-radio>
+              <el-radio :label="1">微页面</el-radio>
+              <el-radio :label="2">微页面分类</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="广告名称" prop="name">
@@ -64,8 +64,8 @@
         </div>
 
         <div class="block button">
-          <el-button @click="routeTo('ADManageIndex')">取    消  </el-button>
-          <el-button @click="saveData">保    存</el-button>
+          <el-button @click="saveData" type="primary">保    存</el-button>
+          <el-button @click="_routeTo('ADManageIndex')">取    消  </el-button>
         </div>
 
       </el-form>
@@ -88,7 +88,7 @@ export default {
       currentDialog: '',
       loading: false,
       ruleForm: {
-        showPage: 1,
+        type: 0,
         name: '',
         imagePath: '',
         advertiseUrl: '',

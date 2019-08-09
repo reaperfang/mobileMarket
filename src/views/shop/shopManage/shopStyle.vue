@@ -10,23 +10,23 @@
       </ul>
     </div>
 
-    <ul class="demo_list tile-list n3" v-if="selectedItem" v-loading="loading">
+    <ul class="demo_list tile-list n3" v-if="selectedItem">
       <li>
-        <img :src="require('../../../assets/images/shop/style/goodsDetail'+ selectedItem.id +'.png')" alt="">
+        <img :src="require('../../../assets/images/shop/style/goodsDetail'+ selectedItem.type +'.png')" alt="">
         <p>商品详情</p>
       </li>
       <li>
-        <img :src="require('../../../assets/images/shop/style/shoppingCar'+ selectedItem.id +'.png')" alt="">
+        <img :src="require('../../../assets/images/shop/style/shoppingCar'+ selectedItem.type +'.png')" alt="">
         <p>购物车</p>
       </li>
       <li>
-        <img :src="require('../../../assets/images/shop/style/orderDetail'+ selectedItem.id +'.png')" alt="">
+        <img :src="require('../../../assets/images/shop/style/orderDetail'+ selectedItem.type +'.png')" alt="">
         <p>订单详情</p>
       </li>
     </ul>
 
     <div class="confirm_btn">
-      <el-button type="primary">保  存</el-button>
+      <el-button type="primary" @click="submit">保  存</el-button>
     </div>
   </div>
 </template>
@@ -37,96 +37,107 @@ export default {
   components: {},
   data () {
     return {
-      loading: true,
-      styleList: [],
+      styleList: [
+        {
+          type: 1,
+          mainColor:'',
+          colors: ['rgba(251,68,67,1)', 'rgba(253,135,84,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 2,
+          colors: ['rgba(251,95,39,1)', 'rgba(253,146,37,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 3,
+          colors: ['rgba(252,87,124,1)', 'rgba(254,230,232,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 4,
+          colors: ['rgba(252,70,75,1)', 'rgba(85,85,85,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 5,
+          colors: ['rgba(251,197,44,1)', 'rgba(29,38,46,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 6,
+          colors: ['rgba(102,196,170,1)', 'rgba(221,242,236,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 7,
+          colors: ['rgba(8,187,7,1)', 'rgba(56,56,56,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 8,
+          colors: ['rgba(105,192,112,1)', 'rgba(225,245,226,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 9,
+          colors: ['rgba(75,144,226,1)', 'rgba(218,233,249,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 10,
+          colors: ['rgba(195,167,105,1)', 'rgba(243,238,225,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 11,
+          colors: ['rgba(51,51,51,1)', 'rgba(255,255,255,1)', 'rgba(255,255,255,1)'],
+        },
+        {
+          type: 12,
+          colors: ['rgba(136,76,255,1)', 'rgba(239,230,255,1)', 'rgba(255,255,255,1)'],
+        }
+      ],
       selectedItem: null  //当前选中的样式
     }
   },
   created() {
+    this.selectedItem = this.styleList[0];
     this.fetch();
   },
   methods: {
 
     fetch() {
-
-      // this.loading = true;
-      // this._apis.shop.getShopStyle({}).then((response)=>{
-      //   this.ruleForm = response;
-      //   this.loading = false;
-      // }).catch((error)=>{
-      //   this.$notify.error({
-      //     title: '错误',
-      //     message: error
-      //   });
-      //   this.loading = false;
-      // });
-
-      this.styleList = [
-        {
-          id: 1,
-          mainColor:'',
-          colors: ['rgba(251,68,67,1)', 'rgba(253,135,84,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 2,
-          colors: ['rgba(251,95,39,1)', 'rgba(253,146,37,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 3,
-          colors: ['rgba(252,87,124,1)', 'rgba(254,230,232,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 4,
-          colors: ['rgba(252,70,75,1)', 'rgba(85,85,85,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 5,
-          colors: ['rgba(251,197,44,1)', 'rgba(29,38,46,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 6,
-          colors: ['rgba(102,196,170,1)', 'rgba(221,242,236,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 7,
-          colors: ['rgba(8,187,7,1)', 'rgba(56,56,56,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 8,
-          colors: ['rgba(105,192,112,1)', 'rgba(225,245,226,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 9,
-          colors: ['rgba(75,144,226,1)', 'rgba(218,233,249,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 10,
-          colors: ['rgba(195,167,105,1)', 'rgba(243,238,225,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 11,
-          colors: ['rgba(51,51,51,1)', 'rgba(255,255,255,1)', 'rgba(255,255,255,1)'],
-        },
-        {
-          id: 12,
-          colors: ['rgba(136,76,255,1)', 'rgba(239,230,255,1)', 'rgba(255,255,255,1)'],
+      this._apis.shop.getShopStyle({}).then((response)=>{
+        if(response.colorStyle) {
+          const colorStyle = JSON.parse(response.colorStyle);
+          if(colorStyle) {
+            this.selectedItem = this.styleList[Number(colorStyle.type) - 1];
+          }
         }
-      ];
-
-      this.selectedItem = this.styleList[0];
-      this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    
     },
 
     /* 选中风格 */
     selectedStyle(event, item) {
       this.selectedItem = item;
-
       const styles = this.$refs.styleList.querySelectorAll('.cell-item');
       for(let dom of styles) {
         dom.className = 'cell-item';
       };
       event.currentTarget.className = 'cell-item style_active';
     },
+
+    submit() {
+      this._apis.shop.setShopStyle({colorStyle: JSON.stringify(this.selectedItem)}).then((response)=>{
+         this.$notify({
+          title: '成功',
+          message: '设置成功！',
+          type: 'success'
+        });
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    }
   }
 }
 </script>

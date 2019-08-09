@@ -135,6 +135,7 @@ class Ajax {
           break;
           case 'order': //订单系统
             config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
+          break;
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
           break;
