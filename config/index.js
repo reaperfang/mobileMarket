@@ -35,14 +35,6 @@ module.exports = {
     proxyTable: {
       '/data-server/**': {
         //target: 'http://172.22.146.2:8080', // 订单 尹茂凯
-<<<<<<< HEAD
-         target: 'http://172.22.134.106:8080', // 商品 王浩
-        //target: 'http://172.22.146.31:8080',
-        //target: 'http://172.22.146.10:8080',
-        // target: 'http://172.22.146.109:8080',
-        // target: 'http://172.22.146.133:8081',  //李雯廷
-        //target: 'http://120.133.1.130:8012',//营销
-=======
         // target: 'http://172.22.146.109:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080', // 客户 崔建
         //target: 'http://172.22.146.10:8080', //客户 刘亚凯
@@ -51,7 +43,6 @@ module.exports = {
         // target: 'http://172.22.146.133:8081',  //李雯廷
         // target: 'http://120.133.1.130:8012',//营销测试机
         target:'http://172.22.146.124:8090',//许涛
->>>>>>> 8872a7dddde94ed73ef5f73d59e1bb681b3d45e2
 
         changeOrigin: true,
         pathRewrite: {

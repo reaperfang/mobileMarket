@@ -2,9 +2,9 @@
 export default {
     //收支明细---流水号类型-------------------------
     revenueExpenditureTerms:[
-        { value: 1, label: '交易流水号' },
-        { value: 2, label: '关联单据编号' },
-        { value: 3, label: '微信流水号' },
+        { value: 'tradeDetailSn', label: '交易流水号' },
+        { value: 'relationSn', label: '关联单据编号' },
+        { value: 'wechatTradeSn', label: '微信流水号' },
     ],
     //收支明细---业务类型
     rebusinessTypes:[
@@ -87,8 +87,8 @@ export default {
     ],
     //物流对账---电子面单（含第二个标签页的物流查询）---单号类型---------------
     fsTerms:[
-        { value: 1, label: '订单编号' },
-        { value: 2, label: '快递单号' },
+        { value:'relationSn', label: '订单编号' },
+        { value:'expressSn', label: '快递单号' },
     ],
     //物流对账---电子面单---业务类型
     fsTypes:[

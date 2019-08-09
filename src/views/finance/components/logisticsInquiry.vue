@@ -1,4 +1,4 @@
-<!--收支明细-->
+<!--电子面单-->
 <template>
   <div>
     <div class="top_part">
@@ -38,23 +38,59 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
-      <liTable style="margin-top:20px"></liTable>
+      <el-table
+        :data="dataList"
+        class="table"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'date', order: 'descending'}"
+        >
+        <el-table-column
+          prop="expressSn"
+          label="快递单号">
+        </el-table-column>
+        <el-table-column
+          prop="expressCompany"
+          label="快递公司">
+        </el-table-column>
+        <el-table-column
+          prop="relationSn"
+          label="关联单据编号">
+        </el-table-column>
+        <el-table-column
+          prop="createUserName"
+          label="操作人">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="查询时间"
+          sortable>
+        </el-table-column>
+      </el-table>
+      <div class="page_styles">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(ruleForm.startIndex) || 1"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize*1"
+          layout="sizes, prev, pager, next"
+          :total="total*1">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import utils from "@/utils";
-import Blob from '@/excel/Blob'
-import Export2Excel from '@/excel/Export2Excel.js'
-import liTable from './liTable'
+import TableBase from "@/components/TableBase";
 import financeCons from '@/system/constant/finance'
 export default {
   name: 'logisticsInquiry',
-  components:{ liTable },
+  extends: TableBase,
   data() {
     return {
       pickerNowDateBefore: {
@@ -68,51 +104,80 @@ export default {
         value2:'',
         expressCompany:'',
       },
-      dataList:[
-        {
-         expressSn:'1111',
-         expressCompany:'中通',
-         relationSn:'12132323',
-         createUserName:'张三',
-         createTime:'2019-05-26'
-        }
-      ],
+      dataList:[ ],
+      total:0,
     }
   },
-  watch: {
-
-  },
+  watch: { },
   computed:{
     fsTerms(){
       return financeCons.fsTerms;
     },
   },
-  created() {    
-  },
-  destroyed() {
-  },
+  created() { },
   methods: {
-    onSubmit(){},
+    init(){
+      let query = {
+        queryType:'',
+        relationSn:'',
+        expressSn:'',
+        expressCompany:'',
+        businessType:'',
+        startTime:'',
+        endTime:'',
+        startIndex:this.ruleForm.startIndex,
+        pageSize:this.ruleForm.pageSize
+      }
+      for(let key  in query){
+        if(this.ruleForm.searchType == key){
+          query[key] = this.ruleForm.searchValue
+        }
+        for(let item in this.ruleForm){
+          if(item == key){
+            query[key] = this.ruleForm[item]
+          }
+        }
+      }
+      let timeValue = this.ruleForm.timeValue
+      if(timeValue){
+        query.startTime = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        query.endTime = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
+      return query;
+    },
+
+    fetch(){
+      let query = this.init();
+      this._apis.finance.getListLi(query).then((response)=>{
+        this.dataList = response.list
+        this.total = response.total || 0
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+    //搜索
+    onSubmit(){
+      this.fetch()
+    },
     //重置
     resetForm(){
       
     },
     //导出
     exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['快递单号','快递公司', '关联单据编号', '操作人','查询时间'];
-            const filterVal = ['expressSn','expressCompany', 'relationSn', 'createUserName','createTime'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '物流查询列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+      // let query = this.init();
+      // this._apis.finance.exportTaRe(query).then((response)=>{
+      //   window.location.href = response
+      // }).catch((error)=>{
+      //   this.$notify.error({
+      //     title: '错误',
+      //     message: error
+      //   });
+      // })
     },
   }
 }
@@ -146,5 +211,9 @@ export default {
       }
     }
   }
+}
+.table{
+  width: 100%; 
+  margin-top:20px;
 }
 </style>
