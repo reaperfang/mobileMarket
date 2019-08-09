@@ -2,14 +2,14 @@
     <div class="order-detail">
         <div class="header">
             <div class="lefter">
-                <span>订单编号：{{orderNumber}} | </span>
-                <span>公众号 | </span>
-                <span>多人拼团 | </span>
-                <span>拼团编号：{{collageNumber}}</span>
+                <span>订单编号：{{orderInfo.code}} | </span>
+                <span>{{orderInfo.channelInfoId}} | </span>
+                <span>{{orderInfo.sendType}} | </span>
+                <span>拼团编号：{{orderInfo.assembleCode}}</span>
             </div>
             <div class="righter">
                 <img src="../../assets/images/order/customerImg.png" alt="">
-                <span>客户ID：{{customerId}}</span>
+                <span>客户ID：{{memberSn}}</span>
             </div>
         </div>
         <orderState class="order-state"></orderState>
@@ -187,12 +187,25 @@ export default {
                 detail: '订单满2000元使用（不含邮费）',
                 limit: '2019',
                 code: '1'
-            }
+            },
+            orderDetail: {}
         }
+    },
+    created() {
+        this.getDetail()
     },
     methods: {
         reducePriceHandler() {
 
+        },
+        getDetail() {
+            let id = this.$route.query.id
+
+            this._apis.order.fetchOrderDetail({id}).then((res) => {
+                this.orderDetail = res
+            }).catch(error => {
+
+            })
         }
     },
     components: {

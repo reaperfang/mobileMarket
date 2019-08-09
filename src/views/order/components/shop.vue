@@ -1,22 +1,62 @@
 <template>
     <div class="order">
-        <order></order>
+        <order :list="list"></order>
+        <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
     </div>
 </template>
 <script>
 import Order from './order'
+import Pagination from '@/components/Pagination'
 
 export default {
     data() {
         return {
-
+            total: 0,
+            listQuery: {
+                startIndex: 1,
+                pageSize: 20,
+            },
+            list: []
         }
     },
+    created() {
+        this.getList()
+    },
+    watch: {
+        
+    },
     methods: {
+        getList() {
+            let _params
 
+            _params = Object.assign({}, this.params, {
+                [this.params.searchType]: this.params.searchValue,
+                //[this.params.searchTimeType + 'Start']: this.orderTimeValue[0],
+                //[this.params.searchTimeType + 'End']: this.orderTimeValue[1]
+            }, this.listQuery)
+            this._apis.order.fetchOrderList(_params).then((res) => {
+                console.log(res)
+                res.list.forEach((val, index) => {
+                    let _val = Object.assign({}, val, val.orderInfo)
+                    _val.checked = false
+                    res.list.splice(index, 1, _val)
+                })
+                this.list = res.list
+                this.total = +res.total
+                this._globalEvent.$emit('total', this.total)
+            }).catch(error => {
+
+            })
+        }
+    },
+    props: {
+        params: {
+            type: Object
+        }
     },
     components: {
-        Order
+        Order,
+        Pagination
     }
 }
 </script>

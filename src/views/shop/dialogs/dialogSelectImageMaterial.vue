@@ -82,9 +82,15 @@ export default {
       {
         loaded: false,
         href: 'http://www.baidu.com',
-        src: 'https://lfyfly.github.io/vue-waterfall-easy/demo/static/img/1.jpg',
+        src: 'http://35.201.165.105:8000/storage/image/20190808/1565246454709498.png',
         title: '图片名称'
-      }
+      },
+      {
+        loaded: false,
+        href: 'http://www.baidu.com',
+        src: 'http://35.201.165.105:8000/storage/image/20190808/1565246499696504.png',
+        title: '图片名称'
+      },
     ]
   },
   methods: {

@@ -102,7 +102,19 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.copyPage({id: item.id}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '复制成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 
@@ -173,8 +185,8 @@ export default {
     
     //获取分类列表
     getClassifyList() {
-      this._apis.shop.getClassifyList({startIndex: 1, pageSise: 100}).then((response)=>{
-        this.classifyList = response.list;
+      this._apis.shop.selectAllClassify({}).then((response)=>{
+        this.classifyList = response;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',

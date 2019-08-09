@@ -2,15 +2,15 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline">
         <el-form-item label="日期" style="margin-bottom:0px;">
           <el-date-picker
-            v-model="timeValue"
+            v-model="ruleForm.timeValue"
             type="daterange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']"
+            :default-time="['00:00:00', '00:00:00']"
             :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
@@ -22,83 +22,123 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
-      <drTable style="margin-top:20px"></drTable>
+      <el-table
+        :data="dataList"
+        class="table"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'date', order: 'descending'}"
+        >
+        <el-table-column
+          prop="accountDate"
+          label="日期"
+          sortable>
+        </el-table-column>
+        <el-table-column
+          prop="income"
+          label="收入（元）">
+        </el-table-column>
+        <el-table-column
+          prop="expend"
+          label="支出（元）">
+        </el-table-column>
+        <el-table-column
+          prop="realIncome"
+          label="总收入（元）">
+        </el-table-column>
+      </el-table>
+      <div class="page_styles">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(ruleForm.startIndex) || 1"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize*1"
+          layout="sizes, prev, pager, next"
+          :total="total*1">
+        </el-pagination>
+      </div>      
     </div>
   </div>
 </template>
 
 <script>
 import utils from "@/utils";
-import Blob from '@/excel/Blob'
-import Export2Excel from '@/excel/Export2Excel.js'
-import drTable from './components/drTable'
+import TableBase from "@/components/TableBase";
 export default {
-  name: 'revenueSituation',
-  components:{ drTable },
+  name: 'dailyRevenue',
+  extends: TableBase,
   data() {
     return {
       pickerNowDateBefore: {
-          disabledDate: (time) => {
-                return time.getTime() > new Date();
-              }
+        disabledDate: (time) => {
+          return time.getTime() > new Date();
+        }
       },
       inline:true,
-      form:{},
-      timeValue:'',
-      dataList:[
-        {
-          accountDate:'2019-02-23',
-          income:'12',
-          expend:'2',
-          realIncome:'10',
-        },
-        {
-          accountDate:'2019-02-23',
-          income:'12',
-          expend:'2',
-          realIncome:'10',
-        },
-      ],
+      ruleForm:{
+        timeValue:''
+      },
+      dataList:[ ],
+      total:0,
     }
   },
-  watch: {
-    timeValue(){
-      let time = utils.formatDate(this.timeValue[0], "yyyy-MM-dd")
-      console.log('11111111',time)
-    }
-  },
-  created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-    
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
-  },
+  watch: { },
+  created() { },
   methods: {
-    onSubmit(){},
+    init(){
+      let query = {
+        accountDateStart:'',
+        accountDateEnd:'',
+        startIndex:this.ruleForm.startIndex,
+        pageSize:this.ruleForm.pageSize
+      }
+      let timeValue = this.ruleForm.timeValue
+      if(timeValue){
+        query.accountDateStart = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        query.accountDateEnd = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
+      return query;
+    },
+
+    fetch(){
+      let query = this.init();
+      this._apis.finance.getListDr(query).then((response)=>{
+        this.dataList = response.list
+        this.total = response.total || 0
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+    //搜索
+    onSubmit(){
+      this.fetch()
+    },
+
     //重置
     resetForm(){
-      
+      this.ruleForm = {
+        timeValue:''
+      }
     },
+
     //导出
     exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['日期','收入（元）', '支出（元）', '总收入（元）'];
-            const filterVal = ['accountDate','income', 'expend', 'realIncome'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '每日营收列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+      let query = this.init();
+      this._apis.finance.exportTaDr(query).then((response)=>{
+        window.location.href = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
   }
 }
@@ -132,5 +172,9 @@ export default {
       }
     }
   }
+}
+.table{
+  width: 100%; 
+  margin-top:20px;
 }
 </style>

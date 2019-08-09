@@ -11,4 +11,14 @@ export function fetchOrderList(data) {
   })
 }
 
+// 订单详情
+export function fetchOrderDetail(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-DETAIL-PROCESSOR',
+    data
+  })
+}
+
 
