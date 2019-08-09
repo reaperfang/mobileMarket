@@ -331,9 +331,11 @@ export default {
     fetch() {
       this.loading = true;
       this._apis.shop.getShopNav({}).then((response)=>{
-        const navigation_json = JSON.parse(response.navigation_json);
-        if(navigation_json && navigation_json.navStyle) {
-          this.ruleForm = navigation_json;
+        let navigationJson = utils.uncompileStr(response.navigationJson);
+        navigationJson = JSON.parse(navigationJson);
+        if(navigationJson && navigationJson.navStyle) {
+          this.ruleForm = navigationJson;
+          this.selectNav(navigationJson.navIds[0]);
         }
         this.loading = false;
       }).catch((error)=>{
@@ -350,7 +352,7 @@ export default {
       this.submit({
         navigationKey: '',
         navigation_type: this.navigation_type,
-        navigation_json: JSON.stringify(this.ruleForm)
+        navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
     },
 
@@ -359,7 +361,7 @@ export default {
        this.submit({
         navigationKey: '',
         navigation_type: this.navigation_type,
-        navigation_json: JSON.stringify(this.ruleForm)
+        navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
     },
 

@@ -141,6 +141,9 @@ export default {
         url: '',
         linkTo: ''
       });
+      // this.currentNav = this.ruleForm.itemList[this.ruleForm.itemList.length - 1];
+      // this.dialogVisible=true; 
+      // this.currentDialog='dialogSelectImageMaterial';
     },
 
     /* 弹框选中图片 */
