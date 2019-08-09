@@ -16,11 +16,11 @@
                     </el-option>
                 </el-select>
             </div>
-            <el-button type="primary">查 询</el-button>
-            <el-button>重 置</el-button>
+            <el-button type="primary" @click="getLabelList">查 询</el-button>
+            <el-button @click="reset">重 置</el-button>
         </div>
-        <el-button type="primary">添加标签</el-button>
-        <clTable style="margin-top: 50px"></clTable>
+        <el-button type="primary" @click="_routeTo('batchImport')">添加标签</el-button>
+        <clTable style="margin-top: 30px" :params="params"></clTable>
     </div>
 </template>
 <script type="es6">
@@ -36,11 +36,25 @@ export default {
                 {label: '手工',value: 0},
                 {label: '自动',value: 1}
             ],
+            params: {}
         }
     },
     computed: {
-        memberLabels() {
-            return clientCont.memberLabels
+        
+    },
+    methods: {
+        getLabelList() {
+            this.params = {
+                cid: 2,
+                startIndex: 1,
+                pageSize: 10,
+                tagName: this.tagName,
+                tagType: this.tagType
+            }
+        },
+        reset() {
+            this.tagName = "";
+            this.tagType = "";
         }
     }
 }

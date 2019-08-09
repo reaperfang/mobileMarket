@@ -2,7 +2,7 @@
   <div class="editor-wrapper" v-loading="loading">
     <widgetView></widgetView>
     <editView></editView>
-    <propView></propView>
+    <propView panelName="分类编辑" editorType="propertyClassify" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this"></propView>
     <div style="width:500px;">
       分类基础数据：
       <el-tag type="primary">{{baseInfo}}</el-tag>
@@ -18,45 +18,23 @@
 </template>
 
 <script>
-import widgetView from "@/views/shop/decorate/widgetView";
-import editView from "@/views/shop/decorate/editView";
-import propView from "@/views/shop/decorate/propView";
-import decorateDemo from "@/assets/json/decorateDemo.json";
+import editorMixin from './editorMixin';
+import utils from "@/utils";
 export default {
   name: "classifyEditor",
-  components: { widgetView, editView, propView },
+  mixins: [editorMixin],
   data() {
     return {
       loading: false,
-      currentClassifyId: this.$route.query.classifyId
+      id: this.$route.query.classifyId
     };
   },
-  created() {
-    if (this.currentClassifyId) {
-      this.getDecorateInfo();
-    } else {
-      this.$store.commit("clearAllData");
-    }
-  },
-  mounted() {},
-  computed: {
-    baseInfo() {
-      return this.$store.getters.baseInfo;
-    },
-    componentDataIds() {
-      return this.$store.getters.componentDataIds;
-    },
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    }
-  },
   methods: {
-    /* 获取店铺装修数据 */
-    getDecorateInfo() {
+    /* 获取分类装修数据 */
+    fetch() {
       const _self = this;
-      const currentClassifyId = this.currentClassifyId;
       this.loading = true;
-      this._apis.shop.getClassifyInfo({id: currentClassifyId}).then((response)=>{
+      this._apis.shop.getClassifyInfo({id: this.id}).then((response)=>{
          this.loading = false;
          this.convertDecorateData(response);
       }).catch((error)=>{
@@ -67,32 +45,64 @@ export default {
       });
     },
 
-    /* 转换装修数据 */
-    convertDecorateData(data) {
-      let componentDataIds = [];
-      let componentDataMap = {};
-      let pageData = JSON.parse(data.pageData);
-      if(!Array.isArray(pageData)) {
-        return;
-      }
-      for (let item of pageData) {
-        componentDataIds.push(item.id);
-        componentDataMap[item.id] = item;
-      }
+     /* 拼装基础数据 */
+    setBaseInfo(data) {
       this.$store.commit("setBaseInfo", {
         name: data.name,
-        explain: data.explain
+        sortType: data.sortType,
+        explain: utils.compileStr(data.explain),
+        showType: data.showType,
+        pageIdList: data.pageIdList
       });
-      this.$store.commit("setComponentDataIds", componentDataIds);
-      this.$store.commit("setComponentDataMap", componentDataMap);
+    },
+
+    /* 保存数据 */
+    saveData() {
+      this.loading = true;
+      const resultData = this.collectData();
+      resultData['explain'] = utils.compileStr(JSON.stringify(resultData.explain));
+      if(this.id) {
+        this._apis.shop.editClassifyInfo(resultData).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '编辑成功！',
+            type: 'success'
+          });
+          this._routeTo('pageManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
+      }else{
+        this._apis.shop.createClassify(resultData).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '创建成功！',
+            type: 'success'
+          });
+          this._routeTo('pageManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
+      }
+    },
+
+    /* 保存并生效数据 */
+    saveAndApplyData() {
+      const resultData = this.collectData();
+      console.log(JSON.stringify({...resultData}));
+      this._routeTo('pageManageIndex');
     }
+
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.editor-wrapper {
-  display: flex;
-  flex-direction: row;
-}
-</style>

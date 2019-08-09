@@ -1,10 +1,9 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="变更客户身份" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="发放会员卡" :hasCancel="hasCancel">
         <div class="c_container">
             <p class="user_id">用户ID：{{data.id}}</p>
-            <p class="user_id">当前身份：非会员身份</p>
             <div class="s_cont">
-                <span>变更为：</span>
+                <span>发放会员卡：</span>
                 <el-select v-model="selectLevel" style="margin-bottom: 10px">
                     <el-option v-for="item in levelList" :label="item.alias" :value="item.id" :key="item.id"></el-option>
                 </el-select>
@@ -35,11 +34,11 @@ export default {
                         levelInfoName = v.name;
                     }
                 });
-                let params = {id: this.data.id, levelInfoId: levelInfoId, levelInfoName: levelInfoName};
-                this._apis.client.identityChange(params).then((response) => {
+                let params = {memberInfoId: this.data.id, cardLevelInfoId: levelInfoId, name: levelInfoName};
+                this._apis.client.cardChange(params).then((response) => {
                     this.$notify({
                         title: '成功',
-                        message: "变更身份成功",
+                        message: "发放会员成功",
                         type: 'success'
                     });
                 }).catch((error) => {

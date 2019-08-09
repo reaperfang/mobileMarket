@@ -1,7 +1,7 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
     <div class="block form">
-      <el-form-item label="分类名称" prop="name">
+      <el-form-item label="个人中心" prop="name">
         <el-input placeholder="请勿超过10个字" v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="排序优先级" prop="sortType">
@@ -33,7 +33,7 @@ import propertyMixin from './mixin';
 import dialogSelectJumpPage from '../../dialogs/dialogSelectJumpPage';
 import RichEditor from '@/components/RichEditor';
 export default {
-  name: 'propertyTitle',
+  name: 'propertyPersonalCenter',
   mixins: [propertyMixin],
   components: {dialogSelectJumpPage, RichEditor},
   data () {

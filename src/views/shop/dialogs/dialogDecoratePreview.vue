@@ -1,5 +1,5 @@
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="(baseInfo.pageName || '页面名称') + '预览'">
+  <DialogBase :visible.sync="visible" width="816px" :title="(baseInfo.name || '页面名称') + '预览'">
     <div class="preview_wrapper">
       <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
         <div class="phone-head">
@@ -24,7 +24,7 @@
           src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564055788117&di=a4408d2b8d4ceadc964a30088db9f8fc&imgtype=0&src=http%3A%2F%2Fpic35.nipic.com%2F20131122%2F3347542_102208318000_2.jpg"
           alt
         />
-        <div class="shop_name">{{baseInfo.shopName || '店铺名称'}}</div>
+        <div class="shop_name">{{baseInfo.name || '店铺名称'}}</div>
         <div class="shop_code">
           <h3>手机扫码访问</h3>
           <h4>微信扫一扫分享至朋友圈</h4>
