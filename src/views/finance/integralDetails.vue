@@ -43,7 +43,7 @@
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'date', order: 'descending'}"
+        :default-sort = "{prop: 'changeTime', order: 'descending'}"
         >
         <el-table-column
           prop="scoreDetailSn"
@@ -166,7 +166,7 @@ export default {
     //导出
     exportToExcel() {
       let query = this.init();
-      this._apis.finance.exportTaId(query).then((response)=>{
+      this._apis.finance.exportId(query).then((response)=>{
         window.location.href = response
       }).catch((error)=>{
         this.$notify.error({

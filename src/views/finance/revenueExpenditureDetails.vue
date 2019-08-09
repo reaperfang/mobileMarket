@@ -234,7 +234,7 @@ export default {
   //导出
     exportToExcel(){
       let query = this.init();
-      this._apis.finance.exportTaRe(query).then((response)=>{
+      this._apis.finance.exportRe(query).then((response)=>{
         window.location.href = response
       }).catch((error)=>{
         this.$notify.error({

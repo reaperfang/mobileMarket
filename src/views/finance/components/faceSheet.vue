@@ -2,7 +2,7 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="ruleForm" :model="ruleForm" :inline="inline" label-width="70px">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline">
         <el-form-item>
           <el-select v-model="ruleForm.searchType" placeholder="订单编号" style="width:124px;">
             <el-option
@@ -29,7 +29,7 @@
         <el-form-item label="快递公司">
           <el-input v-model="ruleForm.expressCompany" placeholder="请输入" style="width:120px;"></el-input>
         </el-form-item>
-        <el-form-item label="发货时间" style="margin-left:25px;">
+        <el-form-item label="发货时间">
           <el-date-picker
             v-model="ruleForm.timeValue"
             type="datetimerange"
@@ -55,7 +55,7 @@
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'date', order: 'descending'}"
+        :default-sort = "{prop: 'createTime', order: 'descending'}"
         >
         <el-table-column
           prop="expressSn"
@@ -138,7 +138,7 @@ export default {
   methods: {
     init(){
       let query = {
-        queryType:'',
+        queryType:0,
         relationSn:'',
         expressSn:'',
         expressCompany:'',
@@ -194,15 +194,15 @@ export default {
     },
     //导出
     exportToExcel() {
-      // let query = this.init();
-      // this._apis.finance.exportTaRe(query).then((response)=>{
-      //   window.location.href = response
-      // }).catch((error)=>{
-      //   this.$notify.error({
-      //     title: '错误',
-      //     message: error
-      //   });
-      // })
+      let query = this.init();
+      this._apis.finance.exportFs(query).then((response)=>{
+        window.location.href = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
   }
 }
