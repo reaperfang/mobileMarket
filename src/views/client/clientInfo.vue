@@ -19,45 +19,49 @@
             <div class="c_top_r fl">
                 <div class="c_title">
                     个人资料
-                    <el-button size="mini" class="btn">保存</el-button>
+                    <el-button size="mini" class="btn" @click="saveInfo">保存</el-button>
                 </div>
                 <div class="form_container">
-                    <el-form ref="form" :model="form">
+                    <el-form ref="form">
                         <el-form-item label="姓名：">
                             <div class="input_wrap">
-                                <el-input v-model="form.memberName" placeholder="请输入名字"></el-input>
+                                <el-input v-model="clientInfoById.memberName" placeholder="请输入名字"></el-input>
                             </div>
                         </el-form-item>
                         <el-form-item label="姓别：">
                             <div class="input_wrap">
-                                <el-radio v-model="form.sex" label="1">男</el-radio>
-                                <el-radio v-model="form.sex" label="2">女</el-radio>
-                                <el-radio v-model="form.sex" label="3">未知</el-radio>
+                                <el-radio v-model="clientInfoById.sex" label="1">男</el-radio>
+                                <el-radio v-model="clientInfoById.sex" label="2">女</el-radio>
+                                <el-radio v-model="clientInfoById.sex" label="0">未知</el-radio>
                             </div>
                         </el-form-item>
                         <el-form-item label="生日：">
                             <div class="input_wrap">
-                                <el-input v-model="form.birthday" placeholder="请输入名字"></el-input>
+                                <el-date-picker
+                                    v-model="clientInfoById.birthday"
+                                    type="date"
+                                    placeholder="请选择日期">
+                                </el-date-picker>
                             </div>
                         </el-form-item>
                         <el-form-item label="微信号：">
                             <div class="input_wrap">
-                                <el-input v-model="form.wechatSn" placeholder="请输入名字"></el-input>
+                                <el-input v-model="clientInfoById.wechatSn" placeholder="请输入微信号"></el-input>
                             </div>
                         </el-form-item>
                         <el-form-item label="邮箱：">
                             <div class="input_wrap">
-                                <el-input v-model="form.email" placeholder="请输入名字"></el-input>
+                                <el-input v-model="clientInfoById.email" placeholder="请输入邮箱"></el-input>
                             </div>
                         </el-form-item>
                         <el-form-item label="地区：">
                             <div class="input_wrap">
-                                <area-select type='all' v-model='form.selected' :data='$pcaa' :level='2' size="large"></area-select>
+                                <area-select type='all' v-model='clientInfoById.selected' :data='$pcaa' :level='2' size="large"></area-select>
                             </div>
                         </el-form-item>
                         <el-form-item>
                             <div class="input_wrap">
-                                <el-input v-model="form.address" placeholder="详细地址"></el-input>
+                                <el-input v-model="clientInfoById.address" placeholder="详细地址"></el-input>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -68,12 +72,12 @@
             <p>标签信息：</p>
             <div class="labels">
                 <div class="label_list">
-                    <p v-for="(item, index) in userTag" :key="item.id">
-                        <span>{{item.tagName}}
-                            <img src="../../assets/images/client/icon_manual.png" alt="" v-if="item.tagType == 0">
-                            <img src="../../assets/images/client/icon_auto.png" alt="" v-if="item.tagType == 1">
+                    <p v-for="(item) in clientInfoById.labelRecordViews" :key="item.id">
+                        <span>{{item.memberLabelInfoName}}
+                            <img src="../../assets/images/client/icon_manual.png" alt="" v-if="item.memberLabelInfoType == 0">
+                            <img src="../../assets/images/client/icon_auto.png" alt="" v-if="item.memberLabelInfoType == 1">
                         </span>
-                        <img src="../../assets/images/client/icon_remove.png" alt="" v-if="item.tagType == 0" @click="deleteTag(index)"></p>
+                        <img src="../../assets/images/client/icon_remove.png" alt="" v-if="item.memberLabelInfoType == 0" @click="deleteTag(item.memberLabelInfoId)"></p>
                 </div>
                 <img src="../../assets/images/client/icon_add.png" alt="" @click="addTag">
             </div>
@@ -84,11 +88,11 @@
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_vip.png" alt="">
                     <p>会员卡：
-                        <span v-if="clientInfoById.memberType == 1">{{clientInfoById.cardLevelName}}</span>
-                        <span v-if="clientInfoById.memberType == 0">无</span>
+                        <span v-if="clientInfoById.memberType !== ''">{{clientInfoById.cardLevelName}}</span>
+                        <span v-if="clientInfoById.memberType == ''">无</span>
                     </p>
-                    <span v-if="clientInfoById.memberType == 1">变更</span>
-                    <span v-if="clientInfoById.memberType == 0">发放</span>
+                    <span v-if="clientInfoById.cardLevelInfoId !== ''" @click="showChangeCard">变更</span>
+                    <span v-if="clientInfoById.memberType == ''" @click="showSendCard">发放</span>
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_money.png" alt="">
@@ -102,12 +106,12 @@
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_code.png" alt="">
-                    <p>可用优惠码：<span>5个</span></p>
+                    <p>可用优惠码：<span>{{clientInfoById.promotionCodeNum}}个</span></p>
                     <span>变更</span>
                 </div>
                 <div class="assets_item rb">
                     <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p>积分：<span>15</span></p>
+                    <p>积分：<span>{{clientInfoById.score}}</span></p>
                     <span>变更</span>
                 </div>
             </div>
@@ -117,7 +121,7 @@
             <div class="assets">
                 <div class="assets_item">
                     <p>最近下单时间</p>
-                    <p>2019-09-12 05:00</p>
+                    <p>{{clientInfoById.lastPayTime}}</p>
                 </div>
                 <div class="assets_item">
                     <p>客单价</p>
@@ -146,33 +150,53 @@ import adjustBalanceDialog from './dialogs/clientInfo/adjustBalanceDialog';
 import discountCouponDialog from './dialogs/clientInfo/discountCouponDialog';
 import issueCouponDialog from './dialogs/clientInfo/issueCouponDialog';
 import addBlackDialog from './dialogs/allClient/addBlackDialog';
+import sendCardDialog from './dialogs/clientInfo/sendCardDialog';
+import changeCardDialog from './dialogs/clientInfo/changeCardDialog';
 export default {
     name: 'clientInfo',
-    components: { changeIdentityDialog, addTagDialog, balanceListDialog, adjustBalanceDialog, discountCouponDialog, issueCouponDialog, addBlackDialog },
+    components: { 
+        changeIdentityDialog, 
+        addTagDialog, 
+        balanceListDialog, 
+        adjustBalanceDialog, 
+        discountCouponDialog, 
+        issueCouponDialog, 
+        addBlackDialog,
+        sendCardDialog,
+        changeCardDialog
+    },
     data() {
         return {
-            form: {
-                memberName: "",
-                sex: '1',
-                birthday:"",
-                wechatSn:"",
-                email:"",
-                selected: [],
-                address:""
-            },
             currentDialog:"",
             dialogVisible: false,
             currentData:{},
-            userTag: []
+            userTag: [],
+            userId: this.$route.query.id,
+            clientInfoById: {
+                selected:[]
+            }
         }
     },
     methods: {
         changeIdentity() {
             this.dialogVisible = true;
             this.currentDialog = "changeIdentityDialog";
+            this.currentData.id = this.userId;
         },
-        deleteTag(index) {
-            this.memberLabels.splice(index,1);
+        deleteTag(id) {
+            //this.memberLabels.splice(index,1);
+            this._apis.client.removeLabel({id:id}).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: "移除标签成功",
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         },
         addTag() {
             this.dialogVisible = true;
@@ -198,17 +222,104 @@ export default {
         showAddBlack() {
             this.dialogVisible = true;
             this.currentDialog = "addBlackDialog";
+        },
+        showSendCard() {
+            this.dialogVisible = true;
+            this.currentDialog = "sendCardDialog";
+            this.currentData.id = this.userId;
+        },
+        showChangeCard() {
+            this.dialogVisible = true;
+            this.currentDialog = "changeCardDialog";
+            this.currentData.id = this.userId;
+            this.currentData.level = this.clientInfoById.levelName;
+        },
+        getMemberInfo() {
+            this._apis.client.getMemberInfo({id: this.userId}).then((response) => {
+                this.clientInfoById = Object.assign({},response);
+                this.clientInfoById.sex = this.clientInfoById.sex.toString();
+                let selected = [];
+                selected[0] = this.clientInfoById.provinceCode;
+                selected[1] = this.clientInfoById.cityCode;
+                selected[2] = this.clientInfoById.areaCode;
+                this.$set(this.clientInfoById, 'selected',selected)
+                console.log(this.clientInfoById);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        saveInfo() {
+            let errFlag = false;
+            let formObj = {
+                id: this.clientInfoById.id, 
+                cid: this.clientInfoById.cid, 
+                memberName: this.clientInfoById.memberName, 
+                sex: this.clientInfoById.sex, 
+                birthday: this.clientInfoById.birthday, 
+                wechatSn: this.clientInfoById.wechatSn, 
+                email: this.clientInfoById.email, 
+                provinceCode: this.clientInfoById.provinceCode, 
+                proviceName: this.clientInfoById.proviceName, 
+                cityCode: this.clientInfoById.cityCode,
+                cityName: this.clientInfoById.cityName,
+                areaCode: this.clientInfoById.areaCode,
+                areaName: this.clientInfoById.areaName,
+                address: this.clientInfoById.address
+            }
+            
+            // Object.keys(formObj).forEach((key) => {
+            //     if(formObj[key].length == 0) {
+            //         errFlag = true
+            //     }
+            // });
+            // if(errFlag) {
+            //     this.$notify({
+            //         title: '警告',
+            //         message: '请输入完整信息',
+            //         type: 'warning'
+            //     });
+            // }
+            // let codeArr = [];
+            // let nameArr = [];
+            // formObj.selected.map((v) => {
+            //     for(let key in v) {
+            //         codeArr.push(key);
+            //         nameArr.push(v[key]);
+            //     }
+            // });
+            // formObj.provinceCode = codeArr[0];
+            // formObj.provinceName = nameArr[0];
+            // formObj.cityCode = codeArr[1];
+            // formObj.cityName = nameArr[1];
+            // formObj.areaCode = codeArr[2];
+            // formObj.areaName = nameArr[2];
+            // delete formObj.selected;
+            // formObj.id = this.userId;
+            // formObj.cid = 2;
+            // this._apis.client.saveMemberInfo(formObj).then((response) => {
+            //     this.$notify({
+            //         title: '成功',
+            //         message: "保存成功",
+            //         type: 'success'
+            //     });
+            // }).catch((error) => {
+            //     this.$notify.error({
+            //         title: '错误',
+            //         message: error
+            //     });
+            // })
         }
     },
     computed: {
-        memberLabels() {
-            return clientApi.tagsById;
-        },
-        clientInfoById() {
-            return clientApi.clientInfoById
-        }
+        // memberLabels() {
+        //     return clientApi.tagsById;
+        // },
     },
     mounted() {
+        this.getMemberInfo();
         this.userTag = this.memberLabels;
     }
 }
@@ -308,15 +419,15 @@ export default {
             display: flex;
             margin: 12px 0 0 30px;
             .label_list{
-                width: 500px;
+                width: 680px;
                 display: flex;
+                flex-wrap: wrap;
                 p{
-                    width: 105px;
-                    margin-right: 15px;
+                    margin: 0 15px 10px 0;
                     display: flex;
                     span{
                         display: block;
-                        width: 78px;
+                        padding: 0 20px;
                         height: 30px;
                         line-height: 30px;
                         text-align: center;
@@ -336,6 +447,7 @@ export default {
                         width: 25px;
                         height: 25px;
                         margin-top: 3px;
+                        cursor: pointer;
                     }
                 }
             }

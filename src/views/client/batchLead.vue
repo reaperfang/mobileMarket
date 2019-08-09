@@ -105,7 +105,7 @@
             </el-form>
         </div>
         <div class="btn_cont">
-            <el-button type="primary">保 存</el-button>
+            <el-button type="primary" @click="saveLabel">保 存</el-button>
             <el-button>取 消</el-button>
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
@@ -120,35 +120,37 @@ export default {
         return {
             ruleForm: {
                 tagName: "",
-                tagType: "1",
-                anyOrAllCondition:"1",
-                isLastConsumeTime: false,
-                consumeTimeType: "0",
+                tagType: "",
+                anyOrAllCondition:"",
+                isLastConsumeTime: null,
+                consumeTimeType: "",
                 consumeTimeValue:"",
                 consumeTimeUnit: 0,
                 consumeTime:"",
-                isTotalConsumeTimes: true,
+                isTotalConsumeTimes: false,
                 consumeTimesMin:"",
                 consumeTimesMax:"",
                 isTotalConsumeMoney: false,
                 consumeMoneyMin:"",
                 consumeMoneyMax:"",
-                isPreUnitPrice: true,
+                isPreUnitPrice: false,
                 preUnitPriceMin:"",
                 preUnitPriceMax:"",
                 isTotalScore: false,
                 totalScoreMin:"",
                 totalScoreMax:"",
-                isProduct: true
+                productInfoIds:"",
+                isProduct: true,
+                labelConditon:""
             },
             rules: {
-                name: [
+                tagName: [
                     { required: true, message: '请输入标签名称', trigger: 'blur'}
                 ],
-                type: [
+                tagType: [
                     { required: true, message: '请选择标签类型', trigger: 'blur'}
                 ],
-                condition: [
+                anyOrAllCondition: [
                     { required: true, message: '请选择满足条件', trigger: 'blur'}
                 ],
             },
@@ -166,6 +168,14 @@ export default {
         chooseProduct() {
             this.dialogVisible = true;
             this.currentDialog = "chooseProductDialog";
+        },
+        saveLabel() {
+            console.log(this.ruleForm);
+            let formObj = Object.assign({}, this.ruleForm);
+            formObj.consumeTimeStart = formObj.consumeTime[0];
+            formObj.consumeTimeEnd = formObj.consumeTime[1];
+            delete formObj.consumeTime;
+            
         }
     }
 }

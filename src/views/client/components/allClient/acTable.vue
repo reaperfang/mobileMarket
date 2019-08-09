@@ -8,7 +8,8 @@
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort="{prop: 'date', order: 'descending'}"
     >
-      <el-table-column type="selection" prop="memberSn" label="客户ID"></el-table-column>
+      <el-table-column type="selection"></el-table-column>
+      <el-table-column prop="memberSn" label="客户ID"></el-table-column>
       <el-table-column prop="nickName" label="客户信息"></el-table-column>
       <el-table-column prop="phone" label="手机号"></el-table-column>
       <el-table-column prop="memberType" label="身份"></el-table-column>
@@ -19,7 +20,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <div class="btns clearfix">
-            <span class="s1" @click="_routeTo('clientInfo')">详情</span>
+            <span class="s1" @click="_routeTo('clientInfo',{id: scope.row.id})">详情</span>
             <span class="s2" @click="handelDelete(scope.row.id)">删除</span>
             <span class="s3" @click="addTag(scope.row.id)">标签</span>
             <span class="s4" @click="addBlackList(scope.row.id)" v-if="scope.row.status == 0">加入黑名单</span>

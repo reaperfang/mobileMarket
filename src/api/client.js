@@ -108,4 +108,78 @@ export function batchMarkLabel(data) {
         data
     })
 }
+//获取客户详情
+export function getMemberInfo(data) {
+    return request({
+        target:'MEMBER-INFO-DETAIL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//客户个人资料保存
+export function saveMemberInfo(data) {
+    return request({
+        target:'MEMBERINFO-PERSONALDATA-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//等级-下拉列表
+export function getLevelList(data) {
+    return request({
+        target:'LEVEL-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//变换客户身份
+export function identityChange(data) {
+    return request({
+        target:'MEMBERINFO-IDENTITYCHANGE-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//变换会员卡
+export function cardChange(data) {
+    return request({
+        target:'MEMBERINFO-GRANTCARD-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//取消手动标签
+export function removeLabel(data) {
+    return request({
+        target:'MEMBERINFO-CANCELLABEL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//标签列表
+export function getLabelList(data) {
+    return request({
+        target:'MEMBER-LABEL-PAGE-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//标签添加
+export function addTag(data) {
+    return request({
+        target:'MEMBER-LABEL-ADD-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+
+
 

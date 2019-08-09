@@ -38,7 +38,17 @@ export default {
     };
   },
   methods: {
-    submit() {}
+    submit() {},
+    getBalanceList() {
+      this._apis.finance.getListCb({startIndex: 1, pageSize: 10}).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        this.$notify.error({
+          title: "错误",
+          message: error
+        });
+      })
+    }
   },
   computed: {
     visible: {
@@ -50,7 +60,9 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.getBalanceList();
+  },
   props: {
     data: {},
     dialogVisible: {

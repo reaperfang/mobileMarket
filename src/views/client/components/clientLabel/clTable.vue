@@ -66,15 +66,15 @@ import TableBase from "@/components/TableBase";
 export default {
   name: "clTable",
   extends: TableBase,
+  props: ['params'],
   data() {
     return {
-      checkAll: false
+      checkAll: false,
+      tagList: []
     };
   },
   computed: {
-    tagList() {
-      return clientApi.tagList
-    }
+  
   },
   created() {
 
@@ -84,14 +84,32 @@ export default {
       this.tagList.forEach(row => {
         this.$refs.clientLabelTable.toggleRowSelection(row)
       });
+    },
+    getLabelList() {
+      this._apis.client.getLabelList(this.params).then((response) => {
+        this.tagList = [].concat(response.list);
+      }).catch((error) => {
+        this.$notify.error({
+            title: '错误',
+            message: error
+        });
+      })
     }
   },
-  components: {}
+  watch: {
+    params() {
+      this.getLabelList();
+    }
+  },
+  mounted() {
+    this.getLabelList();
+  } 
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .edit_span{
     color: #655EFF;
+    cursor: pointer;
     .edit_i{
         display: inline-block;
         width: 14px;
