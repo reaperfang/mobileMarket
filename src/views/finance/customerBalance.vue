@@ -35,7 +35,7 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <!-- <cbTable style="margin-top:20px"></cbTable> -->
@@ -43,7 +43,7 @@
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'date', order: 'descending'}"
+        :default-sort = "{prop: 'tradeTime', order: 'descending'}"
         >
         <el-table-column
           prop="tradeDetailSn"
@@ -166,7 +166,7 @@ export default {
     //导出
     exportToExcel() {
        let query = this.init();
-      this._apis.finance.exportTaCb(query).then((response)=>{
+      this._apis.finance.exportCb(query).then((response)=>{
         window.location.href = response
       }).catch((error)=>{
         this.$notify.error({

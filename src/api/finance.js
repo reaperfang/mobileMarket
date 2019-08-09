@@ -67,7 +67,7 @@ export function getListRe(data) {
     })
 }
 
-export function exportTaRe(data) {
+export function exportRe(data) {
     return request({
       target: 'FINANCIAL-TRADE-EXPORT-PROCESSOR',
       method: 'post',
@@ -86,7 +86,7 @@ export function getListDr(data) {
   })
 }
 
-export function exportTaDr(data) {
+export function exportDr(data) {
   return request({
     target: 'FINANCIAL-ACCOUNT-EXPORT-PROCESSOR',
     method: 'post',
@@ -96,6 +96,14 @@ export function exportTaDr(data) {
 }
 
 //提现明细 --------
+export function getListWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-RECORD-PAGE-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
 
 
 //客户ID余额 --------
@@ -108,7 +116,7 @@ export function getListCb(data) {
   })
 }
 
-export function exportTaCb(data) {
+export function exportCb(data) {
   return request({
     target: 'FINANCIAL-BALANCE-EXPORT-PROCESSOR',
     method: 'post',
@@ -127,7 +135,7 @@ export function getListId(data) {
   })
 }
 
-export function exportTaId(data) {
+export function exportId(data) {
   return request({
     target: 'FINANCIAL-INTEGRAL-EXPORT-PROCESSOR',
     method: 'post',
@@ -137,7 +145,7 @@ export function exportTaId(data) {
 }
 
 //物流对账 --------
-export function getListLi(data) {
+export function getListFs(data) {
   return request({
     target: 'FINANCIAL-EXPRESS-PAGE-PROCESSOR',
     method: 'post',
@@ -146,14 +154,25 @@ export function getListLi(data) {
   })
 }
 
-// export function exportTaLi(data) {
-//   return request({
-//     target: 'FINANCIAL-INTEGRAL-EXPORT-PROCESSOR',
-//     method: 'post',
-//     apiType: 'finance',
-//     data
-//   })
-// }
+//电子面单与物流查询导出
+export function exportFs(data) {
+  return request({
+    target: 'FINANCIAL-EXPRESS-EXPORT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+export function getListLi(data) {
+  return request({
+    target: 'FINANCIAL-EXPRESS-QUERY-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
 
 
 

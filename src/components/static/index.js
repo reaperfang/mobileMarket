@@ -12,7 +12,7 @@ Vue.use(VueDND)
 import utils from '@/utils'
 Vue.use(utils.print) // 注册
 
-//省市区县四级联动
+//省市区县四级联动  demo地址  https://liangzibo.github.io/area-linkage-vue/
 import { pcaa } from 'area-data-vue';
 import 'area-linkage-vue/dist/index.css';
 import AreaLinkageVue from 'area-linkage-vue';

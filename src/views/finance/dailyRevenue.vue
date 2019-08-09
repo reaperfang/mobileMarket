@@ -29,7 +29,7 @@
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'date', order: 'descending'}"
+        :default-sort = "{prop: 'accountDate', order: 'descending'}"
         >
         <el-table-column
           prop="accountDate"
@@ -131,7 +131,7 @@ export default {
     //导出
     exportToExcel() {
       let query = this.init();
-      this._apis.finance.exportTaDr(query).then((response)=>{
+      this._apis.finance.exportDr(query).then((response)=>{
         window.location.href = response
       }).catch((error)=>{
         this.$notify.error({
