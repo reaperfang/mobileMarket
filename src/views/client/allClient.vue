@@ -6,8 +6,8 @@
             <el-form ref="form" :model="form">
                 <el-row>
                     <el-col :span="4">
-                        <el-form-item>
-                            <el-select v-model="form.labelName" placeholder="用户ID">
+                        <el-form-item prop="labelName">
+                            <el-select v-model="form.labelName" placeholder="请选择">
                                 <el-option label="昵称" value="nickName"></el-option>
                                 <el-option label="用户ID" value="memberSn"></el-option>
                                 <el-option label="手机号" value="phone"></el-option>
@@ -15,13 +15,13 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item>
+                        <el-form-item prop="labelValue">
                             <el-input v-model="form.labelValue" placeholder="昵称/姓名/手机号码/用户ID"><el-button slot="append" icon="el-icon-search"></el-button></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item label="客户身份：" class="relaPosition">
-                    <el-checkbox-group v-model="form.memberType">
+                <el-form-item label="客户身份：" class="relaPosition" prop="memberType">
+                    <el-checkbox-group v-model="form.memberType" :max="1">
                         <el-checkbox v-for="item in clientStatusOps" :label="item" :key="item" border>{{item}}</el-checkbox>
                     </el-checkbox-group>
                     <el-popover
@@ -37,7 +37,7 @@
                     </el-popover>
                     <img src="../../assets/images/client/icon_ask.png" alt="" v-popover:popover class="pop_img">
                 </el-form-item>
-                <el-form-item label="客户标签：" class="relaPosition">
+                <el-form-item label="客户标签：" class="relaPosition" prop="memberLabels">
                     <div class="group_container">
                         <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px', height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
                             <el-checkbox v-for="item in labels" :label="item" :key="item" border>{{item}}</el-checkbox>
@@ -46,21 +46,21 @@
                     <el-button type="primary" class="absoPosition">添 加</el-button>
                     <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag">
                 </el-form-item>
-                <el-form-item label="客户渠道：" class="relaPosition">
+                <el-form-item label="客户渠道：" class="relaPosition" prop="channelId">
                     <el-checkbox-group v-model="form.channelId">
-                        <el-checkbox v-for="item in clientChannelOps" :label="item" :key="item" border>{{item}}</el-checkbox>
+                        <el-checkbox v-for="item in channels" :label="item" :key="item" border>{{item}}</el-checkbox>
                     </el-checkbox-group>
                     <div class="more font12" @click="handleMore">更多查询条件<i class="el-icon-arrow-down"></i></div>
                 </el-form-item>
                 <div class="fold_part" v-if="showFold">
-                    <el-form-item label="客户状态：">
-                        <el-checkbox-group v-model="form.status">
+                    <el-form-item label="客户状态：" prop="status">
+                        <el-checkbox-group v-model="form.status" :max="1">
                             <el-checkbox v-for="item in clientStateOps" :label="item" :key="item" border>{{item}}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
                     <el-row>
                         <el-col :span="6">
-                            <el-form-item label="积分：">
+                            <el-form-item label="积分：" prop="scoreMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.scoreMin" placeholder="最小值"></el-input>
                                 </div>
@@ -73,7 +73,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="6">
-                            <el-form-item label="累计消费金额：">
+                            <el-form-item label="累计消费金额：" prop="totalDealMoneyMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.totalDealMoneyMin" placeholder="最小值"></el-input>
                                 </div>
@@ -86,7 +86,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="6">
-                            <el-form-item label="购买次数：">
+                            <el-form-item label="购买次数：" prop="dealTimesMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.dealTimesMin" placeholder="最小值"></el-input>
                                 </div>
@@ -101,7 +101,7 @@
                     </el-row>
                     <el-row>
                         <el-col :span="6">
-                            <el-form-item label="客单价：">
+                            <el-form-item label="客单价：" prop="perUnitPriceMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.perUnitPriceMin" placeholder="最小值"></el-input>
                                 </div>
@@ -114,7 +114,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="注册时间：">
+                            <el-form-item label="注册时间：" prop="becameCustomerTimeStart">
                                 <div class="input_wrap2">
                                     <el-date-picker
                                         v-model="form.becameCustomerTimeStart"
@@ -133,7 +133,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="上次消费时间：">
+                            <el-form-item label="上次消费时间：" prop="lastPayTimeStart">
                                 <div class="input_wrap2">
                                     <el-date-picker
                                         v-model="form.lastPayTimeStart"
@@ -155,7 +155,7 @@
                 </div>
                 <el-form-item class="padR40 marT20">
                     <span class="shou" @click="handleMore">收起<i class="el-icon-arrow-up marL10"></i></span>
-                    <el-button class="fr marL20">重置</el-button>
+                    <el-button class="fr marL20" @click="resetForm('form')">重置</el-button>
                     <el-button type="primary" class="fr" @click="getClientList">查询</el-button>
                 </el-form-item>
             </el-form>
@@ -165,35 +165,26 @@
                 <el-button type="primary">导入</el-button>
                 <el-button>导出</el-button>
             </div>
-            <acTable @delete="handleDelete" @addTag="addTag" @addBlackList="addBlackList" @removeBlack="removeBlack" @batchDelete="batchDelete" @batchAddBlack="batchAddBlack" @batchAddTag="batchAddTag" @batchRemoveBlack="batchRemoveBlack"></acTable>
+            <acTable :newForm="newForm"></acTable>
         </div>
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
 <script>
 import clientCont from '@/system/constant/client';
 import acTable from './components/allClient/acTable';
-import deleteUserDialog from './dialogs/allClient/deleteUserDialog';
-import addTagDialog from './dialogs/allClient/addTagDialog';
-import addBlackDialog from './dialogs/allClient/addBlackDialog';
-import removeBlackDialog from './dialogs/allClient/removeBlackDialog';
-import batchDeleteUserDialog from './dialogs/allClient/batchDeleteUserDialog';
-import batchAddBlackDialog from './dialogs/allClient/batchAddBlackDialog';
-import batchAddTagDialog from './dialogs/allClient/batchAddTagDialog';
-import batchRemoveBlackDialog from './dialogs/allClient/batchRemoveBlackDialog';
 export default {
   name: 'allClient',
-  components: { acTable, deleteUserDialog, addTagDialog, addBlackDialog, removeBlackDialog, batchDeleteUserDialog, batchAddBlackDialog, batchAddTagDialog, batchRemoveBlackDialog },
+  components: { acTable },
   data() {
     return {
       form: {
         labelName:"",
         labelValue:"",
-        memberType:['非会员客户'],
-        memberLabels: ['年轻用户'],
-        channelId: ['小程序'],
-        status: ['正常'],
+        memberType:[],
+        memberLabels: [],
+        channelId: [],
+        status: [],
         scoreMin:"",
         scoreMax:"",
         totalDealMoneyMin:"",
@@ -207,13 +198,15 @@ export default {
         lastPayTimeStart:"",
         lastPayTimeEnd:""
       },
+        newForm: {},
         showFold: true,
         showMoreTag: false,
-        currentDialog:"",
-        dialogVisible: false,
-        currentData:{},
         popVisible: false,
-        labels: []
+        labels: [],
+        labelsList: [],
+        channels: [],
+        channelsList: [],
+        memberList: []
     }
   },
   watch: {
@@ -222,9 +215,6 @@ export default {
   computed:{
     clientStatusOps() {
         return clientCont.clientStatusOps
-    },
-    clientSignOps() {
-        return clientCont.clientSignOps
     },
     clientChannelOps() {
         //return clientCont.clientChannelOps
@@ -248,45 +238,13 @@ export default {
   methods: {
     handleMore() {
         this.showFold = !this.showFold;
-    },
-    handleDelete(id) {
-        this.dialogVisible = true;
-        this.currentDialog = "deleteUserDialog";
-        this.currentData.userId = id;
-    },
-    addTag(cid) {
-        this.dialogVisible = true;
-        this.currentDialog = "addTagDialog";
-    },
-    addBlackList() {
-        this.dialogVisible = true;
-        this.currentDialog = "addBlackDialog";
-    },
-    removeBlack() {
-        this.dialogVisible = true;
-        this.currentDialog = "removeBlackDialog";
-    },
-    batchDelete() {
-        this.dialogVisible = true;
-        this.currentDialog = "batchDeleteUserDialog";
-    },
-    batchAddBlack() {
-        this.dialogVisible = true;
-        this.currentDialog = "batchAddBlackDialog";
-    },
-    batchAddTag() {
-        this.dialogVisible = true;
-        this.currentDialog = "batchAddTagDialog";
-    },
-    batchRemoveBlack() {
-        this.dialogVisible = true;
-        this.currentDialog = "batchRemoveBlackDialog";
-    },
+    },   
     extendTag() {
         this.showMoreTag = !this.showMoreTag;
     },
     getLabels() {
         this._apis.client.getLabels({cid:2, tagType:null}).then((response) => {
+            this.labelsList = [].concat(response);
             response.map((v) => {
                 this.labels.push(v.tagName);
             })
@@ -298,18 +256,71 @@ export default {
         })
     },
     getChannels() {
-        // this._apis.client.getChannels({}).then((response) => {
-        //     console.log(response);
-        // }).catch((error) => {
-        //     this.$notify.error({
-        //         title: '错误',
-        //         message: error
-        //     });
-        // })
+        this._apis.client.getChannels({}).then((response) => {
+            this.channelsList = [].concat(response);
+            response.map((v) => {this.channels.push(v.channerlName)});
+        }).catch((error) => {
+            this.$notify.error({
+                title: '错误',
+                message: error
+            });
+        })
     },
     getClientList() {
-        console.log(this.form);
-        
+        let oForm = Object.assign({},this.form);
+        let labelNames = oForm.memberLabels;
+        let channelNames = oForm.channelId;
+        let labelIds = [];
+        let channelIds = [];
+        let newForm = {};
+        if(labelNames.length > 0) {
+            this.labelsList.map((item) => {
+                labelNames.map((v) => {
+                    if(v == item.tagName) {
+                        labelIds.push(item.id);
+                    }
+                })
+            });
+        }
+        labelIds = labelIds.join(',');
+        if(channelNames.length > 0) {
+            this.channelsList.map((item) => {
+                channelNames.map((v) => {
+                    if(v == item.channerlName) {
+                        channelIds.push(item.id);
+                    }
+                })
+            });
+        }
+        channelIds = channelIds.join(',');
+        oForm.memberLabels = labelIds;
+        oForm.channelId = channelIds;
+        if(oForm.memberType.length > 0) {
+            oForm.memberType = oForm.memberType[0] == "会员" ? '1':'0';
+        }
+        if(oForm.status.length > 0) {
+            oForm.status = oForm.status[0] == "正常" ? '0':'2';
+        }
+        if(oForm.labelValue && oForm.labelName) {
+            newForm[oForm.labelName] = oForm.labelValue;
+        }
+        Object.keys(oForm).forEach((key) => {
+            if(oForm[key].length !== 0) {
+                newForm[key] = oForm[key];
+            }
+        });
+        delete newForm.labelName;
+        delete newForm.labelValue;
+        this.newForm = Object.assign({},newForm);
+    },
+    resetForm(formName) {
+        this.$refs[formName].resetFields();
+        this.form.scoreMax = "";
+        this.form.totalDealMoneyMax = "";
+        this.form.dealTimesMax = "";
+        this.form.perUnitPriceMax = "";
+        this.form.becameCustomerTimeEnd = "";
+        this.form.lastPayTimeEnd = "";
     }
   },
   mounted() {

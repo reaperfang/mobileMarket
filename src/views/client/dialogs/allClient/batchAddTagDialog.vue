@@ -1,7 +1,7 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="批量加标签" :hasCancel="hasCancel">
         <div class="c_container">
-            <p class="c_info">当前选中共20个客户，批量添加以下标签：</p>
+            <p class="c_info">当前选中共{{data.checkedItem.length}}个客户，批量添加以下标签：</p>
             <el-checkbox-group
                 v-model="checkedItems"
                 :max="5">
@@ -19,12 +19,51 @@ export default {
     data() {
         return {
             hasCancel: true,
-            checkedItems:[]
+            checkedItems:[],
+            tagList:[]
         }
     },
     methods: {
         submit() {
-            
+            let memberLabelInfoIds = [];
+            if(this.checkedItems.length > 0) {
+                this.tagList.map((item) => {
+                    this.checkedItems.map((v) => {
+                        if(v == item.tagName) {
+                            memberLabelInfoIds.push(item.id);
+                        }
+                    })
+                });
+            }
+            memberLabelInfoIds = memberLabelInfoIds.join(',');
+            let memberInfoIds = [];
+            this.data.checkedItem.map((v) => {
+                memberInfoIds.push(v.id);
+            });
+            memberInfoIds = memberInfoIds.join(',');
+            //console.log({memberInfoIds,memberLabelInfoIds});
+            this._apis.client.batchMarkLabel({memberInfoIds,memberLabelInfoIds}).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: '批量打标签成功',
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getLabels() {
+            this._apis.client.getLabels({cid:2,tagType:0}).then((response) => {
+                this.tagList = [].concat(response); 
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -38,14 +77,14 @@ export default {
         },
         tagNames() {
             let arr = [];
-            clientApi.tagData.map((item) => {
+            this.tagList.map((item) => {
                 arr.push(item.tagName)
             })
             return arr;
         }
     },
     mounted() {
-        
+        this.getLabels();
     },
     props: {
         data: {

@@ -19,7 +19,19 @@ export default {
     },
     methods: {
         submit() {
-            
+            this._apis.client.deleteMember({id: this.data.userId}).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: '删除成功',
+                    type: 'success'
+                });
+                this.$emit('deleteFeedback', 'success');
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -48,6 +60,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .c_container{
+    text-align: center;
     .warn_img{
         display: block;
         margin: 0 auto 24px auto;
