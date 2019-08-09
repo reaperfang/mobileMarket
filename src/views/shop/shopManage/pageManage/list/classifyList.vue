@@ -28,7 +28,16 @@
           <template slot-scope="scope">
             <span class="table-btn" @click="_routeTo('classifyEditor', {classifyId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deleteClassify(scope.row)">删除</span>
-            <span class="table-btn" @click="link(scope.row)">链接</span>
+            <el-popover
+              placement="right"
+              width="400"
+              trigger="click">
+              <div style="display:flex;">
+                <el-input v-model="scope.row.id" placeholder="请输入内容" style="margin-right:10px"></el-input>
+                <el-button type="primary">复制</el-button>
+              </div>
+              <span class="table-btn" slot="reference" @click="link(scope.row)">链接</span>
+            </el-popover>
           </template>
         </el-table-column>
       </el-table>

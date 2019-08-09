@@ -79,8 +79,6 @@ export default {
 
     /* 转换装修数据 */
     convertDecorateData(data) {
-      //清空选中组件id
-      this.$store.commit('setCurrentComponentId', '');
 
       //还原页面基础信息
       this.$store.commit("setBaseInfo", {
@@ -92,6 +90,8 @@ export default {
         pageKey: data.pageKey
       });
 
+      //打开基础信息面板
+      this.$store.commit('showBaseProperty');
       
       //还原组件列表
       let componentDataIds = [];
