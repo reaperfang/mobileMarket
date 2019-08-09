@@ -137,9 +137,26 @@ export function exportTaId(data) {
 }
 
 //物流对账 --------
-export function getListLi(data) {
+export function getListFs(data) {
   return request({
     target: 'FINANCIAL-EXPRESS-PAGE-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+// export function exportFs(data) {
+//   return request({
+//     target: 'FINANCIAL-INTEGRAL-EXPORT-PROCESSOR',
+//     method: 'post',
+//     apiType: 'finance',
+//     data
+//   })
+// }
+export function getListLi(data) {
+  return request({
+    target: 'FINANCIAL-EXPRESS-QUERY-PROCESSOR',
     method: 'post',
     apiType: 'finance',
     data

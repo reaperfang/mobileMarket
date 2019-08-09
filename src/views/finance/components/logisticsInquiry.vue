@@ -1,10 +1,10 @@
-<!--电子面单-->
+<!--物流查询-->
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline" label-width="70px">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline" label-width="70px">
         <el-form-item>
-          <el-select v-model="form.searchType" placeholder="订单编号" style="width:124px;">
+          <el-select v-model="ruleForm.searchType" placeholder="订单编号" style="width:124px;">
             <el-option
               v-for="item in fsTerms"
               :key="item.value"
@@ -14,21 +14,21 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.searchValue" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="ruleForm.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="查询时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.value3"
+            v-model="ruleForm.timeValue"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']"
+            :default-time="['00:00:00', '00:00:00']"
             :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="快递公司">
-          <el-input v-model="form.expressCompany" placeholder="请输入" style="width:200px;"></el-input>
+          <el-input v-model="ruleForm.expressCompany" placeholder="请输入" style="width:200px;"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm">重置</el-button>
@@ -38,7 +38,7 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>{{total}}}</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <el-table
@@ -99,9 +99,9 @@ export default {
         }
       },
       inline:true,
-      form:{
-        value1:1,
-        value2:'',
+      ruleForm:{
+        searchType:'relationSn',
+        timeValue:'',
         expressCompany:'',
       },
       dataList:[ ],
@@ -165,7 +165,11 @@ export default {
     },
     //重置
     resetForm(){
-      
+      this.ruleForm = {
+        searchType:'relationSn',
+        timeValue:'',
+        expressCompany:'',
+      }
     },
     //导出
     exportToExcel() {

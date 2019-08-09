@@ -35,7 +35,7 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
       <!-- <idTable style="margin-top:20px"></idTable> -->
