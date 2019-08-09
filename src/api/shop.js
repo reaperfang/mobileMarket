@@ -123,6 +123,26 @@ export function getClassifyInfo(data) {
   })
 }
 
+// 编辑分类数据
+export function editClassifyInfo(data) {
+  return request({
+    target: 'DECORATION-CATEGORY-INFO-UPDATE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 新建分类
+export function createClassify(data) {
+  return request({
+    target: 'DECORATION-CATEGORY-INFO-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 // 获取广告数据
 export function getADInfo(data) {
   return request({
