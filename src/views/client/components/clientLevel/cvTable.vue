@@ -37,12 +37,12 @@
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
-            <el-switch></el-switch>
+            <el-switch v-model="scope.row.status"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <span class="edit_span">编辑</span>
+            <span class="edit_span" @click="edit(scope.row.id)">编辑</span>
         </template>
       </el-table-column>
     </el-table>
@@ -65,33 +65,53 @@
 </template>
 
 <script type='es6'>
-import clientApi from '@/api/client';
 import TableBase from "@/components/TableBase";
 export default {
   name: "cvTable",
   extends: TableBase,
+  props: ['params'],
   data() {
     return {
-      checked: false
+      checked: false,
+      levelList: []
     };
   },
   computed: {
-    levelList() {
-      return clientApi.levelList
-    }
+   
   },
   created() {
 
   },
   methods: {
-    
+    getLevelsList() {
+      this._apis.client.getLevelsList(this.params).then((response) => {
+        response.list.map((v) => {v.status = Boolean(v.status)});
+        this.levelList = [].concat(response.list);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    edit(id) {
+      this._routeTo('levelInfo',{id: id});
+    }
   },
-  components: {}
+  mounted() {
+    this.getLevelsList();
+  },
+  watch: {
+    params() {
+      this.getLevelsList();
+    }
+  }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .edit_span{
     color: #655EFF;
+    cursor: pointer;
     .edit_i{
         display: inline-block;
         width: 14px;

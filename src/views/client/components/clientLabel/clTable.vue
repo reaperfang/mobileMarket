@@ -35,7 +35,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <span class="edit_span">
+            <span class="edit_span" @click="edit(scope.row)">
                 <i class="edit_i"></i>
                 查看&编辑
             </span>
@@ -55,7 +55,7 @@
     </div>
     <div class="a_line">
       <el-checkbox v-model="checkAll" @change="handleChange"></el-checkbox>
-      <el-button type="primary">批量删除</el-button>
+      <el-button type="primary" @click="batchDelete">批量删除</el-button>
     </div>
   </div>
 </template>
@@ -94,6 +94,37 @@ export default {
             message: error
         });
       })
+    },
+    edit(row) {
+      this._routeTo('batchImport',{id: row.id});
+    },
+    batchDelete() {
+      let rows = this.$refs.clientLabelTable.selection;
+      if(rows.length == 0) {
+        this.$notify({
+          title: '警告',
+          message: '请选择要删除的标签',
+          type: 'warning'
+        });
+      }else{
+        let arr = [];
+        rows.map((v) => {
+          arr.push(v.id);
+        })
+        this._apis.client.batchDeleteTag({ labelIds: arr }).then((response) => {
+          this.$notify({
+            title: '成功',
+            message: "批量删除标签成功",
+            type: 'success'
+          });
+          this.getLabelList();
+        }).catch((error) => {
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+        })
+      }
     }
   },
   watch: {

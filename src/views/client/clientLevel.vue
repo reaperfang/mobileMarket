@@ -6,9 +6,9 @@
                 <el-option label="禁用" value="0"></el-option>
                 <el-option label="启用" value="1"></el-option>
             </el-select>
-            <el-button type="primary" class="marL20">查 询</el-button>
+            <el-button type="primary" class="marL20" @click="checkLevel">查 询</el-button>
         </div>
-        <cvTable style="margin-top: 36px"></cvTable>
+        <cvTable style="margin-top: 36px" :params="params"></cvTable>
     </div>
 </template>
 <script>
@@ -18,7 +18,23 @@ export default {
     components: { cvTable },
     data() {
         return {
-            status:""
+            status: "",
+            params: {
+                startIndex:"",
+                pageSize:"",
+                status:"",
+                cid:""
+            }
+        }
+    },
+    methods: {
+        checkLevel() {
+            this.params = Object.assign({},{
+                startIndex:"",
+                pageSize:"",
+                status:this.status,
+                cid:""
+            })
         }
     }
 }
