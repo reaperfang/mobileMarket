@@ -1,27 +1,27 @@
 /* 审核 */
 <template>
-  <DialogBase :visible.sync="visible" @submit="submit" title="审核" :hasCancel="hasCancel">
+  <DialogBase :visible.sync="visible" @submit="submit" title="审核">
     <div class="c_container">
       <div class="clearfix">
         <span class="fl c_label">提现申请</span>
         <div class="fl">
           <div class="c_top">
-            <p>客户ID：13128098</p>
+            <p>客户ID：{{info.memberSn}}</p>
             <p>
               提现金额：
-              <span>￥500.00</span>
+              <span>￥{{info.amount}}</span>
             </p>
-            <p>提现编号：43746374685348536</p>
+            <p>提现编号：{{info.cashoutSn}}</p>
           </div>
           <div class="c_steps clearfix">
             <div class="c_step_l">
               <span class="c_green"></span>
-              2019-06-01 10：56：23
+              {{info.createTime}}
             </div>
             <div class="c_step_r">
               <p>提交申请</p>
-              <p>账户可用余额冻结 ￥500.00</p>
-              <p>交易流水 8236876238</p>
+              <p>账户可用余额冻结 ￥{{info.amount}}</p>
+              <p>交易流水 {{info.tradeDetailSn}}</p>
             </div>
           </div>
         </div>
@@ -29,14 +29,14 @@
       <div class="clearfix marT30">
         <span class="fl c_label">提现申请</span>
         <div class="fl">
-            <el-radio v-model="radio" label="1">同意申请</el-radio>
-            <el-radio v-model="radio" label="2">拒绝申请</el-radio>
+            <el-radio v-model="radio" label="0">同意申请</el-radio>
+            <el-radio v-model="radio" label="1">拒绝申请</el-radio>
             <el-input
                 type="textarea"
                 :rows="3"
                 class="marT20"
                 placeholder="请输入拒绝原因，不超过20个字"
-                v-model="textarea">
+                v-model="remarks">
             </el-input>
         </div>
       </div>
@@ -51,14 +51,20 @@ export default {
   props: ["data"],
   data() {
     return {
-      hasCancel: true,
-      radio: "1"
+      info:{},
+      radio: "0",
+      remarks:''
     };
   },
-  methods: {
-    submit() {
-      this.$emit("handleSubmit");
+  props: {
+    data: {},
+    dialogVisible: {
+      type: Boolean,
+      required: true
     }
+  },
+  components: {
+    DialogBase
   },
   computed: {
     visible: {
@@ -70,17 +76,37 @@ export default {
       }
     }
   },
-  mounted() {},
-  props: {
-    data: {},
-    dialogVisible: {
-      type: Boolean,
-      required: true
-    }
+  created() {
+    this.getInfo()
   },
-  components: {
-    DialogBase
-  }
+  methods: {
+    submit() {      
+      let datas = {
+        ids:[this.data.id],
+        auditStatus:this.radio,
+        remarks:this.remarks
+      }
+      this._apis.finance.examineWd(datas).then((response)=>{
+          this.dialogVisible = false
+          this.$emit("handleSubmit");
+      }).catch((error)=>{
+          this.$notify.error({
+          title: '错误',
+          message: error
+          });
+      })
+    },
+    getInfo(){
+      this._apis.finance.getInfoWd({cashoutDetailId:this.data.id}).then((response)=>{
+          this.info = response[0]
+      }).catch((error)=>{
+          this.$notify.error({
+          title: '错误',
+          message: error
+          });
+      })
+    },
+  },  
 };
 </script>
 <style lang="scss" scoped>

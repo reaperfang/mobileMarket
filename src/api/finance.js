@@ -104,7 +104,30 @@ export function getListWd(data) {
     data
   })
 }
-
+export function getInfoWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-DETAIL-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+export function examineWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-AUDIT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+export function exportWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-EXPORT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
 
 //客户ID余额 --------
 export function getListCb(data) {
