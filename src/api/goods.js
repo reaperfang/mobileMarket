@@ -132,4 +132,16 @@ export function fetchGoodsList(data) {
   })
 }
 
+// 新增商品
+export function addGoods(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-NEW-PROCESSOR',
+    data
+  })
+}
+
+
+
 

@@ -85,7 +85,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dd9804fcf6e49509491f6d1f620895fe1',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d35fca7b160da9919290888041787a286',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -104,7 +104,7 @@ class Ajax {
         if(config.noCid){
           config.data =`json=${encodeURI(JSON.stringify({ head, data: config.data}))}`;
         }else{
-          config.data =`json=${encodeURI(JSON.stringify({ head, data: {...config.data,cid}}))}`;
+          config.data =`json=${encodeURI(JSON.stringify({ head, data: {cid, ...config.data}}))}`;
         }
       } else if (config.method == "get") {
         if(config.noCid){
@@ -141,6 +141,9 @@ class Ajax {
           break;
           case 'finance':  //财务接口
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
+          break;
+          case 'goodsOperate':  //商品运营
+            config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
           break;
         }
       }

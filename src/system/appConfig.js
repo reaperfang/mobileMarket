@@ -11,5 +11,6 @@ export default {
 		url: 'https://map.qq.com/api/js?v=2.exp',
 		key: '7FYBZ-SKMKW-D5HR6-RUHRK-Z76EE-DNBYL',
 		defaultCenter: [39.9046900000,116.4071700000]
-	}
+	},
+	realmName: 'http://172.22.146.118'
 }

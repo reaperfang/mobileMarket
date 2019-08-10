@@ -51,6 +51,7 @@ export default {
             options: [],
             tableData: [
                 {
+                    id: '1',
                     name: '商品名称1',
                     unit: 'kg',
                     price: 100,

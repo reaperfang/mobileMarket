@@ -1,7 +1,7 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="选择规格" :showFooter="showFooter">
         <el-cascader
-            :options="options"
+            :options="data"
             :props="props"
             @change="handleChange"
             clearable>
@@ -19,7 +19,12 @@ export default {
     data() {
         return {
             showFooter: false,
-            props: { multiple: true },
+            props: { 
+                multiple: true,
+                value: 'id',
+				label: 'name',
+				children: 'list'
+            },
             options: [{
                 value: '颜色',
                 label: '颜色',

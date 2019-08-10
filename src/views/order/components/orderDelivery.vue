@@ -3,11 +3,16 @@
         <div class="search">
             <div class="top">说明：当前已开启订单自动发货，自动发货后请尽快补充物流信息，您也可以到</div>
             <el-form ref="form" :inline="true" :model="formInline" class="form-inline">
-                <el-form-item label="订单编号">
-                    <el-select v-model="formInline.orderNumberType">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderNumberTypeList" :key="index"></el-option>
-                    </el-select>
-                    <el-input v-model="formInline.orderNumber" placeholder="请输入"></el-input>
+                <el-form-item>
+                    <el-input placeholder="请输入内容" v-model="formInline.searchValue" class="input-with-select">
+                        <el-select v-model="formInline.searchType" slot="prepend" placeholder="请输入">
+                        <el-option label="订单编号" value="code"></el-option>
+                        <el-option label="商品名称" value="goodsName"></el-option>
+                        <el-option label="客户ID" value="memberSn"></el-option>
+                        <el-option label="收货人联系电话" value="receivedPhone"></el-option>
+                        <el-option label="收货人" value="receivedName"></el-option>
+                        </el-select>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="订单状态">
                     <el-select v-model="formInline.orderState">
@@ -19,26 +24,29 @@
                         <el-option :label="item.label" :value="item.value" v-for="(item, index) in deliveryList" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="">
-                    <el-select v-model="formInline.goodsNameType">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in goodsNameTypeList" :key="index"></el-option>
-                    </el-select>
-                    <el-input v-model="formInline.goodsName" placeholder="请输入"></el-input>
-                </el-form-item>
-                <el-form-item label="">
-                    <el-select v-model="formInline.orderTimeType">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderTimeTypeList" :key="index"></el-option>
-                    </el-select>
-                    <el-date-picker
-                        v-model="formInline.orderTime"
-                        type="datetimerange"
-                        range-separator="-"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-                    </el-date-picker>
+                <el-form-item>
+                    <el-input placeholder="请输入内容" v-model="formInline.searchValue" class="input-with-select">
+                        <el-select v-model="formInline.searchType" slot="prepend" placeholder="请输入">
+                        <el-option label="商品名称" value="code"></el-option>
+                        <el-option label="快递公司" value="goodsName"></el-option>
+                        <el-option label="收货人" value="memberSn"></el-option>
+                        </el-select>
+                    </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                    <el-select class="date-picker-select" v-model="formInline.searchTimeType" placeholder>
+                        <el-option label="发货时间" value="sendTime"></el-option>
+                        <el-option label="下单时间" value="createTime"></el-option>
+                        <el-option label="售后时间" value="complateTime"></el-option>
+                    </el-select>
+                    <el-date-picker
+                        v-model="formInline.orderTimeValue"
+                        type="daterange"
+                        range-separator="-"
+                        value-format="yyyy-MM-dd hh:mm:ss"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                    ></el-date-picker>
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
@@ -99,7 +107,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
     </div>
 </template>
@@ -211,10 +219,17 @@ export default {
             ],
             total: 0,
             listQuery: {
-                page: 1,
-                limit: 20,
+                startIndex: 1,
+                pageSize: 20,
+                orderCode: '', // 订单编号
+                orderProductName: '', // 商品名称
+                memberSn: '', // 客户ID
+
             },
         }
+    },
+    created() {
+        this.getList()
     },
     methods: {
         resetForm(formName) {
@@ -224,7 +239,11 @@ export default {
             this.multipleSelection = val;
         },
         getList() {
+            this._apis.order.orderSendPageList({cid: 2}).then((res) => {
+                console.log(res)
+            }).catch(error => {
 
+            })
         }
     },
     components: {
@@ -267,6 +286,19 @@ export default {
 }
 /deep/ .el-input {
     width: auto;
+}
+/deep/ .input-with-select .el-input__inner {
+  width: 139px;
+}
+/deep/ .el-date-editor {
+  margin-left: -6px;
+  border-radius: 0 0 4px 4px;
+}
+/deep/ .date-picker-select .el-input__inner {
+  border-radius: 4px 0 0 4px;
+}
+/deep/ .date-picker-select .el-input__inner:focus {
+  border-color: #dcdfe6;
 }
 </style>
 

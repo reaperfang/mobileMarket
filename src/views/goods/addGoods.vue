@@ -13,9 +13,10 @@
                 <el-cascader
                     :options="itemCatList"
                     v-model="ruleForm.itemCat"
-                    @change="itemCatHandleChange">
+                    @change="itemCatHandleChange"
+                    filterable>
                 </el-cascader>
-                <span class="category-display">您当前的选择是：食品 ＞ 休闲零食</span>
+                <span class="category-display">您当前的选择是：{{itemCatText}}</span>
             </el-form-item>
             <el-form-item label="商品名称" prop="name">
                 <el-input v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
@@ -71,7 +72,7 @@
         <section class="form-section">
             <h2>销售信息</h2>
             <el-form-item label="规格信息" prop="specifications">
-                <el-button class="border-button selection-specification" @click="currentDialog = 'SelectSpecifications'; dialogVisible = true">选择规格</el-button>
+                <el-button class="border-button selection-specification" @click="currentDialog = 'SelectSpecifications'; currentData = specsList; dialogVisible = true">选择规格</el-button>
                 <template>
                     <el-table
                     class="spec-information"
@@ -80,7 +81,7 @@
                     style="width: 100%">
                     <el-table-column
                         prop="label"
-                        label="组合"
+                        :label="specsLabel"
                         width="180">
                     </el-table-column>
                     <el-table-column
@@ -143,22 +144,22 @@
             <el-form-item label="起售数量" prop="number">
                 <div class="input-number">
                     <span @click="reduce">-</span>
-                    <el-input v-model="ruleForm.number"></el-input>
+                    <el-input v-model="ruleForm.startSaleNum"></el-input>
                     <span @click="increase">+</span>
                 </div>
             </el-form-item>
-            <el-form-item label="已售出数量" prop="quantitySold">
-                <el-input type="number" v-model="ruleForm.quantitySold"></el-input>
+            <el-form-item label="已售出数量" prop="selfSaleCount">
+                <el-input type="number" v-model="ruleForm.selfSaleCount"></el-input>
                 <el-checkbox v-model="ruleForm.displaySold">商品详情显示已售出数量</el-checkbox>
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
             </el-form-item>
-            <el-form-item label="单位计量" prop="unitMeasurement">
-                <el-select v-model="ruleForm.unitMeasurement" placeholder="请选择">
+            <el-form-item label="单位计量" prop="productUnit">
+                <el-select v-model="ruleForm.productUnit" placeholder="请选择">
                     <el-option
-                        v-for="item in unitMeasurementList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="item in unitList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
                     </el-option>
                 </el-select>
                 <el-button class="border-button new-units">新增单位</el-button>
@@ -167,26 +168,26 @@
                     <el-input v-model="ruleForm.otherUnit" placeholder="请输入计量单位"></el-input>
                 </div>
             </el-form-item>
-            <el-form-item label="商品品牌" prop="brand">
-                <el-select v-model="ruleForm.brand" placeholder="请选择">
+            <el-form-item label="商品品牌" prop="productBrandInfoId">
+                <el-select v-model="ruleForm.productBrandInfoId" placeholder="请选择">
                     <el-option
                         v-for="item in brandList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
         </section>
         <section class="form-section">
             <h2>物流/售后</h2>
-            <el-form-item label="上架时间" prop="time">
+            <el-form-item label="上架时间" prop="status">
                 <span>定时上架的商品在上架前请到“仓库中的宝贝”里编辑商品。</span>
                 <div>
-                    <el-radio-group v-model="ruleForm.time">
-                        <el-radio :label="1">放入仓库</el-radio>
-                        <el-radio :label="2">立即上架</el-radio>
-                        <span @click="timelyShelvingHandler"><el-radio :label="3">定时上架</el-radio></span>
+                    <el-radio-group v-model="ruleForm.status">
+                        <el-radio :label="0">放入仓库</el-radio>
+                        <el-radio :label="1">立即上架</el-radio>
+                        <span @click="timelyShelvingHandler"><el-radio :label="2">定时上架</el-radio></span>
                     </el-radio-group>
                 </div>
             </el-form-item>
@@ -202,23 +203,23 @@
                     <el-radio :label="2">不赠送</el-radio>
                 </el-radio-group>
             </el-form-item> -->
-            <el-form-item label="开具发票" prop="fapiao">
-                <el-radio-group v-model="ruleForm.fapiao">
+            <el-form-item label="开具发票" prop="isSupportInvoice">
+                <el-radio-group v-model="ruleForm.isSupportInvoice">
                     <el-radio :label="1">支持</el-radio>
-                    <el-radio :label="2">不支持</el-radio>
+                    <el-radio :label="0">不支持</el-radio>
                 </el-radio-group>
                 <span class="prompt">此功能在交易设置中开启后，可选择是否支持开具发票</span>
             </el-form-item>
-            <el-form-item label="是否支持货到付款" prop="cashOnDelivery">
-                <el-radio-group v-model="ruleForm.cashOnDelivery">
+            <el-form-item label="是否支持货到付款" prop="isCashOnDelivery">
+                <el-radio-group v-model="ruleForm.isCashOnDelivery">
                     <el-radio :label="1">是</el-radio>
-                    <el-radio :label="2">否</el-radio>
+                    <el-radio :label="0">否</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="运费设置" prop="freightSettings">
+            <el-form-item label="运费设置" prop="isFreeFreight">
                 <div>
-                    <el-radio v-model="ruleForm.freightSettings" label="1">选择运费模板</el-radio>
-                    <el-select v-model="ruleForm.shippingTemplatesValue" placeholder="请选择">
+                    <el-radio v-model="ruleForm.isFreeFreight" :label="0">选择运费模板</el-radio>
+                    <el-select v-model="ruleForm.freightTemplateId" placeholder="请选择">
                         <el-option
                             v-for="item in shippingTemplates"
                             :key="item.value"
@@ -228,21 +229,21 @@
                         </el-select>
                 </div>
                 <div>
-                    <el-radio v-model="ruleForm.freightSettings" label="2">包邮</el-radio>
+                    <el-radio v-model="ruleForm.isFreeFreight" :label="1">包邮</el-radio>
                 </div>
             </el-form-item>
-            <el-form-item label="是否支持售后维权" prop="rights">
-                <el-radio-group v-model="ruleForm.rights">
+            <el-form-item label="是否支持售后维权" prop="isAfterSaleService">
+                <el-radio-group v-model="ruleForm.isAfterSaleService">
                     <el-radio :label="1">是</el-radio>
-                    <el-radio :label="2">否</el-radio>
+                    <el-radio :label="0">否</el-radio>
                 </el-radio-group>
             </el-form-item>
         </section>
         <section class="form-section">
             <h2>详情描述</h2>
-            <el-form-item label="是否显示关联商品" prop="associatedGoods">
-                <el-radio v-model="ruleForm.associatedGoods" label="1">否</el-radio>
-                <el-radio v-model="ruleForm.associatedGoods" label="2">是</el-radio>
+            <el-form-item label="是否显示关联商品" prop="isShowRelationProduct">
+                <el-radio v-model="ruleForm.isShowRelationProduct" :label="1">否</el-radio>
+                <el-radio v-model="ruleForm.isShowRelationProduct" :label="0">是</el-radio>
                 <el-button class="border-button" @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
             </el-form-item>
             <div class="associated-goods">
@@ -273,12 +274,15 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <el-form-item label="商品详情" prop="brand">
+            <el-form-item label="商品详情" prop="productDetail">
                 <rickEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></rickEditor>
             </el-form-item>
+            <div class="footer">
+                <el-button @click="submitGoods" type="primary">保存</el-button>
+            </div>
         </section>
     </el-form>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData"></component>
 </div>
 </template>
 <script>
@@ -294,33 +298,38 @@ import AddTagDialog from '@/views/goods/dialogs/addTagDialog'
 export default {
     data() {
         return {
+            itemCatText: '',
             categoryValue: [],
             categoryOptions: [],
             productLabelList: [], // 商品标签列表
             ruleForm: {
-                productCategoryInfoId: '123', // 商品类目id
+                productCategoryInfoId: '', // 商品类目id
+                productCatalogInfoId: '', // 商品商家分类ID
                 name: '', // 商品名称
                 description: '', // 商品描述
                 images: 'images', // 商品图片
                 productCategoryInfoIds: '',
                 productLabelId: '', // 商品标签
-                number: 0,
+                startSaleNum: 1, // 起售数量
                 quantitySold: 0,
-                brand: '',
-                time: 1,
+                productBrandInfoId: '', // 商品品牌id
+                status: 0, // 上架状态
+                autoSaleTime: '', // 自动上架时间
                 dazhe: 1,
                 zhengsong: 1,
-                fapiao: 1,
+                isSupportInvoice: 1, // 是否开发票
                 residueStock: false,
                 displaySold: '',
-                unitMeasurement: '',
+                productUnit: '', // 商品计量单位
                 other: false,
                 otherUnit: '',
-                cashOnDelivery: '',
-                freightSettings: '',
-                rights: '',
-                associatedGoods: '',
-                shippingTemplatesValue: '',
+                isCashOnDelivery: 1, // 是否支持货到付款
+                isFreeFreight: 0, // 是否包邮
+                isAfterSaleService: 1, // 是否支持售后服务
+                isShowRelationProduct: 0, // 是否显示关联商品
+                relationProductInfoIds: [], // 关联商品
+                productDetail: '', // 商品详情
+                freightTemplateId: '', // 运费模版ID
                 itemCat: ''
             },
             rules: {
@@ -372,7 +381,7 @@ export default {
             imageVisible: false,
             currentDialog: '',
             dialogVisible: true,
-            unitMeasurementList: [],
+            unitList: [],
             brandList: [],
             myConfig: {
                 // 编辑器不自动被内容撑高
@@ -390,14 +399,112 @@ export default {
             specArr: [],
             shippingTemplates: [],
             tableData: [],
-            itemCatList: []
+            operateCategoryList: [],
+            itemCatList: [],
+            specsList: [],
+            flatSpecsList: [],
+            currentData: [],
+            specsLabel: ''
         }
     },
     created() {
         this.getCategoryList()
         this.getProductLabelList()
+        this.getOperateCategoryList()
+        this.getUnitList()
+        this.getBrandList()
     },
     methods: {
+        flatTreeArray(array = [], childrenKey = 'childrenList') {
+            var result = [];
+            let flat = (array = {}, childrenKey, floor) => {
+                array.forEach(item => {
+                let dataItem = {
+                    floor: floor,
+                    name: item.name,
+                    id: item.id,
+                    parentId: item.parentId,
+                }
+                result.push(dataItem);
+
+                let childrenArr;
+                if (item.hasOwnProperty(childrenKey)) {
+                    childrenArr = item[childrenKey];
+                    delete item[childrenKey];
+                }
+                if (childrenArr && childrenArr.length > 0) {
+                    flat(childrenArr, childrenKey, floor + 1)
+                }
+                });
+            }
+            flat(array, childrenKey, 1);
+            return result;
+        },
+        // 获取商品规格列表
+        getSpecsList() {
+            this._apis.goodsOperate.fetchSpecsList({productCategoryId: "1"}).then(res => { // this.ruleForm.productCategoryInfoId
+                console.log(res)
+                this.specsList = res
+
+                this.flatSpecsList = this.flatTreeArray(JSON.parse(JSON.stringify(res)), 'list')
+            }).catch(error => {
+
+            }) 
+        },
+        submitGoods() {
+            let params
+
+            params = Object.assign({}, this.ruleForm, {
+                productCategoryInfoId: "6",
+                productUnit: "4",
+                productBrandInfoId: "1",
+                productSpecs: {"尺寸": ["L"], "颜色": ["黑色"]},
+                goodsInfos: [{"costPrice": 100, salePrice: 120, stock: 1000, wanningStock: 900, weight: 1, volume: 1, specs: {"尺寸": "L", "颜色": "黑色"}}],
+                productDetail: '商品详情'
+            })
+            this._apis.goods.addGoods(params).then(res => {
+                console.log(res)
+            }).catch(error => {
+
+            }) 
+        },
+        // 获取单品牌管理列表
+        getBrandList() {
+           this._apis.goodsOperate.fetchBrandList().then(res => {
+                this.brandList = res.list
+            }).catch(error => {
+
+            })   
+        },
+        // 获取单位计量列表
+        getUnitList() {
+           this._apis.goodsOperate.fetchUnitList().then(res => {
+                this.unitList = res.list
+            }).catch(error => {
+
+            })   
+        },
+        itemCatHandleChange(value) {
+            let _value = [...value]
+            let arr = this.ruleForm.itemCat.map(id => {
+                return this.operateCategoryList.find(val => val.id == id)
+            })
+
+            this.itemCatText = arr.map(val => val.name).join(' > ')
+            this.ruleForm.productCategoryInfoId = _value.pop()
+
+            this.getSpecsList()
+        },
+        // 获取商品类目列表
+        getOperateCategoryList() {
+            this._apis.goodsOperate.fetchCategoryList().then(res => {
+                let arr = this.transTreeData(res.list, 0)
+                this.operateCategoryList = res.list
+                this.itemCatList = arr
+            }).catch(error => {
+
+            })
+        },
         getProductLabelList() {
             this._apis.goods.fetchAllTagsList().then(res => {
                 console.log(res)
@@ -432,71 +539,95 @@ export default {
             })
         },
         handleChange(value) {
-            
-        },
-        itemCatHandleChange(value) {
-
+            let _value = [...value]
+            this.ruleForm.productCatalogInfoId = _value.pop()
         },
         timelyShelvingHandler() {
             this.currentDialog = 'TimelyShelvingDialog'
             this.dialogVisible = true
         },
         increase() {
-            this.ruleForm.number++
+            this.ruleForm.startSaleNum++
         },
         reduce() {
-            if(this.ruleForm.number > 0) {
+            if(this.ruleForm.startSaleNum > 0) {
                 this.ruleForm.number--
             }
         },
-        submit(arr) {
-            let results = [];
-            let result = [];
+        submit(value) {
+            if(this.currentDialog == 'ChoosingGoodsDialog') {
+                // 关联商品
+                this.tableData.push(value)
+                this.ruleForm.relationProductInfoIds = this.tableData.map(val => val.id)
+            } else if(this.currentDialog == 'TimelyShelvingDialog') {
+                // 设置自动上架时间
+                this.ruleForm.autoSaleTime = value
+            } else if(this.currentDialog == 'SelectSpecifications') {
+                let results = [];
+                let result = [];
 
-            var doExchange = function(arr, index) {
-                for (var i = 0; i<arr[index].length; i++) {
-                    result[index] = arr[index][i];
-                    if (index != arr.length - 1) {
-                        doExchange(arr, index + 1)
-                    } else {
-                        results.push(result.join(','))
-                    }
-                } 
-            }
-
-            if(arr.length) {
-                let _arr = []
-                let obj = {}
-
-                arr.forEach(val => {
-                    if(!obj[val[0]]) {
-                        obj[val[0]] = []
-                        obj[val[0]].push(val[1])
-                    } else {
-                        obj[val[0]].push(val[1])
-                    }
-                })
-
-                for(let i in obj) {
-                    _arr.push(obj[i])
+                var doExchange = function(arr, index) {
+                    for (var i = 0; i<arr[index].length; i++) {
+                        result[index] = arr[index][i];
+                        if (index != arr.length - 1) {
+                            doExchange(arr, index + 1)
+                        } else {
+                            results.push(result.join(','))
+                        }
+                    } 
                 }
 
-                doExchange(_arr, 0);
-                let _results = results.map(val => ({
-                    label: val,
-                    price: '',
-                    salePrice: '',
-                    stock: '',
-                    warning: '',
-                    weight: '',
-                    tiji: '',
-                }))
-                this.specArr = _results
-                console.log(_results)
-            }
+                if(value.length) {
+                    let _arr = []
+                    let obj = {}
 
-            if(this.currentDialog == 'ChoosingGoodsDialog') {
-                this.tableData.push(arr)
+                    value.forEach(val => {
+                        if(!obj[val[0]]) {
+                            obj[val[0]] = []
+                            obj[val[0]].push(val[1])
+                        } else {
+                            obj[val[0]].push(val[1])
+                        }
+                    })
+
+                    for(let i in obj) {
+                        _arr.push(obj[i])
+                    }
+
+                    doExchange(_arr, 0);
+                    let _results = results.map((val, index) => {
+                        let valArr = []
+                        let pId = []
+                        let names = []
+
+                        val.split(',').forEach(id => {
+                            let item = this.flatSpecsList.find(flatItem => flatItem.id == id)
+
+                            valArr.push(item.name)
+                            pId.push(item.parentId)
+                        })
+
+                        pId.forEach(id => {
+                            let item = this.flatSpecsList.find(flatItem => flatItem.id == id)
+
+                            names.push(item.name)
+                        })
+
+                        this.specsLabel = names.join(',')
+
+                        return {
+                            label: valArr.join(','),
+                            price: '',
+                            salePrice: '',
+                            stock: '',
+                            warning: '',
+                            weight: '',
+                            tiji: '',
+                        }
+                    })
+                    this.specArr = _results
+                    console.log(_results)
+                }
             }
         },
         editorValueUpdate(value) {
@@ -515,12 +646,6 @@ export default {
             }else{
                 this.$message.error(response.msg);
             }
-        },
-        handleChange(value) {
-            this.typeId=value[value.length-1];
-            this.typeIds=value.toString();
-            this.ruleForm.productCategoryInfoId=this.typeId;
-            this.ruleForm.productCategoryInfoIds=this.typeIds;
         },
         handleScroll() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || 
