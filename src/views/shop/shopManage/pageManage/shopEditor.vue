@@ -68,8 +68,20 @@ export default {
 
     /* 保存数据 */
     saveData() {
+      let resultData = this.collectData();
+      resultData['status'] = '1';
+      this.submit(resultData);
+    },
+
+    /* 保存并生效数据 */
+    saveAndApplyData() {
+      let resultData = this.collectData();
+      resultData['status'] = '0';
+      this.submit(resultData);
+    },
+
+    submit(resultData) {
       this.loading = true;
-      const resultData = this.collectData();
       if(this.id) {
         this._apis.shop.editPageInfo(resultData).then((response)=>{
           this.$notify({
@@ -103,14 +115,7 @@ export default {
           this.loading = false;
         });
       }
-    },
-
-    /* 保存并生效数据 */
-    saveAndApplyData() {
-      const resultData = this.collectData();
-      console.log(JSON.stringify({...resultData}));
-      this._routeTo('pageManageIndex');
-    },
+    }
 
   },
 

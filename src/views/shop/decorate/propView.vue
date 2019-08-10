@@ -29,11 +29,10 @@
 import utils from '@/utils';
 import propertyBase from './props/propertyBase';
 import propertyClassify from './props/propertyClassify';
-import propertyPersonalCenter from './props/propertyPersonalCenter';
 import dialogDecoratePreview from '../dialogs/dialogDecoratePreview';
 export default {
   name: 'propView', 
-  components: {propertyBase, propertyClassify, propertyPersonalCenter, dialogDecoratePreview},
+  components: {propertyBase, propertyClassify, dialogDecoratePreview},
   props: ['panelName', 'editorType', 'saveData', 'saveAndApplyData', 'parentScope'],
   data () {
     return {
@@ -75,9 +74,6 @@ export default {
         break;
       case 'propertyClassify':
         this.propertyDefault = 'propertyClassify';
-        break;
-      case 'propertyPersonalCenter':
-        this.propertyDefault = 'propertyPersonalCenter';
         break;
     }
   },

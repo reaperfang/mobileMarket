@@ -1,108 +1,119 @@
 <template>
-  <div class="editor-wrapper" v-loading="loading">
-    <widgetView></widgetView>
-    <editView></editView>
-    <propView panelName="分类编辑" editorType="propertyClassify" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this"></propView>
-    <div style="width:500px;">
-      分类基础数据：
-      <el-tag type="primary">{{baseInfo}}</el-tag>
-      <hr />组件数据映射：
-      <ul style="height:770px;overflow-y:auto;">
-        <li v-for="(item,key) of componentDataIds" :key="key">
-          <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
-          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
-        </li>
-      </ul>
+  <div class="group-wrapper">
+    <div class="module view">
+      <div class="phone-head">
+        <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
+        <span>个人中心</span>
+      </div>
+      <div class="phone-body">
+        <componentUserCenter 
+        :data="ruleForm" 
+        v-if="ruleForm"
+        ></componentUserCenter>
+      </div>
+    </div>
+    <div class="module props">
+      <propertyUserCenter 
+      :saveAndApply="saveAndApply" 
+      :data="ruleForm" 
+      :save="save" 
+      @userCenterDataChanged="emitChangeRuleForm"
+      ></propertyUserCenter>
     </div>
   </div>
 </template>
 
 <script>
-import editorMixin from '../pageManage/editorMixin';
-import utils from "@/utils";
+import componentUserCenter from '../../decorate/comps/componentUserCenter';
+import propertyUserCenter from '../../decorate/props/propertyUserCenter';
 export default {
   name: "personCenter",
-  mixins: [editorMixin],
+  components: {componentUserCenter, propertyUserCenter},
   data() {
     return {
-      loading: false,
-      id: this.$route.query.classifyId
+     ruleForm: null,
     };
   },
+  created() {
+    this.fetch();
+  },
   methods: {
-    /* 获取分类装修数据 */
     fetch() {
-      const _self = this;
       this.loading = true;
-      this._apis.shop.getClassifyInfo({id: this.id}).then((response)=>{
-         this.loading = false;
-         this.convertDecorateData(response);
+      this._apis.shop.getUserCenterPage({}).then((response)=>{
+        const pageData = JSON.parse(response.pageData);
+        if(pageData && pageData.avatarPosition) {
+          this.ruleForm = pageData;
+        }
+        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
+        this.loading = false;
       });
     },
 
-     /* 拼装基础数据 */
-    setBaseInfo(data) {
-      this.$store.commit("setBaseInfo", {
-        name: data.name,
-        sortType: data.sortType,
-        explain: utils.compileStr(data.explain),
-        showType: data.showType,
-        pageIdList: data.pageIdList
+    /* 表单数据发生改变 */
+    emitChangeRuleForm(value) {
+      this.ruleForm = value
+    },
+
+    /* 保存并生效 */
+    saveAndApply() {
+      this.submit({
+        status: '0',
+        pageKey: '',
+        pageData: JSON.stringify(this.ruleForm)
       });
     },
 
-    /* 保存数据 */
-    saveData() {
+    /* 保存 */
+    save() {
+       this.submit({
+        status: '1',
+        pageKey: '',
+        pageData: JSON.stringify(this.ruleForm)
+      });
+    },
+
+    submit(params) {
       this.loading = true;
-      const resultData = this.collectData();
-      resultData['explain'] = utils.compileStr(JSON.stringify(resultData.explain));
-      if(this.id) {
-        this._apis.shop.editClassifyInfo(resultData).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '编辑成功！',
-            type: 'success'
-          });
-          this._routeTo('pageManageIndex');
-          this.loading = false;
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
-          this.loading = false;
+      this._apis.shop.editUserCenterPage(params).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '编辑成功！',
+          type: 'success'
         });
-      }else{
-        this._apis.shop.createClassify(resultData).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '创建成功！',
-            type: 'success'
-          });
-          this._routeTo('pageManageIndex');
-          this.loading = false;
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
-          this.loading = false;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
         });
-      }
-    },
-
-    /* 保存并生效数据 */
-    saveAndApplyData() {
-      const resultData = this.collectData();
-      console.log(JSON.stringify({...resultData}));
-      this._routeTo('pageManageIndex');
+        this.loading = false;
+      });
     }
-
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.group-wrapper{
+  display:flex;
+  flex-direction: row;
+}
+.module {
+  &.view {
+    width: 374px;
+    .phone-body {
+      height: 760px;
+    }
+  }
+  &.props{
+    width:346px;
+    border-right: 1px solid #e8e5e5;
+  }
+}
+</style>

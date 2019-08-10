@@ -66,6 +66,25 @@ export default {
   },
   methods: {
 
+    /* 初始化表单数据 */
+    initRuleForm() {
+      if(this.data){
+        this.ruleForm = this.data;
+      }
+      this.$emit('change', {
+        type: 'base',
+        data: this.ruleForm
+      });
+    },
+
+    /* 发送数据改变事件 */
+    emitChangeRuleForm(newValue) {
+      this.$emit('change', {
+        type: 'base',
+        data: newValue
+      });
+    },
+
     /* 弹窗选中了跳转链接 */
     dialogDataSelected(jumpLink) {
       console.log(jumpLink);

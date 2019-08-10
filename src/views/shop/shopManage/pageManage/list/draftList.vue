@@ -16,7 +16,7 @@
         </el-form-item>
       </el-form>
       <div class="btns">
-        <el-button type="primary">新建页面</el-button>
+        <el-button type="primary" @click="_routeTo('templateManageIndex')">新建页面</el-button>
         <el-button type="primary" plain>批量改分类</el-button>
         <el-button type="warning" plain>批量删除</el-button>
       </div>

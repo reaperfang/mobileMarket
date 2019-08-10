@@ -50,7 +50,7 @@ export default {
       this.$store.commit("setBaseInfo", {
         name: data.name,
         sortType: data.sortType,
-        explain: utils.compileStr(data.explain),
+        explain: utils.uncompileStr(data.explain),
         showType: data.showType,
         pageIdList: data.pageIdList
       });
