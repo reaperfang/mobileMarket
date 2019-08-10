@@ -10,8 +10,8 @@
                 </el-form-item>
                 <el-form-item label="标签类型：" prop="tagType">
                     <div class="input_wrap">
-                        <el-radio v-model="ruleForm.tagType" label="1">手动</el-radio>
-                        <el-radio v-model="ruleForm.tagType" label="2">自动</el-radio>
+                        <el-radio v-model="ruleForm.tagType" label="0">手动</el-radio>
+                        <el-radio v-model="ruleForm.tagType" label="1">自动</el-radio>
                     </div>
                     <p class="label_warn">
                         手动标签：无筛选条件给客户定义标签<br>
@@ -125,7 +125,7 @@ export default {
                 isLastConsumeTime: null,
                 consumeTimeType: "",
                 consumeTimeValue:"",
-                consumeTimeUnit: 0,
+                consumeTimeUnit: "",
                 consumeTime:"",
                 isTotalConsumeTimes: false,
                 consumeTimesMin:"",
@@ -140,8 +140,9 @@ export default {
                 totalScoreMin:"",
                 totalScoreMax:"",
                 productInfoIds:"",
-                isProduct: true,
-                labelConditon:""
+                isProduct: false,
+                labelConditon:"",
+                enable: "1"
             },
             rules: {
                 tagName: [
@@ -169,13 +170,74 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "chooseProductDialog";
         },
+        convertUnit(val) {
+            if(val) {
+                return 1;
+            }else{
+                return 0;
+            }
+        },
         saveLabel() {
-            console.log(this.ruleForm);
             let formObj = Object.assign({}, this.ruleForm);
-            formObj.consumeTimeStart = formObj.consumeTime[0];
-            formObj.consumeTimeEnd = formObj.consumeTime[1];
+            formObj.consumeTimeStart = formObj.consumeTime ? formObj.consumeTime[0]:"";
+            formObj.consumeTimeEnd = formObj.consumeTime ? formObj.consumeTime[1]:"";
             delete formObj.consumeTime;
+            formObj.isLastConsumeTime = this.convertUnit(formObj.isLastConsumeTime);
+            formObj.isTotalConsumeTimes = this.convertUnit(formObj.isTotalConsumeTimes);
+            formObj.isTotalConsumeMoney = this.convertUnit(formObj.isTotalConsumeMoney);
+            formObj.isPreUnitPrice = this.convertUnit(formObj.isPreUnitPrice);
+            formObj.isTotalScore = this.convertUnit(formObj.isTotalScore);
+            formObj.isProduct = this.convertUnit(formObj.isProduct);
+            formObj.productInfoIds = "";
+            if(this.$route.query.id) {
+                this._apis.client.updateTag(formObj).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: "标签编辑成功",
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }else{
+                this._apis.client.addTag(formObj).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: "添加标签成功",
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }
             
+        }
+    },
+    mounted() {
+        if(this.$route.query.id) {
+            this._apis.client.getLabelInfo({id:this.$route.query.id}).then((response) => {
+                this.ruleForm = Object.assign({}, response);
+                this.ruleForm.tagType = this.ruleForm.tagType.toString();
+                this.ruleForm.anyOrAllCondition = this.ruleForm.anyOrAllCondition.toString();
+                this.ruleForm.consumeTimeType = this.ruleForm.consumeTimeType.toString();
+                this.ruleForm.isLastConsumeTime = Boolean(this.ruleForm.isLastConsumeTime);
+                this.ruleForm.isTotalConsumeTimes = Boolean(this.ruleForm.isTotalConsumeTimes);
+                this.ruleForm.isTotalConsumeMoney = Boolean(this.ruleForm.isTotalConsumeMoney);
+                this.ruleForm.isPreUnitPrice = Boolean(this.ruleForm.isPreUnitPrice);
+                this.ruleForm.isTotalScore = Boolean(this.ruleForm.isTotalScore);
+                this.ruleForm.isProduct = Boolean(this.ruleForm.isProduct);
+            }).catch((error) => {
+                this.$notify.error({
+                title: '错误',
+                message: error
+                });
+            })
         }
     }
 }

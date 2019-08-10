@@ -180,6 +180,67 @@ export function addTag(data) {
         data
     })
 }
-
-
+//标签详情
+export function getLabelInfo(data) {
+    return request({
+        target:'MEMBER-LABEL-DETAIL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//标签编辑
+export function updateTag(data) {
+    return request({
+        target:'MEMBER-LABEL-UPDATE-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//批量删除标签
+export function batchDeleteTag(data) {
+    return request({
+        target:'MEMBER-LABEL-BATCH-DELETE-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//等级分页查询
+export function getLevelsList(data) {
+    return request({
+        target:'LEVEL-PAGE-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//获取等级详情
+export function getLevelsInfo(data) {
+    return request({
+        target:'LEVEL-DETAIL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//升级条件列表
+export function levelConditionList(data) {
+    return request({
+        target:'LEVEL-CONDITION-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//等级权益列表
+export function getRewardList(data) {
+    return request({
+        target:'UPGRADE-REWARD-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
 

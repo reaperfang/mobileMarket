@@ -48,24 +48,6 @@ export default {
             currentData:{}
         }
     },
-    methods: {
-        submit() {
-            this.otherVisible = true;
-        }
-    },
-    computed: {
-        visible: {
-            get() {
-                return this.dialogVisible
-            },
-            set(val) {
-                this.$emit('update:dialogVisible', val)
-            }
-        }
-    },
-    mounted() {
-        
-    },
     props: {
         data: {
 
@@ -77,7 +59,38 @@ export default {
     },
     components: {
         DialogBase
-    }
+    },
+    computed: {
+        visible: {
+            get() {
+                return this.dialogVisible
+            },
+            set(val) {
+                this.$emit('update:dialogVisible', val)
+            }
+        }
+    },
+    created() {
+        
+    },
+    methods: {
+        submit() {
+            let datas = {
+            ids:this.data,
+            auditStatus:this.radio,
+            remarks:this.remarks
+            }
+            this._apis.finance.examineWd(datas).then((response)=>{
+                this.dialogVisible = false
+                this.otherVisible = true;
+            }).catch((error)=>{
+                this.$notify.error({
+                title: '错误',
+                message: error
+                });
+            })
+        },
+    },    
 }
 </script>
 <style lang="scss" scoped>

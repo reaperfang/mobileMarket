@@ -70,7 +70,7 @@
           label="提现编号">
         </el-table-column>
         <el-table-column
-          prop="memberInfoId"
+          prop="memberSn"
           label="客户ID">
         </el-table-column>
         <el-table-column
@@ -80,6 +80,9 @@
         <el-table-column
           prop="status"
           label="状态">
+          <template slot-scope="scope">
+            {{statusToLabel(scope.row.status)}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="tradeDetailSn"
@@ -94,7 +97,7 @@
         label="操作">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">审核</el-button>
+            <el-button type="text" size="small" v-if="scope.row.status == 0" @click="examine(scope.row)">审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -118,14 +121,14 @@
 import utils from "@/utils";
 import TableBase from "@/components/TableBase"
 import financeCons from '@/system/constant/finance'
-import withdrawDialog from './dialogs/withdrawDialog'
-import auditSuccessDialog from './dialogs/auditSuccessDialog'
-import warnDialog from './dialogs/warnDialog'
-import waitAuditDialog from './dialogs/waitAuditDialog'
-import auditingDialog from './dialogs/auditingDialog'
-import handleAuditDialog from './dialogs/handleAuditDialog'
-import failAuditDialog from './dialogs/failAuditDialog'
-import successAuditDialog from './dialogs/successAuditDialog'
+import withdrawDialog from './dialogs/withdrawDialog'//批量审核
+import auditSuccessDialog from './dialogs/auditSuccessDialog'//审核成功提示
+import warnDialog from './dialogs/warnDialog'//批量审核选择数据提示
+import waitAuditDialog from './dialogs/waitAuditDialog'//提现详情 待审核
+import auditingDialog from './dialogs/auditingDialog'//审核
+import handleAuditDialog from './dialogs/handleAuditDialog'//提现详情  处理中
+import failAuditDialog from './dialogs/failAuditDialog'//提现详情  失败
+import successAuditDialog from './dialogs/successAuditDialog'//提现详情  成功
 export default {
   name: 'revenueSituation',
   extends: TableBase,
@@ -142,14 +145,15 @@ export default {
         searchType:1,
         searchValue:'',
         timeValue:'',
-        status:1,
+        status:0,
         memberInfoId:''
       },
       dataList:[ ],
       total:0,
       currentDialog:"",
       dialogVisible: false,
-      currentData:{}
+      currentData:{},
+      multipleSelection:[]
     }
   },
   watch: { },
@@ -161,7 +165,9 @@ export default {
       return financeCons.presentationStatus;
     },
   },
-  created() { },
+  created() {
+    // this.examine(1)
+   },
   methods: {
     init(){
       let query = {
@@ -220,20 +226,87 @@ export default {
     },
     //导出
     exportToExcel() {
-      let query = this.init();
-      this._apis.finance.exportTaRe(query).then((response)=>{
-        window.location.href = response
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
+      if(this.total >= 1000 ){
+        this.currentData.text = "导出数据量过大，建议分时间段导出。";
+        this.dialogVisible = true
+        this.currentDialog = auditingDialog
+      }else{
+        let query = this.init();
+        this._apis.finance.exportWd(query).then((response)=>{
+          window.location.href = response
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+        })
+      }      
     },
+    handleSelectionChange(val){
+      this.multipleSelection = val;
+    },
+    //批量审核
     batchCheck() {
-      this.dialogVisible = true;
-      this.currentDialog = "withdrawDialog";
-      this.currentData.text = "请选择需要审核的数据";
+      let isCheck = true
+      let ids = []
+      if(this.multipleSelection.length == 0){
+        this.currentData.text = "请选择需要审核的数据";
+        this.dialogVisible = true;
+        this.currentDialog = "warnDialog";
+      }else{
+        this.multipleSelection.map((item)=>{
+          item.status!=0 && (isCheck = false)
+          ids.push(item.id)
+        })
+        if(isCheck == true){
+          this.currentData = ids
+          this.dialogVisible = true
+          this.currentDialog = withdrawDialog
+        }else{
+          this.currentData.text = "选择的数据中包含已经审核过的提现申请，无法批量审核，请重新选择。";
+          this.dialogVisible = true;
+          this.currentDialog = "warnDialog";          
+        }
+      }
+
+    },
+    statusToLabel(value){
+      let status = financeCons.presentationStatus
+      let statusLabel = ''
+      status.forEach(item =>{
+        item.value == value && (statusLabel = item.label)
+      })
+      return statusLabel;
+    },
+    //查看
+    handleClick(row){
+      this.currentData = row
+      this.dialogVisible = true
+      switch(row.status) {
+          case 0:  //待审核
+            this.currentDialog = waitAuditDialog
+          break;
+          case 1:  //处理中
+            this.currentDialog = handleAuditDialog
+          break;
+          case 2: //成功
+            this.currentDialog = successAuditDialog
+          break;
+          case 3: //失败
+            this.currentDialog = failAuditDialog
+          break;
+      }
+    },
+    //审核
+    examine(row){
+      this.currentData = row
+      this.dialogVisible = true
+      this.currentDialog = auditingDialog
+    },
+    handleSubmit(val){
+      console.log('11111',val)
+      this.dialogVisible = true
+      this.currentDialog = auditSuccessDialog
     }
   }
 }
