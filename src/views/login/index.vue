@@ -35,7 +35,7 @@
       title="未创建店铺"
       :visible.sync="dialogVisible"
       width="40%"
-      :before-close="handleClose"
+      :before-close="handleCloses"
       style="margin-top:20vh;">
       <span class="content">对不起，您还没有创建店铺,请先创建店铺再登录</span>
       <span slot="footer" class="dialog-footer">
@@ -43,7 +43,8 @@
         <el-button @click="dialogVisible = false">暂不创建</el-button>
       </span>
     </el-dialog>
-    <el-dialog
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="hideDialog"></shopsDialog>
+    <!-- <el-dialog
       title=""
       :visible.sync="shopsDialog"
       width="40%"
@@ -74,12 +75,12 @@
            </div>
         </div>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
-  <!-- <div>qwerttt</div> -->
 </template>
 
 <script>
+import shopsDialog from '@/views/login/shopsDialog'
 export default {
   name: 'Login',
   data() {
@@ -113,10 +114,13 @@ export default {
       passwordType: 'password',
       loading: false,
       dialogVisible:false,
-      shopsDialog:false,
+      showShopsDialog:false,
       checked:false,
       shopName:'',
     }
+  },
+  components: {
+    shopsDialog
   },
   watch: {
     $route: {
@@ -191,8 +195,11 @@ export default {
       }
     }
   },
-  handleClose(){
+  handleCloses(){
     this.dialogVisible = false
+  },
+  hideDialog(){
+    this.showShopsDialog = false
   }
 }
 </script>
@@ -347,34 +354,34 @@ $bg_white:#fff;
     font-weight: bold;
   }
 }
-.content{
-  .content_top{
-    display: flex;
-    justify-content: space-between;
-  }
-  .content_main{
-    display:flex;
-    justify-content: space-between;
-    flex: 1;
-    margin:20px 0px 30px 0px;
-    div{
-      width: 143px;
-      height: 60px;
-      border-radius:4px;
-      background:rgba(101,94,255,1);
-      opacity:0.5;
-      span{
-        padding:10px;
-        height: 20px;
-        line-height: 20px;
-        display: block;
-        font-size: 14px;
-        color: #FFFFFF;
-        text-align: left;
-      }
-    }
-  }
-}
+// .content{
+//   .content_top{
+//     display: flex;
+//     justify-content: space-between;
+//   }
+//   .content_main{
+//     display:flex;
+//     justify-content: space-between;
+//     flex: 1;
+//     margin:20px 0px 30px 0px;
+//     div{
+//       width: 143px;
+//       height: 60px;
+//       border-radius:4px;
+//       background:rgba(101,94,255,1);
+//       opacity:0.5;
+//       span{
+//         padding:10px;
+//         height: 20px;
+//         line-height: 20px;
+//         display: block;
+//         font-size: 14px;
+//         color: #FFFFFF;
+//         text-align: left;
+//       }
+//     }
+//   }
+// }
 /deep/ .el-dialog__body{
   padding:10px 20px;
 }

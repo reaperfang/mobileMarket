@@ -1,48 +1,56 @@
 <template>
-  <div class="navbar">
-    <div class="navbar-item">[ 新零售-电商豪华版 ] 剩余有效期</div>
-    <div class="navbar-item"></div>
-    <div class="right-menu">
-      <!-- <i class="el-icon-s-custom"/> -->
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
-        <div class="avatar-wrapper">
-          {{(userInfo && userInfo.userName) || '用户名称' }}
-          <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
-          <i class="el-icon-caret-bottom"/>
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <!--<router-link to="/">-->
-            <!--<el-dropdown-item>-->
-              <!--{{ $t('navbar.dashboard') }}-->
-            <!--</el-dropdown-item>-->
-          <!--</router-link>-->
-          <!--<el-dropdown-item >-->
-            <!--<router-link to="/profile/password">-->
-              <!--资质认证-->
-            <!--</router-link>-->
-          <!--</el-dropdown-item>-->
-
-          <!-- <el-dropdown-item>
-            <router-link to="/profile/password">
-              密码修改
+  <div>
+    <div class="navbar">
+      <div class="navbar-item">[ 新零售-电商豪华版 ] 剩余有效期</div>
+      <!-- <div class="navbar-item"></div> -->
+      <div class="right-menu">
+        <router-link to="/profile/upgrade">套餐升级 </router-link> 
+        <!-- <i class="el-icon-s-custom"/> -->
+        <el-dropdown class="avatar-container right-menu-item" trigger="click">
+          <div class="avatar-wrapper">
+            {{(userInfo && userInfo.userName) || '用户名称' }}
+            <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
+            <i class="el-icon-caret-bottom"/>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <router-link to="/">
+              <el-dropdown-item>
+                <!-- {{ $t('navbar.dashboard') }} -->
+              </el-dropdown-item>
             </router-link>
-          </el-dropdown-item> -->
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+            <el-dropdown-item>
+              <span @click="showShopsDialog = true"> 切换店铺 </span>            
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              <router-link to="/profile/accountInfo">
+                账号信息
+              </router-link>
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              <span style="display:block;" @click="logout"> 退出登录 </span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose"></shopsDialog>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
+import shopsDialog from '@/views/login/shopsDialog'
 
 export default {
+  data(){
+    return{
+      showShopsDialog:false
+    }
+  },
   components: {
     Hamburger,
+    shopsDialog
   },
   computed: {
     ...mapGetters([
@@ -59,6 +67,9 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload()// In order to re-instantiate the vue-router object to avoid bugs
       })
+    },
+    handleClose(){
+      this.showShopsDialog = false
     }
   }
 }
@@ -67,17 +78,19 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
   height: 60px;
-  width: 100%;
+  width: calc(100% - 120px);
   line-height: 64px;
   border-radius: 0px !important;
   background:#fff;
   color: #92929B;
-  padding-left: 20px;
+  padding:0px 20px;
   font-size:14px;
   position: fixed;
   left: 120px;
   top: 0;
   z-index: 1000;
+  display:flex;
+  justify-content:space-between;
   .hamburger-container {
     line-height: 58px;
     height: 50px;
@@ -92,8 +105,8 @@ export default {
     vertical-align: top;
   }
   .right-menu {
-    display: none;
-    float: right;
+    // display: none;
+    // float: right;
     height: 100%;
     margin-right: 20px;
     &:focus{
