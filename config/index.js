@@ -43,7 +43,6 @@ module.exports = {
         //target: 'http://172.22.146.4:8080', //客户 刘亚凯
         // target: 'http://172.22.146.123:8080', // 客户 王杰
          //target:'http://172.22.146.124:8090',//许涛
-
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''

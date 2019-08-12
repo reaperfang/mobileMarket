@@ -113,7 +113,7 @@
         </el-pagination>
       </div>
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @handleSubmit="handleSubmit"></component>
   </div>
 </template>
 
@@ -303,10 +303,8 @@ export default {
       this.dialogVisible = true
       this.currentDialog = auditingDialog
     },
-    handleSubmit(val){
-      console.log('11111',val)
-      this.dialogVisible = true
-      this.currentDialog = auditSuccessDialog
+    handleSubmit(){
+      this.fetch()
     }
   }
 }
