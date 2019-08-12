@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-table
-      :data="channelList"
+      :data="importList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
@@ -68,34 +68,38 @@ import clientApi from "@/api/client";
 export default {
   name: "ciTable",
   extends: TableBase,
+  props: [ 'params' ],
   data() {
     return {
-      dataList:[
-        {
-            choose: true,
-            importTime:"",
-            channerlName:"",
-            totalNum:"",
-            successNum:"",
-            failNum:"",
-            operatorId:""
-        },
-      ],
+      importList: []
     };
   },
   computed: {
-    channelList() {
-      return clientApi.channelList
-    }
+    
   },
   mounted() {
-    console.log(this.channelList);
+    this.getImportList();
   },
   created() {
 
   },
   methods: {
-    
+    getImportList() {
+      this._apis.client.importMemberList(this.params).then((response) => {
+        console.log(response);
+        this.importList = [].concat(response.list);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    }
+  },
+  watch: {
+    params(val) {
+      this.getImportList();
+    }
   },
   components: {}
 };
