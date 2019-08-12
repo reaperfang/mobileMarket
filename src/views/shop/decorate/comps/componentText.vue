@@ -1,7 +1,16 @@
 <template>
-    <div>
-       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
-    </div>
+  <!-- 文本 -->
+  <div
+    class="componentText"
+    :style="{'backgroundColor':currentComponentData.data.backgroundColor}"
+    :class="currentComponentData.data.showDivider===true?'borb':''"
+  >
+    <div
+      class="group_text"
+      :class="['font_size'+currentComponentData.data.fontSize,'style'+currentComponentData.data.displayStyle]"
+      :style="{'color':currentComponentData.data.fontColor}"
+    >{{currentComponentData.data.textContent}}</div>
+  </div>
 </template>
 
 <script>
@@ -27,4 +36,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.componentText {
+  & > .group_text {
+    padding: 10px 20px;
+    // background: #fff;
+  }
+  .font_size1 {
+    font-size: 16px;
+  }
+  .font_size2 {
+    font-size: 12px;
+  }
+  .font_size3 {
+    font-size: 10px;
+    transform: scale(0.83);
+  }
+  .style1 {
+    text-align: left;
+  }
+  .style2 {
+    text-align: center;
+  }
+  .style3 {
+    text-align: right;
+  }
+}
+.borb {
+  border-bottom: 1px solid #ccc !important;
+}
 </style>

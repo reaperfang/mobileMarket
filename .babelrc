@@ -11,7 +11,12 @@
   ],
   "plugins": [
     "transform-vue-jsx", 
-    "transform-runtime"
+    "transform-runtime",
+    ["import", {
+      "libraryName": "vant",
+      "libraryDirectory": "es",
+      "style": true
+    }]
     // "transform-remove-console"  //编译时去掉console.*
   ],
   "env": {

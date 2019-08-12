@@ -149,7 +149,7 @@ export default {
       this.tableList = [
         {
           id: uuid(),
-          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
+          url: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
           pageName: '页面1',
           pageTitle: '这是页面标题',
           classify: '常用页面',
@@ -158,7 +158,7 @@ export default {
         },
         {
           id: uuid(),
-          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
+          url: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
           pageName: '页面2',
           pageTitle: '这是页面标题',
           classify: '常用页面',
@@ -167,7 +167,7 @@ export default {
         },
         {
           id: uuid(),
-          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
+          url: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
           pageName: '页面3',
           pageTitle: '这是页面标题',
           classify: '常用页面',
@@ -176,7 +176,7 @@ export default {
         },
         {
           id: uuid(),
-          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
+          url: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
           pageName: '页面4',
           pageTitle: '这是页面标题',
           classify: '常用页面',
