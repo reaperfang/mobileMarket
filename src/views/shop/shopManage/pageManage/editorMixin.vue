@@ -73,7 +73,8 @@ export default {
           pageData.push(componentData);
         }
       }
-      result['pageData'] = utils.compileStr(JSON.stringify(pageData));
+      result['pageData'] = pageData;
+      console.log('decorateData', JSON.stringify(pageData));
       return result;
     }
   }

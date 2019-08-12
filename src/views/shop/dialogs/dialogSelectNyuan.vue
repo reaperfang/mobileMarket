@@ -85,7 +85,7 @@ export default {
       this.tableList = [
          {
           id: uuid(),
-          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
+          url: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
           title: 'N元N件1',
           desc: '这是商品描述',
           createTime: '2019-08-23 12:44:23',
@@ -93,7 +93,7 @@ export default {
         },
         {
           id: uuid(),
-          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
+          url: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
           title: 'N元N件2',
           desc: '这是商品描述2',
           createTime: '2019-08-23 12:44:23',
@@ -101,7 +101,7 @@ export default {
         },
         {
           id: uuid(),
-          url: 'http://35.201.165.105:8000/storage/image/20190807/1565145582923355.png',
+          url: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
           title: 'N元N件3',
           desc: '这是商品描述2',
           createTime: '2019-08-23 12:44:23',

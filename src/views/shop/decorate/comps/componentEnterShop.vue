@@ -1,7 +1,19 @@
 <template>
-    <div>
-       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
+  <!-- 进入店铺 -->
+  <div class="componentEnterShop">
+    <div class="group_shop">
+      <ul>
+        <li>
+          <img :src="require('@/assets/images/shop/dai.png')" alt />
+        </li>
+        <li class="ellipsis">店铺名称店铺名称店铺</li>
+        <li class="ellipsis">{{currentComponentData.data.words}}</li>
+        <li>
+          <img :src="imgs.shopImg1" alt />
+        </li>
+      </ul>
     </div>
+  </div>
 </template>
 
 <script>
@@ -12,7 +24,9 @@ export default {
   components: {},
   data () {
     return {
-      
+      imgs: {
+        shopImg1: require("@/assets/images/shop/triangle.png")
+      }
     }
   },
   created() {
@@ -27,4 +41,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.componentEnterShop {
+  & > .group_shop {
+    & > ul {
+      padding: 10px;
+      background: #fff;
+      display: flex;
+      & > li {
+        height: 40px;
+        line-height: 40px;
+      }
+      & > li:nth-child(1) {
+        flex: 0 0 52px;
+        & > img {
+          width: 40px;
+          height: 40px;
+          border-radius: 20px;
+          float: left;
+          overflow: hidden;
+        }
+      }
+      & > li:nth-child(2) {
+        font-size: 15px;
+        color: #1c1d1f;
+        flex: 0 0 150px;
+      }
+      & > li:nth-child(3) {
+        flex: 0 0 140px;
+        font-size: 14px;
+        color: #fc3d42;
+        text-align: right;
+      }
+      & > li:last-child {
+        flex: 1;
+        & > img {
+          width: 6px;
+          height: 12px;
+          display: inline-block;
+          margin-left: 8px;
+          margin-top: 14px;
+        }
+      }
+    }
+  }
+}
 </style>

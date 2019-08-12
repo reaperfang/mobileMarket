@@ -1,7 +1,13 @@
 <template>
-    <div>
-       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
-    </div>
+  <!-- 公告 -->
+  <div class="componentNotice">
+    <van-notice-bar
+      :text="currentComponentData.data.notice"
+      left-icon="volume-o"
+      :color="currentComponentData.data.fontColor "
+      :background="currentComponentData.data.backgroundColor"
+    />
+  </div>
 </template>
 
 <script>
@@ -27,4 +33,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.componentNotice {
+  .van-notice-bar {
+    height: 29px;
+  }
+  /deep/ .van-notice-bar__wrap {
+    font-size: 12px;
+    padding-left: 10px;
+  }
+  /deep/ .van-icon {
+    color: #fc3d42;
+  }
+  /deep/ .van-icon-volume-o:before {
+    font-size: 14px;
+  }
+}
 </style>
