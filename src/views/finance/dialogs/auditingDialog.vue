@@ -1,5 +1,6 @@
 /* 审核 */
 <template>
+  <div>
   <DialogBase :visible.sync="visible" @submit="submit" title="审核">
     <div class="c_container">
       <div class="clearfix">
@@ -42,6 +43,20 @@
       </div>
     </div>
   </DialogBase>
+  <el-dialog
+        title="提示"
+        :visible.sync="otherVisible"
+        width="30%"
+    >
+        <div class="other_cont">
+            <img src="../../../assets/images/finance/icon_success.png" alt="" style="display:block; margin: 0 auto">
+            <span>审核成功</span>
+        </div>
+        <span slot="footer" class="dialog-footer fcc">
+            <el-button type="primary" @click="otherVisible = false">我知道了</el-button>
+        </span>
+    </el-dialog>
+  </div>
 </template>
 <script>
 import clientApi from "@/api/client";
@@ -53,7 +68,8 @@ export default {
     return {
       info:{},
       radio: "0",
-      remarks:''
+      remarks:'',
+      otherVisible: false
     };
   },
   props: {
@@ -80,7 +96,7 @@ export default {
     this.getInfo()
   },
   methods: {
-    submit() {      
+    submit() {   
       let datas = {
         ids:[this.data.id],
         auditStatus:this.radio,
@@ -88,6 +104,7 @@ export default {
       }
       this._apis.finance.examineWd(datas).then((response)=>{
           this.dialogVisible = false
+          this.otherVisible = true
           this.$emit("handleSubmit");
       }).catch((error)=>{
           this.$notify.error({
@@ -174,6 +191,17 @@ export default {
       }
     }
   }
+}
+.other_cont{
+    text-align: center;
+    img{
+        display: block;
+    }
+    span{
+        display: block;
+        font-size: 18px;
+        margin-top: 20px;
+    }
 }
 </style>
 
