@@ -56,7 +56,7 @@
                         </el-form-item>
                         <el-form-item label="地区：">
                             <div class="input_wrap">
-                                <area-select type='all' v-model='clientInfoById.selected' :data='$pcaa' :level='2' size="large"></area-select>
+                                <area-cascader :level="1" :data='$pcaa' v-model='clientInfoById.selected' size="large" type="all"></area-cascader>
                             </div>
                         </el-form-item>
                         <el-form-item>
@@ -112,7 +112,7 @@
                 <div class="assets_item rb">
                     <img src="../../assets/images/client/icon_money.png" alt="">
                     <p>积分：<span>{{clientInfoById.score}}</span></p>
-                    <span>变更</span>
+                    <span @click="showAdjustScore">变更</span>
                 </div>
             </div>
         </div>
@@ -147,6 +147,7 @@ import changeIdentityDialog from './dialogs/clientInfo/changeIdentityDialog';
 import addTagDialog from './dialogs/clientInfo/addTagDialog';
 import balanceListDialog from './dialogs/clientInfo/balanceListDialog';
 import adjustBalanceDialog from './dialogs/clientInfo/adjustBalanceDialog';
+import adjustCreditDialog from './dialogs/clientInfo/adjustCreditDialog';
 import discountCouponDialog from './dialogs/clientInfo/discountCouponDialog';
 import issueCouponDialog from './dialogs/clientInfo/issueCouponDialog';
 import addBlackDialog from './dialogs/allClient/addBlackDialog';
@@ -163,7 +164,8 @@ export default {
         issueCouponDialog, 
         addBlackDialog,
         sendCardDialog,
-        changeCardDialog
+        changeCardDialog,
+        adjustCreditDialog
     },
     data() {
         return {
@@ -174,7 +176,8 @@ export default {
             userId: this.$route.query.id,
             clientInfoById: {
                 selected:[]
-            }
+            },
+            allCoupons: []
         }
     },
     methods: {
@@ -206,10 +209,21 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "balanceListDialog";
             this.currentData.balance = this.clientInfoById.balance;
+            this.currentData.id = "1";
         },
         showAdjustBalance() {
             this.dialogVisible = true;
             this.currentDialog = "adjustBalanceDialog";
+            this.currentData.balance = this.clientInfoById.balance;
+            this.currentData.id = this.clientInfoById.id;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
+        },
+        showAdjustScore() {
+            this.dialogVisible = true;
+            this.currentDialog = "adjustCreditDialog";
+            this.currentData.score = this.clientInfoById.score;
+            this.currentData.id = this.clientInfoById.id;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
         },
         showDiscountCoupon() {
             this.dialogVisible = true;
@@ -218,6 +232,7 @@ export default {
         sendDiscount() {
             this.dialogVisible = true;
             this.currentDialog = "issueCouponDialog";
+            this.currentData.allCoupons = [].concat(this.allCoupons);
         },
         showAddBlack() {
             this.dialogVisible = true;
@@ -234,6 +249,32 @@ export default {
             this.currentData.id = this.userId;
             this.currentData.level = this.clientInfoById.levelName;
         },
+        getCouponList() {
+            let params = {
+                id: this.userId,
+                cid: "",
+                couponType: 0,
+                usedType: 1
+            }
+            this._apis.client.getCouponList(params).then((response) => {
+               // console.log(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getAllCoupons() {
+            this._apis.client.getAllCoupons({cid:"", couponType: 0}).then((response) => {
+                this.allCoupons = [].concat(response.list);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
         getMemberInfo() {
             this._apis.client.getMemberInfo({id: this.userId}).then((response) => {
                 this.clientInfoById = Object.assign({},response);
@@ -242,8 +283,7 @@ export default {
                 selected[0] = this.clientInfoById.provinceCode;
                 selected[1] = this.clientInfoById.cityCode;
                 selected[2] = this.clientInfoById.areaCode;
-                this.$set(this.clientInfoById, 'selected',selected)
-                console.log(this.clientInfoById);
+                this.$set(this.clientInfoById, 'selected',selected);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -261,56 +301,52 @@ export default {
                 birthday: this.clientInfoById.birthday, 
                 wechatSn: this.clientInfoById.wechatSn, 
                 email: this.clientInfoById.email, 
-                provinceCode: this.clientInfoById.provinceCode, 
-                proviceName: this.clientInfoById.proviceName, 
-                cityCode: this.clientInfoById.cityCode,
-                cityName: this.clientInfoById.cityName,
-                areaCode: this.clientInfoById.areaCode,
-                areaName: this.clientInfoById.areaName,
-                address: this.clientInfoById.address
+                address: this.clientInfoById.address,
+                selected: this.clientInfoById.selected
+            }
+            Object.keys(formObj).forEach((key) => {
+                if(formObj[key].length == 0) {
+                    errFlag = true
+                }
+            });
+            if(errFlag) {
+                this.$notify({
+                    title: '警告',
+                    message: '请输入完整信息',
+                    type: 'warning'
+                });
+            }else{
+                let codeArr = [];
+                let nameArr = [];
+                formObj.selected.map((v) => {
+                    for(let key in v) {
+                        codeArr.push(key);
+                        nameArr.push(v[key]);
+                    }
+                });
+                formObj.provinceCode = codeArr[0];
+                formObj.provinceName = nameArr[0];
+                formObj.cityCode = codeArr[1];
+                formObj.cityName = nameArr[1];
+                formObj.areaCode = codeArr[2];
+                formObj.areaName = nameArr[2];
+                delete formObj.selected;
+                formObj.id = this.userId;
+                formObj.cid = 2;
+                this._apis.client.saveMemberInfo(formObj).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: "保存成功",
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
             }
             
-            // Object.keys(formObj).forEach((key) => {
-            //     if(formObj[key].length == 0) {
-            //         errFlag = true
-            //     }
-            // });
-            // if(errFlag) {
-            //     this.$notify({
-            //         title: '警告',
-            //         message: '请输入完整信息',
-            //         type: 'warning'
-            //     });
-            // }
-            // let codeArr = [];
-            // let nameArr = [];
-            // formObj.selected.map((v) => {
-            //     for(let key in v) {
-            //         codeArr.push(key);
-            //         nameArr.push(v[key]);
-            //     }
-            // });
-            // formObj.provinceCode = codeArr[0];
-            // formObj.provinceName = nameArr[0];
-            // formObj.cityCode = codeArr[1];
-            // formObj.cityName = nameArr[1];
-            // formObj.areaCode = codeArr[2];
-            // formObj.areaName = nameArr[2];
-            // delete formObj.selected;
-            // formObj.id = this.userId;
-            // formObj.cid = 2;
-            // this._apis.client.saveMemberInfo(formObj).then((response) => {
-            //     this.$notify({
-            //         title: '成功',
-            //         message: "保存成功",
-            //         type: 'success'
-            //     });
-            // }).catch((error) => {
-            //     this.$notify.error({
-            //         title: '错误',
-            //         message: error
-            //     });
-            // })
         }
     },
     computed: {
@@ -321,6 +357,8 @@ export default {
     mounted() {
         this.getMemberInfo();
         this.userTag = this.memberLabels;
+        this.getCouponList();
+        this.getAllCoupons();
     }
 }
 </script>

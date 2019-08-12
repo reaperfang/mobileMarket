@@ -25,7 +25,7 @@
                 </el-form-item>
                 <el-form-item label="等级说明：">
                     <div class="input_wrap">
-                        <el-input v-model="ruleForm.explain" placeholder="请输入等级描述"></el-input>
+                        <el-input v-model="ruleForm.upgradePackage" placeholder="请输入等级描述"></el-input>
                     </div>
                 </el-form-item>
                 <div class="line"></div>
@@ -33,7 +33,7 @@
                 <el-form-item v-if="getIndex(this.conditionList,'完善信息') !== -1">
                     <el-checkbox v-model="ruleForm.comInfoCheck">完善信息</el-checkbox>
                     <span>已选： 绑定手机号</span>
-                    <p style="margin-left:115px;">姓名 <span class="addMainColor marL20" @click="openDialog">选择变更</span></p>
+                    <p style="margin-left:115px;">姓名 <span class="addMainColor marL20 pointer" @click="openDialog">选择变更</span></p>
                 </el-form-item>
                 <el-form-item>
                     <div class="radio_line" v-if="getIndex(this.conditionList,'消费金额满') !== -1">
@@ -82,7 +82,7 @@
                 </el-form-item>
                 <div class="line"></div>
                 <p class="l_title" style="margin-left: -19px;">升级奖励：</p><br>
-                <el-form-item>
+                <el-form-item v-if="getIndex(this.rewardList,'赠送积分') !== -1">
                     <el-checkbox v-model="ruleForm.check2">赠送积分</el-checkbox>
                     <span>送</span>
                     <div class="input_wrap3">
@@ -90,7 +90,7 @@
                     </div>
                     <span>积分</span>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item v-if="getIndex(this.rewardList,'赠送红包') !== -1">
                     <el-checkbox v-model="ruleForm.check2">赠送红包</el-checkbox>
                     <span>送</span>
                     <div class="input_wrap3">
@@ -98,7 +98,7 @@
                     </div>
                     <span>元给包1个</span>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item v-if="getIndex(this.rewardList,'赠送赠品') !== -1">
                     <el-checkbox v-model="ruleForm.check2">赠送赠品</el-checkbox>
                     <div class="input_wrap2">
                         <el-select v-model="ruleForm.status" placeholder="选择优惠券">
@@ -111,7 +111,7 @@
                     </div>
                     <span>个</span>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item v-if="getIndex(this.rewardList,'赠送优惠券') !== -1">
                     <el-checkbox v-model="ruleForm.check2">赠送优惠券</el-checkbox>
                     <div class="input_wrap2">
                         <el-select v-model="ruleForm.status" placeholder="选择优惠券">
@@ -127,7 +127,7 @@
             </el-form>
         </div>
         <div class="btn_container" style="text-align: center">
-            <el-button type="primary">保 存</el-button>
+            <el-button type="primary" @click="save">保 存</el-button>
             <el-button>返 回</el-button>
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
@@ -143,7 +143,7 @@ export default {
             fileList: [],
             ruleForm:{
                 name: "",
-                explain:"",
+                upgradePackage:"",
                 comInfoCheck:"",
                 comInfoRadio:"",
                 rightsCheck1:"",
@@ -164,7 +164,8 @@ export default {
             dialogVisible: false,
             levelName: "",
             conditionList: [],
-            rightsList: []
+            rightsList: [],
+            rewardList: []
         }
     },
     methods: {
@@ -227,12 +228,31 @@ export default {
                     message: error
                 });
             })
+        },
+        //获取升级奖励
+        getRewardList() {
+            this._apis.client.getRewardList({cid:"", type: 0}).then((response) => {
+                let _arr = [];
+                response.map((v) => {
+                    let _obj = {}
+                    _obj.name = v.name;
+                    _obj.id = v.id;
+                    _arr.push(_obj);
+                })
+                this.rewardList = [].concat(_arr);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     mounted() {
         this.getLevelsInfo(this.$route.query.id);
         this.getLevelCondition();
         this.getRightsList();
+        this.getRewardList();
     }
 }
 </script>

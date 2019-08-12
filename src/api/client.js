@@ -234,7 +234,7 @@ export function levelConditionList(data) {
         data
     })
 }
-//等级权益列表
+//升级奖励列表
 export function getRewardList(data) {
     return request({
         target:'UPGRADE-REWARD-LIST-PROCESSOR',
@@ -243,4 +243,66 @@ export function getRewardList(data) {
         data
     })
 }
-
+//余额明细表
+export function getBalanceList(data) {
+    return request({
+        target:'FINANCIAL-BALANCE-PAGELIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//手动变更余额
+export function manualChangeBalance(data) {
+    return request({
+        target:'MEMBER-INFOBALANCE-ADJUSTMENT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//手动变更积分
+export function manualChangeCredit(data) {
+    return request({
+        target:'MEMBER-INFO-SCOREADJUSTMENT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//获取优惠券列表
+export function getCouponList(data) {
+    return request({
+        url: '/api/v1/c/app-coupon-member-get',
+        method: 'get',
+        baseURL: process.env.DATA_API,
+        params:data
+    })
+}
+//获取优惠券下拉
+export function getAllCoupons(data) {
+    return request({
+        url: '/api/v1/b/app-coupon/activity/page-list',
+        method: 'get',
+        baseURL: process.env.DATA_API,
+        params:data
+    })
+}
+//优惠券/码发放
+export function distributeCoupon(data) {
+    return request({
+        url: '/api/v1/b/app-coupon-member-get/activity/distribute',
+        method: 'post',
+        baseURL: process.env.DATA_API,
+        params:data
+    })
+}
+//导入客户记录列表
+export function importMemberList(data) {
+    return request({
+        target:'MEMBER-IMPORTRECORD-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
