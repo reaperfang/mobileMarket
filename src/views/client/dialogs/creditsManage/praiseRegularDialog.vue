@@ -1,45 +1,99 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="评价获取积分规则" :hasCancel="hasCancel">
         <div class="c_container">
-            <div class="clearfix"><span class="fl marR20">评价获取积分规则</span><el-switch class="fl" v-model="isBuy" active-color="#66CCAC"></el-switch></div>
+            <div class="clearfix"><span class="fl marR20">评价获取积分规则</span><el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch></div>
             <div>评价订单五星好评且满足以下条件可获得积分
                 <p>（条件1和条件3可独立启用，条件2需在条件1基础上启用）</p>
             </div>
             <div>
                 <span>条件1：    文字满</span>
                 <div class="input_wrap">
-                    <el-input></el-input>
+                    <el-input v-model="fullWord1"></el-input>
                 </div>
-                <span>字  获得</span>
+                <span>字</span>
+                <span v-if="distinguish1 == false">获得</span>
+                <div class="input_wrap" v-if="distinguish1 == false">
+                    <el-input v-model="allMember1"></el-input>
+                </div>
+                <span v-if="distinguish1 == false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <el-checkbox v-model="distinguish1">区分人群奖励</el-checkbox>
+            </div>
+            <div v-if="distinguish1 == true">
+                <span>客户</span>
                 <div class="input_wrap">
-                    <el-input></el-input>
+                    <el-input v-model="noMember1"></el-input>
                 </div>
-                <span>积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <el-checkbox v-model="checked1">区分人群奖励</el-checkbox>
+                <span>积分</span>
+                <span>新会员</span>
+                <div class="input_wrap">
+                    <el-input v-model="newMember1"></el-input>
+                </div>
+                <span>积分</span>
+                <span>老会员</span>
+                <div class="input_wrap">
+                    <el-input v-model="oldMember1"></el-input>
+                </div>
+                <span>积分</span>
             </div>
             <div>
                 <span>条件2：    满</span>
                 <div class="input_wrap">
-                    <el-input></el-input>
+                    <el-input v-model="fullWord2"></el-input>
                 </div>
-                <span>字  额外获得</span>
+                <span>字</span>
+                <span v-if="distinguish2 == false">额外获得</span>
+                <div class="input_wrap" v-if="distinguish2 == false">
+                    <el-input v-model="allMember2"></el-input>
+                </div>
+                <span v-if="distinguish2 == false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <el-checkbox v-model="distinguish2" :disabled="distinguish1 == false">区分人群奖励</el-checkbox>
+            </div>
+            <div v-if="distinguish2 == true">
+                <span>客户</span>
                 <div class="input_wrap">
-                    <el-input></el-input>
+                    <el-input v-model="noMember2"></el-input>
                 </div>
-                <span>积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <el-checkbox v-model="checked2">区分人群奖励</el-checkbox>
+                <span>积分</span>
+                <span>新会员</span>
+                <div class="input_wrap">
+                    <el-input v-model="newMember2"></el-input>
+                </div>
+                <span>积分</span>
+                <span>老会员</span>
+                <div class="input_wrap">
+                    <el-input v-model="oldMember2"></el-input>
+                </div>
+                <span>积分</span>
             </div>
             <div>
                 <span>条件3：    图片/视频满</span>
                 <div class="input_wrap">
-                    <el-input></el-input>
+                    <el-input v-model="fullWord3"></el-input>
                 </div>
-                <span>张/条  可获得</span>
+                <span>张/条</span>
+                <span v-if="distinguish3==false">可获得</span>
+                <div class="input_wrap" v-if="distinguish3==false">
+                    <el-input v-model="allMember3"></el-input>
+                </div>
+                <span v-if="distinguish3==false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <el-checkbox v-model="distinguish3">区分人群奖励</el-checkbox>
+            </div>
+            <div v-if="distinguish3 == true">
+                <span>客户</span>
                 <div class="input_wrap">
-                    <el-input></el-input>
+                    <el-input v-model="noMember3"></el-input>
                 </div>
-                <span>积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <el-checkbox v-model="checked3">区分人群奖励</el-checkbox>
+                <span>积分</span>
+                <span>新会员</span>
+                <div class="input_wrap">
+                    <el-input v-model="newMember3"></el-input>
+                </div>
+                <span>积分</span>
+                <span>老会员</span>
+                <div class="input_wrap">
+                    <el-input v-model="oldMember3"></el-input>
+                </div>
+                <span>积分</span>
             </div>
         </div>
     </DialogBase>
@@ -52,15 +106,87 @@ export default {
     data() {
         return {
             hasCancel: true,
-            isBuy: false,
-            checked1: false,
-            checked2: false,
-            checked3: false
+            enable: false,
+            distinguish1: false,
+            distinguish2: false,
+            distinguish3: false,
+            fullWord1:"",
+            fullWord2:"",
+            fullWord3:"",
+            allMember1:"",
+            allMember2:"",
+            allMember3:"",
+            noMember1:"",
+            noMember2:"",
+            noMember3:"",
+            newMember1:"",
+            newMember2:"",
+            newMember3:"",
+            oldMember1:"",            
+            oldMember2:"",            
+            oldMember3:"",            
         }
     },
     methods: {
         submit() {
-            
+            let params = {
+                id: this.data.id,
+                cid: "2",
+                enable: this.enable,
+                sceneRule: {
+                    condition1: {
+                        distinguish: this.distinguish1,
+                        noDistinguish: {
+                            fullWord: this.fullWord1,
+                            allMember: this.allMember1
+                        },
+                        yesDistinguish: {
+                            fullWord: this.fullWord1,
+                            noMember: this.noMember1,
+                            newMember: this.newMember1,
+                            oldMember: this.oldMember1
+                        }
+                    },
+                    condition2: {
+                        distinguish: this.distinguish2,
+                        noDistinguish: {
+                            fullWord: this.fullWord2,
+                            allMember: this.allMember2
+                        },
+                        yesDistinguish: {
+                            fullWord: this.fullWord2,
+                            noMember: this.noMember2,
+                            newMember: this.newMember2,
+                            oldMember: this.oldMember2
+                        }
+                    },
+                    condition3: {
+                        distinguish: this.distinguish3,
+                        noDistinguish: {
+                            fullWord: this.fullWord3,
+                            allMember: this.allMember3
+                        },
+                        yesDistinguish: {
+                            fullWord: this.fullWord3,
+                            noMember: this.noMember3,
+                            newMember: this.newMember3,
+                            oldMember: this.oldMember3
+                        }
+                    },
+                }
+            };
+            this._apis.client.editCreditRegular(params).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: "保存成功",
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {

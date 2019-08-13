@@ -42,8 +42,8 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
             <div class="btns clearfix">
-                <span>添加标签</span>
-                <span>修改身份等级</span>
+                <span @click="addTag(scope.row)">添加标签</span>
+                <span @click="modify(scope.row)">修改身份等级</span>
             </div>
         </template>
       </el-table-column>
@@ -59,19 +59,24 @@
         :total="100">
       </el-pagination>
     </div>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
-
 <script type='es6'>
 import TableBase from "@/components/TableBase";
-import clientApi from "@/api/client";
+import batchAddTagDialog from '../../dialogs/clientImport/batchAddTagDialog'
+import changeIdentityDialog from '../../dialogs/clientImport/changeIdentityDialog';
 export default {
   name: "ciTable",
   extends: TableBase,
   props: [ 'params' ],
+  components: { batchAddTagDialog, changeIdentityDialog },
   data() {
     return {
-      importList: []
+      importList: [],
+      currentDialog: "",
+      dialogVisible: false,
+      currentData:{}
     };
   },
   computed: {
@@ -86,7 +91,6 @@ export default {
   methods: {
     getImportList() {
       this._apis.client.importMemberList(this.params).then((response) => {
-        console.log(response);
         this.importList = [].concat(response.list);
       }).catch((error) => {
         this.$notify.error({
@@ -94,6 +98,18 @@ export default {
           message: error
         });
       })
+    },
+    addTag(row) {
+      this.dialogVisible = true;
+      this.currentDialog = "batchAddTagDialog";
+      this.currentData.successNum = row.successNum;
+      this.currentData.id = row.id;
+    },
+    modify(row) {
+      this.dialogVisible = true;
+      this.currentDialog = "changeIdentityDialog";
+      this.currentData.successNum = row.successNum;
+      this.currentData.id = row.id;
     }
   },
   watch: {
@@ -101,7 +117,6 @@ export default {
       this.getImportList();
     }
   },
-  components: {}
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
