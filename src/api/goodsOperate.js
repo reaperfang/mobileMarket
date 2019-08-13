@@ -16,7 +16,7 @@ export function fetchUnitList(data) {
     return request({
       apiType: 'goodsOperate',
       method: 'post',
-      target: 'PUBLIC-UNIT-LIST-PROCESSOR',
+      target: 'PUBLIC-PRODUCT-UNITINFO-LIST-QUERY-PROCESSOR',
       data
     })
   }
@@ -26,7 +26,7 @@ export function fetchBrandList(data) {
     return request({
         apiType: 'goodsOperate',
         method: 'post',
-        target: 'PUBLIC-BRAND-PAGELIST',
+        target: 'PUBLIC-PRODUCT-BRANDINFO-LIST-QUERY-PROCESSOR',
         data
     })
 }

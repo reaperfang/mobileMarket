@@ -208,7 +208,7 @@ export default {
             this.multipleSelection = val;
         },
         getList() {
-
+            
         }
     },
     components: {

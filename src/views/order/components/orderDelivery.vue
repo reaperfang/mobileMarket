@@ -226,6 +226,7 @@ export default {
                 memberSn: '', // 客户ID
 
             },
+            tableData: []
         }
     },
     created() {

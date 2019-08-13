@@ -55,8 +55,8 @@
                     width="180">
                     <template slot-scope="scope">
                         <span @click="upperAndLowerRacks(scope.row)" class="goods-state">
-                            {{scope.row.status | statusFilter}}
-                            <i :class="{grounding: scope.row.status === 1, undercarriage: scope.row.status === 0}" class="i-bg"></i>
+                            {{scope.row.goodsInfo.status | statusFilter}}
+                            <i :class="{grounding: scope.row.goodsInfo.status == 1, undercarriage: scope.row.goodsInfo.status == 0}" class="i-bg"></i>
                         </span>
                     </template>
                 </el-table-column>
@@ -76,12 +76,12 @@
                     prop="price"
                     label="售卖价（元）">
                     <template slot-scope="scope">
-                        <span @click="(currentDialog = 'EditorPrice') && (dialogVisible = true) && (currentData = scope.row)" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg"></i></span>
+                        <span @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span class="operate-editor"><i class="i-bg"></i>编辑</span>
+                        <span @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor"><i class="i-bg"></i>编辑</span>
                         <span @click="deleleHandler(scope.row)" class="operate-delete"><i class="i-bg"></i>删除</span>
                     </template>
                 </el-table-column>
@@ -90,15 +90,15 @@
                 <el-button @click="moreManageHandler" type="primary">批量管理</el-button>
                 <el-button v-if="showTableCheck" @click="checkAllHandler">全选</el-button>
                 <div v-if="showTableCheck" class="image-box">
-                    <div class="item">
+                    <div @click="allUpper" class="item">
                         <i class="i-bg up"></i>
                         <p>上架</p>
                     </div>
-                    <div class="item">
+                    <div @click="allLower" class="item">
                         <i class="i-bg down"></i>
                         <p>下架</p>
                     </div>
-                    <div class="item">
+                    <div @click="allDelete" class="item">
                         <i class="i-bg delete"></i>
                         <p>删除</p>
                     </div>
@@ -257,12 +257,12 @@ export default {
     },
     filters: {
         statusFilter(val) {
-            if(val === 1) {
+            if(val == 1) {
                 return '上架'
-            } else if(val === 0) {
+            } else if(val == 0) {
                 return '下架'
-            } else if(val === 2) {
-                return '上架'
+            } else if(val == 2) {
+                return '自动上架'
             }
         },
         async productCatalogFilter(id) {
@@ -280,6 +280,50 @@ export default {
         }
     },
     methods: {
+        allDelete() {
+            let ids = this.multipleSelection.map(val => val.goodsInfo.id)
+
+            this._apis.goods.allDelete({ids}).then((res) => {
+                this.getList()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '删除成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        upperOrLower(status) {
+            let ids = this.multipleSelection.map(val => val.goodsInfo.id)
+
+            this._apis.goods.upperOrLower({ids, status}).then((res) => {
+                this.getList()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '修改成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        allUpper() {
+            this.upperOrLower(1)
+        },
+        allLower() {
+            this.upperOrLower(0)
+        },
         transTreeData(data, pid) {
             var result = [], temp;
             for (var i = 0; i < data.length; i++) {
@@ -310,8 +354,33 @@ export default {
             this.listQuery.productCatalogInfoId = arr.pop()
         },
         upperAndLowerRacks(row) {
-            this.confirm({title: '立即上架', icon: true, text: '是否确认上架？'}).then(() => {
-                
+            let _title = ''
+            let _status
+
+            if(row.goodsInfo.status == 1) {
+                _title = '下架'
+                _status = 0
+            } else if(row.goodsInfo.status == 0) {
+                _title = '上架'
+                _status = 1
+            }
+
+            this.confirm({title: '立即' + _title, icon: true, text: `是否确认${_title}？`}).then(() => {
+                this._apis.goods.upperOrLower({ids: [row.goodsInfo.id], status: _status}).then((res) => {
+                    this.getList()
+                    this.visible = false
+                    this.$notify({
+                        title: '成功',
+                        message: '修改成功！',
+                        type: 'success'
+                    });
+                }).catch(error => {
+                    this.visible = false
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
             })
         },
         moreManageHandler() {
@@ -376,11 +445,22 @@ export default {
                     
                 })
             } else {
-                this.confirm({title: '立即删除', icon: true, text: '当前商品正在参与营销活动，活动有效期内商品不得“删除”。'}).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                this.confirm({title: '立即删除', icon: true, text: '是否确认删除？'}).then(() => {
+                    this._apis.goods.allDelete({ids: [row.goodsInfo.id]}).then((res) => {
+                        this.getList()
+                        this.visible = false
+                        this.$notify({
+                            title: '成功',
+                            message: '删除成功！',
+                            type: 'success'
+                        });
+                    }).catch(error => {
+                        this.visible = false
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -390,7 +470,7 @@ export default {
             }
         },
         onSubmit() {
-
+            this.getList()
         }
     },
     components: {

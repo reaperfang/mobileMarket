@@ -36,8 +36,8 @@ module.exports = {
       '/data-server/**': {
         //target: 'http://172.22.146.2:8080', // 订单 尹茂凯
         //target: 'http://172.22.146.118:8080', // 订单 李刚
-        target: 'http://172.22.146.3:8080', // 订单 张红亮
-        // target: 'http://172.22.146.119:8080', // 商品 王浩
+        //target: 'http://172.22.146.3:8080', // 订单 张红亮
+        target: 'http://172.22.146.116:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080',
         //target: 'http://172.22.146.10:8080',
         // target: 'http://172.22.146.109:8080',
@@ -50,7 +50,7 @@ module.exports = {
         //target: 'http://172.22.146.133:8081',  //李雯廷
         // target: 'http://120.133.1.130:8012',//营销测试机
         //target:'http://172.22.146.124:8090',//许涛
-        //target:'http://172.22.145.1:8080',//耿士龙
+        //target:'http://172.22.145.115:8080',//耿士龙
 
         changeOrigin: true,
         pathRewrite: {
@@ -58,7 +58,7 @@ module.exports = {
         }
       },
       '/upload_server/**': {
-        target: 'http://10.12.52.41:8080/',
+        target: 'http://172.22.146.124:8092/',//许涛
         changeOrigin: true,
         pathRewrite: {
           '^/upload_server': ''
@@ -69,6 +69,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/upload_coupon_server': ''
+        }
+      },
+      '/order_server/**': {
+        target: 'http://172.22.146.12:8080/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/order_server': ''
         }
       }
     }

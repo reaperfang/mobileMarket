@@ -6,7 +6,7 @@
         <div :class="{active: index == 2}" @click="scrollTo(2)" class="item">物流/售后</div>
         <div :class="{active: index == 3}" @click="scrollTo(3)" class="item">详情描述</div>
     </header> -->
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="138px" class="demo-ruleForm">
+    <el-form :model="ruleForm" ref="ruleForm" label-width="138px" class="demo-ruleForm">
         <section class="form-section">
             <h2>基本信息</h2>
             <el-form-item label="商品类目" prop="productCategoryInfoId">
@@ -25,10 +25,12 @@
                 <el-input type="textarea" v-model="ruleForm.description" maxlength="100" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品图片" prop="images">
+                <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px">
                 <el-upload
                     :action="uploadUrl"
                     :limit="6"
                     list-type="picture-card"
+                    :data="{json: JSON.stringify({cid: 222})}"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove"
                     :on-success="centerFileUrl"
@@ -36,7 +38,7 @@
                     <i class="el-icon-plus"></i>
                     <p style="line-height: 21px; margin-top: -39px; color: #92929B;">上传图片</p>
                 </el-upload>
-                <span @click="currentDialog = 'LibraryDialog'; dialogVisible = true" class="material">素材库</span>
+                <span @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
             </el-form-item>
             <el-form-item label="商品分类" prop="productCatalogInfoId">
@@ -71,12 +73,12 @@
         </section>
         <section class="form-section">
             <h2>销售信息</h2>
-            <el-form-item label="规格信息" prop="specifications">
-                <el-button class="border-button selection-specification" @click="currentDialog = 'SelectSpecifications'; currentData = specsList; dialogVisible = true">选择规格</el-button>
-                <template>
+            <el-form-item label="规格信息" prop="goodsInfos">
+                <el-button v-if="!editor" class="border-button selection-specification" @click="currentDialog = 'SelectSpecifications'; currentData = specsList; dialogVisible = true">选择规格</el-button>
+                <template v-if="!editor">
                     <el-table
                     class="spec-information"
-                    :data="specArr"
+                    :data="ruleForm.goodsInfos"
                     :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
                     style="width: 100%">
                     <el-table-column
@@ -85,7 +87,7 @@
                         width="180">
                     </el-table-column>
                     <el-table-column
-                        prop="price"
+                        prop="costPrice"
                         label="成本价"
                         width="180">
                         <template slot-scope="scope">
@@ -94,7 +96,7 @@
                     </el-table-column>
                     <el-table-column
                         prop="salePrice"
-                        label="层售卖价">
+                        label="售卖价">
                         <template slot-scope="scope">
                             <el-input v-model="scope.row.salePrice" placeholder="请输入内容"></el-input>
                         </template>
@@ -107,7 +109,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="warning"
+                        prop="wanningStock"
                         label="库存预警">
                         <template slot-scope="scope">
                             <el-input v-model="scope.row.warning" placeholder="请输入内容"></el-input>
@@ -121,7 +123,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="tiji"
+                        prop="volume"
                         label="体积">
                         <template slot-scope="scope">
                             <el-input v-model="scope.row.tiji" placeholder="请输入内容"></el-input>
@@ -135,11 +137,49 @@
                     </el-table-column>
                     </el-table>
                 </template>
+                <template v-else>
+                    <el-table
+                    class="spec-information-editor"
+                    :data="ruleForm.goodsInfo"
+                    :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+                    style="width: 100%">
+                        <el-table-column
+                            prop="label"
+                            :label="specsLabel"
+                            width="180">
+                        </el-table-column>
+                        <el-table-column
+                            prop="costPrice"
+                            label="成本价"
+                            width="180">
+                        </el-table-column>
+                        <el-table-column
+                            prop="salePrice"
+                            label="售卖价">
+                        </el-table-column>
+                        <el-table-column
+                            prop="stock"
+                            label="库存">
+                        </el-table-column>
+                        <el-table-column
+                            prop="wanningStock"
+                            label="库存预警">
+                        </el-table-column>
+                        <el-table-column
+                            prop="weight"
+                            label="重量">
+                        </el-table-column>
+                        <el-table-column
+                            prop="volume"
+                            label="体积">
+                        </el-table-column>
+                    </el-table>
+                </template>
                 <div>
-                    <el-checkbox v-model="ruleForm.residueStock">商品详情显示剩余库存</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isShowStock">商品详情显示剩余库存</el-checkbox>
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
                 </div>
-                <el-button class="border-button" @click="currentDialog = 'AddSpecifications'; dialogVisible = true">新增规格</el-button>
+                <el-button v-if="!editor" class="border-button" @click="currentDialog = 'AddSpecifications'; dialogVisible = true">新增规格</el-button>
             </el-form-item>
             <el-form-item label="起售数量" prop="number">
                 <div class="input-number">
@@ -150,7 +190,7 @@
             </el-form-item>
             <el-form-item label="已售出数量" prop="selfSaleCount">
                 <el-input type="number" v-model="ruleForm.selfSaleCount"></el-input>
-                <el-checkbox v-model="ruleForm.displaySold">商品详情显示已售出数量</el-checkbox>
+                <el-checkbox v-model="ruleForm.isShowSaleCount">商品详情显示已售出数量</el-checkbox>
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
             </el-form-item>
             <el-form-item label="单位计量" prop="productUnit">
@@ -159,10 +199,10 @@
                         v-for="item in unitList"
                         :key="item.id"
                         :label="item.name"
-                        :value="item.id">
+                        :value="item.name">
                     </el-option>
                 </el-select>
-                <el-button class="border-button new-units">新增单位</el-button>
+                <!-- <el-button class="border-button new-units">新增单位</el-button> -->
                 <div style="margin-top: 21px;">
                     <el-checkbox v-model="ruleForm.other">其他</el-checkbox>
                     <el-input v-model="ruleForm.otherUnit" placeholder="请输入计量单位"></el-input>
@@ -282,7 +322,7 @@
             </div>
         </section>
     </el-form>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected"></component>
 </div>
 </template>
 <script>
@@ -294,6 +334,9 @@ import TimelyShelvingDialog from '@/views/goods/dialogs/timelyShelvingDialog'
 import LibraryDialog from '@/views/goods/dialogs/libraryDialog'
 import AddCategoryDialog from '@/views/goods/dialogs/addCategoryDialog'
 import AddTagDialog from '@/views/goods/dialogs/addTagDialog'
+import dialogSelectImageMaterial from '@/views/shop/dialogs/dialogSelectImageMaterial'
+
+
 
 export default {
     data() {
@@ -302,13 +345,15 @@ export default {
             categoryValue: [],
             categoryOptions: [],
             productLabelList: [], // 商品标签列表
+            specIds: [],
             ruleForm: {
                 productCategoryInfoId: '', // 商品类目id
                 productCatalogInfoId: '', // 商品商家分类ID
                 name: '', // 商品名称
                 description: '', // 商品描述
-                images: 'images', // 商品图片
+                images: '', // 商品图片
                 productCategoryInfoIds: '',
+                selfSaleCount: '', // 自定义销量
                 productLabelId: '', // 商品标签
                 startSaleNum: 1, // 起售数量
                 quantitySold: 0,
@@ -318,8 +363,8 @@ export default {
                 dazhe: 1,
                 zhengsong: 1,
                 isSupportInvoice: 1, // 是否开发票
-                residueStock: false,
-                displaySold: '',
+                isShowStock: 0, // 是否显示库存 1显示 0不显示
+                isShowSaleCount: 0, // 是否显示销量 1显示 0不显示
                 productUnit: '', // 商品计量单位
                 other: false,
                 otherUnit: '',
@@ -329,54 +374,58 @@ export default {
                 isShowRelationProduct: 0, // 是否显示关联商品
                 relationProductInfoIds: [], // 关联商品
                 productDetail: '', // 商品详情
+                goodsInfos: [], // sku列表
                 freightTemplateId: '', // 运费模版ID
-                itemCat: ''
+                itemCat: '',
+                imageData: {
+                    fileName: 'image',
+                    cid: 222
+                }
+                
             },
+            imageList: [],
             rules: {
-                // productCategoryInfoId: [
-                //     { required: true, message: '请输入', trigger: 'blur' },
-                // ],
-                name: [
-                    { required: true, message: '请输入', trigger: 'blur' },
+                productCategoryInfoId: [
+                    { required: true, message: '请选择商品类目', trigger: 'blur' },
                 ],
-                // images: [
-                //     { required: true, message: '请上传商品图片', trigger: 'blur' },
-                // ],
-                quantitySold: [
+                name: [
+                    { required: true, message: '请输入商品名称', trigger: 'blur' },
+                ],
+                images: [
                     { required: true, message: '请上传商品图片', trigger: 'blur' },
                 ],
-                unitMeasurement: [
+                productCatalogInfoId: [
+                    { required: true, message: '请选择商品分类', trigger: 'blur' },
+                ],
+                goodsInfos: [
+                    { required: true, message: '请输入规格信息', trigger: 'blur' },
+                ],
+                selfSaleCount: [
+                    { required: true, message: '请输入已售出数量', trigger: 'blur' },
+                ],
+                productUnit: [
+                    { required: true, message: '请选择单位计量', trigger: 'blur' },
+                ],
+                productBrandInfoId: [
+                    { required: true, message: '请选择商品品牌', trigger: 'blur' },
+                ],
+                status: [
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
-                brand: [
+                isSupportInvoice: [
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
-                time: [
+                isCashOnDelivery: [
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
-                dazhe: [
+                isFreeFreight: [
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
-                zhengsong: [
-                    { required: true, message: '请选择', trigger: 'blur' },
-                ],
-                fapiao: [
-                    { required: true, message: '请选择', trigger: 'blur' },
-                ],
-                cashOnDelivery: [
-                    { required: true, message: '请选择', trigger: 'blur' },
-                ],
-                freightSettings: [
-                    { required: true, message: '请选择', trigger: 'blur' },
-                ],
-                rights: [
-                    { required: true, message: '请选择', trigger: 'blur' },
-                ],
-                associatedGoods: [
+                isAfterSaleService: [
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
             },
-            uploadUrl: '#',
+            uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file/api_file_remote_upload.do`,
             optionsTypeList: [],
             imageVisible: false,
             currentDialog: '',
@@ -396,13 +445,13 @@ export default {
                 UEDITOR_HOME_URL: '/static/UEditor/'
             },
             index: 0,
-            specArr: [],
             shippingTemplates: [],
             tableData: [],
             operateCategoryList: [],
             itemCatList: [],
             specsList: [],
             flatSpecsList: [],
+            flatCategoryList: [],
             currentData: [],
             specsLabel: ''
         }
@@ -413,8 +462,61 @@ export default {
         this.getOperateCategoryList()
         this.getUnitList()
         this.getBrandList()
+        if(this.$route.query.id && this.$route.query.goodsInfoId) {
+            this.getGoodsDetail()
+        }
+    },
+    computed: {
+        editor() {
+            if(this.$route.query.id && this.$route.query.goodsInfoId) {
+                return true
+            } else {
+                return false
+            }
+        }
     },
     methods: {
+        getCategoryIds(arr, id) {
+            let parentId = this.flatCategoryList.find(val => val.id == id).parentId
+
+            arr.unshift(id)
+
+            if(parentId) {
+                this.getCategoryIds(arr, parentId)
+            }
+        },
+        getGoodsDetail() {
+            let {id, goodsInfoId} = this.$route.query
+
+            this._apis.goods.getGoodsDetail({id, goodsInfoId}).then(res => {
+                console.log(res)
+                let arr = []
+
+                this.getCategoryIds(arr, res.productCatalogInfoId)
+
+                let specs = JSON.parse(res.goodsInfo.specs)
+
+                let specsLabelArr = []
+                let labelArr = []
+
+                for(let i in specs) {
+                    if(specs.hasOwnProperty(i)) {
+                        specsLabelArr.push(i)
+                        labelArr.push(specs[i])
+                    }
+                }
+
+                this.specsLabel = specsLabelArr.join(',')
+                res.goodsInfo.label = labelArr.join(',')
+                
+                this.ruleForm = Object.assign({}, this.ruleForm, res, {
+                    goodsInfo: [res.goodsInfo]
+                })
+                this.categoryValue = arr
+            }).catch(error => {
+
+            }) 
+        },
         flatTreeArray(array = [], childrenKey = 'childrenList') {
             var result = [];
             let flat = (array = {}, childrenKey, floor) => {
@@ -451,6 +553,34 @@ export default {
 
             }) 
         },
+        addGoods(params) {
+            this._apis.goods.addGoods(params).then(res => {
+                this.$notify({
+                    title: '成功',
+                    message: '新增成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+        },
+        editorGoods(params) {
+            this._apis.goods.editorGoods(params).then(res => {
+                this.$notify({
+                    title: '成功',
+                    message: '编辑成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+        },
         submitGoods() {
             let params
 
@@ -458,20 +588,24 @@ export default {
                 productCategoryInfoId: "6",
                 productUnit: "4",
                 productBrandInfoId: "1",
-                productSpecs: {"尺寸": ["L"], "颜色": ["黑色"]},
                 goodsInfos: [{"costPrice": 100, salePrice: 120, stock: 1000, wanningStock: 900, weight: 1, volume: 1, specs: {"尺寸": "L", "颜色": "黑色"}}],
-                productDetail: '商品详情'
-            })
-            this._apis.goods.addGoods(params).then(res => {
-                console.log(res)
-            }).catch(error => {
+                productDetail: '商品详情',
 
-            }) 
+                isShowSaleCount: this.ruleForm.isShowSaleCount ? 1 : 0,
+                isShowStock: this.ruleForm.isShowStock ? 1 : 0,
+                productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit
+            })
+            
+            if(!this.editor) {
+                this.addGoods(params)
+            } else {
+                this.editorGoods(params)
+            }
         },
         // 获取单品牌管理列表
         getBrandList() {
            this._apis.goodsOperate.fetchBrandList().then(res => {
-                this.brandList = res.list
+                this.brandList = res
             }).catch(error => {
 
             })   
@@ -479,7 +613,7 @@ export default {
         // 获取单位计量列表
         getUnitList() {
            this._apis.goodsOperate.fetchUnitList().then(res => {
-                this.unitList = res.list
+                this.unitList = res
             }).catch(error => {
 
             })   
@@ -531,6 +665,7 @@ export default {
         },
         getCategoryList() {
             this._apis.goods.fetchCategoryList().then((res) => {
+                this.flatCategoryList = res
                 let arr = this.transTreeData(res, 0)
                 
                 this.categoryOptions = arr
@@ -554,6 +689,82 @@ export default {
                 this.ruleForm.number--
             }
         },
+        selectSpecificationsHandler(value) {
+            let results = [];
+            let result = [];
+
+            var doExchange = function(arr, index) {
+                for (var i = 0; i<arr[index].length; i++) {
+                    result[index] = arr[index][i];
+                    if (index != arr.length - 1) {
+                        doExchange(arr, index + 1)
+                    } else {
+                        results.push(result.join(','))
+                    }
+                } 
+            }
+
+            if(value.length) {
+                let _arr = []
+                let obj = {}
+
+                value.forEach(val => {
+                    if(!obj[val[0]]) {
+                        obj[val[0]] = []
+                        obj[val[0]].push(val[1])
+                    } else {
+                        obj[val[0]].push(val[1])
+                    }
+                })
+
+                for(let i in obj) {
+                    _arr.push(obj[i])
+                }
+
+                doExchange(_arr, 0);
+                let _results = results.map((val, index) => {
+                    let valArr = []
+                    let pId = []
+                    let names = []
+
+                    val.split(',').forEach(id => {
+                        let item = this.flatSpecsList.find(flatItem => flatItem.id == id)
+
+                        valArr.push(item.name)
+                        pId.push(item.parentId)
+                    })
+
+                    pId.forEach(id => {
+                        console.log(this.flatSpecsList)
+                        let item = this.flatSpecsList.find(flatItem => flatItem.id == id)
+
+                        names.push(item.name)
+                    })
+
+                    this.specsLabel = names.join(',')
+
+                    let _specs = {} //{"尺寸": "XL", "颜色": "黑色" }
+
+                    valArr.forEach((val, index) => {
+                        _specs[names[index]] = val
+                    })
+
+                    return {
+                        label: valArr.join(','),
+                        costPrice: '',
+                        salePrice: '',
+                        stock: '',
+                        wanningStock: '',
+                        weight: '',
+                        volume: '',
+                        specs: _specs,
+                        image: ''
+                    }
+                })
+                this.ruleForm.goodsInfos = _results
+                console.log(_results)
+            }
+        },
         submit(value) {
             if(this.currentDialog == 'ChoosingGoodsDialog') {
                 // 关联商品
@@ -563,71 +774,27 @@ export default {
                 // 设置自动上架时间
                 this.ruleForm.autoSaleTime = value
             } else if(this.currentDialog == 'SelectSpecifications') {
-                let results = [];
-                let result = [];
+                this.specIds = value
+                this.selectSpecificationsHandler(value)
+            } else if(this.currentDialog == 'AddSpecifications') {
+                let arr = []
+                let _arr= []
 
-                var doExchange = function(arr, index) {
-                    for (var i = 0; i<arr[index].length; i++) {
-                        result[index] = arr[index][i];
-                        if (index != arr.length - 1) {
-                            doExchange(arr, index + 1)
-                        } else {
-                            results.push(result.join(','))
-                        }
-                    } 
-                }
+                value.forEach(val => {
+                    arr = arr.concat(val)
+                })
 
-                if(value.length) {
-                    let _arr = []
-                    let obj = {}
+                _arr = Array.from(new Set(arr))
 
-                    value.forEach(val => {
-                        if(!obj[val[0]]) {
-                            obj[val[0]] = []
-                            obj[val[0]].push(val[1])
-                        } else {
-                            obj[val[0]].push(val[1])
-                        }
-                    })
-
-                    for(let i in obj) {
-                        _arr.push(obj[i])
+                _arr.forEach(id => {
+                    if(!this.flatSpecsList.find(val => val.id == id)) {
+                        this.flatSpecsList.push({id: id, name: id, parentId: value[0][0]})
                     }
+                })
 
-                    doExchange(_arr, 0);
-                    let _results = results.map((val, index) => {
-                        let valArr = []
-                        let pId = []
-                        let names = []
+                this.specIds = [...this.specIds, ...value]
 
-                        val.split(',').forEach(id => {
-                            let item = this.flatSpecsList.find(flatItem => flatItem.id == id)
-
-                            valArr.push(item.name)
-                            pId.push(item.parentId)
-                        })
-
-                        pId.forEach(id => {
-                            let item = this.flatSpecsList.find(flatItem => flatItem.id == id)
-
-                            names.push(item.name)
-                        })
-
-                        this.specsLabel = names.join(',')
-
-                        return {
-                            label: valArr.join(','),
-                            price: '',
-                            salePrice: '',
-                            stock: '',
-                            warning: '',
-                            weight: '',
-                            tiji: '',
-                        }
-                    })
-                    this.specArr = _results
-                    console.log(_results)
-                }
+                this.selectSpecificationsHandler(this.specIds)
             }
         },
         editorValueUpdate(value) {
@@ -684,6 +851,10 @@ export default {
                 window.scrollTo(0,1282)
                 this.index = 3
             }
+        },
+
+        imageSelected(image) {
+            this.imageList.push(image);
         }
     },
     mounted() {
@@ -697,7 +868,8 @@ export default {
         TimelyShelvingDialog,
         LibraryDialog,
         AddCategoryDialog,
-        AddTagDialog
+        AddTagDialog,
+        dialogSelectImageMaterial
     }
 }
 </script>
@@ -777,6 +949,9 @@ $blue: #655EFF;
     }
     .form-section {
         border-bottom: 1px dashed #d3d3d3;
+        &:last-child {
+            border: none;
+        }
         padding-bottom: 30px;
         padding-top: 24px;
         .new-units {
@@ -841,6 +1016,9 @@ $blue: #655EFF;
         left: 1px;
         top: 2px;
     }
+}
+.footer {
+    text-align: center;
 }
 </style>
 

@@ -97,6 +97,12 @@ export default [
         meta: { title: '打印电子面单', noCache: true, tabTitle: '订单处理' },
       },
       {
+        path: 'bulkDelivery',
+        component: () => import('@/views/order/bulkDelivery'),
+        name: 'bulkDelivery',
+        meta: { title: '批量发货', noCache: true, tabTitle: '订单处理' },
+      },
+      {
         path: 'quickDelivery',
         component: () => import('@/views/order/quickDelivery'),
         name: 'quickDelivery',
