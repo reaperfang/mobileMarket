@@ -1,7 +1,7 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="购买商品获取积分规则" :hasCancel="hasCancel">
         <div class="c_container">
-            <div class="clearfix"><span class="fl marR20">购买商品获取积分规则</span><el-switch class="fl" v-model="isBuy" active-color="#66CCAC"></el-switch></div>
+            <div class="clearfix"><span class="fl marR20">购买商品获取积分规则</span><el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch></div>
             <div>购买获得积分，订单确认收货后按规则发放积分</div>
             <div>
                 <span>赠送积分的商品：</span>
@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             hasCancel: true,
-            isBuy: false,
+            enable: false,
             radio1: '0',
             radio2: '0'
         }

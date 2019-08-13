@@ -61,6 +61,7 @@
                         <el-input placeholder="请输入整数"></el-input>
                     </div>
                     <span>积分</span>
+                    <el-button type="primary" class="marL20">保存</el-button>
                 </div>
                 <cmTable></cmTable>
             </el-tab-pane>

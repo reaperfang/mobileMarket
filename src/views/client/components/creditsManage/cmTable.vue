@@ -12,7 +12,7 @@
         label="获取积分场景">
       </el-table-column>
       <el-table-column
-        prop="status"
+        prop="enable"
         label="状态">
       </el-table-column>
       <el-table-column label="操作">
@@ -24,18 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_styles">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
-        layout="sizes, prev, pager, next"
-        :total="100">
-      </el-pagination>
-      <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
-    </div>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
 
@@ -54,40 +43,57 @@ export default {
     return {
       currentDialog:"",
       dialogVisible: false,
-      currentData:{}
+      currentData:{},
+      creditList: []
     };
   },
   computed: {
-    creditList() {
-      return clientApi.creditList
-    }
   },
   created() {
 
   },
   methods: {
     editCredit(row) {
+      console.log(row);
       switch(row.sceneName) {
-        case '登录': 
+        case '登陆': 
           this.dialogVisible = true;
           this.currentDialog = "loginRegularDialog";
+          this.currentData.id = row.id;
           break;
-        case '购买商品': 
+        case '购买': 
           this.dialogVisible = true;
           this.currentDialog = "buyRegularDialog";
+          this.currentData.id = row.id;
           break;
-        case '复购商品': 
+        case '复购': 
           this.dialogVisible = true;
           this.currentDialog = "repurchaseRegularDialog";
+          this.currentData.id = row.id;
           break;
         case '评价': 
           this.dialogVisible = true;
           this.currentDialog = "praiseRegularDialog";
+          this.currentData.id = row.id;
           break;
         default:
           break;
       }
+    },
+    getCreditList() {
+      this._apis.client.getCreditList({}).then((response) => {
+        response.map((v) => {v.enable = v.enable == 0?'禁用':'启用'});
+        this.creditList = [].concat(response);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     }
+  },
+  mounted() {
+    this.getCreditList();
   }
 };
 </script>

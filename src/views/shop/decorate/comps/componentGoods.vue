@@ -75,12 +75,13 @@ export default {
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;
             this.goodsMargin = this.currentComponentData.data.goodsMargin;
+            var bodyWidth = 375;
             if(this.listStyle=='1'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
             }
             else if(this.listStyle=='2'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
-                var bodyWidth = document.body.clientWidth;
+                
                 if('showTemplate' in this.currentComponentData.data){
                     this.showTemplate= this.currentComponentData.data.showTemplate;
                     if(this.showTemplate!=1){
@@ -96,7 +97,6 @@ export default {
             }
             else if(this.listStyle=='3'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
-                var bodyWidth = document.body.clientWidth;
                 if('showTemplate' in this.currentComponentData.data){
                     this.showTemplate= this.currentComponentData.data.showTemplate;
                     if(this.showTemplate!=1){
