@@ -1,6 +1,6 @@
 <template>
   <!-- 店铺信息 -->
-  <div class="componentShoplnfo" v-if="currentComponentData.data">
+  <div class="componentShoplnfo" v-if="currentComponentData && currentComponentData.data">
     <!-- 样式一 -->
     <div v-if="displayStyle1" class="shopinfo1" :style="imgs1">
       <div class="shopinfo_cont">

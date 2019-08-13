@@ -1,6 +1,6 @@
 <template>
   <!-- 辅助线 -->
-  <div class="componentHelpLine">
+  <div class="componentHelpLine" v-if="currentComponentData && currentComponentData.data">
     <div :class="currentComponentData.data.lineMargin===1?'help_blank':'help_blank1'">
       <p :style="styleObj"></p>
     </div>

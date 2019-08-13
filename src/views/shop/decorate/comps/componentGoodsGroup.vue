@@ -1,17 +1,18 @@
 <template>
 <!-- 组件-商品分组 -->
-    <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup">
+    <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data">
         <div class="componentGoodsGroup_tab" id="componentGoodsGroup_tab" :class="'menuStyle'+menuStyle" :style="{width:componentGoodsGroup_tabWidth}">
             <p class="active" v-if="showAllGroup==1">全部</p>
             <p v-for="(item,key) of goodsGroups" :class="{active:showAllGroup!=1&&key==0}" :key="key">{{item.title}}</p>
         </div>
         <div class="componentGoodsGroup_content">
-            <componentGoods :currentComponentData='currentComponentData'></componentGoods>
+            <componentGoods :data='currentComponentData'></componentGoods>
         </div> 
     </div>
 </template>
 <script>
 import componentButton from './components/componentButton';
+import componentGoods from './componentGoods';
 import componentMixin from './mixin';
 export default {
     name:"componentGoodsGroup",
@@ -35,7 +36,7 @@ export default {
       componentGoods
     },
     created() {
-      this.decorate();
+      this.decoration();
     },
     watch: {
       data: {
@@ -49,8 +50,11 @@ export default {
     //   window.addEventListener("scroll", this.handleScroll, true);
     // },
     methods:{
-        decorate(){
+        decoration(){
             // 把数据传给商品列表
+            if(!this.currentComponentData || !this.currentComponentData.data) {
+              return;
+            }
             this.listStyle = this.currentComponentData.data.listStyle;
             this.goodsGroups = this.currentComponentData.data.goodsGroups;
             this.showAllGroup = this.currentComponentData.data.showAllGroup;

@@ -1,6 +1,6 @@
 <template>
   <!-- 优惠券 -->
-  <div class="componentCoupon">
+  <div class="componentCoupon" v-if="currentComponentData && currentComponentData.data">
     <!-- 样式一 -->
     <div class="coupon_first">
       <ul>

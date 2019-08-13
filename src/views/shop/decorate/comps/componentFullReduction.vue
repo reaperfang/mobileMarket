@@ -1,6 +1,6 @@
 <template>
   <!-- 满减瞒折 -->
-  <div class="componentFullReduction">
+  <div class="componentFullReduction" v-if="currentComponentData && currentComponentData.data">
     <div class="reduction">
       <div class="reduction_first">
         <span>减</span>

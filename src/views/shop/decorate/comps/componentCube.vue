@@ -1,5 +1,5 @@
 <template>
-    <div v-if="currentComponentData.data">
+    <div v-if="currentComponentData && currentComponentData.data">
         <ul class="cube cube_preview">
           <li v-if="currentComponentData.data.templateType === 1">
             <div class="type type1" :style="{padding: currentComponentData.data.pagePadding + 'px'}">

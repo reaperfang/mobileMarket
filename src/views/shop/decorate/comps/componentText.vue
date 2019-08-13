@@ -4,11 +4,13 @@
     class="componentText"
     :style="{'backgroundColor':currentComponentData.data.backgroundColor}"
     :class="currentComponentData.data.showDivider===true?'borb':''"
+    v-if="currentComponentData && currentComponentData.data"
   >
     <div
       class="group_text"
       :class="['font_size'+currentComponentData.data.fontSize,'style'+currentComponentData.data.displayStyle]"
       :style="{'color':currentComponentData.data.fontColor}"
+      v-if="currentComponentData && currentComponentData.data"
     >{{currentComponentData.data.textContent}}</div>
   </div>
 </template>

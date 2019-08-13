@@ -1,5 +1,5 @@
 <template>
-    <div ref="groupWrapper" :style="fontStyle">
+    <div ref="groupWrapper" :style="fontStyle" v-if="data">
        <div class="left-style" v-if="ruleForm.groupStyle==='left'">
           <ul class="nav">
             <li>商品组一</li>

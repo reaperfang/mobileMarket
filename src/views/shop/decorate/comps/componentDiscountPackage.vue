@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-优惠套餐 -->
-    <div class="componentDiscountPackage" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle">
+    <div class="componentDiscountPackage" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data">
         <ul>
             <li v-for="(item,key) of goodList" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
@@ -70,7 +70,7 @@ export default {
         componentButton
     },
     created(){
-        this.decorate();
+        this.decoration();
     },
     watch: {
       data: {
@@ -81,7 +81,10 @@ export default {
       }
     },
     methods:{
-        decorate(){
+        decoration(){
+            if(!this.currentComponentData || !this.currentComponentData.data) {
+              return;
+            }
             this.packages = this.currentComponentData.data.packages;
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;

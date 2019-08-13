@@ -1,6 +1,6 @@
 <template>
   <!-- 购买公告 -->
-  <div class="componentBuyNotice" v-if="currentComponentData.data">
+  <div class="componentBuyNotice" v-if="currentComponentData && currentComponentData.data" >
     <ul :style="{'backgroundColor':currentComponentData.data.backgroundColor}">
       <li>
         <img src="http://35.201.165.105:8000/storage/image/20190809/1565333783849805.png" alt />

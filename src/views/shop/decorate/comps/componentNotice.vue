@@ -1,6 +1,6 @@
 <template>
   <!-- 公告 -->
-  <div class="componentNotice">
+  <div class="componentNotice" v-if="currentComponentData && currentComponentData.data">
     <van-notice-bar
       :text="currentComponentData.data.notice"
       left-icon="volume-o"

@@ -306,6 +306,7 @@ export default {
 
 <style lang="scss" scoped>
 .userCenter {
+  background:#fff;
   & > .userCenter_first {
     height: 301px;
     background: #fff;

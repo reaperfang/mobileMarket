@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-限时秒杀 -->
-    <div class="componentSecondkill" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle">
+    <div class="componentSecondkill" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data">
         <ul>
             <li v-for="(item,key) of goodList" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
@@ -83,7 +83,9 @@ export default {
     },
     methods:{
         decoration(){
-            console.log(this.currentComponentData);
+            if(!this.currentComponentData || !this.currentComponentData.data) {
+              return;
+            }
             this.goods = this.currentComponentData.data.goods;
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;

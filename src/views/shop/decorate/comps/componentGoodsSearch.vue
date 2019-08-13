@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-公用搜索框 -->
-    <div class="componentGoodsSearch" style="z-index:4;">
+    <div class="componentGoodsSearch" style="z-index:4;" v-if="currentComponentData && currentComponentData.data">
         <div class="inputBox" :class="[{'textPosition':textPosition==1},{borderStyle:borderStyle!=1},]" :style="[{background:backgroundColor},{height:borderHeight+'px'},{border:'1px solid'+borderColor},{color:fontColor}]">
             <!-- <img src="@/assets/images/fdj.png" class="fdj" /> -->
             <p :style="{color:fontColor}">{{hotWords[0]}}</p>
@@ -44,6 +44,9 @@ export default {
     },
     methods:{
         decoration(){
+            if(!this.currentComponentData || !this.currentComponentData.data) {
+              return;
+            }
             this.hotWords = this.currentComponentData.data.hotWords;
             this.borderStyle = this.currentComponentData.data.borderStyle;
             this.borderHeight = this.currentComponentData.data.borderHeight;

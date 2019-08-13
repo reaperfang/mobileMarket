@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-多人拼团 -->
-    <div class="componentMultiPerson" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle">
+    <div class="componentMultiPerson" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data">
         <ul>
             <li v-for="(item,key) of goodList" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
@@ -86,6 +86,9 @@ export default {
     },
     methods:{
         decoration(){
+            if(!this.currentComponentData || !this.currentComponentData.data) {
+              return;
+            }
             this.goods = this.currentComponentData.data.goods;
             this.showNumber = this.currentComponentData.data.showNumber;
             if(this.goods.length > this.showNumber){

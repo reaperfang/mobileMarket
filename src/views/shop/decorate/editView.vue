@@ -24,7 +24,7 @@
           @click="selectComponent(item)" 
           @dragstart.self="selectItem = item" 
           @dragend.self="selectItem = {}">
-            <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)"></component>
+            <component v-if="allTemplateLoaded && getComponentData(item).data" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)" ></component>
             <!-- {{getComponentData(item).title}}组件 -->
             <i class="delete_btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
           </div>
@@ -144,6 +144,7 @@ export default {
     .phone-body {
       height: 775px;
       .component_wrapper{
+        min-height: 30px;
         &.actived{
           border:2px dashed $globalMainColor;
         }

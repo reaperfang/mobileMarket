@@ -1,6 +1,6 @@
 <template>
   <!-- 标题 -->
-  <div class="componentTitle" :style="{'backgroundColor':currentComponentData.data.backgroundColor}">
+  <div class="componentTitle" :style="{'backgroundColor':currentComponentData.data.backgroundColor}" v-if="currentComponentData && currentComponentData.data">
     <!-- 1、传统样式 -->
     <div v-if="currentComponentData.data.titleTemplate===1" :class="'title'+currentComponentData.data.displayPosition">
       <div class="title_Title">
