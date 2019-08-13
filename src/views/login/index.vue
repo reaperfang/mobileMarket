@@ -19,7 +19,8 @@
           </span>
           <el-input :type="passwordType" v-model="loginForm.password" name="password" placeholder="密码" @keyup.enter.native="handleLogin" class="login_input"/>
           <span class="show-pwd" @click="showPwd">
-            <svg-icon icon-class="eye" />
+            <i class="el-icon-view"></i>
+            <!-- <svg-icon icon-class="eye" /> -->
           </span>
         </el-form-item>
         <el-form-item class="remember">
@@ -43,39 +44,7 @@
         <el-button @click="dialogVisible = false">暂不创建</el-button>
       </span>
     </el-dialog>
-    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="hideDialog"></shopsDialog>
-    <!-- <el-dialog
-      title=""
-      :visible.sync="shopsDialog"
-      width="40%"
-      :before-close="handleClose"
-      style="margin-top:20vh;">
-      <span slot="title" class="dialog_title">
-        <a>返回官网</a> | <a>选择店铺</a>
-      </span>
-      <div class="content">
-        <div class="content_top">
-          <el-input placeholder="请输入店铺名称" v-model="shopName" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search" class="search"></el-button>
-          </el-input>
-          <el-button>创建店铺</el-button>
-        </div>
-        <div class="content_main">
-           <div>
-             <span>好利来海淀黄庄店</span>
-             <span>移动商城</span>
-           </div>
-           <div>
-             <span>好利来海淀黄庄店</span>
-             <span>移动商城</span>
-           </div>
-           <div>
-             <span>好利来海淀黄庄店</span>
-             <span>移动商城</span>
-           </div>
-        </div>
-      </div>
-    </el-dialog> -->
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose"></shopsDialog>
   </div>
 </template>
 
@@ -147,7 +116,7 @@ export default {
       }
     },
     handleLogin() {
-      this.shopsDialog = true
+      this.showShopsDialog = true
       // this.dialogVisible = true
       // this.$refs.loginForm.validate(valid => {
       //   if (valid && !this.loading) {
@@ -155,7 +124,7 @@ export default {
       //     this.$store.dispatch('login', this.loginForm).then(() => {
       //       this.loading = false
       //       const userName = this.loginForm.userName
-      //       this.$router.push({ path: '/shop/decoration' })
+      //       this.$router.push({ path: '/profile/profile' })
       //       // if (userName === 'admin') {
       //       //   this.$router.push({ path: '/platform/admin' })
       //       // } else {
@@ -178,7 +147,7 @@ export default {
       this.loginForm = Object.assign({}, this.loginForm, {userName, password})
       this.$store.dispatch('login', this.loginForm).then(() => {
         this.loading = false
-        this.$router.push({ path: '/shop/decoration' })
+        this.$router.push({ path: '/profile/profile' })
       }).catch(error => {
         this.$notify.error({
           title: '失败',
@@ -193,14 +162,14 @@ export default {
       if(userName!=undefined && password!=undefined) {
         this.login('admin-lqx', '111111')
       }
+    },
+    handleCloses(){
+      this.dialogVisible = false
+    },
+    handleClose(){
+      this.showShopsDialog = false
     }
   },
-  handleCloses(){
-    this.dialogVisible = false
-  },
-  hideDialog(){
-    this.showShopsDialog = false
-  }
 }
 </script>
 

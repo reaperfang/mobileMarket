@@ -4,10 +4,10 @@
       <div class="navbar-item">[ 新零售-电商豪华版 ] 剩余有效期</div>
       <!-- <div class="navbar-item"></div> -->
       <div class="right-menu">
-        <router-link to="/profile/upgrade">套餐升级 </router-link> 
-        <!-- <i class="el-icon-s-custom"/> -->
+        <router-link to="/profile/upgrade" class="set_meal">套餐升级 </router-link> 
         <el-dropdown class="avatar-container right-menu-item" trigger="click">
           <div class="avatar-wrapper">
+            <i class="el-icon-user-solid"/>
             {{(userInfo && userInfo.userName) || '用户名称' }}
             <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
             <i class="el-icon-caret-bottom"/>
@@ -19,15 +19,22 @@
               </el-dropdown-item>
             </router-link>
             <el-dropdown-item>
-              <span @click="showShopsDialog = true"> 切换店铺 </span>            
+              <span @click="showShopsDialog = true"> 
+                <i class="el-icon-s-operation"></i>
+                切换店铺 
+              </span>            
             </el-dropdown-item>
             <el-dropdown-item divided>
               <router-link to="/profile/accountInfo">
+                <i class="el-icon-s-order"></i>
                 账号信息
               </router-link>
             </el-dropdown-item>
             <el-dropdown-item divided>
-              <span style="display:block;" @click="logout"> 退出登录 </span>
+              <span style="display:block;" @click="logout"> 
+                <i class="el-icon-setting"></i>
+                退出登录
+              </span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -111,6 +118,12 @@ export default {
     margin-right: 20px;
     &:focus{
      outline: none;
+    }
+    .set_meal{
+      margin-right: 20px;
+      font-size: 14px;
+      color: #44434B;
+      cursor: pointer;
     }
     .right-menu-item {
       display: inline-block;
