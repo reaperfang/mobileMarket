@@ -233,6 +233,7 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "issueCouponDialog";
             this.currentData.allCoupons = [].concat(this.allCoupons);
+            this.currentData.memberSn = this.clientInfoById.memberSn;
         },
         showAddBlack() {
             this.dialogVisible = true;

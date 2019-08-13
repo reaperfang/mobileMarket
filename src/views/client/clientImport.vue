@@ -100,10 +100,7 @@ export default {
             //查询导入记录所需要的参数：
             importTime: '',
             channelId2:"",
-            channelOptions:[
-                {id: "1", channerlName:"渠道一"},
-                {id: "2", channerlName:"渠道二"},
-            ],
+            channelOptions:[],
             params: {}
         }
     },
@@ -129,6 +126,17 @@ export default {
                 }
                 this.params = Object.assign({}, params);
             }
+        },
+        //获取渠道下拉
+        getChannels() {
+            this._apis.client.getChannels({}).then((response) => {
+                this.channelOptions = [].concat(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -154,6 +162,9 @@ export default {
                 return this.importTime[1]
             }
         }
+    },
+    mounted() {
+        this.getChannels();
     }
 }
 </script>

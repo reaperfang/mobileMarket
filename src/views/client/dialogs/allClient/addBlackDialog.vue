@@ -43,6 +43,16 @@ export default {
     methods: {
         submit() {
             
+        },
+        getBlackChecks() {
+            this._apis.client.blackChecks({}).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -56,7 +66,7 @@ export default {
         }
     },
     mounted() {
-        
+        this.getBlackChecks();
     },
     props: {
         data: {

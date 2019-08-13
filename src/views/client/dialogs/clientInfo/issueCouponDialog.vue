@@ -1,17 +1,17 @@
 <template>
   <DialogBase :visible.sync="visible" @submit="submit" title="发放优惠券" :hasCancel="hasCancel">
     <div class="c_container">
-      <p class="marB20">客户ID: 0001</p>
+      <p class="marB20">客户ID: {{data.memberSn}}</p>
       <div class="clearfix">
         <div class="fl l_block">
           选择优惠券：
         </div>
         <div class="fl r_block">
           <div class="sel_cont" v-for="(i,index) in selectList" :key="index">
-            <el-select v-model="i.couponId" style="margin-bottom: 10px">
+            <el-select v-model="i.appCouponId" style="margin-bottom: 10px">
               <el-option v-for="item in data.allCoupons" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
-            <el-input-number v-model="i.num" :min="1"></el-input-number>
+            <el-input-number v-model="i.couponNum" :min="1"></el-input-number>
             <span class="marL20 addMainColor pointer" @click="handleDelete(index)">删除</span>
           </div>
           <span class="add pointer" @click="handleAdd">添加</span>
@@ -31,16 +31,23 @@ export default {
       hasCancel: true,
       coupon:"",
       selectList: [
-        {num: 1,couponId:""}
+        {couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1"}
       ]
     };
   },
   methods: {
     submit() {
-      
+      this._apis.client.distributeCoupon(this.selectList).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
     handleAdd() {
-      this.selectList.push({num: 1, couponId:""});
+      this.selectList.push({couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1"});
     },
     handleDelete(index) {
       this.selectList.splice(index, 1);

@@ -1,18 +1,38 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="登录获取积分规则" :hasCancel="hasCancel">
         <div class="c_container">
-            <div class="clearfix"><span class="fl marR20">登录获取积分规则</span><el-switch class="fl" v-model="isOpen" active-color="#66CCAC"></el-switch></div>
+            <div class="clearfix"><span class="fl marR20">登录获取积分规则</span><el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch></div>
             <div>每天首次进入小程序或微信公众号获取积分</div>
             <div>
                 <span>是否区分人群发放：</span>
-                <el-radio v-model="distinguishRadio" label="0">不区分</el-radio>
-                <el-radio v-model="distinguishRadio" label="1">区分</el-radio>
+                <el-radio v-model="distinguish" label="0">不区分</el-radio>
+                <el-radio v-model="distinguish" label="1">区分</el-radio>
             </div>
-            <div>
+            <div v-if="distinguish == '0'">
                 <div class="input_wrap">
-                    <el-input placeholder="请输入整数"></el-input>
+                    <el-input placeholder="请输入整数" v-model="allMember"></el-input>
                 </div>
                 <span>积分</span>
+            </div> 
+            <div v-if="distinguish == '1'">
+                <div class="marB10">
+                    <span>客户</span>
+                    <div class="input_wrap" style="margin-left:14px">
+                        <el-input placeholder="请输入整数" v-model="noMember"></el-input>
+                    </div>
+                </div>
+                <div class="marB10">
+                    <span>新会员</span>
+                    <div class="input_wrap">
+                        <el-input placeholder="请输入整数" v-model="newMember"></el-input>
+                    </div>
+                </div>
+                <div class="marB10">
+                    <span>老会员</span>
+                    <div class="input_wrap">
+                        <el-input placeholder="请输入整数" v-model="oldMember"></el-input>
+                    </div>
+                </div>
             </div>
         </div>
     </DialogBase>
@@ -25,13 +45,45 @@ export default {
     data() {
         return {
             hasCancel: true,
-            isOpen: false,
-            distinguishRadio: '0'
+            enable: false,
+            distinguish: '',
+            allMember:"",
+            noMember:"",
+            newMember:"",
+            oldMember:""
         }
     },
     methods: {
         submit() {
-            
+            this.distinguish = this.distinguish == '0'? false : true;
+            let params = {
+                id: this.data.id,
+                cid: "2",
+                enable: this.enable,
+                sceneRule: {
+                    distinguish: this.distinguish,
+                    noDistinguish: {
+                        allMember: this.allMember
+                    },
+                    yesDistinguish: {
+                        noMember: this.noMember,
+                        newMember: this.newMember,
+                        oldMember: this.oldMember
+                    }
+                }
+            }
+            this._apis.client.editCreditRegular(params).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: "保存成功",
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {

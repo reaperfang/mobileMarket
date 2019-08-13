@@ -294,13 +294,58 @@ export function distributeCoupon(data) {
         url: '/api/v1/b/app-coupon-member-get/activity/distribute',
         method: 'post',
         baseURL: process.env.DATA_API,
-        params:data
+        data
     })
 }
 //导入客户记录列表
 export function importMemberList(data) {
     return request({
         target:'MEMBER-IMPORTRECORD-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//获取积分规则
+export function getCreditList(data) {
+    return request({
+        target:'GAIN-SCORE-SCENE-INFO-FIND-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//修改积分规则
+export function editCreditRegular(data) {
+    return request({
+        target:'GAIN-SCORE-SCENE-INFO-EDIT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//导入用户页-添加标签
+export function addImportLabel(data) {
+    return request({
+        target:'MEMBERINFO-MARKLABELBATCHBYIMPORT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//导入用户页-变更身份
+export function modifyImportIdentity(data) {
+    return request({
+        target:'MEMBERINFO-IDENTITYCHANGEBYIMPORT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//黑名单禁用复选框
+export function blackChecks(data) {
+    return request({
+        target:'MEMBE-RBLACKLISTLIST-PROCESSOR',
         method: 'post',
         apiType: 'member',
         data
