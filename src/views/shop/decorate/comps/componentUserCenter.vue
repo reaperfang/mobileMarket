@@ -1,19 +1,18 @@
 <template>
-      <!-- 我的->用户中心wyy 2019/7/23 -->
-  <div class="container">
-    <!-- <NavItem></NavItem> -->
+  <!-- 我的->用户中心wyy 2019/7/23 -->
+  <div class="container" v-if="data">
     <div class="container-view">
-      <!-- <div class="shopping_titles">用户中心</div> -->
       <div class="userCenter">
         <!-- 第一部分 用户个人信息 -->
         <div class="userCenter_first">
-          <div class="userCenter_firstTop">
-            <div class="userCenter_firstTitle">
+          <div class="userCenter_firstTop" :style="data.backgroundGradients===1?bg:bg1">
+            <!-- 动态变换部分：样式一，左 -->
+            <div class="userCenter_firstTitle" v-if="data.avatarPosition===1">
               <div class="userCenter_firstTitlel fl">
                 <p class="userCenter_firstTitlel1 fl">
                   <img src="../../../../assets/images/shop/userCenter/coupon.png" alt />
                 </p>
-                <p class="userCenter_firstTitlel2 fl">用户微信名称</p>
+                <p class="userCenter_firstTitlel2 fl" :style="{color:data.nickColor}">用户微信名称</p>
                 <p class="userCenter_firstTitlel3">
                   <img src="../../../../assets/images/shop/userCenter/userCenter3.png" alt />
                   <span>等级名称</span>
@@ -29,19 +28,88 @@
                 </p>
               </div>
             </div>
-            <div class="userCenter_car">
+            <!-- 动态变换部分：样式一，居中 -->
+            <div class="userCenter_firstTitle1" v-if="data.avatarPosition===2">
+              <div class="userCenter_firstTitle1l">
+                <p class="userCenter_firstTitler2">
+                  <img src="../../../../assets/images/shop/userCenter/userCenter5.png" alt />
+                  <span>签到</span>
+                </p>
+              </div>
+              <div class="userCenter_firstTitle1c ellipsis">
+                <p class="userCenter_firstTitle1c_img">
+                  <img src="../../../../assets/images/shop/userCenter/coupon.png" alt />
+                </p>
+                <p class="userCenter_firstTitle1c_img1">
+                  <img src="../../../../assets/images/shop/userCenter/userCenter3.png" alt />
+                  <span class="ellipsis">等级名称</span>
+                </p>
+                <p class="userCenter_firstTitle1c_title" :style="{color:data.nickColor}">用户微信名称</p>
+              </div>
+              <div class="userCenter_firstTitler">
+                <p class="userCenter_firstTitler_img">
+                  <img src="../../../../assets/images/shop/userCenter/userCenter4.png" alt />
+                </p>
+              </div>
+            </div>
+            <!-- 动态变换部分：样式一，右 -->
+            <div class="userCenter_firstTitle2" v-if="data.avatarPosition===3">
+              <div class="userCenter_firstTitle2l ellipsis">
+                <p class="userCenter_firstTitler2">
+                  <img src="../../../../assets/images/shop/userCenter/userCenter5.png" alt />
+                  <span>签到</span>
+                </p>
+                <p
+                  class="userCenter_firstTitle2_title ellipsis"
+                  :style="{color:data.nickColor}"
+                >考虑设计费</p>
+              </div>
+              <div class="userCenter_firstTitle2r">
+                <p class="userCenter_firstTitler_img">
+                  <img src="../../../../assets/images/shop/userCenter/userCenter4.png" alt />
+                </p>
+                <p class="userCenter_firstTitle1c_img">
+                  <img src="../../../../assets/images/shop/userCenter/coupon.png" alt />
+                </p>
+                <p class="userCenter_firstTitle1c_img1">
+                  <img src="../../../../assets/images/shop/userCenter/userCenter3.png" alt />
+                  <span class="ellipsis">等级名称</span>
+                </p>
+              </div>
+            </div>
+            <!-- 动态变换部分：会员样式一 -->
+            <div class="userCenter_car" v-if="data.memberColumeStyle===1">
               <p class="userCenter_car1">
                 <span>3654736473683276492549</span>
                 <span>Lv5</span>
               </p>
               <p class="userCenter_car2">卡名称展示</p>
             </div>
+            <!-- 动态变换部分：会员样式二 -->
+            <div class="userCenter_car_two" v-if="data.memberColumeStyle===2">
+              <p class="userCenter_car_two1">
+                <span>3654736473683276492549</span>
+              </p>
+              <p class="userCenter_car_two2 ellipsis">卡名称展示</p>
+              <p class="userCenter_car_two3">
+                <span>Lv5</span>
+              </p>
+            </div>
+            <!--  动态变换部分：会员样式三-->
+            <div class="userCenter_car_three" v-if="data.memberColumeStyle===3">
+              <p class="userCenter_car_three1">
+                <span>3654736473683276492549</span>
+                <span>Lv5</span>
+              </p>
+              <p class="userCenter_car_three2 ellipsis">卡名称展示</p>
+            </div>
           </div>
+
           <div class="userCenter_firstBottom">
             <div class="userCenter_firstBottoml">
               <p>
-                <span>1285</span>
-                <span>已冻结</span>
+                <span class="userCenter_firstBottoml_first">1285</span>
+                <span class="userCenter_firstBottoml_two">已冻结</span>
               </p>
               <div class="userCenter_firstBottoml1">积分</div>
               <div class="userCenter_firstBottoml2"></div>
@@ -203,13 +271,30 @@
 export default {
   name: 'componentUserCenter',
   components: {},
+  props: ['data'],
   data () {
     return {
-      
+      bg: {
+        background:
+          "linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255)),url('" +
+          this.data.backgroundImage +
+          "') no-repeat center"
+      },
+      bg1: {
+        background: "url('" + this.data.backgroundImage + "') no-repeat"
+      }
     }
   },
   created() {
 
+  },
+  watch: {
+     data:{
+      handler(newValue) {
+        this.ruleForm = newValue;
+      },
+      deep: true
+    },
   },
   computed: {
     
@@ -221,14 +306,12 @@ export default {
 
 <style lang="scss" scoped>
 .userCenter {
-  background:#fff;
   & > .userCenter_first {
     height: 301px;
     background: #fff;
     border-bottom: 6px solid #f7f7f7;
     & > .userCenter_firstTop {
       height: 222px;
-      background: url("../../../../assets/images/shop/userCenter/userCenter1.png") no-repeat;
       background-size: 100% 100%;
       position: relative;
       & > .userCenter_firstTitle {
@@ -246,27 +329,25 @@ export default {
             }
           }
           & > .userCenter_firstTitlel2 {
-            padding-left: 18px;
+            padding-left: 19px;
             line-height: 60px;
             font-size: 18px;
             font-weight: 600;
-            color: #fff;
           }
           & > .userCenter_firstTitlel3 {
             position: absolute;
             bottom: -4px;
             left: 10px;
-
             & > img {
               width: 74px;
               height: 23px;
             }
             & > span {
-               position: absolute;
+              position: absolute;
               bottom: 2px;
-              left: 8px;
+              left: 7px;
               color: #fff;
-              font-size:9px;
+              font-size: 9px;
               transform: scale(0.75);
               width: 74px;
               height: 23px;
@@ -285,7 +366,7 @@ export default {
             width: 70px;
             height: 27px;
             background: rgba(239, 239, 239, 0.5);
-            border-radius: 14px 0px 0px 14px;
+            border-radius: 13px 0px 0px 13px;
             position: absolute;
             right: 0px;
             bottom: 0px;
@@ -305,6 +386,162 @@ export default {
           }
         }
       }
+      //   样式一，居中
+      & > .userCenter_firstTitle1 {
+        padding: 18px 0px 0px 0px;
+        display: flex;
+        & > div {
+          flex: 1;
+        }
+        & > .userCenter_firstTitle1l {
+          & > .userCenter_firstTitler2 {
+            width: 70px;
+            height: 27px;
+            background: rgba(239, 239, 239, 0.5);
+            border-radius: 0px 13px 13px 0px;
+            display: flex;
+            align-items: center;
+            & > img {
+              width: 18px;
+              height: 17px;
+              margin-left: 11px;
+            }
+            & > span {
+              font-size: 13px;
+              color: #fff;
+              display: inline-block;
+              margin-left: 5px;
+            }
+          }
+        }
+        & > .userCenter_firstTitle1c {
+          text-align: center;
+          & > .userCenter_firstTitle1c_img {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+            & > img {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+            }
+          }
+          & > .userCenter_firstTitle1c_img1 {
+            position: relative;
+            margin-top: -14px;
+            & > img {
+              width: 74px;
+              height: 23px;
+            }
+            & > span {
+              position: absolute;
+              bottom: 2px;
+              left: 35px;
+              color: #fff;
+              font-size: 9px;
+              transform: scale(0.75);
+              width: 74px;
+              height: 23px;
+              text-align: center;
+            }
+          }
+          & > .userCenter_firstTitle1c_title {
+            width: 100%;
+            font-size: 18px;
+            font-weight: 500;
+          }
+        }
+        & > .userCenter_firstTitler {
+          text-align: right;
+          padding-right: 10px;
+          & > .userCenter_firstTitler_img {
+            & > img {
+              width: 21px;
+              height: 20px;
+            }
+          }
+        }
+      }
+      // 样式一，右侧
+      .userCenter_firstTitle2 {
+        display: flex;
+        padding: 15px 15px 0px 0px;
+        & > div {
+          flex: 1;
+        }
+        & > .userCenter_firstTitle2l {
+          & > .userCenter_firstTitler2 {
+            width: 70px;
+            height: 27px;
+            background: rgba(239, 239, 239, 0.5);
+            border-radius: 0px 13px 13px 0px;
+            display: flex;
+            align-items: center;
+            & > img {
+              width: 18px;
+              height: 17px;
+              margin-left: 11px;
+            }
+            & > span {
+              font-size: 13px;
+              color: #fff;
+              display: inline-block;
+              margin-left: 5px;
+            }
+          }
+          & > .userCenter_firstTitle2_title {
+            padding-top: 23px;
+            padding-left: 12px;
+            font-size: 18px;
+            font-weight: 500;
+          }
+        }
+        & > .userCenter_firstTitle2r {
+          text-align: right;
+          position: relative;
+          & > .userCenter_firstTitler_img {
+            padding-right: 6px;
+            & > img {
+              width: 21px;
+              height: 20px;
+            }
+          }
+          & > .userCenter_firstTitle1c_img {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            right: 0px;
+            margin-top: 12px;
+            & > img {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+            }
+          }
+          & > .userCenter_firstTitle1c_img1 {
+            position: relative;
+            position: absolute;
+            right: -2px;
+            bottom: -30px;
+            & > img {
+              width: 74px;
+              height: 23px;
+            }
+            & > span {
+              position: absolute;
+              bottom: 2px;
+              right: -7px;
+              color: #fff;
+              font-size: 9px;
+              transform: scale(0.75);
+              width: 74px;
+              height: 23px;
+              text-align: center;
+            }
+          }
+        }
+      }
+      // 样式一
       & > .userCenter_car {
         background: url("../../../../assets/images/shop/userCenter/userCenter2.png") no-repeat;
         height: 93px;
@@ -314,7 +551,7 @@ export default {
         bottom: 1px;
         width: 95%;
         & > .userCenter_car1 {
-          padding: 12px 16px 0px 16px;
+          padding: 11px 16px 0px 16px;
           & > span:first-child {
             display: inline-block;
             color: rgba(255, 255, 255, 1);
@@ -356,30 +593,151 @@ export default {
           text-align: center;
         }
       }
+      // 样式二
+      & > .userCenter_car_two {
+        background: url("../../../../assets/images/shop/userCenter/userCenter19.png") no-repeat;
+        background-size: 100% 100%;
+        width: 137px;
+        height: 120px;
+        position: absolute;
+        right: 0px;
+        bottom: -16px;
+        & > .userCenter_car_two1 {
+          transform: rotate(12deg);
+          padding-top: 7px;
+          & > span {
+            display: inline-block;
+            transform: scale(0.58);
+            font-size: 7px;
+            background: linear-gradient(
+              90deg,
+              rgba(255, 210, 101, 1) 0%,
+              rgba(255, 238, 206, 1) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-top: 6px;
+            font-weight: 600;
+          }
+        }
+        & > .userCenter_car_two2 {
+          font-size: 16px;
+          font-weight: 600;
+          background: linear-gradient(
+            90deg,
+            rgba(255, 210, 101, 1) 0%,
+            rgba(255, 238, 206, 1) 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          transform: rotate(12deg);
+          text-align: center;
+          transform: rotate(13deg);
+          text-align: center;
+          padding-top: 15px;
+          padding-left: 5px;
+        }
+        & > .userCenter_car_two3 {
+          transform: rotate(12deg);
+          padding-top: 13px;
+          padding-left: 10px;
+
+          & > span {
+            display: inline-block;
+            font-size: 10px;
+            transform: scale(0.83);
+            background: linear-gradient(
+              90deg,
+              rgba(255, 210, 101, 1) 0%,
+              rgba(255, 238, 206, 1) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+          }
+        }
+      }
+      // 样式三
+      & > .userCenter_car_three {
+        background: url("../../../../assets/images/shop/userCenter/userCenter20.png") no-repeat;
+        height: 62px;
+        background-size: 100% 100%;
+        margin: 0px 10px;
+        position: absolute;
+        bottom: 1px;
+        width: 95%;
+        & > .userCenter_car_three1 {
+          padding: 4px 9px 0px 9px;
+          & > span:first-child {
+            display: inline-block;
+            color: rgba(255, 255, 255, 1);
+            background: linear-gradient(
+              0deg,
+              rgba(255, 210, 101, 1) 0%,
+              rgba(255, 238, 206, 1) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 10px;
+            transform: scale(0.83);
+            -webkit-transform-origin-x: 0;
+          }
+          & > span:last-child {
+            float: right;
+            font-size: 12px;
+            font-weight: 600;
+            font-style: italic;
+            color: rgba(255, 255, 255, 1);
+            background: linear-gradient(
+              36deg,
+              rgba(255, 210, 101, 1) 0%,
+              rgba(255, 238, 206, 1) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+        }
+        & > .userCenter_car_three2 {
+          font-size: 19px;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 1);
+          padding-top: 5px;
+          background: linear-gradient(
+            0deg,
+            rgba(255, 210, 101, 1) 0%,
+            rgba(255, 238, 206, 1) 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-align: center;
+        }
+      }
     }
     & > .userCenter_firstBottom {
       display: flex;
-      height: 74px;
+      height: 173px;
       text-align: center;
+      justify-content: center;
+      align-items: center;
       & > div {
         flex: 1;
       }
       & > .userCenter_firstBottoml {
         & > p {
-          padding-top: 23px;
           position: relative;
-          & > span:first-child {
+          & > .userCenter_firstBottoml_first {
             font-size: 18px;
             font-weight: 600;
             color: rgba(51, 51, 51, 1);
             padding-right: 10px;
           }
-          & > span:last-child {
-            width: 37px;
-            height: 16px;
+          & > .userCenter_firstBottoml_two {
+            width: 48px;
+            height: 20px;
             background: #999999;
             border-radius: 2px;
             font-size: 11px;
+            transform: scale(0.89);
             color: #fff;
             display: inline-block;
             position: absolute;
@@ -392,15 +750,14 @@ export default {
         }
         & > .userCenter_firstBottoml2 {
           width: 1px;
-          height: 27px;
+          height: 26px;
           background: rgba(229, 229, 229, 1);
           float: right;
-          margin-top: -38px;
+          margin-top: -28px;
         }
       }
       & > .userCenter_firstBottomr {
         & > p {
-          padding-top: 23px;
           font-size: 18px;
           font-weight: 600;
           color: #333333;
@@ -436,7 +793,7 @@ export default {
             color: #7c7c7c;
             position: absolute;
             bottom: 0px;
-            left: 10%;
+            left: 20%;
           }
           & > span {
             width: 14px;
@@ -465,7 +822,7 @@ export default {
         }
         & > li:nth-child(3) {
           & > img {
-            width: 14px;
+            width: 18px;
             height: 22px;
           }
         }
@@ -479,7 +836,7 @@ export default {
             color: #7c7c7c;
             position: absolute;
             bottom: 0px;
-            left: 7%;
+            left: 13%;
           }
         }
         & > li:nth-child(5) {
@@ -493,7 +850,7 @@ export default {
             color: #7c7c7c;
             position: absolute;
             bottom: 0px;
-            left: 16%;
+            left: 32%;
           }
         }
       }
