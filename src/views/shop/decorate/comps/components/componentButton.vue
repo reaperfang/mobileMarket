@@ -32,91 +32,96 @@ export default {
         this.buttonStyle='buttonStyle' + this.decorationStyle + ' iconfont icon-gouwuche2';
       }
     }
+  },
+  watch:{
+    buttonStyle(){
+      this.decorate();
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
-// .componentButton{
-//   display:inline-block;
-// }
-// .componentButton.iconfont{
-//   width:26px !important;
-//   height:26px !important;
-//   @extend .flexCenterMiddle;
-//   font-size:0 !important;
-//   padding:0 !important;
-// }
-// .componentButton.iconfont.buttonStyle1{
-//   background:#FF4444;
-//   @include borderRadius(50%);
-//   color:#fff;
-//   &:before{
-//     font-size:17px;
-//   }
-// }
-// .componentButton.iconfont.buttonStyle2{  
-//   border:1px solid #FF4444;
-//   background:none;
-//   @include borderRadius(50%);
-//   color:#FF4444;
-//   font-weight:bold;
-//   &:before{
-//     font-size:17px;
-//   }
-// }
-// .componentButton.buttonStyle3{
-//   padding:0 7.5px;
-//   min-width:50px;
-//   color:#fff;
-//   font-size:12px;
-//   @include borderRadius(50px);
-//   @extend .flexCenterMiddle;
-//   background:#FF4444;
-//   height:24px;
-// }
-// .componentButton.buttonStyle4{
-//   padding:0 7.5px;
-//   border:1px solid #FF4444;
-//   @include borderRadius(4px);
-//   font-size:12px;
-//   @extend .flexCenterMiddle;
-//   color:#FF4444;
-//   min-width:40px;
-//   height:24px;
-// }
-// .componentButton.iconfont.buttonStyle5{
-//   background:#FF4444;
-//   @include borderRadius(50%);
-//   color:#fff;
-//   font-weight:bold;
-//   &:before{
-//     font-size:17px;
-//   }
-// }
-// .componentButton.iconfont.buttonStyle6{
-//   color:#FF4444;
-//   &:before{
-//     font-size:26px;
-//   }
-// }
-// .componentButton.buttonStyle7{
-//   padding:0 7.5px;
-//   min-width:50px;
-//   color:#fff;
-//   font-size:12px;
-//   @extend .flexCenterMiddle;
-//   background:#FF4444;
-//   @include borderRadius(8px);
-//   height:24px;
-// }
-// .componentButton.buttonStyle8{
-//   padding:0 7.5px;
-//   border:1px solid #FF4444;
-//   @include borderRadius(25px);
-//   font-size:12px;
-//   @extend .flexCenterMiddle;
-//   color:#FF4444;
-//   min-width:40px;
-//   height:24px;
-// }
+.componentButton{
+  display:inline-block;
+}
+.componentButton.iconfont{
+  width:26px !important;
+  height:26px !important;
+  @extend .flexCenterMiddle;
+  font-size:0 !important;
+  padding:0 !important;
+}
+.componentButton.iconfont.buttonStyle1{
+  background:#FF4444;
+  @include borderRadius(50%);
+  color:#fff;
+  &:before{
+    font-size:17px;
+  }
+}
+.componentButton.iconfont.buttonStyle2{  
+  border:1px solid #FF4444;
+  background:none;
+  @include borderRadius(50%);
+  color:#FF4444;
+  font-weight:bold;
+  &:before{
+    font-size:17px;
+  }
+}
+.componentButton.buttonStyle3{
+  padding:0 7.5px;
+  min-width:50px;
+  color:#fff;
+  font-size:12px;
+  @include borderRadius(50px);
+  @extend .flexCenterMiddle;
+  background:#FF4444;
+  height:24px;
+}
+.componentButton.buttonStyle4{
+  padding:0 7.5px;
+  border:1px solid #FF4444;
+  @include borderRadius(4px);
+  font-size:12px;
+  @extend .flexCenterMiddle;
+  color:#FF4444;
+  min-width:40px;
+  height:24px;
+}
+.componentButton.iconfont.buttonStyle5{
+  background:#FF4444;
+  @include borderRadius(50%);
+  color:#fff;
+  font-weight:bold;
+  &:before{
+    font-size:17px;
+  }
+}
+.componentButton.iconfont.buttonStyle6{
+  color:#FF4444;
+  &:before{
+    font-size:26px;
+  }
+}
+.componentButton.buttonStyle7{
+  padding:0 7.5px;
+  min-width:50px;
+  color:#fff;
+  font-size:12px;
+  @extend .flexCenterMiddle;
+  background:#FF4444;
+  @include borderRadius(8px);
+  height:24px;
+}
+.componentButton.buttonStyle8{
+  padding:0 7.5px;
+  border:1px solid #FF4444;
+  @include borderRadius(25px);
+  font-size:12px;
+  @extend .flexCenterMiddle;
+  color:#FF4444;
+  min-width:40px;
+  height:24px;
+}
 </style>

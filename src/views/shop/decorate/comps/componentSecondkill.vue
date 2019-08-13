@@ -8,10 +8,9 @@
                 </div>
                 <div class="countdown_Bar">
                     <h1 class="title">秒杀</h1>
-                    <div class="countdown">
-                      <!-- 方源 -->
-                        <!-- <img src="@/components/images/activityCountdownBj.png" alt="" class="bj"> -->
-                        <div class="content" v-if="showContents.indexOf('5')!=-1">
+                    <div class="countdown" v-if="showContents.indexOf('5')!=-1">
+                        <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
+                        <div class="content">
                             <p class="caption">距开始仅剩</p>
                             <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p>
                         </div>
@@ -21,8 +20,8 @@
                     <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">减{{item.minusPrice}}元</font>{{item.title}}</p>
                     <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.desc}}</p>
                     <div class="limit_line">
-                        <p class="limit" v-if="showContents.indexOf('6')!=-1">限 1件/人</p>
-                        <p class="remainder" v-if="showContents.indexOf('7')!=-1">仅剩{{item.remainder}}件</p>
+                        <p class="limit" v-if="showContents.indexOf('7')!=-1">限 1件/人</p>
+                        <p class="remainder" v-if="showContents.indexOf('6')!=-1">仅剩{{item.remainder}}件</p>
                     </div>
                     <div class="price_line">
                         <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.price}}</font></p>
@@ -84,13 +83,15 @@ export default {
     },
     methods:{
         decoration(){
+            console.log(this.currentComponentData);
             this.goods = this.currentComponentData.data.goods;
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;
             this.goodsMargin = this.currentComponentData.data.goodsMargin;
-            var bodyWidth = document.body.clientWidth;
+            var bodyWidth = 375;
             if(this.listStyle==1){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
+                this.goodWidth = "100%";
             }
             else if(this.listStyle==2){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
@@ -99,6 +100,10 @@ export default {
             else if(this.listStyle==3){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
                 this.goodWidth = {width:(bodyWidth - this.pageMargin*2 - this.goodsMargin*2)/3+'px'}
+            }
+            else if(this.listStyle==4){
+                this.goodMargin = {marginTop:this.goodsMargin+'px'};
+                this.goodWidth = "100%";
             }
             else if(this.listStyle==5){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
