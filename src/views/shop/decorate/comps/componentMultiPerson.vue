@@ -101,6 +101,7 @@ export default {
             var bodyWidth = 370;
             if(this.listStyle==1){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
+                this.goodWidth = "100%";
             }
             else if(this.listStyle==2){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
@@ -109,6 +110,10 @@ export default {
             else if(this.listStyle==3){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
                 this.goodWidth = {width:(bodyWidth - this.pageMargin*2 - this.goodsMargin*2)/3+'px'}
+            }
+            else if(this.listStyle==4){
+                this.goodMargin = {marginTop:this.goodsMargin+'px'};
+                this.goodWidth = "100%";
             }
             else if(this.listStyle==5){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
@@ -336,6 +341,15 @@ export default {
         justify-content:space-between;
         flex-wrap:wrap;
         li{
+            &:nth-of-type(1){
+                margin-top:0 !important;
+            }
+            &:nth-of-type(2){
+                margin-top:0 !important;
+            }
+            &:nth-of-type(3){
+                margin-top:0 !important;
+            }
             .countdown_Bar{
                 display:none;
             }
@@ -414,6 +428,7 @@ export default {
                     display:none;
                 }
                 .content{
+                    @extend .flexCenterMiddle;
                     .caption{
                         float:left;
                         color:#fff;
@@ -423,18 +438,19 @@ export default {
                     }
                     .time{
                         float:left;
-                        height:16px;
+                        height:12px;
                         color:#fff;
-                        margin-top:5px;
+                        line-height:12px;
+                        font-size:9px;
+                        margin-left:2px;
                         font{
-                            width:14px;
-                            height:14px;
+                            width:12px;
+                            height:12px;
                             color:#FC3D42;
                             font-size:9px;
-                            line-height:14px;
+                            line-height:12px;
                             background:#fff;
                             position:relative;
-                            top:-2.5px;
                             margin:0 2px;
                             text-align:center;
                         }
@@ -973,7 +989,6 @@ export default {
         }
         .img_box{
             position:relative;
-            @include borderRadius(10px);
             overflow:hidden;
             .label{
                 height:19px;
