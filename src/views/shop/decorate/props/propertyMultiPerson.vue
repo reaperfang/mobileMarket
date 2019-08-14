@@ -156,7 +156,7 @@ export default {
       ruleForm: {
         addType: 2,
         goods: [],
-        showNumber: '',
+        showNumber: 30,
         showAllBtns: true,
         sortRule: 1,
         listStyle: 1,
