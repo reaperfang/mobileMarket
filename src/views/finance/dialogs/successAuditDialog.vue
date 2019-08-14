@@ -1,22 +1,22 @@
 /* 成功 */
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="提现详情" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="提现详情" :showFooter="false">
         <div class="c_container clearfix">
             <div class="c_top">
-                <p>客户ID：13128098</p>
-                <p>提现金额：<span>￥500.00</span></p>
-                <p class="gray">提现编号：43746374685348536</p>
+                <p>客户ID：{{info.memberSn}}</p>
+                <p>提现金额：<span>￥{{info.amount}}</span></p>
+                <p class="gray">提现编号：{{info.cashoutSn}}</p>
                 <div class="c_status">
                     <p>成功</p>
                     <span>已审核通过，提现已到账。</span>
-                    <span>操作人：店员1</span>
-                    <span>操作时间：2019-06-06 12:00:00</span>
+                    <span>操作人：{{info.createUserName}}</span>
+                    <span>操作时间：{{info.createTime}}</span>
                 </div>
             </div>
             <div class="c_steps clearfix">
                 <div class="c_step_l">
                     <span class="c_green"></span>
-                    2019-06-01 10：56：23
+                    {{info.createTime}}
                 </div>
                 <div class="c_step_r">
                     <p>提现到帐</p>
@@ -26,23 +26,23 @@
             <div class="c_steps clearfix">
                 <div class="c_step_l gray">
                     <span class="c_green"></span>
-                    2019-06-01 10：56：23
+                    {{info1.createTime}}
                 </div>
                 <div class="c_step_r">
                     <p>审核通过</p>
                     <p>提现申请已通过商家审核，请等待提现到帐</p>
-                    <p>交易流水号 8236876238</p>
+                    <p>交易流水号 {{info1.tradeDetailSn}}</p>
                 </div>
             </div>
             <div class="c_steps clearfix">
                 <div class="c_step_l gray">
                     <span class="c_green"></span>
-                    2019-06-01 10：56：23
+                    {{info2.createTime}}
                 </div>
                 <div class="c_step_r">
                     <p>提交申请</p>
-                    <p>账户可用余额冻结 ￥500.00</p>
-                    <p>交易流水 8236876238</p>
+                    <p>账户可用余额冻结 ￥{{info2.amount}}</p>
+                    <p>交易流水 {{info2.tradeDetailSn}}</p>
                 </div>
             </div>
         </div> 
@@ -56,26 +56,10 @@ export default {
     props: ['data'],
     data() {
         return {
-            hasCancel: true
+           info:{},
+           info1:{},
+           info2:{}
         }
-    },
-    methods: {
-        submit() {
-            this.$emit('handleSubmit')
-        }
-    },
-    computed: {
-        visible: {
-            get() {
-                return this.dialogVisible
-            },
-            set(val) {
-                this.$emit('update:dialogVisible', val)
-            }
-        }
-    },
-    mounted() {
-        
     },
     props: {
         data: {
@@ -88,7 +72,37 @@ export default {
     },
     components: {
         DialogBase
-    }
+    },
+    computed: {
+        visible: {
+            get() {
+                return this.dialogVisible
+            },
+            set(val) {
+                this.$emit('update:dialogVisible', val)
+            }
+        }
+    },
+    created() {
+        this.getInfo()
+    },
+    methods: {
+        submit() {
+            this.$emit('handleSubmit')
+        },
+        getInfo(){
+            this._apis.finance.getInfoWd({cashoutDetailId:this.data.id}).then((response)=>{
+               this.info = response[0]
+               this.info1 = response[1]
+               this.info2 = response[2]
+            }).catch((error)=>{
+                this.$notify.error({
+                title: '错误',
+                message: error
+                });
+            })
+        },
+    },
 }
 </script>
 <style lang="scss" scoped>

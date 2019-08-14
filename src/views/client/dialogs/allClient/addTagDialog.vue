@@ -18,12 +18,49 @@ export default {
     data() {
         return {
             hasCancel: true,
+            tagList: [],
             checkedItems:[]
         }
     },
     methods: {
         submit() {
-            
+            let memberLabelInfoIds = [];
+            if(this.checkedItems.length > 0) {
+                this.tagList.map((item) => {
+                    this.checkedItems.map((v) => {
+                        if(v == item.tagName) {
+                            memberLabelInfoIds.push(item.id);
+                        }
+                    })
+                });
+            }
+            memberLabelInfoIds = memberLabelInfoIds.join(',');
+            let params = {
+                memberInfoId:this.data.id, 
+                memberLabelInfoIds: memberLabelInfoIds
+            }
+            this._apis.client.markLabel(params).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: '打标签成功',
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+        },
+        getLabels() {
+            this._apis.client.getLabels({cid:2,tagType:0}).then((response) => {
+                this.tagList = [].concat(response); 
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -37,14 +74,14 @@ export default {
         },
         tagNames() {
             let arr = [];
-            clientApi.tagData.map((item) => {
+            this.tagList.map((item) => {
                 arr.push(item.tagName)
             })
             return arr;
         }
     },
     mounted() {
-        
+        this.getLabels();
     },
     props: {
         data: {

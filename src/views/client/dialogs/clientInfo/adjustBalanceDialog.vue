@@ -1,19 +1,19 @@
 <template>
   <DialogBase :visible.sync="visible" @submit="submit" title="手动调整余额" :hasCancel="hasCancel">
     <div class="c_container">
-      <p class="marB20">客户ID: 0001</p>
-      <p class="marB20">当前余额: 30</p>
+      <p class="marB20">客户ID: {{ data.memberSn }}</p>
+      <p class="marB20">当前余额: {{ data.balance }}</p>
       <div class="marB20">
-          <span>增加积分：</span>
+          <span>增加余额：</span>
           <div class="input_wrap">
-              <el-input placeholder="请输入"></el-input>
+              <el-input placeholder="请输入增加余额" v-model="adjustmentBalance"></el-input>
           </div>
       </div>
-      <p class="marB20">调整后余额: 30</p>
-      <div class="marB20">
-          <span>变更原因：</span>
-          <div class="input_wrap">
-              <el-input placeholder="请输入"></el-input>
+      <p class="marB20">调整后余额: {{adjustmentAfterBalance}}</p>
+      <div class="marB20 clearfix">
+          <span class="fl">变更原因：</span>
+          <div class="input_wrap2 fl">
+              <el-input placeholder="请输入变更原因" v-model="remark" type="textarea" :row="3"></el-input>
           </div>
       </div>
     </div>
@@ -27,11 +27,47 @@ export default {
   name: "adjustBalanceDialog",
   data() {
     return {
-      hasCancel: true
+      hasCancel: true,
+      adjustmentBalance: null,
+      remark: ""
     };
   },
   methods: {
-    submit() {}
+    submit() {
+      if(this.adjustmentBalance == "") {
+        this.$notify({
+          title: '警告',
+          message: '请输入增加余额',
+          type: 'warning'
+        });
+      }else if(this.remark == "") {
+        this.$notify({
+          title: '警告',
+          message: '请输入变更原因',
+          type: 'warning'
+        });
+      }else{
+        let params = {
+          id: this.data.id,
+          currentBalance: this.data.balance,
+          adjustmentBalance: this.adjustmentBalance,
+          adjustmentAfterBalance: this.adjustmentAfterBalance,
+          remark: this.remark
+        }
+        this._apis.client.manualChangeBalance(params).then((response) => {
+          this.$notify({
+            title: '成功',
+            message: "调整余额成功",
+            type: 'success'
+          });
+        }).catch((error) => {
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+        })
+      }
+    }
   },
   computed: {
     visible: {
@@ -41,7 +77,12 @@ export default {
       set(val) {
         this.$emit("update:dialogVisible", val);
       }
+    },
+    adjustmentAfterBalance() {
+      return Number(this.data.balance) + Number(this.adjustmentBalance);
     }
+  },
+  watch: {
   },
   mounted() {},
   props: {
@@ -61,6 +102,10 @@ export default {
     text-align: left;
   .input_wrap{
       width: 188px;
+      display: inline-block;
+  }
+  .input_wrap2{
+      width: 500px;
       display: inline-block;
   }
 }

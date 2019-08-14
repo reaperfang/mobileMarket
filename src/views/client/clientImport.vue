@@ -57,7 +57,7 @@
                     end-placeholder="结束日期">
                 </el-date-picker>
                 <span class="marL20">渠道：</span>
-                <el-select v-model="channelId" placeholder="选择渠道">
+                <el-select v-model="channelId2" placeholder="选择渠道">
                     <el-option
                         v-for="item in channelOptions"
                         :key="item.id"
@@ -68,7 +68,7 @@
                 <el-button type="primary" class="marL20" @click="handleCheck">查 询</el-button>
                 <el-button>重 置</el-button>
             </div>
-            <ciTable style="margin-top: 68px"></ciTable>
+            <ciTable style="margin-top: 68px" :params="params"></ciTable>
         </div>
     </div>
 </template>
@@ -76,7 +76,6 @@
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import clientCont from '@/system/constant/client';
-import clientApi from '@/api/client.js';
 import ciTable from './components/clientImport/ciTable';
 import utils from "@/utils";
 export default {
@@ -100,20 +99,49 @@ export default {
             fileList: [],
             //查询导入记录所需要的参数：
             importTime: '',
-            channelId:''
+            channelId2:"",
+            channelOptions:[],
+            params: {}
         }
     },
     methods: {
         handleCheck() {
-            console.log(this.importTimeStart);
+            if(this.importTime == "") {
+                this.$notify({
+                    title: '警告',
+                    message: '请选择导入时间',
+                    type: 'warning'
+                });
+            }else if(this.channelId2 == "") {
+                this.$notify({
+                    title: '警告',
+                    message: '请选择渠道',
+                    type: 'warning'
+                });
+            }else{
+                let params = {
+                    importTimeStart: this.importTime[0],
+                    importTimeEnd: this.importTime[1],
+                    channelId: this.channelId2
+                }
+                this.params = Object.assign({}, params);
+            }
+        },
+        //获取渠道下拉
+        getChannels() {
+            this._apis.client.getChannels({}).then((response) => {
+                this.channelOptions = [].concat(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
         memberLabels() {
             return clientCont.memberLabels
-        },
-        channelOptions() {
-            return clientApi.channelOptions
         },
         handleRemove(file, fileList) {
             //console.log(file, fileList);
@@ -134,6 +162,9 @@ export default {
                 return this.importTime[1]
             }
         }
+    },
+    mounted() {
+        this.getChannels();
     }
 }
 </script>

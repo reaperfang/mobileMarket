@@ -2,9 +2,9 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline" label-width="70px">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline" label-width="70px">
         <el-form-item>
-          <el-select v-model="form.searchType" placeholder="交易流水号" style="width:124px;">
+          <el-select v-model="ruleForm.searchType" placeholder="交易流水号" style="width:124px;">
             <el-option
               v-for="item in revenueExpenditureTerms"
               :key="item.value"
@@ -14,10 +14,10 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.searchValue" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="ruleForm.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="form.businessType" style="width:210px;">
+          <el-select v-model="ruleForm.businessType" style="width:210px;">
             <el-option
               v-for="item in rebusinessTypes"
               :key="item.value"
@@ -27,7 +27,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="支付方式">
-          <el-select v-model="form.payWay" style="width:210px;">
+          <el-select v-model="ruleForm.payWay" style="width:210px;">
             <el-option
               v-for="item in payTypes"
               :key="item.value"
@@ -37,20 +37,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="交易金额">
-          <el-input v-model="form.amountMin" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input v-model="ruleForm.amountMin" placeholder="请输入" style="width:120px;"></el-input>
           -
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.amountMax" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input v-model="ruleForm.amountMax" placeholder="请输入" style="width:120px;"></el-input>
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="timeValue"
+            v-model="ruleForm.timeValue"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']"
+            :default-time="['00:00:00', '00:00:00']"
             :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
@@ -62,74 +62,99 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
-      <reTable style="margin-top:20px"></reTable>
+      <el-table
+        :data="dataList"
+        class="table"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'tradeTime', order: 'descending'}"
+        >
+        <el-table-column
+          prop="tradeDetailSn"
+          label="交易流水号">
+        </el-table-column>
+        <el-table-column
+          prop="tradeType"
+          label="收支类型">
+        </el-table-column>
+        <el-table-column
+          prop="businessType"
+          label="业务类型">
+        </el-table-column>
+        <el-table-column
+          prop="relationSn"
+          label="关联单据编号">
+        </el-table-column>
+        <el-table-column
+          prop="payWay"
+          label="支付方式">
+        </el-table-column>
+        <el-table-column
+          prop="wechatTradeSn"
+          label="微信流水号">
+        </el-table-column>
+        <el-table-column
+          prop="amount"
+          label="交易金额（元）">
+        </el-table-column>
+        <el-table-column
+          prop="isInvoice"
+          label="开票">
+        </el-table-column>
+        <el-table-column
+          prop="tradeTime"
+          label="交易时间"
+          sortable>
+        </el-table-column>
+      </el-table>
+      <div class="page_styles">
+      <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(ruleForm.pageNum) || 1"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize*1"
+          layout="sizes, prev, pager, next"
+          :total="total*1">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import utils from "@/utils";
-import Blob from '@/excel/Blob'
-import Export2Excel from '@/excel/Export2Excel.js'
-import reTable from './components/reTable'
 import financeCons from '@/system/constant/finance'
+import TableBase from "@/components/TableBase";
 export default {
   name: 'revenueExpenditureDetails',
-  components:{ reTable },
+  extends: TableBase,
   data() {
     return {
       pickerNowDateBefore: {
-          disabledDate: (time) => {
-                return time.getTime() > new Date();
-              }
+        disabledDate: (time) => {
+          return time.getTime() > new Date();
+        }
       },
       inline:true,
-      timeValue:'',
-      form:{
-        searchType:1,
+      ruleForm:{
+        searchType:'tradeDetailSn',
         searchValue:'',
         businessType:1,
         payWay:1,
         amountMin:'',
         amountMax:'',
-        value7:''
+        timeValue:'',
+        pageNum:''
       },
-      dataList:[
-        {
-          tradeDetailSn:'123231',
-          tradeType:'123231',
-          businessType:'123231',
-          relationSn:'123231',
-          payWay:'123231',
-          wechatTradeSn:'123231',
-          amount:'123231',
-          isInvoice:'123231',
-          tradeTime:'2019-02-14'
-        },
-        {
-          tradeDetailSn:'123231',
-          tradeType:'123231',
-          businessType:'123231',
-          relationSn:'123231',
-          payWay:'123231',
-          wechatTradeSn:'123231',
-          amount:'123231',
-          isInvoice:'123231',
-          tradeTime:'2019-02-15'
-        },
-      ]
+      dataList:[ ],
+      total:0
     }
   },
   watch: {
-    timeValue(){
-      let time1 = utils.formatDate(this.timeValue[0], "yyyy-MM-dd hh:mm:ss")
-      let time2 = utils.formatDate(this.timeValue[1], "yyyy-MM-dd hh:mm:ss")
-      console.log('11111111',time1)
-      console.log('22222222',time2)
-    }
+
   },
   computed:{
     revenueExpenditureTerms(){
@@ -142,32 +167,81 @@ export default {
       return financeCons.payTypes;
     }
   },
-  created() {    
-  },
-  destroyed() {
-  },
+  created() { },
   methods: {
-    onSubmit(){},
+    init(){
+      let query = {
+        tradeDetailSn:'',
+        relationSn:'',
+        wechatTradeSn:'',
+        businessType:1,
+        tradeType:'',
+        payWay:1,
+        amountMin:'',
+        amountMax:'',
+        tradeTimeStart:'',
+        tradeTimeEnd:'',
+        startIndex:this.ruleForm.startIndex,
+        pageSize:this.ruleForm.pageSize
+      }
+      for(let key  in query){
+        if(this.ruleForm.searchType == key){
+          query[key] = this.ruleForm.searchValue
+        }
+        for(let item in this.ruleForm){
+          if(item == key){
+            query[key] = this.ruleForm[item]
+          }
+        }
+      }
+      let timeValue = this.ruleForm.timeValue
+      if(timeValue){
+        query.tradeTimeStart = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        query.tradeTimeEnd = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
+      return query;
+    },
+
+    fetch(){
+      let query = this.init();
+      this._apis.finance.getListRe(query).then((response)=>{
+        this.dataList = response.list
+        this.total = response.total || 0
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //搜索
+    onSubmit(){
+      this.fetch()
+    },
     //重置
     resetForm(){
-      
+      this.ruleForm = {
+        searchType:'tradeDetailSn',
+        searchValue:'',
+        businessType:1,
+        payWay:1,
+        amountMin:'',
+        amountMax:'',
+        timeValue:''
+      }
     },
-    //导出
-    exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['交易流水号','收支类型', '业务类型', '关联单据编号', '支付方式','微信流水号', '交易金额（元）', '开票','交易时间'];
-            const filterVal = ['tradeDetailSn','tradeType', 'businessType', 'relationSn', 'payType','wechatTradeSn', 'amount', 'isInvoice', 'tradeTime'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '收支明细列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+   
+  //导出
+    exportToExcel(){
+      let query = this.init();
+      this._apis.finance.exportRe(query).then((response)=>{
+        window.location.href = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
   }
 }
@@ -201,5 +275,9 @@ export default {
       }
     }
   }
+}
+.table{
+  width: 100%; 
+  margin-top:20px;
 }
 </style>

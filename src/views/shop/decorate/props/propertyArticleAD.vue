@@ -97,7 +97,7 @@
 
 
    <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @seletedPage="seletedPage"></component>
   </el-form>
 </template>
 
@@ -141,6 +141,9 @@ export default {
         url: '',
         linkTo: ''
       });
+      // this.currentNav = this.ruleForm.itemList[this.ruleForm.itemList.length - 1];
+      // this.dialogVisible=true; 
+      // this.currentDialog='dialogSelectImageMaterial';
     },
 
     /* 弹框选中图片 */
@@ -150,7 +153,7 @@ export default {
     },
 
     /* 弹窗选中了跳转链接 */
-    dialogDataSelected(jumpLink) {
+    seletedPage(jumpLink) {
       console.log(jumpLink);
     },
   }

@@ -16,7 +16,7 @@
         </el-form-item>
       </el-form>
       <div class="btns">
-        <el-button type="primary">新建页面</el-button>
+        <el-button type="primary" @click="_routeTo('templateManageIndex')">新建页面</el-button>
         <el-button type="primary" plain>批量改分类</el-button>
         <el-button type="warning" plain>批量删除</el-button>
       </div>
@@ -84,14 +84,26 @@ export default {
   },
   methods: {
 
-   /* 复制页面 */
+    /* 复制页面 */
     copyPage(item) {
       this.$confirm('确定复制此页面吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.copyPage({id: item.id}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '复制成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 
@@ -102,7 +114,19 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.deletePages({ids: [item.id]}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '删除成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 
@@ -113,7 +137,19 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          
+          this._apis.shop.setIndex({id: item.id}).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '设置成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
         })
     },
 

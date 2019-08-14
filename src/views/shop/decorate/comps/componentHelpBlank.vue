@@ -1,7 +1,8 @@
 <template>
-    <div>
-       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
-    </div>
+  <!-- 辅助线 -->
+  <div class="componentHelpBlank" v-if="currentComponentData && currentComponentData.data">
+    <div class="help_blank" :style="{'height':currentComponentData.data.blankHeight+'px'}"></div>
+  </div>
 </template>
 
 <script>
@@ -27,4 +28,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.componentHelpBlank {
+  & > .help_blank {
+    width: 100%;
+    background: #fff;
+  }
+}
 </style>

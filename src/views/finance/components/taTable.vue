@@ -45,7 +45,7 @@
         :data="dataList"
         style="width: 100%"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'date', order: 'descending'}"
+        :default-sort = "{prop: 'createTime', order: 'descending'}"
         >
         <el-table-column
           prop="memberId"

@@ -2,8 +2,8 @@
   <div class="editor-wrapper" v-loading="loading">
     <widgetView></widgetView>
     <editView></editView>
-    <propView></propView>
-    <div style="width:500px;">
+    <propView panelName="页面编辑" editorType='propertyBase' :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this"></propView>
+    <!-- <div style="width:500px;">
       页面基础数据：
       <el-tag type="primary">{{baseInfo}}</el-tag>
       <hr />组件数据映射：
@@ -13,61 +13,39 @@
           <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import widgetView from "@/views/shop/decorate/widgetView";
-import editView from "@/views/shop/decorate/editView";
-import propView from "@/views/shop/decorate/propView";
-import decorateDemo from "@/assets/json/decorateDemo.json";
-import utils from "@/utils";
+import editorMixin from './editorMixin';
 export default {
   name: "shopEditor",
+  mixins: [editorMixin],
   props: ["pageId"],
-  components: { widgetView, editView, propView },
   data() {
     return {
       loading: false,
-      currentPageId: this.pageId || this.$route.query.pageId
+      id: this.pageId || this.$route.query.pageId,
+      dataLoaded: false
     };
-  },
-  created() {
-    this.$store.commit("clearAllData");
-    if (this.currentPageId) {
-      this.getDecorateInfo();
-    }
-  },
-  mounted() {},
-  computed: {
-    baseInfo() {
-      return this.$store.getters.baseInfo;
-    },
-    componentDataIds() {
-      return this.$store.getters.componentDataIds;
-    },
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    }
   },
   watch: {
     pageId(newValue) {
-      this.$store.commit("clearAllData");
       if (newValue) {
-        this.currentPageId = newValue;
-        this.getDecorateInfo();
+        this.id = newValue;
       }
+      this.init();
     }
   },
   methods: {
     /* 获取店铺装修数据 */
-    getDecorateInfo() {
+    fetch() {
       const _self = this;
-      const currentPageId = this.currentPageId;
       this.loading = true;
-      this._apis.shop.getPageInfo({id: currentPageId}).then((response)=>{
+      this._apis.shop.getPageInfo({id: this.id}).then((response)=>{
          this.loading = false;
+         this.dataLoaded = true;
          this.convertDecorateData(response);
       }).catch((error)=>{
         this.$notify.error({
@@ -77,12 +55,9 @@ export default {
       });
     },
 
-    /* 转换装修数据 */
-    convertDecorateData(data) {
-      //清空选中组件id
-      this.$store.commit('setCurrentComponentId', '');
-
-      //还原页面基础信息
+     /* 拼装基础数据 */
+    setBaseInfo(data) {
+       //还原页面基础信息
       this.$store.commit("setBaseInfo", {
         name: data.name,
         title: data.title,
@@ -91,33 +66,61 @@ export default {
         colorStyle: data.colorStyle,
         pageKey: data.pageKey
       });
+    },
 
-      
-      //还原组件列表
-      let componentDataIds = [];
-      let componentDataMap = {};
-      const string = utils.uncompileStr(data.pageData);
-      if(string.indexOf('id') < 0) {
-        return;
+    /* 保存数据 */
+    saveData() {
+      let resultData = this.collectData();
+      resultData['status'] = '1';
+      this.submit(resultData);
+    },
+
+    /* 保存并生效数据 */
+    saveAndApplyData() {
+      let resultData = this.collectData();
+      resultData['status'] = '0';
+      this.submit(resultData);
+    },
+
+    submit(resultData) {
+      this.loading = true;
+      if(this.id) {
+        this._apis.shop.editPageInfo(resultData).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '编辑成功！',
+            type: 'success'
+          });
+          this._routeTo('pageManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
+      }else{
+        this._apis.shop.createPage(resultData).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '创建成功！',
+            type: 'success'
+          });
+          this._routeTo('pageManageIndex');
+          this.loading = false;
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+          this.loading = false;
+        });
       }
-      let pageData = JSON.parse(string);
-      if(!Array.isArray(pageData)) {
-        return;
-      }
-      for (let item of pageData) {
-        componentDataIds.push(item.id);
-        componentDataMap[item.id] = item;
-      }
-      this.$store.commit("setComponentDataIds", componentDataIds);
-      this.$store.commit("setComponentDataMap", componentDataMap);
     }
-  }
+
+  },
+
 };
 </script>
 
-<style lang="scss" scoped>
-.editor-wrapper {
-  display: flex;
-  flex-direction: row;
-}
-</style>

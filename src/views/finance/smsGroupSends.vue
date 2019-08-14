@@ -34,21 +34,33 @@
       </div>
       <div class="data_statistics">
         <div class="item">
-          <span class="money">累计短信群发</span>
+          <span class="money">累计充值金额</span>
           <span class="num">
-            <em>1000条</em>
+            <em>1000.00元</em>
           </span>
         </div>
         <div class="item">
-          <span class="money">短信剩余</span>
+          <span class="money">预计可发送短信条数</span>
           <span class="num">
-            <em>50条</em>
+            <em>10000</em>
           </span>
         </div>
         <div class="item">
-          <span class="money">累计短信充值</span>
+          <span class="money">当前短信余额</span>
           <span class="num">
-            <em>10次</em>
+            <em>500.00元</em>
+          </span>
+        </div>
+        <div class="item">
+          <span class="money">已发送短信（营销）</span>
+          <span class="num">
+            <em>300条</em>
+          </span>
+        </div>
+        <div class="item">
+          <span class="money">已发送短信（通知）</span>
+          <span class="num">
+            <em>300条</em>
           </span>
         </div>
         <div>
@@ -76,7 +88,7 @@
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']"
+            :default-time="['00:00:00', '00:00:00']"
             :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>

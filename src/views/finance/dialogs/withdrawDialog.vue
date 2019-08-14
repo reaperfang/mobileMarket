@@ -1,17 +1,17 @@
-/*提现审核 */
+/*批量审核 */
 <template>
 <div>
     <DialogBase :visible.sync="visible" @submit="submit" title="提现审核" :hasCancel="hasCancel">
         <div class="c_container">
             <div class="marB20">
-                <el-radio v-model="checkRadio" label="1">同意申请</el-radio>
-                <el-radio v-model="checkRadio" label="2">拒绝申请</el-radio>
+                <el-radio v-model="radio" label="0">同意申请</el-radio>
+                <el-radio v-model="radio" label="1">拒绝申请</el-radio>
             </div>
             <el-input
                 type="textarea"
                 :rows="4"
                 placeholder="请输入拒绝原因，不超过20个字"
-                v-model="textarea">
+                v-model="remarks">
             </el-input>
         </div>
     </DialogBase>
@@ -41,30 +41,12 @@ export default {
     data() {
         return {
             hasCancel: true,
-            checkRadio: '1',
-            textarea:"",
+            radio: '1',
+            remarks:"",
             otherVisible: false,
             currentDialog: "",
             currentData:{}
         }
-    },
-    methods: {
-        submit() {
-            this.otherVisible = true;
-        }
-    },
-    computed: {
-        visible: {
-            get() {
-                return this.dialogVisible
-            },
-            set(val) {
-                this.$emit('update:dialogVisible', val)
-            }
-        }
-    },
-    mounted() {
-        
     },
     props: {
         data: {
@@ -77,7 +59,39 @@ export default {
     },
     components: {
         DialogBase
-    }
+    },
+    computed: {
+        visible: {
+            get() {
+                return this.dialogVisible
+            },
+            set(val) {
+                this.$emit('update:dialogVisible', val)
+            }
+        }
+    },
+    created() {
+        
+    },
+    methods: {
+        submit() {
+            let datas = {
+                ids:this.data,
+                auditStatus:this.radio,
+                remarks:this.remarks
+            }
+            this._apis.finance.examineWd(datas).then((response)=>{
+                this.dialogVisible = false
+                this.otherVisible = true;
+                this.$emit("handleSubmit");
+            }).catch((error)=>{
+                this.$notify.error({
+                title: '错误',
+                message: error
+                });
+            })
+        },
+    },    
 }
 </script>
 <style lang="scss" scoped>

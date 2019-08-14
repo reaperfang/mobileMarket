@@ -1,31 +1,20 @@
 <template>
   <DialogBase :visible.sync="visible" @submit="submit" title="发放优惠券" :hasCancel="hasCancel">
     <div class="c_container">
-      <p class="marB20">客户ID: 0001</p>
+      <p class="marB20">客户ID: {{data.memberSn}}</p>
       <div class="clearfix">
         <div class="fl l_block">
           选择优惠券：
         </div>
         <div class="fl r_block">
-          <div class="sel_cont">
-            <el-select v-model="coupon" style="margin-bottom: 10px">
-              <el-option label="漏洞优惠券" value="1"></el-option>
-              <el-option label="优惠券1" value="2"></el-option>
-              <el-option label="优惠券2" value="3"></el-option>
+          <div class="sel_cont" v-for="(i,index) in selectList" :key="index">
+            <el-select v-model="i.appCouponId" style="margin-bottom: 10px">
+              <el-option v-for="item in data.allCoupons" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
-            <el-input-number v-model="num1" :min="1"></el-input-number>
-            <span class="marL20 addMainColor">删除</span>
+            <el-input-number v-model="i.couponNum" :min="1"></el-input-number>
+            <span class="marL20 addMainColor pointer" @click="handleDelete(index)">删除</span>
           </div>
-          <div class="sel_cont">
-            <el-select v-model="coupon" style="margin-bottom: 10px">
-              <el-option label="漏洞优惠券" value="1"></el-option>
-              <el-option label="优惠券1" value="2"></el-option>
-              <el-option label="优惠券2" value="3"></el-option>
-            </el-select>
-            <el-input-number v-model="num1" :min="1"></el-input-number>
-            <span class="marL20 addMainColor">删除</span>
-          </div>
-          <span class="add">添加</span>
+          <span class="add pointer" @click="handleAdd">添加</span>
         </div>
       </div>
     </div>
@@ -40,11 +29,29 @@ export default {
   data() {
     return {
       hasCancel: true,
-      num1: 1
+      coupon:"",
+      selectList: [
+        {couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1"}
+      ]
     };
   },
   methods: {
-    submit() {}
+    submit() {
+      this._apis.client.distributeCoupon(this.selectList).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    handleAdd() {
+      this.selectList.push({couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1"});
+    },
+    handleDelete(index) {
+      this.selectList.splice(index, 1);
+    }
   },
   computed: {
     visible: {
@@ -56,7 +63,9 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+  
+  },
   props: {
     data: {},
     dialogVisible: {

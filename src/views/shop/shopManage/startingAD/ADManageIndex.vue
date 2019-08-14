@@ -59,6 +59,7 @@
             <span class="table-btn" v-else>---</span>
             <span class="table-btn" @click="_routeTo('createAD', {ADId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deleteAD(scope.row)">删除</span>
+            <!-- <el-button class="table-btn" type="text" @click="deleteAD(scope.row)" :disabled="true">删除</el-button> -->
           </template>
         </el-table-column>
       </el-table>

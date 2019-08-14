@@ -1,22 +1,22 @@
 /*待审核 */
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="提现详情" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="提现详情" :showFooter="false">
         <div class="c_container clearfix">
             <div class="c_top">
-                <p>客户ID：13128098</p>
-                <p>提现金额：<span>￥500.00</span></p>
-                <p>提现编号：43746374685348536</p>
+                <p>客户ID：{{info.memberSn}}</p>
+                <p>提现金额：<span>￥{{info.amount}}</span></p>
+                <p>提现编号：{{info.cashoutSn}}</p>
                 <p class="c_status">待审核</p>
             </div>
             <div class="c_steps clearfix">
                 <div class="c_step_l">
                     <span class="c_green"></span>
-                    2019-06-01 10：56：23
+                    {{info.createTime}}
                 </div>
                 <div class="c_step_r">
                     <p>提交申请</p>
-                    <p>账户可用余额冻结 ￥500.00</p>
-                    <p>交易流水 8236876238</p>
+                    <p>账户可用余额冻结 ￥{{info.amount}}</p>
+                    <p>交易流水 {{info.tradeDetailSn}}</p>
                 </div>
             </div>
         </div> 
@@ -27,29 +27,10 @@ import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
     name: "waitAuditDialog",
-    props: ['data'],
     data() {
-        return {
-            hasCancel: true
-        }
-    },
-    methods: {
-        submit() {
-            this.$emit('handleSubmit')
-        }
-    },
-    computed: {
-        visible: {
-            get() {
-                return this.dialogVisible
-            },
-            set(val) {
-                this.$emit('update:dialogVisible', val)
-            }
-        }
-    },
-    mounted() {
-        
+        return { 
+            info:{}
+         }
     },
     props: {
         data: {
@@ -60,9 +41,37 @@ export default {
             required: true
         },
     },
-    components: {
-        DialogBase
-    }
+    components: {DialogBase},
+    computed: {
+        visible: {
+            get() {
+                return this.dialogVisible
+            },
+            set(val) {
+                this.$emit('update:dialogVisible', val)
+            }
+        }
+    },
+    created(){  
+        this.getInfo()
+    },
+    methods: {
+        submit() {
+            this.$emit('handleSubmit')
+        },
+
+        getInfo(){
+            this._apis.finance.getInfoWd({cashoutDetailId:this.data.id}).then((response)=>{
+               this.info = response[0]
+            }).catch((error)=>{
+                this.$notify.error({
+                title: '错误',
+                message: error
+                });
+            })
+        },
+
+    },
 }
 </script>
 <style lang="scss" scoped>

@@ -2,12 +2,12 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline" label-width="90px">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline" label-width="90px">
         <el-form-item label="交易流水号">
-          <el-input v-model="form.relationSn" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="ruleForm.tradeDetailSn" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="交易类型">
-          <el-select v-model="form.businessType" style="width:100px;">
+          <el-select v-model="ruleForm.businessType" style="width:100px;">
             <el-option
               v-for="item in transactionTypes"
               :key="item.value"
@@ -18,7 +18,7 @@
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.tradeTime"
+            v-model="ruleForm.timeValue"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
@@ -35,23 +35,68 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
-      <cbTable style="margin-top:20px"></cbTable>
+      <!-- <cbTable style="margin-top:20px"></cbTable> -->
+      <el-table
+        :data="dataList"
+        class="table"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'tradeTime', order: 'descending'}"
+        >
+        <el-table-column
+          prop="tradeDetailSn"
+          label="交易流水号">
+        </el-table-column>
+        <el-table-column
+          prop="relationSn"
+          label="关联单据编号">
+        </el-table-column>
+        <el-table-column
+          prop="memberInfoId"
+          label="客户ID">
+        </el-table-column>
+        <el-table-column
+          prop="businessType"
+          label="交易类型">
+        </el-table-column>
+        <el-table-column
+          prop="changeAmount"
+          label="变动金额（元）">
+        </el-table-column>
+        <el-table-column
+          prop="surplusAmount"
+          label="剩余金额（元）">
+        </el-table-column>
+        <el-table-column
+          prop="tradeTime"
+          label="交易时间"
+          sortable>
+        </el-table-column>
+      </el-table>
+      <div class="page_styles">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(ruleForm.startIndex) || 1"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize*1"
+          layout="sizes, prev, pager, next"
+          :total="total*1">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import utils from "@/utils";
-import Blob from '@/excel/Blob'
-import Export2Excel from '@/excel/Export2Excel.js'
-import cbTable from './components/cbTable'
+import TableBase from "@/components/TableBase";
 import financeCons from '@/system/constant/finance'
 export default {
-  name: 'revenueSituation',
-  components:{ cbTable },
+  name: 'customerBalance',
+  extends: TableBase,
   data() {
     return {
       pickerNowDateBefore: {
@@ -60,61 +105,75 @@ export default {
         }
       },
       inline:true,
-      form:{
-        relationSn:'',
+      ruleForm:{
+        tradeDetailSn:'',
         businessType:1,
-        tradeTime:''
+        timeValue:''
       },
-      dataList:[
-        {
-          tradeDetailSn:'',
-          relationSn:'',
-          memberInfoId:'',
-          businessType:'',
-          changeAmount:'',
-          surplusAmount:'',
-          tradeTime:''
-        },
-      ],
+      dataList:[ ],
+      total:0,
     }
   },
-  watch: {
-
-  },
+  watch: { },
   computed:{
     transactionTypes(){
       return financeCons.transactionTypes;
     },
   },
-  created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-    
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
-  },
+  created() { },
   methods: {
-    onSubmit(){},
+    init(){
+      let query = {
+        tradeDetailSn:this.ruleForm.tradeDetailSn,
+        businessType:this.ruleForm.businessType,
+        startTime:'',
+        endTime:'',
+        startIndex:this.ruleForm.startIndex,
+        pageSize:this.ruleForm.pageSize
+      }
+      let timeValue = this.ruleForm.timeValue
+      if(timeValue){
+        query.startTime = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        query.endTime = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
+      return query;
+    },
+
+    fetch(){
+      let query = this.init();
+      this._apis.finance.getListCb(query).then((response)=>{
+        this.dataList = response.list
+        this.total = response.total || 0
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+    onSubmit(){
+      this.fetch()
+    },
     //重置
     resetForm(){
-      
+      this.ruleForm = {
+        tradeDetailSn:'',
+        businessType:1,
+        timeValue:''
+      }
     },
     //导出
     exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['交易流水号','关联单据编号', '客户ID', '交易类型', '变动金额（元）','剩余金额（元）', '交易时间'];
-            const filterVal = ['tradeDetailSn','relationSn', 'memberInfoId', 'businessType', 'changeAmount','surplusAmount', 'tradeTime'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '客户余额列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+       let query = this.init();
+      this._apis.finance.exportCb(query).then((response)=>{
+        window.location.href = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
   }
 }
@@ -148,5 +207,9 @@ export default {
       }
     }
   }
+}
+.table{
+  width: 100%; 
+  margin-top:20px;
 }
 </style>

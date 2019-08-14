@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-table
-      :data="channelList"
+      :data="importList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
@@ -42,8 +42,8 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
             <div class="btns clearfix">
-                <span>添加标签</span>
-                <span>修改身份等级</span>
+                <span @click="addTag(scope.row)">添加标签</span>
+                <span @click="modify(scope.row)">修改身份等级</span>
             </div>
         </template>
       </el-table-column>
@@ -59,45 +59,64 @@
         :total="100">
       </el-pagination>
     </div>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
-
 <script type='es6'>
 import TableBase from "@/components/TableBase";
-import clientApi from "@/api/client";
+import batchAddTagDialog from '../../dialogs/clientImport/batchAddTagDialog'
+import changeIdentityDialog from '../../dialogs/clientImport/changeIdentityDialog';
 export default {
   name: "ciTable",
   extends: TableBase,
+  props: [ 'params' ],
+  components: { batchAddTagDialog, changeIdentityDialog },
   data() {
     return {
-      dataList:[
-        {
-            choose: true,
-            importTime:"",
-            channerlName:"",
-            totalNum:"",
-            successNum:"",
-            failNum:"",
-            operatorId:""
-        },
-      ],
+      importList: [],
+      currentDialog: "",
+      dialogVisible: false,
+      currentData:{}
     };
   },
   computed: {
-    channelList() {
-      return clientApi.channelList
-    }
+    
   },
   mounted() {
-    console.log(this.channelList);
+    this.getImportList();
   },
   created() {
 
   },
   methods: {
-    
+    getImportList() {
+      this._apis.client.importMemberList(this.params).then((response) => {
+        this.importList = [].concat(response.list);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    addTag(row) {
+      this.dialogVisible = true;
+      this.currentDialog = "batchAddTagDialog";
+      this.currentData.successNum = row.successNum;
+      this.currentData.id = row.id;
+    },
+    modify(row) {
+      this.dialogVisible = true;
+      this.currentDialog = "changeIdentityDialog";
+      this.currentData.successNum = row.successNum;
+      this.currentData.id = row.id;
+    }
   },
-  components: {}
+  watch: {
+    params(val) {
+      this.getImportList();
+    }
+  },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

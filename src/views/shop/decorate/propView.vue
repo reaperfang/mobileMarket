@@ -5,18 +5,18 @@
           {{this.componentDataMap[this.currentComponentId].title}}
         </p>
         <p class="title" v-else>
-          页面信息
+          {{panelName}}
         </p>
       </div>
       <transition name="fade" :duration="{ enter: 200, leave: 100 }">
-        <component v-if="basePropertyShow" :is="'propertyBase'" @change="propsChange" :data="baseInfo" key="base"></component>
+        <component v-if="basePropertyShow" :is="propertyDefault" @change="propsChange" :data="baseInfo" key="base"></component>
         <component v-else :is='currentComponent' @change="propsChange" v-bind="this.componentDataMap[this.currentComponentId]" key="components"></component>
       </transition>
       <div class="block button" v-loading="loading">
         <div class="help_blank"></div>
         <div class="buttons">
-          <el-button type="primary" @click="saveAndApplyData">保存并生效</el-button>
-          <el-button @click="saveData">保    存</el-button>
+          <el-button type="primary" @click="saveAndApplyData.call(parentScope)">保存并生效</el-button>
+          <el-button @click="saveData.call(parentScope)">保    存</el-button>
           <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
         </div>
       </div>
@@ -28,10 +28,12 @@
 <script>
 import utils from '@/utils';
 import propertyBase from './props/propertyBase';
+import propertyClassify from './props/propertyClassify';
 import dialogDecoratePreview from '../dialogs/dialogDecoratePreview';
 export default {
   name: 'propView', 
-  components: {propertyBase, dialogDecoratePreview},
+  components: {propertyBase, propertyClassify, dialogDecoratePreview},
+  props: ['panelName', 'editorType', 'saveData', 'saveAndApplyData', 'parentScope'],
   data () {
     return {
       currentComponent: null,  //当前组件名称
@@ -39,7 +41,8 @@ export default {
       currentDialog: '',
       utils,
       currentPageId: this.$route.query.pageId,
-      loading: false
+      loading: false,
+      propertyBase: ''   //基础组件名称
     }
   },
   computed:{
@@ -62,6 +65,16 @@ export default {
   watch: {
     'currentComponentId'(newValue, oldValue) {
       this.loadPropTemplate();
+    }
+  },
+  created() {
+    switch(this.editorType) {
+      case 'propertyBase':
+        this.propertyDefault = 'propertyBase';
+        break;
+      case 'propertyClassify':
+        this.propertyDefault = 'propertyClassify';
+        break;
     }
   },
   mounted() {
@@ -87,68 +100,7 @@ export default {
     /* 更新组件数据 */
     propsChange(params) {
       this.$store.commit('updateComponent', params);
-    },
-    
-    /* 保存数据 */
-    saveData() {
-      this.loading = true;
-      const resultData = this.collectData();
-      if(this.currentPageId) {
-        this._apis.shop.editPageInfo(resultData).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '编辑成功！',
-            type: 'success'
-          });
-          this._routeTo('pageManageIndex');
-          this.loading = false;
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
-          this.loading = false;
-        });
-      }else{
-        this._apis.shop.createPage(resultData).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '创建成功！',
-            type: 'success'
-          });
-          this._routeTo('pageManageIndex');
-          this.loading = false;
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
-          this.loading = false;
-        });
-      }
-    },
-
-    /* 保存并生效数据 */
-    saveAndApplyData() {
-      const resultData = this.collectData();
-      console.log(JSON.stringify({...resultData}));
-      this._routeTo('pageManageIndex');
-    },
-
-    /* 收集数据 */
-    collectData() {
-      let result = this.baseInfo;
-      result['id'] = this.currentPageId;
-      let pageData = [];
-      for(let item of this.componentDataIds) {
-        const componentData = this.componentDataMap[item];
-        if(componentData) {
-          pageData.push(componentData);
-        }
-      }
-      result['pageData'] = utils.compileStr(JSON.stringify(pageData));
-      return result;
-    }
+    } 
   }
 }
 </script>

@@ -2,12 +2,12 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline">
         <el-form-item label="客户ID">
-          <el-input v-model="form.memberInfoId" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="ruleForm.memberInfoId" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="form.businessTypeId" style="width:100px;">
+          <el-select v-model="ruleForm.businessTypeId" style="width:100px;">
             <el-option
               v-for="item in idbusinessTypes"
               :key="item.value"
@@ -18,7 +18,7 @@
         </el-form-item>
         <el-form-item label="获取时间" style="margin-left:25px;">
           <el-date-picker
-            v-model="form.value7"
+            v-model="ruleForm.timeValue"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
@@ -35,23 +35,68 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
-      <idTable style="margin-top:20px"></idTable>
+      <!-- <idTable style="margin-top:20px"></idTable> -->
+      <el-table
+        :data="dataList"
+        class="table"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'changeTime', order: 'descending'}"
+        >
+        <el-table-column
+          prop="scoreDetailSn"
+          label="积分流水号">
+        </el-table-column>
+        <el-table-column
+          prop="memberInfoId"
+          label="客户ID">
+        </el-table-column>
+        <el-table-column
+          prop="businessTypeId"
+          label="业务类型">
+        </el-table-column>
+        <el-table-column
+          prop="changeScore"
+          label="变动积分">
+        </el-table-column>
+        <el-table-column
+          prop="surplusScore"
+          label="剩余积分">
+        </el-table-column>
+        <el-table-column
+          prop="changeTime"
+          label="交易时间"
+          sortable>
+        </el-table-column>
+        <el-table-column
+          prop="remarks"
+          label="备注">
+        </el-table-column>
+      </el-table>
+      <div class="page_styles">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(ruleForm.startIndex) || 1"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize*1"
+          layout="sizes, prev, pager, next"
+          :total="total*1">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import utils from "@/utils";
-import Blob from '@/excel/Blob'
-import Export2Excel from '@/excel/Export2Excel.js'
-import idTable from './components/idTable'
+import TableBase from "@/components/TableBase";
 import financeCons from '@/system/constant/finance'
 export default {
   name: 'integralDetails',
-  components:{ idTable },
+  extends: TableBase,
   data() {
     return {
       pickerNowDateBefore: {
@@ -60,60 +105,75 @@ export default {
         }
       },
       inline:true,
-      form:{
+      ruleForm:{
         memberInfoId:'',
         businessTypeId:1,
-        value7:''
+        timeValue:''
       },
-      dataList:[
-        {
-          scoreDetailSn:'123213123',
-          memberInfoId:'124',
-          businessTypeId:'1',
-          changeScore:'12',
-          surplusScore:'10',
-          changeTime:'2019-02-05',
-          remarks:'备注'
-        },
-      ]
+      dataList:[ ],
+      total:0,
     }
   },
-  watch: {
-
-  },
+  watch: { },
   computed:{
     idbusinessTypes(){
       return financeCons.idbusinessTypes;
     }
   },
-  created() {
-    
-  },
-  destroyed() {
-    
-  },
+  created() { },
   methods: {
-    onSubmit(){},
+    init(){
+      let query = {
+        memberInfoId:this.ruleForm.memberInfoId,
+        businessTypeId:this.ruleForm.businessTypeId,
+        startTime:'',
+        endTime:'',
+        startIndex:this.ruleForm.startIndex,
+        pageSize:this.ruleForm.pageSize
+      }
+      let timeValue = this.ruleForm.timeValue
+      if(timeValue){
+        query.startTime = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        query.endTime = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
+      return query;
+    },
+
+    fetch(){
+      let query = this.init();
+      this._apis.finance.getListId(query).then((response)=>{
+        this.dataList = response.list
+        this.total = response.total || 0
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+    onSubmit(){
+      this.fetch()
+    },
     //重置
     resetForm(){
-      
+      this.ruleForm = {
+        memberInfoId:'',
+        businessTypeId:1,
+        timeValue:''
+      }
     },
     //导出
     exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['交易流水号','收支类型', '业务类型', '关联单据编号', '支付方式','微信流水号', '交易金额（元）', '开票','交易时间'];
-            const filterVal = ['tradeDetailSn','tradeType', 'businessType', 'relationSn', 'payType','wechatTradeSn', 'amount', 'isInvoice', 'tradeTime'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '收支明细列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+      let query = this.init();
+      this._apis.finance.exportId(query).then((response)=>{
+        window.location.href = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
   }
 }
@@ -147,5 +207,9 @@ export default {
       }
     }
   }
+}
+.table{
+  width: 100%; 
+  margin-top:20px;
 }
 </style>

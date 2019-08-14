@@ -2,7 +2,6 @@
 import request from '@/system/request'
 
 
-/********************************************************** demo  开始 ******************************************************/
 // 页面管理&草稿箱列表(分页)
 export function getPageList(data) {
   return request({
@@ -123,6 +122,26 @@ export function getClassifyInfo(data) {
   })
 }
 
+// 编辑分类数据
+export function editClassifyInfo(data) {
+  return request({
+    target: 'DECORATION-CATEGORY-INFO-UPDATE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 新建分类
+export function createClassify(data) {
+  return request({
+    target: 'DECORATION-CATEGORY-INFO-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 // 获取广告数据
 export function getADInfo(data) {
   return request({
@@ -207,6 +226,26 @@ export function getGoodsGroup(data) {
 export function editGoodsGroup(data) {
   return request({
     target: 'DECORATION-PAGE-INFO-COMMODITY-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取个人中心页面数据
+export function getUserCenterPage(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-PERSONAL-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 编辑个人中心页面数据
+export function editUserCenterPage(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-PERSONAL-INSERT-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data

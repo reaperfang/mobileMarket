@@ -48,7 +48,7 @@ class Ajax {
             }
             return res.data;
           } else if(res.errno === 0){
-            return res.data;;
+            return res.data;
           } else {
             return Promise.reject(res.msg)
           }
@@ -85,7 +85,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d2acd693954525d602e2a72bb412c549c',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149df802ed26aed99e38e1e6cdccaa4c4882',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),

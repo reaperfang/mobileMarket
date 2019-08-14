@@ -27,18 +27,21 @@ export default {
   data() {
     return {
       hasCancel: true,
-      dataList: [
-          {
-              createUserName:"Coco",
-              tradeTime:"2019-08-01",
-              changeReason:"消费得积分",
-              changeAmount:"50"
-          }
-      ]
+      dataList: []
     };
   },
   methods: {
-    submit() {}
+    submit() {},
+    getBalanceList() {
+      this._apis.finance.getListCb({memberInfoId: this.data.id, startIndex: 1, pageSize: 10}).then((response) => {
+        this.dataList = [].concat(response.list);
+      }).catch((error) => {
+        this.$notify.error({
+          title: "错误",
+          message: error
+        });
+      })
+    }
   },
   computed: {
     visible: {
@@ -50,7 +53,9 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.getBalanceList();
+  },
   props: {
     data: {},
     dialogVisible: {

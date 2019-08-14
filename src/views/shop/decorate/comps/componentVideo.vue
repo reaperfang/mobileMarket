@@ -1,7 +1,15 @@
 <template>
-    <div>
-       <el-tag type="danger" v-for="(item, key) in currentComponentData.data">{{key}}：{{item}}</el-tag>
+  <!-- 视频 -->
+  <div class="componentVideo" v-if="currentComponentData && currentComponentData.data">
+    <div v-on:click="playVideo()">
+      <video
+        :src="currentComponentData.data.videoUrl"
+        controls="controls"
+        class="video"
+        :poster="currentComponentData.data.coverUrl"
+      >您的浏览器不支持 video 标签。</video>
     </div>
+  </div>
 </template>
 
 <script>
@@ -26,4 +34,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.componentVideo {
+  .video {
+    width: 100%;
+    height: 210spx;
+  }
+}
 </style>

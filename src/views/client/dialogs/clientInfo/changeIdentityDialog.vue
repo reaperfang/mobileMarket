@@ -1,14 +1,12 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="变更客户身份" :hasCancel="hasCancel">
         <div class="c_container">
-            <p class="user_id">用户ID：0001</p>
+            <p class="user_id">用户ID：{{data.id}}</p>
             <p class="user_id">当前身份：非会员身份</p>
             <div class="s_cont">
                 <span>变更为：</span>
-                <el-select v-model="identities" style="margin-bottom: 10px">
-                    <el-option label="VIP1" value="1"></el-option>
-                    <el-option label="VIP2" value="2"></el-option>
-                    <el-option label="VIP3" value="3"></el-option>
+                <el-select v-model="selectLevel" style="margin-bottom: 10px">
+                    <el-option v-for="item in levelList" :label="item.alias" :value="item.id" :key="item.id"></el-option>
                 </el-select>
             </div>
         </div>
@@ -23,12 +21,51 @@ export default {
     data() {
         return {
             hasCancel: true,
-            identities:""
+            selectLevel:"",
+            levelList: []
         }
     },
     methods: {
         submit() {
+            if(this.selectLevel.length > 0) {
+                let levelInfoId, levelInfoName;
+                this.levelList.map((v) => {
+                    if(v.id == this.selectLevel) {
+                        levelInfoId = v.id;
+                        levelInfoName = v.name;
+                    }
+                });
+                let params = {id: this.data.id, levelInfoId: levelInfoId, levelInfoName: levelInfoName};
+                this._apis.client.identityChange(params).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: "变更身份成功",
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }else{
+                this.$notify({
+                    title: '警告',
+                    message: '请选择用户等级',
+                    type: 'warning'
+                });
+            }
             
+        },
+        getLevelList() {
+            this._apis.client.getLevelList({cid:2}).then((response) => {
+                this.levelList = [].concat(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -42,7 +79,7 @@ export default {
         }
     },
     mounted() {
-        
+        this.getLevelList();
     },
     props: {
         data: {

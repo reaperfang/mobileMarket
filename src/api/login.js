@@ -11,7 +11,7 @@ export function login(data) {
 
 export function logout() {
   return request({
-    target: '',
+    target: 'MANAGER-API-101',
     method: 'post'
   })
 }

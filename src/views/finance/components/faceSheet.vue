@@ -1,10 +1,10 @@
-<!--收支明细-->
+<!--电子面单-->
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline" label-width="70px">
+      <el-form ref="ruleForm" :model="ruleForm" :inline="inline">
         <el-form-item>
-          <el-select v-model="form.searchType" placeholder="订单编号" style="width:124px;">
+          <el-select v-model="ruleForm.searchType" placeholder="订单编号" style="width:124px;">
             <el-option
               v-for="item in fsTerms"
               :key="item.value"
@@ -14,10 +14,10 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.searchValue" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="ruleForm.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="form.businessType" style="width:210px;">
+          <el-select v-model="ruleForm.businessType" style="width:210px;">
             <el-option
               v-for="item in fsTypes"
               :key="item.value"
@@ -27,16 +27,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="快递公司">
-          <el-input v-model="form.expressCompany" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input v-model="ruleForm.expressCompany" placeholder="请输入" style="width:120px;"></el-input>
         </el-form-item>
-        <el-form-item label="发货时间" style="margin-left:25px;">
+        <el-form-item label="发货时间">
           <el-date-picker
-            v-model="form.value7"
+            v-model="ruleForm.timeValue"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['12:00:00', '08:00:00']"
+            :default-time="['00:00:00', '00:00:00']"
             :picker-options="pickerNowDateBefore">
           </el-date-picker>
         </el-form-item>
@@ -48,23 +48,63 @@
     </div>
     <div class="under_part">
       <div class="total">
-        <span>全部 <em>700</em> 项</span>
+        <span>全部 <em>{{total}}</em> 项</span>
         <el-button icon="document" @click='exportToExcel()'>导出</el-button>
       </div>
-      <fsTable style="margin-top:20px"></fsTable>
+      <el-table
+        :data="dataList"
+        class="table"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'createTime', order: 'descending'}"
+        >
+        <el-table-column
+          prop="expressSn"
+          label="快递单号">
+        </el-table-column>
+        <el-table-column
+          prop="expressCompany"
+          label="快递公司">
+        </el-table-column>
+        <el-table-column
+          prop="businessType"
+          label="业务类型">
+        </el-table-column>
+        <el-table-column
+          prop="relationSn"
+          label="关联单据编号">
+        </el-table-column>
+        <el-table-column
+          prop="createUserName"
+          label="操作人">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="操作时间"
+          sortable>
+        </el-table-column>
+      </el-table>
+      <div class="page_styles">
+         <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(ruleForm.pageNum) || 1"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize*1"
+          layout="sizes, prev, pager, next"
+          :total="total*1">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import utils from "@/utils";
-import Blob from '@/excel/Blob'
-import Export2Excel from '@/excel/Export2Excel.js'
-import fsTable from './fsTable'
+import TableBase from "@/components/TableBase";
 import financeCons from '@/system/constant/finance'
 export default {
   name: 'faceSheet',
-  components:{ fsTable },
+  extends: TableBase,
   data() {
     return {
       pickerNowDateBefore: {
@@ -73,29 +113,18 @@ export default {
               }
       },
       inline:true,
-      form:{
-        searchType:1,
+      ruleForm:{
+        searchType:'relationSn',
         searchValue:'',
         businessType:1,
         expressCompany:'',
-        value6:'',
-        value7:''
+        timeValue:''
       },
-      dataList:[
-        {
-          expressSn:'1213',
-          expressCompany:'中通',
-          businessType:'1',
-          relationSn:'232323',
-          createUserName:'张三',
-          createTime:'2019-07-22'
-        }
-      ],
+      dataList:[ ],
+      total:0
     }
   },
-  watch: {
-
-  },
+  watch: {},
   computed:{
     fsTerms(){
       return financeCons.fsTerms;
@@ -106,30 +135,74 @@ export default {
   },
   created() {    
   },
-  destroyed() {
-  },
   methods: {
-    onSubmit(){},
+    init(){
+      let query = {
+        queryType:0,
+        relationSn:'',
+        expressSn:'',
+        expressCompany:'',
+        businessType:'',
+        startTime:'',
+        endTime:'',
+        startIndex:this.ruleForm.startIndex,
+        pageSize:this.ruleForm.pageSize
+      }
+      for(let key  in query){
+        if(this.ruleForm.searchType == key){
+          query[key] = this.ruleForm.searchValue
+        }
+        for(let item in this.ruleForm){
+          if(item == key){
+            query[key] = this.ruleForm[item]
+          }
+        }
+      }
+      let timeValue = this.ruleForm.timeValue
+      if(timeValue){
+        query.startTime = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        query.endTime = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
+      return query;
+    },
+
+    fetch(){
+      let query = this.init();
+      this._apis.finance.getListFs(query).then((response)=>{
+        this.dataList = response.list
+        this.total = response.total || 0
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //搜索
+    onSubmit(){
+      this.fetch()
+    },
     //重置
     resetForm(){
-      
+      this.ruleForm = {
+        searchType:'relationSn',
+        searchValue:'',
+        businessType:1,
+        expressCompany:'',
+        timeValue:''
+      }
     },
     //导出
     exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['快递单号','快递公司', '业务类型', '关联单据编号', '操作人','操作时间'];
-            const filterVal = ['expressSn','expressCompany', 'businessType', 'relationSn', 'createUserName','createTime'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '电子面单列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+      let query = this.init();
+      this._apis.finance.exportFs(query).then((response)=>{
+        window.location.href = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
   }
 }
@@ -163,5 +236,9 @@ export default {
       }
     }
   }
+}
+.table{
+  width: 100%; 
+  margin-top:20px;
 }
 </style>

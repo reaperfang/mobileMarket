@@ -58,6 +58,145 @@ export function getDataNumRs(data) {
 }
 
 //收支明细 -------
+export function getListRe(data) {
+    return request({
+      target: 'FINANCIAL-TRADE-RECORD-PAGE-PROCESSOR',
+      method: 'post',
+      apiType: 'finance',
+      data
+    })
+}
+
+export function exportRe(data) {
+    return request({
+      target: 'FINANCIAL-TRADE-EXPORT-PROCESSOR',
+      method: 'post',
+      apiType: 'finance',
+      data
+    })
+}
+
+//每日营收 --------
+export function getListDr(data) {
+  return request({
+    target: 'FINANCIAL-ACCOUNT-RECORD-PAGE-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+export function exportDr(data) {
+  return request({
+    target: 'FINANCIAL-ACCOUNT-EXPORT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+//提现明细 --------
+export function getListWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-RECORD-PAGE-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+export function getInfoWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-DETAIL-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+export function examineWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-AUDIT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+export function exportWd(data) {
+  return request({
+    target: 'FINANCIAL-CASHOUT-EXPORT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+//客户ID余额 --------
+export function getListCb(data) {
+  return request({
+    target: 'FINANCIAL-BALANCE-PAGELIST-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+export function exportCb(data) {
+  return request({
+    target: 'FINANCIAL-BALANCE-EXPORT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+//积分明细 --------
+export function getListId(data) {
+  return request({
+    target: 'FINANCIAL-INTEGRAL-PAGELIST-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+export function exportId(data) {
+  return request({
+    target: 'FINANCIAL-INTEGRAL-EXPORT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+//物流对账 --------
+export function getListFs(data) {
+  return request({
+    target: 'FINANCIAL-EXPRESS-PAGE-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+//电子面单与物流查询导出
+export function exportFs(data) {
+  return request({
+    target: 'FINANCIAL-EXPRESS-EXPORT-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+export function getListLi(data) {
+  return request({
+    target: 'FINANCIAL-EXPRESS-QUERY-PROCESSOR',
+    method: 'post',
+    apiType: 'finance',
+    data
+  })
+}
+
+
 
 
 

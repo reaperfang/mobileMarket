@@ -161,7 +161,6 @@ export default {
     }
   },
   created() {
-    this.convertGoodsId();
   },
   methods: {
 

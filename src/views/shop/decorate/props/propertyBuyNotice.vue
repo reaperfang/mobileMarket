@@ -25,16 +25,10 @@
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
-      <el-form-item label="公告商品" prop="goodsType">
-        <el-radio-group v-model="ruleForm.goodsType">
-          <el-radio :label="1">商品</el-radio>
-          <el-radio :label="2">商品分组</el-radio>
-        </el-radio-group>
-      </el-form-item>
-       <el-form-item label="商品" v-if="ruleForm.goodsType === 1" prop="goods">
+       <el-form-item label="公告商品" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of goodsList" :key="key">
+            <li v-for="(item, key) of ruleForm.goods" :key="key">
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteGoods(item)"></i>
             </li>
@@ -44,33 +38,20 @@
           </ul>
         </div>
       </el-form-item>
-      <el-form-item label="商品分组" v-if="ruleForm.goodsType === 2" prop="goodsGroup">
-        <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">从商品分组中选择</el-button>
-        <div class="goods_groups">
-          <el-tag
-            v-for="tag in ruleForm.goodsGroups"
-            :key="tag.title"
-            closable
-            type="success" @close="deleteGoodsGroup(tag)">
-            {{tag.title}}
-          </el-tag>
-        </div>
-      </el-form-item>
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected"></component>
   </el-form>
 </template>
 
 <script>
 import propertyMixin from './mixin';
 import dialogSelectGoods from '../../dialogs/dialogSelectGoods';
-import dialogSelectGoodsGroup from '../../dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyBuyNotice',
   mixins: [propertyMixin],
-  components: {dialogSelectGoods, dialogSelectGoodsGroup},
+  components: {dialogSelectGoods},
   data () {
     return {
       ruleForm: {
@@ -79,28 +60,16 @@ export default {
         intervalEnd: 60,
         backgroundColor: 'rgb(255,248,233)',
         fontColor: 'rgb(102,102,102)',
-        goodsType: 1,
-        goods: '',
-        goodsGroups: []
+        goods: []
       },
       rules: {
 
       },
       dialogVisible: false,
-      currentDialog: '',
-      goodsList: []
+      currentDialog: ''
     }
   },
   created() {
-    this.convertGoodsId();
-  },
-  watch: {
-    goodsList: {
-      handler(newValue) {
-        this.convertGoodsId();
-      },
-      deep: true
-    }
   },
   methods: {
 
@@ -112,38 +81,13 @@ export default {
           tempGoodsList.splice(i, 1);
         }
       }
-      this.goodsList = tempGoodsList;
-    },
-
-    /* 转换商品id */
-    convertGoodsId() {
-      const array = [];
-      for(let item of this.goodsList) {
-        array.push(item.id);
-      }
-      this.ruleForm.goods = array.join(',');
+      this.ruleForm.goods = tempGoodsList;
     },
 
     /* 弹窗选中了商品 */
     dialogDataSelected(goods) {
-      this.goodsList = goods;
-    },
-
-    /* 弹窗选中了商品分组 */
-    dialogGoodsGroupSelected(goodsGroup) {
-      this.ruleForm.goodsGroups = goodsGroup;
-    },
-
-     /* 删除项 */
-    deleteGoodsGroup(item) {
-      const tempGoodsGroups = [...this.ruleForm.goodsGroups];
-      for(let i=0;i<tempGoodsGroups.length;i++) {
-        if(item === tempGoodsGroups[i]) {
-          tempGoodsGroups.splice(i, 1);
-        }
-      }
-      this.ruleForm.goodsGroups = tempGoodsGroups;
-    },
+      this.ruleForm.goods = goods;
+    }
   }
 }
 </script>
