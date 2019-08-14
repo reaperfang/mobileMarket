@@ -1,20 +1,36 @@
 <template>
     <div class="order-state">
-        <template v-if="orderState == '待发货'">
+        <template v-if="orderState === 0">
             <div class="item lefter">
-                <el-steps :active="1">
+                <el-steps :active="2">
                     <el-step title="客户下单" description=""></el-step>
                     <el-step title="客户付款" description=""></el-step>
                     <el-step title="商户发货" description=""></el-step>
                     <el-step title="商户收货" description=""></el-step>
-                    <el-step title="订单完成" description=""></el-step>
+                    <el-step title="完成" description=""></el-step>
                 </el-steps>
             </div>
             <div class="item righter">
-                <p>待发货</p>
+                <p>待付款</p>
                 <div class="button-box">
                     <el-button>关闭订单</el-button>
-                    <el-button type="primary">发 货</el-button>
+                </div>
+            </div>
+        </template>
+        <template v-else-if="orderState === 1">
+            <div class="item lefter">
+                <el-steps :active="2">
+                    <el-step title="客户下单" description=""></el-step>
+                    <el-step title="客户付款" description=""></el-step>
+                    <el-step title="商户发货" description=""></el-step>
+                    <el-step title="商户收货" description=""></el-step>
+                    <el-step title="完成" description=""></el-step>
+                </el-steps>
+            </div>
+            <div class="item righter">
+                <p>待成团</p>
+                <div class="button-box">
+                    <el-button>关闭订单</el-button>
                 </div>
             </div>
         </template>
@@ -28,9 +44,13 @@ export default {
         }
     },
     computed: {
-        orderState() {
-            return '待发货'
-        }
+        
+    },
+    props: {
+        orderState: {
+            type: Number,
+            required: true
+        },
     }
 }
 </script>

@@ -55,17 +55,58 @@
                     </div>
                     <div class="item">{{order.receivedName}}/{{order.receivedPhone}}</div>
                     <div class="item">{{order.deliveryWay}}</div>
-                    <div class="item">{{order.orderStatus}}</div>
+                    <div class="item">{{order.orderStatus | orderStatusFilter}}</div>
                     <div class="item operate">
                         <div @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</div>
                         <div class="delivery">发货信息</div>
+                        <template v-if="order.orderStatus == 0">
+                            <!-- 待付款 -->
+                            <p>查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">订单改价</p>
+                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
+                            <p @click="makeCollections(order)">确认收款</p>
+                        </template>
+                        <template v-else-if="order.orderStatus == 1">
+                            <!-- 待成团 -->
+                            
+                        </template>
+                        <template v-else-if="order.orderStatus == 2">
+                            <!-- 关闭 -->
+                            <p>查看详情</p>
+                        </template>
+                        <template v-else-if="order.orderStatus == 3">
+                            <!-- 待发货 -->
+                            <p>查看详情</p>
+                            <p>发货</p>
+                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
+                        </template>
+                        <template v-else-if="order.orderStatus == 4">
+                            <!-- 部分发货 -->
+                            <p>查看详情</p>
+                            <p>继续发货</p>
+                            <p>发货信息</p>
+                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">提前关闭订单</p>
+                        </template>
+                        <template v-else-if="order.orderStatus == 5">
+                            <!-- 待收货 -->
+                            <p>查看详情</p>
+                            <p>发货信息</p>
+                        </template>
+                        <template v-else-if="order.orderStatus == 6">
+                            <!-- 完成 -->
+                            <p>查看详情</p>
+                            <p>发货信息</p>
+                        </template>
                     </div>
                 </div>
             </div>
         </div>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit"></component>
     </div>
 </template>
 <script>
+import CloseOrderDialog from '@/views/order/dialogs/closeOrderDialog'
+
 export default {
     data() {
         return {
@@ -97,10 +138,49 @@ export default {
                         }
                     ]
                 }
-            ]
+            ],
+            currentDialog: '',
+            currentData: '',
+            dialogVisible: false
         }
     },
     methods: {
+        submit(value) {
+            this._apis.order.orderClose({...value, id: this.currentData}).then((res) => {
+                this.$emit('getList')
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '关闭成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        makeCollections(order) {
+           this.confirm({title: '确认收款提示', icon: true, text: `确定收款后无法撤销，您要确认收款吗？`}).then(() => {
+                this._apis.order.makeCollections({id: order.orderInfo.id, payWay: 4}).then((res) => {
+                    this.$emit('getList')
+                    this.visible = false
+                    this.$notify({
+                        title: '成功',
+                        message: '收款成功！',
+                        type: 'success'
+                    });
+                }).catch(error => {
+                    this.visible = false
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }) 
+        },
         checkedChange() {
             let len = this.list.filter(val => val.checked).length
 
@@ -111,6 +191,9 @@ export default {
         list: {
             type: Array
         }
+    },
+    components: {
+        CloseOrderDialog
     }
 }
 </script>

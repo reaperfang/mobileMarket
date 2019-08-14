@@ -1,10 +1,17 @@
 <template>
     <DialogBase :visible.sync="visible" width="500px" :showFooter="showFooter" title="编辑库存">
-        <zform class="zform" :ruleForm="ruleForm" :rules="rules" :formItems="formItems" label-width="100px" :data="$data" @submit="submit">
-            <template v-slot:name>
-                <span style="color: red;">{{ruleForm.name}}</span>
-            </template>
-        </zform>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="商品标题:" prop="name">
+                <span>{{ruleForm.name}}</span>
+            </el-form-item>
+            <el-form-item label="库存:" prop="stock">
+                <el-input v-model="ruleForm.stock"></el-input>
+            </el-form-item>
+        </el-form>
+        <div class="footer">
+            <el-button @click="submit('ruleForm')" type="primary">确定</el-button>
+            <el-button>取消</el-button>
+        </div>
     </DialogBase>
 </template>
 <script>
@@ -23,18 +30,6 @@ export default {
                     { required: true, message: '请输入库存', trigger: 'blur' },
                 ],
             },
-            formItems: [
-                {
-                    label: '商品标题',
-                    prop: 'name',
-                    type: 'slot'
-                },
-                {
-                    label: '库存',
-                    prop: 'stock',
-                    type: 'input'
-                },
-            ],
             showFooter: false
         }
     },
@@ -50,13 +45,38 @@ export default {
         }
     },
     methods: {
-        submit(val) {
-            console.log(val)
+        submit(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this._apis.goods.updateStock({
+                        goodsInfoId: this.data.goodsInfo.id,
+                        changeType: 0,
+                        changeStock: this.ruleForm.stock
+                        }).then((res) => {
+                            this.$emit('submit')
+                            this.visible = false
+                            this.$notify({
+                                title: '成功',
+                                message: '编辑成功！',
+                                type: 'success'
+                            });
+                }).catch(error => {
+                    this.visible = false
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+            });
         },
         getCurrent() {
             this.ruleForm = Object.assign({}, {
                 name: this.data.goodsName,
-                stock: this.data.store
+                stock: this.data.goodsInfo.stock
             })
         }
     },
@@ -86,7 +106,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    
+    .footer {
+        text-align: center;
+    }
 </style>
 
 

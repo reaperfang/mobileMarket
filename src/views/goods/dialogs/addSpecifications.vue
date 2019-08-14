@@ -1,7 +1,7 @@
 <template>
     <zdialog :visible.sync="visible" title="新增规格" :showFooter="showFooter">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="活动名称" prop="name">
+            <el-form-item label="规格名称" prop="name">
                 <el-input v-model="ruleForm.name" placeholder="请输入规格名称"></el-input>
                 <el-button @click="plus">添加规格值</el-button>
             </el-form-item>
@@ -44,7 +44,17 @@ export default {
     },
     methods: {
         submit() {
-            this.$emit('submit', this.arr)
+            let arr = []
+
+            this.items.forEach(val => {
+                let _arr = []
+
+                _arr[0] = this.ruleForm.name
+                _arr[1] = val.value
+
+                arr.push(_arr)
+            })
+            this.$emit('submit', arr)
             this.visible = false
         },
         handleChange(val) {
@@ -105,9 +115,6 @@ export default {
         }
         display: flex;
         align-items: center;
-    }
-    /deep/ .el-button.el-button--small {
-        color: #fff!important;
     }
     .spec-value {
         margin-left: 108px;
