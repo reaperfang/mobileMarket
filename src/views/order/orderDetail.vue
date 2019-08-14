@@ -16,7 +16,7 @@
         <div class="message">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="订单信息" name="order">
-                    <orderInformation :orderInfo="orderDetail.orderInfo"></orderInformation>
+                    <orderInformation :orderInfo="orderDetail.orderInfo" @getDetail="getDetail"></orderInformation>
                 </el-tab-pane>
                 <el-tab-pane label="发货信息" name="delivery">
                     <deliveryInformation></deliveryInformation>
@@ -98,7 +98,7 @@
                     <div class="value">¥{{orderDetail.orderInfo.discountFreight}}</div>
                 </div>
                 <div class="item reduce-price">
-                    <el-select style="margin-right: 5px;" v-model="goodsListMessage.reducePriceType" placeholder="请选择">
+                    <el-select style="margin-right: 5px;" v-model="goodsListMessage.consultType" placeholder="请选择">
                         <el-option
                         v-for="item in goodsListMessage.reducePriceTypeList"
                         :key="item.value"
@@ -107,7 +107,7 @@
                         </el-option>
                     </el-select>
                     <div class="value">
-                         <el-input class="reduce-price-input" @change="reducePriceHandler" v-if="goodsListMessage.reducePriceVisible" v-model="goodsListMessage.reducePrice"></el-input>
+                         <el-input class="reduce-price-input" @change="reducePriceHandler" v-if="goodsListMessage.reducePriceVisible" v-model="goodsListMessage.consultMoney"></el-input>
                          <span v-if="!goodsListMessage.reducePriceVisible">{{goodsListMessage.reducePrice}}</span>
                         <span @click="goodsListMessage.reducePriceVisible = !goodsListMessage.reducePriceVisible">改价</span>
                     </div>
@@ -169,17 +169,17 @@ export default {
                 memberDiscount: '1',
                 favourable: '1',
                 freeShipping: '1',
-                reducePrice: '1',
+                consultMoney: '',
                 amountInHand: '1',
-                reducePriceType: '协商减价',
+                consultType: '1',
                 reducePriceTypeList: [
                     {
                         label: '协商减价',
-                        value: '协商减价'
+                        value: '2'
                     },
                     {
                         label: '协商加价',
-                        value: '协商加价'
+                        value: '1'
                     },
                 ]
             },
@@ -224,7 +224,19 @@ export default {
     },
     methods: {
         reducePriceHandler() {
-
+            this._apis.order.orderPriceChange({id: this.orderDetail.orderInfo.id, 
+            consultType: this.goodsListMessage.consultType, consultMoney: this.goodsListMessage.consultMoney}).then(res => {
+                this.$notify({
+                    title: '成功',
+                    message: '添加成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
         },
         getDetail() {
             let id = this.$route.query.id

@@ -14,7 +14,7 @@
                             <p>{{orderInfo.receivedDetail}}</p>
                         </div>
                     </div>
-                    <p @click="currentDialog = 'ReceiveInformationDialog'; dialogVisible = true" class="change"><span>修改</span></p>
+                    <p @click="currentDialog = 'ReceiveInformationDialog'; currentData =orderInfo.id; dialogVisible = true" class="change"><span>修改</span></p>
                 </div>
             </el-col>
             <el-col :span="8"><div class="grid-content center">
@@ -61,8 +61,8 @@
                 <div class="item remark-box">
                     <div class="label">商户备注</div>
                     <div class="value">
-                        <span v-if="remarkVisible" @click="remarkVisible = false" class="blue">我要备注</span>
-                        <template v-if="!remarkVisible">
+                        <span v-if="!remarkVisible" @click="remarkVisible = true" class="blue">我要备注</span>
+                        <template v-if="remarkVisible">
                             <el-input
                                 type="textarea"
                                 :rows="2"
@@ -77,7 +77,7 @@
                 </div>
             </div></el-col>
         </el-row>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="submit"></component>
     </div>
 </template>
 <script>
@@ -98,13 +98,29 @@ export default {
             message: 'message',
             remarks: 'remarks',
             currentDialog: '',
+            currentData: '',
             dialogVisible: false,
             remarkVisible: false
         }
     },
     methods: {
+        submit() {
+            this.$emit('getDetail')
+        },
         remarkHandler() {
             this.remarkVisible = true
+            this._apis.order.orderRemark({id: this.orderInfo.id, sellerRemark: this.orderInfo.sellerRemark}).then(res => {
+                this.$notify({
+                    title: '成功',
+                    message: '添加成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
         }
     },
     filters: {

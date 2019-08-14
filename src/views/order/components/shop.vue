@@ -1,6 +1,6 @@
 <template>
     <div class="order">
-        <order :list="list"></order>
+        <order :list="list" @getList="getList"></order>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
     </div>
 </template>
