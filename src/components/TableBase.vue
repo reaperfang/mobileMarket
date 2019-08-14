@@ -5,7 +5,7 @@ import utils from '@/utils';
 export default {
   name: 'tableBase',
   data() {
-    const pageSize = 5;
+    const pageSize = 10;
     return {
       startIndex: 1,
       pageSize: pageSize,
