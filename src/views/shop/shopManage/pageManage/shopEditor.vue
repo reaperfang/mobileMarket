@@ -3,7 +3,7 @@
     <widgetView></widgetView>
     <editView></editView>
     <propView panelName="页面编辑" editorType='propertyBase' :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this"></propView>
-    <div style="width:500px;">
+    <!-- <div style="width:500px;">
       页面基础数据：
       <el-tag type="primary">{{baseInfo}}</el-tag>
       <hr />组件数据映射：
@@ -13,7 +13,7 @@
           <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       loading: false,
-      id: this.pageId || this.$route.query.pageId
+      id: this.pageId || this.$route.query.pageId,
+      dataLoaded: false
     };
   },
   watch: {
@@ -44,6 +45,7 @@ export default {
       this.loading = true;
       this._apis.shop.getPageInfo({id: this.id}).then((response)=>{
          this.loading = false;
+         this.dataLoaded = true;
          this.convertDecorateData(response);
       }).catch((error)=>{
         this.$notify.error({

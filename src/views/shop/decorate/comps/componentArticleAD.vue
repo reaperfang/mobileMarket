@@ -1,6 +1,6 @@
 <template>
   <!-- 图片广告 -->
-  <div class="componentArticleAD" v-if="currentComponentData.data">
+  <div class="componentArticleAD" v-if="currentComponentData && currentComponentData.data">
     <!-- 1、一行一个 -->
     <div v-if="currentComponentData.data.templateType==1" :style="{'padding':currentComponentData.data.pageMargin+'px'}">
       <div class="article_first">

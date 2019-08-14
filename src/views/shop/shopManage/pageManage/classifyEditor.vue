@@ -1,9 +1,9 @@
 <template>
   <div class="editor-wrapper" v-loading="loading">
     <widgetView></widgetView>
-    <editView></editView>
+    <editView v-if="!loading"></editView>
     <propView panelName="分类编辑" editorType="propertyClassify" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this"></propView>
-    <div style="width:500px;">
+    <!-- <div style="width:500px;">
       分类基础数据：
       <el-tag type="primary">{{baseInfo}}</el-tag>
       <hr />组件数据映射：
@@ -13,7 +13,7 @@
           <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 

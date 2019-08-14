@@ -1,6 +1,6 @@
 <template>
   <!-- 辅助线 -->
-  <div class="componentHelpBlank">
+  <div class="componentHelpBlank" v-if="currentComponentData && currentComponentData.data">
     <div class="help_blank" :style="{'height':currentComponentData.data.blankHeight+'px'}"></div>
   </div>
 </template>

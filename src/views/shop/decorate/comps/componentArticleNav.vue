@@ -1,6 +1,6 @@
 <template>
   <!-- 图文导航 -->
-  <div class="componentArticleNav" :style="{'backgroundColor':currentComponentData.data.backgroundColor}">
+  <div class="componentArticleNav" :style="{'backgroundColor':currentComponentData.data.backgroundColor}" v-if="currentComponentData && currentComponentData.data">
     <!-- 1、图片导航 -->
     <div v-if="currentComponentData.data.templateType===1">
       <!-- (1)固定 -->

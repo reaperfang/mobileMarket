@@ -76,7 +76,9 @@ export default {
     };
   },
   methods: {
-    submit() {},
+    submit() {
+      
+    },
     sendDiscount() {
       this.$emit("sendDiscount");
     }
