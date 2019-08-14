@@ -34,7 +34,7 @@ export default {
     }
   },
   watch:{
-    buttonStyle(){
+    decorationStyle(){
       this.decorate();
     }
   }
@@ -74,7 +74,7 @@ export default {
   min-width:50px;
   color:#fff;
   font-size:12px;
-  @include borderRadius(50px);
+  @include borderRadius(25px);
   @extend .flexCenterMiddle;
   background:#FF4444;
   height:24px;
@@ -111,7 +111,7 @@ export default {
   font-size:12px;
   @extend .flexCenterMiddle;
   background:#FF4444;
-  @include borderRadius(8px);
+  @include borderRadius(4px);
   height:24px;
 }
 .componentButton.buttonStyle8{

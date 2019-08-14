@@ -73,7 +73,7 @@ export default {
           pageData.push(componentData);
         }
       }
-      result['pageData'] = utils.compileStr(JSON.stringify(pageData));
+      result['pageData'] = utils.compileStr(JSON.stringify(pageData));;
       return result;
     }
   }
