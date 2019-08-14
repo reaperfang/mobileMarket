@@ -6,9 +6,9 @@
                 <div class="img_box">
                     <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
                 </div>
-                <div class="countdown_Bar">
+                <div class="countdown_Bar" v-if="showContents.indexOf('5')!=-1">
                     <h1 class="title">秒杀</h1>
-                    <div class="countdown" v-if="showContents.indexOf('5')!=-1">
+                    <div class="countdown">
                         <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
                         <div class="content">
                             <p class="caption">距开始仅剩</p>
@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="info_box">
+                <div class="info_box" v-if="showContents.length > 0">
                     <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">减{{item.minusPrice}}元</font>{{item.title}}</p>
                     <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.desc}}</p>
                     <div class="limit_line">
@@ -157,8 +157,36 @@ export default {
         &:first-child{
             margin-top:0 !important;
         }
-        .img_box{
-            @include borderRadius(10px 10px 0 0);
+        .countdown_Bar{
+            .countdown{
+                float:right;
+                width:189px;
+                height:43px;
+                padding:0 3.5px 0 15px;
+                .content{
+                    .caption{
+                        color:#333;
+                        font-size:11px;
+                        line-height:1;
+                        margin-top:6px;
+                        text-align:center;
+                    }
+                    .time{
+                        margin-top:5.5px;
+                        height:16px;
+                        font-size:14px;
+                        color:#333;
+                        line-height:16px;
+                        font{
+                            background:#333;
+                            width:29px;
+                            height:16px;
+                            color:#fff;
+                            margin:0 4px;
+                        }
+                    }
+                }
+            }
         }
         .info_box{
             padding:15px 10px;
@@ -223,24 +251,21 @@ export default {
                 .countdown{
                     width:100%;
                     height:100%;
-                    padding:0 10px;
                     .bj{
                         display:none;
                     }
                     .content{
+                        @extend .flexCenterMiddle;
                         .caption{
-                            float:left;
                             color:#fff;
                             font-size:10px;
                             line-height:31px;
                             margin:0;
                         }
                         .time{
-                            float:left;
                             margin-left:7.5px;
                             height:16px;
                             color:#fff;
-                            margin-top:7.5px;
                             font{
                                 width:16px;
                                 height:16px;
@@ -396,6 +421,7 @@ export default {
                     display:none;
                 }
                 .content{
+                    @extend .flexCenterMiddle;
                     .caption{
                         float:left;
                         color:#fff;
@@ -405,18 +431,19 @@ export default {
                     }
                     .time{
                         float:left;
-                        height:16px;
+                        height:12px;
                         color:#fff;
-                        margin-top:5px;
+                        line-height:12px;
+                        font-size:9px;
+                        margin-left:2px;
                         font{
-                            width:14px;
-                            height:14px;
+                            width:12px;
+                            height:12px;
                             color:#FC3D42;
                             font-size:9px;
-                            line-height:14px;
+                            line-height:12px;
                             background:#fff;
                             position:relative;
-                            top:-2.5px;
                             margin:0 2px;
                             text-align:center;
                         }
@@ -543,8 +570,36 @@ export default {
             }
             &:nth-of-type(3n+1){
                 width:100% !important;
-                .img_box{
-                    @include borderRadius(10px 10px 0 0);
+                .countdown_Bar{
+                    .countdown{
+                        float:right;
+                        width:189px;
+                        height:43px;
+                        padding:0 3.5px 0 15px;
+                        .content{
+                            .caption{
+                                color:#333;
+                                font-size:11px;
+                                line-height:1;
+                                margin-top:6px;
+                                text-align:center;
+                            }
+                            .time{
+                                margin-top:5.5px;
+                                height:16px;
+                                font-size:14px;
+                                color:#333;
+                                line-height:16px;
+                                font{
+                                    background:#333;
+                                    width:29px;
+                                    height:16px;
+                                    color:#fff;
+                                    margin:0 4px;
+                                }
+                            }
+                        }
+                    }
                 }
                 .info_box{
                     padding:15px 10px;
@@ -586,24 +641,21 @@ export default {
                     .countdown{
                         width:100%;
                         height:100%;
-                        padding:0 10px;
                         .bj{
                             display:none;
                         }
                         .content{
+                            @extend .flexCenterMiddle;
                             .caption{
-                                float:left;
                                 color:#fff;
                                 font-size:10px;
                                 line-height:31px;
                                 margin:0;
                             }
                             .time{
-                                float:left;
                                 margin-left:7.5px;
                                 height:16px;
                                 color:#fff;
-                                margin-top:7.5px;
                                 font{
                                     width:16px;
                                     height:16px;
@@ -686,24 +738,21 @@ export default {
                     .countdown{
                         width:100%;
                         height:100%;
-                        padding:0 10px;
                         .bj{
                             display:none;
                         }
                         .content{
+                            @extend .flexCenterMiddle;
                             .caption{
-                                float:left;
                                 color:#fff;
                                 font-size:10px;
                                 line-height:31px;
                                 margin:0;
                             }
                             .time{
-                                float:left;
                                 margin-left:7.5px;
                                 height:16px;
                                 color:#fff;
-                                margin-top:7.5px;
                                 font{
                                     width:16px;
                                     height:16px;
@@ -884,10 +933,6 @@ export default {
                 margin-left:13.5px;
             }
             .countdown{
-                float:right;
-                width:139px;
-                height:43px;
-                padding:0 3.5px 0 15px;
                 position:relative;
                 .bj{
                     width:100%;
@@ -901,28 +946,14 @@ export default {
                     z-index:1;
                     overflow:hidden;
                     .caption{
-                        color:#333;
-                        font-size:11px;
-                        line-height:1;
-                        margin-top:6px;
-                        text-align:center;
+                       
                     }
                     .time{
-                        margin-top:5.5px;
                         overflow:hidden;
-                        height:16px;
                         text-align:center;
-                        font-size:14px;
-                        color:#333;
-                        line-height:16px;
                         font{
                             display:inline-block;
-                            @include borderRadius(4px);
-                            background:#333;
-                            width:29px;
-                            height:16px;
-                            color:#fff;
-                            margin:0 4px;
+                            @include borderRadius(2px);
                         }
                     }
                 }

@@ -30,8 +30,8 @@
           <el-radio :label="1">颜色1</el-radio>
           <el-radio :label="2">颜色2</el-radio>
           <el-radio :label="3">颜色3</el-radio>
-          <el-radio :label="3">颜色4</el-radio>
-          <el-radio :label="3">颜色5</el-radio>
+          <el-radio :label="4">颜色4</el-radio>
+          <el-radio :label="5">颜色5</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="更多设置" prop="hideScrambled">
@@ -60,7 +60,7 @@ export default {
         addType: 2,
         couponStyle: 1,
         couponColor: 1,
-        hideScrambled: true,
+        hideScrambled: false,
         coupons: []
       },
       rules: {

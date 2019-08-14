@@ -57,7 +57,6 @@
 </template>
 
 <script type='es6'>
-import clientApi from "@/api/client";
 import TableBase from "@/components/TableBase";
 import deleteUserDialog from "../../dialogs/allClient/deleteUserDialog";
 import addTagDialog from "../../dialogs/allClient/addTagDialog";
