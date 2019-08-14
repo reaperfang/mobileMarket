@@ -5,7 +5,8 @@
                 <el-date-picker
                     v-model="ruleForm.time"
                     type="date"
-                    placeholder="选择日期">
+                    placeholder="选择日期"
+                    value-format="yyyy-MM-dd hh:mm:ss">
                 </el-date-picker>
             </el-form-item>
             <el-form-item class="footer">
@@ -34,6 +35,7 @@ export default {
     },
     methods: {
         onSubmit() {
+           this.$emit('submit', this.ruleForm.time)
            this.visible = false
         }
     },

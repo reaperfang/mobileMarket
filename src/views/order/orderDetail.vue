@@ -2,21 +2,21 @@
     <div class="order-detail">
         <div class="header">
             <div class="lefter">
-                <span>订单编号：{{orderInfo.code}} | </span>
-                <span>{{orderInfo.channelInfoId}} | </span>
-                <span>{{orderInfo.sendType}} | </span>
-                <span>拼团编号：{{orderInfo.assembleCode}}</span>
+                <span>订单编号：{{orderDetail.orderInfo.code}} | </span>
+                <span>{{orderDetail.orderInfo.channelInfoId}} | </span>
+                <span>{{orderDetail.orderInfo.sendType}} | </span>
+                <span>拼团编号：{{orderDetail.orderInfo.assembleCode}}</span>
             </div>
             <div class="righter">
                 <img src="../../assets/images/order/customerImg.png" alt="">
-                <span>客户ID：{{memberSn}}</span>
+                <span>客户ID：{{orderDetail.orderInfo.memberSn}}</span>
             </div>
         </div>
-        <orderState class="order-state"></orderState>
+        <orderState :orderState="orderDetail.orderInfo.orderStatus" class="order-state"></orderState>
         <div class="message">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="订单信息" name="order">
-                    <orderInformation></orderInformation>
+                    <orderInformation :orderInfo="orderDetail.orderInfo" @getDetail="getDetail"></orderInformation>
                 </el-tab-pane>
                 <el-tab-pane label="发货信息" name="delivery">
                     <deliveryInformation></deliveryInformation>
@@ -26,7 +26,7 @@
         <div class="goods-list">
             <p class="header">订单清单</p>
             <el-table
-                :data="tableData"
+                :data="orderDetail.orderItems"
                 style="width: 100%">
                 <el-table-column
                     label="商品"
@@ -34,41 +34,45 @@
                     <template slot-scope="scope">
                         <div class="goods-detail">
                             <div class="item">
-                                <img src="" alt="">
+                                <img :src="scope.row.goodsImage" alt="">
                             </div>
                             <div class="item">
-                                <p></p>
-                                <p></p>
+                                <p>{{scope.row.goodsName}}</p>
+                                <p>{{scope.row.goodsSpecs}}</p>
                             </div>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="company"
+                    prop="goodsUnit"
                     label="单位"
                     width="180">
                 </el-table-column>
                 <el-table-column
-                    prop="quantity"
+                    prop="goodsCount"
                     label="数量">
                 </el-table-column>
                 <el-table-column
-                    prop="unitPrice"
                     label="商品单价">
+                    <template slot-scope="scope">
+                        ¥{{scope.row.goodsPrice}}
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="allPrice"
                     label="商品小计">
+                    <template slot-scope="scope">
+                        ¥{{scope.row.subtotalMoney}}
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="goods-list-message">
                 <div class="item">
                     <div class="label">运费：</div>
-                    <div class="value">{{goodsListMessage.freight}}</div>
+                    <div class="value">¥{{orderDetail.orderInfo.freight}}</div>
                 </div>
                 <div class="item">
                     <div class="label">应收金额：</div>
-                    <div class="value">{{goodsListMessage.payAmount}}</div>
+                    <div class="value">¥{{orderDetail.orderInfo.receivableMoney}}</div>
                 </div>
                 <div class="item">
                     <div class="label">优惠券金额：</div>
@@ -79,22 +83,22 @@
                 </div>
                 <div class="item">
                     <div class="label">满减/满折：</div>
-                    <div class="value">{{goodsListMessage.discount}}</div>
+                    <div class="value">¥{{orderDetail.orderInfo.discountMoney}}</div>
                 </div>
                 <div class="item">
                     <div class="label">会员折扣：</div>
-                    <div class="value">{{goodsListMessage.memberDiscount}}</div>
+                    <div class="value">¥{{orderDetail.orderInfo.memberDiscountMoney}}</div>
                 </div>
                 <div class="item">
                     <div class="label">优惠套装：</div>
-                    <div class="value">{{goodsListMessage.favourable}}</div>
+                    <div class="value">¥{{orderDetail.orderInfo.discountPackageMoney}}</div>
                 </div>
                 <div class="item">
                     <div class="label">满包邮：</div>
-                    <div class="value">{{goodsListMessage.freeShipping}}</div>
+                    <div class="value">¥{{orderDetail.orderInfo.discountFreight}}</div>
                 </div>
                 <div class="item reduce-price">
-                    <el-select style="margin-right: 5px;" v-model="goodsListMessage.reducePriceType" placeholder="请选择">
+                    <el-select style="margin-right: 5px;" v-model="goodsListMessage.consultType" placeholder="请选择">
                         <el-option
                         v-for="item in goodsListMessage.reducePriceTypeList"
                         :key="item.value"
@@ -103,33 +107,35 @@
                         </el-option>
                     </el-select>
                     <div class="value">
-                         <el-input class="reduce-price-input" @change="reducePriceHandler" v-if="goodsListMessage.reducePriceVisible" v-model="goodsListMessage.reducePrice"></el-input>
+                         <el-input class="reduce-price-input" @change="reducePriceHandler" v-if="goodsListMessage.reducePriceVisible" v-model="goodsListMessage.consultMoney"></el-input>
                          <span v-if="!goodsListMessage.reducePriceVisible">{{goodsListMessage.reducePrice}}</span>
                         <span @click="goodsListMessage.reducePriceVisible = !goodsListMessage.reducePriceVisible">改价</span>
                     </div>
                 </div>
                 <div class="item">
                     <div class="label">实收金额：</div>
-                    <div class="value">{{goodsListMessage.amountInHand}}</div>
+                    <div class="value">¥{{orderDetail.orderInfo.actualMoney}}</div>
                 </div>
             </div>
             <div class="operate-record">
                 <p class="header">操作记录</p>
                 <el-table
-                    :data="operateRecord"
+                    :data="orderDetail.orderOperationRecordList"
                     style="width: 100%">
                     <el-table-column
-                        prop="operate"
                         label="操作"
                         width="180">
+                        <template slot-scope="scope">
+                            {{scope.row.operationType | operationTypeFilter}}
+                        </template>
                     </el-table-column>
                     <el-table-column
-                        prop="operater"
+                        prop="createUserName"
                         label="操作人"
                         width="180">
                     </el-table-column>
                     <el-table-column
-                        prop="operateTime"
+                        prop="createTime"
                         label="操作时间">
                     </el-table-column>
                 </el-table>
@@ -163,17 +169,17 @@ export default {
                 memberDiscount: '1',
                 favourable: '1',
                 freeShipping: '1',
-                reducePrice: '1',
+                consultMoney: '',
                 amountInHand: '1',
-                reducePriceType: '协商减价',
+                consultType: '1',
                 reducePriceTypeList: [
                     {
                         label: '协商减价',
-                        value: '协商减价'
+                        value: '2'
                     },
                     {
                         label: '协商加价',
-                        value: '协商加价'
+                        value: '1'
                     },
                 ]
             },
@@ -188,15 +194,49 @@ export default {
                 limit: '2019',
                 code: '1'
             },
-            orderDetail: {}
+            orderDetail: {
+                orderInfo: {}
+            }
         }
     },
     created() {
         this.getDetail()
     },
+    filters: {
+        operationTypeFilter(code) {
+            switch(code) {
+                case 1:
+                    return '确认收款'
+                case 2:
+                    return '改价'
+                case 3:
+                    return '继续发货'
+                case 4:
+                    return '补填物流信息'
+                case 5:
+                    return '发货'
+                case 6:
+                    return '关闭订单'
+                case 7:
+                    return '提前关闭订单'
+            }
+        }
+    },
     methods: {
         reducePriceHandler() {
-
+            this._apis.order.orderPriceChange({id: this.orderDetail.orderInfo.id, 
+            consultType: this.goodsListMessage.consultType, consultMoney: this.goodsListMessage.consultMoney}).then(res => {
+                this.$notify({
+                    title: '成功',
+                    message: '添加成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
         },
         getDetail() {
             let id = this.$route.query.id

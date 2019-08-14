@@ -95,7 +95,7 @@ class Ajax {
       head.value = md5(CONST.VALUE + head.target + head.requestTime);
 
     //获取cid和shopInfoId
-    let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
+    let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '2';
     let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId 
     : '';
 
@@ -104,7 +104,7 @@ class Ajax {
         if(config.noCid){
           config.data =`json=${encodeURI(JSON.stringify({ head, data: config.data}))}`;
         }else{
-          config.data =`json=${encodeURI(JSON.stringify({ head, data: {...config.data,cid}}))}`;
+          config.data =`json=${encodeURI(JSON.stringify({ head, data: {cid, ...config.data}}))}`;
         }
       } else if (config.method == "get") {
         if(config.noCid){
@@ -134,13 +134,17 @@ class Ajax {
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
           break;
           case 'order': //订单系统
-            config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
+            //config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
+            config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
           break;
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
           break;
           case 'finance':  //财务接口
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
+          break;
+          case 'goodsOperate':  //商品运营
+            config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
           break;
         }
       }

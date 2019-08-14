@@ -83,6 +83,9 @@ export default {
     },
 
     submit(resultData) {
+      if(!resultData.name) {
+        return;
+      }
       this.loading = true;
       if(this.id) {
         this._apis.shop.editPageInfo(resultData).then((response)=>{

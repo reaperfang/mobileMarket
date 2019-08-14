@@ -77,7 +77,7 @@ export default {
       this.videoList = [
          {
           id: uuid(),
-          videoUrl: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
+          videoUrl: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
           title: '美丽的天空之境',
           desc: '这是商品描述',
           createTime: '08-23',
@@ -85,7 +85,7 @@ export default {
         },
         {
           id: uuid(),
-          videoUrl: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
+          videoUrl: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
           title: '美丽的天空之境2',
           desc: '这是商品描述2',
           createTime: '08-23',
@@ -93,7 +93,7 @@ export default {
         },
         {
           id: uuid(),
-          videoUrl: 'http://img.yxp.126.net/VUKxW42-iWGgVKQ30HxFpg==/927987815164602.jpg',
+          videoUrl: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
           title: '美丽的天空之境3',
           desc: '这是商品描述2',
           createTime: '08-23',

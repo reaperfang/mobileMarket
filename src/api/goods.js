@@ -132,4 +132,96 @@ export function fetchGoodsList(data) {
   })
 }
 
+// 新增商品
+export function addGoods(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-NEW-PROCESSOR',
+    data
+  })
+}
+
+// 获取商品详情
+export function getGoodsDetail(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-DETAIL-PROCESSOR',
+    data
+  })
+}
+
+// 编辑商品
+export function editorGoods(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-EDIT-PROCESSOR',
+    data
+  })
+}
+
+// 修改售价
+export function changePrice(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-CHANGE-PRICE-PROCESSOR',
+    data
+  })
+}
+
+// 单条修改库存
+export function updateStock(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-UPDATE-STOCK-PROCESSOR',
+    data
+  })
+}
+
+// 商品上下架(批量)
+export function upperOrLower(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-UPPER-OR-LOWER-PROCESSOR',
+    data
+  })
+}
+
+// 商品删除(批量)
+export function allDelete(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-DELETE-PROCESSOR',
+    data
+  })
+}
+
+// 批量改价
+export function allUpdatePrice(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-BATCH-CHANGE-PRICE-PROCESSOR',
+    data
+  })
+}
+
+// 商品导入分页列表
+export function getImportPageList(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-IMPORT-PAGE-LIST-PROCESSOR',
+    data
+  })
+}
+
+
+
 

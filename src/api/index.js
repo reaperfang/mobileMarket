@@ -7,6 +7,7 @@ import * as finance from "./finance";//财务模块接口
 import * as goods from "./goods";
 import * as order from "./order";
 import * as client from "./client"; //客户接口
+import * as goodsOperate from "./goodsOperate"; //商品运营
 
 export default {
 	demo,
@@ -17,5 +18,6 @@ export default {
 	order,
 	client,
 	shop,
-	finance
+	finance,
+	goodsOperate
 };

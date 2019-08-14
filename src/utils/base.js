@@ -52,17 +52,17 @@ export function deepClone(source) {
  * @returns
  */
 export function colorRGB2Hex(color) {
-    if(!color){
-      return ''
-    };
-    var rgb = color.split(',');
-    var r = parseInt(rgb[0].split('(')[1]);
-    var g = parseInt(rgb[1]);
-    var b = parseInt(rgb[2].split(')')[0]);
- 
-    var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-    return hex;
- }
+  if (!color) {
+    return ''
+  };
+  var rgb = color.split(',');
+  var r = parseInt(rgb[0].split('(')[1]);
+  var g = parseInt(rgb[1]);
+  var b = parseInt(rgb[2].split(')')[0]);
+
+  var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  return hex;
+}
 
 
 /* 格式化数字*/
@@ -124,21 +124,21 @@ export function formatDate(value, fmt) {
  * @param {*} fmt
  * @returns
  */
-export function countDate(num){
+export function countDate(num) {
   let date1 = new Date();
   let date2 = new Date(date1);
-  date2.setDate(date1.getDate()+num);
+  date2.setDate(date1.getDate() + num);
   // let time2 = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
-  let time2 = this.formatDate(date2,"yyyy-MM-dd")
+  let time2 = this.formatDate(date2, "yyyy-MM-dd")
   return time2;
 }
 
- /**
- *系统内部跳转
- *
- * @export
- * @param {*} pathName
- */
+/**
+*系统内部跳转
+*
+* @export
+* @param {*} pathName
+*/
 export function routeTo(pathName, query = {}) {
   this.$router.push({
     name: pathName,
@@ -190,10 +190,10 @@ export function asyncLoadCss(doc, path) {
     node.rel = 'stylesheet';
     node.href = path;
     doc.getElementsByTagName('head')[0].appendChild(node);
-    node.onload = function(){
+    node.onload = function () {
       resolve();
     };
-    node.onerror = function(){
+    node.onerror = function () {
       reject();
     };
   })
@@ -212,10 +212,10 @@ export function asyncLoadJs(doc, path) {
     script.setAttribute("type", "text/javascript");
     script.src = path;
     doc.body.appendChild(script);
-    script.onload = function(){
+    script.onload = function () {
       resolve();
     };
-    script.onerror = function(){
+    script.onerror = function () {
       reject();
     };
   })
@@ -228,10 +228,10 @@ export function asyncLoadJs(doc, path) {
  * @param {*} name
  */
 export function titleCase(name) {
-  let str = name.replace(/\b\w+\b/g, function(word){
-    return word.substring(0,1).toUpperCase()+word.substring(1);
+  let str = name.replace(/\b\w+\b/g, function (word) {
+    return word.substring(0, 1).toUpperCase() + word.substring(1);
   });
-  return str; 
+  return str;
 }
 
 /**
@@ -243,37 +243,55 @@ export function titleCase(name) {
  * @param {*} value
  */
 export function getDictLabel(obj, group, value) {
-    const dictList = obj
-    const dict = dictList[group]
-    let rst = ''
-    if (dict && Array.isArray(dict)) {
-      for (let i = 0; i < dict.length; i++) {
-        if (dict[i].value === value) {
-          rst = dict[i].label
-          break
-        }
+  const dictList = obj
+  const dict = dictList[group]
+  let rst = ''
+  if (dict && Array.isArray(dict)) {
+    for (let i = 0; i < dict.length; i++) {
+      if (dict[i].value === value) {
+        rst = dict[i].label
+        break
       }
     }
-    return rst
   }
+  return rst
+}
 
 //对字符串进行加密(店铺装修数据)     
-export function compileStr(code){   
-  var c=String.fromCharCode(code.charCodeAt(0)+code.length);
-  for(var i=1;i<code.length;i++)
-    {      
-    c+=String.fromCharCode(code.charCodeAt(i)+code.charCodeAt(i-1));
-  }   
-  return escape(c);   
+export function compileStr(code) {
+  var c = String.fromCharCode(code.charCodeAt(0) + code.length);
+  for (var i = 1; i < code.length; i++) {
+    c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
+  }
+  return escape(c);
 }
 
 //对字符串进行解密(店铺装修数据)     
-export function uncompileStr(code){      
-  code=unescape(code);      
-  var c=String.fromCharCode(code.charCodeAt(0)-code.length);      
-  for(var i=1;i<code.length;i++)
-  {      
-    c+=String.fromCharCode(code.charCodeAt(i)-c.charCodeAt(i-1));      
-  }      
-  return c;   
+export function uncompileStr(code) {
+  code = unescape(code);
+  var c = String.fromCharCode(code.charCodeAt(0) - code.length);
+  for (var i = 1; i < code.length; i++) {
+    c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
+  }
+  return c;
+}
+
+//订单状态过滤器   
+export function orderStatusFilter(status) {
+  switch (status) {
+    case 0:
+      return '待付款'
+    case 1:
+      return '待成团'
+    case 2:
+      return '关闭'
+    case 3:
+      return '待发货'
+    case 4:
+      return '部分发货'
+    case 5:
+      return '待收货'
+    case 6:
+      return '完成'
+  }
 }

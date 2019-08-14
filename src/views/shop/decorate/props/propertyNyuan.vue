@@ -91,15 +91,14 @@
       <el-form-item label="显示内容" prop="showContents">
         <el-checkbox-group v-model="ruleForm.showContents">
           <el-checkbox label="1">活动名称</el-checkbox>
-          <el-checkbox label="2">活动描述</el-checkbox>
-          <el-checkbox label="3">活动价格</el-checkbox>
-          <el-checkbox label="4">活动原价</el-checkbox>
-          <el-checkbox label="5">抢购倒计时</el-checkbox>
-          <el-checkbox label="6">限制规则</el-checkbox>
-          <el-checkbox label="7">活动内任选商品</el-checkbox>
-          <el-checkbox label="8">购买按钮</el-checkbox>
+          <el-checkbox label="2">活动价格</el-checkbox>
+          <el-checkbox label="3">抢购倒计时</el-checkbox>
+          <el-checkbox label="4">限制规则</el-checkbox>
+          <el-checkbox label="5">活动内任选商品</el-checkbox>
+          <el-checkbox label="6">已售件数</el-checkbox>
+          <el-checkbox label="7">购买按钮</el-checkbox>
         </el-checkbox-group>
-        <el-radio-group v-if="ruleForm.showContents.includes('8')" v-model="ruleForm.buttonStyle">
+        <el-radio-group v-if="ruleForm.showContents.includes('7')" v-model="ruleForm.buttonStyle">
           <el-radio :label="1">样式1</el-radio>
           <el-radio :label="2">样式2</el-radio>
           <el-radio :label="3">样式3</el-radio>

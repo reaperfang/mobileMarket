@@ -5,45 +5,54 @@
                 <div class="grid-content lefter">
                     <div class="item">
                         <div class="label">配送方式</div>
-                        <div class="value">{{expressType}}</div>
+                        <div class="value">{{orderInfo.deliveryWay | deliveryWayFilter}}</div>
                     </div>
                     <div class="item">
                         <div class="label">收货信息</div>
-                        <div class="value">{{receiveInformation}}</div>
+                        <div class="value">
+                            <p>{{orderInfo.receivedName}} / {{orderInfo.receivedPhone}}</p>
+                            <p>{{orderInfo.receivedDetail}}</p>
+                        </div>
                     </div>
-                    <p @click="currentDialog = 'ReceiveInformationDialog'; dialogVisible = true" class="change"><span>修改</span></p>
+                    <p @click="currentDialog = 'ReceiveInformationDialog'; currentData =orderInfo.id; dialogVisible = true" class="change"><span>修改</span></p>
                 </div>
             </el-col>
             <el-col :span="8"><div class="grid-content center">
                 <div class="item">
                     <div class="label">付款人</div>
-                    <div class="value">{{payer}} <span class="blue">详情</span></div>
+                    <div class="value">{{orderInfo.payer}} <span class="blue">详情</span></div>
                 </div>
                 <div class="item">
                     <div class="label">付款方式</div>
-                    <div class="value">{{payMode}}</div>
+                    <div class="value">{{orderInfo.payWay | payWayFilter}}</div>
                 </div>
                 <div class="item">
                     <div class="label">付款时间</div>
-                    <div class="value">{{payTime}}</div>
+                    <div class="value">{{orderInfo.payComplateTime}}</div>
                 </div>
                 <div class="item">
                     <div class="label">交易流水号</div>
-                    <div class="value">{{batch}}</div>
-                </div>
-                <div class="item">
-                    <div class="label">微信流水号</div>
-                    <div class="value">{{wechat}}</div>
+                    <div class="value">{{orderInfo.transactionCodeList && orderInfo.transactionCodeList.join(',')}}</div>
                 </div>
                 <div class="item">
                     <div class="label">本单获得</div>
-                    <div class="value">{{win}}</div>
+                    <div class="value">
+                        <p>积分 {{orderInfo.gainScore}}</p>
+                        <p>赠品 {{orderInfo.gift}}</p>
+                        <p>优惠券 </p>
+                        <p>优惠码 </p>
+                    </div>
                 </div>
             </div></el-col>
             <el-col :span="8"><div class="grid-content righter">
                 <div class="item">
                     <div class="label">发票信息</div>
-                    <div class="value">{{batch}}</div>
+                    <div class="value">
+                        <p>发票类型 {{orderInfo.invoiceType | invoiceTypeFilter}}</p>
+                        <p>发票抬头 {{orderInfo.invoiceTitle}}</p>
+                        <p>发票内容 商品明细</p>
+                        <p>电子发票将在订单完成后1-2天内开具</p>
+                    </div>
                 </div>
                 <div class="item">
                     <div class="label">客户留言</div>
@@ -52,13 +61,13 @@
                 <div class="item remark-box">
                     <div class="label">商户备注</div>
                     <div class="value">
-                        <span v-if="remarkVisible" @click="remarkVisible = false" class="blue">我要备注</span>
-                        <template v-if="!remarkVisible">
+                        <span v-if="!remarkVisible" @click="remarkVisible = true" class="blue">我要备注</span>
+                        <template v-if="remarkVisible">
                             <el-input
                                 type="textarea"
                                 :rows="2"
                                 placeholder="请输入内容"
-                                v-model="remarks">
+                                v-model="orderInfo.sellerRemark">
                             </el-input>
                             <p class="tr blue">
                                 <span @click="remarkHandler">完成</span>
@@ -68,7 +77,7 @@
                 </div>
             </div></el-col>
         </el-row>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="submit"></component>
     </div>
 </template>
 <script>
@@ -89,13 +98,60 @@ export default {
             message: 'message',
             remarks: 'remarks',
             currentDialog: '',
+            currentData: '',
             dialogVisible: false,
             remarkVisible: false
         }
     },
     methods: {
+        submit() {
+            this.$emit('getDetail')
+        },
         remarkHandler() {
             this.remarkVisible = true
+            this._apis.order.orderRemark({id: this.orderInfo.id, sellerRemark: this.orderInfo.sellerRemark}).then(res => {
+                this.$notify({
+                    title: '成功',
+                    message: '添加成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+        }
+    },
+    filters: {
+        deliveryWayFilter(code) {
+            if(code === 1) {
+                return '普通快递'
+            } else if(code === 2) {
+                return '商家自送'
+            }
+        },
+        payWayFilter(code) {
+            if(code === 1) {
+                return '线上支付'
+            } else if(code === 2) {
+                return '货到付款'
+            } else if(code === 3) {
+                return '找人代付'
+            }
+        },
+        invoiceTypeFilter(code) {
+            if(code === 1) {
+                return '个人'
+            } else if(code === 2) {
+                return '公司'
+            }
+        }
+    },
+    props: {
+        orderInfo: {
+            type: Object,
+            required: true
         }
     },
     components: {

@@ -94,13 +94,12 @@
           <el-checkbox label="2">商品描述</el-checkbox>
           <el-checkbox label="3">商品价格</el-checkbox>
           <el-checkbox label="4">商品原价</el-checkbox>
-          <el-checkbox label="5">剩余库存</el-checkbox>
-          <el-checkbox label="6">抢购倒计时</el-checkbox>
-          <el-checkbox label="7">抢购进度条</el-checkbox>
-          <el-checkbox label="8">限制规则</el-checkbox>
-          <el-checkbox label="9">购买按钮</el-checkbox>
+          <el-checkbox label="5">抢购倒计时</el-checkbox>
+          <el-checkbox label="6">抢购进度条</el-checkbox>
+          <el-checkbox label="7">限制规则</el-checkbox>
+          <el-checkbox label="8">购买按钮</el-checkbox>
         </el-checkbox-group>
-        <el-radio-group v-if="ruleForm.showContents.includes('9')" v-model="ruleForm.buttonStyle">
+        <el-radio-group v-if="ruleForm.showContents.includes('8')" v-model="ruleForm.buttonStyle">
           <el-radio :label="1">样式1</el-radio>
           <el-radio :label="2">样式2</el-radio>
           <el-radio :label="3">样式3</el-radio>

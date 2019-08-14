@@ -68,7 +68,7 @@
                     label="导入时间">
                 </el-table-column>
             </el-table>
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" />
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </section>
     </div>
 </template>
@@ -84,12 +84,27 @@ export default {
             ],
             total: 0,
             listQuery: {
-                page: 1,
-                limit: 20,
+                startIndex: 1,
+                pageSize: 20,
             },
         }
     },
+    created() {
+        this.getList()
+    },
     methods: {
+        getList(param) {
+            //this.listLoading = true
+            let _param
+            
+            _param = Object.assign({}, this.listQuery, param)
+
+            this._apis.goods.getImportPageList(_param).then((res) => {
+                console.log(res)
+            }).catch(error => {
+                //this.listLoading = false
+            })
+        },
         next() {
             if (this.active++ > 2) this.active = 0;
         }
