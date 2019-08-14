@@ -4,6 +4,16 @@
       <div class="top_part">
         <div class="search">
           <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="70px">
+            <el-form-item label="店铺:" prop="shop">
+              <el-select v-model="form.shop" placeholder="请选择">
+                <el-option
+                  v-for="item in shops"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="角色:" prop="name">
                 <el-input v-model="form.name" style="width:182px;" placeholder="全部"></el-input>
             </el-form-item>
@@ -28,8 +38,15 @@ export default {
   data() {
     return {
       form:{
+        shop:'',
         name:'',
       },
+      shops:[
+        {
+          label:'店铺1',
+          value:1
+        }
+      ],
       tableData: [{
         date: '2016-05-03',
         name: '王小虎',

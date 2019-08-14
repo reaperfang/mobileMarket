@@ -3,22 +3,23 @@
     <div class="main">
         <h1>创建角色</h1>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="店铺名称:" prop="shopName">
+            <!-- <el-form-item label="店铺名称:" prop="shopName">
                 <el-input v-model="form.shopName" style="width:182px;" placeholder="10个汉字"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="角色名称:" prop="name">
                 <el-input v-model="form.name" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item>
             <el-form-item label="角色描述:" prop="remack">
                 <el-input v-model="form.remack" style="width:182px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="选择权限:" prop="role">
+            <el-form-item label="同步店铺:" prop="role">
                 <el-checkbox-group v-model="form.role" class="inline">
                     <el-checkbox
                     v-for="item in options"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    style="display:block;">
                     </el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
