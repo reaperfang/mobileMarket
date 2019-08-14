@@ -87,7 +87,7 @@ export default {
           receiverLimit: '不限制',
           timesLimit: '不限制',
           remainingStock: 124234,
-          status: '已过期不可选'
+          status: 'false'
         },
         {
           id: uuid(),
@@ -97,7 +97,7 @@ export default {
           receiverLimit: '不限制',
           timesLimit: '不限制',
           remainingStock: 124234,
-          status: '已过期不可选'
+          status: 'false'
         },
         {
           id: uuid(),
@@ -107,7 +107,7 @@ export default {
           receiverLimit: '不限制',
           timesLimit: '不限制',
           remainingStock: 124234,
-          status: '已过期不可选'
+          status: 'true'
         }
       ]
     },

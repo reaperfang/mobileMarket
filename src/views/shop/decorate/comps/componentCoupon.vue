@@ -4,33 +4,45 @@
     <!-- 样式一 -->
     <div class="coupon_first">
       <ul>
-        <!-- status:true时候是已领取,hideScrambled:ture显示, -->
-        <li
-          v-for="(item, key) in currentComponentData.data.coupons"
-          :style="item.status=='true'?imgs1:imgs "
-          v-if="item.hideScrambled=='false'"
-          :key="item.id"
-        >
-          <div class="first_money">
-            <span :class="style1">{{item.remainingStock}}</span>
-            <span :class="style1">元</span>
-          </div>
-          <div :class="style2" class="first_present">{{item.content}}</div>
-        </li>
-        <!-- <li :style="imgs">
-          <div class="first_money">
-            <span
-              :class="[currentComponentData.data.couponStyle===3?'col_'+currentComponentData.data.couponColor:'',currentComponentData.data.couponColor===3?'col_1':'']"
-            >100.01</span>
-            <span
-              :class="[currentComponentData.data.couponStyle===3?'col_'+currentComponentData.data.couponColor:'',currentComponentData.data.couponColor===3?'col_1':'']"
-            >元</span>
-          </div>
-          <div
-            :class="[currentComponentData.data.couponStyle===3?'col_'+currentComponentData.data.couponColor:'',currentComponentData.data.couponColor===3?'col_6':'']"
-            class="first_present"
-          >无门开使用</div>
-        </li>-->
+        <!-- status:true时候是已领取,hideScrambled:false, -->
+        <template  v-for="(item, key) in currentComponentData.data.coupons">
+          <li
+            v-if="currentComponentData.data.hideScrambled===false"
+            :style="item.status=='true'?imgs1:imgs "
+            :key="key"
+            >
+            <div class="first_money">
+              <span :class="style1">{{item.remainingStock}}</span>
+              <span :class="style1">元</span>
+            </div>
+            <div :class="style2" class="first_present">{{item.content}}</div>
+          </li>
+          <li
+            v-else-if="item.status=='false'"
+            :style="item.status=='true'?imgs1:imgs "
+            :key="key"
+            >
+            <div class="first_money">
+              <span :class="style1">{{item.remainingStock}}</span>
+              <span :class="style1">元</span>
+            </div>
+            <div :class="style2" class="first_present">{{item.content}}</div>
+          </li>
+          <!-- <li :style="imgs">
+            <div class="first_money">
+              <span
+                :class="[currentComponentData.data.couponStyle===3?'col_'+currentComponentData.data.couponColor:'',currentComponentData.data.couponColor===3?'col_1':'']"
+              >100.01</span>
+              <span
+                :class="[currentComponentData.data.couponStyle===3?'col_'+currentComponentData.data.couponColor:'',currentComponentData.data.couponColor===3?'col_1':'']"
+              >元</span>
+            </div>
+            <div
+              :class="[currentComponentData.data.couponStyle===3?'col_'+currentComponentData.data.couponColor:'',currentComponentData.data.couponColor===3?'col_6':'']"
+              class="first_present"
+            >无门开使用</div>
+          </li>-->
+        </template>
       </ul>
     </div>
   </div>
@@ -44,22 +56,7 @@ export default {
   components: {},
   data () {
     return {
-      imgs: {
-        backgroundImage:
-          "url(" +
-          require(`@/assets/images/shop/coupon/cou${this.currentComponentData.data.couponStyle}_color${this.currentComponentData.data.couponColor}.png`) +
-          ")",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%"
-      },
-      imgs1: {
-        backgroundImage:
-          "url(" +
-          require(`@/assets/images/shop/coupon/cou${this.currentComponentData.data.couponStyle}_color0.png`) +
-          ")",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%"
-      }
+      
     }
   },
   created() {
@@ -79,6 +76,26 @@ export default {
         this.currentComponentData.data.couponStyle === 3 ? "col_" + this.currentComponentData.data.couponColor : "",
         this.currentComponentData.data.couponColor === 3 ? "col_6" : ""
       ];
+    },
+    imgs() {
+      return {
+        backgroundImage:
+          "url(" +
+          require(`@/assets/images/shop/coupon/cou${this.currentComponentData.data.couponStyle}_color${this.currentComponentData.data.couponColor}.png`) +
+          ")",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 100%"
+      }
+    },
+    imgs1() {
+      return {
+        backgroundImage:
+          "url(" +
+          require(`@/assets/images/shop/coupon/cou${this.currentComponentData.data.couponStyle}_color0.png`) +
+          ")",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 100%"
+      }
     }
   },
   methods: {
@@ -88,6 +105,7 @@ export default {
 
 <style lang="scss" scoped>
 .componentCoupon {
+  background: #f1f1f1;
   .coupon_first {
     & > ul {
       display: -webkit-box;
