@@ -101,17 +101,17 @@
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_coupon.png" alt="">
-                    <p >可用优惠券：<span class="pointer" @click="showDiscountCoupon('0')">{{clientInfoById.couponNum}}张</span></p>
-                    <span>变更</span>
+                    <p >可用优惠券：<span class="pointer" @click="showDiscountCoupon('0')">{{couponList.length}}张</span></p>
+                    <span @click="sendCoupon">发放</span>
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_code.png" alt="">
-                    <p>可用优惠码：<span class="pointer" @click="showDiscountCoupon('1')">{{clientInfoById.promotionCodeNum}}个</span></p>
-                    <span>变更</span>
+                    <p>可用优惠码：<span class="pointer" @click="showDiscountCoupon('1')">{{codeList.length}}个</span></p>
+                    <span @click="sendCode">发放</span>
                 </div>
                 <div class="assets_item rb">
                     <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p @click="test">积分：<span>{{clientInfoById.score}}</span></p>
+                    <p>积分：<span>{{clientInfoById.score}}</span></p>
                     <span @click="showAdjustScore">变更</span>
                 </div>
             </div>
@@ -150,6 +150,7 @@ import adjustBalanceDialog from './dialogs/clientInfo/adjustBalanceDialog';
 import adjustCreditDialog from './dialogs/clientInfo/adjustCreditDialog';
 import discountCouponDialog from './dialogs/clientInfo/discountCouponDialog';
 import issueCouponDialog from './dialogs/clientInfo/issueCouponDialog';
+import issueCodeDialog from './dialogs/clientInfo/issueCodeDialog';
 import addBlackDialog from './dialogs/allClient/addBlackDialog';
 import sendCardDialog from './dialogs/clientInfo/sendCardDialog';
 import changeCardDialog from './dialogs/clientInfo/changeCardDialog';
@@ -165,7 +166,8 @@ export default {
         addBlackDialog,
         sendCardDialog,
         changeCardDialog,
-        adjustCreditDialog
+        adjustCreditDialog,
+        issueCodeDialog
     },
     data() {
         return {
@@ -177,7 +179,10 @@ export default {
             clientInfoById: {
                 selected:[]
             },
-            allCoupons: []
+            allCoupons: [],
+            allCodes: [],
+            couponList: [],
+            codeList: []
         }
     },
     methods: {
@@ -229,14 +234,21 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "discountCouponDialog";
             this.currentData.couponType = type;
+            this.currentData.couponList = [].concat(this.couponList);
+            this.currentData.codeList = [].concat(this.codeList);
         },
         sendDiscount() {
-            console.log(this.currentData.couponType);
-
-            this.dialogVisible = true;
-            this.currentDialog = "issueCouponDialog";
-            this.currentData.allCoupons = [].concat(this.allCoupons);
-            this.currentData.memberSn = this.clientInfoById.memberSn;
+            if(this.currentData.couponType == '0') {
+                this.dialogVisible = true;
+                this.currentDialog = "issueCouponDialog";
+                this.currentData.allCoupons = [].concat(this.allCoupons);
+                this.currentData.memberSn = this.clientInfoById.memberSn;
+            }else{
+                this.dialogVisible = true;
+                this.currentDialog = "issueCodeDialog";
+                this.currentData.allCodes = [].concat(this.allCodes);
+                this.currentData.memberSn = this.clientInfoById.memberSn;
+            }
         },
         showAddBlack() {
             this.dialogVisible = true;
@@ -256,6 +268,17 @@ export default {
         getAllCoupons() {
             this._apis.client.getAllCoupons({cid:"", couponType: 0}).then((response) => {
                 this.allCoupons = [].concat(response.list);
+                localStorage.setItem('allCoupons', JSON.stringify(this.allCoupons));
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getAllCodes() {
+            this._apis.client.getAllCoupons({cid:"", couponType: 1}).then((response) => {
+                this.allCodes = [].concat(response.list);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -336,27 +359,52 @@ export default {
             }
             
         },
-        test() {
-            let params = {pageNum:"1", pageSize: "10"};
-            this._apis.client.getGiftList(params).then((response) => {
-                console.log(response);
+        getUsedCoupon() {
+            let params = {usedType:"1", couponType: "0", memberId: "1"};
+            this._apis.client.getUsedCoupon(params).then((response) => {
+                response.map((v) => {
+                    this.couponList.push(v.appCoupon);
+                })
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
                     message: error
                 });
             })
+        },
+        getUsedCode() {
+            let params = {usedType:"1", couponType: "1", memberId: "1"};
+            this._apis.client.getUsedCoupon(params).then((response) => {
+                response.map((v) => {
+                    this.codeList.push(v.appCoupon);
+                })
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        sendCoupon() {
+            this.dialogVisible = true;
+            this.currentDialog = "issueCouponDialog";
+            this.currentData.allCoupons = [].concat(this.allCoupons);
+        },
+        sendCode() {
+            this.dialogVisible = true;
+            this.currentDialog = "issueCodeDialog";
+            this.currentData.allCodes = [].concat(this.allCodes);
         }
     },
     computed: {
-        // memberLabels() {
-        //     return clientApi.tagsById;
-        // },
     },
     mounted() {
         this.getMemberInfo();
         this.userTag = this.memberLabels;
         this.getAllCoupons();
+        this.getAllCodes();
+        this.getUsedCoupon();
+        this.getUsedCode();
     }
 }
 </script>
