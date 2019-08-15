@@ -100,7 +100,7 @@ export default {
                 }
             }
             else if(this.listStyle=='3'){
-                this.goodMargin = {marginTop:this.goodsMargin + 'px'};
+                this.goodMargin = {marginTop:this.goodsMargin + 'px',marginLeft:this.goodsMargin + 'px'};
                 if('showTemplate' in this.currentComponentData.data){
                     this.showTemplate= this.currentComponentData.data.showTemplate;
                     if(this.showTemplate!=1){
@@ -412,12 +412,14 @@ export default {
     ul{
         display:flex;
         display:-webkit-flex;
-        justify-content:space-between;
         flex-wrap:wrap;
         li{
             margin-top:15px;
             width:110px;
             overflow:hidden;
+            &:nth-of-type(3n+1){
+                margin-left:0 !important;
+            }
             &:nth-of-type(1){
                 margin-top:0 !important;
             }
