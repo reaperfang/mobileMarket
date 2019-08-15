@@ -1,22 +1,24 @@
 <template>
-  <div>
+  <div class="main">
      <el-tabs v-model="currentTab" @tab-click="handleClick">
-      <el-tab-pane label="编辑普通图文" name="generalArticle"></el-tab-pane>
-      <el-tab-pane label="编辑微信图文" name="wechatArticle"></el-tab-pane>
+      <el-tab-pane label="图片素材" name="imageMaterial"></el-tab-pane>
+      <el-tab-pane label="图文素材" name="articleMaterial"></el-tab-pane>
+      <el-tab-pane label="视频素材" name="videoMaterial"></el-tab-pane>
     </el-tabs>
     <component :is="currentTab"></component>
   </div>
 </template>
 
 <script>
-import generalArticle from './generalArticle';
-import wechatArticle from './wechatArticle';
+import imageMaterial from './material/imageMaterial';
+import articleMaterial from './material/articleMaterial';
+import videoMaterial from './material/videoMaterial';
 export default {
   name: 'fileManageIndex',
-  components: {generalArticle, wechatArticle},
+  components: {imageMaterial, articleMaterial, videoMaterial},
   data () {
     return {
-      currentTab: 'generalArticle'
+      currentTab: 'imageMaterial'
     }
   },
   created() {
@@ -31,4 +33,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main{
+  background: #fff;
+  padding:20px;
+}
 </style>

@@ -84,6 +84,13 @@ export default [
 				name: "fileManageIndex",
 				meta: { title: "我的文件", noCache: true }
 			},
+			{
+				path: "generalArticle",
+				component: () => import("@/views/shop/shopManage/myFile/generalArticle"),
+				name: "generalArticle",
+				meta: { title: "创建图文素材", noCache: true },
+				hidden: true
+			},
 		]
 	}
 ];

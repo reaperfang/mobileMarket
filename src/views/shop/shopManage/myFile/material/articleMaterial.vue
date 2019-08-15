@@ -1,5 +1,7 @@
 <template>
-  <p>图文素材</p>
+  <div>
+    <el-button type="primary" plain @click="_routeTo('generalArticle')">新建图文素材</el-button>
+  </div>
 </template>
 
 <script>
