@@ -67,6 +67,7 @@ export default {
   data () {
     return {
       tableList:[],
+      currentItem: {},
       ruleForm: {
         status: '1',
         name: '',
@@ -81,6 +82,7 @@ export default {
 
     /* 删除分类 */
     deleteClassify(item) {
+      this.currentItem = item;
       this.$confirm('确定删除此分类吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -104,7 +106,7 @@ export default {
 
     /* 链接 */
     link(item) {
-
+      this.currentItem = item;
     },
 
     fetch() {

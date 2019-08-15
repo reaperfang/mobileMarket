@@ -41,7 +41,6 @@ export default {
   methods: {
     /* 获取店铺装修数据 */
     fetch() {
-      const _self = this;
       this.loading = true;
       this._apis.shop.getPageInfo({id: this.id}).then((response)=>{
          this.loading = false;
@@ -52,6 +51,7 @@ export default {
           title: '错误',
           message: error
         });
+        this.loading = false;
       });
     },
 

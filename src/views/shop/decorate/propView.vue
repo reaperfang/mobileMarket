@@ -21,7 +21,7 @@
         </div>
       </div>
       <!-- 动态弹窗 -->
-      <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
     </div>
 </template>
 

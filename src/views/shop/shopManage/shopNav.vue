@@ -213,10 +213,10 @@
       </div>
         <!-- {{ruleForm}} -->
       <!-- 动态弹窗 -->
-      <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
+      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
 
       <DialogBase :visible.sync="pageDialogVisible" width="816px" :title="'选择跳转页面'" @submit="seletePage">
-        <component :is="currentDialog" @seletedRow="rowSeleted"></component>
+        <component v-if="dialogVisible" :is="currentDialog" @seletedRow="rowSeleted"></component>
       </DialogBase>
     </div>
   </div>

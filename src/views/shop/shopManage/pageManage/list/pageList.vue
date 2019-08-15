@@ -64,7 +64,7 @@
       </div>
     </div>
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :pageId="currentItem.id" :pageLink="'http://www.baidu.com'"></component>
   </div>
 </template>
 
@@ -91,6 +91,7 @@ export default {
       classifyList: [],
       dialogVisible: false,
       currentDialog: '',
+      currentItem: {},
       ruleForm: {
         status: '0',
         pageCategoryInfoId: '',
@@ -106,6 +107,7 @@ export default {
 
     /* 复制页面 */
     copyPage(item) {
+      this.currentItem = item;
       this.$confirm('确定复制此页面吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -129,6 +131,7 @@ export default {
 
     /* 删除页面 */
     deletePage(item) {
+       this.currentItem = item;
        this.$confirm('确定删除此页面吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -152,12 +155,14 @@ export default {
 
     /* 推广 */
     spread(item) {
+       this.currentItem = item;
        this.dialogVisible=true; 
        this.currentDialog='dialogPopularize';
     },
 
     /* 设为首页 */
     setIndex(item) {
+       this.currentItem = item;
        this.$confirm('确定将此页面设为首页吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

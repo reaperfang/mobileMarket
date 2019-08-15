@@ -133,7 +133,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
   </el-form>
 </template>
 
