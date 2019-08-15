@@ -101,17 +101,17 @@
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_coupon.png" alt="">
-                    <p >可用优惠券：<span class="pointer" @click="showDiscountCoupon">{{clientInfoById.couponNum}}张</span></p>
+                    <p >可用优惠券：<span class="pointer" @click="showDiscountCoupon('0')">{{clientInfoById.couponNum}}张</span></p>
                     <span>变更</span>
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_code.png" alt="">
-                    <p>可用优惠码：<span>{{clientInfoById.promotionCodeNum}}个</span></p>
+                    <p>可用优惠码：<span class="pointer" @click="showDiscountCoupon('1')">{{clientInfoById.promotionCodeNum}}个</span></p>
                     <span>变更</span>
                 </div>
                 <div class="assets_item rb">
                     <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p>积分：<span>{{clientInfoById.score}}</span></p>
+                    <p @click="test">积分：<span>{{clientInfoById.score}}</span></p>
                     <span @click="showAdjustScore">变更</span>
                 </div>
             </div>
@@ -225,11 +225,14 @@ export default {
             this.currentData.id = this.clientInfoById.id;
             this.currentData.memberSn = this.clientInfoById.memberSn;
         },
-        showDiscountCoupon() {
+        showDiscountCoupon(type) {
             this.dialogVisible = true;
             this.currentDialog = "discountCouponDialog";
+            this.currentData.couponType = type;
         },
         sendDiscount() {
+            console.log(this.currentData.couponType);
+
             this.dialogVisible = true;
             this.currentDialog = "issueCouponDialog";
             this.currentData.allCoupons = [].concat(this.allCoupons);
@@ -249,22 +252,6 @@ export default {
             this.currentDialog = "changeCardDialog";
             this.currentData.id = this.userId;
             this.currentData.level = this.clientInfoById.levelName;
-        },
-        getCouponList() {
-            let params = {
-                id: this.userId,
-                cid: "",
-                couponType: 0,
-                usedType: 1
-            }
-            this._apis.client.getCouponList(params).then((response) => {
-               // console.log(response);
-            }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
-            })
         },
         getAllCoupons() {
             this._apis.client.getAllCoupons({cid:"", couponType: 0}).then((response) => {
@@ -348,6 +335,17 @@ export default {
                 })
             }
             
+        },
+        test() {
+            let params = {pageNum:"1", pageSize: "10"};
+            this._apis.client.getGiftList(params).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -358,7 +356,6 @@ export default {
     mounted() {
         this.getMemberInfo();
         this.userTag = this.memberLabels;
-        this.getCouponList();
         this.getAllCoupons();
     }
 }

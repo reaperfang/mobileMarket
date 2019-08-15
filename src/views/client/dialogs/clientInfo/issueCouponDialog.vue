@@ -12,7 +12,7 @@
               <el-option v-for="item in data.allCoupons" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <el-input-number v-model="i.couponNum" :min="1"></el-input-number>
-            <span class="marL20 addMainColor pointer" @click="handleDelete(index)">删除</span>
+            <span class="addMainColor pointer" @click="handleDelete(index)" style="margin-left: 20px">删除</span>
           </div>
           <span class="add pointer" @click="handleAdd">添加</span>
         </div>

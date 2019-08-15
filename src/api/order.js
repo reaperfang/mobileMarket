@@ -101,5 +101,35 @@ export function orderPriceChange(data) {
   })
 }
 
+// 评论列表查询（分页）
+export function getCommentList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-PRODUCT-COMMENT-PAGE-LIST-PROCESSOR',
+    data
+  })
+}
+
+// 查看评论详情
+export function getCommentInfo(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-PRODUCT-COMMENT-INFO-PROCESSOR',
+    data
+  })
+}
+
+// 回复 / 批量回复
+export function replyComment(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-PRODUCT-COMMENT-REPLYP-ROCESSOR',
+    data
+  })
+}
+
 
 
