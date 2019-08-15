@@ -100,6 +100,7 @@ export default [
         path: 'bulkDelivery',
         component: () => import('@/views/order/bulkDelivery'),
         name: 'bulkDelivery',
+        hidden: true,
         meta: { title: '批量发货', noCache: true, tabTitle: '订单处理' },
       },
       {

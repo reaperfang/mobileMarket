@@ -3,24 +3,36 @@
     <div class="main">
         <h1>创建角色</h1>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="店铺名称:" prop="shopName">
+            <!-- <el-form-item label="店铺名称:" prop="shopName">
                 <el-input v-model="form.shopName" style="width:182px;" placeholder="10个汉字"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="角色名称:" prop="name">
                 <el-input v-model="form.name" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item>
             <el-form-item label="角色描述:" prop="remack">
                 <el-input v-model="form.remack" style="width:182px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="选择权限:" prop="role">
+            <el-form-item label="同步店铺:" prop="role">
                 <el-checkbox-group v-model="form.role" class="inline">
                     <el-checkbox
                     v-for="item in options"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    class="mr20">
                     </el-checkbox>
                 </el-checkbox-group>
+            </el-form-item>
+            <el-form-item>
+                <el-tab-pane v-for="(menu, index) in theModel" :key="index"  :label="menu.menuName" style="display:block">
+                    <tree-menu 
+                    :model="menu" 
+                    ref="tree" 
+                    :menuList="menu" 
+                    :label="index" 
+                    :selectKeys="selectKeys">
+                    </tree-menu>
+                </el-tab-pane>
             </el-form-item>
             <el-form-item class="mtb200">
                 <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -32,27 +44,32 @@
 
 <script>
 // import { listArea } from '@/api/area'
+import treeMenu from '@/components/TreeMenu'
+import * as menus from '@/components/menus'
 export default {
   name: 'createRole',
+  components:{
+      treeMenu
+  },
   data() {
     return {
       form: {
           shopName:'',
           name: '',
           remack: '',
-          role: ''
+          role: [1,2]
       },
       options:[
           {
-              label:'运营',
+              label:'店铺1',
               value:1
           },
           {
-              label:'财务',
+              label:'店铺2',
               value:2
           },
           {
-              label:'库管',
+              label:'店铺3',
               value:3
           }
       ],
@@ -70,9 +87,13 @@ export default {
         role:[
           { required: true, message: '请选择角色', trigger: 'blur' },
         ]
-      }
-
+      },
+      selectKeys:[],
+      theModel:menus
     }
+  },
+  methods:{
+      onSubmit(){},      
   }
 }
 </script>
@@ -93,6 +114,9 @@ export default {
 }
 .ml20{
     margin-left: 20px;
+}
+.mr20{
+    margin-right: 20px;
 }
 .mtb200{
     margin: 200px 0;

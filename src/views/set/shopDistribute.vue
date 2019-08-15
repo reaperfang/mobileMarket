@@ -10,11 +10,18 @@
                 <el-input v-model="form.phone" style="width:182px;" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="分配店铺:" prop="role">
-                <el-checkbox-group v-model="form.role" class="inline" @change="handleCheckedCitiesChange">
+                <el-checkbox 
+                :indeterminate="isIndeterminate" 
+                v-model="checkAll" 
+                @change="handleCheckAllChange">
+                    全选
+                </el-checkbox>
+                <el-checkbox-group v-model="checkedShop" class="inline" @change="handleCheckedShopsChange">
                     <el-checkbox 
                     v-for="item in options" 
-                    :label="item.label"
-                    :key="item.label">
+                    :label="item.value"
+                    :key="item.label"
+                    style="display:block;">
                     {{item.label}}
                     </el-checkbox>
                 </el-checkbox-group>
@@ -67,12 +74,29 @@ export default {
         role:[
           { required: true, message: '请选择店铺', trigger: 'blur' },
         ]
-      }
-
+      },
+      checkedShop:[1,2],
+      checkAll:false,
+      isIndeterminate: false
     }
   },
   methods:{
-     
+     onSubmit(){
+        
+     },
+     handleCheckAllChange(val) {
+        let vals = []
+        this.options.map(item =>{
+            vals.push(item.value)
+        })
+        this.checkedShop = val ? vals : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedShopsChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.options.length;
+        this.isIndeterminate != checkedCount > 0 && checkedCount < this.options.length;
+      }
   }
 }
 </script>

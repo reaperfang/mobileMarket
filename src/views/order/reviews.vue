@@ -1,30 +1,39 @@
 <template>
     <div class="reviews">
         <div class="search">
-            <el-form ref="form" :inline="true" :model="formInline" class="form-inline">
+            <el-form ref="form" :inline="true" :model="listQuery" class="form-inline">
                 <el-form-item label="订单编号">
-                    <el-input v-model="formInline.orderNumber" placeholder="请输入"></el-input>
+                    <el-input v-model="listQuery.orderCode" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="商品名称">
-                    <el-input v-model="formInline.goodsName" placeholder="请输入"></el-input>
+                    <el-input v-model="listQuery.goodsName" placeholder="请输入"></el-input>
                 </el-form-item>
-                <el-form-item label="订单状态">
-                    <el-select v-model="formInline.orderState">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderStateList" :key="index"></el-option>
+                <el-form-item label="审核状态">
+                    <el-select v-model="listQuery.auditStatus">
+                        <el-option label="全部" value=""></el-option>
+                        <el-option label="待审核" value="0"></el-option>
+                        <el-option label="审核通过" value="1"></el-option>
+                        <el-option label="审核未通过" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="评价星级">
-                    <el-select v-model="formInline.star">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderStateList" :key="index"></el-option>
+                    <el-select v-model="listQuery.starNum">
+                        <el-option label="全部" value=""></el-option>
+                        <el-option label="1星" value="1"></el-option>
+                        <el-option label="2星" value="2"></el-option>
+                        <el-option label="3星" value="3"></el-option>
+                        <el-option label="4星" value="4"></el-option>
+                        <el-option label="5星" value="5"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="下单时间">
+                <el-form-item label="评论时间">
                     <el-date-picker
-                        v-model="formInline.orderDate"
+                        v-model="listQuery.orderDate"
                         type="daterange"
                         range-separator="-"
                         start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+                        end-placeholder="结束日期"
+                        value-format="yyyy-MM-dd hh:mm:ss">
                     </el-date-picker>
                 </el-form-item>
                 <div class="buttons">
@@ -35,7 +44,7 @@
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
-                        <el-button type="primary">搜 索</el-button>
+                        <el-button @click="getList" type="primary">搜 索</el-button>
                     </div>
                 </div>
             </el-form>
@@ -55,25 +64,25 @@
                         width="55">
                     </el-table-column>
                     <el-table-column
-                        prop="tag"
+                        prop="isChoiceness"
                         label="全部"
                         width="120"
-                        :filters="[{ text: '精选', value: '精选' }, { text: '普通', value: '普通' }]"
+                        :filters="[{ text: '精选', value: 1 }, { text: '普通', value: 0 }]"
                         :filter-method="filterTag"
                         filter-placement="bottom-end">
                         <template slot-scope="scope">
-                            <el-tag color="#FF4B1C">{{scope.row.tag}}</el-tag>
+                            <el-tag v-if="scope.row.isChoiceness == 1" color="#FF4B1C">{{scope.row.isChoiceness | isChoicenessFilter}}</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="star"
+                        prop="starNum"
                         label="评价星级"
                         width="120"
-                        :filters="[{ text: '1星', value: '1' }, { text: '2星', value: '2' }, { text: '3星', value: '3' }, { text: '4星', value: '4' }, { text: '5星', value: '5' }]"
+                        :filters="[{ text: '1星', value: 1 }, { text: '2星', value: 2 }, { text: '3星', value: 3 }, { text: '4星', value: 4 }, { text: '5星', value: 5 }]"
                         :filter-method="filterStar"
                         filter-placement="bottom-end">
                         <template slot-scope="scope">
-                            {{scope.row.star}}星
+                            {{scope.row.starNum}}星
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -82,7 +91,7 @@
                         width="120">
                     </el-table-column>
                     <el-table-column
-                        prop="orderNumber"
+                        prop="orderInfoCode"
                         label="订单编号">
                     </el-table-column>
                     <el-table-column
@@ -90,16 +99,19 @@
                         label="客户ID">
                     </el-table-column>
                     <el-table-column
-                        prop="orderState"
+                        prop="auditStatus"
                         label="状态">
                     </el-table-column>
                     <el-table-column
-                        prop="reply"
-                        label="回复">
+                        prop="isReply"
+                        label="回复"
+                        :filters="[{ text: '是', value: 1 }, { text: '否', value: 0 }]"
+                        :filter-method="replyFilterTag"
+                        filter-placement="bottom-end">
                     </el-table-column>
                     <el-table-column
-                        prop="time"
-                        label="最新发货时间">
+                        prop="createTime"
+                        label="评价时间">
                     </el-table-column>
                     <el-table-column label="操作">
                         <template slot-scope="scope">
@@ -109,7 +121,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
     </div>
 </template>
@@ -119,13 +131,6 @@ import Pagination from '@/components/Pagination'
 export default {
     data() {
         return {
-            formInline: {
-                orderNumber: '', // 订单编号
-                goodsName: '', //  商品名称
-                orderState: '', //  订单状态
-                star: '', //   评价星级
-                orderDate: '', //  下单时间
-            },
             orderStateList: [
                 {
                     label: '全部',
@@ -162,8 +167,15 @@ export default {
             ],
             total: 0,
             listQuery: {
-                page: 1,
-                limit: 20,
+                startIndex: 1,
+                pageSize: 20,
+                orderCode: '', // 订单号
+                goodsName: '', // 商品名称
+                orderDate: '',
+                createTimeStart: '', // 评论查询开始时间
+                creaTetimeEnd: '', // 评论查询结束时间
+                auditStatus: '', // 审核状态
+                starNum: '', // 星级数量
             },
             tableData: [
                 {
@@ -180,6 +192,16 @@ export default {
             ]
         }
     },
+    created() {
+        this.getList()
+    },
+    filters: {
+        isChoicenessFilter(code) {
+            if(code == 1) {
+                return '精选'
+            }
+        }
+    },
     methods: {
         resetForm(formName) {
             this.$refs[formName].resetFields();
@@ -187,15 +209,32 @@ export default {
         handleSelectionChange(val) {
             this.multipleSelection = val;
         },
-        getList() {
-
-        },
         filterTag(value, row) {
-            return row.tag === value;
+            return row.isChoiceness === value;
+        },
+        replyFilterTag(value, row) {
+            return row.isReply == +value;
         },
         filterStar(value, row) {
-            return row.star === value;
-        }
+            return row.starNum === +value;
+        },
+        getList(param) {
+            //this.listLoading = true
+            let _param
+            
+            _param = Object.assign({}, this.listQuery, param, {
+                createTimeStart: this.listQuery.orderDate[0],
+                creaTetimeEnd: this.listQuery.orderDate[1]
+            })
+
+            this._apis.order.getCommentList(_param).then((res) => {
+                this.total = +res.total
+                this.tableData = res.list
+                console.log(res)
+            }).catch(error => {
+                //this.listLoading = false
+            })
+        },
     },
     components: {
         Pagination
@@ -251,6 +290,8 @@ export default {
 }
 /deep/ .el-tag {
     color: #fff;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 </style>
 

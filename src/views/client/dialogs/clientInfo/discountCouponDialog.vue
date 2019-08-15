@@ -1,10 +1,9 @@
 <template>
   <DialogBase :visible.sync="visible" @submit="submit" title="优惠券/码" :hasCancel="hasCancel">
     <div class="c_container" style="position: relative">
-      <el-button class="border_btn send" @click="sendDiscount">发放优惠券</el-button>
+      <el-button class="border_btn send" @click="sendDiscount">{{data.couponType == '0' ? '发放优惠券':'发放优惠码'}}</el-button>
       <el-tabs v-model="activeName">
         <el-tab-pane label="优惠券" name="first">
-          
           <div class="clearfix">
             <p class="fl">共20张</p>
             <div class="fr">
@@ -81,6 +80,17 @@ export default {
     },
     sendDiscount() {
       this.$emit("sendDiscount");
+    },
+    getUsedCoupon() {
+      let params = {usedType:"1", couponType: "1", memberId: "1"};
+      this._apis.client.getUsedCoupon(params).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     }
   },
   computed: {
@@ -93,7 +103,9 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.getUsedCoupon();
+  },
   props: {
     data: {},
     dialogVisible: {
