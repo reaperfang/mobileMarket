@@ -23,8 +23,8 @@
             <span class="s1" @click="_routeTo('clientInfo',{id: scope.row.id})">详情</span>
             <span class="s2" @click="handelDelete(scope.row.id)">删除</span>
             <span class="s3" @click="addTag(scope.row.id)">标签</span>
-            <span class="s4" @click="addBlackList(scope.row.id)" v-if="scope.row.status == 0">加入黑名单</span>
-            <span class="s5" @click="removeBlack(scope.row.id)" v-if="scope.row.status == 2">解除黑名单</span>
+            <span class="s4" @click="addBlackList(scope.row)" v-if="scope.row.status == 0">加入黑名单</span>
+            <span class="s5" @click="removeBlack(scope.row)" v-if="scope.row.status == 1">解除黑名单</span>
           </div>
         </template>
       </el-table-column>
@@ -104,49 +104,69 @@ export default {
       this.currentData.userId = id;
     },
     batchDelete() {
-      if (this.checkAll) {
+      if (this.$refs.allClientTable.selection.length > 0) {
         this.dialogVisible = true;
         this.currentDialog = "batchDeleteUserDialog";
+        this.currentData.checkedItem = this.$refs.allClientTable.selection;
       } else {
         this.$notify.info({
           title: "消息",
           message: "请选择客户"
         });
       }
-      this.currentData.checkedItem = this.$refs.allClientTable.selection;
     },
     batchAddTag() {
-      if (this.checkAll) {
+      if (this.$refs.allClientTable.selection.length > 0) {
         this.dialogVisible = true;
         this.currentDialog = "batchAddTagDialog";
+        this.currentData.checkedItem = this.$refs.allClientTable.selection;
       } else {
         this.$notify.info({
           title: "消息",
           message: "请选择客户"
         });
       }
-      this.currentData.checkedItem = this.$refs.allClientTable.selection;
     },
     addTag(id) {
       this.dialogVisible = true;
       this.currentDialog = "addTagDialog";
       this.currentData.id = id;
     },
-    addBlackList(cid) {
+    addBlackList(row) {
       this.dialogVisible = true;
       this.currentDialog = "addBlackDialog";
+      this.currentData.memberSn = row.memberSn;
+      this.currentData.id = row.id;
     },
-    removeBlack(id) {
+    removeBlack(row) {
       this.dialogVisible = true;
       this.currentDialog = "removeBlackDialog";
+      this.currentData.id = row.id;
+      this.currentData.memberSn = row.memberSn;
     },
     batchAddBlack() {
-      this.dialogVisible = true;
-      this.currentDialog = "batchAddBlackDialog";
+      if (this.$refs.allClientTable.selection.length > 0) {
+        this.dialogVisible = true;
+        this.currentDialog = "batchAddBlackDialog";
+        this.currentData.checkedItem = this.$refs.allClientTable.selection;
+      } else {
+        this.$notify.info({
+          title: "消息",
+          message: "请选择客户"
+        });
+      }
     },
     batchRemoveBlack() {
-      this.dialogVisible = true;
-      this.currentDialog = "batchRemoveBlackDialog";
+      if (this.$refs.allClientTable.selection.length > 0) {
+        this.dialogVisible = true;
+        this.currentDialog = "batchRemoveBlackDialog";
+        this.currentData.checkedItem = this.$refs.allClientTable.selection;
+      } else {
+        this.$notify.info({
+          title: "消息",
+          message: "请选择客户"
+        });
+      }
     },
     handleChange(val) {
       this.memberList.forEach(row => {

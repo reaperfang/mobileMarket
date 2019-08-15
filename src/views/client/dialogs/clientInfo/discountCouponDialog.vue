@@ -5,9 +5,9 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="优惠券" name="first">
           <div class="clearfix">
-            <p class="fl">共20张</p>
+            <p class="fl">共{{data.couponList.length}}张</p>
             <div class="fr">
-              <el-select v-model="coupon" style="margin-bottom: 10px">
+              <el-select v-model="couponType" style="margin-bottom: 10px">
                 <el-option label="全部状态（20）" value="1"></el-option>
                 <el-option label="未使用" value="2"></el-option>
                 <el-option label="已使用" value="3"></el-option>
@@ -15,22 +15,22 @@
             </div>
           </div>
           <el-table
-            :data="dataList"
+            :data="data.couponList"
             style="width: 100%"
             :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
             :default-sort="{prop: 'date', order: 'descending'}"
           >
-            <el-table-column prop="createUserName" label="优惠券名称"></el-table-column>
-            <el-table-column prop="tradeTime" label="领取方式"></el-table-column>
-            <el-table-column prop="changeReason" label="获取时间"></el-table-column>
-            <el-table-column prop="changeAmount" label="状态"></el-table-column>
+            <el-table-column prop="name" label="优惠券名称"></el-table-column>
+            <el-table-column prop="cardSubTitle" label="领取方式"></el-table-column>
+            <el-table-column prop="beginTime" label="获取时间"></el-table-column>
+            <el-table-column prop="status" label="状态"></el-table-column>
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="优惠码" name="second">
           <div class="clearfix">
-            <p class="fl">共20张</p>
+            <p class="fl">共{{data.codeList.length}}张</p>
             <div class="fr">
-              <el-select v-model="coupon" style="margin-bottom: 10px">
+              <el-select v-model="codeType" style="margin-bottom: 10px">
                 <el-option label="全部状态（20）" value="1"></el-option>
                 <el-option label="未使用" value="2"></el-option>
                 <el-option label="已使用" value="3"></el-option>
@@ -38,15 +38,15 @@
             </div>
           </div>
           <el-table
-            :data="dataList"
+            :data="data.codeList"
             style="width: 100%"
             :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
             :default-sort="{prop: 'date', order: 'descending'}"
           >
-            <el-table-column prop="createUserName" label="优惠券名称"></el-table-column>
-            <el-table-column prop="tradeTime" label="领取方式"></el-table-column>
-            <el-table-column prop="changeReason" label="获取时间"></el-table-column>
-            <el-table-column prop="changeAmount" label="状态"></el-table-column>
+            <el-table-column prop="name" label="优惠券名称"></el-table-column>
+            <el-table-column prop="cardSubTitle" label="领取方式"></el-table-column>
+            <el-table-column prop="beginTime" label="获取时间"></el-table-column>
+            <el-table-column prop="status" label="状态"></el-table-column>
           </el-table>
         </el-tab-pane>
       </el-tabs>
@@ -63,15 +63,8 @@ export default {
     return {
       hasCancel: true,
       activeName: "first",
-      coupon: '1',
-      dataList: [
-        {
-          createUserName: "Coco",
-          tradeTime: "2019-08-01",
-          changeReason: "消费得积分",
-          changeAmount: "50"
-        }
-      ]
+      couponType: '1',
+      codeType: "1"
     };
   },
   methods: {
@@ -80,17 +73,6 @@ export default {
     },
     sendDiscount() {
       this.$emit("sendDiscount");
-    },
-    getUsedCoupon() {
-      let params = {usedType:"1", couponType: "1", memberId: "1"};
-      this._apis.client.getUsedCoupon(params).then((response) => {
-        console.log(response);
-      }).catch((error) => {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
     }
   },
   computed: {
@@ -104,7 +86,7 @@ export default {
     }
   },
   mounted() {
-    this.getUsedCoupon();
+    
   },
   props: {
     data: {},
