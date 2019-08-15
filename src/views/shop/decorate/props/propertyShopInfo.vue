@@ -23,7 +23,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </el-form>
 </template>
 
@@ -52,7 +52,7 @@ export default {
 
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.backgroundImage = dialogData.src;
+      this.ruleForm.backgroundImage = dialogData.filePath;
     }
   }
 }

@@ -14,7 +14,7 @@ module.exports = {
     assetsPublicPath: '/',
     host: '127.0.0.1',
     // host: '0.0.0.0',
-    port: 9000, 
+    port: 9000,
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: false,
@@ -36,29 +36,25 @@ module.exports = {
       '/data-server/**': {
         //target: 'http://172.22.146.2:8080', // 订单 尹茂凯
         //target: 'http://172.22.134.106:8080', // 商品 王浩
-        //target: 'http://172.22.146.133:8081',  //李雯廷
+        target: 'http://172.22.146.133:8081',  //李雯廷
         //target: 'http://120.133.1.130:8012',//营销
         //target: 'http://172.22.146.109:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080', // 客户 崔建
         //target: 'http://172.22.146.4:8080', //客户 刘亚凯
-        //target: 'http://172.22.146.123:8080', // 客户 王杰
+        // target: 'http://172.22.146.123:8080', // 客户 王杰
         //target:'http://172.22.146.124:8090',//许涛
         //target: 'http://172.22.134.125:8012',//陈程
-        //target: 'http://172.22.146.118:8080', // 订单 李刚
+        target: 'http://172.22.146.12:8091', // 订单 李刚
         //target: 'http://172.22.146.3:8080', // 订单 张红亮
-        // target: 'http://172.22.146.116:8080', // 商品 王浩
+        //target: 'http://172.22.146.116:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080',
         //target: 'http://172.22.146.10:8080',
         // target: 'http://172.22.146.109:8080',
-        //target: 'http://172.22.146.133:8081',  //李雯廷
         //target: 'http://172.22.146.31:8080', // 客户 崔建
         //target: 'http://172.22.146.10:8080', //客户 刘亚凯
-        // target: 'http://172.22.146.123:8080', // 客户 王杰
         // target: 'http://172.22.146.109:8080',
         // target: 'http://120.133.1.130:8012',//营销测试机
-        //target:'http://172.22.146.124:8090',//许涛
         //target:'http://172.22.145.115:8080',//耿士龙
-        //target: 'http://120.133.1.130:8012',//营销
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
@@ -88,7 +84,7 @@ module.exports = {
     }
   },
 
-    // 测试环境
+  // 测试环境
   testBuild: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist-test/index.html'),
@@ -115,7 +111,7 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report || false,
 
-     // `npm run build:prod --generate_report`
+    // `npm run build:prod --generate_report`
     generateAnalyzerReport: process.env.npm_config_generate_report || false
   },
 

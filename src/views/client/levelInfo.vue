@@ -91,7 +91,7 @@
                     <span>积分</span>
                 </el-form-item>
                 <el-form-item v-if="getIndex(this.rewardList,'赠送红包') !== -1">
-                    <el-checkbox v-model="ruleForm.check2">赠送红包</el-checkbox>
+                    <el-checkbox v-model="ruleForm.check3">赠送红包</el-checkbox>
                     <span>送</span>
                     <div class="input_wrap3">
                         <el-input placeholder="填写数字"></el-input>
@@ -99,7 +99,7 @@
                     <span>元给包1个</span>
                 </el-form-item>
                 <el-form-item v-if="getIndex(this.rewardList,'赠送赠品') !== -1">
-                    <el-checkbox v-model="ruleForm.check2">赠送赠品</el-checkbox>
+                    <el-checkbox v-model="ruleForm.check4" @change="showGiftDialog">赠送赠品</el-checkbox>
                     <div class="input_wrap2">
                         <el-select v-model="ruleForm.status" placeholder="选择优惠券">
                             <el-option label="区域一" value="shanghai"></el-option>
@@ -112,7 +112,7 @@
                     <span>个</span>
                 </el-form-item>
                 <el-form-item v-if="getIndex(this.rewardList,'赠送优惠券') !== -1">
-                    <el-checkbox v-model="ruleForm.check2">赠送优惠券</el-checkbox>
+                    <el-checkbox v-model="ruleForm.check5">赠送优惠券</el-checkbox>
                     <div class="input_wrap2">
                         <el-select v-model="ruleForm.status" placeholder="选择优惠券">
                             <el-option label="区域一" value="shanghai"></el-option>
@@ -127,17 +127,18 @@
             </el-form>
         </div>
         <div class="btn_container" style="text-align: center">
-            <el-button type="primary" @click="save">保 存</el-button>
+            <el-button type="primary">保 存</el-button>
             <el-button>返 回</el-button>
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
     </div>
 </template>
 <script type="es6">
-import levelInfoDialog from './dialogs/levelInfo/levelInfoDialog'
+import levelInfoDialog from './dialogs/levelInfo/levelInfoDialog';
+import giftListDialog from './dialogs/levelInfo/giftListDialog';
 export default {
     name: 'levelInfo',
-    components: { levelInfoDialog },
+    components: { levelInfoDialog, giftListDialog },
     data() {
         return {
             fileList: [],
@@ -152,6 +153,9 @@ export default {
                 check1: false,
                 radio1: "1",
                 check2: false,
+                check3: false,
+                check4: false,
+                check5: false,
                 status: ""
             },
             rules: {
@@ -246,6 +250,14 @@ export default {
                     message: error
                 });
             })
+        },
+        showGiftDialog(val) {
+            if(val) {
+                this.dialogVisible = true;
+                this.currentDialog = "giftListDialog";
+            }else{
+                this.dialogVisible = false;
+            }
         }
     },
     mounted() {

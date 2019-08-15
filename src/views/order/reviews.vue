@@ -38,8 +38,8 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button class="border-button">批量审核</el-button>
-                        <el-button class="border-button">批量回复</el-button>
+                        <el-button @click="batchAudit" class="border-button">批量审核</el-button>
+                        <el-button @click="batchReply" class="border-button">批量回复</el-button>
                         <el-button @click="$router.push('/order/sensitiveWords')" class="border-button">敏感词设置</el-button>
                     </div>
                     <div class="righter">
@@ -91,16 +91,19 @@
                         width="120">
                     </el-table-column>
                     <el-table-column
-                        prop="orderInfoCode"
+                        prop="orderCode"
                         label="订单编号">
                     </el-table-column>
                     <el-table-column
-                        prop="customerId"
+                        prop="memberSn"
                         label="客户ID">
                     </el-table-column>
                     <el-table-column
                         prop="auditStatus"
                         label="状态">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.auditStatus | auditStatusFilter}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                         prop="isReply"
@@ -108,25 +111,32 @@
                         :filters="[{ text: '是', value: 1 }, { text: '否', value: 0 }]"
                         :filter-method="replyFilterTag"
                         filter-placement="bottom-end">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.isReply | isReplyFilter}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                         prop="createTime"
                         label="评价时间">
                     </el-table-column>
-                    <el-table-column label="操作">
+                    <el-table-column label="操作" width="150px">
                         <template slot-scope="scope">
+                            <span v-if="scope.row.auditStatus == 0" class="blue" @click="currentDialog = 'AuditDialog'; title='审核'; batch = false; currentData = scope.row; dialogVisible = true">审核</span>
+                            <span class="blue" @click="setChoiceness(scope.row)">{{scope.row.isChoiceness == 1 ? '取消精选' : '设为精选'}}</span>
                             <span @click="$router.push({ path: '/order/reviewsDetail?id=' +  scope.row.id})" class="blue">查看</span>
-                            <span class="blue">同意</span>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit" @audit="auditSubmit" :title="title"></component>
     </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination'
+import BatchReplyDialog from '@/views/order/dialogs/batchReplyDialog'
+import AuditDialog from '@/views/order/dialogs/auditDialog'
 
 export default {
     data() {
@@ -189,7 +199,13 @@ export default {
                     reply: '是',
                     time: '2019'
                 }
-            ]
+            ],
+            currentDialog: '',
+            currentData: {},
+            dialogVisible: false,
+            title: '',
+            batch: false
+
         }
     },
     created() {
@@ -200,9 +216,115 @@ export default {
             if(code == 1) {
                 return '精选'
             }
+        },
+        isReplyFilter(code) {
+            if(code == 0) {
+                return '否'
+            } else if(code == 1) {
+                return '是'
+            }
+        },
+        auditStatusFilter(code) {
+            if(code == 0) {
+                return '待审核'
+            } else if(code == 1) {
+                return '审核通过'
+            } else if(code == 2) {
+                return '审核未通过'
+            }
         }
     },
     methods: {
+        auditSubmit(value) {
+            let params = {auditStatus: +value}
+            let ids = this.multipleSelection.map(val => +val.id) 
+
+            if(this.batch) {
+                params.ids = ids
+            } else {
+                params.id = this.currentData.id
+            }
+            this._apis.order.orderCommentAuth(params).then((res) => {
+                this.getList()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: `审核成功！`,
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        setChoiceness(row) {
+            this._apis.order.setChoiceness({id: row.id, isChoiceness: row.isChoiceness == 1 ? 0 : 1}).then((res) => {
+                let message = ''
+
+                if(row.isChoiceness == 1) {
+                    message = '取消'
+                } else {
+                    message = '设置'
+                }
+                this.getList()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: `${message}成功！`,
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        onSubmit(value) {
+            console.log(value)
+            this._apis.order.replyComment({ids: this.multipleSelection.map(val => val.id), replyContent: value}).then((res) => {
+                console.log(res)
+            }).catch(error => {
+                
+            })
+        },
+        batchAudit() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量审核的评论', confirmText: '知道了'})
+                return
+            } else {
+                if(this.multipleSelection.filter(val => val.auditStatus != 0).length) {
+                    this.confirm({title: '提示', icon: true, text: '勾选的评论中包含已审核的数据，无法批量回复，请重新选择。', confirmText: '知道了'})
+
+                    return
+                }
+            }
+
+            this.currentDialog = 'AuditDialog'
+            this.title = '批量审核'
+            this.batch = true
+            this.dialogVisible = true
+        },
+        batchReply() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量回复的评论', confirmText: '知道了'})
+                return
+            } else {
+                if(this.multipleSelection.filter(val => val.isReply).length) {
+                    this.confirm({title: '提示', icon: true, text: '勾选的评论中包含已回复的数据，无法批量回复，请重新选择。', confirmText: '知道了'})
+
+                    return
+                }
+            }
+
+            this.currentDialog = 'BatchReplyDialog'
+            this.title = '批量回复'
+            this.dialogVisible = true
+        },
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
@@ -237,7 +359,9 @@ export default {
         },
     },
     components: {
-        Pagination
+        Pagination,
+        BatchReplyDialog,
+        AuditDialog
     }
 }
 </script>

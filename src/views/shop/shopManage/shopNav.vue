@@ -32,13 +32,13 @@
         <div class="phone-footer">
           <ul class="navs type1" v-if="ruleForm.navStyle.id == 1">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
-              <img :src="ruleForm.navMap[item].navIcon" alt="">
+              <img :src="ruleForm.navMap[item].navIconActive" alt="">
               <span>{{ruleForm.navMap[item].navName}}</span>
             </li>
           </ul>
           <ul class="navs type2" v-if="ruleForm.navStyle.id == 2">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
-              <img :src="navMap[item].navIcon" alt="">
+              <img :src="navMap[item].navIconActive" alt="">
             </li>
           </ul>
           <ul class="navs type3" v-if="ruleForm.navStyle.id == 3">
@@ -71,13 +71,28 @@
             <el-form-item label="导航名称" prop="navName">
               <el-input v-model="currentNav.navName" placeholder="请输入导航名称(请勿超过4个汉字或8个字母)"></el-input>
             </el-form-item>
-            <el-form-item label="导航图标" prop="navIcon">
-              <div class="img_preview" v-if="currentNav.navIcon">
-                <img :src="currentNav.navIcon" alt="">
-                <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
-              </div>
-              <div class="add_button" v-if="!currentNav.navIcon" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
-                <i class="inner"></i>
+            <el-form-item label="导航图标" prop="">
+              <div class="upload_img_list">
+                <div class="img_block">
+                  <p>选中</p>
+                  <div class="img_preview" v-if="currentNav.navIconActive">
+                    <img :src="currentNav.navIconActive" alt="">
+                    <span @click="currentImg='active';dialogVisible=true; currentDialog='dialogSelectImageMaterial'">修改</span>
+                  </div>
+                  <div class="add_button" v-if="!currentNav.navIconActive" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
+                    <i class="inner"></i>
+                  </div>
+                </div>
+                <div class="img_block">
+                  <p>未选中</p>
+                  <div class="img_preview" v-if="currentNav.navIcon">
+                    <img :src="currentNav.navIcon" alt="">
+                    <span @click="currentImg='normal';dialogVisible=true; currentDialog='dialogSelectImageMaterial'">修改</span>
+                  </div>
+                  <div class="add_button" v-if="!currentNav.navIcon" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
+                    <i class="inner"></i>
+                  </div>
+                </div>
               </div>
               建议尺寸：750*370，尺寸不匹配时，图片将被压缩或拉伸以铺满四周
             </el-form-item>
@@ -131,6 +146,9 @@
                 <el-option label="营销活动" value="11"></el-option>
               </el-select>
             </el-form-item>
+            <el-tag type="success" @close="deleteGoodsGroup()" v-if="navigation_type === '1' && seletedPage">
+              {{seletedPage.data.name}}
+            </el-tag>
           </div>
 
 
@@ -185,9 +203,9 @@
           <div class="block button">
             <div class="help_blank"></div>
             <div class="buttons">
-              <el-button @click="saveAndApply">保存并启用</el-button>
-              <el-button @click="save">暂    存</el-button>
               <el-button @click="resetData">重    置</el-button>
+              <el-button @click="save">暂    存</el-button>
+              <el-button @click="saveAndApply">保存并启用</el-button>
             </div>
           </div>
 
@@ -195,7 +213,11 @@
       </div>
         <!-- {{ruleForm}} -->
       <!-- 动态弹窗 -->
-      <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
+      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
+
+      <DialogBase :visible.sync="pageDialogVisible" width="816px" :title="'选择跳转页面'" @submit="seletePage">
+        <component v-if="dialogVisible" :is="currentDialog" @seletedRow="rowSeleted"></component>
+      </DialogBase>
     </div>
   </div>
 </template>
@@ -203,14 +225,21 @@
 <script>
 import dialogSelectImageMaterial from '../dialogs/dialogSelectImageMaterial';
 import dialogSelectNavTemplate from '../dialogs/dialogSelectNavTemplate';
+
+import DialogBase from "@/components/DialogBase";
+import microPage from "../dialogs/jumpLists/microPage";
+import microPageClassify from "../dialogs/jumpLists/microPageClassify";
+import marketCampaign from "../dialogs/jumpLists/marketCampaign";
+
 import utils from "@/utils";
 import uuid from 'uuid/v4';
 export default {
   name: 'shopNav',
-  components: {dialogSelectImageMaterial, dialogSelectNavTemplate},
+  components: {dialogSelectImageMaterial, dialogSelectNavTemplate, DialogBase, microPage, microPageClassify, marketCampaign},
   data () {
     return {
       dialogVisible: false,
+      pageDialogVisible: false,
       currentDialog: '',
       navigation_type: '0',  //导航类型
       utils,
@@ -222,7 +251,11 @@ export default {
         navMap: {}
       },
       rules: {},
-      currentNav: null  //当前导航对象
+      currentNav: null,  //当前导航对象
+      currentImg: 'active',  //当前上传图片类型   高亮和普通
+      seletedPage: null,   //选中的页面
+      tempSelectPage: null  //临时选中的页面  
+
     }
   },
   computed: {
@@ -235,17 +268,42 @@ export default {
         }
       },
       depp: true
+    },
+    'currentNav.systemNavLinkUrl'(newValue) {
+      switch(newValue) {
+        case '7':
+          this.pageDialogVisible = true;
+          this.currentDialog = 'microPage';
+          break;
+        case '8':
+          this.pageDialogVisible = true;
+          this.currentDialog = 'microPageClassify';
+          break;
+        case '11':
+          this.pageDialogVisible = true;
+          this.currentDialog = 'marketCampaign';
+          break;
+      }
     }
   },
   created() {
     this.initnavMap();
     this.fetch();
   },
+  watch: {
+    navigation_type() {
+      this.fetch();
+    }
+  },
   methods: {
 
      /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.currentNav.navIcon = dialogData.src;
+      if(this.currentImg === 'active') {
+        this.currentNav.navIconActive = dialogData.filePath;
+      }else if(this.currentImg === 'normal') {
+        this.currentNav.navIcon = dialogData.filePath;
+      }
     },
 
      /* 弹窗选中了导航样式 */
@@ -271,6 +329,7 @@ export default {
         id: uuid(),
         navName: `导航${num}`,
         navIcon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564824709390&di=f171260fec0b461843d15c732ef5ba92&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2F201306%2F18%2F122658rt90n2d2zy4qnn0q.jpg',
+        navIconActive: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564824709390&di=f171260fec0b461843d15c732ef5ba92&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2F201306%2F18%2F122658rt90n2d2zy4qnn0q.jpg',
         navLinkType: 1,
         systemNavLinkUrl: '1',
         customNavLinkUrl: '',
@@ -351,6 +410,7 @@ export default {
     saveAndApply() {
       this.submit({
         navigationKey: '',
+        status: '1',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -360,6 +420,7 @@ export default {
     save() {
        this.submit({
         navigationKey: '',
+        status: '0',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -385,8 +446,24 @@ export default {
 
     /* 重置 */
     resetData() {
+      // this.submit({
+      //   navigationKey: '',
+      //   status: '0',
+      //   navigation_type: this.navigation_type,
+      //   navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+      // });
+    },
 
-    }
+    rowSeleted(row) {
+      this.tempSelectPage = row;
+    },
+
+    /* 向父组件提交选中的数据 */
+    seletePage() {
+      if(this.tempSelectPage) {
+        this.seletedPage = this.tempSelectPage;
+      }
+    },
   }
 }
 </script>
@@ -581,6 +658,24 @@ export default {
           background:#fff;
           padding-bottom: 30px;
           margin-top: 30px;
+        }
+      }
+      .upload_img_list{
+        display:flex;
+        flex-direction: row;
+        .img_block{
+          margin-right:10px;
+          .img_preview{
+            width:50px;
+            height:50px;
+            span{
+              font-size:12px;
+            }
+          }
+          .add_button{
+            width:50px;
+            height:50px;
+          }
         }
       }
     }

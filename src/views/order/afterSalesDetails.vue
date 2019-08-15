@@ -3,11 +3,11 @@
         <div class="header">
             <el-row>
                 <el-col :span="12">
-                    <span>售后单编号：{{}}</span>
+                    <span>售后单编号：{{orderAfterSale.code}}</span>
                     <span>【退货退款】</span>
                 </el-col>
                 <el-col class="header-righter" :span="12">
-                    <span>买家：{{}}</span>
+                    <span>客户ID：{{orderAfterSale.memberSn}}</span>
                 </el-col>
             </el-row>
         </div>
@@ -37,7 +37,7 @@
             <el-tab-pane label="售后信息" name="afterSalesInformation"></el-tab-pane>
             <el-tab-pane label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
         </el-tabs>
-        <component :is="currentView"></component>
+        <component :is="currentView" :orderList="recordList"></component>
     </div>
 </template>
 <script>
@@ -48,10 +48,37 @@ export default {
     data() {
         return {
             activeName: 'afterSalesInformation',
-            currentView: 'afterSalesInformation'
+            currentView: 'afterSalesInformation',
+            itemList: [],
+            orderAfterSale: {},
+            recordList: [],
+            sendItemList: []
         }
     },
+    created() {
+        this.getDetail()
+    },
     methods: {
+        getDetail() {
+            this._apis.order.getOrderAfterSaleDetail({id: this.$route.query.id}).then((res) => {
+                console.log(res)
+                this.itemList = res.itemList
+                this.orderAfterSale = res.orderAfterSale
+                this.recordList = res.recordList
+                this.sendItemList = res.sendItemList
+                this.$notify({
+                    title: '成功',
+                    message: '查询成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
         handleClick(tab, event) {
             this.currentView = this.activeName
         }

@@ -40,7 +40,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @videoSelected="videoSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @videoSelected="videoSelected"></component>
   </el-form>
 </template>
 
@@ -70,7 +70,7 @@ export default {
   methods: {
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.coverUrl= dialogData.src;
+      this.ruleForm.coverUrl= dialogData.filePath;
     },
 
 

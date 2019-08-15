@@ -20,16 +20,16 @@ class Ajax {
   }
 
   // request拦截器
-  requestGlobal(){
+  requestGlobal() {
     this.service.interceptors.request.use(
       e => {
         e.params = e.params || {}
         // e.headers = e.headers || {}
         e.headers = {
-          businessId:1,
-          tenantId:1,
-          merchantId:1,
-          loginUserId:1
+          businessId: 1,
+          tenantId: 1,
+          merchantId: 1,
+          loginUserId: 1
         }
         return e
       },
@@ -42,16 +42,16 @@ class Ajax {
     this.service.interceptors.response.use(
       response => {
         const res = response.data
-          if(res.status === 'success' || res.status === 200){
-            if(res.accessToken){
-              return res;
-            }
-            return res.data;
-          } else if(res.errno === 0){
-            return res.data;
-          } else {
-            return Promise.reject(res.msg)
+        if (res.status === 'success' || res.status === 200) {
+          if (res.accessToken) {
+            return res;
           }
+          return res.data;
+        } else if (res.errno === 0) {
+          return res.data;
+        } else {
+          return Promise.reject(res.msg)
+        }
       },
       error => {
         if (error.code === "ECONNABORTED") {
@@ -64,9 +64,9 @@ class Ajax {
 
   request(config) {
     this.setApiAddress(config);
-    if(config.target){
+    if (config.target) {
       config = this.setRequestParams(config);
-    }else{
+    } else {
       this.requestGlobal();
     }
     return this.service(config);
@@ -75,7 +75,7 @@ class Ajax {
   // 根据后端接口重置请求 -- 电商
   setRequestParams(config) {
     const CONST = appConfig[this.systemRequest];
-    if(!CONST){
+    if (!CONST) {
       MessageBox.alert('请求参数错误', '警告', {
         confirmButtonText: '确定',
         type: 'error'
@@ -85,7 +85,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d1c2b64333e54c7cdcf9a46ef6e0a272b',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d6dbb93aec7bb921320ba6b37ab693c6b',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -96,60 +96,60 @@ class Ajax {
 
     //获取cid和shopInfoId
     let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '2';
-    let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId 
-    : '';
+    let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId
+      : '';
 
-      //拼接全部参数
-      if (config.method == "post") {
-        if(config.noCid){
-          config.data =`json=${encodeURI(JSON.stringify({ head, data: config.data}))}`;
-        }else{
-          config.data =`json=${encodeURI(JSON.stringify({ head, data: {cid, ...config.data}}))}`;
-        }
-      } else if (config.method == "get") {
-        if(config.noCid){
-          config.params = {json: {head, data: config.params}};
-        }else{
-          config.params = {json: {head, data: {...config.params,cid}}};
-        }
+    //拼接全部参数
+    if (config.method == "post") {
+      if (config.noCid) {
+        config.data = `json=${encodeURI(JSON.stringify({ head, data: config.data }))}`;
+      } else {
+        config.data = `json=${encodeURI(JSON.stringify({ head, data: { cid, ...config.data } }))}`;
       }
-      return config;
+    } else if (config.method == "get") {
+      if (config.noCid) {
+        config.params = { json: { head, data: config.params } };
+      } else {
+        config.params = { json: { head, data: { ...config.params, cid } } };
+      }
     }
+    return config;
+  }
 
   //配置接口地址
   setApiAddress(config) {
-    if(!config.baseURL){
-      if(config.apiType){
-        switch(config.apiType) {
+    if (!config.baseURL) {
+      if (config.apiType) {
+        switch (config.apiType) {
           case 'member':  //新零售商城
             config.baseURL = `${process.env.DATA_API}/api-member-web/member/api.do`;
-          break;
+            break;
           case 'coupon':  //优惠券系统
             config.baseURL = `${process.env.DATA_API}/coupon/api.do`; //测试环境
-          break;
+            break;
           case 'monitor': //埋点项目
             config.baseURL = `${process.env.DATA_API}/monitor-web/monitor/api.do`;
-          break;
+            break;
           case 'goods': //商品系统
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
-          break;
+            break;
           case 'order': //订单系统
             //config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
             config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
-          break;
+            break;
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
-          break;
+            break;
           case 'finance':  //财务接口
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
-          break;
+            break;
           case 'goodsOperate':  //商品运营
             config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
-          break;
+            break;
         }
       }
     }
-    
+
   }
 }
 

@@ -272,3 +272,63 @@ export function editShopNav(data) {
   })
 }
 
+// 获取微页面分享
+export function getPageShare(data) {
+  return request({
+    target: 'DECORATION-PAGE-SHARE-FIND-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 更新微页面分享
+export function updatePageShare(data) {
+  return request({
+    target: 'DECORATION-PAGE-SHARE-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取海报
+export function getPoster(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-POSTER-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取二维码
+export function getQrcode(data) {
+  return request({
+    target: 'DECORATION-CREATE-QRCODE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//重置商品分组
+export function resetGoodsGroup(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-COMMODITY-RESET-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//重置个人中心
+export function resetPersonalInfo(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-PERSONAL-RESETPROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+

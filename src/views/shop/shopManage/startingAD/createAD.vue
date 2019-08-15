@@ -71,7 +71,7 @@
       </el-form>
     </div>
     <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
   </div>
 </template>
 
@@ -106,7 +106,7 @@ export default {
   methods: {
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.imagePath= dialogData.src;
+      this.ruleForm.imagePath= dialogData.filePath;
     },
 
     /* 弹窗选中了跳转链接 */

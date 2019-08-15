@@ -58,9 +58,19 @@ export default {
 
     /* 保存数据 */
     saveData() {
-      this.loading = true;
       const resultData = this.collectData();
-      resultData['explain'] = utils.compileStr(JSON.stringify(resultData.explain));
+      resultData['explain'] = utils.compileStr(JSON.stringify(resultData.explain || {}));
+       if(!resultData.name) {
+         this.$alert('请填写基础信息后重试，点击确认开始编辑分类信息!', '警告', {
+          confirmButtonText: '确定',
+          callback: action => {
+            //打开基础信息面板
+            this.$store.commit('showBaseProperty');
+          }
+        });
+        return;
+      }
+      this.loading = true;
       if(this.id) {
         this._apis.shop.editClassifyInfo(resultData).then((response)=>{
           this.$notify({

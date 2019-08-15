@@ -100,7 +100,7 @@ export default {
                 console.log(this.goodWidth);
             }
             else if(this.listStyle==3){
-                this.goodMargin = {marginTop:this.goodsMargin+'px'};
+                this.goodMargin = {marginTop:this.goodsMargin+'px',marginLeft:this.goodsMargin+'px'};
                 this.goodWidth = {width:(bodyWidth - this.pageMargin*2 - this.goodsMargin*2)/3+'px'}
             }
             else if(this.listStyle==4){
@@ -125,6 +125,7 @@ export default {
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.hideEndGoods = this.currentComponentData.data.hideEndGoods;
             this.hideType = this.currentComponentData.data.hideType;
+            this.goodList = [];
             if(this.hideSaledGoods==true){
                 for(var i in this.packages){
                     if(this.packages[i].soldOut!=1){
@@ -338,9 +339,11 @@ export default {
     ul{
         display:flex;
         display:-webkit-flex;
-        justify-content:space-between;
         flex-wrap:wrap;
         li{
+            &:nth-of-type(3n+1){
+                margin-left:0 !important;
+            }
             &:nth-of-type(1){
                 margin-top:0 !important;
             }

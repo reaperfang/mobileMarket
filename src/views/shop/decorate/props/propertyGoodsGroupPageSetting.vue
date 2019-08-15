@@ -41,8 +41,9 @@
         </div>
 
         <div class="block button">
-          <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
+          <el-button @click="resetData">重    置</el-button>
           <el-button @click="save">保    存</el-button>
+          <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
           <el-button>预    览  </el-button>
         </div>
 
@@ -53,7 +54,7 @@
 export default {
   name: 'propertyGoodsGroupPageSetting',
   components: {},
-  props: ['saveAndApply', 'save', 'data'],
+  props: ['saveAndApply', 'save', 'resetData', 'data'],
   data () {
     return {
       ruleForm: {

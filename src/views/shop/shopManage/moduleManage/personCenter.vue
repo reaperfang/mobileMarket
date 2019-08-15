@@ -17,6 +17,7 @@
       :saveAndApply="saveAndApply" 
       :data="ruleForm" 
       :save="save" 
+      :resetData="resetData"
       @userCenterDataChanged="emitChangeRuleForm"
       ></propertyUserCenter>
     </div>
@@ -75,6 +76,25 @@ export default {
         status: '1',
         pageKey: '',
         pageData: JSON.stringify(this.ruleForm)
+      });
+    },
+
+    /* 重置 */
+    resetData() {
+      this.loading = true;
+      this._apis.shop.resetPersonalInfo({}).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '重置成功！',
+          type: 'success'
+        });
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
       });
     },
 

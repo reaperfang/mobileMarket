@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="table">
-      <p>微页面（共28个）</p>
-      <el-table :data="tableList" stripe>
+      <p>微页面（共{{total || 0}}个）</p>
+      <el-table :data="tableList" stripe v-loading="loading">
         <el-table-column
           type="selection"  
           width="55">
@@ -64,7 +64,7 @@
       </div>
     </div>
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :pageId="currentItem.id" :pageLink="'http://www.baidu.com'"></component>
   </div>
 </template>
 
@@ -78,10 +78,20 @@ export default {
   components: {dialogPopularize},
   data () {
     return {
-      tableList:[],
+      tableList:[
+        {
+          id: '1',
+          name: '临时数据',
+          title: '阿三酱豆腐吧',
+          vv: 0,
+          pv: 0,
+          updateTime: '25987345'
+        }
+      ],
       classifyList: [],
       dialogVisible: false,
       currentDialog: '',
+      currentItem: {},
       ruleForm: {
         status: '0',
         pageCategoryInfoId: '',
@@ -97,6 +107,7 @@ export default {
 
     /* 复制页面 */
     copyPage(item) {
+      this.currentItem = item;
       this.$confirm('确定复制此页面吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -120,6 +131,7 @@ export default {
 
     /* 删除页面 */
     deletePage(item) {
+       this.currentItem = item;
        this.$confirm('确定删除此页面吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -143,12 +155,14 @@ export default {
 
     /* 推广 */
     spread(item) {
+       this.currentItem = item;
        this.dialogVisible=true; 
        this.currentDialog='dialogPopularize';
     },
 
     /* 设为首页 */
     setIndex(item) {
+       this.currentItem = item;
        this.$confirm('确定将此页面设为首页吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -171,14 +185,17 @@ export default {
     },
 
     fetch() {
+      this.loading = true;
       this._apis.shop.getPageList(this.ruleForm).then((response)=>{
         this.tableList = response.list;
         this.total = response.total;
+        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
+        this.loading = false;
       });
     },
 

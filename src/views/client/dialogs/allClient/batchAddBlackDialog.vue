@@ -1,27 +1,34 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="批量加入黑名单" :hasCancel="hasCancel">
         <div class="c_container">
-            <p class="user_id">满足以上搜索条件共20个客户</p>
+            <p class="user_id">满足以上搜索条件共{{data.checkedItem.length}}个客户</p>
             <div class="clearfix">
                 <p class="c_label fl">禁用选择：</p>
-                <el-checkbox v-model="blackCheck1" label="优惠券" class="fl marT10"></el-checkbox>
+                <el-checkbox v-model="checks[0].checked" :label="checks[0].name" class="fl marT10"></el-checkbox>
                 <div class="form_container fl">
-                    <div class="a_d">
-                        <el-select v-model="coupon" style="margin-bottom: 10px">
-                            <el-option label="漏洞优惠券" value="1"></el-option>
-                            <el-option label="优惠券1" value="2"></el-option>
-                            <el-option label="优惠券2" value="3"></el-option>
+                    <div class="a_d" v-for="(i,index) in couponIds" :key="index">
+                        <el-select v-model="i.id" style="margin-bottom: 10px">
+                            <el-option v-for="item in allCoupons" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
-                        <span class="marL20 addMainColor">删除</span>
+                        <span class="marL20 addMainColor pointer" @click="deleteCoupon(index)">删除</span>
                     </div>
                 </div>
-                <span class="add">添加</span>
+                <span class="add" @click="addCouponSel">添加</span>
+            </div>
+            <div class="clearfix">
+                <el-checkbox v-model="checks[1].checked" :label="checks[1].name" class="fl marT10"></el-checkbox>
+                <div class="form_container fl">
+                    <div class="a_d" v-for="(i,index) in codeIds" :key="index">
+                        <el-select v-model="i.id" style="margin-bottom: 10px">
+                            <el-option v-for="item in allCodes" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                        <span class="marL20 addMainColor pointer" @click="deleteCode(index)">删除</span>
+                    </div>
+                </div>
+                <span class="add" @click="addCodeSel">添加</span>
             </div>
             <div class="check_container">
-                <el-checkbox v-model="blackCheck1" label="积分冻结" class="marB10"></el-checkbox><br>
-                <el-checkbox v-model="blackCheck1" label="冻结余额" class="marB10"></el-checkbox><br>
-                <el-checkbox v-model="blackCheck1" label="下单购买" class="marB10"></el-checkbox><br>
-                <el-checkbox v-model="blackCheck1" label="登录系统" class="marB10"></el-checkbox>
+                <el-checkbox v-for="item in checks.slice(2,checks.length)" :key="item.id" v-model="item.checked" :label="item.name" class="check_item"></el-checkbox><br>
             </div>
             <p class="red">提示：积分、余额和优惠券属于虚拟资产，冻结可能会产品生法律风险，请谨慎操作。</p>
         </div>
@@ -31,18 +38,95 @@
 import clientApi from '@/api/client';
 import DialogBase from '@/components/DialogBase'
 export default {
-    name: "batchAddBlackDialog",
+    name: "addBlackDialog",
     props: ['data'],
     data() {
         return {
             hasCancel: true,
             blackCheck1: false,
-            coupon:""
+            checks: [],
+            couponIds: [{id:""}],
+            codeIds: [{id:""}]
         }
     },
     methods: {
         submit() {
-            
+            let params = {};
+            let blackListMapDtos = [];
+            let memberInfoIds = [];
+            this.checks.map((v) => {
+                if(v.checked) {
+                    if(v.name == "优惠券" && this.couponIds.length !== 0) {
+                        let arr = [];
+                        this.couponIds.map((item) => {
+                            arr.push(item.id);
+                        })
+                        let obj = {
+                            blackInfold: v.id,
+                            disableItemValue: arr.join(',')
+                        }
+                        blackListMapDtos.push(obj);
+                    }else if(v.name == "优惠码" && this.codeIds.length !== 0) {
+                        let arr = [];
+                        this.codeIds.map((item) => {
+                            arr.push(item.id);
+                        })
+                        let obj = {
+                            blackInfold: v.id,
+                            disableItemValue: arr.join(',')
+                        }
+                        blackListMapDtos.push(obj);
+                    }else{
+                        let obj = {
+                            blackInfold: v.id,
+                            disableItemValue: "1"
+                        }
+                        blackListMapDtos.push(obj);
+                    }
+                }
+            });
+            this.data.checkedItem.map((v) => {
+                memberInfoIds.push(v.id);
+            });
+            params.memberInfoIds = memberInfoIds.join(',');
+            params.blackListMapDtos = [].concat(blackListMapDtos);
+            this._apis.client.batchToBlack(params).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: "批量加入黑名单成功",
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getBlackChecks() {
+            this._apis.client.blackChecks({}).then((response) => {
+                response.map((v) => {
+                    this.$set(v, 'checked', false);
+                });
+                this.checks = [].concat(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        addCouponSel() {
+            this.couponIds.push({id: ""});
+        },
+        addCodeSel() {
+            this.codeIds.push({id: ""});
+        },
+        deleteCoupon(index) {
+            this.couponIds.splice(index, 1);
+        },
+        deleteCode(index) {
+            this.codeIds.splice(index, 1);
         }
     },
     computed: {
@@ -53,10 +137,16 @@ export default {
             set(val) {
                 this.$emit('update:dialogVisible', val)
             }
+        },
+        allCoupons() {
+            return JSON.parse(localStorage.getItem('allCoupons'));
+        },
+        allCodes() {
+            return JSON.parse(localStorage.getItem('allCodes'));
         }
     },
-    mounted() {
-        
+    created() {
+        this.getBlackChecks();
     },
     props: {
         data: {
@@ -78,8 +168,7 @@ export default {
     padding: 0 0 10px 15px;
 }
 .c_label{
-    width: 100px;
-    padding-top: 7px;
+    margin: 5px 0 0 15px;
 }
 .form_container{
     width: 266px;
@@ -91,10 +180,15 @@ export default {
     float: left;
     color: #655EFF;
     margin: 8px 0 0 5px;
+    cursor: pointer;
 }
 .check_container{
     text-align: left;
     padding-left: 100px;
+    .check_item{
+        display: block;
+        margin: 10px 0;
+    }
 }
 .red{
     color: #F55858;

@@ -11,25 +11,19 @@
 </template>
 
 <script>
-import componentMixin from './mixin';
+import componentMixin from "./mixin";
 export default {
-  name: 'componentNotice',
-  mixins:[componentMixin],
+  name: "componentNotice",
+  mixins: [componentMixin],
   components: {},
-  data () {
-    return {
-     
-    }
+  data() {
+    return {};
   },
-  created() {
-
-  },
-  computed: {
-    
-  },
-  methods: {
-  }
-}
+  created() {},
+  computed: {},
+  mounted() {},
+  methods: {}
+};
 </script>
 
 <style lang="scss" scoped>

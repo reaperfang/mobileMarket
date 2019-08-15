@@ -131,5 +131,88 @@ export function replyComment(data) {
   })
 }
 
+// 设为/取消精选
+export function setChoiceness(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-PRODUCT-COMMENT-CHOICENESS-PROCESSOR',
+    data
+  })
+}
+
+// 审核 / 批量审核
+export function orderCommentAuth(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-PRODUCT-COMMENT-AUTH-PROCESSOR',
+    data
+  })
+}
+
+//  商家自定义敏感词列表查询
+export function getSensitiveWordList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'SENSITIVE-WORD-LIST-PROCESSOR',
+    data
+  })
+}
+
+//  商家自定义敏感词删除
+export function deleteSensitiveWord(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'SENSITIVE-WORD-DELETE-PROCESSOR',
+    data
+  })
+}
+
+//  商家自定义敏感词添加
+export function addSensitiveWord(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'SENSITIVE-WORD-ADD-PROCESSOR',
+    data
+  })
+}
+
+//  售后单列表
+export function getOrderAfterSalePageList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-PAGE-LIST-PROCESSOR',
+    data
+  })
+}
+
+//  售后单详情
+export function getOrderAfterSaleDetail(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-INFO-PROCESSOR',
+    data
+  })
+}
+
+//  审核/批量审核
+export function orderAfterSaleUpdateStatus(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-UPDATE-STATUS-PROCESSOR',
+    data
+  })
+}
+
+
+
+
 
 
