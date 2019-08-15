@@ -3,7 +3,7 @@
     <el-button type="text" @click="dialogVisible=true; currentDialog='dialogUploadImage'">上传图片</el-button>
     <el-button type="text" @click="dialogVisible=true; currentDialog='dialogCutImage'">剪裁</el-button>
     <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
   </p>
 </template>
 

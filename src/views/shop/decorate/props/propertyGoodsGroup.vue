@@ -30,15 +30,15 @@
         <el-radio-group v-model="ruleForm.menuStyle">
           <el-radio :label="1">样式1</el-radio>
           <el-radio :label="2">样式2</el-radio>
-          <el-radio :label="2">样式3</el-radio>
+          <el-radio :label="3">样式3</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="菜单位置" prop="menuPosition">
+      <!-- <el-form-item label="菜单位置" prop="menuPosition">
         <el-radio-group v-model="ruleForm.menuPosition">
           <el-radio :label="1">正常模式</el-radio>
           <el-radio :label="2">滚动至顶部固定</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="列表样式" prop="listStyle">
         <el-radio-group v-model="ruleForm.listStyle">
           <el-radio :label="1">大图模式</el-radio>
@@ -133,7 +133,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
   </el-form>
 </template>
 

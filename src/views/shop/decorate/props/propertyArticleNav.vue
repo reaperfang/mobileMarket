@@ -70,7 +70,7 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @seletedPage="seletedPage"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @seletedPage="seletedPage"></component>
   </el-form>
 </template>
 

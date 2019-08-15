@@ -14,8 +14,8 @@
       </div>
     </div>
     <div class="table">
-      <p>微页面分类（共28个）</p>
-      <el-table :data="tableList" stripe>
+      <p>微页面分类（共{{total || 0}}个）</p>
+      <el-table :data="tableList" stripe v-loading="loading">
         <el-table-column
           type="selection"  
           width="55">
@@ -67,6 +67,7 @@ export default {
   data () {
     return {
       tableList:[],
+      currentItem: {},
       ruleForm: {
         status: '1',
         name: '',
@@ -81,6 +82,7 @@ export default {
 
     /* 删除分类 */
     deleteClassify(item) {
+      this.currentItem = item;
       this.$confirm('确定删除此分类吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -104,18 +106,21 @@ export default {
 
     /* 链接 */
     link(item) {
-
+      this.currentItem = item;
     },
 
     fetch() {
+       this.loading = true;
        this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
         this.tableList = response.list;
         this.total = response.total;
+        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
+        this.loading = false;
       });
     }
   }

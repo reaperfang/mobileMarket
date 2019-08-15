@@ -272,3 +272,43 @@ export function editShopNav(data) {
   })
 }
 
+// 获取微页面分享
+export function getPageShare(data) {
+  return request({
+    target: 'DECORATION-PAGE-SHARE-FIND-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 更新微页面分享
+export function updatePageShare(data) {
+  return request({
+    target: 'DECORATION-PAGE-SHARE-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取海报
+export function getPoster(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-POSTER-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+// 获取二维码
+export function getQrcode(data) {
+  return request({
+    target: 'DECORATION-CREATE-QRCODE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+

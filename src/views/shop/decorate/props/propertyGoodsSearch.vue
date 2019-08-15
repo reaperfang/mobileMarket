@@ -27,7 +27,7 @@
         <el-button v-else class="button-new-tag" type="primary" size="small" @click="showInput">+ 添加热词</el-button>
       </el-form-item>
       <el-form-item label="搜索样式" prop="borderStyle">
-        <el-radio-group v-model="ruleForm.searchStyle">
+        <el-radio-group v-model="ruleForm.borderStyle">
           <el-radio :label="1">方形</el-radio>
           <el-radio :label="2">圆形</el-radio>
         </el-radio-group>

@@ -9,6 +9,23 @@
         </el-select>
       </div>
       <el-upload
+          :action="uploadUrl"
+          :data="{json: JSON.stringify({cid: 222})}"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-success="handleSuccess"
+          :on-error="handleError"
+          :before-remove="beforeRemove"
+          :on-change="handleChange"
+          :before-upload="beforeUpload"
+          :name="'upfile'"
+          @clearFiles="clearUploadFiles"
+          multiple
+          :on-exceed="handleExceed"
+          :file-list="fileList">
+           <el-button size="small" type="primary">上传新图片</el-button>
+      </el-upload>
+      <!-- <el-upload
         class="upload-demo"
         action="http://35.201.165.105:8000/controller.php?action=uploadimage"
         :on-preview="handlePreview"
@@ -23,17 +40,17 @@
         multiple
         :on-exceed="handleExceed"
         :file-list="fileList">
-      <el-button size="small" type="primary">上传新图片</el-button>
+      <el-button size="small" type="primary">上传新图片</el-button> -->
       <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-    </el-upload>
+    <!-- </el-upload> -->
     </div>
     <div class="material_wrapper" ref="materialWrapper" v-loading="loading" :style="{'overflow-y': loading ? 'hidden' : 'auto'}">
         <waterfall :col='3' :width="250" :gutterWidth="10"  :data="imgsArr" :isTransition="false" >
           <template >
             <div class="cell-item" v-for="(item,key) in imgsArr" :key="key" @click="selectImg($event, item)">
-              <img :src="item.src" alt="加载错误" @load="loadImg($event, item)" @error="loadError($event, item)"/> 
+              <img :src="item.filePath" alt="加载错误" @load="loadImg($event, item)" @error="loadError($event, item)"/> 
               <div class="item-body">
-                  <div class="item-desc">{{item.title}}</div>
+                  <div class="item-desc">{{item.fileName}}</div>
               </div>
             </div>
           </template>
@@ -64,6 +81,7 @@ export default {
       ruleForm: {
         group: 1
       },
+      uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file/api_file_remote_upload.do`,
       uploadState: []   //本次上传状态列表
     };
   },
@@ -78,22 +96,28 @@ export default {
     }
   },
   created() {
-    this.imgsArr = [
-      {
-        loaded: false,
-        href: 'http://www.baidu.com',
-        src: 'http://35.201.165.105:8000/storage/image/20190808/1565246454709498.png',
-        title: '图片名称'
-      },
-      {
-        loaded: false,
-        href: 'http://www.baidu.com',
-        src: 'http://35.201.165.105:8000/storage/image/20190808/1565246499696504.png',
-        title: '图片名称'
-      },
-    ]
+    this.fetch();
   },
   methods: {
+
+    fetch() {
+      this.loading = true;
+      this._apis.file.getMaterialList({
+        fileGroupInfoId:"1",
+        startIndex:"1",
+        pageSize:"10",
+        sourceMaterialType:"0",
+      }).then((response)=>{
+        this.imgsArr = response.list;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
 
     /**************************** 上传相关  开始 *******************************/
 
@@ -135,13 +159,17 @@ export default {
 
     /* 上传成功钩子 */
     handleSuccess(response, file, fileList) {
-      this.allImgUploaded();
-      this.imgsArr.push({
-        loaded: false,
-        href: '',
-        title: response.original,
-        src: `http://35.201.165.105:8000${response.url}`
-      })
+      if(file.status == "success"){
+          this.allImgUploaded();
+          this.imgsArr.push({
+            loaded: false,
+            href: '',
+            title: response.original,
+            src: `http://35.201.165.105:8000${response.url}`
+          })
+      }else{
+          this.$message.error(response.msg);
+      }
     },
 
     /* 上传失败钩子 */

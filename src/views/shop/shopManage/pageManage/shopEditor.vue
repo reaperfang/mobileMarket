@@ -41,7 +41,6 @@ export default {
   methods: {
     /* 获取店铺装修数据 */
     fetch() {
-      const _self = this;
       this.loading = true;
       this._apis.shop.getPageInfo({id: this.id}).then((response)=>{
          this.loading = false;
@@ -52,6 +51,7 @@ export default {
           title: '错误',
           message: error
         });
+        this.loading = false;
       });
     },
 
@@ -84,6 +84,13 @@ export default {
 
     submit(resultData) {
       if(!resultData.name) {
+         this.$alert('请填写基础信息后重试，点击确认开始编辑页面信息!', '警告', {
+          confirmButtonText: '确定',
+          callback: action => {
+            //打开基础信息面板
+            this.$store.commit('showBaseProperty');
+          }
+        });
         return;
       }
       this.loading = true;

@@ -360,3 +360,48 @@ export function getGiftList(data) {
         params: data
     })
 }
+//红包列表
+export function getRedPacket(data) {
+    return request({
+        url: '/api/v1/b/hongbao',
+        method: 'get',
+        baseURL: process.env.DATA_API,
+        params: data
+    })
+}
+//加入黑名单
+export function addToBlack(data) {
+    return request({
+        target:'MEMBER-BLACKLIST-DETAIL-ADD-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//批量加入黑名单
+export function batchToBlack(data) {
+    return request({
+        target:'MEMBER-BLACKLIST-DETAIL-ADD-BATCH-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//解除黑名单
+export function removeFromBlack(data) {
+    return request({
+        target:'MEMBER-BLACKLIST-DETAIL-REMOVE-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//批量解除黑名单
+export function batchRemoveFromBlack(data) {
+    return request({
+        target:'MEMBER-BLACKLIST-DETAIL-REMOVEBATCH-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}

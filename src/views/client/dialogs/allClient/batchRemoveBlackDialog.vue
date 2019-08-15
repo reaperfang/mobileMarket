@@ -2,7 +2,7 @@
     <DialogBase :visible.sync="visible" @submit="submit" title="批量解除黑名单" :hasCancel="hasCancel">
         <div class="c_container">
             <img src="../../../../assets/images/client/icon_cuowu.png" alt="" class="warn_img">
-            <p>满足以上搜索条件共20个客户</p>
+            <p>满足以上搜索条件共{{ data.checkedItem.length }}个客户</p>
             <p>确定将以上客户冻结权限全部解冻吗？</p>
         </div>
     </DialogBase>
@@ -19,7 +19,23 @@ export default {
     },
     methods: {
         submit() {
-            
+            let memberInfoIds = [];
+            this.data.checkedItem.map((v) => {
+                memberInfoIds.push(v.id);
+            });
+            let params = {memberInfoIds: memberInfoIds.join(',')}
+            this._apis.client.batchRemoveFromBlack(params).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: "批量加入黑名单成功",
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {

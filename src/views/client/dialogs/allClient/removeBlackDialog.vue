@@ -1,7 +1,7 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="解除黑名单" :hasCancel="hasCancel">
         <div class="c_container">
-            <p>ID:<span>0001</span></p>
+            <p>ID:<span>{{ data.memberSn }}</span></p>
             <p>当前冻结：</p>
             <div class="clearfix">
                 <p class="fl">优惠券：</p>
@@ -28,7 +28,18 @@ export default {
     },
     methods: {
         submit() {
-            
+            this._apis.client.removeFromBlack({memberInfoId: this.data.id}).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: "解除黑名单成功",
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
