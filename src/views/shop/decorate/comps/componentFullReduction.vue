@@ -4,15 +4,16 @@
     <div class="reduction">
       <div class="reduction_first">
         <span>减</span>
-        <span>满减/满折</span>
+        <span>{{currentComponentData.data.title}}</span>
         <span>2019.05.10-2019.06.10</span>
       </div>
       <div class="reduction_two">
         <ul>
-          <li :class="reductionStyle">{{currentComponentData.data.title}}</li>
-          <li :class="reductionStyle">{{currentComponentData.data.title}}</li>
-          <li :class="reductionStyle">{{currentComponentData.data.title}}</li>
-          <li :class="reductionStyle">{{currentComponentData.data.title}}</li>
+          <li
+            class="ellipsis"
+            :class="reductionStyle"
+            v-for="items in currentComponentData.data.promotions"
+          >{{items.regular}}</li>
         </ul>
       </div>
     </div>
@@ -67,7 +68,7 @@ export default {
       }
       & > span:last-child(3) {
         font-size: 11px;
-		transform: scale(0.92);
+        transform: scale(0.92);
         color: #7c7c7c;
       }
     }
@@ -86,6 +87,8 @@ export default {
           color: #fc3d42;
           margin-right: 18px;
           margin-bottom: 10px;
+          font-size: 11px;
+          transform: scale(0.92);
         }
         & > .style1 {
           border: 1px solid #fc3d42;
