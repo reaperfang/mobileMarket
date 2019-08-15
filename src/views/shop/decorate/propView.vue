@@ -15,8 +15,8 @@
       <div class="block button" v-loading="loading">
         <div class="help_blank"></div>
         <div class="buttons">
-          <el-button type="primary" @click="saveAndApplyData.call(parentScope)">保存并生效</el-button>
-          <el-button @click="saveData.call(parentScope)">保    存</el-button>
+          <el-button type="primary" @click="saveAndApplyData.call(parentScope)" v-if="id">保存并生效</el-button>
+          <el-button @click="saveData.call(parentScope)" type="primary">{{id ? '保   存' : '创   建'}}</el-button>
           <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       utils,
-      currentPageId: this.$route.query.pageId,
+      id: this.$route.query.pageId,
       loading: false,
       propertyBase: ''   //基础组件名称
     }
