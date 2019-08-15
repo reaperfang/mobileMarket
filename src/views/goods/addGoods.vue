@@ -231,13 +231,13 @@
                     </el-radio-group>
                 </div>
             </el-form-item>
-            <!-- <el-form-item label="会员打折" prop="dazhe">
-                <el-radio-group v-model="ruleForm.dazhe">
+            <el-form-item label="会员打折" prop="isJoinDiscount">
+                <el-radio-group v-model="ruleForm.isJoinDiscount">
                     <el-radio :label="1">参与会员打折</el-radio>
-                    <el-radio :label="2">不参与会员打折</el-radio>
+                    <el-radio :label="0">不参与会员打折</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="积分赠送" prop="zhengsong">
+            <!-- <el-form-item label="积分赠送" prop="zhengsong">
                 <el-radio-group v-model="ruleForm.zhengsong">
                     <el-radio :label="1">赠送</el-radio>
                     <el-radio :label="2">不赠送</el-radio>
@@ -360,7 +360,7 @@ export default {
                 productBrandInfoId: '', // 商品品牌id
                 status: 0, // 上架状态
                 autoSaleTime: '', // 自动上架时间
-                dazhe: 1,
+                isJoinDiscount: 1, // 是否参与打折 1参与 ,0不参与
                 zhengsong: 1,
                 isSupportInvoice: 1, // 是否开发票
                 isShowStock: 0, // 是否显示库存 1显示 0不显示

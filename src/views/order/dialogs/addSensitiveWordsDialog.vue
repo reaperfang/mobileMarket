@@ -62,7 +62,7 @@ export default {
    .add-sensitive-words {
        .content {
            .content-title {
-
+               font-size: 18px;
            }
            .sensitive-words-box {
                margin-top: 10px;
@@ -72,6 +72,12 @@ export default {
                margin-top: 37px;
            }
        }
+   }
+   /deep/ .el-textarea__inner {
+       min-height: 143px!important;
+   }
+   /deep/ .el-input--small {
+       font-size: 14px;
    }
 </style>
 <style lang="scss">

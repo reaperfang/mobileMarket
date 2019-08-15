@@ -37,7 +37,7 @@
             <div class="row">
               <div class="col reviews-label">评价内容</div>
               <div class="col gray reviews-content">
-                <p>{{orderProductComment.replyContent}}</p>
+                <p>{{orderProductComment.content}}</p>
                 <div class="row">
                   <div class="col">
                     <img
@@ -76,7 +76,8 @@
       <div class="title">
         <div class="row">
           <div class="col replay-label">商户回复</div>
-          <div @click="showReplayBox = true" class="col">我要回复评论</div>
+          <div v-if="orderProductComment.isReply != 1" @click="showReplayBox = true" class="col blue">我要回复评论</div>
+          <div class="col" v-html="orderProductComment.replyContent"></div>
         </div>
       </div>
       <div v-if="showReplayBox" class="replay-box">
@@ -97,11 +98,11 @@
         >
           <el-table-column prop="type" label="操作" width="180">
             <template slot-scope="scope">
-              <span>{{type | typeFilter}}</span>
+              <span>{{scope.row.type | typeFilter}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="createuserid" label="操作人" width="180"></el-table-column>
-          <el-table-column prop="createtime" label="操作时间"></el-table-column>
+          <el-table-column prop="createUserName" label="操作人" width="180"></el-table-column>
+          <el-table-column prop="createTime" label="操作时间"></el-table-column>
         </el-table>
       </div>
     </section>
@@ -171,7 +172,7 @@ export default {
   },
   methods: {
     replyComment() {
-        this._apis.order.replyComment({id: this.$route.query.id, replyContent: this.orderProductComment.replyContent}).then((res) => {
+        this._apis.order.replyComment({id: this.$route.query.id, replyContent: this.textarea}).then((res) => {
             console.log(res)
         }).catch(error => {
             
@@ -261,9 +262,6 @@ export default {
         margin-bottom: 30px;
         .replay-label {
           margin-right: 20px;
-        }
-        .col:last-child {
-          color: $globalMainColor;
         }
       }
       .footer {
