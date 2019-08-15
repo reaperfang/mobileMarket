@@ -40,3 +40,14 @@ export function fetchSpecsList(data) {
       data
     })
   }
+
+  // 获取敏感词列表
+export function fetchPublicSensitiveList(data) {
+  return request({
+    apiType: 'goodsOperate',
+    method: 'post',
+    target: 'PUBLIC-SENSITIVE-LIST-PROCESSOR',
+    data
+  })
+}
+

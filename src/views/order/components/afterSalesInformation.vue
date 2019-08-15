@@ -336,7 +336,12 @@ export default {
                 limit: '2019',
                 code: '1'
             },
-            recordList: []
+        }
+    },
+    props: {
+        recordList: {
+            type: Array,
+            required: true
         }
     }
 }

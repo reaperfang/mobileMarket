@@ -16,7 +16,7 @@
                 </div>
                 <div class="content-sensitive">
                     <span v-for="(item, index) in sensitiveList" :key="index">
-                        {{item}}, <span @click="deleteSensitive(index)" class="delete">删除</span>
+                        {{item.name}}, <span @click="deleteSensitive(item)" class="delete">删除</span>
                     </span>
                 </div>  
             </section>
@@ -52,15 +52,75 @@ export default {
             dialogVisible: false
         }
     },
+    created() {
+        this.getList()
+        this.getPublicList()
+    },
     methods: {
-        deleteSensitive(index) {
-            this.sensitiveList.splice(index, 1)
+        deleteSensitive(item) {
+            this._apis.order.deleteSensitiveWord({id: item.id}).then((res) => {
+                this.getList()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '删除成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         },
         onSubmit(words) {
             words = words.replace(/^\s+|\s+$/g, '')
             let wordsArr = words.split(/\s*,\s*/)
-            this.sensitiveList = this.sensitiveList.concat(wordsArr)
-        }
+
+            this._apis.order.addSensitiveWord({names: wordsArr.join(',')}).then((res) => {
+                this.getList()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '添加成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getList(param) {
+            //this.listLoading = true
+
+            this._apis.order.getSensitiveWordList().then((res) => {
+                console.log(res)
+                this.sensitiveList = res
+            }).catch(error => {
+                //this.listLoading = false
+            })
+        },
+        getPublicList(param) {
+            this._apis.goodsOperate.fetchPublicSensitiveList().then((res) => {
+                this.systomSensitiveList = res
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '添加成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
     },
     components: {
         AddSensitiveWordsDialog
