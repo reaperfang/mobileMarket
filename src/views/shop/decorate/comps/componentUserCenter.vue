@@ -269,10 +269,10 @@
 
 <script>
 export default {
-  name: 'componentUserCenter',
+  name: "componentUserCenter",
   components: {},
-  props: ['data'],
-  data () {
+  props: ["data"],
+  data() {
     return {
       bg: {
         background:
@@ -283,30 +283,25 @@ export default {
       bg1: {
         background: "url('" + this.data.backgroundImage + "') no-repeat"
       }
-    }
+    };
   },
-  created() {
-
-  },
+  created() {},
   watch: {
-     data:{
+    data: {
       handler(newValue) {
         this.ruleForm = newValue;
       },
       deep: true
-    },
+    }
   },
-  computed: {
-    
-  },
-  methods: {
-  }
-}
+  computed: {},
+  methods: {}
+};
 </script>
 
 <style lang="scss" scoped>
 .userCenter {
-  background:#fff;
+  background: #fff;
   & > .userCenter_first {
     height: 301px;
     background: #fff;
@@ -544,7 +539,8 @@ export default {
       }
       // 样式一
       & > .userCenter_car {
-        background: url("../../../../assets/images/shop/userCenter/userCenter2.png") no-repeat;
+        background: url("../../../../assets/images/shop/userCenter/userCenter2.png")
+          no-repeat;
         height: 93px;
         background-size: 100% 100%;
         margin: 0px 10px;
@@ -596,7 +592,8 @@ export default {
       }
       // 样式二
       & > .userCenter_car_two {
-        background: url("../../../../assets/images/shop/userCenter/userCenter19.png") no-repeat;
+        background: url("../../../../assets/images/shop/userCenter/userCenter19.png")
+          no-repeat;
         background-size: 100% 100%;
         width: 137px;
         height: 120px;
@@ -660,7 +657,8 @@ export default {
       }
       // 样式三
       & > .userCenter_car_three {
-        background: url("../../../../assets/images/shop/userCenter/userCenter20.png") no-repeat;
+        background: url("../../../../assets/images/shop/userCenter/userCenter20.png")
+          no-repeat;
         height: 62px;
         background-size: 100% 100%;
         margin: 0px 10px;
@@ -716,7 +714,7 @@ export default {
     }
     & > .userCenter_firstBottom {
       display: flex;
-      height: 173px;
+      height: 74px;
       text-align: center;
       justify-content: center;
       align-items: center;
@@ -735,6 +733,7 @@ export default {
           & > .userCenter_firstBottoml_two {
             width: 48px;
             height: 20px;
+            line-height: 20px;
             background: #999999;
             border-radius: 2px;
             font-size: 11px;
@@ -754,7 +753,7 @@ export default {
           height: 26px;
           background: rgba(229, 229, 229, 1);
           float: right;
-          margin-top: -28px;
+          margin-top: -38px;
         }
       }
       & > .userCenter_firstBottomr {

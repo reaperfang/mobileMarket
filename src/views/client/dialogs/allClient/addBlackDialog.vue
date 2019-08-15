@@ -88,8 +88,7 @@ export default {
     padding: 0 0 10px 15px;
 }
 .c_label{
-    width: 100px;
-    padding-top: 7px;
+    margin: 5px 0 0 15px;
 }
 .form_container{
     width: 266px;

@@ -2,6 +2,22 @@
 <template>
      <div class="main">
       <div class="top_part">
+        <div class="search">
+          <el-form ref="form" :inline="true" :model="form" label-width="70px">
+            <el-form-item label="店铺:" prop="shop">
+              <el-select v-model="form.shop" placeholder="请选择">
+                <el-option
+                  v-for="item in shops"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-button type="primary" @click="submit">查询</el-button>
+            <el-button type="primary" @click="reset">重置</el-button>
+          </el-form>
+        </div>
         <el-button type="primary" @click="_routeTo('createRole')">新建角色</el-button>
       </div>
       <div class="bottom_part">
@@ -17,8 +33,14 @@ export default {
   data() {
     return {
       form:{
-        name:'',
+        shop:'',
       },
+      shops:[
+        {
+          label:'店铺1',
+          value:1
+        }
+      ],
       tableData: [{
         date: '2016-05-03',
         name: '王小虎',
@@ -46,6 +68,8 @@ export default {
     
   },
   methods: {
+    submit(){},
+    reset(){},
     handleSelectionChange(val) {
       this.multipleSelection = val;
     }
@@ -63,7 +87,8 @@ export default {
   background: #fff;
   padding:20px;
   .top_part{
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
   }
   .bottom_part{
     margin-top:10px;

@@ -270,15 +270,6 @@ export function manualChangeCredit(data) {
         data
     })
 }
-//获取优惠券列表
-export function getCouponList(data) {
-    return request({
-        url: '/api/v1/c/app-coupon-member-get',
-        method: 'get',
-        baseURL: process.env.DATA_API,
-        params:data
-    })
-}
 //获取优惠券下拉
 export function getAllCoupons(data) {
     return request({
@@ -349,5 +340,23 @@ export function blackChecks(data) {
         method: 'post',
         apiType: 'member',
         data
+    })
+}
+//用户已经有的优惠券
+export function getUsedCoupon(data) {
+    return request({
+        url: '/api/v1/b/app-coupon-member-get/activity/customer-list',
+        method: 'get',
+        baseURL: process.env.DATA_API,
+        params: data
+    })
+}
+//赠品列表
+export function getGiftList(data) {
+    return request({
+        url: '/api/v1/b/app-gift/activity/page-list',
+        method: 'get',
+        baseURL: process.env.DATA_API,
+        params: data
     })
 }

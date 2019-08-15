@@ -339,6 +339,7 @@ export default {
 /deep/.el-checkbox.is-bordered.el-checkbox--small{
     padding: 5px 10px 5px 10px;
     background:rgba(211,211,211,0.3);
+    margin-right: 10px;
 }
 /deep/.el-checkbox__label{
     padding-left: 0;
@@ -370,12 +371,12 @@ export default {
             position: relative;
             .absoPosition{
                 position: absolute;
-                left: 562px;
+                left: 594px;
                 top: 0;
             }
             .down_img{
                 position: absolute;
-                left: 524px;
+                left: 569px;
                 top: 5px;
             }
             .more{

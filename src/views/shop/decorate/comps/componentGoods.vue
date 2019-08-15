@@ -9,10 +9,10 @@
                         <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
                     </div>
                 </div>
-                <div class="text">
+                <div class="text" v-if="showContents.length>0">
                     <p class="title" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.title}}</p>
-                    <p class="fTitle" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.desc}}</p>
-                    <div class="priceLine" v-if="showContents.indexOf('3')!=-1">
+                    <p class="fTitle" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('3')!=-1">{{item.desc}}</p>
+                    <div class="priceLine" v-if="showContents.indexOf('2')!=-1">
                         <p class="price">￥<font>{{item.price}}</font></p>
                     </div>
                     <componentButton :decorationStyle="buttonStyle" decorationText="加入购物车" v-if="showContents.indexOf('4')!=-1" class="button"></componentButton>
@@ -78,9 +78,10 @@ export default {
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;
             this.goodsMargin = this.currentComponentData.data.goodsMargin;
-            var bodyWidth = 375;
+            var bodyWidth = 370;
             if(this.listStyle=='1'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
+                this.goodWidth = "100%";
             }
             else if(this.listStyle=='2'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
@@ -99,7 +100,7 @@ export default {
                 }
             }
             else if(this.listStyle=='3'){
-                this.goodMargin = {marginTop:this.goodsMargin + 'px'};
+                this.goodMargin = {marginTop:this.goodsMargin + 'px',marginLeft:this.goodsMargin + 'px'};
                 if('showTemplate' in this.currentComponentData.data){
                     this.showTemplate= this.currentComponentData.data.showTemplate;
                     if(this.showTemplate!=1){
@@ -115,6 +116,7 @@ export default {
             }
             else if(this.listStyle=='4'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
+                this.goodWidth = "100%";
             }
             else if(this.listStyle=='5'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
@@ -179,7 +181,6 @@ export default {
         li{
             .img{
                 background:#f6f6f6;
-                @include borderRadius(4px);
                 position:relative;
                 .imgAbsolute{
                     position:absolute;
@@ -411,12 +412,14 @@ export default {
     ul{
         display:flex;
         display:-webkit-flex;
-        justify-content:space-between;
         flex-wrap:wrap;
         li{
             margin-top:15px;
             width:110px;
             overflow:hidden;
+            &:nth-of-type(3n+1){
+                margin-left:0 !important;
+            }
             &:nth-of-type(1){
                 margin-top:0 !important;
             }
@@ -553,19 +556,32 @@ export default {
                 .title{
                     height:17px;
                     @include lineClamp(1);
-                    margin-top:5px;
+                    margin-top:2.5px;
                 }
                 .fTitle{
-                    margin-top:10px;
+                    margin-top:5px;
                 }
                 .priceLine{
-                    margin-top:12.5px;
+                    margin-top:10px;
                 }
             }
         }
         li.goodsRatio2{
             .img{
                 padding-bottom:36%;
+            }
+            .text{
+                .title{
+                    height:17px;
+                    @include lineClamp(1);
+                    margin-top:2.5px;
+                }
+                .fTitle{
+                    margin-top:17px;
+                }
+                .priceLine{
+                    margin-top:30px;
+                }
             }
         }
         li.goodsRatio3{
@@ -578,10 +594,10 @@ export default {
                     @include lineClamp(3);
                 }
                 .fTitle{
-                    margin-top:25px;
+                    margin-top:10px;
                 }
                 .priceLine{
-                    margin-top:50px;
+                    margin-top:35px;
                 }
             }
         }
@@ -596,10 +612,10 @@ export default {
                     @include lineClamp(1);
                 }
                 .fTitle{
-                    margin-top:7.5px;
+                    margin-top:4px;
                 }
                 .priceLine{
-                    margin-top:10px;
+                    margin-top:4px;
                 }
             }
         }  

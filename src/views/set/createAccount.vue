@@ -16,14 +16,26 @@
                 <el-checkbox-group v-model="form.role" class="inline" @change="handleCheckedCitiesChange">
                     <el-checkbox 
                     v-for="item in options" 
-                    :label="item.label"
-                    :key="item.label">
+                    :label="item.value"
+                    :key="item.label"
+                    style="display:block; width:100px;">
                     {{item.label}}
                     </el-checkbox>
                 </el-checkbox-group>
-                <el-button type="primary" class="ml20" @click="_routeTo('createRole')">添加角色</el-button>
+                <el-button type="primary" @click="_routeTo('createRole')">添加角色</el-button>
             </el-form-item>
-            <el-form-item class="mtb200">
+            <el-form-item label="同步店铺:" prop="shops">
+                <el-checkbox-group v-model="form.shop" class="inline" @change="handleCheckedCitiesChange">
+                    <el-checkbox 
+                    v-for="item in shops" 
+                    :label="item.value"
+                    :key="item.label"
+                    style="display:block; width:100px;">
+                    {{item.label}}
+                    </el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item class="mtb100">
                 <el-button type="primary" @click="onSubmit">保存</el-button>
                 <el-button @click="_routeTo('subaccountManage')">返回</el-button>
             </el-form-item>
@@ -41,7 +53,8 @@ export default {
           shopName:'',
           name: '',
           phone: '',
-          role: ['运营']
+          role: [1],
+          shop:[1]
       },
       options:[
           {
@@ -54,6 +67,20 @@ export default {
           },
           {
               label:'库管',
+              value:3
+          }
+      ],
+      shops:[
+          {
+              label:'店铺1',
+              value:1
+          },
+          {
+              label:'店铺2',
+              value:2
+          },
+          {
+              label:'店铺3',
               value:3
           }
       ],
@@ -98,7 +125,7 @@ export default {
 .ml20{
     margin-left: 20px;
 }
-.mtb200{
-    margin: 200px 0;
+.mtb100{
+    margin: 100px 0;
 }
 </style>
