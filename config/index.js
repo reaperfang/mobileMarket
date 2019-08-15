@@ -14,7 +14,7 @@ module.exports = {
     assetsPublicPath: '/',
     host: '127.0.0.1',
     // host: '0.0.0.0',
-    port: 9000, 
+    port: 9000,
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: false,
@@ -50,7 +50,7 @@ module.exports = {
         //target: 'http://172.22.146.31:8080',
         //target: 'http://172.22.146.10:8080',
         // target: 'http://172.22.146.109:8080',
-        //target: 'http://172.22.146.133:8081',  //李雯廷
+        target: 'http://172.22.146.133:8081',  //李雯廷
         //target: 'http://172.22.146.31:8080', // 客户 崔建
         //target: 'http://172.22.146.10:8080', //客户 刘亚凯
         // target: 'http://172.22.146.109:8080',
@@ -85,7 +85,7 @@ module.exports = {
     }
   },
 
-    // 测试环境
+  // 测试环境
   testBuild: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist-test/index.html'),
@@ -112,7 +112,7 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report || false,
 
-     // `npm run build:prod --generate_report`
+    // `npm run build:prod --generate_report`
     generateAnalyzerReport: process.env.npm_config_generate_report || false
   },
 
