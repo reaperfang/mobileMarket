@@ -48,8 +48,9 @@
         </div>
 
         <div class="block button">
-          <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
+          <el-button @click="resetData">重    置</el-button>
           <el-button @click="save">保    存</el-button>
+          <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
           <el-button>预    览  </el-button>
         </div>
         <!-- 动态弹窗 -->
@@ -62,7 +63,7 @@ import dialogSelectImageMaterial from '../../dialogs/dialogSelectImageMaterial';
 export default {
   name: 'propertyUserCenter',
   components: {dialogSelectImageMaterial},
-  props: ['saveAndApply', 'save', 'data'],
+  props: ['saveAndApply', 'save', 'resetData', 'data'],
   data () {
     return {
       dialogVisible: false,
@@ -101,7 +102,7 @@ export default {
 
      /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.backgroundImage = dialogData.src;
+      this.ruleForm.backgroundImage = dialogData.filePath;
     }
   }
 }

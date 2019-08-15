@@ -51,7 +51,8 @@
           <div>
             <el-button type="text" @click="openSetting = true">更多设置</el-button>
             <el-button type="text" @click="getPoster">下载海报图片</el-button>
-            <el-button type="text" @click="openQrcode">下载二维码</el-button>
+            <el-button type="text" @click="openQrcode('h5')" v-if="currentType === 'h5'">下载二维码</el-button>
+            <el-button type="text" @click="openQrcode('mini')" v-if="currentType === 'mini'">下载小程序码</el-button>
           </div>
            <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="70px" v-if="openSetting">
               <el-form-item label="分享样式" prop="shareStyle">
@@ -64,6 +65,7 @@
               <el-form-item label="分享标题" prop="title">
                 <el-input
                   :rows="5"
+                  :max="10"
                   placeholder="请输入分享标题，最多10字"
                   v-model="ruleForm.title">
                 </el-input>
@@ -71,6 +73,7 @@
               <el-form-item label="分享描述" prop="describe">
                 <el-input
                   :rows="5"
+                  :max="18"
                   placeholder="请输入分享标题，最多10字"
                   v-model="ruleForm.describe">
                 </el-input>
@@ -135,7 +138,22 @@ export default {
         picture: ''
       },
       rules: {
-
+        title: [
+          {
+            min: 0,
+            max: 10,
+            message: "长度在 0 到 10 个字符",
+            trigger: "blur"
+          }
+        ],
+        describe: [
+          {
+            min: 0,
+            max: 12,
+            message: "长度在 0 到 12 个字符",
+            trigger: "blur"
+          }
+        ],
       },
       qrCode: '',
       openSetting: false  //是否开启设置
@@ -170,6 +188,14 @@ export default {
       }).then((response)=>{
         if(response && response.pageInfoId) {
           this.ruleForm = response;
+        }else{
+          this.ruleForm = {
+            pageInfoId: this.pageId,
+            type: '0',
+            title: '',
+            describe: '',
+            picture: ''
+          }
         }
         this.loading = false;
       }).catch((error)=>{
@@ -217,18 +243,26 @@ export default {
     },
 
     /* 新页签打开二维码 */
-    openQrcode() {
-      this.getQrcode((url) =>{
-        window.location.href = `data:image/png;base64,${url}`;
+    openQrcode(codeType) {
+      const _self = this;
+      this.getQrcode(codeType, (url) =>{
+        _self.download(`data:image/png;base64,${url}`, '分享');
+        const img = new Image();
+        img.style.cssText = 'margin:200px auto 0;display: block;';
+        img.src = `data:image/png;base64,${url}`;
+        const newWin = window.open("", "_blank");
+        newWin.document.write(img.outerHTML);
+        newWin.document.title = "分享"
+        newWin.document.close();
       });
     },
 
     /* 获取二维码 */
-    getQrcode(callback) {
+    getQrcode(codeType, callback) {
       this._apis.shop.getQrcode({
         url: this.pageLink,
-        width: 225,
-        height: 225
+        width: '225',
+        height: '225'
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);

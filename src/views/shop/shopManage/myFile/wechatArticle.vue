@@ -34,7 +34,7 @@ export default {
   methods: {
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.coverUrl= dialogData.src;
+      this.ruleForm.coverUrl= dialogData.filePath;
     }
   }
 }

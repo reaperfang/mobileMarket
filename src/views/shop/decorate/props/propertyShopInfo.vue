@@ -52,7 +52,7 @@ export default {
 
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.backgroundImage = dialogData.src;
+      this.ruleForm.backgroundImage = dialogData.filePath;
     }
   }
 }

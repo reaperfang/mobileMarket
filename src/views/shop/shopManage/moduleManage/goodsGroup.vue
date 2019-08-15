@@ -78,6 +78,25 @@ export default {
       });
     },
 
+    /* 重置 */
+    resetData() {
+      this.loading = true;
+      this._apis.shop.resetGoodsGroup({}).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '重置成功！',
+          type: 'success'
+        });
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
+
     submit(params) {
       this.loading = true;
       this._apis.shop.editGoodsGroup(params).then((response)=>{

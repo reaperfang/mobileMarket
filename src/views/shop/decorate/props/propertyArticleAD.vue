@@ -148,8 +148,8 @@ export default {
 
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.currentAD.title= dialogData.title,
-      this.currentAD.url= dialogData.src;
+      this.currentAD.title= dialogData.fileName,
+      this.currentAD.url= dialogData.filePath;
     },
 
     /* 弹窗选中了跳转链接 */

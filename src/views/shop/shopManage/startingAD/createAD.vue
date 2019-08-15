@@ -106,7 +106,7 @@ export default {
   methods: {
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.imagePath= dialogData.src;
+      this.ruleForm.imagePath= dialogData.filePath;
     },
 
     /* 弹窗选中了跳转链接 */

@@ -203,9 +203,9 @@
           <div class="block button">
             <div class="help_blank"></div>
             <div class="buttons">
-              <el-button @click="saveAndApply">保存并启用</el-button>
-              <el-button @click="save">暂    存</el-button>
               <el-button @click="resetData">重    置</el-button>
+              <el-button @click="save">暂    存</el-button>
+              <el-button @click="saveAndApply">保存并启用</el-button>
             </div>
           </div>
 
@@ -290,14 +290,19 @@ export default {
     this.initnavMap();
     this.fetch();
   },
+  watch: {
+    navigation_type() {
+      this.fetch();
+    }
+  },
   methods: {
 
      /* 弹框选中图片 */
     imageSelected(dialogData) {
       if(this.currentImg === 'active') {
-        this.currentNav.navIconActive = dialogData.src;
+        this.currentNav.navIconActive = dialogData.filePath;
       }else if(this.currentImg === 'normal') {
-        this.currentNav.navIcon = dialogData.src;
+        this.currentNav.navIcon = dialogData.filePath;
       }
     },
 
@@ -405,6 +410,7 @@ export default {
     saveAndApply() {
       this.submit({
         navigationKey: '',
+        status: '1',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -414,6 +420,7 @@ export default {
     save() {
        this.submit({
         navigationKey: '',
+        status: '0',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -439,7 +446,12 @@ export default {
 
     /* 重置 */
     resetData() {
-
+      // this.submit({
+      //   navigationKey: '',
+      //   status: '0',
+      //   navigation_type: this.navigation_type,
+      //   navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+      // });
     },
 
     rowSeleted(row) {

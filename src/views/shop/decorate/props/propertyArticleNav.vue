@@ -120,8 +120,8 @@ export default {
 
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.currentNav.title= dialogData.title,
-      this.currentNav.url= dialogData.src;
+      this.currentNav.title= dialogData.fileName,
+      this.currentNav.url= dialogData.filePath;
     },
 
     /* 弹窗选中了跳转链接 */

@@ -312,3 +312,23 @@ export function getQrcode(data) {
   })
 }
 
+//重置商品分组
+export function resetGoodsGroup(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-COMMODITY-RESET-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//重置个人中心
+export function resetPersonalInfo(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-PERSONAL-RESETPROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
