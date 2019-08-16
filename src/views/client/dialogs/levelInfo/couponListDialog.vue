@@ -1,25 +1,26 @@
 <template>
-  <DialogBase :visible.sync="visible" @submit="submit" title="选择赠品" :hasCancel="hasCancel">
+  <DialogBase :visible.sync="visible" @submit="submit" title="选择优惠券" :hasCancel="hasCancel">
     <div class="table_container">
       <div class="fr marB20">
         <div class="input_wrap">
-          <el-input placeholder="赠品编号/名称" v-model="key"></el-input>
+          <el-input placeholder="优惠券名称/优惠券编号" v-model="key"></el-input>
         </div>
         <el-button type="primary">搜索</el-button>
       </div>
       <div>
         <el-table
-          :data="giftList"
+          :data="couponList"
           style="width: 100%"
-          ref="giftTable"
+          ref="couponTable"
           :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
           :default-sort="{prop: 'date', order: 'descending'}"
         >
           <el-table-column type="selection"></el-table-column>
-          <el-table-column prop="businessId" label="赠品编号"></el-table-column>
-          <el-table-column prop="goodsName" label="赠品名称"></el-table-column>
-          <el-table-column prop="stock" label="剩余库存"></el-table-column>
-          <el-table-column prop="goodsName" label="状态"></el-table-column>         
+          <el-table-column prop="businessId" label="优惠券编号"></el-table-column>
+          <el-table-column prop="name" label="优惠券名称"></el-table-column>
+          <el-table-column prop="useTypeDiscount" label="限领次数"></el-table-column>
+          <el-table-column prop="remainStock" label="当前剩余数量"></el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>         
         </el-table>
       </div>
     </div>
@@ -37,7 +38,7 @@ export default {
   },
   methods: {
     submit() {
-        this.$emit('getSelection', {selection: this.$refs.giftTable.selection});
+        this.$emit('getSelectedCoupon', {selection: this.$refs.couponTable.selection});
     }
   },
   computed: {
@@ -49,8 +50,8 @@ export default {
         this.$emit("update:dialogVisible", val);
       }
     },
-    giftList() {
-        return JSON.parse(localStorage.getItem('giftList'));
+    couponList() {
+        return JSON.parse(localStorage.getItem('allCoupons'));
     }
   },
   props: {

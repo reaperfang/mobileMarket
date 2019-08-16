@@ -22,8 +22,7 @@ export default {
             params: {
                 startIndex:"",
                 pageSize:"",
-                status:"",
-                cid:""
+                status:""
             }
         }
     },
@@ -32,8 +31,7 @@ export default {
             this.params = Object.assign({},{
                 startIndex:"",
                 pageSize:"",
-                status:this.status,
-                cid:""
+                status:this.status
             })
         }
     }

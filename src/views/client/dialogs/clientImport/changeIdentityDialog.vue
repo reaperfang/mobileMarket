@@ -58,7 +58,7 @@ export default {
             
         },
         getLevelList() {
-            this._apis.client.getLevelList({cid:2}).then((response) => {
+            this._apis.client.getLevelList({}).then((response) => {
                 this.levelList = [].concat(response);
             }).catch((error) => {
                 this.$notify.error({
