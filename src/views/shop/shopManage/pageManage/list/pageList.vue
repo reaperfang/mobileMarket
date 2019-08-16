@@ -64,7 +64,7 @@
       </div>
     </div>
      <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :pageId="currentItem.id" :pageLink="'http://www.baidu.com'"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :pageId="currentItem.id" :pageLink="currentItem.shareUrl"></component>
   </div>
 </template>
 

@@ -13,7 +13,6 @@
             :key="key"
             :data="getComponentData(item)"
           ></component>
-          {{getComponentData(item).title}}
         </div>
       </div>
     </div>
@@ -21,7 +20,34 @@
       <div class="shop_code">
         <h3>店铺手机预览</h3>
         <h4>使用微信扫描二维码，预览店铺效果</h4>
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564648928&di=dca17a8e2becd36980fd621ef6965f60&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201801%2F20%2F20180120123551_mE8UG.thumb.700_0.png" alt="">
+        <div class="qrcode_wrapper">
+          <img :src="qrCode" alt="">
+        </div>
+      </div>
+      <div class="tools">
+        <h3>店铺工具</h3>
+        <ul class="tile-list n3">
+          <li>
+            <el-button type="primary" plain @click="_routeTo('ADManageIndex')">首页广告</el-button>
+            <!-- <p>{{toolsData.status1 === '1' ? '已开启' : '已关闭'}}</p> -->
+          </li>
+          <li>
+            <el-button type="primary" plain @click="_routeTo('shopNav')">店铺导航</el-button>
+            <!-- <p>{{toolsData.status2 === '1' ? '已开启' : '已关闭'}}</p> -->
+          </li>
+          <li>
+            <el-button type="primary" plain @click="_routeTo('shopStyle')">店铺风格</el-button>
+            <div class="color_wrapper">
+              <div class="style_block" v-for="(item, key) of color.colors" :key="key" :style="{'backgroundColor': item}"></div>
+            </div>
+          </li>
+          <li>
+            <el-button type="primary" plain @click="_routeTo('shopEditor', {pageId: homePageId})">首页装修</el-button>
+          </li>
+          <li>
+            <el-button type="primary" plain  @click="_routeTo('templateManageIndex')">店铺模板</el-button>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -32,11 +58,23 @@ import utils from "@/utils";
 import widget from "@/system/constant/widget";
 export default {
   name: "shopMainDecorated",
+  props: ['homePageData'],
   data() {
     return {
       utils,
-      allTemplateLoaded: false,
-      templateList: {} //模板对象列表
+      allTemplateLoaded: false,  //所有模板是否加载结束
+      templateList: {}, //模板对象列表
+      color: {
+        type: 1,
+        mainColor:'',
+        colors: ['rgba(251,68,67,1)', 'rgba(253,135,84,1)', 'rgba(255,255,255,1)'],
+      },
+      shopInfo: {  //店铺信息
+        logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+        name: '源源的店铺'
+      },
+      qrCode: '',
+      toolsData: null  //工具数据
     };
   },
   computed: {
@@ -54,6 +92,8 @@ export default {
     }
   },
   created() {
+    this.getQrcode();
+    this.getTools();
     this.loadTemplateLists();
   },
   methods: {
@@ -83,7 +123,40 @@ export default {
             }
           });
       }
-    }
+    },
+
+      /* 获取二维码 */
+    getQrcode(codeType, callback) {
+      this._apis.shop.getQrcode({
+        url: this.homePageData.shareUrl,
+        width: '250',
+        height: '250',
+        logoUrl: this.shopInfo.logo
+      }).then((response)=>{
+        this.qrCode = `data:image/png;base64,${response}`;
+        callback && callback(response);
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    },
+
+      /* 获取工具状态 */
+    getTools() {
+      //  this._apis.shop.getTools({}).then((response)=>{
+      //   this.toolsData = response;
+      //   this.loading = false;
+      // }).catch((error)=>{
+      //   this.$notify.error({
+      //     title: '错误',
+      //     message: error
+      //   });
+      //   this.loading = false;
+      // });
+    },
+
   }
 };
 </script>
@@ -130,12 +203,51 @@ export default {
            font-size:16px;
            margin-top:30px;
         }
-        img{
-          width:100%;
-          margin-top:40px;
+        .qrcode_wrapper{
+          padding:5px;
+          img{
+            width: 250px;
+            height: 250px;
+            display: block;
+            border: 1px solid #ddd;
+            margin: 40px auto 0;
+          }
+        }
+      }
+      .tools{
+        margin-top:20px;
+        padding:30px;
+        box-sizing: border-box;
+        text-align:center;
+        border:1px solid rgba(211,211,211,1);
+        background:rgba(248,248,248,1);
+        h3{
+          text-align:center;
+          font-size:18px;
+          color:rgba(68,67,75,1);
+        }
+        ul{
+          margin-top:30px;
+          li{
+            p{
+              margin-top: 12px;
+              color:rgba(211,211,211,1);
+            }
+            .color_wrapper{
+              margin: 12px 0 0 10px;
+              display:flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              cursor:pointer;
+              border: 2px dashed transparent;
+              .style_block{
+                width:18px;
+                height:18px;
+              }
+            }
+          }
         }
       }
     }
   }
-// }
 </style>

@@ -14,21 +14,20 @@
               :key="key"
               :data="getComponentData(item)"
             ></component>
-            {{getComponentData(item).title}}
           </div>
         </div>
       </div>
       <div class="shop_info">
         <img
           class="shop_logo"
-          src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564055788117&di=a4408d2b8d4ceadc964a30088db9f8fc&imgtype=0&src=http%3A%2F%2Fpic35.nipic.com%2F20131122%2F3347542_102208318000_2.jpg"
+          :src="shopInfo.logo"
           alt
         />
-        <div class="shop_name">{{baseInfo.name || '店铺名称'}}</div>
+        <div class="shop_name">{{shopInfo.name || '店铺名称'}}</div>
         <div class="shop_code">
           <h3>手机扫码访问</h3>
           <h4>微信扫一扫分享至朋友圈</h4>
-          <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564648928&di=dca17a8e2becd36980fd621ef6965f60&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201801%2F20%2F20180120123551_mE8UG.thumb.700_0.png" alt="">
+          <img :src="qrCode" alt="">
         </div>
       </div>
     </div>
@@ -48,12 +47,20 @@ export default {
           type: Boolean,
           required: true
       },
+      homePageData: {
+        type: Object
+      }
   },
   data() {
     return {
       utils,
       allTemplateLoaded: false,
-      templateList: {} //模板对象列表
+      templateList: {}, //模板对象列表
+      shopInfo: {
+        logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+        name: '源源的店铺'
+      },
+      qrCode: ''
     };
   },
   computed: {
@@ -79,6 +86,7 @@ export default {
     }
   },
   created() {
+    this.getQrcode();
     this.loadTemplateLists();
   },
   methods: {
@@ -108,12 +116,30 @@ export default {
             }
           });
       }
-    }
+    },
+
+    /* 获取二维码 */
+    getQrcode(codeType, callback) {
+      this._apis.shop.getQrcode({
+        url: this.homePageData.shareUrl,
+        width: '250',
+        height: '250',
+        logoUrl: this.shopInfo.logo
+      }).then((response)=>{
+        this.qrCode = `data:image/png;base64,${response}`;
+        callback && callback(response);
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    },
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .preview_wrapper {
     display: flex;
     flex-direction: row;
