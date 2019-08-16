@@ -4,50 +4,121 @@
             客户发货
         </div>
         <div class="container">
-            <div class="item" v-for="(item, index) in items" :key="index">
+            <div class="item">
                 <div class="header">
                     <div class="header-lefter">
-                        <div class="header-lefter-item number">{{index + 1}}</div>
-                        <div class="header-lefter-item ">快递单号：{{item.expressNumber}}</div>
-                        <div @click="currentDialog = 'logisticsDialog'; dialogVisible = true; currentData = item" class="header-lefter-item  blue">查看物流</div>
+                        <div class="header-lefter-item number">1</div>
+                        <div class="header-lefter-item ">快递单号：{{orderAfterSale.returnExpressNo}}</div>
+                        <div @click="currentDialog = 'logisticsDialog'; dialogVisible = true" class="header-lefter-item  blue">查看物流</div>
                     </div>
                     <div class="header-righter">
                         <div class="header-righter-item">【客户发货】</div>
-                        <div class="header-righter-item">发货人：{{item.deliverier}}</div>
-                        <div class="header-righter-item">{{item.time}}</div>
-                        <div @click="item.showContent = !item.showContent">
-                            <i v-if="item.showContent" class="el-icon-caret-top"></i>
-                            <i v-if="!item.showContent" class="el-icon-caret-top"></i>
+                        <div class="header-righter-item">发货人：{{orderAfterSale.memberSn}}</div>
+                        <div class="header-righter-item">{{orderAfterSale.memberReturnGoodsTime}}</div>
+                        <div @click="showCustomerContent = !showCustomerContent">
+                            <i v-if="showCustomerContent" class="el-icon-caret-top"></i>
+                            <i v-if="!showCustomerContent" class="el-icon-caret-top"></i>
                         </div>
                     </div>
                 </div>
-                <div v-if="item.showContent" class="content">
+                <div v-if="showCustomerContent" class="content">
                     <el-table
-                        :data="item.list"
+                        :data="itemList"
                         style="width: 100%">
                         <el-table-column
                             label="商品"
                             width="180">
                             <template slot-scope="scope">
-                                <div class="goods-detail">
-                                    <div class="goods-detail-item">
-                                        <img src="" alt="">
+                                <div class="row justity-between">
+                                    <div class="col">
+                                        <img :src="scope.row.goodsImage" alt="">
                                     </div>
-                                    <div class="goods-detail-item">
-                                        <p></p>
-                                        <p></p>
+                                    <div class="col">
+                                        <p>{{scope.row.goodsName}}</p>
+                                        <p>{{scope.row.goodsSpces}}</p>
                                     </div>
                                 </div>
                             </template>
                         </el-table-column>
                         <el-table-column
-                            prop="unit"
+                            prop="goodsUnit"
                             label="单位"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="quantity"
-                            label="本次发货数量">
+                            prop="afterSaleCount"
+                            label="数量">
+                        </el-table-column>
+                        <el-table-column
+                            prop="subtotalMoney"
+                            label="小计">
+                        </el-table-column>
+                        <el-table-column
+                            prop="afterSaleLimitTime"
+                            label="售后有效期">
+                        </el-table-column>
+                    </el-table>
+                    <div class="remark">快递单号：{{}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="delivery-information-header">
+            商家发货
+        </div>
+        <div class="container">
+            <div class="item">
+                <div class="header">
+                    <div class="header-lefter">
+                        <div class="header-lefter-item number">2</div>
+                        <div class="header-lefter-item ">快递单号：{{orderAfterSale.expressNo}}</div>
+                        <div @click="currentDialog = 'logisticsDialog'; dialogVisible = true" class="header-lefter-item  blue">查看物流</div>
+                    </div>
+                    <div class="header-righter">
+                        <div class="header-righter-item">【商家发货】</div>
+                        <div class="header-righter-item">发货人：{{orderAfterSale.sendName}}</div>
+                        <div class="header-righter-item">{{orderAfterSale.receiveGoodsTime}}</div>
+                        <div @click="showContent = !showContent">
+                            <i v-if="showContent" class="el-icon-caret-top"></i>
+                            <i v-if="!showContent" class="el-icon-caret-top"></i>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="showContent" class="content">
+                    <el-table
+                        :data="sendItemList"
+                        style="width: 100%">
+                        <el-table-column
+                            label="商品"
+                            width="180">
+                            <template slot-scope="scope">
+                                <div class="row justity-between">
+                                    <div class="col">
+                                        <img :src="scope.row.goodsImage" alt="">
+                                    </div>
+                                    <div class="col">
+                                        <p>{{scope.row.goodsName}}</p>
+                                        <p>{{scope.row.goodsSpces}}</p>
+                                    </div>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="goodsUnit"
+                            label="单位"
+                            width="180">
+                        </el-table-column>
+                        <el-table-column
+                            prop="afterSaleCount"
+                            label="数量">
+                        </el-table-column>
+                        <el-table-column
+                            prop="subtotalMoney"
+                            label="小计">
+                        </el-table-column>
+                        <el-table-column
+                            prop="afterSaleLimitTime"
+                            label="售后有效期">
                         </el-table-column>
                     </el-table>
                     <div class="remark">快递单号：{{}}</div>
@@ -81,7 +152,23 @@ export default {
             ],
             currentDialog: '',
             dialogVisible: false,
-            currentData: {}
+            currentData: {},
+            showCustomerContent: true,
+            showContent: true
+        }
+    },
+    props: {
+        sendItemList: {
+            type: Array,
+            default: []
+        },
+        itemList: {
+            type: Array,
+            default: []
+        },
+        orderAfterSale: {
+            type: Object,
+            default: {}
         }
     },
     components: {
@@ -99,7 +186,7 @@ export default {
         }
         .delivery-information-header {
             margin: 20px 0;
-            margin-top: 0;
+            margin-top: 10px;
         }
         .container {
             .item {

@@ -266,7 +266,7 @@ export default {
             this.currentData.level = this.clientInfoById.levelName;
         },
         getAllCoupons() {
-            this._apis.client.getAllCoupons({cid:"", couponType: 0}).then((response) => {
+            this._apis.client.getAllCoupons({couponType: 0}).then((response) => {
                 this.allCoupons = [].concat(response.list);
                 localStorage.setItem('allCoupons', JSON.stringify(this.allCoupons));
             }).catch((error) => {
@@ -277,7 +277,7 @@ export default {
             })
         },
         getAllCodes() {
-            this._apis.client.getAllCoupons({cid:"", couponType: 1}).then((response) => {
+            this._apis.client.getAllCoupons({couponType: 1}).then((response) => {
                 this.allCodes = [].concat(response.list);
             }).catch((error) => {
                 this.$notify.error({
@@ -306,7 +306,6 @@ export default {
             let errFlag = false;
             let formObj = {
                 id: this.clientInfoById.id, 
-                cid: this.clientInfoById.cid, 
                 memberName: this.clientInfoById.memberName, 
                 sex: this.clientInfoById.sex, 
                 birthday: this.clientInfoById.birthday, 
@@ -343,7 +342,6 @@ export default {
                 formObj.areaName = nameArr[2];
                 delete formObj.selected;
                 formObj.id = this.userId;
-                formObj.cid = 2;
                 this._apis.client.saveMemberInfo(formObj).then((response) => {
                     this.$notify({
                         title: '成功',

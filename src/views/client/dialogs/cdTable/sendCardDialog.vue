@@ -65,7 +65,7 @@ export default {
             }
         },
         getLabels() {
-            let params = { cid: 2, tagType: null }
+            let params = { tagType: null }
             this._apis.client.getLabels(params).then((response) => {
                 this.tags = [].concat(response);
             }).catch((error) => {

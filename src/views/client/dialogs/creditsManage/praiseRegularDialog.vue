@@ -131,7 +131,6 @@ export default {
         submit() {
             let params = {
                 id: this.data.id,
-                cid: "2",
                 enable: this.enable,
                 sceneRule: {
                     condition1: {
