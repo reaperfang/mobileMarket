@@ -332,3 +332,13 @@ export function resetPersonalInfo(data) {
   })
 }
 
+//获取首页
+export function getHomePage(data) {
+  return request({
+    target: 'DECORATION-PAGE-INFO-HOME-PAGE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+

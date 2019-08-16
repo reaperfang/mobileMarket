@@ -83,7 +83,7 @@ export default {
     /* 删除分类 */
     deleteClassify(item) {
       this.currentItem = item;
-      this.$confirm('确定删除此分类吗？', '提示', {
+      this.$confirm(`确定删除 [ ${item.name} ] 吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

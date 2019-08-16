@@ -88,7 +88,7 @@ export default {
     /* 复制页面 */
     copyPage(item) {
       this.currentItem = item;
-      this.$confirm('确定复制此页面吗？', '提示', {
+      this.$confirm(`确定复制 [ ${item.name} ] 吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -112,7 +112,7 @@ export default {
     /* 删除页面 */
     deletePage(item) {
       this.currentItem = item;
-       this.$confirm('确定删除此页面吗？', '提示', {
+       this.$confirm(`确定删除 [ ${item.name} ] 吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -136,7 +136,7 @@ export default {
     /* 设为首页 */
     setIndex(item) {
       this.currentItem = item;
-       this.$confirm('确定将此页面设为首页吗？', '提示', {
+       this.$confirm(`确定将 [ ${item.name} ] 设为首页吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

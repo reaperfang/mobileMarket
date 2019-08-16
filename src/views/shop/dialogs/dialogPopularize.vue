@@ -8,17 +8,17 @@
         <!-- 预览区 -->
         <div class="preview poster" v-if="shareStyle == 1">
           <div class="one">
-            <img :src="ruleForm.picture" alt="">
-            <h3>{{ruleForm.title || '页面标题'}}</h3>
+            <img :src="ruleForm.picture" alt="分享店铺LOGO">
+            <h3>{{ruleForm.title || '页面名称'}}</h3>
             <p>{{ruleForm.describe || '页面描述'}}</p>
           </div>
           <div class="two">
             <div class="left">
-              <h3>{{ruleForm.title || '页面标题'}}</h3>
-              <p>{{ruleForm.describe || '页面描述'}}</p>
+              <h3>{{shopInfo.name || '店铺名称'}}</h3>
+              <p>扫码或长按二维码</p>
             </div>
             <div class="right">
-              <img :src="qrCode" alt="">
+              <img :src="qrCode" alt="页面二维码">
             </div>
           </div>
         </div>
@@ -26,19 +26,19 @@
         <div class="preview wechat_friends" v-if="shareStyle == 2">
           <div class="bubble">
               <div class="left">
-                <h3>{{ruleForm.title || '页面标题'}}</h3>
+                <h3>{{ruleForm.title || '页面名称'}}</h3>
                 <p>{{ruleForm.describe || '页面描述'}}</p>
               </div>
               <div class="right">
-                <img :src="ruleForm.picture" alt="">
+                <img :src="ruleForm.picture" alt="分享店铺LOGO">
               </div>
           </div>
         </div>
 
         <div class="preview wechat_ommunity" v-if="shareStyle == 3">
            <div class="bubble">
-              <img :src="ruleForm.picture" alt="">
-              <span>{{ruleForm.title || '页面标题'}}</span>
+              <img :src="ruleForm.picture" alt="分享店铺LOGO">
+              <span>{{ruleForm.title || '页面名称'}}</span>
           </div>
         </div>
 
@@ -155,6 +155,10 @@ export default {
           }
         ],
       },
+      shopInfo: {
+        logo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565883872169&di=d3f4f63e9e4362d5c04d9e9f6571e69d&imgtype=0&src=http%3A%2F%2Fp.moto8.com%2Fforum%2F201201%2F05%2F141059y9zgzp6zuq2puzup.jpg',
+        name: '源源的店铺'
+      },
       qrCode: '',
       openSetting: false  //是否开启设置
     };
@@ -231,7 +235,8 @@ export default {
     /* 获取海报 */
     getPoster() {
       this._apis.shop.getPoster({
-        id: this.ruleForm.pageInfoId
+        type: this.currentType === 'h5' ? '0' : '1',
+        pageInfoId: this.ruleForm.pageInfoId
       }).then((response)=>{
        this.download(response, '分享');
       }).catch((error)=>{
@@ -263,6 +268,7 @@ export default {
         url: this.pageLink,
         width: '225',
         height: '225'
+        // logoUrl: this.shopInfo.logo
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);
@@ -300,6 +306,7 @@ export default {
         border:1px solid rgba(211,211,211,1);
         padding:20px;
         box-sizing: border-box;
+        text-align: center;
         img{
           width: 220px;
           display: block;
