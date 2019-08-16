@@ -243,7 +243,7 @@ export default {
         this.showMoreTag = !this.showMoreTag;
     },
     getLabels() {
-        this._apis.client.getLabels({cid:2, tagType:null}).then((response) => {
+        this._apis.client.getLabels({tagType:null}).then((response) => {
             this.labelsList = [].concat(response);
             response.map((v) => {
                 this.labels.push(v.tagName);

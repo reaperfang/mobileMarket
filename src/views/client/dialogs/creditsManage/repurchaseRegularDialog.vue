@@ -59,7 +59,6 @@ export default {
             this.distinguish = this.distinguish == '0'? false : true;
             let params = {
                 id: this.data.id,
-                cid: "2",
                 enable: this.enable,
                 sceneRule: {
                     distinguish: this.distinguish,

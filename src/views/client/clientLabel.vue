@@ -45,7 +45,6 @@ export default {
     methods: {
         getLabelList() {
             this.params = {
-                cid: 2,
                 startIndex: 1,
                 pageSize: 10,
                 tagName: this.tagName,

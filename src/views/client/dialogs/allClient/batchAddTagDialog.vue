@@ -56,7 +56,7 @@ export default {
             })
         },
         getLabels() {
-            this._apis.client.getLabels({cid:2,tagType:0}).then((response) => {
+            this._apis.client.getLabels({tagType:0}).then((response) => {
                 this.tagList = [].concat(response); 
             }).catch((error) => {
                 this.$notify.error({

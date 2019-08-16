@@ -18,7 +18,6 @@
           :before-remove="beforeRemove"
           :on-change="handleChange"
           :before-upload="beforeUpload"
-          :name="'upfile'"
           @clearFiles="clearUploadFiles"
           multiple
           :on-exceed="handleExceed"

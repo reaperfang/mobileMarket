@@ -12,43 +12,43 @@
             <p>
                 <span>姓名</span>
                 <span>
-                    <el-switch v-model="name" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="info.name" active-color="#66CCAC"></el-switch>
+                </span>
+            </p>
+            <p>
+                <span>微信</span>
+                <span>
+                    <el-switch v-model="info.wechart_sn" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
             <p>
                 <span>性别</span>
                 <span>
-                    <el-switch v-model="sex" active-color="#66CCAC"></el-switch>
-                </span>
-            </p>
-            <p>
-                <span>性别</span>
-                <span>
-                    <el-switch v-model="sex" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="info.gender" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
             <p>
                 <span>生日</span>
                 <span>
-                    <el-switch v-model="sex" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="info.birthday" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
             <p>
                 <span>邮箱</span>
                 <span>
-                    <el-switch v-model="sex" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="info.email" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
             <p>
                 <span>地区</span>
                 <span>
-                    <el-switch v-model="sex" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="info.area" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
             <p>
                 <span>爱好</span>
                 <span>
-                    <el-switch v-model="sex" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="info.hobby" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
         </div>
@@ -56,20 +56,26 @@
 </template>
 <script>
 import DialogBase from '@/components/DialogBase'
-
 export default {
     name: 'levelInfoDialog',
     data() {
         return {
             hasCancel: true,
-            name: true,
-            sex: true,
-
+            info: {
+                name: true,
+                wechart_sn: true,
+                gender: true,
+                birthday: false,
+                email: false,
+                area: false,
+                hobby: false,
+                phone: true
+            }
         }
     },
     methods: {
         submit() {
-            
+            this.$emit('getSelectedInfo', this.info);
         }
     },
     computed: {

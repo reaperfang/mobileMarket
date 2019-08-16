@@ -78,19 +78,16 @@
 <script>
 
 export default {
-  name: 'shopMain',
+  name: 'shopMainDefault',
   data() {
     return {
-      
     }
   },
 
   created() {
-
   },
 
   methods: {
-
   }
 }
 </script>
