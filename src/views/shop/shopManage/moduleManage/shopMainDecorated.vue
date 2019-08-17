@@ -107,7 +107,7 @@ export default {
       let loadedLength = 0;
       const widgetList = widget.getWidgetList();
       for (let item of widgetList) {
-        import(`@/views/shop/decorate/comps/component${this.utils.titleCase(item)}.vue`)
+        import(`@/components/Decorate/comps/component${this.utils.titleCase(item)}.vue`)
           .then(loadedComponent => {
             this.templateList[item] = loadedComponent.default;
             loadedLength++;

@@ -332,6 +332,16 @@ export function resetPersonalInfo(data) {
   })
 }
 
+//重置店铺导航
+export function resetShopNav(data) {
+  return request({
+    target: 'DECORATION-PAGE-NAVIGATION-RESET-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 //获取首页
 export function getHomePage(data) {
   return request({

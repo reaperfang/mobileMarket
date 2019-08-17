@@ -4,7 +4,7 @@
             <p class="user_id">用户ID：{{ data.memberSn }}</p>
             <div class="clearfix">
                 <p class="c_label fl">禁用选择：</p>
-                <el-checkbox v-model="checks[0].checked" :label="checks[0].name" class="fl marT10"></el-checkbox>
+                <el-checkbox v-model="checks[0].checked" label="优惠券" class="fl marT10"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in couponIds" :key="index">
                         <el-select v-model="i.id" style="margin-bottom: 10px">
@@ -16,7 +16,7 @@
                 <span class="add" @click="addCouponSel">添加</span>
             </div>
             <div class="clearfix">
-                <el-checkbox v-model="checks[1].checked" :label="checks[1].name" class="fl marT10"></el-checkbox>
+                <el-checkbox v-model="checks[1].checked" label="优惠码" class="fl marT10"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in codeIds" :key="index">
                         <el-select v-model="i.id" style="margin-bottom: 10px">
@@ -58,26 +58,48 @@ export default {
                     if(v.name == "优惠券" && this.couponIds.length !== 0) {
                         let arr = [];
                         this.couponIds.map((item) => {
-                            arr.push(item.id);
+                            this.allCoupons.map((i) => {
+                                let obj = {};
+                                if(item.id == i.id) {
+                                    obj[item.id] = i.name;
+                                    arr.push(obj);
+                                }
+                            })
                         })
+                        let str = "";
+                        arr.map((v) => {str += "" + JSON.stringify(v) + ','});
+                        str = str.replace(/{|}/g, "");
+                        str = str.substring(0, str.length - 1);
                         let obj = {
-                            blackInfold: v.id,
-                            disableItemValue: arr.join(',')
+                            blackInfoId: v.id,
+                            blackInfoName: v.name,
+                            disableItemValue: str
                         }
                         blackListMapDtos.push(obj);
                     }else if(v.name == "优惠码" && this.codeIds.length !== 0) {
                         let arr = [];
                         this.codeIds.map((item) => {
-                            arr.push(item.id);
+                            this.allCodes.map((i) => {
+                                let obj = {};
+                                if(item.id == i.id) {
+                                    obj[item.id] = i.name;
+                                    arr.push(obj);
+                                }
+                            })
                         })
+                        let str = "";
+                        arr.map((v) => {str += "" + JSON.stringify(v) + ','});
+                        str = str.replace(/{|}/g, "");
+                        str = str.substring(0, str.length - 1);
                         let obj = {
-                            blackInfold: v.id,
-                            disableItemValue: arr.join(',')
+                            blackInfoId: v.id,
+                            blackInfoName: v.name,
+                            disableItemValue: str
                         }
                         blackListMapDtos.push(obj);
                     }else{
                         let obj = {
-                            blackInfold: v.id,
+                            blackInfoId: v.id,
                             disableItemValue: "1"
                         }
                         blackListMapDtos.push(obj);

@@ -1,36 +1,50 @@
 <template>
-  <div class="editor-wrapper" v-loading="loading">
-    <widgetView></widgetView>
-    <editView v-if="!loading"></editView>
-    <propView panelName="分类编辑" editorType="propertyClassify" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this" :homePageData="homePageData"></propView>
-    <!-- <div style="width:500px;">
-      分类基础数据：
-      <el-tag type="primary">{{baseInfo}}</el-tag>
-      <hr />组件数据映射：
-      <ul style="height:770px;overflow-y:auto;">
-        <li v-for="(item,key) of componentDataIds" :key="key">
-          <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
-          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
-        </li>
-      </ul>
-    </div> -->
-  </div>
+  <Decorate panelName="分类编辑" :componentConfig="componentConfig" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :homePageData="homePageData"></Decorate>
 </template>
 
 <script>
-import editorMixin from './editorMixin';
 import utils from "@/utils";
+import decorate from '@/components/Decorate';
 export default {
   name: "classifyEditor",
-  mixins: [editorMixin],
+  components: {decorate},
   data() {
     return {
       loading: false,
       id: this.$route.query.classifyId,
-      homePageData: null
+      homePageData: null,
+      componentConfig: {
+        type: 'classify',
+        isBase: true,
+        hidden: true,
+        title: '微页面分类信息'
+      }
     };
   },
+  computed: {
+    baseInfo() {
+      return this.$store.getters.baseInfo;
+    },
+    componentDataIds() {
+      return this.$store.getters.componentDataIds;
+    },
+    componentDataMap() {
+      return this.$store.getters.componentDataMap;
+    },
+
+    baseProperty() {
+      return this.$store.getters.baseProperty;
+    },
+  },
   methods: {
+
+    init() {
+      this.$store.commit("clearAllData");
+      if (this.id) {
+        this.fetch();
+      }
+    },
+
     /* 获取分类装修数据 */
     fetch() {
       const _self = this;
@@ -67,7 +81,7 @@ export default {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
-            this.$store.commit('showBaseProperty');
+            this.$store.commit('setCurrentComponentId', this.baseProperty.id);
           }
         });
         return;
@@ -113,6 +127,21 @@ export default {
       const resultData = this.collectData();
       console.log(JSON.stringify({...resultData}));
       this._routeTo('pageManageIndex');
+    },
+
+     /* 保存前收集装修数据 */
+    collectData() {
+      let result = this.baseInfo;
+      result['id'] = this.id;
+      let pageData = [];
+      for(let item of this.componentDataIds) {
+        const componentData = this.componentDataMap[item];
+        if(componentData) {
+          pageData.push(componentData);
+        }
+      }
+      result['pageData'] = utils.compileStr(JSON.stringify(pageData));;
+      return result;
     }
 
   }

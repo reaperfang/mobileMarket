@@ -40,6 +40,16 @@ export default {
                     message: error
                 });
             })
+        },
+        getFreezeList() {
+            this._apis.client.getFreezeList({memberInfoId: this.data.id}).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -53,7 +63,7 @@ export default {
         }
     },
     mounted() {
-        
+        this.getFreezeList();
     },
     props: {
         data: {
