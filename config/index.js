@@ -22,7 +22,7 @@ module.exports = {
     useEslint: false,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
-    showEslintErrorsInOverlay: false,
+    showEslintErrorsInOverlay: true,
 
     /**
      * Source Maps
@@ -36,11 +36,11 @@ module.exports = {
       '/data-server/**': {
         //target: 'http://172.22.146.2:8080', // 订单 尹茂凯
         //target: 'http://172.22.134.106:8080', // 商品 王浩
-        //target: 'http://172.22.146.133:8081',  //李雯廷
+        target: 'http://172.22.146.133:8081',  //李雯廷
         //target: 'http://120.133.1.130:8012',//营销
         //target: 'http://172.22.146.109:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080', // 客户 崔建
-        target: 'http://172.22.146.4:8080', //客户 刘亚凯
+        // target: 'http://172.22.146.4:8080', //客户 刘亚凯
         //target: 'http://172.22.146.123:8080', // 客户 王杰
         //target:'http://172.22.146.124:8090',//许涛
         //target: 'http://172.22.134.125:8012',//陈程

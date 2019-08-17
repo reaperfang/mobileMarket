@@ -204,8 +204,8 @@
             <div class="help_blank"></div>
             <div class="buttons">
               <el-button @click="resetData">重    置</el-button>
-              <el-button @click="save">暂    存</el-button>
-              <el-button @click="saveAndApply">保存并启用</el-button>
+              <el-button @click="save">保    存</el-button>
+              <el-button @click="saveAndApply" type="primary">保存并启用</el-button>
             </div>
           </div>
 
@@ -410,7 +410,7 @@ export default {
     saveAndApply() {
       this.submit({
         navigationKey: '',
-        status: '1',
+        status: '0',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -420,7 +420,7 @@ export default {
     save() {
        this.submit({
         navigationKey: '',
-        status: '0',
+        status: '1',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -446,12 +446,27 @@ export default {
 
     /* 重置 */
     resetData() {
-      // this.submit({
-      //   navigationKey: '',
-      //   status: '0',
-      //   navigation_type: this.navigation_type,
-      //   navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      // });
+      this.loading = true;
+      this._apis.shop.resetShopNav({}).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '重置成功！',
+          type: 'success'
+        });
+        let navigationJson = utils.uncompileStr(response.navigationJson);
+        navigationJson = JSON.parse(navigationJson);
+        if(navigationJson && navigationJson.navStyle) {
+          this.ruleForm = navigationJson;
+          this.selectNav(navigationJson.navIds[0]);
+        }
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     },
 
     rowSeleted(row) {

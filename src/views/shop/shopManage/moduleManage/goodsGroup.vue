@@ -17,6 +17,7 @@
       :saveAndApply="saveAndApply" 
       :data="ruleForm" 
       :save="save" 
+      :resetData="resetData"
       @goodsGroupPageDataChanged="emitChangeRuleForm"
       ></propertyGoodsGroupPageSetting>
     </div>
@@ -24,8 +25,8 @@
 </template>
 
 <script>
-import componentGoodsGroupPageSetting from '../../decorate/comps/componentGoodsGroupPageSetting';
-import propertyGoodsGroupPageSetting from '../../decorate/props/propertyGoodsGroupPageSetting';
+import componentGoodsGroupPageSetting from '@/components/Decorate/comps/componentGoodsGroupPageSetting';
+import propertyGoodsGroupPageSetting from '@/components/Decorate/props/propertyGoodsGroupPageSetting';
 export default {
   name: "shopIndex",
   components: {componentGoodsGroupPageSetting, propertyGoodsGroupPageSetting},
@@ -87,6 +88,10 @@ export default {
           message: '重置成功！',
           type: 'success'
         });
+        const pageData = JSON.parse(response.pageData);
+        if(pageData && pageData.groupStyle) {
+          this.ruleForm = pageData;
+        }
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({

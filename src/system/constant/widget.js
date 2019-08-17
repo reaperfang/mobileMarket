@@ -2,6 +2,24 @@
 export default {
   widgetList: {
 
+        hiddenWidget: {
+          title:'隐藏组件',
+          list: [
+            {
+              type: 'pageInfo',
+              iconClass: '',
+              title: '页面信息',
+              hidden: true
+            },
+            {
+              type: 'classify',
+              iconClass: '',
+              title: '微页面分类',
+              hidden: true
+            }
+          ]
+        },
+
         //基础组件
         baseWidget: {
           title:'基础组件',

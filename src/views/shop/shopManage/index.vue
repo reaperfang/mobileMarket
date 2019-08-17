@@ -1,6 +1,6 @@
 <template>
   <div style="background:rgb(242,242,249);">
-    <el-tabs v-model="currentTab" @tab-click="handleClick">
+    <el-tabs v-model="currentTab">
       <el-tab-pane label="店铺主页" :name="shopMain" v-loading="loading"></el-tab-pane>
       <el-tab-pane label="个人中心" name="personCenter"></el-tab-pane>
       <el-tab-pane label="商品分组" name="goodsGroup"></el-tab-pane>
@@ -31,10 +31,13 @@ export default {
     this.getHomePage();
   },
 
-  methods: {
-    handleClick(comp) {
-      this.currentTab = comp.name;
+  computed: {
+     baseProperty() {
+      return this.$store.getters.baseProperty;
     },
+  },
+
+  methods: {
 
     /* 获取首页数据 */
     getHomePage() {
@@ -68,7 +71,7 @@ export default {
       this.setBaseInfo(data);
       
       //打开基础信息面板
-      this.$store.commit('showBaseProperty');
+      this.$store.commit('setCurrentComponentId', this.baseProperty.id);
       
       //还原组件列表
       let componentDataIds = [];

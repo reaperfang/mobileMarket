@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import componentUserCenter from '../../decorate/comps/componentUserCenter';
-import propertyUserCenter from '../../decorate/props/propertyUserCenter';
+import componentUserCenter from '@/components/Decorate//comps/componentUserCenter';
+import propertyUserCenter from '@/components/Decorate//props/propertyUserCenter';
 export default {
   name: "personCenter",
   components: {componentUserCenter, propertyUserCenter},
@@ -88,6 +88,10 @@ export default {
           message: '重置成功！',
           type: 'success'
         });
+        const pageData = JSON.parse(response.pageData);
+        if(pageData && pageData.avatarPosition) {
+          this.ruleForm = pageData;
+        }
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
