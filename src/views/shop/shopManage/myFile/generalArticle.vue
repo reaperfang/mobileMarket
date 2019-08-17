@@ -35,6 +35,11 @@
         </div>
       </div>
     </div>
+    <p class="btns">
+      <el-button type="primary">预览</el-button>
+      <el-button type="primary" plain>取消</el-button>
+      <el-button type="primary">保存</el-button>
+    </p>
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </div>
 </template>
@@ -137,6 +142,11 @@ export default {
       }
     }
   }
+}
+.btns{
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 100px;
 }
 .mt10{
   margin-top: 10px;

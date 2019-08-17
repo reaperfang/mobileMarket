@@ -4,6 +4,7 @@
     <el-table
       :data="levelList"
       style="width: 100%"
+      ref="levelTable"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
@@ -37,18 +38,19 @@
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
-            <el-switch v-model="scope.row.status"></el-switch>
+            <el-switch v-model="scope.row.status" @change="handleSwitch(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <span class="edit_span" @click="edit(scope.row.id)">编辑</span>
+            <span class="edit_span" @click="edit(scope.row.id)" v-if="scope.row.name">编辑</span>
+            <span class="edit_span" @click="edit(scope.row.id)" v-if="!scope.row.name">待配置</span>
         </template>
       </el-table-column>
     </el-table>
     <div class="single_check">
-        <el-checkbox v-model="checked"></el-checkbox>
-        <el-button class="other_btn">批量禁用</el-button>
+        <el-checkbox v-model="checked" @change="handleAll"></el-checkbox>
+        <el-button class="other_btn" @click="batchDisable">批量禁用</el-button>
     </div>
     <div class="page_styles">
       <el-pagination
@@ -96,6 +98,51 @@ export default {
     },
     edit(id) {
       this._routeTo('levelInfo',{id: id});
+    },
+    handleSwitch(row) {
+      let status = row.status ? "1":"0";
+      this._apis.client.enableLevel({id:row.id, status: status}).then((response) => {
+        this.$notify({
+          title: '成功',
+          message: "切换成功",
+          type: 'success'
+        });
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    handleAll(val) {
+      this.levelList.forEach(row => {
+        this.$refs.levelTable.toggleRowSelection(row)
+      });
+    },
+    batchDisable() {
+      let rows = this.$refs.levelTable.selection;
+      if(rows.length == 0) {
+        this.$notify({
+          title: '警告',
+          message: '请选择要禁用的等级',
+          type: 'warning'
+        });
+      }else{
+        let arr = [];
+        rows.map((v) => {arr.push(v.id);});
+        this._apis.client.batchEnableLevel({levelIds: arr, status: '0'}).then((response) => {
+          this.$notify({
+            title: '成功',
+            message: "批量禁用成功",
+            type: 'success'
+          });
+        }).catch((error) => {
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+        })
+      }
     }
   },
   mounted() {
