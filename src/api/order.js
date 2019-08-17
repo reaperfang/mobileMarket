@@ -211,6 +211,36 @@ export function orderAfterSaleUpdateStatus(data) {
   })
 }
 
+//  导出
+export function orderAfterSaleExport(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTERSALE-EXPORT-EXCEL-PROCESS',
+    data
+  })
+}
+
+//  换货确认
+export function orderAfterConfirmExchange(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-CONFIRM-EXCHANGE-PROCESSOR',
+    data
+  })
+}
+
+//  订单支付信息
+export function getOrderPayRecordList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-PAY-RECORD-LIST-PROCESSOR',
+    data
+  })
+}
+
 
 
 

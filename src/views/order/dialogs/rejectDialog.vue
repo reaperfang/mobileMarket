@@ -1,9 +1,8 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" :title="title" width="500px" :showFooter="showFooter">
         <div>
-            <p>拒绝申请可能会受到客户ID差评，如果确定拒绝售后，请选择拒绝原因：</p>
-            <el-radio v-model="refuseReason" label="1">人为破坏拒绝售后</el-radio>
-            <el-radio v-model="refuseReason" label="2">其他</el-radio>
+            <el-radio v-model="refuseReason" label="人为破坏拒绝售后">人为破坏拒绝售后</el-radio>
+            <el-radio v-model="refuseReason" label="其他">其他</el-radio>
             <div class="footer">
                 <el-button>取消</el-button>
                 <el-button @click="submit" type="primary">确定</el-button>
@@ -23,7 +22,7 @@ export default {
     },
     methods: {
         submit() {
-            this.$emit('audit', this.auditStatus)
+            this.$emit('reject', this.refuseReason)
             this.visible = false
         }
     },

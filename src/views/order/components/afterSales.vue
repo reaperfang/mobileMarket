@@ -198,9 +198,13 @@ export default {
                 page: 1,
                 limit: 20,
             },
+            tableData: []
         }
     },
     methods: {
+        onSubmit() {
+
+        },
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },

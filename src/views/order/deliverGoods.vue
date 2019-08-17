@@ -157,10 +157,25 @@ export default {
             },
             rules: {
 
-            }
+            },
+            orderDetail: {},
+            nameList: []
         }
     },
+    created() {
+        this.getOrderDetail()
+    },
     methods: {
+        getOrderDetail() {
+            let id = this.$route.query.orderId
+
+            this._apis.order.fetchOrderDetail({id}).then((res) => {
+                this.orderDetail = res
+                this.tableData = this.orderDetail.orderItems
+            }).catch(error => {
+
+            })
+        },
         handleSelectionChange(val) {
             this.multipleSelection = val;
         }
