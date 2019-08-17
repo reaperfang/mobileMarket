@@ -375,7 +375,8 @@ export default {
             console.log(levelConditionList);
             let receiveConditionsRemarks = "";
             levelConditionList.map((v) => {
-                receiveConditionsRemarks = "" + v.label + ','
+                if(typeof(conditionValue))
+                receiveConditionsRemarks += "" + v.label + v.conditionValue + ','
             });
             console.log(receiveConditionsRemarks);
             let rightsList = [];
