@@ -405,3 +405,39 @@ export function batchRemoveFromBlack(data) {
         data
     })
 }
+//等级编辑
+export function editLevel(data) {
+    return request({
+        target:'LEVEL-EDIT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//等级启用禁用
+export function enableLevel(data) {
+    return request({
+        target:'LEVEL-ENABEL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//等级批量禁用
+export function batchEnableLevel(data) {
+    return request({
+        target:'LEVEL-ENABEL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//解除黑名单冻结列表
+export function getFreezeList(data) {
+    return request({
+        target:'MEMBERINFO-BLACKLISTDETAILS-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}

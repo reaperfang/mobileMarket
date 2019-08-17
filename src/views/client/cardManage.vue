@@ -79,7 +79,9 @@ export default {
                 let i = response.list.findIndex((value,index,arr) => {
                     return value.name == "";
                 });
-                this.$set(response.list[i], 'isGray', false);
+                if(i !== -1) {
+                    this.$set(response.list[i], 'isGray', false);
+                }
                 this.cardList = [].concat(response.list);
             }).catch((error) => {
                 this.$notify.error({

@@ -16,23 +16,23 @@
                 </el-form-item>
                 <el-form-item label="领取条件：" prop="receiveSetting">
                     <el-radio v-model="ruleForm.receiveSetting" label="0">可直接领取</el-radio><br>
-                    <el-radio v-model="ruleForm.receiveSetting" label="1" style="margin-left: 93px">满足特定条件</el-radio>
+                    <el-radio v-model="ruleForm.receiveSetting" label="1" style="margin-left: 93px" @change="showSpacialDialog">满足特定条件</el-radio>
                 </el-form-item>
                 <div class="line"></div>
                 <p class="l_title" style="margin-left: -19px;">权益礼包：</p><br>
                 <el-form-item label="会员卡权益:" prop="rightsDtoList">
-                    <el-checkbox-group v-model="rightsDtoList">
-                        
-                    </el-checkbox-group>
+                    <el-form-item>
+                        <el-checkbox>优先发货</el-checkbox>
+                    </el-form-item>
+                    <el-form-item style="margin-left: 87px">
+                        <el-checkbox>积分回馈倍率</el-checkbox>
+                        <div class="input_wrap3">
+                            <el-input placeholder="请输入数字" ></el-input>
+                        </div>
+                        <span>倍</span>
+                        <span class="gray">(当前积分兑换率：1元1积分)</span>
+                    </el-form-item>
                 </el-form-item>
-                <!-- <el-form-item>
-                    <el-checkbox v-model="ruleForm.check2" style="margin-left: 86px;">积分回馈倍率</el-checkbox>
-                    <div class="input_wrap3">
-                        <el-input placeholder="填写数字"></el-input>
-                    </div>
-                    <span>倍</span>
-                    <span class="l_warn">（当前积分兑换率：1元1积分）</span>
-                </el-form-item> -->
                 <el-form-item label="特权说明：" prop="remark">
                     <div class="input_wrap4">
                         <el-input type="textarea" :rows="5" placeholder="请输入该等级或会员卡通用的特权说明，最多不超过250个字符" v-model="ruleForm.remark"></el-input>
@@ -79,9 +79,9 @@ export default {
             fileList: [],
             ruleForm:{
                 name: "",
-                backgroundType: "0",
+                backgroundType: "",
                 background: "",
-                receiveSetting:"0",
+                receiveSetting:"",
 
                 check1: false,
                 radio1: "1",
@@ -121,7 +121,9 @@ export default {
             currentData: '',
             dialogVisible: false,
             cardData: this.$route.query.cardData,
-            rightsList: []
+            rightsList: [],
+            conditionList: [],
+            rewardList:[]
         }
     },
     methods: {
@@ -141,10 +143,36 @@ export default {
                     message: error
                 });
             })
+        },
+        getConditionList() {
+            this._apis.client.levelConditionList({type: 1}).then((response) => {
+                this.conditionList = [].concat(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getRewardList() {
+            this._apis.client.getRewardList({type: 1}).then((response) => {
+                this.rewardList = [].concat(response);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        showSpacialDialog(val) {
+            this.dialogVisible = true;
+            this.currentDialog = "createCardDialog";
         }
     },
     mounted() {
         this.getRightsList();
+        this.getConditionList();
+        this.getRewardList();
     }
 }
 </script>
