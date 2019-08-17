@@ -133,7 +133,7 @@ export default {
             this.dialogVisible = true;
         },
         getRightsList() {
-            this._apis.client.getRightsList({cid: 2, rightsType:1}).then((response) => {
+            this._apis.client.getRightsList({rightsType:1}).then((response) => {
                 this.rightsList = [].concat(response);
             }).catch((error) => {
                 this.$notify.error({

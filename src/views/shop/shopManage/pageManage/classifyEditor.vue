@@ -2,7 +2,7 @@
   <div class="editor-wrapper" v-loading="loading">
     <widgetView></widgetView>
     <editView v-if="!loading"></editView>
-    <propView panelName="分类编辑" editorType="propertyClassify" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this"></propView>
+    <propView panelName="分类编辑" editorType="propertyClassify" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this" :homePageData="homePageData"></propView>
     <!-- <div style="width:500px;">
       分类基础数据：
       <el-tag type="primary">{{baseInfo}}</el-tag>
@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       loading: false,
-      id: this.$route.query.classifyId
+      id: this.$route.query.classifyId,
+      homePageData: null
     };
   },
   methods: {
@@ -36,6 +37,7 @@ export default {
       this.loading = true;
       this._apis.shop.getClassifyInfo({id: this.id}).then((response)=>{
          this.loading = false;
+         this.homePageData = response;
          this.convertDecorateData(response);
       }).catch((error)=>{
         this.$notify.error({

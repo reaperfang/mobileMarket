@@ -21,7 +21,7 @@
         </div>
       </div>
       <!-- 动态弹窗 -->
-      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :homePageData="homePageData"></component>
     </div>
 </template>
 
@@ -33,7 +33,7 @@ import dialogDecoratePreview from '../dialogs/dialogDecoratePreview';
 export default {
   name: 'propView', 
   components: {propertyBase, propertyClassify, dialogDecoratePreview},
-  props: ['panelName', 'editorType', 'saveData', 'saveAndApplyData', 'parentScope'],
+  props: ['panelName', 'editorType', 'saveData', 'saveAndApplyData', 'parentScope', 'homePageData'],
   data () {
     return {
       currentComponent: null,  //当前组件名称

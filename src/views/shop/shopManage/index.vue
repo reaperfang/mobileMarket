@@ -1,11 +1,11 @@
 <template>
-  <div style="background:rgb(242,242,249);" v-loading="loading">
+  <div style="background:rgb(242,242,249);">
     <el-tabs v-model="currentTab" @tab-click="handleClick">
-      <el-tab-pane label="店铺主页" :name="shopMain"></el-tab-pane>
+      <el-tab-pane label="店铺主页" :name="shopMain" v-loading="loading"></el-tab-pane>
       <el-tab-pane label="个人中心" name="personCenter"></el-tab-pane>
       <el-tab-pane label="商品分组" name="goodsGroup"></el-tab-pane>
     </el-tabs>
-    <component :is="currentTab"></component>
+    <component :is="currentTab" :homePageData="homePageData"></component>
   </div>
 </template>
 
@@ -20,11 +20,11 @@ export default {
   components: {shopMainDefault, shopMainDecorated, personCenter, goodsGroup},
   data () {
     return {
-      currentTab: 'shopMainDefault',
-      shopMain: 'shopMainDefault',
+      currentTab: 'shopMainDefault',  //当前页签
+      shopMain: 'shopMainDefault',  //当前主页类型
       loading: true,
-      hasHomePage: false,
-      homePageDecorateData: null
+      hasHomePage: false,  //是否有首页装修数据
+      homePageData: null  //首页装修数据
     }
   },
   created() {
@@ -50,6 +50,7 @@ export default {
           this.hasHomePage = true;
           this.shopMain = 'shopMainDecorated';
           this.currentTab = 'shopMainDecorated';
+          this.homePageData = response;
           this.convertDecorateData(response);
         }
         this.loading = false;

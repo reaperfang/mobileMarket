@@ -1,25 +1,26 @@
 <template>
-  <DialogBase :visible.sync="visible" @submit="submit" title="选择赠品" :hasCancel="hasCancel">
+  <DialogBase :visible.sync="visible" @submit="submit" title="选择红包" :hasCancel="hasCancel">
     <div class="table_container">
       <div class="fr marB20">
         <div class="input_wrap">
-          <el-input placeholder="赠品编号/名称" v-model="key"></el-input>
+          <el-input placeholder="输入红包名称/红包编号" v-model="key"></el-input>
         </div>
         <el-button type="primary">搜索</el-button>
       </div>
       <div>
         <el-table
-          :data="giftList"
+          :data="redList"
           style="width: 100%"
-          ref="giftTable"
+          ref="redTable"
           :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
           :default-sort="{prop: 'date', order: 'descending'}"
         >
           <el-table-column type="selection"></el-table-column>
-          <el-table-column prop="businessId" label="赠品编号"></el-table-column>
-          <el-table-column prop="goodsName" label="赠品名称"></el-table-column>
-          <el-table-column prop="stock" label="剩余库存"></el-table-column>
-          <el-table-column prop="goodsName" label="状态"></el-table-column>         
+          <el-table-column prop="id" label="编号"></el-table-column>
+          <el-table-column prop="name" label="红包名称"></el-table-column>
+          <el-table-column prop="name" label="红包类型"></el-table-column>
+          <el-table-column prop="hongbaoTotalMoney" label="红包余额"></el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>         
         </el-table>
       </div>
     </div>
@@ -28,7 +29,7 @@
 <script>
 import DialogBase from "@/components/DialogBase";
 export default {
-  name: "levelInfoDialog",
+  name: "redListDialog",
   data() {
     return {
       hasCancel: true,
@@ -37,7 +38,7 @@ export default {
   },
   methods: {
     submit() {
-        this.$emit('getSelection', {selection: this.$refs.giftTable.selection});
+        this.$emit('getSelectedRed', {selection: this.$refs.redTable.selection});
     }
   },
   computed: {
@@ -49,8 +50,8 @@ export default {
         this.$emit("update:dialogVisible", val);
       }
     },
-    giftList() {
-        return JSON.parse(localStorage.getItem('giftList'));
+    redList() {
+        return JSON.parse(localStorage.getItem('redPacket'));
     }
   },
   props: {

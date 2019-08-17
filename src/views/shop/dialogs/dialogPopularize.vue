@@ -97,7 +97,7 @@
       </div>
     </el-tabs>
     <!-- 动态弹窗 -->
-    <component  v-if="dialogVisible2" :is="currentDialog" :dialogVisible.sync="dialogVisible2"></component>
+    <component  v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible2"></component>
   </DialogBase>
 </template>
 
@@ -156,7 +156,7 @@ export default {
         ],
       },
       shopInfo: {
-        logo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565883872169&di=d3f4f63e9e4362d5c04d9e9f6571e69d&imgtype=0&src=http%3A%2F%2Fp.moto8.com%2Fforum%2F201201%2F05%2F141059y9zgzp6zuq2puzup.jpg',
+        logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
         name: '源源的店铺'
       },
       qrCode: '',
@@ -267,8 +267,8 @@ export default {
       this._apis.shop.getQrcode({
         url: this.pageLink,
         width: '225',
-        height: '225'
-        // logoUrl: this.shopInfo.logo
+        height: '225',
+        logoUrl: this.shopInfo.logo
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);
