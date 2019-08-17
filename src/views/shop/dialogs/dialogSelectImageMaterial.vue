@@ -24,24 +24,6 @@
           :file-list="fileList">
            <el-button size="small" type="primary">上传新图片</el-button>
       </el-upload>
-      <!-- <el-upload
-        class="upload-demo"
-        action="http://35.201.165.105:8000/controller.php?action=uploadimage"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-success="handleSuccess"
-        :on-error="handleError"
-        :before-remove="beforeRemove"
-        :on-change="handleChange"
-        :before-upload="beforeUpload"
-        :name="'upfile'"
-        @clearFiles="clearUploadFiles"
-        multiple
-        :on-exceed="handleExceed"
-        :file-list="fileList">
-      <el-button size="small" type="primary">上传新图片</el-button> -->
-      <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-    <!-- </el-upload> -->
     </div>
     <div class="material_wrapper" ref="materialWrapper" v-loading="loading" :style="{'overflow-y': loading ? 'hidden' : 'auto'}">
         <waterfall :col='3' :width="250" :gutterWidth="10"  :data="imgsArr" :isTransition="false" >
@@ -298,7 +280,7 @@ export default {
     }
 }
 .material_wrapper{
-  height:400px;
+  height:390px;
   overflow-y: auto;
 
   .cell-item {

@@ -61,6 +61,15 @@
           <span class="newClass" @click="newGroup">+ 新建分组</span>
         </div>
       </div>
+      <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="10"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+      </el-pagination>
     </div>
     <!-- 动态弹窗 -->
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
@@ -87,7 +96,9 @@ export default {
 
       ],
       loading:false,
-      checked:false
+      checked:false,
+      currentPage:1,
+      total:0
     }
   },
   created() {
@@ -131,6 +142,10 @@ export default {
       this.$set(item, 'loaded', true);  //只要加载了都算成功，用来后面统计
       this.allImgLoaded();
     },
+    //分页相关
+    handleSizeChange(){},
+    handleCurrentChange(){},
+
   }
 }
 </script>

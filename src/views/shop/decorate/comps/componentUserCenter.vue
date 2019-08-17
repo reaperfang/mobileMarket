@@ -155,10 +155,10 @@
             <ul>
               <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter11.png" alt />
+                  <img :src="data.moduleList.integralMarket.icon || '../../../../assets/images/shop/userCenter/userCenter11.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">积分商城</p>
+                  <p class="fl" :style="{color: data.moduleList.integralMarket.color}">{{data.moduleList.integralMarket.titleValue}}</p>
                   <div class="fr userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r1">
                       <span>NEW</span>
@@ -170,10 +170,10 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter12.png" alt />
+                  <img :src="data.moduleList.messageCenter.icon || '../../../../assets/images/shop/userCenter/userCenter12.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">消息中心</p>
+                  <p class="fl" :style="{color: data.moduleList.messageCenter.color}">{{data.moduleList.messageCenter.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r1">99+</div>
                     <img src="../../../../assets/images/shop/userCenter/triangle.png" alt />
@@ -182,10 +182,10 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter13.png" alt />
+                  <img :src="data.moduleList.memberRank.icon || '../../../../assets/images/shop/userCenter/userCenter13.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">会员等级</p>
+                  <p class="fl" :style="{color: data.moduleList.memberRank.color}">{{data.moduleList.memberRank.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r2">Lv5</div>
                     <img src="../../../../assets/images/shop/userCenter/triangle.png" alt />
@@ -198,34 +198,34 @@
             <ul>
               <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter14.png" alt />
+                  <img :src="data.moduleList.coupon.icon || '../../../../assets/images/shop/userCenter/userCenter14.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">优惠券</p>
+                  <p class="fl" :style="{color: data.moduleList.coupon.color}">{{data.moduleList.coupon.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r2">可使用5张</div>
                     <img src="../../../../assets/images/shop/userCenter/triangle.png" alt />
                   </div>
                 </div>
               </li>
-              <li>
+              <!-- <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter15.png" alt />
+                  <img :src="data.moduleList.messageCenter.icon || '../../../../assets/images/shop/userCenter/userCenter15.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">优惠码</p>
+                  <p class="fl" :style="{color: data.moduleList.messageCenter.color}">{{data.moduleList.messageCenter.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r2">可使用5个</div>
                     <img src="../../../../assets/images/shop/userCenter/triangle.png" alt />
                   </div>
                 </div>
-              </li>
+              </li> -->
               <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter16.png" alt />
+                  <img :src="data.moduleList.gift.icon || '../../../../assets/images/shop/userCenter/userCenter16.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">赠品包</p>
+                  <p class="fl" :style="{color: data.moduleList.gift.color}">{{data.moduleList.gift.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r2 color_v2">待领取5件</div>
                     <img src="../../../../assets/images/shop/userCenter/triangle.png" alt />
@@ -234,10 +234,10 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter17.png" alt />
+                  <img :src="data.moduleList.myAssemble.icon || '../../../../assets/images/shop/userCenter/userCenter17.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">我的拼团</p>
+                  <p class="fl" :style="{color: data.moduleList.myAssemble.color}">{{data.moduleList.myAssemble.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r2">拼团中1个</div>
                     <img src="../../../../assets/images/shop/userCenter/triangle.png" alt />
@@ -250,10 +250,10 @@
             <ul>
               <li>
                 <div class="userCenter_three1Img">
-                  <img src="../../../../assets/images/shop/userCenter/userCenter18.png" alt />
+                  <img :src="data.moduleList.address.icon || '../../../../assets/images/shop/userCenter/userCenter18.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl">收货地址</p>
+                  <p class="fl" :style="{color: data.moduleList.address.color}">{{data.moduleList.address.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <img src="../../../../assets/images/shop/userCenter/triangle.png" alt />
                   </div>

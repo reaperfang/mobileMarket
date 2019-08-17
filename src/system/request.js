@@ -59,6 +59,7 @@ class Ajax {
         }
         return Promise.reject(error.message);
       }
+
     );
   }
 

@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">
         <div class="block header">
           <p class="title">个人信息页设置</p>
           <p class="state">生效中</p>
@@ -47,6 +47,21 @@
           </el-form-item>
         </div>
 
+        <div class="block form">
+          <el-form-item :label="item.title" prop=""  v-for="(item, key) in ruleForm.moduleList"
+            :key="key" >
+            <div 
+            class="module_block"
+            @dragstart.self="selectItem = item" 
+            @dragend.self="selectItem = {}">
+                <el-input v-model="item.titleValue"></el-input>
+                <img :src="item.icon" alt="">
+                <colorPicker  v-model="item.color"></colorPicker >
+                <el-button type="text">重置</el-button>
+            </div>
+          </el-form-item>
+        </div>  
+
         <div class="block button">
           <el-button @click="resetData">重    置</el-button>
           <el-button @click="save">保    存</el-button>
@@ -60,9 +75,10 @@
 
 <script>
 import dialogSelectImageMaterial from '../../dialogs/dialogSelectImageMaterial';
+import vuedraggable from "vuedraggable";
 export default {
   name: 'propertyUserCenter',
-  components: {dialogSelectImageMaterial},
+  components: {dialogSelectImageMaterial, vuedraggable},
   props: ['saveAndApply', 'save', 'resetData', 'data'],
   data () {
     return {
@@ -73,7 +89,58 @@ export default {
         backgroundGradients: 1,  //背景渐变
         avatarPosition: 1,  //头像位置
         nickColor: '#000000',  //昵称颜色
-        memberColumeStyle: 1  //会员栏样式
+        memberColumeStyle: 1,  //会员栏样式
+        moduleList: {
+          integralMarket: {
+            name: 'integralMarket',
+            title: '积分商城',
+            titleValue: '积分商城',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+          messageCenter: {
+            name: 'messageCenter',
+            title: '消息中心',
+            titleValue: '消息中心',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+          memberRank: {
+            name: 'memberRank',
+            title: '会员等级',
+            titleValue: '会员等级',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+          coupon: {
+            name: 'coupon',
+            title: '优惠券',
+            titleValue: '优惠券',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+          gift: {
+            name: 'gift',
+            title: '赠品包',
+            titleValue: '赠品包',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+          myAssemble: {
+            name: 'myAssemble',
+            title: '我的拼团',
+            titleValue: '我的拼团',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+          address: {
+            name: 'address',
+            title: '地址管理',
+            titleValue: '地址管理',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+        }
       },
       rules: {}
     }
@@ -110,11 +177,30 @@ export default {
 
 <style lang="scss" scoped>
  .block{
-      &.button{
-        padding: 30px 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-      }
+    &.button{
+      padding: 30px 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
     }
+  }
+  .module_block{
+    display:flex;
+    flex-direction: row;
+    margin-bottom:10px;
+    .el-input{
+      margin-right:10px;
+    }
+    img{
+      width:34px;
+      height:34px;
+      display: block;
+      margin-right:10px;
+    }
+    /deep/.colorBtn{
+      width:25px!important;
+      height:25px!important;
+      margin-right:10px;
+    }
+  }
 </style>
