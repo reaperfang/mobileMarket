@@ -84,7 +84,7 @@ export default {
     fetch() {
       this.loading = true;
       this._apis.file.getMaterialList({
-        fileGroupInfoId:"1",
+        fileGroupInfoId:"",
         startIndex:"1",
         pageSize:"10",
         sourceMaterialType:"0",

@@ -27,6 +27,7 @@
 <script>
 import componentGoodsGroupPageSetting from '@/components/Decorate/comps/componentGoodsGroupPageSetting';
 import propertyGoodsGroupPageSetting from '@/components/Decorate/props/propertyGoodsGroupPageSetting';
+import utils from "@/utils";
 export default {
   name: "shopIndex",
   components: {componentGoodsGroupPageSetting, propertyGoodsGroupPageSetting},
@@ -42,7 +43,14 @@ export default {
     fetch() {
       this.loading = true;
       this._apis.shop.getGoodsGroup({}).then((response)=>{
-        const pageData = JSON.parse(response.pageData);
+        const string = utils.uncompileStr(response.pageData);
+        if(string.indexOf('groupStyle') < 0) {
+          return;
+        }
+        let pageData = JSON.parse(string);
+        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
+          return;
+        }
         if(pageData && pageData.groupStyle) {
           this.ruleForm = pageData;
         }
@@ -66,7 +74,7 @@ export default {
       this.submit({
         status: '0',
         pageKey: '',
-        pageData: JSON.stringify(this.ruleForm)
+        pageData: utils.compileStr(JSON.stringify(this.ruleForm))
       });
     },
 
@@ -75,7 +83,7 @@ export default {
        this.submit({
         status: '1',
         pageKey: '',
-        pageData: JSON.stringify(this.ruleForm)
+        pageData: utils.compileStr(JSON.stringify(this.ruleForm))
       });
     },
 
@@ -88,7 +96,14 @@ export default {
           message: '重置成功！',
           type: 'success'
         });
-        const pageData = JSON.parse(response.pageData);
+        const string = utils.uncompileStr(response.pageData);
+        if(string.indexOf('groupStyle') < 0) {
+          return;
+        }
+        let pageData = JSON.parse(string);
+        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
+          return;
+        }
         if(pageData && pageData.groupStyle) {
           this.ruleForm = pageData;
         }

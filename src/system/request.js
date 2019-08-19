@@ -86,7 +86,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dbbc8c6bfa9f10f632f254e9845946eaf',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d1ad127cecab362d68c1cb6ab7b877ece',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -139,7 +139,7 @@ class Ajax {
             config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
             break;
           case 'decorate':  //装修接口
-            config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
+            config.baseURL = `${process.env.DATA_API}/api-decoration-web/decoration/api.do`;
             break;
           case 'finance':  //财务接口
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
@@ -147,8 +147,13 @@ class Ajax {
           case 'goodsOperate':  //商品运营
             config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
             break;
+<<<<<<< HEAD
           case 'publicOrder':  //地址
           config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`; // 李权宇
+=======
+          case 'matrix':  //开关  许涛
+            config.baseURL = `${process.env.DATA_API}/matrix-admin/matrix/api.do`;
+>>>>>>> 8808efbd4d3d661693ee7f76c061eb958428612d
             break;
         }
       }

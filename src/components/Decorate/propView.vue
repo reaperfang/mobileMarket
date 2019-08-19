@@ -5,7 +5,7 @@
           {{this.componentDataMap[this.currentComponentId].title}}
         </p>
         <p class="title" v-else>
-          {{panelName}}
+          编辑
         </p>
       </div>
       <transition name="fade" :duration="{ enter: 200, leave: 100 }">
@@ -14,8 +14,9 @@
       <div class="block button" v-loading="loading">
         <div class="help_blank"></div>
         <div class="buttons">
-          <el-button type="primary" @click="saveAndApplyData.call(parentScope)" v-if="id">保存并生效</el-button>
+          <el-button @click="resetData.call(parentScope)" v-if="resetData">重   置</el-button>
           <el-button @click="saveData.call(parentScope)" type="primary">{{id ? '保   存' : '创   建'}}</el-button>
+          <el-button type="primary" @click="saveAndApplyData.call(parentScope)" v-if="saveAndApplyData && id">保存并生效</el-button>
           <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
         </div>
       </div>
@@ -30,7 +31,7 @@ import dialogDecoratePreview from '@/views/shop/dialogs/dialogDecoratePreview';
 export default {
   name: 'propView', 
   components: {dialogDecoratePreview},
-  props: ['panelName', 'saveData', 'saveAndApplyData', 'parentScope', 'homePageData'],
+  props: ['saveData', 'saveAndApplyData', 'resetData', 'parentScope', 'homePageData'],
   data () {
     return {
       currentComponent: null,  //当前组件名称
