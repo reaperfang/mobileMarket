@@ -2,40 +2,40 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="lklist"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
+        prop="name"
         label="会员卡名称">
       </el-table-column>
       <el-table-column
-        prop="channel"
+        prop="enable"
         label="状态">
       </el-table-column>
       <el-table-column
-        prop="importNum"
+        prop="cardSn"
         label="卡号">
       </el-table-column>
       <el-table-column
-        prop="successNum"
+        prop="memberInfoId"
         label="领取人ID"
       >
       </el-table-column>
       <el-table-column
-        prop="failNum"
+        prop="createTime"
         label="领取时间"
       >
       </el-table-column>
       <el-table-column
-        prop="buyTime"
+        prop="receiveWay"
         label="获取方式"
       >
       </el-table-column>
       <el-table-column
-        prop="operator"
+        prop="createUserName"
         label="发放人"
       >
       </el-table-column>
@@ -59,29 +59,47 @@ import TableBase from "@/components/TableBase";
 export default {
   name: "lkTable",
   extends: TableBase,
+  props: ['lkParams'],
   data() {
     return {
-      dataList:[
-        {
-            choose: true,
-            importTime:"",
-            channel:"",
-            importNum:"",
-            successNum:"",
-            failNum:"",
-            buyTime:"",
-            operator:""
-        },
-      ],
+      lklist:[],
     };
   },
   created() {
 
   },
   methods: {
-    
+    getLkList(startIndex, pageSize) {
+      let params = {};
+      if(Object.keys(this.lkParams).length == 0) {
+        params = {
+          startIndex: startIndex || 1,
+          pageSize: pageSize || 10,
+        }
+      }else{
+        params = Object.assign({}, this.lkParams);
+        params.startIndex = startIndex;
+        params.pageSize = pageSize;
+      }
+      this._apis.client.getLkList(params).then((response) => {
+        this.lklist = [].concat(response.list);
+      }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    }
   },
-  components: {}
+  mounted() {
+    this.getLkList(1,10);
+  },
+  components: {},
+  watch: {
+    lkParams() {
+      this.getLkList(1,10);
+    }
+  }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

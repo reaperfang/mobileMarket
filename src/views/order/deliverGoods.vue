@@ -11,7 +11,7 @@
                     <div class="title">
                         <div>
                             <span>商品清单</span>
-                            <span>订单编号 {{}}</span>
+                            <span>订单编号 {{orderInfo.code}}</span>
                         </div>
                     </div>
                     <div class="content">
@@ -25,9 +25,11 @@
                                 width="55">
                             </el-table-column>
                             <el-table-column
-                                prop="number"
                                 label="序号"
                                 width="180">
+                                <template slot-scope="scope">
+                                    <span>{{scope.$index + 1}}</span>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                 label="商品"
@@ -38,25 +40,25 @@
                                             <img src="" alt="">
                                         </div>
                                         <div class="goods-detail-item">
-                                            <p></p>
-                                            <p></p>
+                                            <p>{{scope.row.goodsName}}</p>
+                                            <p>{{scope.row.goodsSpecs}}</p>
                                         </div>
                                     </div>
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                prop="theoryNumber"
+                                prop="goodsCount"
                                 label="应发数量">
                             </el-table-column>
-                            <el-table-column
+                            <!-- <el-table-column
                                 prop="realityNumber"
                                 label="可发货数量">
-                            </el-table-column>
+                            </el-table-column> -->
                             <el-table-column
-                                prop="thisNumber"
+                                prop="sendCount"
                                 label="本次发货数量">
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.thisNumber"></el-input>
+                                    <el-input v-model="scope.row.sendCount"></el-input>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -71,20 +73,20 @@
                             <i class="take-in-icon"></i>
                             <span>收货信息</span>
                         </div>
-                        <div class="blue">修改收货信息</div>
+                        <div class="blue" @click="changeReceivedInfo">修改收货信息</div>
                     </div>
                     <div class="content">
                         <div class="item">
                             <div class="label">收货人</div>
-                            <div class="value">{{}}</div>
+                            <div class="value">{{orderInfo.receivedName}}</div>
                         </div>
                         <div class="item">
                             <div class="label">联系电话</div>
-                            <div class="value">{{}}</div>
+                            <div class="value">{{orderInfo.receivedPhone}}</div>
                         </div>
                         <div class="item">
                             <div class="label">收货信息</div>
-                            <div class="value">{{}}</div>
+                            <div class="value">{{orderInfo.receivedDetail}}</div>
                         </div>
                     </div>
                 </div>
@@ -99,15 +101,15 @@
                     <div class="content">
                         <div class="item">
                             <div class="label">发货人</div>
-                            <div class="value">{{}}</div>
+                            <div class="value">{{orderSendInfo.sendName}}</div>
                         </div>
                         <div class="item">
                             <div class="label">联系电话</div>
-                            <div class="value">{{}}</div>
+                            <div class="value">{{orderSendInfo.sendPhone}}</div>
                         </div>
                         <div class="item">
                             <div class="label">发货信息</div>
-                            <div class="value">{{}}</div>
+                            <div class="value">{{orderSendInfo.sendRemark}}</div>
                         </div>
                     </div>
                 </div>
@@ -116,33 +118,36 @@
                 <p>3.填写物流信息</p>
                 <div class="logistics">
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                        <el-form-item label="快递公司" prop="name">
-                            <el-select v-model="ruleForm.name" placeholder="请选择">
-                                <el-option :label="item.label" :value="item.value" v-for="(item, index) in nameList" :key="index"></el-option>
+                        <el-form-item label="快递公司" prop="expressCompanys">
+                            <el-select v-model="ruleForm.expressCompanys" placeholder="请选择">
+                                <el-option :label="item.expressCompany" :value="item.expressCompany" v-for="(item, index) in expressCompanyList" :key="index"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="快递单号" prop="number">
-                            <el-input v-model="ruleForm.number"></el-input>
+                        <el-form-item label="快递单号" prop="expressNos">
+                            <el-input v-model="ruleForm.expressNos"></el-input>
                         </el-form-item>
-                        <el-form-item label="物流备注" prop="remarks">
+                        <el-form-item label="物流备注" prop="remark">
                             <el-input
                                 style="width: 623px;"
                                 type="textarea"
                                 :rows="2"
                                 placeholder="非必填，请输入，不超过100个字符"
-                                v-model="ruleForm.remarks">
+                                v-model="ruleForm.remark">
                             </el-input>
                         </el-form-item>
                     </el-form>
                 </div>
             </div>
             <div class="footer">
-                <el-button type="primary">发 货</el-button>
+                <el-button type="primary" @click="sendGoods">发 货</el-button>
             </div>
         </div>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit"></component>
     </div>
 </template>
 <script>
+import ReceiveInformationDialog from '@/views/order/dialogs/receiveInformationDialog'
+
 export default {
     data() {
         return {
@@ -159,19 +164,75 @@ export default {
 
             },
             orderDetail: {},
-            nameList: []
+            nameList: [],
+            orderInfo: {},
+            orderSendInfo: {},
+            currentDialog: '',
+            dialogVisible: false,
+            currentData: {},
+            expressCompanyList: []
         }
     },
     created() {
         this.getOrderDetail()
+        this.getExpressCompanyList()
     },
     methods: {
+        getExpressCompanyList() {
+            this._apis.order.fetchExpressCompanyList().then((res) => {
+                this.expressCompanyList = res
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        sendGoods() {
+            let params
+
+            params = {
+                sendInfoDtoList: [
+                    {
+                        orderId: this.$route.query.orderId || this.$route.query.id,
+                        memberInfoId: this.orderInfo.memberInfoId,
+                        orderCode: this.orderInfo.code,
+                        orderItems: this.multipleSelection
+                    }
+                ]
+            }
+            this._apis.order.orderSendGoods(params).then((res) => {
+                this.visible = false
+                this.$notify({
+                    title: '发货成功',
+                    message: '删除成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        changeReceivedInfo() {
+            this.currentDialog = 'ReceiveInformationDialog'
+            this.currentData = this.orderInfo
+            this.dialogVisible = true
+        },
+        onSubmit() {
+            this.getOrderDetail()
+        },
         getOrderDetail() {
-            let id = this.$route.query.orderId
+            let id = this.$route.query.orderId || this.$route.query.id
 
             this._apis.order.fetchOrderDetail({id}).then((res) => {
                 this.orderDetail = res
                 this.tableData = this.orderDetail.orderItems
+                this.orderInfo = res.orderInfo
+                this.orderSendInfo = res.orderSendInfo
             }).catch(error => {
 
             })
@@ -179,6 +240,9 @@ export default {
         handleSelectionChange(val) {
             this.multipleSelection = val;
         }
+    },
+    components: {
+        ReceiveInformationDialog
     }
 }
 </script>

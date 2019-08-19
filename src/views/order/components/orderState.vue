@@ -207,7 +207,7 @@
                     <p>待发货</p>
                     <div>
                         <span>关闭订单</span>
-                        <span>发货</span>
+                        <span @click="$router.push('/order/deliverGoods?id=' + $route.query.id)">发货</span>
                     </div>
                 </div>
             </template>

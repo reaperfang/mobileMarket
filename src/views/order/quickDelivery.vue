@@ -16,26 +16,27 @@
       <el-button @click="$router.push('/order/newTemplate')" class="border-button new-template">新建模板</el-button>
     </section>
     <section class="search">
-      <el-form :inline="true" :model="formInline" class="form-inline">
+      <el-form :inline="true" :model="listQuery" class="form-inline">
         <div class="row justify-between">
           <div class="col">
             <el-form-item label="模板名称">
-              <el-input v-model="formInline.name" placeholder="请输入"></el-input>
+              <el-input v-model="listQuery.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="创建时间">
               <el-date-picker
-                v-model="formInline.time"
+                v-model="listQuery.time"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                value-format="yyyy-MM-dd hh:mm:ss"
               ></el-date-picker>
             </el-form-item>
           </div>
           <div class="col">
             <el-form-item>
               <span class="orange resetting">重置</span>
-              <el-button type="primary" @click="onSubmit">搜 索</el-button>
+              <el-button type="primary" @click="getList">搜 索</el-button>
             </el-form-item>
           </div>
         </div>
@@ -43,7 +44,7 @@
     </section>
     <section class="table-box">
       <div class="table-title">
-        已选择 项，全部
+        全部
         <span>{{total}}</span>项
       </div>
       <div class="table">
@@ -53,15 +54,19 @@
           :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
         >
           <el-table-column prop="name" label="模板名称" width="180"></el-table-column>
-          <el-table-column prop="mode" label="计费方式" width="180"></el-table-column>
-          <el-table-column prop="quantity" label="应用商品数量"></el-table-column>
-          <el-table-column prop="time" sortable label="编辑时间"></el-table-column>
+          <el-table-column prop="calculationWay" label="计费方式" width="180">
+            <template slot-scope="scope">
+              <span>{{scope.row.calculationWay | calculationWayFilter}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="productCount" label="应用商品数量"></el-table-column>
+          <el-table-column prop="updateTime" sortable label="编辑时间"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <div class="operate-box">
-                <span @click="$router.push('/order/newTemplate?mode=look')">查看</span>
+                <span @click="$router.push('/order/newTemplate?mode=look&id=' + scope.row.id)">查看</span>
                 <span @click="$router.push('/order/newTemplate?mode=copy')">复制</span>
-                <span @click="$router.push('/order/newTemplate?mode=change')">修改</span>
+                <span @click="$router.push('/order/newTemplate?mode=change&id=' + scope.row.id)">修改</span>
               </div>
             </template>
           </el-table-column>
@@ -93,15 +98,52 @@ export default {
       total: 0,
       tableData: [{}],
       listQuery: {
-        page: 1,
-        limit: 20
+        startIndex: 1,
+        pageSize: 20,
+        time: '',
+        startTime: '',
+        endTime: ''
       },
       currentDialog: "",
       dialogVisible: false
     };
   },
+  created() {
+    this.getList()
+  },
+  filters: {
+    calculationWayFilter(code) {
+      switch(code) {
+        case 1:
+          return '按件计费'
+        case 2:
+          return '按重量计费'
+        case 3:
+          return '按体积计费'
+      }
+    }
+  },
   methods: {
-    getList() {}
+    getList() {
+      this._apis.order.fetchTemplatePageList(this.listQuery, {
+        startTime: this.listQuery.time ? this.listQuery.time[0] : '',
+        endTime: this.listQuery.time ? this.listQuery.time[1] : '',
+      }).then((res) => {
+          this.total = +res.total
+          this.tableData = res.list
+          this.$notify({
+              title: '成功',
+              message: '查询成功！',
+              type: 'success'
+          });
+      }).catch(error => {
+          this.visible = false
+          this.$notify.error({
+              title: '错误',
+              message: error
+          });
+      })
+    }
   },
   components: {
     Pagination,

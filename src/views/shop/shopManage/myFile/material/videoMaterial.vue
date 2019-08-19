@@ -15,28 +15,42 @@
       <p class="list_top">图片素材<span>{{num}}</span>条</p>
       <div class="list_main">
         <div class="list_img">
-           <div class="item_img">
-             <p class="img_head">
-               <span>
-                 <el-checkbox v-model="checked"></el-checkbox>
-                 7月12日
-                </span>
+           <div class="imgs">
+            <div class="item_img">
+              <p class="img_head">
                 <span>
-                  <i class="wx_icon"></i>
-                  8MB
-                </span>
-             </p>
-             <div class="img_body">
-               <p class="title">美丽的天空之城</p>
-               <img src="" class="imgs">
-             </div>
-             <p class="img_bottom">
-               <span><i class="el-icon-edit"></i></span>
-               <span><i class="el-icon-folder"></i></span>
-               <span><i class="el-icon-download"></i></span>
-               <span><i class="el-icon-delete" @click="deleteImage"></i></span>
-             </p>
+                  <el-checkbox v-model="checked"></el-checkbox>
+                  7月12日
+                  </span>
+                  <span>
+                    <i class="wx_icon"></i>
+                    8MB
+                  </span>
+              </p>
+              <div class="img_body">
+                <p class="title">美丽的天空之城</p>
+                <img src="" class="imgs">
+              </div>
+              <p class="img_bottom">
+                <span><i class="el-icon-edit"></i></span>
+                <span><i class="el-icon-folder"></i></span>
+                <span><i class="el-icon-download"></i></span>
+                <span><i class="el-icon-delete" @click="deleteImage"></i></span>
+              </p>
+            </div>
            </div>
+           <p class="pages">
+              <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="10"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              class="page_nav">
+              </el-pagination>
+           </p>
         </div>
         <div class="groups">
           <p class="groups_head">全部图片</p>
@@ -58,15 +72,6 @@
           <span class="newClass" @click="newGroup">+ 新建分组</span>
         </div>
       </div>
-      <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="10"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-      </el-pagination>
     </div>
     <!-- 动态弹窗 -->
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
@@ -144,60 +149,63 @@ export default {
   display: flex;
   justify-content: space-between;
   .list_img{
-    display: flex;
-    justify-content: space-around;
-    .item_img{
-      width: 250px;
-      border: 1px solid #e6e6e6;
-      .img_head{
-        height: 25px;
-        line-height: 25px;
-        padding: 0 10px;
-        border-bottom: 1px solid #e6e6e6;
-        display: flex;
-        flex: 1;
-        justify-content: space-between;
-        span{
-          font-size: 14px;
-          color: #92929B;
-        }
-        .wx_icon{
-          width: 20px;
-          height: 20px;
-          display: inline-block;
-          vertical-align: middle;
-          background: url('../../../../../assets/images/shop/wx_icon.png');
-        }
-      }
-      .img_body{
-        width:100%;
-        padding:10px 10px;
-        font-size: 14px;
-        color: #44434B;
-        .title{
+    width: 100%;
+    .imgs{
+      display: flex;
+      flex-flow: row wrap;
+      .item_img{
+        width: 250px;
+        border: 1px solid #e6e6e6;
+        .img_head{
           height: 25px;
           line-height: 25px;
+          padding: 0 10px;
+          border-bottom: 1px solid #e6e6e6;
+          display: flex;
+          flex: 1;
+          justify-content: space-between;
+          span{
+            font-size: 14px;
+            color: #92929B;
+          }
+          .wx_icon{
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            background: url('../../../../../assets/images/shop/wx_icon.png');
+          }
         }
-        .imgs{
-          width: 100%;
-          height:85px;
+        .img_body{
+          width:100%;
+          padding:10px 10px;
+          font-size: 14px;
+          color: #44434B;
+          .title{
+            height: 25px;
+            line-height: 25px;
+          }
+          .imgs{
+            width: 100%;
+            height:85px;
+          }
         }
-      }
-      .img_bottom{
-        height: 25px;
-        line-height: 25px;
-        display: flex;
-        justify-content:space-between;
-        span{
-          width: 25%;
-          display: inline-block;
-          background: #DDDDDD;
-          text-align: center;
-          color: #fff;
-          cursor: pointer;
-        }
-        span:nth-of-type(n+2){
-          border-left:1px solid #fff;
+        .img_bottom{
+          height: 25px;
+          line-height: 25px;
+          display: flex;
+          justify-content:space-between;
+          span{
+            width: 25%;
+            display: inline-block;
+            background: #DDDDDD;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+          }
+          span:nth-of-type(n+2){
+            border-left:1px solid #fff;
+          }
         }
       }
     }
@@ -207,6 +215,7 @@ export default {
     border: 1px solid #e6e6e6;
     font-size: 14px;
     color: #44434B;
+    margin-left: 30px;
     .groups_head{
       height: 30px;
       line-height: 30px;
@@ -234,6 +243,14 @@ export default {
       padding-left: 20px;
       cursor: pointer;
     }
+  }
+}
+.pages{
+  width: 100%;
+  margin-top: 50px;
+  text-align: right;
+  .page_nav{
+    display: inline-block;
   }
 }
 .ml10{

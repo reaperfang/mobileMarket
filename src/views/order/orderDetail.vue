@@ -223,6 +223,9 @@ export default {
         }
     },
     methods: {
+        sendGoods() {
+            console.log('sendGoods')
+        },
         reducePriceHandler() {
             this._apis.order.orderPriceChange({id: this.orderDetail.orderInfo.id, 
             consultType: this.goodsListMessage.consultType, consultMoney: this.goodsListMessage.consultMoney}).then(res => {

@@ -37,6 +37,7 @@
     "vant": "^2.1.2",
     "vcolorpicker": "^0.1.8",
     "vue": "^2.6.10",
+    "vue-clipboard2": "^0.3.0",
     "vue-count-to": "^1.0.13",
     "vue-cropper": "^0.4.9",
     "vue-jsonp": "^0.1.8",
