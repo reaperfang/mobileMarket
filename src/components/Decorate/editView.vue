@@ -5,7 +5,10 @@
       <span>{{baseInfo.name || '页面标题'}}</span>
     </div>
     <div class="phone-body" @click="clickTitle($event)">
+
+      <!-- 可拖拽调整顺序 -->
        <vuedraggable 
+        v-if="dragable"
         class="drag-wrap"
         :list='componentDataIds'
         :group='{
@@ -29,6 +32,12 @@
             <i v-if="item !== baseProperty.id" class="delete_btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
           </div>
     </vuedraggable>
+
+    <!-- 不可拖拽调整顺序,可用来预览 -->
+     <div v-else class="component_wrapper" style="cursor:text" v-for="(item, key) of componentDataIds" :key="key">
+        <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)" ></component>
+        <!-- {{getComponentData(item).title}}组件 -->
+      </div>
     </div>
 
   </div>
@@ -41,6 +50,12 @@ import vuedraggable from "vuedraggable";
 
 export default {
   name: 'editView',
+  props: {
+    dragable: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {vuedraggable},
   data () {
     return {
@@ -132,6 +147,9 @@ export default {
     },
 
     clickTitle(event) {
+      if(!this.dragable) {
+        return;
+      }
       if(!event || (event.target.className.indexOf('phone-head') > -1 || event.target.className.indexOf('phone-body') > -1)) {
        this.$store.commit('setCurrentComponentId',  this.baseProperty.id);
       }

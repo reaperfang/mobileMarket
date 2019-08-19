@@ -139,13 +139,16 @@ class Ajax {
             config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
             break;
           case 'decorate':  //装修接口
-            config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
+            config.baseURL = `${process.env.DATA_API}/api-decoration-web/decoration/api.do`;
             break;
           case 'finance':  //财务接口
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
             break;
           case 'goodsOperate':  //商品运营
             config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
+            break;
+          case 'matrix':  //开关  许涛
+            config.baseURL = `${process.env.DATA_API}/matrix-admin/matrix/api.do`;
             break;
         }
       }

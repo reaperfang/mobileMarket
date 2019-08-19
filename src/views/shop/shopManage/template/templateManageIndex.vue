@@ -15,21 +15,26 @@
           </div>
         </div>
       </li>
-      <li v-for="(item, key) of templateList" :key="key">
+      <li v-for="(item, key) of templateList" :key="key" v-loading="loading">
         <div class="view">
-          <img :src="item.img" alt="">
+          <img :src="item.img || 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg'" alt="">
         </div>
         <div class="info">
           <div class="top">
-            <span>{{item.title}}</span>
+            <span>{{item.title || '页面模板'}}</span>
             <i class="mini_program"></i>
             <i class="wechat"></i>
           </div>
-          <div class="bottom">
+          <!-- <div class="bottom">
             <el-button type="success" size="mini" v-if="item.price === 0" plain>免费</el-button>
             <span class="price" v-if="item.price !== 0">￥{{item.price}}</span>
-            <el-button type="success" plain v-if="item.state === 2" @click="_routeTo('templateEdit')">立即应用</el-button>
+            <el-button type="success" plain v-if="item.state === 2" @click="_routeTo('templateEdit', {id: scope.row.id})">立即应用</el-button>
             <el-button type="warning" plain v-if="item.state === 1">立即购买</el-button>
+          </div> -->
+          <div class="bottom">
+            <el-button type="success" size="mini"  plain>免费</el-button>
+            <!-- <span class="price" v-if="item.price !== 0">￥{{item.price}}</span> -->
+            <el-button type="success" plain @click="_routeTo('templateEdit', {id: item.id})">立即应用</el-button>
           </div>
         </div>
       </li>
@@ -43,45 +48,59 @@ export default {
   components: {},
   data () {
     return {
+      loading: true,
       templateList: [
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-          title: '商城首页',
-          price: 2300,
-          state: 1
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-          title: '会员中心',
-          price: 0,
-          state: 2
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-          title: '商品详情页',
-          price: 0,
-          state: 2
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-          title: '购物车',
-          price: 540,
-          state: 1
-        },
-        {
-          img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-          title: '订单详情页',
-          price: 247,
-          state: 2
-        },
+        // {
+        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
+        //   title: '商城首页',
+        //   price: 2300,
+        //   state: 1
+        // },
+        // {
+        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
+        //   title: '会员中心',
+        //   price: 0,
+        //   state: 2
+        // },
+        // {
+        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
+        //   title: '商品详情页',
+        //   price: 0,
+        //   state: 2
+        // },
+        // {
+        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
+        //   title: '购物车',
+        //   price: 540,
+        //   state: 1
+        // },
+        // {
+        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
+        //   title: '订单详情页',
+        //   price: 247,
+        //   state: 2
+        // },
       ]
     }
   },
   created() {
-
+    this.fetch();
   },
   methods: {
-
+    fetch() {
+      this.loading = true;
+      this._apis.shop.getTemplateList({}).then((response)=>{
+        this.templateList = response;
+        // this.total = response.total;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
   }
 }
 </script>

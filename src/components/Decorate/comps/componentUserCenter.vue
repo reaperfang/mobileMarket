@@ -208,18 +208,18 @@
                   </div>
                 </div>
               </li>
-              <!-- <li>
+              <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.messageCenter.icon || '../../../assets/images/shop/userCenter/userCenter15.png'" alt />
+                  <img :src="data.moduleList.couponCode.icon || '../../../assets/images/shop/userCenter/userCenter15.png'" alt />
                 </div>
                 <div class="userCenter_three1Cont">
-                  <p class="fl" :style="{color: data.moduleList.messageCenter.color}">{{data.moduleList.messageCenter.titleValue}}</p>
+                  <p class="fl" :style="{color: data.moduleList.couponCode.color}">{{data.moduleList.couponCode.titleValue}}</p>
                   <div class="userCenter_three1Cont_r">
                     <div class="userCenter_three1Cont_r2">可使用5个</div>
                     <img src="../../../assets/images/shop/userCenter/triangle.png" alt />
                   </div>
                 </div>
-              </li> -->
+              </li>
               <li>
                 <div class="userCenter_three1Img">
                   <img :src="data.moduleList.gift.icon || '../../../assets/images/shop/userCenter/userCenter16.png'" alt />

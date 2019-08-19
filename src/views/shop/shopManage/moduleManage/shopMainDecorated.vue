@@ -1,20 +1,7 @@
 <template>
   <div class="preview_wrapper">
     <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
-      <div class="phone-head">
-        <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt />
-        <span>{{baseInfo.pageTitle || '页面标题'}}</span>
-      </div>
-      <div class="phone-body">
-        <div class="component_wrapper" v-for="(item, key) of componentDataIds" :key="key">
-          <component
-            v-if="allTemplateLoaded"
-            :is="templateList[getComponentData(item).type]"
-            :key="key"
-            :data="getComponentData(item)"
-          ></component>
-        </div>
-      </div>
+      <editView :dragable="false"></editView>
     </div>
     <div class="shop_info">
       <div class="shop_code">
@@ -29,11 +16,11 @@
         <ul class="tile-list n3">
           <li>
             <el-button type="primary" plain @click="_routeTo('ADManageIndex')">首页广告</el-button>
-            <!-- <p>{{toolsData.status1 === '1' ? '已开启' : '已关闭'}}</p> -->
+            <p>{{toolsData && toolsData.adOpenType === 1 ? '已开启' : '已关闭'}}</p>
           </li>
           <li>
             <el-button type="primary" plain @click="_routeTo('shopNav')">店铺导航</el-button>
-            <!-- <p>{{toolsData.status2 === '1' ? '已开启' : '已关闭'}}</p> -->
+            <p>{{toolsData && toolsData.shopNavigation === 1 ? '已开启' : '已关闭'}}</p>
           </li>
           <li>
             <el-button type="primary" plain @click="_routeTo('shopStyle')">店铺风格</el-button>
@@ -55,15 +42,14 @@
 
 <script>
 import utils from "@/utils";
-import widget from "@/system/constant/widget";
+import editView from "@/components/Decorate/editView";
 export default {
   name: "shopMainDecorated",
   props: ['homePageData'],
+  components: {editView},
   data() {
     return {
       utils,
-      allTemplateLoaded: false,  //所有模板是否加载结束
-      templateList: {}, //模板对象列表
       color: {
         type: 1,
         mainColor:'',
@@ -78,15 +64,6 @@ export default {
     };
   },
   computed: {
-    currentComponentId() {
-      return this.$store.getters.currentComponentId;
-    },
-    componentDataIds() {
-      return this.$store.getters.componentDataIds;
-    },
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    },
     baseInfo() {
       return this.$store.getters.baseInfo;
     }
@@ -94,36 +71,8 @@ export default {
   created() {
     this.getQrcode();
     this.getTools();
-    this.loadTemplateLists();
   },
   methods: {
-    /* 获取组件数据 */
-    getComponentData(id) {
-      return this.componentDataMap[id];
-    },
-
-    //加载模板列表
-    loadTemplateLists() {
-      let loadedLength = 0;
-      const widgetList = widget.getWidgetList();
-      for (let item of widgetList) {
-        import(`@/components/Decorate/comps/component${this.utils.titleCase(item)}.vue`)
-          .then(loadedComponent => {
-            this.templateList[item] = loadedComponent.default;
-            loadedLength++;
-            if (loadedLength >= widgetList.length) {
-              this.allTemplateLoaded = true;
-            }
-          })
-          .catch(e => {
-            console.log(e);
-            loadedLength++;
-            if (loadedLength >= widgetList.length) {
-              this.allTemplateLoaded = true;
-            }
-          });
-      }
-    },
 
       /* 获取二维码 */
     getQrcode(codeType, callback) {
@@ -145,16 +94,16 @@ export default {
 
       /* 获取工具状态 */
     getTools() {
-      //  this._apis.shop.getTools({}).then((response)=>{
-      //   this.toolsData = response;
-      //   this.loading = false;
-      // }).catch((error)=>{
-      //   this.$notify.error({
-      //     title: '错误',
-      //     message: error
-      //   });
-      //   this.loading = false;
-      // });
+       this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
+        this.toolsData = response;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     },
 
   }
@@ -167,14 +116,11 @@ export default {
     flex-direction: row;
     justify-content: flex-start;
     padding-top:20px;
-    .module {
+    /deep/.module {
       &.view {
         width: 374px;
         .phone-body {
           height: 592px;
-          .component_wrapper{
-            cursor:text;
-          }
         }
       }
     }
