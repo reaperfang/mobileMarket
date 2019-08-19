@@ -123,7 +123,7 @@
         </div>
         <div class="btn_container" style="text-align: center">
             <el-button type="primary" @click="save">保 存</el-button>
-            <el-button>返 回</el-button>
+            <el-button @click="_routeTo('clientLevel')">返 回</el-button>
         </div>
         <component 
             :is="currentDialog" 
@@ -151,13 +151,7 @@ export default {
                 id: this.$route.query.id,
                 name: "",
                 levelImageUrl:"",
-                explain:"",
-                upgradePackage:"",
-                receiveConditionsRemarks:"",
-                rights:"",
-                levelConditionList: [],
-                rightsList: [],
-                upgradeRewardList:[]
+                explain:""
             },
             rules: {
                 name: [
@@ -333,6 +327,7 @@ export default {
             this.selectedInfos = Object.assign({}, obj);
         },
         save() {
+            let formObj = {};
             let levelConditionList = [];
             if(this.condition1) {
                 if(Object.keys(this.selectedInfos).length == 0) {
@@ -372,12 +367,14 @@ export default {
                 }
                 levelConditionList.push(params2);
             }
-            console.log(levelConditionList);
             let receiveConditionsRemarks = "";
             levelConditionList.map((v) => {
-                receiveConditionsRemarks = "" + v.label + ','
+                receiveConditionsRemarks += "" + v.label + v.conditionValue + ','
             });
-            console.log(receiveConditionsRemarks);
+            receiveConditionsRemarks = receiveConditionsRemarks.replace('[object Object]',"");
+            levelConditionList.map((v) => {
+                delete v.label;
+            });
             let rightsList = [];
             if(this.right1) {
                 if(this.mby == "") {
@@ -390,6 +387,7 @@ export default {
                     let params3 = {};
                     params3.rightsInfoId = this.getId(this.rightsList,'满包邮');
                     params3.rightsValue = this.mby;
+                    params3.label = "满包邮";
                     rightsList.push(params3);
                 }
             } 
@@ -404,10 +402,17 @@ export default {
                     let params4 = {};
                     params4.rightsInfoId = this.getId(this.rightsList,'会员折扣');
                     params4.rightsValue = this.hyzk;
+                    params4.label = "会员折扣";
                     rightsList.push(params4);
                 }
             }
-            //console.log(rightsList);
+            let rights = "";
+            rightsList.map((v) => {
+                rights += "" + v.label + v.rightsValue + ','
+            });
+            rightsList.map((v) => {
+                delete v.label;
+            });
             let upgradeRewardList = [];
             if(this.upgrade1) {
                 if(this.zsjf == "") {
@@ -420,6 +425,7 @@ export default {
                     let params5 = {};
                     params5.upgradeRewardInfoId = this.getId(this.rewardList,'赠送积分');
                     params5.giftNumber = this.zsjf;
+                    params5.label = "赠送积分";
                     upgradeRewardList.push(params5);
                 }
             }
@@ -435,6 +441,7 @@ export default {
                         let obj = {};
                         obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送红包');
                         obj.giftProduct = v.id;
+                        obj.label = "赠送红包";
                         upgradeRewardList.push(obj);
                     })
                 }
@@ -451,6 +458,7 @@ export default {
                         let obj = {};
                         obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送赠品');
                         obj.giftProduct = v.id;
+                        obj.label = "赠送赠品";
                         obj.giftNumber = v.number;
                         upgradeRewardList.push(obj);
                     })
@@ -469,11 +477,48 @@ export default {
                         obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送优惠券');
                         obj.giftProduct = v.id;
                         obj.giftNumber = v.number;
+                        obj.label = "赠送优惠券"
                         upgradeRewardList.push(obj);
                     })
                 }
             }
-            //console.log(upgradeRewardList);
+            let upgradePackage = "";
+            let upgradeArr = [];
+            upgradeRewardList.map((v) => {
+                if(upgradeArr.indexOf(v.label) == -1) {
+                    upgradeArr.push(v.label);
+                    upgradePackage += "" + v.label + ','
+                }
+            });
+            upgradePackage = upgradePackage.replace(/undefined/g,'');
+            upgradeRewardList.map((v) => {
+                if(v.label) {
+                    delete v.label;
+                }
+            });
+            formObj.levelConditionList = [].concat(levelConditionList);
+            formObj.rightsList = [].concat(rightsList);
+            formObj.upgradeRewardList = [].concat(upgradeRewardList);
+            formObj.upgradePackage = upgradePackage;
+            formObj.receiveConditionsRemarks = receiveConditionsRemarks;
+            formObj.rights = rights;
+            formObj.id = this.ruleForm.id;
+            formObj.cid = this.ruleForm.cid;
+            formObj.name = this.ruleForm.name;
+            formObj.levelImageUrl = this.ruleForm.levelImageUrl;
+            formObj.explain = this.ruleForm.explain;
+            this._apis.client.editLevel(formObj).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: "等级编辑成功",
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     mounted() {

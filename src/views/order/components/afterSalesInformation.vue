@@ -174,7 +174,7 @@
         <section class="drawback">
             <p class="section-header">卖家退款合计</p>
             <div class="row justity-between">
-                <div class="col">
+                <div class="col" style="margin-right: 50px;">
                     <div class="row">
                         <div class="col">
                             应退积分：
@@ -250,7 +250,7 @@
                     </div> -->
                 </div>
                 <div class="col">
-                    <div class="row">
+                    <div class="row align-center">
                         <div class="col">
                             退还积分：
                         </div>

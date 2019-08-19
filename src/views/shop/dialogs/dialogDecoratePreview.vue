@@ -1,28 +1,9 @@
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="(baseInfo.name || '页面名称') + '预览'">
     <div class="preview_wrapper">
-      <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
-        <div class="phone-head">
-          <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt />
-          <span>{{baseInfo.pageTitle || '页面标题'}}</span>
-        </div>
-        <div class="phone-body">
-          <div class="component_wrapper" v-for="(item, key) of componentDataIds" :key="key">
-            <component
-              v-if="allTemplateLoaded"
-              :is="templateList[getComponentData(item).type]"
-              :key="key"
-              :data="getComponentData(item)"
-            ></component>
-          </div>
-        </div>
-      </div>
+      <editView :dragable="false"></editView>
       <div class="shop_info">
-        <img
-          class="shop_logo"
-          :src="shopInfo.logo"
-          alt
-        />
+        <img class="shop_logo" :src="shopInfo.logo" alt />
         <div class="shop_name">{{shopInfo.name || '店铺名称'}}</div>
         <div class="shop_code">
           <h3>手机扫码访问</h3>
@@ -36,11 +17,11 @@
 
 <script>
 import DialogBase from "@/components/DialogBase";
+import editView from "@/components/Decorate/editView";
 import utils from "@/utils";
-import widget from "@/system/constant/widget";
 export default {
   name: "dialogDecoratePreview",
-  components: {DialogBase},
+  components: {DialogBase, editView},
   props: {
       data: {},
       dialogVisible: {
@@ -54,8 +35,6 @@ export default {
   data() {
     return {
       utils,
-      allTemplateLoaded: false,
-      templateList: {}, //模板对象列表
       shopInfo: {
         logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
         name: '源源的店铺'
@@ -72,51 +51,14 @@ export default {
           this.$emit('update:dialogVisible', val)
       }
     },
-    currentComponentId() {
-      return this.$store.getters.currentComponentId;
-    },
-    componentDataIds() {
-      return this.$store.getters.componentDataIds;
-    },
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    },
     baseInfo() {
       return this.$store.getters.baseInfo;
     }
   },
   created() {
     this.getQrcode();
-    this.loadTemplateLists();
   },
   methods: {
-    /* 获取组件数据 */
-    getComponentData(id) {
-      return this.componentDataMap[id];
-    },
-
-    //加载模板列表
-    loadTemplateLists() {
-      let loadedLength = 0;
-      const widgetList = widget.getWidgetList();
-      for (let item of widgetList) {
-        import(`@/views/shop/decorate/comps/component${this.utils.titleCase(item)}.vue`)
-          .then(loadedComponent => {
-            this.templateList[item] = loadedComponent.default;
-            loadedLength++;
-            if (loadedLength >= widgetList.length) {
-              this.allTemplateLoaded = true;
-            }
-          })
-          .catch(e => {
-            console.log(e);
-            loadedLength++;
-            if (loadedLength >= widgetList.length) {
-              this.allTemplateLoaded = true;
-            }
-          });
-      }
-    },
 
     /* 获取二维码 */
     getQrcode(codeType, callback) {
@@ -145,14 +87,11 @@ export default {
     flex-direction: row;
     justify-content: center;
     padding-top:20px;
-    .module {
+    /deep/.module {
       &.view {
         width: 374px;
         .phone-body {
           height: 592px;
-          .component_wrapper{
-            cursor:text;
-          }
         }
       }
     }

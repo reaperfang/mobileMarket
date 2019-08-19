@@ -211,6 +211,137 @@ export function orderAfterSaleUpdateStatus(data) {
   })
 }
 
+//  导出
+export function orderAfterSaleExport(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTERSALE-EXPORT-EXCEL-PROCESS',
+    data
+  })
+}
+
+//  换货确认
+export function orderAfterConfirmExchange(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-CONFIRM-EXCHANGE-PROCESSOR',
+    data
+  })
+}
+
+//  订单支付信息
+export function getOrderPayRecordList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-PAY-RECORD-LIST-PROCESSOR',
+    data
+  })
+}
+
+//  订单发货 / 批量发货
+export function orderSendGoods(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDERSENDINFOBATCHPROCESS',
+    data
+  })
+}
+
+//  获取快递公司
+export function fetchExpressCompanyList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'EXPRESS-COMPANY-LIST-PROCESSOR',
+    data
+  })
+}
+
+//  获取电子面单列表
+export function fetchElectronicFaceSheetList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'EXPRESS-ELECTRONIC-SHEET-PAGELIST-PROCESSOR',
+    data
+  })
+}
+
+//  查看电子面单
+export function getElectronicFaceSheetDetail(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'EXPRESS-ELECTRONIC-SHEET-DETAIL-PROCESS',
+    data
+  })
+}
+
+//  新增电子面单
+export function addElectronicFaceSheet(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-EXPRESS-ELECTRONIC-SHEET-ADD-PROCESSOR',
+    data
+  })
+}
+
+//  修改电子面单
+export function editorElectronicFaceSheet(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: '',
+    data
+  })
+}
+
+//  删除电子面单
+export function deleteElectronicFaceSheet(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: '',
+    data
+  })
+}
+
+//  获取物流管理列表
+export function fetchTemplatePageList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'FREIGHT-TEMPLATE-PAGE-LIST-PROCESSOR',
+    data
+  })
+}
+
+//  物流模板详情查看
+export function getTemplatePageDetail(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'FREIGHT-TEMPLATE-DETAIL-PROCESSOR',
+    data
+  })
+}
+
+// 获取省市区
+export function getArea(data) {
+  return request({
+    apiType: 'publicOrder',
+    method: 'post',
+    target: 'PUBLIC-CITY-ALLLIST-PROCESSOR',
+    data
+  })
+}
+
+
 
 
 

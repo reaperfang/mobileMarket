@@ -144,6 +144,12 @@ export default {
             dialogVisible: false
         }
     },
+    created() {
+        
+    },
+    watch: {
+
+    },
     methods: {
         submit(value) {
             this._apis.order.orderClose({...value, id: this.currentData}).then((res) => {
@@ -190,7 +196,7 @@ export default {
     props: {
         list: {
             type: Array
-        }
+        },
     },
     components: {
         CloseOrderDialog

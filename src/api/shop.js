@@ -332,12 +332,65 @@ export function resetPersonalInfo(data) {
   })
 }
 
+//重置店铺导航
+export function resetShopNav(data) {
+  return request({
+    target: 'DECORATION-PAGE-NAVIGATION-RESET-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 //获取首页
 export function getHomePage(data) {
   return request({
     target: 'DECORATION-PAGE-INFO-HOME-PAGE-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
+    data
+  })
+}
+
+//获取店铺装修模板
+export function getTemplateList(data) {
+  return request({
+    target: 'DECORATION-PAGE-TEMPLALE-FIND-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//获取店铺开关状态
+export function getSwitchStatus(data) {
+  return request({
+    target: 'SHOP-API-100-PROCESSOR',
+    method: 'post',
+    apiType: 'matrix',
+    noCid: true,
+    data
+  })
+}
+
+//改变导航切换状态
+export function changeNavSwitchStatus(data) {
+  return request({
+    target: '',
+    method: 'post',
+    apiType: 'matrix',
+    noCid: true,
+    data
+  })
+}
+
+//改变广告切换状态
+export function changeADSwitchStatus(data) {
+  return request({
+    target: '',
+    method: 'post',
+    apiType: 'matrix',
+    noCid: true,
     data
   })
 }

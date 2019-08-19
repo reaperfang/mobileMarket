@@ -1,6 +1,6 @@
 <template>
   <div style="background:rgb(242,242,249);">
-    <el-tabs v-model="currentTab" @tab-click="handleClick">
+    <el-tabs v-model="currentTab">
       <el-tab-pane label="店铺主页" :name="shopMain" v-loading="loading"></el-tab-pane>
       <el-tab-pane label="个人中心" name="personCenter"></el-tab-pane>
       <el-tab-pane label="商品分组" name="goodsGroup"></el-tab-pane>
@@ -15,8 +15,10 @@ import shopMainDecorated from './moduleManage/shopMainDecorated';
 import personCenter from './moduleManage/personCenter';
 import goodsGroup from './moduleManage/goodsGroup';
 import utils from "@/utils";
+import decorateMixin from '@/components/Decorate/decorateMixin';
 export default {
   name: 'index',
+  mixins: [decorateMixin],
   components: {shopMainDefault, shopMainDecorated, personCenter, goodsGroup},
   data () {
     return {
@@ -27,17 +29,11 @@ export default {
       homePageData: null  //首页装修数据
     }
   },
-  created() {
-    this.getHomePage();
-  },
 
   methods: {
-    handleClick(comp) {
-      this.currentTab = comp.name;
-    },
 
     /* 获取首页数据 */
-    getHomePage() {
+    fetch() {
       this.loading = true;
       this._apis.shop.getHomePage({}).then((response)=>{
 
@@ -63,32 +59,6 @@ export default {
       });
     },
 
-     /* 转换接口获取的装修数据 */
-    convertDecorateData(data) {
-      this.setBaseInfo(data);
-      
-      //打开基础信息面板
-      this.$store.commit('showBaseProperty');
-      
-      //还原组件列表
-      let componentDataIds = [];
-      let componentDataMap = {};
-      const string = utils.uncompileStr(data.pageData);
-      if(string.indexOf('id') < 0) {
-        return;
-      }
-      let pageData = JSON.parse(string);
-      if(!Array.isArray(pageData)) {
-        return;
-      }
-      for (let item of pageData) {
-        componentDataIds.push(item.id);
-        componentDataMap[item.id] = item;
-      }
-      this.$store.commit("setComponentDataIds", componentDataIds);
-      this.$store.commit("setComponentDataMap", componentDataMap);
-    },
-
      /* 拼装基础数据 */
     setBaseInfo(data) {
        //还原页面基础信息
@@ -107,7 +77,6 @@ export default {
 
 <style lang="scss" scoped>
 .el-tabs{
-  // background:#fff;
   padding:20px;
   padding-bottom: 0;
 }

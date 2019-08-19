@@ -17,7 +17,7 @@ export default {
     data() {
         return {
             showFooter: false,
-            auditStatus: ''
+            auditStatus: '',
         }
     },
     methods: {

@@ -1,39 +1,35 @@
 <template>
-  <div class="editor-wrapper" v-loading="loading">
-    <widgetView></widgetView>
-    <editView v-if="!loading"></editView>
-    <propView panelName="分类编辑" editorType="propertyClassify" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this" :homePageData="homePageData"></propView>
-    <!-- <div style="width:500px;">
-      分类基础数据：
-      <el-tag type="primary">{{baseInfo}}</el-tag>
-      <hr />组件数据映射：
-      <ul style="height:770px;overflow-y:auto;">
-        <li v-for="(item,key) of componentDataIds" :key="key">
-          <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
-          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
-        </li>
-      </ul>
-    </div> -->
-  </div>
+  <Decorate :componentConfig="componentConfig" :saveData="saveData" :homePageData="homePageData"></Decorate>
 </template>
 
 <script>
-import editorMixin from './editorMixin';
 import utils from "@/utils";
+import Decorate from '@/components/Decorate';
+import decorateMixin from '@/components/Decorate/decorateMixin';
 export default {
   name: "classifyEditor",
-  mixins: [editorMixin],
+  mixins: [decorateMixin],
+  components: {Decorate},
   data() {
     return {
       loading: false,
       id: this.$route.query.classifyId,
-      homePageData: null
+      homePageData: null,
+      componentConfig: {
+        type: 'classify',
+        isBase: true,
+        hidden: true,
+        title: '微页面分类信息'
+      }
     };
   },
   methods: {
+
     /* 获取分类装修数据 */
     fetch() {
-      const _self = this;
+      if(!this.id) {
+        return;
+      };
       this.loading = true;
       this._apis.shop.getClassifyInfo({id: this.id}).then((response)=>{
          this.loading = false;
@@ -45,6 +41,19 @@ export default {
           message: error
         });
       });
+    },
+
+     /* 检查数据可用性 */
+    checkData(data) {
+      const string = utils.uncompileStr(data.pageData);
+      if(string.indexOf('id') < 0) {
+        return null;
+      }
+      let pageData = JSON.parse(string);
+      if(!Array.isArray(pageData)) {
+        return null;
+      }
+      return pageData;
     },
 
      /* 拼装基础数据 */
@@ -67,7 +76,7 @@ export default {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
-            this.$store.commit('showBaseProperty');
+            this.$store.commit('setCurrentComponentId', this.baseProperty.id);
           }
         });
         return;
@@ -106,13 +115,6 @@ export default {
           this.loading = false;
         });
       }
-    },
-
-    /* 保存并生效数据 */
-    saveAndApplyData() {
-      const resultData = this.collectData();
-      console.log(JSON.stringify({...resultData}));
-      this._routeTo('pageManageIndex');
     }
 
   }

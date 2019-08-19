@@ -2,6 +2,42 @@
 export default {
   widgetList: {
 
+        hiddenWidget: {
+          title:'隐藏组件',
+          list: [
+            {
+              type: 'pageInfo',
+              iconClass: '',
+              title: '页面信息',
+              hidden: true
+            },
+            {
+              type: 'classify',
+              iconClass: '',
+              title: '微页面分类',
+              hidden: true
+            },
+            {
+              type: 'userCenter',
+              iconClass: '',
+              title: '个人中心',
+              hidden: true
+            },
+            {
+              type: 'goodsGroup',
+              iconClass: '',
+              title: '商品分类',
+              hidden: true
+            },
+            {
+              type: 'shopNav',
+              iconClass: '',
+              title: '店铺导航',
+              hidden: true
+            }
+          ]
+        },
+
         //基础组件
         baseWidget: {
           title:'基础组件',

@@ -13,10 +13,10 @@
           <el-form-item label="模板名称" prop="name">
             <el-input v-model="ruleForm.name" placeholder="请输入，不超过20个字符"></el-input>
           </el-form-item>
-          <el-form-item label="计费方式" prop="mode">
-            <el-radio v-model="ruleForm.mode" label="1">按件计费</el-radio>
-            <el-radio v-model="ruleForm.mode" label="2">按重计费</el-radio>
-            <el-radio v-model="ruleForm.mode" label="3">按体积计费</el-radio>
+          <el-form-item label="计费方式" prop="calculationWay">
+            <el-radio v-model="ruleForm.calculationWay" :label="1">按件计费</el-radio>
+            <el-radio v-model="ruleForm.calculationWay" :label="2">按重计费</el-radio>
+            <el-radio v-model="ruleForm.calculationWay" :label="3">按体积计费</el-radio>
           </el-form-item>
         </el-form>
       </div>
@@ -31,7 +31,7 @@
                     <span>配送区域</span>
                     <span class="des">说明：除指定区域外，其余区域按默认计算。</span>
                   </div>
-                  <div class="col blue">为指定区域设置运费</div>
+                  <div @click="currentDialog = 'RegionDialog'" class="col blue">为指定区域设置运费</div>
                 </div>
               </div>
               <div>
@@ -81,13 +81,13 @@
                 </el-table>
               </div>
             </div>
-            <div class="content-item">
+            <!-- <div class="content-item">
               <div class="content-item-title">
                 <div class="row">
                   <div class="col">不配送区域</div>
                   <div class="col no-distribution-box">
-                    <el-radio v-model="noDistribution" label="1">无</el-radio>
-                    <el-radio v-model="noDistribution" label="2">有</el-radio>
+                    <el-radio v-model="ruleForm.isNotSend" label="0">无</el-radio>
+                    <el-radio v-model="ruleForm.isNotSend" label="1">有</el-radio>
                   </div>
                 </div>
               </div>
@@ -98,16 +98,19 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
         </div>
         <div class="footer">
           <el-button>取 消</el-button>
           <el-button type="primary">确 定</el-button>
         </div>
     </section>
+    <component :is="currentDialog" @dialogClose="dialogClose" :data="ruleForm" @selectedRegions="selectedRegions" :refresh="fetch"></component>
   </div>
 </template>
 <script>
+import RegionDialog from '@/views/order/dialogs/regionDialog'
+
 export default {
     data() {
         return {
@@ -130,13 +133,43 @@ export default {
                 increaseNumber: 1,
                 increasePrice: 10
               }
-            ]
+            ],
+            currentDialog: '',
+
         }
     },
+    created() {
+      if(this.$route.query.id) {
+        this.getDetail()
+      }
+    },
     methods: {
+      dialogClose() {
+        
+      },
+      selectedRegions() {
+
+      },
+      fetch() {
+        
+      },
+      getDetail() {
+        this._apis.order.getTemplatePageDetail({id: this.$route.query.id}).then((res) => {
+            this.ruleForm = Object.assign({}, this.ruleForm, res)
+        }).catch(error => {
+            this.visible = false
+            this.$notify.error({
+                title: '错误',
+                message: error
+            });
+        })
+      },
       deleteItem(index) {
         this.noDistributionList.splice(index, 1)
       }
+    },
+    components: {
+      RegionDialog
     }
 };
 </script>

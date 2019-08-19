@@ -20,7 +20,7 @@
                     <div>
                         <span>查看</span>
                         <span @click="auth">同意</span>
-                        <span>拒绝</span>
+                        <span @click="reject">拒绝</span>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     <div>
                         <span>查看</span>
                         <span>查看物流</span>
-                        <span>确认收货</span>
+                        <span @click="confirmTakeOver">确认收货</span>
                         <span>退款</span>
                     </div>
                 </div>
@@ -132,8 +132,14 @@ export default {
         }
     },
     methods: {
+        confirmTakeOver() {
+            this.$emit('confirmTakeOver')
+        },
         auth() {
             this.$emit('auth')
+        },
+        reject() {
+            this.$emit('reject')
         }
     },
     computed: {

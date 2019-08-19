@@ -12,7 +12,7 @@
                 <span>客户ID：{{orderDetail.orderInfo.memberSn}}</span>
             </div>
         </div>
-        <orderState :orderState="orderDetail.orderInfo.orderStatus" class="order-state"></orderState>
+        <orderState :orderState="orderDetail.orderInfo.orderStatus" :payWay="orderDetail.orderInfo.payWay" :closeReaosn="orderDetail.orderInfo.closeReaosn" class="order-state"></orderState>
         <div class="message">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="订单信息" name="order">
@@ -223,6 +223,9 @@ export default {
         }
     },
     methods: {
+        sendGoods() {
+            console.log('sendGoods')
+        },
         reducePriceHandler() {
             this._apis.order.orderPriceChange({id: this.orderDetail.orderInfo.id, 
             consultType: this.goodsListMessage.consultType, consultMoney: this.goodsListMessage.consultMoney}).then(res => {

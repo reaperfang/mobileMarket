@@ -3,25 +3,15 @@ import uuid from 'uuid/v4';
 const decorate = {
 	state: {
 		currentComponentId: "",  //当前组件id
-		basePropertyShow: true,  //基础属性显示开关
+		baseProperty: {},  //基础属性
 		baseInfo: {},  //店铺装修页面基础信息
 		componentDataIds: [],  //组件列表id序列
 		componentDataMap: {}   //组件数据集合映射
 	},
 	mutations: {
-		/* 显示基础属性组件 */
-		showBaseProperty: (state) => {
-			state.basePropertyShow = true;
-		},
-
-		/* 隐藏基础属性组件 */
-		hideBaseProperty: (state) => {
-			state.basePropertyShow = false;
-		},
 
 		/* 设置当前组件id */
 		setCurrentComponentId: (state, id) => {
-			state.basePropertyShow = false;
 			state.currentComponentId = id;
 		},
 
@@ -42,33 +32,46 @@ const decorate = {
 			} else if (prevId) {
 				this.commit("setCurrentComponentId", prevId);
 			} else {
-				state.basePropertyShow = true;
+				// 当前组件为基础组件
+				this.commit("setCurrentComponentId", state.baseProperty.id);
 			}
 			state.componentDataIds.splice(index, 1);
 
 		},
 
 
-		/* 添加组件数据 */
+		/* 添加组件 */
 		addComponent: (state, component) => {
 			const id = uuid();
-			state.componentDataIds.push(id);
-			state.componentDataMap[id] = {
+			const obj = {
 				id,
 				type: component.type,
 				title: component.title,
+				hidden: component.hidden,
 				data: null   //默认必须是null，否则首次渲染模板会出错!
 			};
 
-			state.basePropertyShow = false;
+			// 添加组件id到ids顺序表
+			state.componentDataIds.push(id);
+
+			// 添加组件数据到数据以映射表
+			state.componentDataMap[id] = obj;
+
+			// 设置当前组件id
 			state.currentComponentId = id;
+
+			// 设置基础组件
+			if(component.isBase) {
+				state.baseProperty = obj;
+			}
+
 		},
 
 
 		/* 更新组件数据 */
 		updateComponent(state, params) {
 			//对基础信息组件特殊处理
-			if (params.type && params.type === 'base') {
+			if (params.id === state.baseProperty.id) {
 				state.baseInfo = params.data;
 			} else {
 				//对列表组件处理
@@ -81,12 +84,12 @@ const decorate = {
 			}
 		},
 
-		//设置店铺基本信息
+		//设置基本信息
 		setBaseInfo(state, baseInfo) {
 			state.baseInfo = baseInfo;
 		},
 
-		//外部设置ids序列
+		//外部设置ids顺序表
 		setComponentDataIds(state, ids) {
 			state.componentDataIds = ids;
 		},
@@ -96,7 +99,7 @@ const decorate = {
 			state.componentDataMap = componentDataMap;
 		},
 
-		//清除所有数据实现初始化
+		//初始化所有数据
 		clearAllData(state) {
 			state.baseInfo = {};
 			state.componentDataIds = [];

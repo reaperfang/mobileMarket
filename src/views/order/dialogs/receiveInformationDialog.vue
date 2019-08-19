@@ -35,7 +35,13 @@ export default {
                 receivedName: '',
                 receivedPhone: '',
                 deliveryAddress: [],
-                receivedDetail: ''
+                receivedDetail: '',
+                receivedProvinceCode: '',
+                receivedProvinceName: '',
+                receivedCityCode: '',
+                receivedCityName: '',
+                receivedAreaCode: '',
+                receivedAreaName: '',
             },
             rules: {
 
@@ -43,14 +49,29 @@ export default {
             showFooter: false
         }
     },
+    created() {
+        this.getDetail()
+    },
+    watch: {
+        data: {
+            deep: true,
+            handler() {
+                this.getDetail()
+            }
+        }
+    },
     methods: {
+        getDetail() {
+            this.ruleForm = Object.assign({}, this.ruleForm, this.data)
+        },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     let codes = Object.keys(this.ruleForm.deliveryAddress)
 
                     this._apis.order.orderUpdateReceive({
-                        id: this.data,
+                        id: (typeof this.data) == 'string' ?  this.data : (this.$route.query.orderId || this.$route.query.id),
+                        //code: this.$route.query.orderId ? this.$route.query.orderId : '',
                         receivedProvinceCode: codes[0],
                         receivedProvinceName: this.ruleForm.deliveryAddress[0][codes[0]],
                         receivedCityCode: codes[1],

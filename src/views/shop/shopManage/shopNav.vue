@@ -7,8 +7,9 @@
     <div class="on_off">
       <p>店铺的各个页面可以通过导航串联起来。通过精心设置的导航，方便买家在栏目间快速切换，引导买家前往你期望的页面。  </p>
       <el-switch
-        v-model="ruleForm.openNav"
+        v-model="openNav"
         active-color="#13ce66"
+        @change="switchStatusChange"
         inactive-color="#ff4949">
       </el-switch>
     </div>
@@ -30,18 +31,18 @@
 
         <!-- 手机底部 -->
         <div class="phone-footer">
-          <ul class="navs type1" v-if="ruleForm.navStyle.id == 1">
+          <ul class="navs type1" v-if="ruleForm.navStyle == 1">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
               <img :src="ruleForm.navMap[item].navIconActive" alt="">
               <span>{{ruleForm.navMap[item].navName}}</span>
             </li>
           </ul>
-          <ul class="navs type2" v-if="ruleForm.navStyle.id == 2">
+          <ul class="navs type2" v-if="ruleForm.navStyle == 2">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
               <img :src="navMap[item].navIconActive" alt="">
             </li>
           </ul>
-          <ul class="navs type3" v-if="ruleForm.navStyle.id == 3">
+          <ul class="navs type3" v-if="ruleForm.navStyle == 3">
             <div class="keyboard">
               <i class="el-icon-platform-eleme"></i>
             </div>
@@ -50,7 +51,7 @@
               <span>{{ruleForm.navMap[item].navName}}</span>
             </li>
           </ul>
-          <ul class="navs type4" v-if="ruleForm.navStyle.id == 4">
+          <ul class="navs type4" v-if="ruleForm.navStyle == 4">
             <li >第四种导航样式</li>
           </ul>
 
@@ -204,8 +205,8 @@
             <div class="help_blank"></div>
             <div class="buttons">
               <el-button @click="resetData">重    置</el-button>
-              <el-button @click="save">暂    存</el-button>
-              <el-button @click="saveAndApply">保存并启用</el-button>
+              <el-button @click="save">保    存</el-button>
+              <el-button @click="saveAndApply" type="primary">保存并启用</el-button>
             </div>
           </div>
 
@@ -243,9 +244,9 @@ export default {
       currentDialog: '',
       navigation_type: '0',  //导航类型
       utils,
+      openNav: true,   //系统-是否打开导航
       ruleForm: {
-        openNav: true,   //系统-是否打开导航
-        navStyle: {id:1},  //系统-全局导航样式
+        navStyle: 1,  //系统-全局导航样式
         applyPage: ['1','2','3'],  //系统-应用页面
         navIds: [],
         navMap: {}
@@ -254,7 +255,8 @@ export default {
       currentNav: null,  //当前导航对象
       currentImg: 'active',  //当前上传图片类型   高亮和普通
       seletedPage: null,   //选中的页面
-      tempSelectPage: null  //临时选中的页面  
+      tempSelectPage: null,  //临时选中的页面  
+      toolsData: null  //工具数据
 
     }
   },
@@ -284,11 +286,18 @@ export default {
           this.currentDialog = 'marketCampaign';
           break;
       }
+    },
+    toolsData: {
+      handler(newValue) {
+        this.openNav = newValue.shopNavigation === 1;
+      },
+      depp: true
     }
   },
   created() {
     this.initnavMap();
     this.fetch();
+    this.getTools();
   },
   watch: {
     navigation_type() {
@@ -390,11 +399,17 @@ export default {
     fetch() {
       this.loading = true;
       this._apis.shop.getShopNav({}).then((response)=>{
-        let navigationJson = utils.uncompileStr(response.navigationJson);
-        navigationJson = JSON.parse(navigationJson);
-        if(navigationJson && navigationJson.navStyle) {
-          this.ruleForm = navigationJson;
-          this.selectNav(navigationJson.navIds[0]);
+        const string = utils.uncompileStr(response.navigationJson);
+        if(string.indexOf('navIds') < 0) {
+          return;
+        }
+        let pageData = JSON.parse(string);
+        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
+          return;
+        }
+        if(pageData && pageData.navStyle) {
+          this.ruleForm = pageData;
+          this.selectNav(pageData.navIds[0]);
         }
         this.loading = false;
       }).catch((error)=>{
@@ -406,11 +421,41 @@ export default {
       });
     },
 
+     /* 获取工具状态 */
+    getTools() {
+       this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
+        this.toolsData = response;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
+
+     /* 开关状态切换 */
+    switchStatusChange(value) {
+      this._apis.shop.changeNavSwitchStatus({id: '2'}).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '修改成功！',
+          type: 'success'
+        });
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    },
+
     /* 保存并启用 */
     saveAndApply() {
       this.submit({
         navigationKey: '',
-        status: '1',
+        status: '0',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -420,7 +465,7 @@ export default {
     save() {
        this.submit({
         navigationKey: '',
-        status: '0',
+        status: '1',
         navigation_type: this.navigation_type,
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
       });
@@ -446,12 +491,33 @@ export default {
 
     /* 重置 */
     resetData() {
-      // this.submit({
-      //   navigationKey: '',
-      //   status: '0',
-      //   navigation_type: this.navigation_type,
-      //   navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      // });
+      this.loading = true;
+      this._apis.shop.resetShopNav({}).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '重置成功！',
+          type: 'success'
+        });
+        const string = utils.uncompileStr(response.navigationJson);
+        if(string.indexOf('navIds') < 0) {
+          return;
+        }
+        let pageData = JSON.parse(string);
+        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
+          return;
+        }
+        if(pageData && pageData.navStyle) {
+          this.ruleForm = pageData;
+          this.selectNav(pageData.navIds[0]);
+        }
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     },
 
     rowSeleted(row) {

@@ -22,7 +22,7 @@ module.exports = {
     useEslint: false,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
-    showEslintErrorsInOverlay: false,
+    showEslintErrorsInOverlay: true,
 
     /**
      * Source Maps
@@ -45,15 +45,24 @@ module.exports = {
         //target:'http://172.22.146.124:8090',//许涛
         //target: 'http://172.22.134.125:8012',//陈程
         // target: 'http://172.22.146.12:8091', // 订单 李刚
+        //target: 'http://172.22.146.133:8081',  //李雯廷
+        // target: 'http://172.22.146.114:8080', // 商品 王浩2
+        // target: 'http://172.22.146.133:8081',  //李雯廷
+        // target: 'http://www.lwt.com',  //李雯廷2
+        //target: 'http://172.22.146.31:8080', // 客户 崔建
+        //target: 'http://172.22.146.4:8080', //客户 刘亚凯
+        //target: 'http://172.22.146.123:8080', // 客户 王杰
+        //target:'http://172.22.146.124:8090',//许涛
+        //target: 'http://172.22.134.125:8012',//陈程
+        //target: 'http://172.22.146.12:8091', // 订单 李刚
         //target: 'http://172.22.146.3:8080', // 订单 张红亮
         //target: 'http://172.22.146.116:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080',
         //target: 'http://172.22.146.10:8080',
-        // target: 'http://172.22.146.109:8080',
         //target: 'http://172.22.146.31:8080', // 客户 崔建
-        // target: 'http://172.22.146.109:8080',
         // target: 'http://120.133.1.130:8012',//营销测试机
         //target:'http://172.22.145.115:8080',//耿士龙
+        // target:'http://172.22.145.113:8083',//李权宇
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
@@ -74,7 +83,7 @@ module.exports = {
         }
       },
       '/order_server/**': {
-        target: 'http://172.22.146.12:8080/',
+        target: 'http://172.22.145.113:8080/',
         changeOrigin: true,
         pathRewrite: {
           '^/order_server': ''

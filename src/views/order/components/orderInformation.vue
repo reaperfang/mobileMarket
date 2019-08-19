@@ -20,7 +20,7 @@
             <el-col :span="8"><div class="grid-content center">
                 <div class="item">
                     <div class="label">付款人</div>
-                    <div class="value">{{orderInfo.payer}} <span class="blue">详情</span></div>
+                    <div class="value">{{orderInfo.payer}}</div> <!-- <span class="blue">详情</span> -->
                 </div>
                 <div class="item">
                     <div class="label">付款方式</div>
@@ -100,10 +100,33 @@ export default {
             currentDialog: '',
             currentData: '',
             dialogVisible: false,
-            remarkVisible: false
+            remarkVisible: false,
+            //replacePayWechatNames: ''
         }
     },
+    created() {
+        //this.getOrderPayRecordList()
+    },
     methods: {
+        // getOrderPayRecordList() {
+        //     this._apis.order.getOrderPayRecordList({id: this.$route.query.id}).then(res => {
+        //         let str = ''
+
+        //         let namesList = res.map(val => val.replacePayWechatName)
+
+        //         namesL
+        //         this.$notify({
+        //             title: '成功',
+        //             message: '查询成功！',
+        //             type: 'success'
+        //         });
+        //     }).catch(error => {
+        //         this.$notify.error({
+        //             title: '错误',
+        //             message: error
+        //         });
+        //     }) 
+        // },
         submit() {
             this.$emit('getDetail')
         },

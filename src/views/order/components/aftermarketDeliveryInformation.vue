@@ -58,7 +58,7 @@
                             label="售后有效期">
                         </el-table-column>
                     </el-table>
-                    <div class="remark">快递单号：{{}}</div>
+                    <!-- <div class="remark">快递单号：{{}}</div> -->
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@
                             label="售后有效期">
                         </el-table-column>
                     </el-table>
-                    <div class="remark">快递单号：{{}}</div>
+                    <!-- <div class="remark">快递单号：{{}}</div> -->
                 </div>
             </div>
         </div>

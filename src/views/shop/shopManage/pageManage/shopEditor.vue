@@ -1,34 +1,27 @@
 <template>
-  <div class="editor-wrapper" v-loading="loading">
-    <widgetView></widgetView>
-    <editView></editView>
-    <propView panelName="页面编辑" editorType='propertyBase' :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this" :homePageData="homePageData"></propView>
-    <!-- <div style="width:500px;">
-      页面基础数据：
-      <el-tag type="primary">{{baseInfo}}</el-tag>
-      <hr />组件数据映射：
-      <ul style="height:770px;overflow-y:auto;">
-        <li v-for="(item,key) of componentDataIds" :key="key">
-          <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
-          <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
-        </li>
-      </ul>
-    </div> -->
-  </div>
+  <Decorate :componentConfig="componentConfig" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :homePageData="homePageData"></Decorate>
 </template>
 
 <script>
-import editorMixin from './editorMixin';
+import Decorate from '@/components/Decorate';
+import decorateMixin from '@/components/Decorate/decorateMixin';
 export default {
   name: "shopEditor",
-  mixins: [editorMixin],
   props: ["pageId"],
+  mixins: [decorateMixin],
+  components: {Decorate},
   data() {
     return {
       loading: false,
       id: this.pageId || this.$route.query.pageId,
       dataLoaded: false,
-      homePageData: null
+      homePageData: null,
+      componentConfig: {
+        type: 'pageInfo',
+        isBase: true,
+        hidden: true,
+        title: '页面信息'
+      }
     };
   },
   watch: {
@@ -36,12 +29,17 @@ export default {
       if (newValue) {
         this.id = newValue;
       }
-      this.init();
+      this.$store.commit("clearAllData");
+      this.fetch();
     }
   },
   methods: {
+
     /* 获取店铺装修数据 */
     fetch() {
+      if(!this.id) {
+        return;
+      }
       this.loading = true;
       this._apis.shop.getPageInfo({id: this.id}).then((response)=>{
          this.loading = false;
@@ -55,6 +53,19 @@ export default {
         });
         this.loading = false;
       });
+    },
+
+    /* 检查数据可用性 */
+    checkData(data) {
+      const string = utils.uncompileStr(data.pageData);
+      if(string.indexOf('id') < 0) {
+        return;
+      }
+      let pageData = JSON.parse(string);
+      if(!Array.isArray(pageData)) {
+        return;
+      }
+      return pageData;
     },
 
      /* 拼装基础数据 */
@@ -90,7 +101,7 @@ export default {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
-            this.$store.commit('showBaseProperty');
+            this.$store.commit('setCurrentComponentId', this.baseProperty.id);
           }
         });
         return;

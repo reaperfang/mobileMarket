@@ -405,3 +405,67 @@ export function batchRemoveFromBlack(data) {
         data
     })
 }
+//等级编辑
+export function editLevel(data) {
+    return request({
+        target:'LEVEL-EDIT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//等级启用禁用
+export function enableLevel(data) {
+    return request({
+        target:'LEVEL-ENABEL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//等级批量禁用
+export function batchEnableLevel(data) {
+    return request({
+        target:'LEVEL-ENABEL-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//解除黑名单冻结列表
+export function getFreezeList(data) {
+    return request({
+        target:'MEMBERINFO-BLACKLISTDETAILS-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//会员卡管理-详情信息
+export function getCardInfo(data) {
+    return request({
+        target:'CARD-LEVEL-INFO-FIND-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//会员卡管理-编辑
+export function editCard(data) {
+    return request({
+        target:'CARD-LEVEL-INFO-EDIT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//会员卡领取记录查询列表
+export function getLkList(data) {
+    return request({
+        target:'RECEIVE-CARD-RECORD-FIND-PAGE-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+

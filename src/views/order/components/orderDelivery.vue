@@ -75,26 +75,29 @@
                     width="55">
                 </el-table-column>
                 <el-table-column
-                    prop="orderNumber"
+                    prop="orderCode"
                     label="订单编号"
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="customerId"
+                    prop="memberSn"
                     label="客户ID"
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="receiver"
+                    prop="receivedName"
                     label="收货人">
                 </el-table-column>
                 <el-table-column
-                    prop="mobile"
+                    prop="receivedPhone"
                     label="收货人电话">
                 </el-table-column>
                 <el-table-column
-                    prop="state"
+                    prop="status"
                     label="状态">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.status | statusFilter}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="time"
@@ -103,7 +106,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
-                        <span>发货</span>
+                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id + '&orderId=' + scope.row.orderId)">发货</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -229,10 +232,27 @@ export default {
             tableData: []
         }
     },
+    filters: {
+        statusFilter(code) {
+            switch(code) {
+                case 3:
+                    return '待发货'
+                case 4:
+                    return '部分发货'
+                case 5:
+                    return '待收货'
+                case 6:
+                    return '完成'
+            }
+        },
+    },
     created() {
         this.getList()
     },
     methods: {
+        onSubmit() {
+
+        },
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
@@ -242,6 +262,7 @@ export default {
         getList() {
             this._apis.order.orderSendPageList({cid: 2}).then((res) => {
                 console.log(res)
+                this.tableData = res.list
             }).catch(error => {
 
             })

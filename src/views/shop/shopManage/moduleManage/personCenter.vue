@@ -25,8 +25,9 @@
 </template>
 
 <script>
-import componentUserCenter from '../../decorate/comps/componentUserCenter';
-import propertyUserCenter from '../../decorate/props/propertyUserCenter';
+import componentUserCenter from '@/components/Decorate//comps/componentUserCenter';
+import propertyUserCenter from '@/components/Decorate//props/propertyUserCenter';
+import utils from "@/utils";
 export default {
   name: "personCenter",
   components: {componentUserCenter, propertyUserCenter},
@@ -42,7 +43,14 @@ export default {
     fetch() {
       this.loading = true;
       this._apis.shop.getUserCenterPage({}).then((response)=>{
-        const pageData = JSON.parse(response.pageData);
+        const string = utils.uncompileStr(response.pageData);
+        if(string.indexOf('moduleList') < 0) {
+          return;
+        }
+        let pageData = JSON.parse(string);
+        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
+          return;
+        }
         if(pageData && pageData.avatarPosition) {
           this.ruleForm = pageData;
         }
@@ -66,7 +74,7 @@ export default {
       this.submit({
         status: '0',
         pageKey: '',
-        pageData: JSON.stringify(this.ruleForm)
+        pageData: utils.compileStr(JSON.stringify(this.ruleForm))
       });
     },
 
@@ -75,7 +83,7 @@ export default {
        this.submit({
         status: '1',
         pageKey: '',
-        pageData: JSON.stringify(this.ruleForm)
+        pageData: utils.compileStr(JSON.stringify(this.ruleForm))
       });
     },
 
@@ -88,6 +96,17 @@ export default {
           message: '重置成功！',
           type: 'success'
         });
+        const string = utils.uncompileStr(response.pageData);
+        if(string.indexOf('moduleList') < 0) {
+          return;
+        }
+        let pageData = JSON.parse(string);
+        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
+          return;
+        }
+        if(pageData && pageData.avatarPosition) {
+          this.ruleForm = pageData;
+        }
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
