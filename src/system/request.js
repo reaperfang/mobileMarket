@@ -86,7 +86,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d587b410023a42087a444676fc434b430',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dbbc8c6bfa9f10f632f254e9845946eaf',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -146,6 +146,9 @@ class Ajax {
             break;
           case 'goodsOperate':  //商品运营
             config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
+            break;
+          case 'publicOrder':  //地址
+          config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`; // 李权宇
             break;
         }
       }
