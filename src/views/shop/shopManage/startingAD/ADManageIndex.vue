@@ -3,8 +3,9 @@
     <div class="on_off">
       <p>店铺的各个页面可以通过导航串联起来。通过精心设置的导航，方便买家在栏目间快速切换，引导买家前往你期望的页面。 </p>
       <el-switch
-        v-model="ruleForm.openAD"
+        v-model="openAD"
         active-color="#13ce66"
+        @change="switchStatusChange"
         inactive-color="#ff4949">
       </el-switch>
     </div>
@@ -89,17 +90,27 @@ export default {
   data () {
     return {
       tableList:[],
+      openAD: true,
       ruleForm: {
-        openAD: true,
         status: '',
         name: '',
         sort: 'desc'
       },
-      rules: {}
+      rules: {},
+      toolsData: null  //工具数据
+    }
+  },
+  watch: {
+     toolsData: {
+      handler(newValue) {
+        this.openAD = newValue.adOpenType === 1;
+      },
+      depp: true
     }
   },
   created() {
     this.fetch();
+    this.getTools();
   },
   methods: {
 
@@ -181,7 +192,38 @@ export default {
           message: error
         });
       });
+    },
+
+     /* 获取工具状态 */
+    getTools() {
+       this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
+        this.toolsData = response;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
+
+    /* 开关状态切换 */
+    switchStatusChange(value) {
+      this._apis.shop.changeADSwitchStatus({id: '2'}).then((response)=>{
+        this.$notify({
+          title: '成功',
+          message: '修改成功！',
+          type: 'success'
+        });
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     }
+
   }
 }
 </script>

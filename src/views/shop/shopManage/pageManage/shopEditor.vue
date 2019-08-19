@@ -1,12 +1,14 @@
 <template>
-  <Decorate panelName="页面编辑" :componentConfig="componentConfig" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :homePageData="homePageData"></Decorate>
+  <Decorate :componentConfig="componentConfig" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :homePageData="homePageData"></Decorate>
 </template>
 
 <script>
 import Decorate from '@/components/Decorate';
+import decorateMixin from '@/components/Decorate/decorateMixin';
 export default {
   name: "shopEditor",
   props: ["pageId"],
+  mixins: [decorateMixin],
   components: {Decorate},
   data() {
     return {
@@ -22,42 +24,22 @@ export default {
       }
     };
   },
-  created() {
-    this.init();
-  },
   watch: {
     pageId(newValue) {
       if (newValue) {
         this.id = newValue;
       }
-      this.init();
+      this.$store.commit("clearAllData");
+      this.fetch();
     }
   },
-  computed: {
-    baseInfo() {
-      return this.$store.getters.baseInfo;
-    },
-    componentDataIds() {
-      return this.$store.getters.componentDataIds;
-    },
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    },
-
-    baseProperty() {
-      return this.$store.getters.baseProperty;
-    },
-  },
   methods: {
-    init() {
-      this.$store.commit("clearAllData");
-      if (this.id) {
-        this.fetch();
-      }
-    },
 
     /* 获取店铺装修数据 */
     fetch() {
+      if(!this.id) {
+        return;
+      }
       this.loading = true;
       this._apis.shop.getPageInfo({id: this.id}).then((response)=>{
          this.loading = false;
@@ -71,6 +53,19 @@ export default {
         });
         this.loading = false;
       });
+    },
+
+    /* 检查数据可用性 */
+    checkData(data) {
+      const string = utils.uncompileStr(data.pageData);
+      if(string.indexOf('id') < 0) {
+        return;
+      }
+      let pageData = JSON.parse(string);
+      if(!Array.isArray(pageData)) {
+        return;
+      }
+      return pageData;
     },
 
      /* 拼装基础数据 */
@@ -145,21 +140,6 @@ export default {
           this.loading = false;
         });
       }
-    },
-
-     /* 保存前收集装修数据 */
-    collectData() {
-      let result = this.baseInfo;
-      result['id'] = this.id;
-      let pageData = [];
-      for(let item of this.componentDataIds) {
-        const componentData = this.componentDataMap[item];
-        if(componentData) {
-          pageData.push(componentData);
-        }
-      }
-      result['pageData'] = utils.compileStr(JSON.stringify(pageData));;
-      return result;
     }
 
   },

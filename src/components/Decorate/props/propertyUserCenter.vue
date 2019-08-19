@@ -81,7 +81,7 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       ruleForm: {
-        backgroundImage: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',  //背景图
+        backgroundImage: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2829014450,3677490423&fm=26&gp=0.jpg',  //背景图
         backgroundGradients: 1,  //背景渐变
         avatarPosition: 1,  //头像位置
         nickColor: '#000000',  //昵称颜色
@@ -112,6 +112,13 @@ export default {
             name: 'coupon',
             title: '优惠券',
             titleValue: '优惠券',
+            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            color: '#000'
+          },
+          couponCode: {
+            name: 'couponCode',
+            title: '优惠码',
+            titleValue: '优惠码',
             icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
             color: '#000'
           },
@@ -150,12 +157,14 @@ export default {
     },
     ruleForm: {
       handler(newValue) {
+        newValue.backgroundImage= 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2829014450,3677490423&fm=26&gp=0.jpg';
         this.$emit('userCenterDataChanged', newValue);
       },
       deep: true
     }
   },
   created() {
+    this.ruleForm.backgroundImage= 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2829014450,3677490423&fm=26&gp=0.jpg';
     this.$emit('userCenterDataChanged', this.ruleForm);
   },
   computed: {
@@ -165,7 +174,7 @@ export default {
 
      /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.backgroundImage = dialogData.filePath;
+      // this.ruleForm.backgroundImage = dialogData.filePath;
     }
   }
 }

@@ -16,6 +16,24 @@ export default {
               iconClass: '',
               title: '微页面分类',
               hidden: true
+            },
+            {
+              type: 'userCenter',
+              iconClass: '',
+              title: '个人中心',
+              hidden: true
+            },
+            {
+              type: 'goodsGroup',
+              iconClass: '',
+              title: '商品分类',
+              hidden: true
+            },
+            {
+              type: 'shopNav',
+              iconClass: '',
+              title: '店铺导航',
+              hidden: true
             }
           ]
         },

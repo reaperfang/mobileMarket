@@ -1,13 +1,15 @@
 <template>
-  <Decorate panelName="分类编辑" :componentConfig="componentConfig" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :homePageData="homePageData"></Decorate>
+  <Decorate :componentConfig="componentConfig" :saveData="saveData" :homePageData="homePageData"></Decorate>
 </template>
 
 <script>
 import utils from "@/utils";
-import decorate from '@/components/Decorate';
+import Decorate from '@/components/Decorate';
+import decorateMixin from '@/components/Decorate/decorateMixin';
 export default {
   name: "classifyEditor",
-  components: {decorate},
+  mixins: [decorateMixin],
+  components: {Decorate},
   data() {
     return {
       loading: false,
@@ -21,33 +23,13 @@ export default {
       }
     };
   },
-  computed: {
-    baseInfo() {
-      return this.$store.getters.baseInfo;
-    },
-    componentDataIds() {
-      return this.$store.getters.componentDataIds;
-    },
-    componentDataMap() {
-      return this.$store.getters.componentDataMap;
-    },
-
-    baseProperty() {
-      return this.$store.getters.baseProperty;
-    },
-  },
   methods: {
-
-    init() {
-      this.$store.commit("clearAllData");
-      if (this.id) {
-        this.fetch();
-      }
-    },
 
     /* 获取分类装修数据 */
     fetch() {
-      const _self = this;
+      if(!this.id) {
+        return;
+      };
       this.loading = true;
       this._apis.shop.getClassifyInfo({id: this.id}).then((response)=>{
          this.loading = false;
@@ -59,6 +41,19 @@ export default {
           message: error
         });
       });
+    },
+
+     /* 检查数据可用性 */
+    checkData(data) {
+      const string = utils.uncompileStr(data.pageData);
+      if(string.indexOf('id') < 0) {
+        return null;
+      }
+      let pageData = JSON.parse(string);
+      if(!Array.isArray(pageData)) {
+        return null;
+      }
+      return pageData;
     },
 
      /* 拼装基础数据 */
@@ -120,28 +115,6 @@ export default {
           this.loading = false;
         });
       }
-    },
-
-    /* 保存并生效数据 */
-    saveAndApplyData() {
-      const resultData = this.collectData();
-      console.log(JSON.stringify({...resultData}));
-      this._routeTo('pageManageIndex');
-    },
-
-     /* 保存前收集装修数据 */
-    collectData() {
-      let result = this.baseInfo;
-      result['id'] = this.id;
-      let pageData = [];
-      for(let item of this.componentDataIds) {
-        const componentData = this.componentDataMap[item];
-        if(componentData) {
-          pageData.push(componentData);
-        }
-      }
-      result['pageData'] = utils.compileStr(JSON.stringify(pageData));;
-      return result;
     }
 
   }

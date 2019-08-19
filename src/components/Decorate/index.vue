@@ -1,8 +1,8 @@
 <template>
   <div class="editor-wrapper">
-    <widgetView></widgetView>
+    <widgetView v-if="showWidget"></widgetView>
     <editView></editView>
-    <propView :panelName="panelName" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :parentScope="this" :homePageData="homePageData"></propView>
+    <propView :saveData="saveData" :saveAndApplyData="saveAndApplyData" :resetData="resetData" :parentScope="this" :homePageData="homePageData"></propView>
     <!-- <div style="width:500px;">
       页面基础数据：
       <el-tag type="primary">{{baseInfo}}</el-tag>
@@ -25,7 +25,27 @@ import utils from "@/utils";
 export default {
   name: "decorate",
   components: { widgetView, editView, propView },
-  props: ["componentConfig", "panelName", "saveData", "saveAndApplyData", "homePageData"],
+  props: {
+    componentConfig: {
+      type: Object
+    },
+    saveData: {
+      type: Object
+    },
+    saveAndApplyData: {
+      type: Object
+    },
+    resetData: {
+      type: Object
+    },
+    homePageData: {
+      type: Object
+    },
+    showWidget: {
+      type: Boolean,
+      default: true
+    },
+  },
   data() {
     return {
     };

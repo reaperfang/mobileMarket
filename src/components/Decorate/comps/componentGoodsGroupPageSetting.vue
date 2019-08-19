@@ -1,6 +1,6 @@
 <template>
     <div ref="groupWrapper" :style="fontStyle" v-if="data">
-       <div class="left-style" v-if="ruleForm.groupStyle==='left'">
+       <div class="left-style" v-if="ruleForm.groupStyle==1">
           <ul class="nav">
             <li>商品组一</li>
             <li>商品组二</li>
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div class="top-style" v-else-if="ruleForm.groupStyle==='top'">
+        <div class="top-style" v-else-if="ruleForm.groupStyle==2">
           <ul class="nav tile-list n5">
             <li>商品组一</li>
             <li>商品组二</li>
@@ -196,9 +196,9 @@ export default {
   methods: {
      /* 设置字体粗细 */
     setFont(value = this.ruleForm.groupFont) {
-      if(value === 'normal') {
+      if(value == 1) {
         this.fontStyle = {fontWeight: 500};
-      }else if(value === 'bold') {
+      }else if(value == 2) {
         this.fontStyle = {fontWeight: 700};
       }
     },
@@ -207,9 +207,9 @@ export default {
     setImgRadius(value = this.ruleForm.groupImg) {
       const imgs = this.$refs.groupWrapper.querySelectorAll('img');
       for(let i=0;i<imgs.length;i++){
-        if(value === 'rightAngle'){
+        if(value == 1){
           imgs[i].style.borderRadius = '0%';
-        }else if(value === 'circleAngle') {
+        }else if(value == 2) {
           imgs[i].style.borderRadius = '10px';
         }
       }
