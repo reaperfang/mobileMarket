@@ -31,21 +31,22 @@
                                 v-for="item in cardNames"
                                 :key="item.id"
                                 :label="item.name"
-                                :value="item.id"
+                                :value="item.name"
                             ></el-option>
                         </el-select>
                     </div>
                     <span style="margin-left: 200px;">领取时间：</span>
                     <el-date-picker
                         type="daterange"
+                        v-model="getTime"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
                     </el-date-picker>
-                    <el-button type="primary" class="marL20">查 询</el-button>
-                    <el-button class="border_btn">重 置</el-button>
+                    <el-button type="primary" class="marL20" @click="handleFind">查 询</el-button>
+                    <el-button class="border_btn" @click="reset">重 置</el-button>
                 </div>
-                <lkTable style="margin-top: 39px"></lkTable>
+                <lkTable style="margin-top: 39px" :lkParams="lkParams"></lkTable>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -61,11 +62,25 @@ export default {
             activeName: 'first',
             popVisible: false,
             selected:"",
+            getTime: "",
             cardList: [],
-            cardNames: []
+            cardNames: [],
+            lkParams: {}
         }
     },
     methods: {
+        handleFind() {
+            let obj = {
+                name: this.selected,
+                startTime: this.getTime[0],
+                endTime: this.getTime[1] 
+            }
+            this.lkParams = Object.assign({},obj);
+        },
+        reset() {
+            this.selected = "";
+            this.getTime = "";
+        },
         getCardList() {
             let obj = {
                 "startIndex": 1,

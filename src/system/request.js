@@ -86,7 +86,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d587b410023a42087a444676fc434b430',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d1ad127cecab362d68c1cb6ab7b877ece',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
