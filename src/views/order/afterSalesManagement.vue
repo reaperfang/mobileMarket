@@ -48,8 +48,8 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button>导出</el-button>
-                        <el-button>批量审核</el-button>
+                        <el-button @click="exportOrder">导出</el-button>
+                        <el-button @click="batchUpdateStatus">批量审核</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
@@ -94,14 +94,14 @@
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="sellerStatus"
+                    prop="orderAfterSaleStatus"
                     label="状态">
                     <template slot-scope="scope">
-                        <span>{{scope.row.sellerStatus | sellerStatusFilter}}</span>
+                        <span>{{scope.row.orderAfterSaleStatus | orderAfterSaleStatusFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="createTimeStart"
+                    prop="createTime"
                     label="申请时间">
                 </el-table-column>
                 <el-table-column label="操作">
@@ -114,12 +114,14 @@
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit" :title="title"></component>
     </div>
 </template>
 <script>
 import Pagination from '@/components/Pagination'
 import RejectDialog from '@/views/order/dialogs/rejectDialog'
+import AuditDialog from '@/views/order/dialogs/auditDialog'
+import BatchUpdateStatusDialog from '@/views/order/dialogs/batchUpdateStatusDialog'
 
 export default {
     data() {
@@ -213,7 +215,8 @@ export default {
                 applicationDate: []
             },
             currentDialog: '',
-            dialogVisible: false
+            dialogVisible: false,
+            title: ''
         }
     },
     created() {
@@ -229,34 +232,90 @@ export default {
                 return '仅退款'
             }
         },
-        sellerStatusFilter(code) {
+        orderAfterSaleStatusFilter(code) {
             if(code == 0) {
                 return '提交申请'
             } else if(code == 1) {
-                return '取消申请 '
+                return '待退货 '
             } else if(code == 2) {
-                return '审核通过'
+                return '待处理'
             }
              else if(code == 3) {
-                return '审核拒绝'
+                return '待收货'
             }
              else if(code == 4) {
-                return '客户发货'
+                return '已完成'
             }
              else if(code == 5) {
-                return '确认收货'
-            }else if(code == 6) {
-                return '商户发货'
-            }else if(code == 7) {
-                return '客户收货'
-            }else if(code == 8) {
-                return '退款'
+                return '已关闭'
             }
         }
     },
     methods: {
-        onSubmit() {
-            
+        exportOrder() {
+           this._apis.order.orderAfterSaleExport({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
+                console.log(res)
+                this.$notify({
+                    title: '成功',
+                    message: '导出成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+        },
+        batchUpdateStatus() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请勾选需要批量审核的售后单', confirmText: '我知道了'})
+                return
+            } else {
+                if(this.multipleSelection.filter(val => val.orderAfterSaleStatus != 0).length) {
+                    this.confirm({title: '提示', icon: true, text: '选择的数据中包含已经审核过的售后单， 无法批量审核，请重新选择', confirmText: '我知道了'})
+                    return
+                }
+            }
+
+            this.currentDialog = 'BatchUpdateStatusDialog'
+            this.title = '批量审核'
+            this.dialogVisible = true
+        },
+        onSubmit(value) {
+            console.log(value)
+            if(value.status == 1) {
+                // 通过
+                this._apis.order.orderAfterSaleUpdateStatus({ids: this.multipleSelection.map(val => val.id), orderAfterSaleStatus: 1}).then((res) => {
+                    console.log(res)
+                    this.getList()
+                    this.$notify({
+                        title: '成功',
+                        message: '审核成功！',
+                        type: 'success'
+                    });
+                }).catch(error => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            } else {
+                this._apis.order.orderAfterSaleUpdateStatus({ids: this.multipleSelection.map(val => val.id), orderAfterSaleStatus: 5, refuseReason: value.refuseReason}).then((res) => {
+                    console.log(res)
+                    this.getList()
+                    this.$notify({
+                        title: '成功',
+                        message: '审核成功！',
+                        type: 'success'
+                    });
+                }).catch(error => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }
         },
         updateRejectStatus(row) {
 
@@ -276,9 +335,6 @@ export default {
                     message: error
                 });
             })
-        },
-        onSubmit() {
-
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
@@ -303,7 +359,9 @@ export default {
     },
     components: {
         Pagination,
-        RejectDialog
+        RejectDialog,
+        AuditDialog,
+        BatchUpdateStatusDialog
     }
 }
 </script>

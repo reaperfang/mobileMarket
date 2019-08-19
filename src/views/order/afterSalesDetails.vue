@@ -12,19 +12,21 @@
             </el-row>
         </div>
         <section class="flow-path">
-            <afterSalesState :orderAfterSale="orderAfterSale" @auth="auth"></afterSalesState>
+            <afterSalesState :orderAfterSale="orderAfterSale" @auth="auth" @reject="reject" @confirmTakeOver="confirmTakeOver"></afterSalesState>
         </section>
         <el-tabs class="tabs" v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="售后信息" name="afterSalesInformation"></el-tab-pane>
             <el-tab-pane label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
         </el-tabs>
         <component :is="currentView" :recordList="recordList" :orderAfterSale="orderAfterSale" :itemList="itemList" :sendItemList="sendItemList"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @reject="onReject" title="审核"></component>
     </div>
 </template>
 <script>
 import AfterSalesInformation from './components/afterSalesInformation'
 import AftermarketDeliveryInformation from './components/aftermarketDeliveryInformation'
 import AfterSalesState from './components/afterSalesState'
+import RejectDialog from '@/views/order/dialogs/rejectDialog'
 
 export default {
     data() {
@@ -35,6 +37,8 @@ export default {
             orderAfterSale: {},
             recordList: [],
             sendItemList: [],
+            currentDialog: '',
+            dialogVisible: false
         }
     },
     created() {
@@ -52,19 +56,65 @@ export default {
         }
     },
     methods: {
+        confirmTakeOver() {
+            this._apis.order.orderAfterConfirmExchange({
+                id: this.orderAfterSale.id,
+                exchangeConfirmation: 1
+            }).then((res) => {
+                this.getDetail()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '确认收货成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        reject() {
+            this.currentDialog = 'RejectDialog'
+            this.dialogVisible = true
+        },
+        onReject(value) {
+            this._apis.order.orderAfterSaleUpdateStatus({
+                id: this.orderAfterSale.id,
+                refuseReason: value,
+                orderAfterSaleStatus: 5
+            }).then((res) => {
+                this.getDetail()
+                this.visible = false
+                this.$notify({
+                    title: '成功',
+                    message: '拒绝审核成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
         auth() {
             this._apis.order.orderAfterSaleUpdateStatus({
                 id: this.orderAfterSale.id,
-                realReturnMoney: this.orderAfterSale.orderAfterSale,
+                realReturnMoney: this.orderAfterSale.realReturnMoney,
                 realReturnBalance: this.orderAfterSale.realReturnBalance,
-                realReturnWalletMoney: this.orderAfterSale.realReturnWalletMoney
+                realReturnWalletMoney: this.orderAfterSale.realReturnWalletMoney,
+                orderAfterSaleStatus: 1
 
             }).then((res) => {
                 this.getDetail()
                 this.visible = false
                 this.$notify({
                     title: '成功',
-                    message: '删除成功！',
+                    message: '审核成功！',
                     type: 'success'
                 });
             }).catch(error => {
@@ -103,7 +153,8 @@ export default {
     components: {
         AfterSalesInformation,
         AftermarketDeliveryInformation,
-        AfterSalesState
+        AfterSalesState,
+        RejectDialog
     }   
 }
 </script>

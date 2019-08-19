@@ -1,0 +1,96 @@
+<template>
+    <DialogBase :visible.sync="visible" :title="title" width="500px" :showFooter="showFooter">
+        <div>
+            <el-radio v-model="auditStatus" label="1">通过</el-radio>
+            <el-radio v-model="auditStatus" label="2">不通过</el-radio>
+            <div class="footer">
+                <el-button>取消</el-button>
+                <el-button @click="submit" type="primary">确定</el-button>
+            </div>
+            <el-dialog
+                title="提示"
+                :visible.sync="showReject"
+                width="500px">
+                <div>
+                    <el-radio v-model="refuseReason" label="人为破坏拒绝售后">人为破坏拒绝售后</el-radio>
+                    <el-radio v-model="refuseReason" label="其他">其他</el-radio>
+                </div>
+                <span slot="footer" class="dialog-footer" style="text-align: center; display: block;">
+                    <el-button @click="showReject = false">取 消</el-button>
+                    <el-button type="primary" @click="rejectHandler">确 定</el-button>
+                </span>
+            </el-dialog>
+        </div>
+    </DialogBase>
+</template>
+<script>
+import DialogBase from '@/components/DialogBase'
+import RejectDialog from '@/views/order/dialogs/rejectDialog'
+
+export default {
+    data() {
+        return {
+            showFooter: false,
+            auditStatus: '',
+            currentDialog: '',
+            showReject: false,
+            refuseReason: ''
+        }
+    },
+    methods: {
+        rejectHandler() {
+            this.$emit('submit', {status: 2, refuseReason: this.refuseReason})
+            this.showReject = false
+            this.visible = false
+        },
+        submit() {
+            //this.$emit('audit', this.auditStatus)
+            if(this.auditStatus == 2) {
+                this.showReject = true
+            } else {
+                this.$emit('submit', {status: 1})
+                this.visible = false
+            }
+            
+        }
+    },
+    computed: {
+        visible: {
+            get() {
+                return this.dialogVisible
+            },
+            set(val) {
+                this.$emit('update:dialogVisible', val)
+            }
+        },
+    },
+    props: {
+        data: {
+
+        },
+        dialogVisible: {
+            type: Boolean,
+            required: true
+        },
+        title: {
+            type: String,
+            required: true
+        },
+    },
+    components: {
+        DialogBase,
+        RejectDialog
+    }
+}
+</script>
+<style lang="scss" scoped>
+   .footer {
+       text-align: center;
+       margin-top: 140px;
+   }
+   /deep/ .v-modal {
+       display: none!important;
+       z-index: 0!important;
+   }
+</style>
+
