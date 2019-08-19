@@ -4,7 +4,7 @@
         <el-form-item label="本地上传">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
@@ -16,10 +16,10 @@
         <el-form-item label="分组">
           <el-select v-model="group_value" placeholder="请选择">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in groupList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -49,11 +49,12 @@ export default {
   },
   data() {
     return {
+      uploadUrl:`${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
       form:{},
       imageUrl:'',
       group_value:'',
       wx_value:'',
-      options:[],
+      groupList:[],
     };
   },
   computed: {
@@ -67,8 +68,23 @@ export default {
     }
   },
   created() {
+    this.getGroups()
   },
   methods: {
+    //查询分组
+    getGroups(){
+      let query ={
+        type:'0'
+      }
+      this._apis.file.getGroup(query).then((response)=>{
+        this.groupList = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },

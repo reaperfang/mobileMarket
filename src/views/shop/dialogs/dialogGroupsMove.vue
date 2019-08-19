@@ -1,13 +1,13 @@
 <template>
-  <DialogBase :visible.sync="visible" width="500px" :title="'移动分组'">
+  <DialogBase :visible.sync="visible" width="500px" :title="'移动分组'" @submit="submit">
     <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="分组名称：">
-           <el-select v-model="form.groupName" placeholder="请选择">
+           <el-select v-model="form.groupId" placeholder="请选择">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in groupList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -22,7 +22,7 @@ export default {
   name: "dialogGroupsMove",
   components: {DialogBase},
   props: {
-      data: {},
+      arrayData: {},
       dialogVisible: {
           type: Boolean,
           required: true
@@ -31,9 +31,9 @@ export default {
   data() {
     return {
       form:{
-        groupName:''
+        groupId:''
       },
-      options:[],
+      groupList:[],
     };
   },
   computed: {
@@ -47,8 +47,26 @@ export default {
     }
   },
   created() {
+    this.getGroups()
   },
   methods: {
+    //查询分组
+    getGroups(){
+      let query ={
+        type:'0'
+      }
+      this._apis.file.getGroup(query).then((response)=>{
+        this.groupList = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    submit() {
+      this.$emit('submit',{moveGroup:{imageId:this.arrayData,groupId:this.form.groupId}})
+    }
   }
 };
 </script>

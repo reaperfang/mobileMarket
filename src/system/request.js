@@ -86,7 +86,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dcbf6735e8e2c249084ee8bf682dc0c3a',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dfbf381af2e4e8deb4d39566c6ed8abfb',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -139,7 +139,7 @@ class Ajax {
             config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
             break;
           case 'decorate':  //装修接口
-            config.baseURL = `${process.env.DATA_API}/decoration/api.do`;
+            config.baseURL = `${process.env.DATA_API}/api-decoration-web/decoration/api.do`;
             break;
           case 'finance':  //财务接口
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;

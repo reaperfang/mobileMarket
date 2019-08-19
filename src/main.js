@@ -54,6 +54,10 @@ Vue.prototype.confirm = function({title, icon, text, cancel, width, confirmText}
   })
 }
 
+/*按钮复制链接地址 */
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
 
 /* 自定义全局变量或方法挂载 */
 Vue.prototype._routeTo = utils.routeTo; //全局路由跳转快捷方式  routeTo('login', {a:1, b:2})

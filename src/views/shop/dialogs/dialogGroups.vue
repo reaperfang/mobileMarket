@@ -1,5 +1,5 @@
 <template>
-  <DialogBase :visible.sync="visible" width="500px" :title="'编辑分组'">
+  <DialogBase :visible.sync="visible" width="500px" :title="'分组'" @submit="submit">
     <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="分组名称：">
            <el-input v-model="form.groupName" class="w250"></el-input>
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       form:{
-        groupName:''
+        groupName:this.data.name || ''
       },
     };
   },
@@ -41,6 +41,13 @@ export default {
   created() {
   },
   methods: {
+    submit() {
+      if(this.data.type == 'edit'){
+        this.$emit('submit',{edit:{groupId:this.data.id,groupName:this.form.groupName}})
+      }else{
+        this.$emit('submit',{add:{groupName:this.form.groupName}})
+      }
+    }
   }
 };
 </script>

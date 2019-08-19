@@ -28,37 +28,40 @@
       <p class="list_top">图片素材<span>{{num}}</span>条</p>
       <div class="list_main">
         <div class="list_img">
-           <div class="item_img" @mouseenter="onMouseOver" @mouseleave="onMouseOut">
-             <p class="img_head">
-               <span>7月12日</span>
-               <i class="wx_icon"></i>
-             </p>
-             <div class="img_body">
-               <p class="title">美丽的天空之城</p>
-               <img src="" class="imgs">
-               <p class="content">
-                 内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试
-               </p>
-             </div>
-             <p class="img_bottom">
-               <span><i class="el-icon-edit"></i></span>
-               <span><i class="el-icon-delete"></i></span>
-             </p>
-             <div ref="operate">
-               <i class="el-icon-view lookArticle"> 预览文章</i>
-             </div>
-           </div>
+            <div class="item_img" @mouseenter="onMouseOver" @mouseleave="onMouseOut">
+              <p class="img_head">
+                <span>7月12日</span>
+                <i class="wx_icon"></i>
+              </p>
+              <div class="img_body">
+                <p class="title">美丽的天空之城</p>
+                <img src="" class="imgs">
+                <p class="content">
+                  内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试
+                </p>
+              </div>
+              <p class="img_bottom">
+                <span><i class="el-icon-edit"></i></span>
+                <span><i class="el-icon-delete"></i></span>
+              </p>
+              <div ref="operate">
+                <i class="el-icon-view lookArticle"> 预览文章</i>
+              </div>
+            </div>
         </div>
       </div>
-      <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="10"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-      </el-pagination>
+      <p class="pages">
+          <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          class="page_nav">
+          </el-pagination>
+      </p>
     </div>
     <!-- 动态弹窗 -->
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
@@ -126,7 +129,7 @@ export default {
   justify-content: space-between;
   .list_img{
     display: flex;
-    justify-content: space-around;
+    flex-flow: row wrap;
     .item_img{
       width: 250px;
       border: 1px solid #e6e6e6;
@@ -196,9 +199,17 @@ export default {
         padding: 90px 0px 0px 80px;
         color: #fff;
         cursor: pointer;
-        // display:none;
+        display:none;
       }
     }
+  }
+}
+.pages{
+  width: 100%;
+  margin-top: 50px;
+  text-align: right;
+  .page_nav{
+    display: inline-block;
   }
 }
 </style>

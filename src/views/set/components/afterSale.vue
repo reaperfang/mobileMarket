@@ -1,7 +1,7 @@
 /*售后相关 */
 <template>
   <div class="main">
-    <el-form ref="form" :model="form" :rules="rules" label-width="180px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="200px">
         <div class="item">
             <h2>自动收货： <span>说明：仅对有物流信息的订单生效，对没有物流信息的订单需要手动确认</span></h2>
             <el-form-item label="买家自动确认收货时间："></el-form-item>
@@ -75,6 +75,24 @@
                 </el-radio-group>
             </el-form-item>
         </div>
+        <div class="item">
+            <h2>
+                物流查询：
+                <span class="note">电子面单和物流轨迹查询服务是与第三方快递鸟合作，开启服务器需注册快递鸟会员，相关费用直接与快递鸟结算</span>    
+            </h2>
+            <el-form-item label="是否开启物流轨迹查询服务：" prop="name9">
+                <el-radio-group v-model="form.name9">
+                    <el-radio :label="3">是</el-radio>
+                    <el-radio :label="6">否</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item label="请注册快递鸟并输入用户ID:" prop="name10">
+                <el-input placeholder="请输入用户ID" v-model="name10" style="width:260px;"></el-input>
+            </el-form-item>
+            <el-form-item label="请注册快递鸟并输入API Key:" prop="name11">
+                <el-input placeholder="请输入用户API Key" v-model="name11" style="width:260px;"></el-input>
+            </el-form-item>
+        </div>
         <el-form-item>
             <el-button type="primary" @click="onSubmit">保存</el-button>
         </el-form-item>
@@ -96,7 +114,10 @@ export default {
             name5: '',
             name6: '',
             name7: '',
-            name8: ''
+            name8: '',
+            name9:'',
+            name10:'',
+            name11:''
         },
      rules: {
         name1: [
@@ -150,5 +171,9 @@ export default {
             color: #92929B;
         }
     }
+}
+.note{
+    font-size: 12px;
+    color: #92929B;
 }
 </style>

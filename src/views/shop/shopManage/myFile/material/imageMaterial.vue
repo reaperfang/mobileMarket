@@ -4,7 +4,7 @@
       <div>
         <el-checkbox v-model="checkedAll">全选</el-checkbox>
         <el-button type="warning" plain class="ml10" @click="deleteImage">批量删除</el-button>
-        <el-button type="warning" plain @click="moveGroup">移动分组</el-button>
+        <el-button type="warning" plain @click="moveGroups">移动分组</el-button>
       </div>
       <div>
         <el-button type="primary" plain @click="syncImage">同步图片</el-button>
@@ -12,67 +12,64 @@
       </div>
     </div>
     <div class="list">
-      <p class="list_top">图片素材<span>{{num}}</span>条</p>
+      <p class="list_top">图片素材<span>{{total*1}}</span>条</p>
       <div class="list_main">
         <div class="list_img">
-           <div class="item_img" @mouseenter="onMouseOver" @mouseleave="onMouseOut">
-             <div class="img_info">
-              <img src="">
-              <div class="img_bottom">
-                <p>
-                  <span>
-                    <el-checkbox v-model="checked"></el-checkbox>
-                    <i class="wx_icon"></i>
-                  </span>
-                  <span>
-                    800*640px
-                  </span>
-                  <span>
-                    <i class="el-icon-link"></i>
-                    <i class="el-icon-download"></i>
-                  </span>
-                </p>
+          <div class="imgs">
+            <div class="item_img" v-for="(item,index) in list" :key="item.id"  @mouseenter="onMouseOver(index)" @mouseleave="onMouseOut(index)">
+              <div class="img_info">
+                <img :src="item.filePath">
+                <div class="img_bottom">
+                  <p>
+                    <span>
+                      <el-checkbox v-model="checked"></el-checkbox>
+                      <i class="wx_icon" v-if="item.isSyncWechat"></i>
+                    </span>
+                    <span>
+                      {{item.imgPixelWidth || '0'}}*{{item.imgPixelHeight || '0'}}px
+                    </span>
+                    <span>
+                      <i class="el-icon-link oper" @click="copyLink(item.filePath)"></i>
+                      <i class="el-icon-download oper" @click="downImage(item.filePath,item.fileName)"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="operate" ref="operate">
+                  <el-button type="primary" plain class="block mt10 ml10" @click="moveGroups(item.id)">分组</el-button>
+                  <!-- <el-button type="primary" plain class="block mt10">剪裁</el-button> -->
+                  <el-button type="primary" plain class="block mt10" @click="deleteImage(item.id,'imageId')">删除</el-button>
+                </div>
               </div>
-              <div class="operate" ref="operate">
-                <el-button type="primary" plain class="block mt10 ml10">分组</el-button>
-                <el-button type="primary" plain class="block mt10">剪裁</el-button>
-                <el-button type="primary" plain class="block mt10">删除</el-button>
-              </div>
-             </div>
+            </div>
            </div>
+           <p class="pages">
+              <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="10"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total*1"
+              class="page_nav">
+              </el-pagination>
+           </p>
         </div>
         <div class="groups">
           <p class="groups_head">全部图片</p>
-          <p class="item">未分组</p>
-          <p class="item">
-            <span>配图</span>
-            <span>
-              <i class="el-icon-edit" @click="newGroup"></i>
-              <i class="el-icon-delete" @click="deleteImage"></i>
+          <p class="item" v-for="item in groupList" :key="item.id">
+            <span @click="getList(item.id)">{{item.name}}</span>
+            <span v-if="item.id != -1">
+              <i class="el-icon-edit" @click="newGroup(item.id,item.name,'edit')"></i>
+              <i class="el-icon-delete" @click="deleteImage(item.id,'groupId')"></i>
             </span>
           </p>
-          <p class="item">
-            <span>封面</span>
-            <span>
-              <i class="el-icon-edit" @click="newGroup"></i>
-              <i class="el-icon-delete" @click="deleteImage"></i>
-            </span>
-          </p>
-          <span class="newClass" @click="newGroup">+ 新建分组</span>
+          <span class="newClass" @click="newGroup('','','new')">+ 新建分组</span>
         </div>
       </div>
-      <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="10"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-      </el-pagination>
     </div>
     <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="data" :arrayData="arrayData" @submit="handleSubmit"></component>
   </div>
 </template>
 
@@ -83,39 +80,184 @@ import dialogSync from '../../../dialogs/dialogSync';
 import dialogDelete from '../../../dialogs/dialogDelete';
 import dialogGroups from '../../../dialogs/dialogGroups';
 import dialogGroupsMove from '../../../dialogs/dialogGroupsMove';
+import dialogCopyLink from '../../../dialogs/dialogCopyLink';
+
 export default {
   name: 'imageMaterial',
-  components: {dialogCutImage, dialogUploadImage,dialogSync,dialogDelete,dialogGroups,dialogGroupsMove},
+  components: {dialogCutImage, dialogUploadImage,dialogSync,dialogDelete,dialogGroups,dialogGroupsMove,dialogCopyLink},
   data () {
     return {
+      data:'',
+      arrayData:[],
       dialogVisible: false,
       currentDialog: '',
-      num:10,
       checkedAll:false,
       imgsArr:[
 
       ],
       loading:false,
       checked:false,
+      list:[],
+      groupList:[],
       currentPage:1,
-      total:0
+      pageSize:10,
+      total:0,
     }
   },
   created() {
-
+    this.getList()
+    this.getGroups()
   },
   methods: {
-    newGroup(){
+    //获取图片列表
+    getList(id){
+      let query ={
+        fileGroupInfoId:id || '',
+        pageNum:this.currentPage,
+        pageSize:this.pageSize,
+        sourceMaterialType:'0'
+      }
+      this._apis.file.getMaterialList(query).then((response)=>{
+        this.list = response.list
+        this.total = response.total
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //下载图片
+    downImage(filepath,fileName){
+      let a = document.createElement('a')
+          a.download = fileName || '图片名称'
+          a.href = filepath;
+          a.click();
+    },
+    //复制链接
+    copyLink(link){
+      this.dialogVisible = true
+      this.currentDialog = 'dialogCopyLink'
+      this.data = link
+    },
+  /**********************************        分组相关      **********************/
+    //查询分组
+    getGroups(){
+      let query ={
+        type:'0'
+      }
+      this._apis.file.getGroup(query).then((response)=>{
+        this.groupList = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //弹窗反馈
+    handleSubmit(data){
+      for(let key in data){
+        switch (key) {
+          case 'add':  //新零售商城
+            this.addGroup(data.add.groupName) 
+          break;
+          case 'edit':
+            this.editGroup(data.edit.groupId,data.edit.groupName)
+          break;
+          case 'deleteGroup':
+            this.deleteGroup(data.deleteGroup.groupId)
+          break;
+          case 'moveGroup':
+            this.moveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
+          break;
+          case 'deleteImage':
+            this.deleteImages(data.deleteImage.imageId)
+          break;
+        }
+      }
+    },
+    //添加分组
+    addGroup(groupName){
+      let query ={
+        name:groupName,
+        parentId:'0',
+        type:'0'
+      }
+      this._apis.file.newGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '添加成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })      
+    },
+    //编辑分组
+    editGroup(groupId,groupName){
+      let query ={
+        id:groupId,
+        name:groupName,
+        type:'0'
+      }
+      this._apis.file.editGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '操作成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })      
+    },
+    //删除分组
+    deleteGroup(id){
+      let query ={
+        id:id,
+        type:0
+      }
+      this._apis.file.deleteGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '操作成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+   /**********************************        弹窗相关      **********************/
+    newGroup(id,name,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroups'
+      this.data = {
+        type:type,
+        id:id || '',
+        name:name || ''
+      }
     },
-    moveGroup(){
-      this.dialogVisible = true;
-      this.currentDialog = 'dialogGroupsMove'
-    },
-    deleteImage(){
+    deleteImage(id,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogDelete'
+      if(type == 'groupId'){
+        this.data = {
+          id:id || '',
+          type:type
+        }
+      }else{
+        this.arrayData=[]
+        this.arrayData.push(id)
+      }
     },
     uploadImage(){
       this.dialogVisible = true;
@@ -125,12 +267,57 @@ export default {
       this.dialogVisible = true;
       this.currentDialog = 'dialogSync'
     },
-    onMouseOver(){
-      this.$refs.operate.style.display="block"
+    moveGroups(id){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogGroupsMove'
+      this.arrayData = []
+      this.arrayData.push(id)
     },
-    onMouseOut(){
-      this.$refs.operate.style.display="none"
+    /**********************************        单张图片      **********************/
+    onMouseOver(index){
+      this.$refs.operate[index].style.display="block"
     },
+    onMouseOut(index){
+      this.$refs.operate[index].style.display="none"
+    },
+    //分组
+    moveGroup(id,groupId){
+      let query ={
+        ids:id,
+        toFileGroupInfoId:groupId
+      }
+      this._apis.file.moveGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '移动分组成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //删除
+    deleteImages(id){
+      let query ={
+        ids:id,
+      }
+      this._apis.file.deleteMaterial(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '删除成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
      /* 成功加载图片 */
     loadImg(event, item) {
       this.$set(item, 'loaded', true);
@@ -142,9 +329,15 @@ export default {
       this.$set(item, 'loaded', true);  //只要加载了都算成功，用来后面统计
       this.allImgLoaded();
     },
-    //分页相关
-    handleSizeChange(){},
-    handleCurrentChange(){},
+    /**********************************        分页相关      **********************/
+    handleSizeChange(val){
+      this.pageSize = val || this.pageSize
+      this.getList()
+    },
+    handleCurrentChange(pIndex){
+      this.currentPage = pIndex || this.currentPage
+      this.getList()
+    },
 
   }
 }
@@ -169,42 +362,52 @@ export default {
   display: flex;
   justify-content: space-between;
   .list_img{
-    display: flex;
-    justify-content: space-around;
-    .item_img{
-      border: 1px solid #e6e6e6;
-      .img_info{
-        width: 240px;
-        height:150px;
-        position: relative;
-        .img_bottom{
-          width:100%;
-          height: 30px;
-          line-height: 30px;
-          padding:0 10px;
-          position: absolute;
-          left:0px;
-          bottom:-25px;
-          z-index: 1;
-          background:rgba(0,0,0,1);
-          opacity: 0.5;
-          p{
-            display:flex;
-            justify-content: space-between;
-            color: #fff;
-            font-weight: bold;
+    width: 100%;
+    .imgs{
+      display: flex;
+      flex-flow: row wrap;
+      .item_img{
+        border: 1px solid #e6e6e6;
+        .img_info{
+          width: 240px;
+          height:150px;
+          position: relative;
+          img{
+            width: 240px;
+            height:150px;
           }
-        }
-        .operate{
-          width: 100%;
-          height: 175px;
-          position: absolute;
-          top:0;
-          left:0;
-          z-index: 2;
-          background-color:rgba(0,0,0,0.2);
-          padding: 20px 0px 0px 80px;
-          display:none;
+          .img_bottom{
+            width:100%;
+            height: 30px;
+            line-height: 30px;
+            padding:0 10px;
+            position: absolute;
+            left:0px;
+            bottom:-25px;
+            z-index: 1;
+            background:rgba(0,0,0,1);
+            opacity: 0.5;
+            p{
+              display:flex;
+              justify-content: space-between;
+              color: #fff;
+              font-weight: bold;
+              .oper{
+                cursor: pointer;
+              }
+            }
+          }
+          .operate{
+            width: 100%;
+            height: 175px;
+            position: absolute;
+            top:0;
+            left:0;
+            z-index: 2;
+            background-color:rgba(0,0,0,0.2);
+            padding: 20px 0px 0px 80px;
+            display:none;
+          }
         }
       }
     }
@@ -214,6 +417,8 @@ export default {
     border: 1px solid #e6e6e6;
     font-size: 14px;
     color: #44434B;
+    margin-left: 30px;
+    padding-bottom:20px;
     .groups_head{
       height: 30px;
       line-height: 30px;
@@ -282,5 +487,13 @@ export default {
 }
 .block{
   display: block;
+}
+.pages{
+  width: 100%;
+  margin-top: 50px;
+  text-align: right;
+  .page_nav{
+    display: inline-block;
+  }
 }
 </style>

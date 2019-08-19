@@ -1,7 +1,6 @@
 // 文件相关接口
 import request from '@/system/request'
 
-
 // 获取素材列表(分页)
 export function getMaterialList(data) {
   return request({
@@ -11,4 +10,78 @@ export function getMaterialList(data) {
     data
   })
 }
+
+//删除素材
+export function deleteMaterial(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-DELETE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//获取分组
+export function getGroup(data) {
+  return request({
+    target: 'DECORATION-FILE-GROUP-SELECT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//新建分组
+export function newGroup(data) {
+  return request({
+    target: 'DECORATION-FILE-GROUP-INSERT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//编辑分组
+export function editGroup(data) {
+  return request({
+    target: 'DECORATION-FILE-GROUP-UPDATE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//删除分组
+export function deleteGroup(data) {
+  return request({
+    target: 'DECORATION-FILE-GROUP-DELETE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//移动分组
+export function moveGroup(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-UPDATEFILE-GROUP-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+
+/********************************  图片  ********************************/
+//上传图片
+
+
+
+/********************************  图文  ********************************/
+
+
+
+/********************************  视频  ********************************/
+
+
 
