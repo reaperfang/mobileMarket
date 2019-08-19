@@ -71,6 +71,7 @@ export default {
   created() {
     this.getQrcode();
     this.getTools();
+    this.getShopStyle();
   },
   methods: {
 
@@ -95,7 +96,7 @@ export default {
       /* 获取工具状态 */
     getTools() {
        this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
-        this.toolsData = response;
+        this.toolsData = JSON.parse(response);
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
@@ -105,6 +106,20 @@ export default {
         this.loading = false;
       });
     },
+
+    /* 获取店铺风格 */
+    getShopStyle() {
+      this._apis.shop.getShopStyle({}).then((response)=>{
+        if(response.colorStyle) {
+          this.color = JSON.parse(response.colorStyle);
+        }
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    }
 
   }
 };

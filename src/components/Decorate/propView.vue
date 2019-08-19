@@ -76,8 +76,12 @@ export default {
 
     /* 动态加载属性模板 */
     loadPropTemplate() {
-      const currentComponentData = this.componentDataMap[this.currentComponentId];
-      if(currentComponentData){
+      let currentComponentData = this.componentDataMap[this.currentComponentId];
+      let type = currentComponentData && currentComponentData.type || '';
+      if(this.baseProperty.id === this.currentComponentId) {
+        type = this.baseProperty.type;
+      }
+      if(type){
         import(`./props/property${this.utils.titleCase(currentComponentData.type)}.vue`).then(loadedComponent => {
           this.currentComponent = '';
           this.$nextTick(()=>{  //清除缓存组件以后下一帧处理

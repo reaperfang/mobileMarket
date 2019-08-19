@@ -15,13 +15,32 @@
           type="selection"  
           width="55">
         </el-table-column>
-        <el-table-column prop="title" label="优惠券名称"></el-table-column>
-        <el-table-column prop="goods" label="适用商品"></el-table-column>
-        <el-table-column prop="content" label="优惠内容"></el-table-column>
-        <el-table-column prop="receiverLimit" label="领取人限制"></el-table-column>
-        <el-table-column prop="timesLimit" label="限领次数"></el-table-column>
-        <el-table-column prop="remainingStock" label="剩余库存"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
+        <el-table-column prop="name" label="优惠券名称"></el-table-column>
+        <el-table-column prop="goodsType" label="适用商品">
+           <template slot-scope="scope">
+            {{scope.row.goodsType === 0 ? '全部' : '指定商品'}} 
+          </template>
+        </el-table-column>  <!-- 0是全部  1是指定商品 -->
+        <el-table-column prop="content" label="优惠内容">
+          <template slot-scope="scope">
+            <span v-if="scope.row.useCondition > -1">满{{scope.row.useCondition}},减{{scope.row.useTypeFullcut}}</span>
+            <span v-else>减{{scope.row.useTypeFullcut}}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column prop="receiveLimitCount" label="领取人限制"></el-table-column> -->
+        <el-table-column prop="receiveLimitCount" label="限领次数">
+           <template slot-scope="scope">
+            {{scope.row.receiveLimitCount >-1 ? scope.row.receiveLimitCount : '无限制'}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="remainStock" label="剩余库存"></el-table-column>
+        <el-table-column prop="status" label="状态">  <!-- 0是未生效  1是生效中 2是已失效-->
+           <template slot-scope="scope">
+            <span v-if="scope.row.status === 0">未生效</span>
+            <span v-else-if="scope.row.status === 1">生效中</span>
+            <span v-else-if="scope.row.status === 2">已生效</span>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="pagination">
         <el-pagination
@@ -58,8 +77,10 @@ export default {
     return {
       tableList: [],
       multipleSelection: [],
+      pageNum: 1,
       ruleForm: {
-        name: ''
+        pageNum: 1,
+        name: '',
       },
       rules: {}
     };
@@ -78,38 +99,26 @@ export default {
   },
   methods: {
     fetch() {
-      this.tableList = [
-        {
-          id: uuid(),
-          title: '优惠券1',
-          goods: '全店商品',
-          content: '满20，减10',
-          receiverLimit: '不限制',
-          timesLimit: '不限制',
-          remainingStock: 124234,
-          status: 'false'
-        },
-        {
-          id: uuid(),
-          title: '优惠券2',
-          goods: '全店商品',
-          content: '满20，减10',
-          receiverLimit: '不限制',
-          timesLimit: '不限制',
-          remainingStock: 124234,
-          status: 'false'
-        },
-        {
-          id: uuid(),
-          title: '优惠券3',
-          goods: '全店商品',
-          content: '满20，减10',
-          receiverLimit: '不限制',
-          timesLimit: '不限制',
-          remainingStock: 124234,
-          status: 'true'
-        }
-      ]
+      this.loading = true;
+      this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
+        this.tableList = response.list;
+        this.total = response.total;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
+
+     //当前页码改变
+    handleCurrentChange(pIndex=1) {
+      this.loading = true
+      this.pageNum = pIndex
+      this.ruleForm.pageNum = pIndex
+      this.fetch()
     },
 
     /* 向父组件提交选中的数据 */

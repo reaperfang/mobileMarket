@@ -30,13 +30,13 @@ export default {
       type: Object
     },
     saveData: {
-      type: Object
+      type: Function
     },
     saveAndApplyData: {
-      type: Object
+      type: Function
     },
     resetData: {
-      type: Object
+      type: Function
     },
     homePageData: {
       type: Object
@@ -63,7 +63,6 @@ export default {
     componentDataMap() {
       return this.$store.getters.componentDataMap;
     },
-
     baseProperty() {
       return this.$store.getters.baseProperty;
     },

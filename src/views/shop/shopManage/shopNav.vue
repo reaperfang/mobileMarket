@@ -424,7 +424,7 @@ export default {
      /* 获取工具状态 */
     getTools() {
        this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
-        this.toolsData = response;
+        this.toolsData = JSON.parse(response);
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
@@ -437,7 +437,7 @@ export default {
 
      /* 开关状态切换 */
     switchStatusChange(value) {
-      this._apis.shop.changeNavSwitchStatus({id: '2'}).then((response)=>{
+      this._apis.shop.changeSwitchStatus({id: '2', shopNavigation: value === true ? 1 : 0}).then((response)=>{
         this.$notify({
           title: '成功',
           message: '修改成功！',

@@ -86,7 +86,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d587b410023a42087a444676fc434b430',
+        accessToken: store.getters.token || '09255c7724fe9b8df952aa2f7e3ec7186b5700d83f4a19114588a2fb306d3b80',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -147,8 +147,8 @@ class Ajax {
           case 'goodsOperate':  //商品运营
             config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
             break;
-          case 'matrix':  //开关  许涛
-            config.baseURL = `${process.env.DATA_API}/matrix-admin/matrix/api.do`;
+          case 'manager':  //广告和导航开关修改  许涛
+            config.baseURL = `${process.env.DATA_API}/api-manager-web/manager/api.do`;
             break;
         }
       }

@@ -367,31 +367,90 @@ export function getSwitchStatus(data) {
   return request({
     target: 'SHOP-API-100-PROCESSOR',
     method: 'post',
-    apiType: 'matrix',
+    apiType: 'manager',
     noCid: true,
     data
   })
 }
 
-//改变导航切换状态
-export function changeNavSwitchStatus(data) {
+//改变切换状态
+export function changeSwitchStatus(data) {
   return request({
-    target: '',
+    target: 'SHOP-API-102-PROCESSOR',
     method: 'post',
-    apiType: 'matrix',
+    apiType: 'manager',
     noCid: true,
     data
   })
 }
 
-//改变广告切换状态
-export function changeADSwitchStatus(data) {
-  return request({
-    target: '',
-    method: 'post',
-    apiType: 'matrix',
-    noCid: true,
-    data
-  })
+//优惠券B端选择
+export function getCouponList(data) {
+    return request({
+      url: '/api/v1/b/app-coupon/page-list',
+      method: 'get',
+      baseURL: process.env.DATA_API,
+      params:data
+    })
+}
+
+//拼团选择商品
+export function getMultiPersonList(data) {
+    return request({
+      url: '/api/v1/b/app-group-buy/pageGoods',
+      method: 'get',
+      baseURL: process.env.DATA_API,
+      params:data
+    })
+}
+
+//N元N件选择商品
+export function getNyuanList(data) {
+    return request({
+      url: '/api/v1/b/goodsbale/page-list',
+      method: 'get',
+      baseURL: process.env.DATA_API,
+      params:data
+    })
+}
+
+//秒杀B端选择商品
+export function getSecondkillList(data) {
+    return request({
+      url: '/api/v1/b/seckill/app-goods-page-list',
+      method: 'get',
+      baseURL: process.env.DATA_API,
+      params:data
+    })
+}
+
+//限时折扣B端选择商品
+export function getDiscountList(data) {
+    return request({
+      url: '/api/v1/b/limit-discount/app-goods-page-list',
+      method: 'get',
+      baseURL: process.env.DATA_API,
+      params:data
+    })
+}
+
+//优惠套装B端选择商品
+export function getDiscountPackageList(data) {
+    return request({
+      url: '/api/v1/b/package-buy/app-page-list',
+      method: 'get',
+      baseURL: process.env.DATA_API,
+      params:data
+    })
+}
+
+//满减选择活动
+export function getFullReductionList(data) {
+    return request({
+      url: '/api/v1/b/app-reward/page',
+      method: 'get',
+      baseURL: process.env.DATA_API,
+      params:data
+    })
 }
 
