@@ -175,7 +175,7 @@ export default {
             zsjf:"",
 
             currentDialog:"",
-            currentData: '',
+            currentData: {},
             dialogVisible: false,
             levelName: "",
             conditionList: [],
@@ -199,6 +199,60 @@ export default {
             this._apis.client.getLevelsInfo({id:id}).then((response) => {
                 this.levelName = response.alias;
                 this.ruleForm = Object.assign({}, response);
+                //用于回显升级条件
+                this.ruleForm.levelConditionList.map((v) => {
+                    if(v.levelConditionId == this.getId(this.conditionList, '完善信息')) {
+                        this.condition1 = true;
+                        this.currentData.info = JSON.parse(v.conditionValue);
+                        this.selectedInfos = this.currentData.info;
+                    }
+                    if(v.levelConditionId == this.getId(this.conditionList, '消费金额满')) {
+                        this.condition2 = "消费金额满";
+                        this.xfjem = v.conditionValue;
+                    }
+                    if(v.levelConditionId == this.getId(this.conditionList, '消费次数满')) {
+                        this.condition2 = "消费次数满";
+                        this.xfcsm = v.conditionValue;
+                    }
+                    if(v.levelConditionId == this.getId(this.conditionList, '积分获得满')) {
+                        this.condition2 = "积分获得满";
+                        this.jfhdm = v.conditionValue;
+                    }
+                })
+                //用于回显等级权益
+                this.ruleForm.rightsList.map((v) => {
+                    if(v.rightsInfoId == this.getId(this.rightsList, '满包邮')) {
+                        this.right1 = true;
+                        this.mby = v.rightsValue;
+                    }
+                    if(v.rightsInfoId == this.getId(this.rightsList, '会员折扣')) {
+                        this.right2 = true;
+                        this.hyzk = v.rightsValue;
+                    }
+                })
+                //用于回显升级奖励
+                let redArr = [], giftArr = [], couponArr = [];
+                this.ruleForm.upgradeRewardList.map((v) => {
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList, '赠送积分')) {
+                        this.upgrade1 = true;
+                        this.zsjf = v.giftNumber;
+                    }
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送红包')) {
+                        this.upgrade2 = true;
+                        this.selectedReds.push({name: v.giftName, id: v.giftProduct});
+                        redArr.push(v.giftProduct);
+                    }
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送赠品')) {
+                        this.upgrade3 = true;
+                        this.selectedGifts.push({id: v.giftProduct, goodsName: v.giftName, number: v.giftNumber });
+                        giftArr.push(v.giftProduct);
+                    }
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送优惠券')) {
+                        this.upgrade4 = true;
+                        this.selectedCoupons.push({id: v.giftProduct, name: v.giftName, number: v.giftNumber});
+                        couponArr.push(v.giftProduct);
+                    }
+                })
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -250,6 +304,7 @@ export default {
                     _arr.push(_obj);
                 })
                 this.rightsList = [].concat(_arr);
+                this.getLevelsInfo(this.$route.query.id);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -441,6 +496,7 @@ export default {
                         let obj = {};
                         obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送红包');
                         obj.giftProduct = v.id;
+                        obj.giftName = v.name;
                         obj.label = "赠送红包";
                         upgradeRewardList.push(obj);
                     })
@@ -458,6 +514,7 @@ export default {
                         let obj = {};
                         obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送赠品');
                         obj.giftProduct = v.id;
+                        obj.giftName = v.goodsName;
                         obj.label = "赠送赠品";
                         obj.giftNumber = v.number;
                         upgradeRewardList.push(obj);
@@ -476,6 +533,7 @@ export default {
                         let obj = {};
                         obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送优惠券');
                         obj.giftProduct = v.id;
+                        obj.giftName = v.name;
                         obj.giftNumber = v.number;
                         obj.label = "赠送优惠券"
                         upgradeRewardList.push(obj);
@@ -522,10 +580,10 @@ export default {
         }
     },
     mounted() {
-        this.getLevelsInfo(this.$route.query.id);
         this.getLevelCondition();
         this.getRightsList();
         this.getRewardList();
+        
     }
 }
 </script>

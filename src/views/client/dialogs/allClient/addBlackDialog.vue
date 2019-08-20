@@ -123,10 +123,11 @@ export default {
         },
         getBlackChecks() {
             this._apis.client.blackChecks({}).then((response) => {
-                response.map((v) => {
-                    this.$set(v, 'checked', false);
-                });
-                this.checks = [].concat(response);
+                console.log(response);
+                // response.map((v) => {
+                //     this.$set(v, 'checked', false);
+                // });
+                // this.checks = [].concat(response);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

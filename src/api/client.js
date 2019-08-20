@@ -468,4 +468,13 @@ export function getLkList(data) {
         data
     })
 }
+//获取商品分类
+export function getProductClass(data) {
+    return request({
+        target:'PRODUCT-CATALOG-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'goods',
+        data
+    })
+}
 

@@ -30,6 +30,7 @@
 import DialogBase from "@/components/DialogBase";
 export default {
   name: "redListDialog",
+  props: ['data'],
   data() {
     return {
       hasCancel: true,
@@ -39,6 +40,16 @@ export default {
   methods: {
     submit() {
         this.$emit('getSelectedRed', {selection: this.$refs.redTable.selection});
+    },
+    getSel() {
+      let redArr = this.data.redArr;
+      redArr.map((v) => {
+        this.redList.forEach(row => {
+          if(row.id = v) {
+            this.$refs.redTable.toggleRowSelection(row, true);
+          }
+        });
+      })
     }
   },
   computed: {
@@ -63,6 +74,11 @@ export default {
   },
   components: {
     DialogBase
+  },
+  updated() {
+    if(this.data.redArr) {
+      this.getSel();
+    }
   }
 };
 </script>
