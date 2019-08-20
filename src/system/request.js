@@ -8,6 +8,7 @@ import appConfig from '@/system/appConfig';
 class Ajax {
   constructor() {
     this.systemRequest = 'head';
+    this.systemType = 'onlineBusiness';
     this.service = axios.create({
       timeout: 10000, // request timeout
     });
@@ -23,13 +24,15 @@ class Ajax {
   requestGlobal() {
     this.service.interceptors.request.use(
       e => {
-        e.params = e.params || {}
-        // e.headers = e.headers || {}
-        e.headers = {
-          businessId: 1,
-          tenantId: 1,
-          merchantId: 1,
-          loginUserId: 1
+        if(this.systemType === 'market') {
+          e.params = e.params || {}
+          // e.headers = e.headers || {}
+          e.headers = {
+            businessId: 1,
+            tenantId: 1,
+            merchantId: 1,
+            loginUserId: 1
+          }
         }
         return e
       },
@@ -66,8 +69,10 @@ class Ajax {
   request(config) {
     this.setApiAddress(config);
     if (config.target) {
+      this.systemType = 'onlineBusiness';
       config = this.setRequestParams(config);
     } else {
+      this.systemType = 'market';
       this.requestGlobal();
     }
     return this.service(config);
@@ -86,7 +91,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '09255c7724fe9b8df952aa2f7e3ec7186b5700d83f4a19114588a2fb306d3b80',
+        accessToken: store.getters.token || '3c59dc048e8850243be8079a5c74d079',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
