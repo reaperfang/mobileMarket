@@ -15,7 +15,7 @@ export default {
   name: "dialogGroups",
   components: {DialogBase},
   props: {
-      data: {},
+      data: { },
       dialogVisible: {
           type: Boolean,
           required: true

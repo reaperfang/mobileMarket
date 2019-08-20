@@ -1,20 +1,23 @@
 <template>
-  <DialogBase :visible.sync="visible" width="500px" :title="'上传图片'">
+  <DialogBase :visible.sync="visible" width="500px" :title="title" @submit="uploadImage">
     <el-form :model="form" class="demo-form-inline" label-width="115px">
         <el-form-item label="本地上传">
           <el-upload
             class="avatar-uploader"
             :action="uploadUrl"
             :show-file-list="false"
+            :limit="1"
+            :data="{json: JSON.stringify({cid: 222})}"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-          <p class="note">仅支持gif,jpeg,png,bmp4种格式，大小不超过3.0MB</p>
+          <p class="note" v-if="title == '上传图片'">仅支持gif,jpeg,png,bmp4种格式，大小不超过3.0MB</p>
+          <p class="note" v-if="title == '上传视频'">视频大小不超过10mb，支持mp4,mov,m4v,flv,x-flv,mkv,wmv,avi,rmvb,3gp格式</p>
         </el-form-item>
         <el-form-item label="分组">
-          <el-select v-model="group_value" placeholder="请选择">
+          <el-select v-model="form.groupValue" placeholder="请选择">
             <el-option
               v-for="item in groupList"
               :key="item.id"
@@ -23,13 +26,13 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否同步至微信">
+        <!-- <el-form-item label="是否同步至微信">
           <el-switch
-            v-model="wx_value"
+            v-model="form.wxSync"
             active-color="#13ce66"
             inactive-color="#ff4949">
           </el-switch>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
   </DialogBase>
 </template>
@@ -41,7 +44,10 @@ export default {
   name: "dialogUploadImage",
   components: {DialogBase},
   props: {
-      data: {},
+      data: {
+        type:String,
+        required:true
+      },
       dialogVisible: {
           type: Boolean,
           required: true
@@ -50,11 +56,14 @@ export default {
   data() {
     return {
       uploadUrl:`${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
-      form:{},
-      imageUrl:'',
-      group_value:'',
-      wx_value:'',
-      groupList:[],
+      title:this.data,
+      form:{
+        imageUrl:'',
+        groupValue:'',
+        // wxSync:''
+      },
+      fileData:{},
+      groupList:[]
     };
   },
   computed: {
@@ -65,7 +74,7 @@ export default {
       set(val) {
           this.$emit('update:dialogVisible', val)
       }
-    }
+    },
   },
   created() {
     this.getGroups()
@@ -85,8 +94,32 @@ export default {
         });
       })
     },
+   //上传图片
+    uploadImage(){
+      let query ={
+        fileGroupInfoId:this.form.groupValue,
+        data:[
+          {
+            fileName:this.fileData.original,
+            filePath:this.fileData.url,
+            imgPixelWidth:this.fileData.width,
+            imgPixelHeight:this.fileData.height,
+            fileSize:this.fileData.size
+          }
+        ]
+      }
+      this._apis.file.uploadImage(query).then((response)=>{
+        this.groupList = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.fileData = res.data
+      this.form.imageUrl = res.data.url
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
@@ -100,6 +133,7 @@ export default {
       }
       return isJPG && isLt2M;
     },
+
   }
 };
 </script>

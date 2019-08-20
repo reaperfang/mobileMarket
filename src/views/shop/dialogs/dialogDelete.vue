@@ -18,10 +18,13 @@ export default {
   },
   props: {
       data:{
-        type: String,
+        type: Object,
         required: true
       },
-      arrayData:{},
+      arrayData:{
+        type:Array,
+        required: true
+      },
       dialogVisible: {
           type: Boolean,
           required: true
@@ -40,7 +43,7 @@ export default {
   methods: {
     submit() {
       if(this.data.type == 'groupId'){
-        this.$emit('submit',{deleteGroup:{groupId:this.data}})
+        this.$emit('submit',{deleteGroup:{groupId:this.data.id}})
       }else{
         this.$emit('submit',{deleteImage:{imageId:this.arrayData}})
       }

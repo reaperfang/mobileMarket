@@ -113,7 +113,7 @@ export default {
     getList(id){
       let query ={
         fileGroupInfoId:id || '',
-        pageNum:this.currentPage,
+        startIndex:this.currentPage,
         pageSize:this.pageSize,
         sourceMaterialType:'0'
       }
@@ -154,28 +154,6 @@ export default {
           message: error
         });
       })
-    },
-    //弹窗反馈
-    handleSubmit(data){
-      for(let key in data){
-        switch (key) {
-          case 'add':  //新零售商城
-            this.addGroup(data.add.groupName) 
-          break;
-          case 'edit':
-            this.editGroup(data.edit.groupId,data.edit.groupName)
-          break;
-          case 'deleteGroup':
-            this.deleteGroup(data.deleteGroup.groupId)
-          break;
-          case 'moveGroup':
-            this.moveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
-          break;
-          case 'deleteImage':
-            this.deleteImages(data.deleteImage.imageId)
-          break;
-        }
-      }
     },
     //添加分组
     addGroup(groupName){
@@ -237,6 +215,31 @@ export default {
       })
     },
    /**********************************        弹窗相关      **********************/
+    //弹窗反馈
+    handleSubmit(data){
+      for(let key in data){
+        switch (key) {
+          case 'add':  
+            this.addGroup(data.add.groupName) 
+          break;
+          case 'edit':
+            this.editGroup(data.edit.groupId,data.edit.groupName)
+          break;
+          case 'deleteGroup':
+            this.deleteGroup(data.deleteGroup.groupId)
+          break;
+          case 'moveGroup':
+            this.moveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
+          break;
+          case 'deleteImage':
+            this.deleteImages(data.deleteImage.imageId)
+          break;
+          case 'syncImage':
+            this.handleSyncImage()
+          break;
+        }
+      }
+    },
     newGroup(id,name,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroups'
@@ -262,6 +265,7 @@ export default {
     uploadImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogUploadImage'
+      this.data = '上传图片'
     },
     syncImage(){
       this.dialogVisible = true;
@@ -318,6 +322,14 @@ export default {
       })
     },
 
+    //同步图片
+    handleSyncImage(){
+      this.$notify.error({
+          title: '提示',
+          message: '微信接口'
+        });
+    },
+
      /* 成功加载图片 */
     loadImg(event, item) {
       this.$set(item, 'loaded', true);
@@ -368,6 +380,7 @@ export default {
       flex-flow: row wrap;
       .item_img{
         border: 1px solid #e6e6e6;
+        margin:0px 30px 50px 0px;
         .img_info{
           width: 240px;
           height:150px;

@@ -1,5 +1,5 @@
 <template>
-  <DialogBase :visible.sync="visible" width="500px" :title="'同步确认'">
+  <DialogBase :visible.sync="visible" width="500px" :title="'同步确认'" @submit="submit">
       <div class="content">
         <p>将微信公众平台的图片同步至有翼电商平台，</p>
         <p>一小时只能进行一次，确定要同步吗？</p>
@@ -32,7 +32,11 @@ export default {
       }
     }
   },
-  methods: {},
+  methods: {
+    submit() {
+      this.$emit('submit',{syncImage:''})
+    }
+  },
 
 }
 </script>

@@ -14,7 +14,7 @@ export function getMaterialList(data) {
 //删除素材
 export function deleteMaterial(data) {
   return request({
-    target: 'DECORATION-MY-FILE-DELETE-PROCESSOR',
+    target: 'DECORATION-MY-FILE-BATCH-DELETE-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data
@@ -74,6 +74,17 @@ export function moveGroup(data) {
 
 /********************************  图片  ********************************/
 //上传图片
+export function uploadImage(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-UP-LOAD-PHOTO-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+
+
 
 
 

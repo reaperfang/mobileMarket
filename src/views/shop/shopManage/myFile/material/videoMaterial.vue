@@ -12,24 +12,24 @@
       </div>
     </div>
     <div class="list">
-      <p class="list_top">图片素材<span>{{num}}</span>条</p>
+      <p class="list_top">视频素材<span>{{total*1}}</span>条</p>
       <div class="list_main">
         <div class="list_img">
-           <div class="imgs">
+           <div class="imgs" v-for="item in list" :key="item.id">
             <div class="item_img">
               <p class="img_head">
                 <span>
                   <el-checkbox v-model="checked"></el-checkbox>
-                  7月12日
+                  {{item.updateTime}}
                   </span>
                   <span>
                     <i class="wx_icon"></i>
-                    8MB
+                    {{item.fileSize}} MB
                   </span>
               </p>
               <div class="img_body">
-                <p class="title">美丽的天空之城</p>
-                <img src="" class="imgs">
+                <p class="title">{{item.title}}</p>
+                <img :src="item.filePath" class="imgs">
               </div>
               <p class="img_bottom">
                 <span><i class="el-icon-edit"></i></span>
@@ -47,34 +47,26 @@
               :page-sizes="[10, 20, 30, 40]"
               :page-size="10"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="total"
+              :total="total*1"
               class="page_nav">
               </el-pagination>
            </p>
         </div>
         <div class="groups">
-          <p class="groups_head">全部图片</p>
-          <p class="item">未分组</p>
-          <p class="item">
-            <span>配图</span>
-            <span>
-              <i class="el-icon-edit" @click="newGroup"></i>
-              <i class="el-icon-delete" @click="deleteImage"></i>
+          <p class="groups_head">全部视频</p>
+          <p class="item" v-for="item in groupList" :key="item.id">
+            <span @click="getList(item.id)">{{item.name}}</span>
+            <span v-if="item.id != -1">
+              <i class="el-icon-edit" @click="newGroup(item.id,item.name,'edit')"></i>
+              <i class="el-icon-delete" @click="deleteImage(item.id,'groupId')"></i>
             </span>
           </p>
-          <p class="item">
-            <span>封面</span>
-            <span>
-              <i class="el-icon-edit" @click="newGroup"></i>
-              <i class="el-icon-delete" @click="deleteImage"></i>
-            </span>
-          </p>
-          <span class="newClass" @click="newGroup">+ 新建分组</span>
+          <span class="newClass" @click="newGroup('','','new')">+ 新建分组</span>
         </div>
       </div>
     </div>
     <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="data" :arrayData="arrayData" @submit="handleSubmit"></component>
   </div>
 </template>
 
@@ -96,33 +88,188 @@ export default {
       num:10,
       checked:false,
       currentPage:1,
-      total:0
+      total:0,
+
+      data:'',
+      arrayData:[],
+      dialogVisible: false,
+      currentDialog: '',
+      checkedAll:false,
+      imgsArr:[ ],
+      loading:false,
+      checked:false,
+      list:[],
+      groupList:[],
+      currentPage:1,
+      pageSize:10,
+      total:0,
     }
   },
   created() {
-
+    this.getList()
+    this.getGroups()
   },
   methods: {
-    newGroup(){
+    //获取视频列表
+    getList(){
+      let query ={
+        // fileGroupInfoId:id || '',
+        fileGroupInfoId:'',
+        pageNum:this.currentPage,
+        pageSize:this.pageSize,
+        sourceMaterialType:'2'
+      }
+      this._apis.file.getMaterialList(query).then((response)=>{
+        response.list.map((item) => {
+          item.updateTime = item.updateTime.slice(0,10)
+        })
+        this.list = [].concat(response.list)
+        this.total = response.total
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    /**********************************        分组相关      **********************/
+    //查询分组
+    getGroups(){
+      let query ={
+        type:'2'
+      }
+      this._apis.file.getGroup(query).then((response)=>{
+        this.groupList = response
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //添加分组
+    addGroup(groupName){
+      let query ={
+        name:groupName,
+        parentId:'0',
+        type:'2'
+      }
+      this._apis.file.newGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '添加成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })      
+    },
+    //编辑分组
+    editGroup(groupId,groupName){
+      let query ={
+        id:groupId,
+        name:groupName,
+        type:'2'
+      }
+      this._apis.file.editGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '操作成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })      
+    },
+    //删除分组
+    deleteGroup(id){
+      let query ={
+        id:id,
+        type:'2'
+      }
+      this._apis.file.deleteGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '操作成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+  /**********************************        弹窗相关      **********************/
+    //弹窗反馈
+    handleSubmit(data){
+      for(let key in data){
+        switch (key) {
+          case 'add': 
+            this.addGroup(data.add.groupName) 
+          break;
+          case 'edit':
+            this.editGroup(data.edit.groupId,data.edit.groupName)
+          break;
+          case 'deleteGroup':
+            this.deleteGroup(data.deleteGroup.groupId)
+          break;
+          case 'moveGroup':
+            this.moveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
+          break;
+          case 'deleteImage':
+            this.deleteImages(data.deleteImage.imageId)
+          break;
+          case 'syncImage':
+            this.handleSyncImage()
+          break;
+        }
+      }
+    },
+
+    newGroup(id,name,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroups'
+      this.data = {
+        type:type,
+        id:id || '',
+        name:name || ''
+      }
+    },
+    deleteImage(id,type){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogDelete'
+      if(type == 'groupId'){
+        this.data = {
+          id:id || '',
+          type:type
+        }
+      }else{
+        this.arrayData=[]
+        this.arrayData.push(id)
+      }
     },
     moveGroup(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroupsMove'
     },
-    deleteImage(){
-      this.dialogVisible = true;
-      this.currentDialog = 'dialogDelete'
-    },
     uploadImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogUploadImage'
+      this.data = '上传视频'
     },
     syncImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogSync'
     },
+    /**********************************        单个视频      **********************/
     //分页相关
     handleSizeChange(){},
     handleCurrentChange(){},
@@ -156,6 +303,7 @@ export default {
       .item_img{
         width: 250px;
         border: 1px solid #e6e6e6;
+        margin:0px 30px 50px 0px;
         .img_head{
           height: 25px;
           line-height: 25px;
