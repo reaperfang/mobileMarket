@@ -92,31 +92,37 @@ export default {
     }
   },
   created() {
-    this.selectedItem = this.styleList[0];
-    this.fetch();
+    
+  },
+  computed: {
+     colorStyle() {
+      this.setSeletedItem(this.$store.getters.colorStyle);
+      return this.$store.getters.colorStyle || {};
+    },
+  },
+  watch: {
+    colorStyle: {
+      handler (newValue){
+        this.setSeletedItem(newValue);
+      },
+      deep: true
+    }
   },
   methods: {
 
-    fetch() {
-      this._apis.shop.getShopStyle({}).then((response)=>{
-        if(response.colorStyle) {
-          const colorStyle = JSON.parse(response.colorStyle);
-          if(colorStyle) {
-            this.selectedItem = this.styleList[Number(colorStyle.type) - 1];
-          }
-        }
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      });
-    
+    /* 设置选中风格 */
+    setSeletedItem(item) {
+      if(item && item.type){
+        this.selectedItem = this.styleList[Number(item.type) - 1]
+      }else{
+        this.selectedItem = this.styleList[0];
+      }
     },
 
     /* 选中风格 */
     selectedStyle(event, item) {
       this.selectedItem = item;
+      this.$store.commit('setColorStyle', this.selectedItem);
       const styles = this.$refs.styleList.querySelectorAll('.cell-item');
       for(let dom of styles) {
         dom.className = 'cell-item';

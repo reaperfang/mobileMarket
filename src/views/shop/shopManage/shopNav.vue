@@ -31,18 +31,18 @@
 
         <!-- 手机底部 -->
         <div class="phone-footer">
-          <ul class="navs type1" v-if="ruleForm.navStyle == 1">
+          <ul class="navs type1" v-if="ruleForm.navStyle.id == 1">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
               <img :src="ruleForm.navMap[item].navIconActive" alt="">
               <span>{{ruleForm.navMap[item].navName}}</span>
             </li>
           </ul>
-          <ul class="navs type2" v-if="ruleForm.navStyle == 2">
+          <ul class="navs type2" v-if="ruleForm.navStyle.id == 2">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
               <img :src="navMap[item].navIconActive" alt="">
             </li>
           </ul>
-          <ul class="navs type3" v-if="ruleForm.navStyle == 3">
+          <ul class="navs type3" v-if="ruleForm.navStyle.id == 3">
             <div class="keyboard">
               <i class="el-icon-platform-eleme"></i>
             </div>
@@ -51,7 +51,7 @@
               <span>{{ruleForm.navMap[item].navName}}</span>
             </li>
           </ul>
-          <ul class="navs type4" v-if="ruleForm.navStyle == 4">
+          <ul class="navs type4" v-if="ruleForm.navStyle.id == 4">
             <li >第四种导航样式</li>
           </ul>
 
@@ -246,7 +246,7 @@ export default {
       utils,
       openNav: true,   //系统-是否打开导航
       ruleForm: {
-        navStyle: 1,  //系统-全局导航样式
+        navStyle: {id: 1},  //系统-全局导航样式
         applyPage: ['1','2','3'],  //系统-应用页面
         navIds: [],
         navMap: {}
@@ -261,6 +261,10 @@ export default {
     }
   },
   computed: {
+    shopInfo() {
+      this.openNav = this.$store.getters.shopInfo.shopNavigation === 1;
+      return this.$store.getters.shopInfo || {};
+    }
   },
   watch: {
     currentNav: {
@@ -287,7 +291,10 @@ export default {
           break;
       }
     },
-    toolsData: {
+    navigation_type() {
+      this.fetch();
+    },
+    shopInfo: {
       handler(newValue) {
         this.openNav = newValue.shopNavigation === 1;
       },
@@ -297,12 +304,6 @@ export default {
   created() {
     this.initnavMap();
     this.fetch();
-    this.getTools();
-  },
-  watch: {
-    navigation_type() {
-      this.fetch();
-    }
   },
   methods: {
 
@@ -411,20 +412,6 @@ export default {
           this.ruleForm = pageData;
           this.selectNav(pageData.navIds[0]);
         }
-        this.loading = false;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-        this.loading = false;
-      });
-    },
-
-     /* 获取工具状态 */
-    getTools() {
-       this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
-        this.toolsData = JSON.parse(response);
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({

@@ -1,3 +1,4 @@
+/* 多人拼团示例弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="500px" :title="'查看示例'" :showFooter="false">
     <div class="multi_wrapper">

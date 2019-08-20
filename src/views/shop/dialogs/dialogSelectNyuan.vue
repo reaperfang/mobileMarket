@@ -1,3 +1,4 @@
+/* 选择N元N件弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择N元N件活动'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
@@ -10,16 +11,16 @@
         </el-form-item>
       </div>
     </el-form>
-    <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange">
+    <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange"  v-loading="loading">
         <el-table-column
           type="selection"  
           width="55">
         </el-table-column>
-        <el-table-column prop="title" label="N元N件活动标题">
+        <el-table-column prop="name" label="活动标题">
           <template slot-scope="scope">
             <div class="name_wrapper">
-              <img :src="scope.row.url" alt="加载错误">
-              <p>{{scope.row.title}}</p>
+              <img :src="scope.row.activityPic" alt="">
+              <p>{{scope.row.name}}</p>
             </div>
           </template>
         </el-table-column>
@@ -60,8 +61,10 @@ export default {
     return {
       tableList: [],
       multipleSelection: [],
+      pageNum: 1,
       ruleForm: {
-        name: ''
+        pageNum: 1,
+        name: '',
       },
       rules: {}
     };
@@ -82,32 +85,26 @@ export default {
   },
   methods: {
     fetch() {
-      this.tableList = [
-         {
-          id: uuid(),
-          url: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
-          title: 'N元N件1',
-          desc: '这是商品描述',
-          createTime: '2019-08-23 12:44:23',
-          price: 20
-        },
-        {
-          id: uuid(),
-          url: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
-          title: 'N元N件2',
-          desc: '这是商品描述2',
-          createTime: '2019-08-23 12:44:23',
-          price: 37
-        },
-        {
-          id: uuid(),
-          url: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
-          title: 'N元N件3',
-          desc: '这是商品描述2',
-          createTime: '2019-08-23 12:44:23',
-          price: 78
-        }
-      ]
+      this.loading = true;
+      this._apis.shop.getNyuanList(this.ruleForm).then((response)=>{
+        this.tableList = response.list;
+        this.total = response.total;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
+
+     //当前页码改变
+    handleCurrentChange(pIndex=1) {
+      this.loading = true
+      this.pageNum = pIndex
+      this.ruleForm.pageNum = pIndex
+      this.fetch()
     },
 
     /* 向父组件提交选中的数据 */
@@ -118,15 +115,17 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .name_wrapper{
     display: flex;
     flex-direction: row;
     align-items: center;
     img{
-      width:50px;
-      height:30px;
-      margin-right:10px;
+      width: 50px;
+      height: 30px;
+      display: block;
+      margin-right: 10px;
+      border: 1px solid #ddd;
     }
 }
 </style>

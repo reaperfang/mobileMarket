@@ -1,3 +1,4 @@
+/* 选择图片素材弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择图片'" @submit="submit">
     <div class="material_head">

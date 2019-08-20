@@ -1,3 +1,4 @@
+/* 选择图文素材弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择图文'">
   </DialogBase>

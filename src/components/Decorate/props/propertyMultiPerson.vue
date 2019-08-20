@@ -14,7 +14,7 @@
               <img :src="item.url" alt="">
               <i class="delete_btn" @click.stop="deleteMultiPerson(item)"></i>
             </li>
-            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
+            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectMultiPerson'">
               <i class="inner"></i>
             </li>
           </ul>
@@ -144,13 +144,13 @@
 
 <script>
 import propertyMixin from './mixin';
-import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
+import dialogSelectMultiPerson from '@/views/shop/dialogs/dialogSelectMultiPerson';
 import dialogMultiPersonDemo from '@/views/shop/dialogs/dialogMultiPersonDemo';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyMultiPerson',
   mixins: [propertyMixin],
-  components: {dialogSelectGoods, dialogMultiPersonDemo},
+  components: {dialogSelectMultiPerson, dialogMultiPersonDemo},
   data () {
     return {
       ruleForm: {

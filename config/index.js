@@ -70,6 +70,13 @@ module.exports = {
           '^/data-server': ''
         }
       },
+      '/sale_server/**': {
+        target: 'http://120.133.1.130:8012',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/sale_server': ''
+        }
+      },
       '/upload_server/**': {
         target: 'https://test-omo.aiyouyi.cn/',
         changeOrigin: true,

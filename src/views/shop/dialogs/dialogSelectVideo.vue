@@ -1,3 +1,4 @@
+/* 选择视频素材弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择视频'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
