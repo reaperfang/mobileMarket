@@ -1,6 +1,6 @@
 /* 选择满减满折弹框 */
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'选择满减活动'" @submit="submit">
+  <DialogBase :visible.sync="visible" width="816px" :title="'选择满减满折活动'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
       <div class="inline-head">
         <el-form-item label prop="name">
@@ -20,20 +20,31 @@
     >
       <el-table-column type="selection" width="30"></el-table-column>
       <el-table-column prop="name" label="活动标题" :width="250"></el-table-column>
-      <el-table-column prop="regular" label="规则"></el-table-column>
+      <el-table-column prop="activityRule" label="规则" :width="200">
+        <template slot-scope="scope">
+          <el-popover
+            v-if="scope.row.activityRule && scope.row.activityRule.length >=10"
+            placement="top-start"
+            title="满减满折规则"
+            width="200"
+            trigger="hover"
+            :content="scope.row.activityRule">
+            <span slot="reference">{{scope.row.activityRule.substring(0, 10)}}...</span>
+          </el-popover>
+          <span v-else>
+            {{scope.row.activityRule}}
+          </span> 
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="remainStock" label="剩余库存"></el-table-column> -->
       <el-table-column prop="status" label="活动状态">  <!-- 0是未生效  1是生效中 2是已失效-->
-          <template slot-scope="scope">
+        <template slot-scope="scope">
           <span v-if="scope.row.status === 0">未开始</span>
           <span v-else-if="scope.row.status === 1">开始中</span>
           <span v-else-if="scope.row.status === 2">已开始</span>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="活动时间" :width="400">
-        <template slot-scope="scope">
-          {{scope.row.startTime}} 至 {{scope.row.endTime}}
-        </template>
-      </el-table-column>
+      <el-table-column prop="startTime" label="创建时间"></el-table-column>
     </el-table>
     <div class="pagination">
       <el-pagination

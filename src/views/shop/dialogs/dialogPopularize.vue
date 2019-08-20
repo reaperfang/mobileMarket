@@ -98,7 +98,7 @@
       </div>
     </el-tabs>
     <!-- 动态弹窗 -->
-    <component  v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible2"></component>
+    <component  v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible2" @imageSelected="imageSelected"></component>
   </DialogBase>
 </template>
 
@@ -156,10 +156,6 @@ export default {
           }
         ],
       },
-      shopInfo: {
-        logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
-        name: '源源的店铺'
-      },
       qrCode: '',
       openSetting: false  //是否开启设置
     };
@@ -177,7 +173,10 @@ export default {
       set(val) {
           this.$emit('update:dialogVisible', val)
       }
-    }
+    },
+    shopInfo() {
+      return this.$store.getters.shopInfo || {};
+    },
   },
   created() {
     this.fetch();
@@ -287,6 +286,11 @@ export default {
         aLink.download = name 
         aLink.href = `data:image/png;base64,${url}`; 
         aLink.dispatchEvent(new MouseEvent('click', {}))
+    },
+
+     /* 弹框选中图片 */
+    imageSelected(dialogData) {
+      this.ruleForm.picture = dialogData.filePath;
     }
   }
 };

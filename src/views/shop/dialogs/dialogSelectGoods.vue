@@ -81,33 +81,20 @@ export default {
   created() {},
   mounted() {},
   methods: {
+
     fetch() {
-      this.tableList = [
-        {
-          id: uuid(),
-          url: "https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg",
-          title: "商品1",
-          desc: "这是商品描述",
-          createTime: "2019-08-23 12:44:23",
-          price: 20
-        },
-        {
-          id: uuid(),
-          url: "https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg",
-          title: "商品2",
-          desc: "这是商品描述2",
-          createTime: "2019-08-23 12:44:23",
-          price: 37
-        },
-        {
-          id: uuid(),
-          url: "https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg",
-          title: "商品3",
-          desc: "这是商品描述2",
-          createTime: "2019-08-23 12:44:23",
-          price: 78
-        }
-      ];
+      this.loading = true;
+      this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
+        this.tableList = response.list;
+        this.total = response.total;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     },
 
     /* 向父组件提交选中的数据 */
