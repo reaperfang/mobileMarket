@@ -17,11 +17,11 @@
       </li>
       <li v-for="(item, key) of templateList" :key="key" v-loading="loading">
         <div class="view">
-          <img :src="item.img || 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg'" alt="">
+          <img :src="item.url" alt="">
         </div>
         <div class="info">
           <div class="top">
-            <span>{{item.title || '页面模板'}}</span>
+            <span>{{item.name || '页面模板'}}</span>
             <i class="mini_program"></i>
             <i class="wechat"></i>
           </div>

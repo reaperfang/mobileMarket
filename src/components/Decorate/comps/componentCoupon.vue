@@ -8,25 +8,40 @@
         <template  v-for="(item, key) in currentComponentData.data.coupons">
           <li
             v-if="currentComponentData.data.hideScrambled===false"
-            :style="item.status=='true'?imgs1:imgs "
+            :style="item.status===2?imgs1:imgs "
             :key="key"
             >
             <div class="first_money">
-              <span :class="style1">{{item.remainingStock}}</span>
-              <span :class="style1">元</span>
+              <span :class="style1">{{item.name}}</span>
+              <!-- <span :class="style1">元</span> -->
+              <span :class="style1"></span>
             </div>
-            <div :class="style2" class="first_present">{{item.content}}</div>
+            <div :class="style2" class="first_present">
+              <span v-if="item.useCondition > -1">
+                满{{item.useCondition}},减{{item.useTypeFullcut}}
+              </span>
+              <span v-else>
+                减{{item.useTypeFullcut}}
+              </span>
+            </div>
           </li>
           <li
-            v-else-if="item.status=='false'"
-            :style="item.status=='true'?imgs1:imgs "
+            v-else-if="item.status=== 0"
+            :style="item.status===2?imgs1:imgs "
             :key="key"
             >
             <div class="first_money">
-              <span :class="style1">{{item.remainingStock}}</span>
+              <span :class="style1">{{item.remainStock}}</span>
               <span :class="style1">元</span>
             </div>
-            <div :class="style2" class="first_present">{{item.content}}</div>
+            <div :class="style2" class="first_present">
+              <span v-if="item.useCondition > -1">
+                满{{item.useCondition}},减{{item.useTypeFullcut}}
+              </span>
+              <span v-else>
+                减{{item.useTypeFullcut}}
+              </span>
+            </div>
           </li>
           <!-- <li :style="imgs">
             <div class="first_money">

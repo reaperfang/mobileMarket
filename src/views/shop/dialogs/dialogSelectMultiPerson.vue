@@ -1,10 +1,10 @@
-/* 选择满减满折弹框 */
+/* 选择多人拼团弹框 */
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'选择满减活动'" @submit="submit">
+   <DialogBase :visible.sync="visible" width="816px" :title="'选择拼团商品'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
       <div class="inline-head">
         <el-form-item label prop="name">
-          <el-input v-model="ruleForm.name" placeholder="请输入活动名称"></el-input>
+          <el-input v-model="ruleForm.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
         <el-form-item label prop="name">
           <el-button type="primary" @click="fetch">搜 索</el-button>
@@ -18,22 +18,24 @@
       @selection-change="handleSelectionChange"
       v-loading="loading"
     >
-      <el-table-column type="selection" width="30"></el-table-column>
-      <el-table-column prop="name" label="活动标题" :width="250"></el-table-column>
-      <el-table-column prop="regular" label="规则"></el-table-column>
-      <!-- <el-table-column prop="remainStock" label="剩余库存"></el-table-column> -->
-      <el-table-column prop="status" label="活动状态">  <!-- 0是未生效  1是生效中 2是已失效-->
-          <template slot-scope="scope">
-          <span v-if="scope.row.status === 0">未开始</span>
-          <span v-else-if="scope.row.status === 1">开始中</span>
-          <span v-else-if="scope.row.status === 2">已开始</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="" label="活动时间" :width="400">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="goodName" label="商品标题">
         <template slot-scope="scope">
-          {{scope.row.startTime}} 至 {{scope.row.endTime}}
+          <div class="name_wrapper">
+            <img :src="scope.row.url" alt="" />
+            <p>{{scope.row.goodName}}</p>
+          </div>
         </template>
       </el-table-column>
+      <el-table-column prop="reductionUnitPrice" label="优惠单价"></el-table-column>
+      <el-table-column prop="remainStock" label="剩余库存"></el-table-column>
+      <el-table-column prop="activeName" label="活动名称"></el-table-column>
+      <el-table-column prop="buyLimit" label="商品限购件/人"></el-table-column>
+      <el-table-column prop="" label="活动时间">
+          <template slot-scope="scope">
+            {{scope.row.startTime}} - {{scope.row.endTime}}
+          </template>
+        </el-table-column>
     </el-table>
     <div class="pagination">
       <el-pagination
@@ -51,19 +53,19 @@
 
 <script>
 import DialogBase from "@/components/DialogBase";
-import tableBase from "@/components/TableBase";
+import tableBase from '@/components/TableBase';
 import utils from "@/utils";
-import uuid from "uuid/v4";
+import uuid from 'uuid/v4';
 export default {
-  name: "dialogSelectFullReduction",
+  name: "dialogSelectMultiPerson",
   extends: tableBase,
-  components: { DialogBase },
+  components: {DialogBase},
   props: {
-    data: {},
-    dialogVisible: {
-      type: Boolean,
-      required: true
-    }
+      data: {},
+      dialogVisible: {
+          type: Boolean,
+          required: true
+      },
   },
   data() {
     return {
@@ -80,19 +82,19 @@ export default {
   computed: {
     visible: {
       get() {
-        return this.dialogVisible;
+          return this.dialogVisible
       },
       set(val) {
-        this.$emit("update:dialogVisible", val);
+          this.$emit('update:dialogVisible', val)
       }
     }
   },
-  created() {},
-  mounted() {},
+  created() {
+  },
   methods: {
     fetch() {
       this.loading = true;
-      this._apis.shop.getFullReductionList(this.ruleForm).then((response)=>{
+      this._apis.shop.getMultiPersonList(this.ruleForm).then((response)=>{
         this.tableList = response.list;
         this.total = response.total;
         this.loading = false;
@@ -115,8 +117,8 @@ export default {
 
     /* 向父组件提交选中的数据 */
     submit() {
-      this.$emit("dialogDataSelected", this.multipleSelection);
-    }
+      this.$emit('dialogDataSelected',  this.multipleSelection);
+    },
   }
 };
 </script>

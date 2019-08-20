@@ -185,10 +185,45 @@ export default {
                 response.isSyncWechat = response.isSyncWechat.toString();
                 response.receiveSetting = response.receiveSetting.toString();
                 this.ruleForm = Object.assign({}, response);
-                console.log(this.ruleForm);
                 //用于回显领取条件
                 this.currentData.conditionData = { name: this.ruleForm.levelConditionInfoView.name, value: this.ruleForm.levelConditionValueView.conditionValue};
-                console.log(this.currentData.conditionData);
+                this.levelConditionValueDto.conditionValue = this.ruleForm.levelConditionValueView.conditionValue;
+                this.levelConditionValueDto.label = this.ruleForm.levelConditionInfoView.name;
+                this.levelConditionValueDto.levelConditionId = this.ruleForm.levelConditionValueView.levelConditionId;
+                //用于回显权益礼包
+                this.ruleForm.levelRightsInfoList.map((v) => {
+                    if(v.rightsInfoId == this.getId(this.rightsList,'积分回馈倍率')) {
+                        this.right2 = true;
+                        this.jfhkbl = v.rightsValue;
+                    }
+                    if(v.rightsInfoId == this.getId(this.rightsList,'优先发货')) {
+                        this.right1 = true;
+                    }
+                });
+                //用于回显领取礼包
+                let redArr = [], giftArr = [], couponArr = [];
+                this.ruleForm.upgradeRewardValueList.map((v) => {
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送积分')) {
+                        this.upgrade1 = true;
+                        this.zsjf = v.giftNumber;
+                    }
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送红包')) {
+                        this.upgrade2 = true;
+                        this.selectedReds.push({name: v.giftName, id: v.giftProduct});
+                        redArr.push(v.giftProduct);
+                    }
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送赠品')) {
+                        this.upgrade3 = true;
+                        this.selectedGifts.push({id: v.giftProduct, goodsName: v.giftName, number: v.giftNumber });
+                        giftArr.push(v.giftProduct);
+                    }
+                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送优惠券')) {
+                        this.upgrade4 = true;
+                        this.selectedCoupons.push({id: v.giftProduct, name: v.giftName, number: v.giftNumber});
+                        couponArr.push(v.giftProduct);
+                    }
+                })
+                this.currentData.redArr = [].concat(redArr);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -258,6 +293,7 @@ export default {
                     _arr.push(_obj);
                 })
                 this.rewardList = [].concat(_arr);
+                this.getCardInfo();
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -397,6 +433,7 @@ export default {
                             let obj = {};
                             obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送红包');
                             obj.levelType = 1;
+                            obj.giftName = v.name;
                             obj.giftProduct = v.id;
                             obj.label = "赠送红包";
                             upgradeRewardDtoList.push(obj);
@@ -416,6 +453,7 @@ export default {
                             obj.upgradeRewardInfoId = this.getId(this.rewardList,'赠送赠品');
                             obj.giftProduct = v.id;
                             obj.levelType = 1;
+                            obj.giftName = v.goodsName;
                             obj.label = "赠送赠品";
                             obj.giftNumber = v.number;
                             upgradeRewardDtoList.push(obj);
@@ -436,6 +474,7 @@ export default {
                             obj.giftProduct = v.id;
                             obj.levelType = 1;
                             obj.giftNumber = v.number;
+                            obj.giftName = v.name;
                             obj.label = "赠送优惠券"
                             upgradeRewardDtoList.push(obj);
                         })
@@ -475,8 +514,7 @@ export default {
             }
         }
     },
-    mounted() {
-        this.getCardInfo();
+    created() {
         this.getRightsList();
         this.getConditionList();
         this.getRewardList();

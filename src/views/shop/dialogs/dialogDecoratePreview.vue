@@ -1,3 +1,4 @@
+/* 预览装修弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="(baseInfo.name || '页面名称') + '预览'">
     <div class="preview_wrapper">

@@ -5,10 +5,10 @@
         <div class="goods_list">
           <ul>
             <li v-for="(item, key) of ruleForm.goods" :key="key">
-              <img :src="item.url" alt="">
+              <img :src="item.goodsImgUrl" alt="">
               <i class="delete_btn" @click.stop="deleteSecondkill(item)"></i>
             </li>
-            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
+            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectSecondkill'">
               <i class="inner"></i>
             </li>
           </ul>
@@ -127,12 +127,12 @@
 
 <script>
 import propertyMixin from './mixin';
-import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
+import dialogSelectSecondkill from '@/views/shop/dialogs/dialogSelectSecondkill';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertySecondkill',
   mixins: [propertyMixin],
-  components: {dialogSelectGoods},
+  components: {dialogSelectSecondkill},
   data () {
     return {
       ruleForm: {

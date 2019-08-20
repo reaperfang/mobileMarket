@@ -58,6 +58,7 @@
 import DialogBase from '@/components/DialogBase'
 export default {
     name: 'levelInfoDialog',
+    props: ['data'],
     data() {
         return {
             hasCancel: true,
@@ -99,6 +100,9 @@ export default {
     },
     components: {
         DialogBase
+    },
+    mounted() {
+        this.info = this.data.info;
     }
 }
 </script>

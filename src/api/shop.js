@@ -352,7 +352,7 @@ export function getHomePage(data) {
   })
 }
 
-//获取店铺装修模板
+//获取店铺装修模板列表
 export function getTemplateList(data) {
   return request({
     target: 'DECORATION-PAGE-TEMPLALE-FIND-PROCESSOR',
@@ -362,8 +362,18 @@ export function getTemplateList(data) {
   })
 }
 
-//获取店铺开关状态
-export function getSwitchStatus(data) {
+//获取店铺装修某个模板的页面列表
+export function getPagesByTemplateId(data) {
+  return request({
+    target: 'DECORATION-PAGE-TEMPLATE-ITEM-FIND-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//获取店铺信息
+export function getShopInfo(data) {
   return request({
     target: 'SHOP-API-100-PROCESSOR',
     method: 'post',
@@ -373,7 +383,7 @@ export function getSwitchStatus(data) {
   })
 }
 
-//改变切换状态
+//改变店铺切换状态
 export function changeSwitchStatus(data) {
   return request({
     target: 'SHOP-API-102-PROCESSOR',
@@ -387,9 +397,9 @@ export function changeSwitchStatus(data) {
 //优惠券B端选择
 export function getCouponList(data) {
     return request({
-      url: '/api/v1/b/app-coupon/page-list',
+      url: 'api/v1/b/app-coupon/page-list',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -397,9 +407,9 @@ export function getCouponList(data) {
 //拼团选择商品
 export function getMultiPersonList(data) {
     return request({
-      url: '/api/v1/b/app-group-buy/pageGoods',
+      url: 'api/v1/b/app-group-buy/pageGoods',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -407,9 +417,9 @@ export function getMultiPersonList(data) {
 //N元N件选择商品
 export function getNyuanList(data) {
     return request({
-      url: '/api/v1/b/goodsbale/page-list',
+      url: 'api/v1/b/goodsbale/page-list',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -417,9 +427,9 @@ export function getNyuanList(data) {
 //秒杀B端选择商品
 export function getSecondkillList(data) {
     return request({
-      url: '/api/v1/b/seckill/app-goods-page-list',
+      url: 'api/v1/b/seckill/app-goods-page-list',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -427,9 +437,9 @@ export function getSecondkillList(data) {
 //限时折扣B端选择商品
 export function getDiscountList(data) {
     return request({
-      url: '/api/v1/b/limit-discount/app-goods-page-list',
+      url: 'api/v1/b/limit-discount/app-goods-page-list',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -437,9 +447,9 @@ export function getDiscountList(data) {
 //优惠套装B端选择商品
 export function getDiscountPackageList(data) {
     return request({
-      url: '/api/v1/b/package-buy/app-page-list',
+      url: 'api/v1/b/package-buy/app-page-list',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -447,9 +457,9 @@ export function getDiscountPackageList(data) {
 //满减选择活动
 export function getFullReductionList(data) {
     return request({
-      url: '/api/v1/b/app-reward/page',
+      url: 'api/v1/b/app-reward/page',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }

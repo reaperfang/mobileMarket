@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       loading: true,
-      id: '',
+      id: this.$route.query.id || '',
       dataLoaded: false,
       homePageData: null,
       componentConfig: {
@@ -31,7 +31,8 @@ export default {
         hidden: true,
         title: '页面信息'
       },
-      pageList: []  //页面列表
+      pageList: [],  //页面列表
+      pageMaps: {}  //页面数据集合
     };
   },
   created() {
@@ -39,29 +40,17 @@ export default {
   },
   watch: {
     id(newValue) {
-      this.$store.commit("clearAllData");
-      this.fetch();
+      this.fetch(newValue);
     }
   },
   methods: {
-    /* 获取店铺装修数据 */
-    fetch() {
-      if(!this.id) {
-        return;
+
+    fetch(newValue) {
+      if(newValue) {
+        this.$store.commit("clearAllData");
+        this.homePageData = this.pageMaps[newValue];
+        this.convertDecorateData(this.pageMaps[newValue]);
       }
-      this.loading = true;
-      this._apis.shop.getPageInfo({id: this.id}).then((response)=>{
-         this.dataLoaded = true;
-         this.homePageData = response;
-         this.convertDecorateData(response);
-         this.loading = false;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-        this.loading = false;
-      });
     },
 
      /* 拼装基础数据 */
@@ -79,22 +68,19 @@ export default {
 
     getPageList() {
       this.loading = true;
-      this._apis.shop.getPageList({
-        status: '0',
-        pageCategoryInfoId: '',
-        name: '',
-        pageSize: 50,
-        startIndex: 1
-      }).then((response)=>{
-        this.id= response.list[0].id;
-        this.pageList = response.list;
-        // this.loading = false;
+      this._apis.shop.getPagesByTemplateId({pageTemplateId: this.id}).then((response)=>{
+        this.pageList = response;
+        for(let item of response) {
+          this.pageMaps[item.id] = item;
+        }
+        this.fetch(response[0].id);
+        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
-        // this.loading = false;
+        this.loading = false;
       });
     },
 

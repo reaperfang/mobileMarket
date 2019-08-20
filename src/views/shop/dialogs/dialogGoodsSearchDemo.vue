@@ -1,3 +1,4 @@
+/* 商品搜索示例弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'查看示例'">
     示例图片
