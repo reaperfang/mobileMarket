@@ -1,3 +1,4 @@
+/* 页面管理-推广弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'推广'" :showFooter="false">
      <el-tabs v-model="currentType">

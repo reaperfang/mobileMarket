@@ -8,18 +8,17 @@
         </el-input>
       </el-form-item>
       <el-form-item label="选择活动" prop="promotions">
-        <div class="goods_list">
-          <ul>
-            <li v-for="(item, key) of ruleForm.promotions" :key="key">
-              <img :src="item.url" alt="">
-              <i class="delete_btn" @click.stop="deleteFullReduction(item)"></i>
-            </li>
-            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectFullReduction'">
-              <i class="inner"></i>
-            </li>
-          </ul>
+        <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">选择活动</el-button>
+        <div>
+          <el-tag
+            v-for="tag in ruleForm.promotions"
+            :key="tag.name"
+            closable
+            style="margin-right:5px;"
+            type="success" @close="deleteFullReduction(tag)">
+            {{tag.name}}
+          </el-tag>
         </div>
-        最多可选5个活动
       </el-form-item>
       <el-form-item label="展示样式" prop="displayStyle">
         <el-radio-group v-model="ruleForm.displayStyle">

@@ -16,16 +16,16 @@
         <ul class="tile-list n3">
           <li>
             <el-button type="primary" plain @click="_routeTo('ADManageIndex')">首页广告</el-button>
-            <p>{{toolsData && toolsData.adOpenType === 1 ? '已开启' : '已关闭'}}</p>
+            <p>{{shopInfo.adOpenType === 1 ? '已开启' : '已关闭'}}</p>
           </li>
           <li>
             <el-button type="primary" plain @click="_routeTo('shopNav')">店铺导航</el-button>
-            <p>{{toolsData && toolsData.shopNavigation === 1 ? '已开启' : '已关闭'}}</p>
+            <p>{{shopInfo.shopNavigation === 1 ? '已开启' : '已关闭'}}</p>
           </li>
           <li>
             <el-button type="primary" plain @click="_routeTo('shopStyle')">店铺风格</el-button>
             <div class="color_wrapper">
-              <div class="style_block" v-for="(item, key) of color.colors" :key="key" :style="{'backgroundColor': item}"></div>
+              <div class="style_block" v-for="(item, key) of colorStyle.colors" :key="key" :style="{'backgroundColor': item}"></div>
             </div>
           </li>
           <li>
@@ -50,28 +50,22 @@ export default {
   data() {
     return {
       utils,
-      color: {
-        type: 1,
-        mainColor:'',
-        colors: ['rgba(251,68,67,1)', 'rgba(253,135,84,1)', 'rgba(255,255,255,1)'],
-      },
-      shopInfo: {  //店铺信息
-        logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
-        name: '源源的店铺'
-      },
-      qrCode: '',
-      toolsData: null  //工具数据
+      qrCode: ''
     };
   },
   computed: {
     baseInfo() {
       return this.$store.getters.baseInfo;
-    }
+    },
+    shopInfo() {
+      return this.$store.getters.shopInfo || {};
+    },
+    colorStyle() {
+      return this.$store.getters.colorStyle || {};
+    },
   },
   created() {
     this.getQrcode();
-    this.getTools();
-    this.getShopStyle();
   },
   methods: {
 
@@ -85,34 +79,6 @@ export default {
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      });
-    },
-
-      /* 获取工具状态 */
-    getTools() {
-       this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
-        this.toolsData = JSON.parse(response);
-        this.loading = false;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-        this.loading = false;
-      });
-    },
-
-    /* 获取店铺风格 */
-    getShopStyle() {
-      this._apis.shop.getShopStyle({}).then((response)=>{
-        if(response.colorStyle) {
-          this.color = JSON.parse(response.colorStyle);
-        }
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',

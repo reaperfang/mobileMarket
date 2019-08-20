@@ -1,3 +1,4 @@
+/* 选择导航模板弹窗 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择导航模板'">
   </DialogBase>

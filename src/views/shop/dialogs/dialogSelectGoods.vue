@@ -1,3 +1,4 @@
+/* 选择商品弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择已上架商品'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
@@ -117,7 +118,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .name_wrapper {
   display: flex;
   flex-direction: row;
@@ -125,7 +126,9 @@ export default {
   img {
     width: 50px;
     height: 30px;
+    display: block;
     margin-right: 10px;
+    border: 1px solid #ddd;
   }
 }
 </style>

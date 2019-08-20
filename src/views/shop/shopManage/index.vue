@@ -70,7 +70,7 @@ export default {
         colorStyle: data.colorStyle,
         pageKey: data.pageKey
       });
-    },
+    }
   }
 }
 </script>

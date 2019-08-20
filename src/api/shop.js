@@ -352,7 +352,7 @@ export function getHomePage(data) {
   })
 }
 
-//获取店铺装修模板
+//获取店铺装修模板列表
 export function getTemplateList(data) {
   return request({
     target: 'DECORATION-PAGE-TEMPLALE-FIND-PROCESSOR',
@@ -362,8 +362,18 @@ export function getTemplateList(data) {
   })
 }
 
-//获取店铺开关状态
-export function getSwitchStatus(data) {
+//获取店铺装修某个模板的页面列表
+export function getPagesByTemplateId(data) {
+  return request({
+    target: 'DECORATION-PAGE-TEMPLATE-ITEM-FIND-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//获取店铺信息
+export function getShopInfo(data) {
   return request({
     target: 'SHOP-API-100-PROCESSOR',
     method: 'post',
@@ -373,7 +383,7 @@ export function getSwitchStatus(data) {
   })
 }
 
-//改变切换状态
+//改变店铺切换状态
 export function changeSwitchStatus(data) {
   return request({
     target: 'SHOP-API-102-PROCESSOR',
