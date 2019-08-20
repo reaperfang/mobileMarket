@@ -13,7 +13,7 @@
         <el-radio v-model="mode" label="2">按商品累加运费</el-radio>
         <span @click="currentDialog = 'FreightRulesDialog'; dialogVisible = true" class="blue pointer">计费规则说明</span>
       </div>
-      <el-button @click="$router.push('/order/newTemplate')" class="border-button new-template">新建模板</el-button>
+      <el-button @click="$router.push('/order/newTemplate?mode=new')" class="border-button new-template">新建模板</el-button>
     </section>
     <section class="search">
       <el-form :inline="true" :model="listQuery" class="form-inline">
@@ -65,7 +65,7 @@
             <template slot-scope="scope">
               <div class="operate-box">
                 <span @click="$router.push('/order/newTemplate?mode=look&id=' + scope.row.id)">查看</span>
-                <span @click="$router.push('/order/newTemplate?mode=copy')">复制</span>
+                <span @click="$router.push('/order/newTemplate?mode=copy&id=' + scope.row.id)">复制</span>
                 <span @click="$router.push('/order/newTemplate?mode=change&id=' + scope.row.id)">修改</span>
               </div>
             </template>

@@ -48,8 +48,8 @@
             <template slot-scope="scope">
               <div class="operate-box">
                 <span @click="$router.push('/order/newElectronicFaceSheet?id=' + scope.row.expressCompanyCode + '&detail=' + true)">查看</span>
-                <span @click="$router.push('/order/newElectronicFaceSheet?id=' + scope.row.expressCompanyCode)">修改</span>
-                <span @click="deleteElectronicFaceSheet(scope.row.expressCompanyCode)">删除</span>
+                <span @click="$router.push('/order/newElectronicFaceSheet?id=' + scope.row.id + '&expressCompanyCode=' + scope.row.expressCompanyCode)">修改</span>
+                <span @click="deleteElectronicFaceSheet(scope.row)">删除</span>
               </div>
             </template>
           </el-table-column>
@@ -91,9 +91,9 @@ export default {
     this.getList();
   },
   methods: {
-    deleteElectronicFaceSheet(id) {
+    deleteElectronicFaceSheet(row) {
       this.confirm({title: '提示', text: '删除后无法撤销，确定删除吗？'}).then(() => {
-          this._apis.order.deleteElectronicFaceSheet({id, deleteFlag: 0}).then((res) => {
+          this._apis.order.deleteElectronicFaceSheet({id: row.id, expressCompanyCode: row.expressCompanyCode}).then((res) => {
               this.getList()
               this.$notify({
                   title: '成功',

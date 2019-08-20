@@ -296,7 +296,7 @@ export function editorElectronicFaceSheet(data) {
   return request({
     apiType: 'order',
     method: 'post',
-    target: '',
+    target: 'EDIT-EXPRESS-ELECTRONIC-SHEET',
     data
   })
 }
@@ -306,7 +306,7 @@ export function deleteElectronicFaceSheet(data) {
   return request({
     apiType: 'order',
     method: 'post',
-    target: '',
+    target: 'DELETE-EXPRESS-ELE-SHEET-PROCESSOR',
     data
   })
 }
@@ -334,12 +334,44 @@ export function getTemplatePageDetail(data) {
 // 获取省市区
 export function getArea(data) {
   return request({
-    apiType: 'publicOrder',
+    apiType: 'goodsOperate',
     method: 'post',
     target: 'PUBLIC-CITY-ALLLIST-PROCESSOR',
     data
   })
 }
+
+// 新建物流模板
+export function addFreightTemplate(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'FREIGHT-TEMPLATE-ADD-PROCESSOR',
+    data
+  })
+}
+
+// 物流模板修改
+export function editorFreightTemplate(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'FREIGHT-TEMPLATE-EDIT-PROCESSOR',
+    data
+  })
+}
+
+// 售后单列表
+export function getOrderAfterSaleList(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-PAGE-LIST-PROCESSOR',
+    data
+  })
+}
+
+
 
 
 
