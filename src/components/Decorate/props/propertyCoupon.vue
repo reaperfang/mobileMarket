@@ -13,6 +13,7 @@
           v-for="tag in ruleForm.coupons"
           :key="tag.title"
           closable
+          style="margin-right:5px;"
           type="success" @close="deleteCoupon(tag)">
           {{tag.title}}
         </el-tag>

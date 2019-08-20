@@ -100,7 +100,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="time"
+                    prop="updateTime"
                     label="最新发货时间">
                 </el-table-column>
                 <el-table-column label="操作">

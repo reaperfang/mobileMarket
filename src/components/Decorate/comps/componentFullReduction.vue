@@ -13,7 +13,7 @@
             class="ellipsis"
             :class="reductionStyle"
             v-for="items in currentComponentData.data.promotions"
-          >{{items.regular}}</li>
+          >{{items.name}}</li>
         </ul>
       </div>
     </div>

@@ -10,7 +10,9 @@ const app = {
     language: Cookies.get('language') || 'en',
     size: Cookies.get('size') || 'medium',
     typeList: [],
-    mapLoaded: false
+    mapLoaded: false,
+    shopInfo: {},  //店铺信息
+    colorStyle: {}  //店铺颜色风格
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -43,6 +45,12 @@ const app = {
     },
     SET_MAP_STATE: (state, loaded) => {
       state.mapLoaded = loaded;
+    },
+    setShopInfo: (state, data) => {
+      state.shopInfo = data;
+    },
+    setColorStyle: (state, data) => {
+      state.colorStyle = data;
     }
   },
   actions: {

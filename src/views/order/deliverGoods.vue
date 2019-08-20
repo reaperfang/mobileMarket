@@ -119,8 +119,8 @@
                 <div class="logistics">
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                         <el-form-item label="快递公司" prop="expressCompanys">
-                            <el-select v-model="ruleForm.expressCompanys" placeholder="请选择">
-                                <el-option :label="item.expressCompany" :value="item.expressCompany" v-for="(item, index) in expressCompanyList" :key="index"></el-option>
+                            <el-select v-model="ruleForm.expressCompanyCode" placeholder="请选择">
+                                <el-option :label="item.expressCompany" :value="item.expressCompanyCode" v-for="(item, index) in expressCompanyList" :key="index"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="快递单号" prop="expressNos">
@@ -158,7 +158,9 @@ export default {
             ruleForm: {
                 name: '',
                 number: '',
-                remarks: ''
+                remark: '',
+                expressCompanyCode: '',
+                expressCompany: ''
             },
             rules: {
 
@@ -192,25 +194,50 @@ export default {
         sendGoods() {
             let params
 
+            this.ruleForm.expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == this.ruleForm.expressCompanyCode).expressCompany
+
             params = {
                 sendInfoDtoList: [
                     {
                         orderId: this.$route.query.orderId || this.$route.query.id,
                         memberInfoId: this.orderInfo.memberInfoId,
                         orderCode: this.orderInfo.code,
-                        orderItems: this.multipleSelection
+                        orderItems: this.multipleSelection,
+                        id: this.orderSendInfo.id,
+                        memberSn: this.orderInfo.memberSn,
+                        receivedName: this.orderInfo.receivedName,
+                        receivedPhone: this.orderInfo.receivedPhone,
+                        receivedProvinceCode: this.orderInfo.receivedProvinceCode,
+                        receivedProvinceName: this.orderInfo.receivedProvinceName,
+                        receivedCityCode: this.orderInfo.receivedCityCode,
+                        receivedCityName: this.orderInfo.receivedCityName,
+                        receivedAreaCode: this.orderInfo.receivedAreaCode,
+                        receivedAreaName: this.orderInfo.receivedAreaName,
+                        receivedDetail: this.orderInfo.receivedDetail,
+                        sendName: this.orderSendInfo.sendName,
+                        sendPhone: this.orderSendInfo.sendPhone,
+                        sendProvinceCode: this.orderSendInfo.sendProvinceCode,
+                        sendProvinceName: this.orderSendInfo.sendProvinceName,
+                        sendCityCode: this.orderSendInfo.sendCityCode,
+                        sendCityName: this.orderSendInfo.sendCityName,
+                        sendAreaCode: this.orderSendInfo.sendAreaCode,
+                        sendAreaName: this.orderSendInfo.sendAreaName,
+                        sendDetail: this.orderSendInfo.sendDetail,
+                        expressCompanys: this.ruleForm.expressCompany,
+                        expressNos: this.ruleForm.expressNos,
+                        expressCompanyCodes: this.ruleForm.expressCompanyCode,
+                        remark: this.ruleForm.remark
                     }
-                ]
+                ],
             }
             this._apis.order.orderSendGoods(params).then((res) => {
-                this.visible = false
                 this.$notify({
-                    title: '发货成功',
-                    message: '删除成功！',
+                    title: '成功',
+                    message: '发货成功',
                     type: 'success'
                 });
+                this.$router.push('/order/deliveryManagement')
             }).catch(error => {
-                this.visible = false
                 this.$notify.error({
                     title: '错误',
                     message: error

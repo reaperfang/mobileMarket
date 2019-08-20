@@ -1,3 +1,4 @@
+/* 选择页面跳转弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择跳转页面'" @submit="submit">
     <div class="jump_wrapper" style="background:rgb(242,242,249);">
@@ -65,7 +66,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .jump_wrapper{
   padding:0 20px;
 }

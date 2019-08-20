@@ -96,21 +96,25 @@ export default {
         name: '',
         sort: 'desc'
       },
-      rules: {},
-      toolsData: null  //工具数据
+      rules: {}
     }
   },
   watch: {
-     toolsData: {
+     shopInfo: {
       handler(newValue) {
         this.openAD = newValue.adOpenType === 1;
       },
       depp: true
     }
   },
+  computed: {
+    shopInfo() {
+      this.openAD = this.$store.getters.shopInfo.adOpenType === 1;
+      return this.$store.getters.shopInfo || {};
+    }
+  },
   created() {
     this.fetch();
-    this.getTools();
   },
   methods: {
 
@@ -191,20 +195,6 @@ export default {
           title: '错误',
           message: error
         });
-      });
-    },
-
-     /* 获取工具状态 */
-    getTools() {
-       this._apis.shop.getSwitchStatus({id: '2'}).then((response)=>{
-        this.toolsData = JSON.parse(response);
-        this.loading = false;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-        this.loading = false;
       });
     },
 

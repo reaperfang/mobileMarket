@@ -87,18 +87,20 @@ const decorate = {
 		//设置基本信息
 		setBaseInfo(state, baseInfo) {
 			state.baseInfo = baseInfo;
-			state.baseProperty.data = baseInfo;
-			state.componentDataMap[state.baseProperty.id].data = baseInfo;
+			// state.baseProperty.data = baseInfo;
+			// state.componentDataMap[state.baseProperty.id].data = baseInfo;
 		},
 
 		//外部设置ids顺序表
 		setComponentDataIds(state, ids) {
-			state.componentDataIds = [state.baseProperty.id].concat(ids);
+			state.componentDataIds = ids;
+			// state.componentDataIds = [state.baseProperty.id].concat(ids);
 		},
 
 		//外部设置数据map列表
 		setComponentDataMap(state, componentDataMap) {
-			state.componentDataMap = Object.assign(state.baseProperty, componentDataMap);
+			state.componentDataMap = componentDataMap;
+			// state.componentDataMap = Object.assign(state.baseProperty, componentDataMap);
 		},
 
 		//初始化所有数据

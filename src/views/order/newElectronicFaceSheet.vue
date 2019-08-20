@@ -131,6 +131,7 @@ export default {
             message: "编辑成功！",
             type: "success"
           });
+          this.$router.push('/order/electronicFaceSheet')
         })
         .catch(error => {
           this.visible = false;
@@ -172,7 +173,7 @@ export default {
       },
       getDetail() {
         this._apis.order
-        .getElectronicFaceSheetDetail({expressCompanyCode: this.$route.query.id})
+        .getElectronicFaceSheetDetail({expressCompanyCode: this.$route.query.expressCompanyCode})
         .then(res => {
           console.log(res)
           this.ruleForm = Object.assign({}, res)

@@ -1,39 +1,43 @@
 <template>
- <el-dialog title="选择区域" :visible.sync="dialogFormVisible"  @close="close" width="500px" class="gl-dialog">
-	<div class="wrapper">
-    <!-- deliveryAreaPrice-{{data.deliveryAreaPrice}}  <br/><br/><br/> checkList-{{checkList}} -->
-		<template v-for="(item, key) of region">
-			<div class="province" :key="key">
-				<p class="title" @mouseover="titleMouseover(item)" @mouseout="titleMouseout(item)">{{item.name}}</p>
-				<div class="citys" v-if="item.checked"  @mouseover="titleMouseover(item)" @mouseout="titleMouseout(item)">
-					<el-checkbox-group v-model="checkList">
-						<el-checkbox v-for="(city, key2) of item.citys" :key="key2" 
-            :label="{
-              code: item.code,
-              name: item.code, 
-              city: {
-                code: city.code, 
-                name: city.name
-              }
-            }">{{city.name}}</el-checkbox>
-					</el-checkbox-group>
-				</div>
-			</div>
-		</template>
-	</div>
-	<div>
-		已选中：<el-tag v-for="(item, key) of checkList" :key="key" style="margin-right:5px;margin-bottom:5px;">{{item.city.name}}</el-tag>
-	</div>
-	<div slot="footer" class="dialog-footer">
-		<el-button @click="dialogFormVisible = false">取 消</el-button>
-		<el-button type="primary" @click="submit()" :loading="loading">确 定</el-button>
-	</div>
-  </el-dialog>
-
-           
+  <DialogBase :visible.sync="visible" title="区域选择" width="500px" :showFooter="showFooter">
+      <div>
+          <div class="wrapper">
+            <template v-for="(item, key) of region">
+              <div class="province" :key="key">
+                <div class="title" @mouseenter="titleMouseover(item)">
+                  <el-checkbox v-model="item.checked"></el-checkbox>{{item.name}}
+                  <div class="citys" v-if="item.checked"  @mouseover="titleMouseover(item)" @mouseout="titleMouseout(item)">
+                    <div class="tr">
+                      <i class="el-icon-close" @click="closeCitys"></i>
+                    </div>
+                    <el-checkbox-group v-model="checkList">
+                      <el-checkbox v-for="(city, key2) of item.citys" :key="key2" 
+                      :label="{
+                        code: item.code,
+                        name: item.name, 
+                        city: {
+                          code: city.code, 
+                          name: city.name
+                        }
+                      }">{{city.name}}</el-checkbox>
+                    </el-checkbox-group>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+          <div>
+            已选中：<el-tag v-for="(item, key) of checkList" :key="key" style="margin-right:5px;margin-bottom:5px;">{{item.city.name}}</el-tag>
+          </div>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="visible = false">取 消</el-button>
+            <el-button type="primary" @click="submit" :loading="loading">确 定</el-button>
+          </div>
+      </div>
+  </DialogBase>    
 </template>
 <script>
-//import dialogBase from "../dialogBase";
+import DialogBase from '@/components/DialogBase'
 import { _nationalRegionInfo } from "@/api/order";
 export default {
   name: "regionDialog",
@@ -43,14 +47,47 @@ export default {
       region: [], //地区列表json
       // dialogWidth: '1000px',
       checkList: [], //选中的地区
-      dialogFormVisible: true
+      dialogFormVisible: true,
+
+      showFooter: false
     };
   },
   created() {
     this.fetch();
     this.convertData();
   },
+  computed: {
+      visible: {
+          get() {
+              return this.dialogVisible
+          },
+          set(val) {
+              this.$emit('update:dialogVisible', val)
+          }
+      },
+  },
+  props: {
+      data: {
+
+      },
+      dialogVisible: {
+          type: Boolean,
+          required: true
+      },
+  },
+  components: {
+      DialogBase
+  },
   methods: {
+    closeCitys() {
+      let _region = [...this.region]
+
+      _region.forEach(val => {
+        val.checked = false
+      })
+
+      this.region = _region
+    },
     fetch() {
       this.loading = true;
       this._apis.order.getArea()
@@ -65,8 +102,8 @@ export default {
     },
 
     submit() {
-      this.$emit("selectedRegions", this.checkList);
-      this.dialogFormVisible = false;
+      this.$emit("submit", this.checkList);
+      this.visible = false;
     },
 
     convertData() {
@@ -108,11 +145,11 @@ export default {
 
     //鼠标移出
     titleMouseout(item) {
-      const tempItem = [...this.region];
-      for (let one of tempItem) {
-        one.checked = false;
-      }
-      this.region = tempItem;
+      // const tempItem = [...this.region];
+      // for (let one of tempItem) {
+      //   one.checked = false;
+      // }
+      // this.region = tempItem;
     },
     close() {
       
@@ -164,6 +201,9 @@ export default {
       }
     }
   }
+}
+.dialog-footer {
+  text-align: center;
 }
 // p.title:hover + .citys{
 // 	display:block;

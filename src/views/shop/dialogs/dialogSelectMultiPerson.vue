@@ -1,10 +1,10 @@
-/* 选择商品弹框 */
+/* 选择多人拼团弹框 */
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'选择已上架商品'" @submit="submit">
+   <DialogBase :visible.sync="visible" width="816px" :title="'选择拼团商品'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
       <div class="inline-head">
         <el-form-item label prop="name">
-          <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+          <el-input v-model="ruleForm.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
         <el-form-item label prop="name">
           <el-button type="primary" @click="fetch">搜 索</el-button>
@@ -16,17 +16,26 @@
       stripe
       ref="multipleTable"
       @selection-change="handleSelectionChange"
+      v-loading="loading"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="title" label="商品标题">
+      <el-table-column prop="goodName" label="商品标题">
         <template slot-scope="scope">
           <div class="name_wrapper">
-            <img :src="scope.row.url" alt="加载错误" />
-            <p>{{scope.row.title}}</p>
+            <img :src="scope.row.url" alt="" />
+            <p>{{scope.row.goodName}}</p>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column prop="reductionUnitPrice" label="优惠单价"></el-table-column>
+      <el-table-column prop="remainStock" label="剩余库存"></el-table-column>
+      <el-table-column prop="activeName" label="活动名称"></el-table-column>
+      <el-table-column prop="buyLimit" label="商品限购件/人"></el-table-column>
+      <el-table-column prop="" label="活动时间">
+          <template slot-scope="scope">
+            {{scope.row.startTime}} - {{scope.row.endTime}}
+          </template>
+        </el-table-column>
     </el-table>
     <div class="pagination">
       <el-pagination
@@ -44,26 +53,28 @@
 
 <script>
 import DialogBase from "@/components/DialogBase";
-import tableBase from "@/components/TableBase";
+import tableBase from '@/components/TableBase';
 import utils from "@/utils";
-import uuid from "uuid/v4";
+import uuid from 'uuid/v4';
 export default {
-  name: "dialogSelectGoods",
+  name: "dialogSelectMultiPerson",
   extends: tableBase,
-  components: { DialogBase },
+  components: {DialogBase},
   props: {
-    data: {},
-    dialogVisible: {
-      type: Boolean,
-      required: true
-    }
+      data: {},
+      dialogVisible: {
+          type: Boolean,
+          required: true
+      },
   },
   data() {
     return {
       tableList: [],
       multipleSelection: [],
+      pageNum: 1,
       ruleForm: {
-        name: ""
+        pageNum: 1,
+        name: '',
       },
       rules: {}
     };
@@ -71,20 +82,19 @@ export default {
   computed: {
     visible: {
       get() {
-        return this.dialogVisible;
+          return this.dialogVisible
       },
       set(val) {
-        this.$emit("update:dialogVisible", val);
+          this.$emit('update:dialogVisible', val)
       }
     }
   },
-  created() {},
-  mounted() {},
+  created() {
+  },
   methods: {
-
     fetch() {
       this.loading = true;
-      this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
+      this._apis.shop.getMultiPersonList(this.ruleForm).then((response)=>{
         this.tableList = response.list;
         this.total = response.total;
         this.loading = false;
@@ -97,10 +107,18 @@ export default {
       });
     },
 
+     //当前页码改变
+    handleCurrentChange(pIndex=1) {
+      this.loading = true
+      this.pageNum = pIndex
+      this.ruleForm.pageNum = pIndex
+      this.fetch()
+    },
+
     /* 向父组件提交选中的数据 */
     submit() {
-      this.$emit("dialogDataSelected", this.multipleSelection);
-    }
+      this.$emit('dialogDataSelected',  this.multipleSelection);
+    },
   }
 };
 </script>

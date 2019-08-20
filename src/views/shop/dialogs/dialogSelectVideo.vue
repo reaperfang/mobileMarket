@@ -1,3 +1,4 @@
+/* 选择视频素材弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择视频'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
@@ -21,11 +22,16 @@
       <li v-for="(item, key) of videoList" :key="key" class="cell-item" @click="selectVideo($event, item)">
         <div class="video_head">
           <span>{{item.createTime}}</span>
-          <span>{{item.size + 'MB'}}</span>
+          <span>{{item.fileSize + 'MB'}}</span>
         </div>
         <div class="video_body">
-          <p>{{item.title}}</p>
-          <img :src="item.videoUrl" alt="">
+          <p>{{item.fileName}}</p>
+          <video
+            :src="item.filePath"
+            controls="controls"
+            class="video"
+            :poster="item.fileCover"
+          >您的浏览器不支持 video 标签。</video>
         </div>
       </li>
     </ul>
@@ -74,32 +80,22 @@ export default {
   },
   methods: {
     fetch() {
-      this.videoList = [
-         {
-          id: uuid(),
-          videoUrl: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
-          title: '美丽的天空之境',
-          desc: '这是商品描述',
-          createTime: '08-23',
-          size: 20
-        },
-        {
-          id: uuid(),
-          videoUrl: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
-          title: '美丽的天空之境2',
-          desc: '这是商品描述2',
-          createTime: '08-23',
-          size: 37
-        },
-        {
-          id: uuid(),
-          videoUrl: 'https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg',
-          title: '美丽的天空之境3',
-          desc: '这是商品描述2',
-          createTime: '08-23',
-          size: 78
-        }
-      ]
+      this.loading = true;
+      this._apis.file.getMaterialList({
+        fileGroupInfoId:"",
+        startIndex:"1",
+        pageSize:"10",
+        sourceMaterialType:"2",
+      }).then((response)=>{
+        this.videoList = response.list;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     },
 
     /* 选中视频 */
@@ -134,7 +130,7 @@ ul.video_list{
 .video_head{
     display: flex;
     flex-direction: row;
-    // justify-content: space-between;
+    justify-content: space-between;
     padding:5px 20px;
 }
 .video_body{
@@ -143,7 +139,7 @@ ul.video_list{
     text-align:left;
     padding:5px 20px;
   }
-  img{
+  video{
     width: 100%;
     padding: 20px;
     padding-top: 0;

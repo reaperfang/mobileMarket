@@ -1,3 +1,4 @@
+/* 选择图片素材弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择图片'" @submit="submit">
     <div class="material_head">
@@ -62,7 +63,7 @@ export default {
       ruleForm: {
         group: 1
       },
-      uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file/api_file_remote_upload.do`,
+      uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
       uploadState: []   //本次上传状态列表
     };
   },
@@ -159,7 +160,7 @@ export default {
       this.imgsArr.push({
         loaded: false,
         href: '',
-        title: response.original,
+        title: file.name,
         src: ``
       })
     },

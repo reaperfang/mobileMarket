@@ -57,13 +57,19 @@ module.exports = {
         //target: 'http://172.22.146.116:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080',
         //target: 'http://172.22.146.10:8080',
-        //target: 'http://172.22.146.31:8080', // 客户 崔建
         // target: 'http://120.133.1.130:8012',//营销测试机
         //target:'http://172.22.145.115:8080',//耿士龙
-        // target:'http://172.22.145.113:8083',//李权宇
+        //  target:'http://172.22.145.113:8083',//李权宇
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
+        }
+      },
+      '/sale_server/**': {
+        target: 'http://120.133.1.130:8012',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/sale_server': ''
         }
       },
       '/upload_server/**': {

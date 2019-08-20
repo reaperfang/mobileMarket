@@ -22,66 +22,64 @@
       </div>
     </section>
     <section class="regional-setting">
-        <div class="title">区域设置</div>
-        <div class="content">
-            <div class="content-item">
-              <div class="content-item-title">
-                <div class="row justify-between">
-                  <div class="col">
-                    <span>配送区域</span>
-                    <span class="des">说明：除指定区域外，其余区域按默认计算。</span>
-                  </div>
-                  <div @click="currentDialog = 'RegionDialog'" class="col blue">为指定区域设置运费</div>
-                </div>
+      <div class="title">区域设置</div>
+      <div class="content">
+        <div class="content-item">
+          <div class="content-item-title">
+            <div class="row justify-between">
+              <div class="col">
+                <span>配送区域</span>
+                <span class="des">说明：除指定区域外，其余区域按默认计算。</span>
               </div>
-              <div>
-                <el-table
-                  :data="tableData"
-                  border
-                  :header-cell-style="{background:'#f3f4f3', color:'#132215'}"
-                  style="width: 100%">
-                  <el-table-column
-                    prop="address"
-                    label="配送到"
-                    width="180">
-                  </el-table-column>
-                  <el-table-column
-                    label="首件"
-                    width="180">
-                    <template slot-scope="scope">
-                      <el-input v-model="scope.row.first"></el-input> 件或以内
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    label="运费（元）">
-                    <template slot-scope="scope">
-                      <el-input v-model="scope.row.freight"></el-input>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    label="续件"
-                    width="180">
-                    <template slot-scope="scope">
-                      每增加<el-input v-model="scope.row.increaseNumber"></el-input>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    label="续费（元）"
-                    width="180">
-                    <template slot-scope="scope">
-                      运费增加<el-input v-model="scope.row.increasePrice"></el-input>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    label="操作">
-                    <template slot-scope="scope">
-                      <span v-if="scope.$index != 0" class="blue">删除</span>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
+              <div
+                @click="currentDialog = 'RegionDialog'; dialogVisible = true"
+                class="col blue"
+              >为指定区域设置运费</div>
             </div>
-            <!-- <div class="content-item">
+          </div>
+          <div>
+            <el-table
+              :data="tableData"
+              border
+              :header-cell-style="{background:'#f3f4f3', color:'#132215'}"
+              style="width: 100%"
+            >
+              <el-table-column prop="areaInfoList" label="配送到" width="180">
+                <template slot-scope="scope">
+                  <span>{{scope.row.areaInfoList.map(val => val.cityName).join(',')}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="首件" width="180">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.theFirst"></el-input>件或以内
+                </template>
+              </el-table-column>
+              <el-table-column label="运费（元）">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.freight"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="续件" width="180">
+                <template slot-scope="scope">
+                  每增加
+                  <el-input v-model="scope.row.superaddition"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="续费（元）" width="180">
+                <template slot-scope="scope">
+                  运费增加
+                  <el-input v-model="scope.row.renew"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <span @click="deleteRow(scope.$index)" v-if="scope.$index != 0" class="blue">删除</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <!-- <div class="content-item">
               <div class="content-item-title">
                 <div class="row">
                   <div class="col">不配送区域</div>
@@ -98,79 +96,169 @@
                   </div>
                 </div>
               </div>
-            </div> -->
-        </div>
-        <div class="footer">
-          <el-button>取 消</el-button>
-          <el-button type="primary">确 定</el-button>
-        </div>
+        </div>-->
+      </div>
+      <div class="footer">
+        <el-button>取 消</el-button>
+        <el-button @click="submit" type="primary">确 定</el-button>
+      </div>
     </section>
-    <component :is="currentDialog" @dialogClose="dialogClose" :data="ruleForm" @selectedRegions="selectedRegions" :refresh="fetch"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit"></component>
   </div>
 </template>
 <script>
-import RegionDialog from '@/views/order/dialogs/regionDialog'
+import RegionDialog from "@/views/order/dialogs/regionDialog";
 
 export default {
-    data() {
-        return {
-            ruleForm: {
-                name: '',
-                mode: '1'
-            },
-            noDistribution: '',
-            noDistributionList: [
-              '新建', '内蒙'
-            ],
-            rules: {
-                
-            },
-            tableData: [
-              {
-                address: '默认运费（全国）',
-                first: 1,
-                freight: 10,
-                increaseNumber: 1,
-                increasePrice: 10
-              }
-            ],
-            currentDialog: '',
-
-        }
-    },
-    created() {
-      if(this.$route.query.id) {
-        this.getDetail()
-      }
-    },
-    methods: {
-      dialogClose() {
-        
+  data() {
+    return {
+      ruleForm: {
+        name: "",
+        calculationWay: 1
       },
-      selectedRegions() {
-
-      },
-      fetch() {
-        
-      },
-      getDetail() {
-        this._apis.order.getTemplatePageDetail({id: this.$route.query.id}).then((res) => {
-            this.ruleForm = Object.assign({}, this.ruleForm, res)
-        }).catch(error => {
-            this.visible = false
-            this.$notify.error({
-                title: '错误',
-                message: error
-            });
-        })
-      },
-      deleteItem(index) {
-        this.noDistributionList.splice(index, 1)
-      }
-    },
-    components: {
-      RegionDialog
+      noDistribution: "",
+      noDistributionList: ["新建", "内蒙"],
+      rules: {},
+      tableData: [],
+      currentDialog: "",
+      dialogVisible: false
+    };
+  },
+  created() {
+    if (this.$route.query.id) {
+      this.getDetail();
     }
+  },
+  methods: {
+    deleteRow(index) {
+      this.tableData.splice(index, 1)
+    },
+    editor() {
+      let params = {};
+
+      params = Object.assign({}, this.ruleForm, {
+        templateContents: this.tableData
+      });
+      this._apis.order
+        .editorFreightTemplate(params)
+        .then(res => {
+          this.$notify({
+            title: "成功",
+            message: "新建成功！",
+            type: "success"
+          });
+          this.$router.push("/order/quickDelivery");
+        })
+        .catch(error => {
+          this.$notify.error({
+            title: "错误",
+            message: error
+          });
+        });
+    },
+    add() {
+      let params = {};
+
+      params = Object.assign({}, this.ruleForm, {
+        templateContents: this.tableData
+      });
+      this._apis.order
+        .addFreightTemplate(params)
+        .then(res => {
+          this.$notify({
+            title: "成功",
+            message: "新建成功！",
+            type: "success"
+          });
+          this.$router.push("/order/quickDelivery");
+        })
+        .catch(error => {
+          this.$notify.error({
+            title: "错误",
+            message: error
+          });
+        });
+    },
+    submit() {
+      if(this.$route.query.id) {
+        if(this.$route.query.mode == 'copy') {
+          this.add()
+        } else {
+          this.editor()
+        }
+      } else {
+        this.add()
+      }
+    },
+    onSubmit(value) {
+      console.log(value);
+      this.tableData = [
+        ...this.tableData,
+        {
+          areaInfoList: value.map(val => ({
+            receivedProvinceCode: val.code,
+            receivedCityCode: val.city.code,
+            cityName: val.city.name
+          })),
+          theFirst: "",
+          freight: "",
+          superaddition: "",
+          renew: ""
+        }
+      ];
+    },
+    dialogClose() {},
+    selectedRegions() {},
+    fetch() {},
+    getArea() {
+      return new Promise((resolve, reject) => {
+        this._apis.order
+          .getArea()
+          .then(response => {
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    getDetail() {
+      this.getArea().then(areaList => {
+        this._apis.order
+          .getTemplatePageDetail({ id: this.$route.query.id })
+          .then(res => {
+            this.ruleForm = Object.assign({}, this.ruleForm, res);
+            let templateContents = JSON.parse(res.content);
+
+            templateContents.forEach(templateContent => {
+              let areaInfoList = templateContent.areaInfoList
+
+              areaInfoList.forEach(areaInfo => {
+                let receivedProvinceCode = areaInfo.receivedProvinceCode
+                let receivedCityCode = areaInfo.receivedCityCode
+                let cityName = areaList.find(area => area.code == receivedProvinceCode).citys.find(city => city.code == receivedCityCode).name
+
+                areaInfo.cityName = cityName
+              })
+            })
+            this.tableData = templateContents;
+          })
+          .catch(error => {
+            this.visible = false;
+            this.$notify.error({
+              title: "错误",
+              message: error
+            });
+          });
+      });
+    },
+    deleteItem(index) {
+      this.noDistributionList.splice(index, 1);
+    }
+  },
+  components: {
+    RegionDialog
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -179,59 +267,59 @@ export default {
     padding: 20px;
     background-color: #fff;
     .title {
-        margin-bottom: 20px;
-        font-size: 16px;
+      margin-bottom: 20px;
+      font-size: 16px;
     }
     &.regional-setting {
-        margin-top: 20px;
-        .content {
-            margin-left: 60px;
-            .content-item {
-              &:last-child {
-                margin-top: 40px;
-                .no-distribution-box {
-                  margin-left: 20px;
-                }
-                .no-distribution-list {
-                  border-radius:4px;
-                  border:1px solid rgba(202,207,203,1);
-                  min-height: 180px;
-                  padding: 10px;
-                  .no-distribution-item {
-                    margin-right: 40px;
-                    .delete-item {
-                      color: $globalMainColor;
-                      cursor: pointer;
-                    }
-                  }
-                }
-              }
-              .content-item-title {
-                font-size: 16px;
-                color: #161617;
-                margin-bottom: 18px;
-                .des {
-                  color: #9FA29F;
-                  font-size: 14px;
-                  margin-left: 20px;
+      margin-top: 20px;
+      .content {
+        margin-left: 60px;
+        .content-item {
+          &:last-child {
+            margin-top: 40px;
+            .no-distribution-box {
+              margin-left: 20px;
+            }
+            .no-distribution-list {
+              border-radius: 4px;
+              border: 1px solid rgba(202, 207, 203, 1);
+              min-height: 180px;
+              padding: 10px;
+              .no-distribution-item {
+                margin-right: 40px;
+                .delete-item {
+                  color: $globalMainColor;
+                  cursor: pointer;
                 }
               }
             }
+          }
+          .content-item-title {
+            font-size: 16px;
+            color: #161617;
+            margin-bottom: 18px;
+            .des {
+              color: #9fa29f;
+              font-size: 14px;
+              margin-left: 20px;
+            }
+          }
         }
-        .footer {
-          text-align: center;
-          margin-top: 30px;
-        }
-        /deep/ .el-input {
-          width: 62px;
-          margin-right: 10px;
-          margin-left: 10px;
-        }
+      }
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+      }
+      /deep/ .el-input {
+        width: 62px;
+        margin-right: 10px;
+        margin-left: 10px;
+      }
     }
   }
 }
 /deep/ .el-input {
-    width: auto;
+  width: auto;
 }
 </style>
 

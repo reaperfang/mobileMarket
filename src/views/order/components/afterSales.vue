@@ -62,35 +62,38 @@
                     width="55">
                 </el-table-column>
                 <el-table-column
-                    prop="orderNumber"
+                    prop="code"
                     label="售后单编号"
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="customerId"
+                    prop="memberSn"
                     label="客户ID"
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="receiver"
+                    prop="receivedName"
                     label="收货人">
                 </el-table-column>
                 <el-table-column
-                    prop="mobile"
+                    prop="receivedPhone"
                     label="收货人电话">
                 </el-table-column>
                 <el-table-column
-                    prop="state"
+                    prop="status"
                     label="状态">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.status | statusFilter}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="time"
+                    prop="updateTime"
                     label="最新发货时间">
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span>查看</span>
-                        <span>发货</span>
+                        <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
+                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id + '&orderId=' + scope.row.orderId)">发货</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -195,11 +198,28 @@ export default {
             ],
             total: 0,
             listQuery: {
-                page: 1,
-                limit: 20,
+                startIndex: 1,
+                pageSize: 20,
             },
             tableData: []
         }
+    },
+    created() {
+        this.getList()
+    },
+    filters: {
+        statusFilter(code) {
+            switch(code) {
+                case 3:
+                    return '待发货'
+                case 4:
+                    return '部分发货'
+                case 5:
+                    return '待收货'
+                case 6:
+                    return '完成'
+            }
+        },
     },
     methods: {
         onSubmit() {
@@ -212,7 +232,22 @@ export default {
             this.multipleSelection = val;
         },
         getList() {
-            
+            this._apis.order.getOrderAfterSaleList(this.listQuery).then((res) => {
+                console.log(res)
+                this.total = +res.total
+                this.tableData = res.list
+                this.$notify({
+                    title: '成功',
+                    message: '查询成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     components: {

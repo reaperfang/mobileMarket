@@ -1,5 +1,6 @@
+/* 选择满减满折弹框 */
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'选择满减活动'" @submit="submit">
+  <DialogBase :visible.sync="visible" width="816px" :title="'选择满减满折活动'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
       <div class="inline-head">
         <el-form-item label prop="name">
@@ -15,11 +16,35 @@
       stripe
       ref="multipleTable"
       @selection-change="handleSelectionChange"
+      v-loading="loading"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="title" label="优惠活动标题"></el-table-column>
-      <el-table-column prop="regular" label="规则"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column type="selection" width="30"></el-table-column>
+      <el-table-column prop="name" label="活动标题" :width="250"></el-table-column>
+      <el-table-column prop="activityRule" label="规则" :width="200">
+        <template slot-scope="scope">
+          <el-popover
+            v-if="scope.row.activityRule && scope.row.activityRule.length >=10"
+            placement="top-start"
+            title="满减满折规则"
+            width="200"
+            trigger="hover"
+            :content="scope.row.activityRule">
+            <span slot="reference">{{scope.row.activityRule.substring(0, 10)}}...</span>
+          </el-popover>
+          <span v-else>
+            {{scope.row.activityRule}}
+          </span> 
+        </template>
+      </el-table-column>
+      <!-- <el-table-column prop="remainStock" label="剩余库存"></el-table-column> -->
+      <el-table-column prop="status" label="活动状态">  <!-- 0是未生效  1是生效中 2是已失效-->
+        <template slot-scope="scope">
+          <span v-if="scope.row.status === 0">未开始</span>
+          <span v-else-if="scope.row.status === 1">开始中</span>
+          <span v-else-if="scope.row.status === 2">已开始</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="startTime" label="创建时间"></el-table-column>
     </el-table>
     <div class="pagination">
       <el-pagination
@@ -55,8 +80,10 @@ export default {
     return {
       tableList: [],
       multipleSelection: [],
+      pageNum: 1,
       ruleForm: {
-        name: ""
+        pageNum: 1,
+        name: '',
       },
       rules: {}
     };
@@ -75,32 +102,26 @@ export default {
   mounted() {},
   methods: {
     fetch() {
-      this.tableList = [
-        {
-          id: uuid(),
-          url: "https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg",
-          title: "满减：中秋活动",
-          desc: "这是商品描述",
-          createTime: "2019-08-23 12:44:23",
-          regular: "满10元减15元"
-        },
-        {
-          id: uuid(),
-          url: "https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg",
-          title: "满减：国庆活动",
-          desc: "这是商品描述2",
-          createTime: "2019-08-23 12:44:23",
-          regular: "满10元减5元"
-        },
-        {
-          id: uuid(),
-          url: "https://img.ivsky.com/img/tupian/li/201811/18/tianye-003.jpg",
-          title: "满减：春节活动",
-          desc: "这是商品描述2",
-          createTime: "2019-08-23 12:44:23",
-          regular: "满10元减5元"
-        }
-      ];
+      this.loading = true;
+      this._apis.shop.getFullReductionList(this.ruleForm).then((response)=>{
+        this.tableList = response.list;
+        this.total = response.total;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
+
+     //当前页码改变
+    handleCurrentChange(pIndex=1) {
+      this.loading = true
+      this.pageNum = pIndex
+      this.ruleForm.pageNum = pIndex
+      this.fetch()
     },
 
     /* 向父组件提交选中的数据 */
@@ -111,7 +132,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .name_wrapper {
   display: flex;
   flex-direction: row;
@@ -119,7 +140,9 @@ export default {
   img {
     width: 50px;
     height: 30px;
+    display: block;
     margin-right: 10px;
+    border: 1px solid #ddd;
   }
 }
 </style>

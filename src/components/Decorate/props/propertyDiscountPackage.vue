@@ -5,7 +5,7 @@
         <div class="goods_list">
           <ul>
             <li v-for="(item, key) of ruleForm.packages" :key="key">
-              <img :src="item.url" alt="">
+              <img :src="item.activityPic" alt="">
               <i class="delete_btn" @click.stop="deletePackage(item)"></i>
             </li>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectPackage'">

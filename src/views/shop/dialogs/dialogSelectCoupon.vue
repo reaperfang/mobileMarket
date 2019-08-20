@@ -1,3 +1,4 @@
+/* 选择优惠券弹框 */
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="'选择优惠券'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
@@ -10,7 +11,7 @@
         </el-form-item>
       </div>
     </el-form>
-    <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange">
+    <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange" v-loading="loading">
         <el-table-column
           type="selection"  
           width="55">
@@ -21,7 +22,7 @@
             {{scope.row.goodsType === 0 ? '全部' : '指定商品'}} 
           </template>
         </el-table-column>  <!-- 0是全部  1是指定商品 -->
-        <el-table-column prop="content" label="优惠内容">
+        <el-table-column prop="" label="优惠内容">
           <template slot-scope="scope">
             <span v-if="scope.row.useCondition > -1">满{{scope.row.useCondition}},减{{scope.row.useTypeFullcut}}</span>
             <span v-else>减{{scope.row.useTypeFullcut}}</span>
@@ -129,5 +130,17 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.name_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  img {
+    width: 50px;
+    height: 30px;
+    display: block;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+  }
+}
 </style>
