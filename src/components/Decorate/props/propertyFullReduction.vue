@@ -8,7 +8,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="选择活动" prop="promotions">
-        <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">选择活动</el-button>
+        <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectFullReduction'">选择活动</el-button>
         <div>
           <el-tag
             v-for="tag in ruleForm.promotions"
