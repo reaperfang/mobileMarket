@@ -1,13 +1,12 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="购买商品获取积分规则" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="选择商品" :hasCancel="hasCancel">
         <div class="c_container">
            <div>
                <div class="input_wrap">
-                   <el-select v-model="coupon" style="margin-bottom: 10px">
-                    <el-option label="分类一" value="1"></el-option>
-                    <el-option label="分类2" value="2"></el-option>
-                    <el-option label="分类3" value="3"></el-option>
-                </el-select>
+                   <el-cascader
+                    :options="categoryOptions"
+                    v-model="categoryValue"
+                   ></el-cascader>
                </div>
                 <div class="input_wrap">
                     <el-input placeholder="输入商品标签"></el-input>
@@ -15,7 +14,7 @@
                 <div class="input_wrap2">
                     <el-input placeholder="输入商品名称/商品编号"></el-input>
                 </div>
-                <el-button type="primary" class="marL10">搜索</el-button>
+                <el-button type="primary" class="marL10" @click="handleSearch">搜索</el-button>
                 <el-button>重置</el-button>
            </div>
            
@@ -30,12 +29,43 @@ export default {
     data() {
         return {
             hasCancel: true,
-            
+            categoryOptions:[],
+            categoryValue:[]
         }
     },
     methods: {
         submit() {
             
+        },
+        transTreeData(data, pid) {
+            var result = [], temp;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].parentId == pid) {
+                    var obj = {"categoryName": data[i].name,"id": data[i].id, 
+                        parentId: data[i].parentId, level: data[i].level, sort: data[i].sort, 
+                        image: data[i].image, enable: data[i].enable, label: data[i].name, value: data[i].id};
+                    temp = this.transTreeData(data, data[i].id);
+                    if (temp.length > 0) {
+                        obj.children = temp;
+                    }
+                    result.push(obj);
+                }
+            }
+            return result;
+        },
+        getProductClass() {
+            this._apis.client.getProductClass({}).then((response) => {
+                let arr = this.transTreeData(response, 0);
+                this.categoryOptions = [].concat(arr);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        handleSearch() {
+            console.log(this.categoryValue);
         }
     },
     computed: {
@@ -49,7 +79,7 @@ export default {
         }
     },
     mounted() {
-        
+        this.getProductClass();
     },
     props: {
         data: {
@@ -71,7 +101,7 @@ export default {
         text-align: left;
         margin-bottom: 17px;
         .input_wrap{
-            width: 109px;
+            width: 150px;
             display: inline-block;
         }
         .input_wrap2{
