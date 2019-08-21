@@ -3,16 +3,28 @@
   <DialogBase :visible.sync="visible" width="816px" :title="'选择图片'" @submit="submit">
     <div class="material_head">
       <div class="select">
-        <el-select v-model="groupId" placeholder="全部">
-          <el-option value="">全部</el-option>
-          <el-option
-              v-for="item in groupList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
+        <el-select v-model="ruleForm.group" placeholder="">
+          <el-option label="全部" :value="1"></el-option>
+          <el-option label="文章配图" :value="2"></el-option>
+          <el-option label="封面配图" :value="3"></el-option>
         </el-select>
       </div>
+      <el-upload
+          :action="uploadUrl"
+          :data="{json: JSON.stringify({cid: 222})}"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-success="handleSuccess"
+          :on-error="handleError"
+          :before-remove="beforeRemove"
+          :on-change="handleChange"
+          :before-upload="beforeUpload"
+          @clearFiles="clearUploadFiles"
+          multiple
+          :on-exceed="handleExceed"
+          :file-list="fileList">
+           <el-button size="small" type="primary">上传新图片</el-button>
+      </el-upload>
     </div>
     <div class="material_wrapper" ref="materialWrapper" v-loading="loading" :style="{'overflow-y': loading ? 'hidden' : 'auto'}">
         <waterfall :col='3' :width="250" :gutterWidth="10"  :data="imgsArr" :isTransition="false" >
@@ -26,18 +38,6 @@
           </template>
         </waterfall>
     </div>
-    <p class="pages">
-        <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total*1"
-        class="page_nav">
-        </el-pagination>
-    </p>
   </DialogBase>
 </template>
 
@@ -60,12 +60,11 @@ export default {
       selectedItem: null,
       imgsArr: [], //维护的图片数据
       fileList: [],  //用来显示进度条的列表
-      uploadState: [],
-      currentPage:1,
-      pageSize:10,  
-      total:0,
-      groupId:'',
-      groupList:[]
+      ruleForm: {
+        group: 1
+      },
+      uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
+      uploadState: []   //本次上传状态列表
     };
   },
   computed: {
@@ -78,27 +77,21 @@ export default {
       }
     }
   },
-  watch:{
-    groupId(){
-      this.fetch()
-    }
-  },
   created() {
-    this.getGroups();
     this.fetch();
   },
   methods: {
+
     fetch() {
       this.loading = true;
       this._apis.file.getMaterialList({
-        fileGroupInfoId:this.groupId || '',
-        startIndex:this.currentPage,
-        pageSize:this.pageSize,
+        fileGroupInfoId:"",
+        startIndex:"1",
+        pageSize:"10",
         sourceMaterialType:"0",
       }).then((response)=>{
-        this.imgsArr = response.list
-        this.total = response.total
-        this.loading = false
+        this.imgsArr = response.list;
+        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
@@ -106,20 +99,6 @@ export default {
         });
         this.loading = false;
       });
-    },
-    //查询分组
-    getGroups(){
-      let query ={
-        type:'0'
-      }
-      this._apis.file.getGroup(query).then((response)=>{
-        this.groupList = response
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
     },
 
     /**************************** 上传相关  开始 *******************************/
@@ -271,15 +250,6 @@ export default {
       this.$emit('imageSelected',  this.selectedItem);
     },
 
-    /**********************************        分页相关      **********************/
-    handleSizeChange(val){
-      this.pageSize = val || this.pageSize
-      this.fetch()
-    },
-    handleCurrentChange(pIndex){
-      this.currentPage = pIndex || this.currentPage
-      this.fetch()
-    },
 
   }
 };
@@ -334,9 +304,5 @@ export default {
   .img_active{
     border: 2px dashed $globalMainColor!important;
   }
-}
-.pages{
-  text-align: center;
-  margin-top: 20px;
 }
 </style>

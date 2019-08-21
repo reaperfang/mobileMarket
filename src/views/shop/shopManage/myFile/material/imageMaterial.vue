@@ -48,7 +48,7 @@
               @current-change="handleCurrentChange"
               :current-page="currentPage"
               :page-sizes="[10, 20, 30, 40]"
-              :page-size="10"
+              :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total*1"
               class="page_nav">
@@ -237,6 +237,9 @@ export default {
           case 'syncImage':
             this.handleSyncImage()
           break;
+          case 'uploadImage':
+            this.getList()
+          break;
         }
       }
     },
@@ -265,7 +268,9 @@ export default {
     uploadImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogUploadImage'
-      this.data = '上传图片'
+      this.data = {
+        txt:'上传图片'
+      }
     },
     syncImage(){
       this.dialogVisible = true;
@@ -274,6 +279,7 @@ export default {
     moveGroups(id){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroupsMove'
+      this.data = 'image'
       this.arrayData = []
       this.arrayData.push(id)
     },
@@ -330,17 +336,17 @@ export default {
         });
     },
 
-     /* 成功加载图片 */
-    loadImg(event, item) {
-      this.$set(item, 'loaded', true);
-      this.allImgLoaded();
-    },
+    //  /* 成功加载图片 */
+    // loadImg(event, item) {
+    //   this.$set(item, 'loaded', true);
+    //   this.allImgLoaded();
+    // },
 
-    /* 图片加载失败 */
-    loadError(event, item) {
-      this.$set(item, 'loaded', true);  //只要加载了都算成功，用来后面统计
-      this.allImgLoaded();
-    },
+    // /* 图片加载失败 */
+    // loadError(event, item) {
+    //   this.$set(item, 'loaded', true);  //只要加载了都算成功，用来后面统计
+    //   this.allImgLoaded();
+    // },
     /**********************************        分页相关      **********************/
     handleSizeChange(val){
       this.pageSize = val || this.pageSize

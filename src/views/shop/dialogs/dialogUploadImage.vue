@@ -1,6 +1,6 @@
 <template>
-  <DialogBase :visible.sync="visible" width="500px" :title="title" @submit="uploadImage">
-    <el-form :model="form" class="demo-form-inline" label-width="115px">
+  <DialogBase :visible.sync="visible" width="600px" :title="title" @submit="title == '上传图片' ? uploadImage : uploadVideo">
+    <el-form :model="form" class="demo-form-inline" label-width="90px">
         <el-form-item label="本地上传">
           <el-upload
             class="avatar-uploader"
@@ -16,6 +16,9 @@
           <p class="note" v-if="title == '上传图片'">仅支持gif,jpeg,png,bmp4种格式，大小不超过3.0MB</p>
           <p class="note" v-if="title == '上传视频'">视频大小不超过10mb，支持mp4,mov,m4v,flv,x-flv,mkv,wmv,avi,rmvb,3gp格式</p>
         </el-form-item>
+        <el-form-item label="名称" v-if="title == '上传视频'">
+          <el-input v-model="form.name" placeholder="请勿超过20字" style="width:195px"></el-input>
+        </el-form-item>
         <el-form-item label="分组">
           <el-select v-model="form.groupValue" placeholder="请选择">
             <el-option
@@ -26,13 +29,21 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="是否同步至微信">
-          <el-switch
-            v-model="form.wxSync"
-            active-color="#13ce66"
-            inactive-color="#ff4949">
-          </el-switch>
-        </el-form-item> -->
+       <el-form-item label="封面" v-if="title == '上传视频'">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :limit="1"
+            :data="{json: JSON.stringify({cid: 222})}"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="form.imageUrls" :src="form.imageUrls" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <p class="note">建议尺寸：800*800，支持jpg,gif,jpeg,png三种格式，大小不超过3.0MB。</p>
+          <p class="note">如果不添加封面，系统会默认截取视频的第一个画面作为封面</p>
+        </el-form-item>
       </el-form>
   </DialogBase>
 </template>
@@ -45,7 +56,7 @@ export default {
   components: {DialogBase},
   props: {
       data: {
-        type:String,
+        type:Object,
         required:true
       },
       dialogVisible: {
@@ -56,11 +67,12 @@ export default {
   data() {
     return {
       uploadUrl:`${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
-      title:this.data,
+      title:this.data.txt,
       form:{
         imageUrl:'',
+        name:'',
         groupValue:'',
-        // wxSync:''
+        imageUrls:''
       },
       fileData:{},
       groupList:[]
@@ -104,12 +116,33 @@ export default {
             filePath:this.fileData.url,
             imgPixelWidth:this.fileData.width,
             imgPixelHeight:this.fileData.height,
-            fileSize:this.fileData.size
+            fileSize:this.fileData.size,
+            sign:this.fileData.sign
           }
         ]
       }
       this._apis.file.uploadImage(query).then((response)=>{
-        this.groupList = response
+        this.$emit('submit',{uploadImage:''})
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //上传视频
+    uploadVideo(){
+      let query ={
+        fileGroupInfoId:this.form.groupValue,
+        fileName:this.fileData.original,
+        filePath:this.fileData.url,
+        fileSize:this.fileData.size,
+        name:this.form.name,
+        fileover:this.form.imageUrls,
+        sign:sign,
+      }
+      this._apis.file.uploadVideo(query).then((response)=>{
+        this.$emit('submit',{uploadVideo:''})
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',

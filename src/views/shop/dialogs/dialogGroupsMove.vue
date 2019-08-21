@@ -22,6 +22,7 @@ export default {
   name: "dialogGroupsMove",
   components: {DialogBase},
   props: {
+      data:{},
       arrayData: {},
       dialogVisible: {
           type: Boolean,
@@ -52,10 +53,8 @@ export default {
   methods: {
     //查询分组
     getGroups(){
-      let query ={
-        type:'0'
-      }
-      this._apis.file.getGroup(query).then((response)=>{
+      let type = this.data == 'image' ? '0' : '2'
+      this._apis.file.getGroup({type:type}).then((response)=>{
         this.groupList = response
       }).catch((error)=>{
         this.$notify.error({
