@@ -12,6 +12,23 @@ export default {
     currentComponentData() {
       return this.componentDataMap[this.currentComponentId] || {};
     }
-  }
+  },
+  created(){
+      this.decoration && this.decoration();
+  },
+  watch: {
+      data: {
+        handler(newValue) {
+          this.decoration && this.decoration();
+        },
+        deep: true
+      },
+      'currentComponentData.data.ids': { 
+        handler(newValue) {
+            this.fetch && this.fetch();
+        },
+        deep: true
+      }
+    },
 };
 </script>	

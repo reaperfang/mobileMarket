@@ -2,12 +2,12 @@
 <!-- 组件-限时秒杀 -->
     <div class="componentDiscount" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data">
         <ul>
-            <li v-for="(item,key) of goodList" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
+            <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
-                    <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
+                    <img :src="item.goodsImgUrl" alt="" :class="{goodsFill:goodsFill!=1}">
                 </div>
                 <div class="countdown_Bar" v-if="showContents.indexOf('5')!=-1">
-                    <h1 class="title">限时折扣</h1>
+                    <h1 class="title">{{item.activityName}}</h1>
                     <div class="countdown">
                         <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
                         <div class="content">
@@ -17,20 +17,20 @@
                     </div>
                 </div>
                 <div class="info_box" v-if="showContents.length > 0">
-                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">减{{item.minusPrice}}元</font>{{item.title}}</p>
-                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.desc}}</p>
+                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">减{{item.activitReduction}}元</font>{{item.goodsName}}</p>
+                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.description}}</p>
                     <div class="limit_line" v-if="showContents.indexOf('6')!=-1||showContents.indexOf('7')!=-1">
-                        <p class="limit" v-if="showContents.indexOf('7')!=-1">限 1件/人</p>
+                        <p class="limit" v-if="showContents.indexOf('7')!=-1">限 {{item.activityJoinLimit}}件/人</p>
                         <div class="remainder_box" v-if="showContents.indexOf('6')!=-1">
                             <div class="jd_line">
                                 <div class="current_line"></div>
                             </div>
-                            <p>已抢<font>25</font>件</p>
+                            <p>已抢<font>{{item.stock - item.remainStock}}</font>件</p>
                         </div>
                     </div>
                     <div class="price_line">
-                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.price}}</font></p>
-                        <p class="yPrice" v-if="showContents.indexOf('4')!=-1">￥{{item.yPrice}}</p>
+                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.reductionPrice}}</font></p>
+                        <p class="yPrice" v-if="showContents.indexOf('4')!=-1">￥{{item.salePrice}}</p>
                     </div>
                     <componentButton :decorationStyle="buttonStyle" decorationText="立即抢购" class="button" v-if="showContents.indexOf('8')!=-1"></componentButton>
                     <p class="activity_end" v-if="false">已售罄</p>
@@ -49,8 +49,6 @@ export default {
     mixins:[componentMixin],
     data(){
         return{
-            // 商品列表
-            goods: [],
             // 样式属性
             listStyle: '',
             pageMargin: '',
@@ -66,7 +64,7 @@ export default {
             // 自己定义的
             goodWidth:'',
             goodMargin:'',
-            goodList: []
+            list: []
         }
     },
     components:{
@@ -75,20 +73,11 @@ export default {
     created(){
         this.decoration();
     },
-    watch: {
-      data: {
-        handler(newValue) {
-          this.decoration();
-        },
-        deep: true
-      }
-    },
     methods:{
         decoration(){
             if(!this.currentComponentData || !this.currentComponentData.data) {
               return;
             }
-            this.goods = this.currentComponentData.data.goods;
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;
             this.goodsMargin = this.currentComponentData.data.goodsMargin;
@@ -124,8 +113,34 @@ export default {
             this.textAlign = this.currentComponentData.data.textAlign;
             this.showContents = this.currentComponentData.data.showContents;
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
-            this.goodList = this.goods;
-        }
+            this.fetch();
+        },
+
+          //根据ids拉取数据
+        fetch() {
+            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
+                this.loading = true;
+                this._apis.shop.getDiscountListByIds({
+                    rightsDiscount: 1, 
+                    spuIds: this.currentComponentData.data.ids.join(',')
+                }).then((response)=>{
+                    this.createList(response.list);
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                    this.loading = false;
+                });
+            }
+        },
+
+         /* 创建数据 */
+        createList(datas) {
+            this.list = datas;
+        },
+
     }
 }
 </script>

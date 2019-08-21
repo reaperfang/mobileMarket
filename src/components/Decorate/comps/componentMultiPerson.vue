@@ -2,7 +2,7 @@
 <!-- 组件-多人拼团 -->
     <div class="componentMultiPerson" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data">
         <ul>
-            <li v-for="(item,key) of goodList" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
+            <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
                     <p class="label" v-if="showContents.indexOf('6')!=-1">{{item.alreadyTeamPeople}}人已团</p>
                     <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
@@ -45,8 +45,6 @@ export default {
     mixins:[componentMixin],
     data(){
         return{
-            // 商品列表
-            goods: [],
             // 样式属性
             showNumber: "",
             showAllBtns: true,
@@ -66,7 +64,7 @@ export default {
             // 自己定义的
             goodWidth:'',
             goodMargin:'',
-            goodList: []
+            list: []
         }
     },
     created(){
@@ -75,24 +73,12 @@ export default {
     components:{
         componentButton
     },
-    watch: {
-      data: {
-        handler(newValue) {
-          this.decoration();
-        },
-        deep: true
-      }
-    },
     methods:{
         decoration(){
             if(!this.currentComponentData || !this.currentComponentData.data) {
               return;
             }
-            this.goods = this.currentComponentData.data.goods;
             this.showNumber = this.currentComponentData.data.showNumber;
-            if(this.goods.length > this.showNumber){
-                this.goods = this.goods.slice(0,this.showNumber);
-            }
             this.showAllBtns = this.currentComponentData.data.showAllBtns;
             this.sortRule = this.currentComponentData.data.sortRule;
             this.listStyle = this.currentComponentData.data.listStyle;
@@ -131,19 +117,57 @@ export default {
             this.showContents = this.currentComponentData.data.showContents;
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
-            this.goodList = [];
+            this.fetch();
+        },
+
+         //根据ids拉取数据
+        fetch() {
+            if(this.currentComponentData && this.currentComponentData.data) {
+                let params = {};
+                if(this.currentComponentData.data.addType == 2) {
+                    params = {
+                        num: this.currentComponentData.data.showNumber,
+                        order: this.currentComponentData.data.sortRule
+                    };
+                }else{
+                    params = {
+                        spuIds: this.currentComponentData.data.ids.join(','),
+                        order: this.currentComponentData.data.sortRule
+                    };
+                }
+
+                this.loading = true;
+                this._apis.shop.getMultiPersonListByIds(params).then((response)=>{
+                    this.createList(response);
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                    this.loading = false;
+                });
+            }
+        },
+
+         /* 创建数据 */
+        createList(datas) {
+            if(datas.length > this.showNumber){
+                datas = datas.slice(0,this.showNumber);
+            }
+            this.list = [];
             if(this.hideSaledGoods==true){
-                var goods = this.goods;
-                for(var i in this.goods){
+                var goods = datas;
+                for(var i in datas){
                     if(goods[i].soldOut!=1){
-                        this.goodList.push(this.goods[i]);
+                        this.list.push(datas[i]);
                     }
                 }
             }
             else{
-                this.goodList = this.goods;
+                this.list = datas;
             }
-        }
+        },
     }
 }
 </script>
