@@ -2,6 +2,11 @@
 export default {
   name: "propertyMixin",
   props: ["data"],
+  data() {
+    return {
+      items: []
+    }
+  },
   created() {
     this.initRuleForm();
   },
@@ -31,7 +36,23 @@ export default {
         id: this.$parent.currentComponentId,
         data: newValue
       });
-    }
+    },
+
+     /* 删除数据项 */
+    deleteItem(item) {
+      const tempItems = [...this.items];
+      for(let i=0;i<tempItems.length;i++) {
+        if(item === tempItems[i]) {
+          tempItems.splice(i, 1);
+        }
+      }
+      this.items = tempItems;
+    },
+
+    /* 弹窗选中了数据项 */
+    dialogDataSelected(items) {
+      this.items = items;
+    } 
   }
 };
 </script>

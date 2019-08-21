@@ -2,7 +2,7 @@
 <!-- 组件-优惠套餐 -->
     <div class="componentNyuan" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data">
         <ul>
-            <li v-for="(item,key) of goodList" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
+            <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
                     <div class="label" v-if="showContents.indexOf('6')!=-1">已售{{item.alreadySell}}件</div>
                     <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
@@ -43,8 +43,6 @@ export default {
     mixins:[componentMixin],
     data(){
         return{
-            // 商品列表
-            promotions: [],
             // 样式属性
             listStyle: '',
             pageMargin: '',
@@ -63,7 +61,7 @@ export default {
             // 自己定义的
             goodWidth:'',
             goodMargin:'',
-            goodList: []
+            list: []
         }
     },
     components:{
@@ -72,20 +70,11 @@ export default {
     created(){
         this.decoration();
     },
-    watch: {
-      data: {
-        handler(newValue) {
-          this.decoration();
-        },
-        deep: true
-      }
-    },
     methods:{
         decoration(){
             if(!this.currentComponentData || !this.currentComponentData.data) {
               return;
             }
-            this.promotions = this.currentComponentData.data.promotions;
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;
             this.goodsMargin = this.currentComponentData.data.goodsMargin;
@@ -124,30 +113,54 @@ export default {
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.hideEndGoods = this.currentComponentData.data.hideEndGoods;
             this.hideType = this.currentComponentData.data.hideType;
-            this.goodList = [];
+            this.fetch();
+        },
+
+         //根据ids拉取数据
+        fetch() {
+            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
+                this.loading = true;
+                this._apis.shop.getNyuanListByIds({
+                    baleIds : this.currentComponentData.data.ids.join(',')
+                }).then((response)=>{
+                    this.createList(response.list);
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                    this.loading = false;
+                });
+            }
+        },
+
+         /* 创建数据 */
+        createList(datas) {
+            this.list = [];
             if(this.hideSaledGoods==true){
-                for(var i in this.promotions){
-                    if(this.promotions[i].soldOut!=1){
-                        this.goodList.push(this.promotions[i]);
+                for(var i in datas){
+                    if(datas[i].soldOut!=1){
+                        this.list.push(datas[i]);
                     }
                 }
             }
             else{
-                this.goodList = this.promotions;
+                this.list = datas;
             }
-            var goodList = this.goodList;
-            this.goodList = [];
+            var list = this.goodList;
+            this.list = [];
             if(this.hideEndGoods==true){
-                for(var i in goodList){
-                    if(goodList[i].activityEnd!=1){
-                        this.goodList.push(goodList[i]);
+                for(var i in list){
+                    if(list[i].activityEnd!=1){
+                        this.list.push(list[i]);
                     }
                 }
             }
             else{
-                this.goodList = goodList;
+                this.list = list;
             }
-        }
+        },
     }
 }
 </script>

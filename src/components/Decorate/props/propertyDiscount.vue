@@ -4,9 +4,9 @@
       <el-form-item label="选择商品" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of ruleForm.goods" :key="key">
+            <li v-for="(item, key) of items" :key="key">
               <img :src="item.goodsImgUrl" alt="">
-              <i class="delete_btn" @click.stop="deleteDiscount(item)"></i>
+              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectDiscount'">
               <i class="inner"></i>
@@ -128,7 +128,6 @@ export default {
   data () {
     return {
       ruleForm: {
-        goods: '',
         listStyle: 1,
         pageMargin: 15,
         goodsMargin: 10,
@@ -139,7 +138,8 @@ export default {
         textStyle: 1,
         textAlign: 1,
         showContents: [],
-        buttonStyle: 1
+        buttonStyle: 1,
+        ids: []
       },
       rules: {
 
@@ -150,23 +150,19 @@ export default {
   },
   created() {
   },
+  watch: {
+    'items': {
+      handler(newValue) {
+        this.ruleForm.ids = [];
+        for(let item of newValue) {
+          this.ruleForm.ids.push(item.spuId);
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
 
-    /* 删除限时折扣 */
-    deleteDiscount(item) {
-      const tempGoodsList = [...this.ruleForm.goods];
-      for(let i=0;i<tempGoodsList.length;i++) {
-        if(item === tempGoodsList[i]) {
-          tempGoodsList.splice(i, 1);
-        }
-      }
-      this.ruleForm.goods = tempGoodsList;
-    },
-
-    /* 弹窗选中了商品 */
-    dialogDataSelected(list) {
-      this.ruleForm.goods = list;
-    },
   }
 }
 </script>

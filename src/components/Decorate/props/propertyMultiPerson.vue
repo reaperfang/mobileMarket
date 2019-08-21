@@ -10,9 +10,9 @@
      <el-form-item label="选择商品" v-if="ruleForm.addType === 1" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of ruleForm.goods" :key="key">
+            <li v-for="(item, key) of items" :key="key">
               <img :src="item.url" alt="">
-              <i class="delete_btn" @click.stop="deleteMultiPerson(item)"></i>
+              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectMultiPerson'">
               <i class="inner"></i>
@@ -30,10 +30,10 @@
       </el-form-item>
       <el-form-item label="排序规则" v-if="ruleForm.addType === 2" prop="sortRule">
         <el-select v-model="ruleForm.sortRule" placeholder="请选择排序规则">
-          <el-option label="1" value="销量越高越靠前"></el-option>
-          <el-option label="2" value="浏览次数越多越靠前"></el-option>
-          <el-option label="3" value="开始时间越晚越靠前"></el-option>
-          <el-option label="4" value="结束时间越早越靠前"></el-option>
+          <el-option label="销量越高越靠前" :value="1"></el-option>
+          <el-option label="浏览次数越多越靠前" :value="2"></el-option>
+          <el-option label="开始时间越晚越靠前" :value="3"></el-option>
+          <el-option label="结束时间越早越靠前" :value="4"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="列表样式" prop="listStyle">
@@ -155,8 +155,7 @@ export default {
     return {
       ruleForm: {
         addType: 2,
-        goods: [],
-        showNumber: 30,
+        showNumber: 5,
         showAllBtns: true,
         sortRule: 1,
         listStyle: 1,
@@ -170,7 +169,8 @@ export default {
         textAlign: 1,
         showContents: [],
         hideSaledGoods: true,
-        buttonStyle: 1
+        buttonStyle: 1,
+        ids: []
       },
       rules: {
 
@@ -181,23 +181,18 @@ export default {
   },
   created() {
   },
-  methods: {
-
-    /* 删除多人拼团 */
-    deleteMultiPerson(item) {
-      const tempGoodsList = [...this.ruleForm.goods];
-      for(let i=0;i<tempGoodsList.length;i++) {
-        if(item === tempGoodsList[i]) {
-          tempGoodsList.splice(i, 1);
+  watch: {
+    'items': {
+      handler(newValue) {
+        this.ruleForm.ids = [];
+        for(let item of newValue) {
+          this.ruleForm.ids.push(item.spuId);
         }
-      }
-      this.ruleForm.goods = tempGoodsList;
-    },
-
-    /* 弹窗选中了商品 */
-    dialogDataSelected(list) {
-      this.ruleForm.goods = list;
-    },
+      },
+      deep: true
+    }
+  },
+  methods: {
 
     /* 关闭案例弹窗 */
     dialogClosed() {

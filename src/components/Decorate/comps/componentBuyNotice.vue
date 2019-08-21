@@ -45,7 +45,23 @@ export default {
           that.animate = !that.animate; // 这个地方如果不把animate 取反会出现消息回滚的现象，此时把ul 元素的过渡属性取消掉就可以完美实现无缝滚动的效果了
         }, 0);
       }
-    }
+    },
+
+     //根据ids拉取数据
+      fetch() {
+          this.loading = true;
+          this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
+              this.tableList = response.list;
+              this.total = response.total;
+              this.loading = false;
+          }).catch((error)=>{
+              this.$notify.error({
+              title: '错误',
+              message: error
+              });
+              this.loading = false;
+          });
+      },
   },
   mounted() {
     this.timer = setInterval(this.scroll, 2000);

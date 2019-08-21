@@ -7,16 +7,28 @@
           <el-radio :label="2">自动获取</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="" prop="addType">
+      <el-form-item label="" prop="addType" v-if="ruleForm.addType === 1">
         <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">添加优惠券(最多添加10张优惠券)</el-button>
         <el-tag
-          v-for="tag in ruleForm.coupons"
+          v-for="tag in items"
           :key="tag.title"
           closable
           style="margin-right:5px;"
-          type="success" @close="deleteCoupon(tag)">
+          type="success" @close="deleteItem(tag)">
           {{tag.title}}
         </el-tag>
+      </el-form-item>
+      <el-form-item label="券活动数" prop="couponNumberType" v-if="ruleForm.addType === 2">
+        <el-radio-group v-model="ruleForm.couponNumberType">
+          <el-radio :label="1">全部</el-radio>
+          <el-radio :label="2">
+            <el-input
+              style="width:200px;"
+              placeholder="请输入显示的券活动数"
+              v-model="ruleForm.showNumber" :disabled="ruleForm.couponNumberType === 1">
+            </el-input>
+          </el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="样式" prop="couponStyle">
         <el-radio-group v-model="ruleForm.couponStyle">
@@ -59,10 +71,12 @@ export default {
     return {
       ruleForm: {
         addType: 2,
+        showNumber: 5,   //券活动数
+        couponNumberType: 1,  //券活动数类型
         couponStyle: 1,
         couponColor: 1,
         hideScrambled: false,
-        coupons: []
+        ids: []
       },
       rules: {
 
@@ -71,23 +85,18 @@ export default {
       currentDialog: '',
     }
   },
-  methods: {
-
-    /* 删除优惠券 */
-    deleteCoupon(item) {
-      const tempCoupons = [...this.ruleForm.coupons];
-      for(let i=0;i<tempCoupons.length;i++) {
-        if(item === tempCoupons[i]) {
-          tempCoupons.splice(i, 1);
+   watch: {
+    'items': {
+      handler(newValue) {
+        this.ruleForm.ids = [];
+        for(let item of newValue) {
+          this.ruleForm.ids.push(item.id);
         }
-      }
-      this.ruleForm.coupons = tempCoupons;
-    },
-
-    /* 弹窗选中了优惠券 */
-    dialogDataSelected(coupons) {
-      this.ruleForm.coupons = coupons;
-    } 
+      },
+      deep: true
+    }
+  },
+  methods: {
   }
 }
 </script>
