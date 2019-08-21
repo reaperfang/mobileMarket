@@ -37,7 +37,7 @@ module.exports = {
         //target: 'http://172.22.146.2:8080', // 订单 尹茂凯
         //target: 'http://172.22.134.106:8080', // 商品 王浩
         // target: 'http://172.22.146.133:8081',  //李雯廷
-        target: 'http://www.lwt.com',  //李雯廷2
+        // target: 'http://www.lwt.com',  //李雯廷2
         // target:'http://172.22.146.124:8099',//许涛 开关
         //target: 'http://120.133.1.130:8012',//营销
         //target: 'http://172.22.146.109:8080', // 商品 王浩
@@ -60,6 +60,7 @@ module.exports = {
         // target: 'http://120.133.1.130:8012',//营销测试机
         //target:'http://172.22.145.115:8080',//耿士龙
         //  target:'http://172.22.145.113:8083',//李权宇
+         target:'http://hhq3bj.natappfree.cc/',//数据
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''

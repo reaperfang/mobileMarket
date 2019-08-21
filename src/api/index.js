@@ -9,6 +9,7 @@ import * as order from "./order";
 import * as client from "./client"; //客户接口
 import * as goodsOperate from "./goodsOperate"; //商品运营
 import * as file from "./file"; //文件模块
+import * as data from "./data"; //数据模块
 
 export default {
 	demo,
@@ -21,5 +22,6 @@ export default {
 	shop,
 	finance,
 	goodsOperate,
-	file
+	file,
+	data
 };
