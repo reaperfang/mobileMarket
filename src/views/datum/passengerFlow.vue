@@ -43,6 +43,27 @@ export default {
             activeName: "first", 
             range: ""
         }
+    },
+    methods:{
+               getData(){
+                   let data ={
+                       cid:1,
+                       startTime:'',
+                       endTime:'',
+                       visitSourceType:'',
+                       analysisType:'',
+                       dateType:''
+                   }
+       this._apis.data.flowAnalysis(data).then((response)=>{
+      console.log(222,response)
+        }).catch((error)=>{
+            console.log(123)
+            this.$message.error(error);
+        })
+        }
+    },
+    created(){
+        this.getData()
     }
 }
 </script>

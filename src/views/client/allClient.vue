@@ -7,7 +7,7 @@
                 <el-row>
                     <el-col :span="4">
                         <el-form-item prop="labelName">
-                            <el-select v-model="form.labelName" placeholder="请选择">
+                            <el-select v-model="form.labelName" placeholder="请选择" clearable>
                                 <el-option label="昵称" value="nickName"></el-option>
                                 <el-option label="用户ID" value="memberSn"></el-option>
                                 <el-option label="手机号" value="phone"></el-option>
@@ -43,7 +43,7 @@
                             <el-checkbox v-for="item in labels" :label="item" :key="item" border>{{item}}</el-checkbox>
                         </el-checkbox-group>
                     </div>
-                    <el-button type="primary" class="absoPosition">添 加</el-button>
+                    <el-button type="primary" class="absoPosition" @click="_routeTo('batchImport')">添 加</el-button>
                     <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag">
                 </el-form-item>
                 <el-form-item label="客户渠道：" class="relaPosition" prop="channelId">
@@ -391,7 +391,7 @@ export default {
             }
             .pop_img{
                 position: absolute;
-                left: 230px;
+                left: 211px;
                 top: -7px;
             }
         }

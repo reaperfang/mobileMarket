@@ -11,11 +11,11 @@
         <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectFullReduction'">选择活动</el-button>
         <div>
           <el-tag
-            v-for="tag in ruleForm.promotions"
+            v-for="tag in items"
             :key="tag.name"
             closable
             style="margin-right:5px;"
-            type="success" @close="deleteFullReduction(tag)">
+            type="success" @close="deleteItem(tag)">
             {{tag.name}}
           </el-tag>
         </div>
@@ -46,8 +46,8 @@ export default {
     return {
       ruleForm: {
         title: '满减/满折',
-        promotions: '',
-        displayStyle: 1
+        displayStyle: 1,
+        ids: []
       },
       rules: {
 
@@ -57,6 +57,17 @@ export default {
     }
   },
   created() {
+  },
+   watch: {
+    'items': {
+      handler(newValue) {
+        this.ruleForm.ids = [];
+        for(let item of newValue) {
+          this.ruleForm.ids.push(item.id);
+        }
+      },
+      deep: true
+    }
   },
   methods: {
 

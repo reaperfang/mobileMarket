@@ -190,6 +190,10 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "changeIdentityDialog";
             this.currentData.id = this.userId;
+            this.currentData.oldLevelId = this.clientInfoById.levelInfoId;
+            this.currentData.identity = this.clientInfoById.levelName;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
+            this.currentData.oldLevel = this.clientInfoById.level;
         },
         deleteTag(id) {
             //this.memberLabels.splice(index,1);
@@ -288,6 +292,8 @@ export default {
         },
         getMemberInfo() {
             this._apis.client.getMemberInfo({id: this.userId}).then((response) => {
+                console.log(response);
+
                 this.clientInfoById = Object.assign({},response);
                 this.clientInfoById.sex = this.clientInfoById.sex.toString();
                 let selected = [];
@@ -396,8 +402,12 @@ export default {
     },
     computed: {
     },
-    mounted() {
-        this.getMemberInfo();
+    created() {
+        this.$nextTick(function() {
+            if(this.$route.query.id) {
+                this.getMemberInfo();
+            }
+        })
         this.userTag = this.memberLabels;
         this.getAllCoupons();
         this.getAllCodes();

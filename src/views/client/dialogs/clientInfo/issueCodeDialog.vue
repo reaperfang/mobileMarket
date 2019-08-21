@@ -101,6 +101,9 @@ export default {
         color: #655EFF;
       }
     }
+    .marB20{
+      margin-bottom: 20px;
+    }
 }
 </style>
 

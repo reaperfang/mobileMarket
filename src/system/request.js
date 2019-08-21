@@ -155,6 +155,9 @@ class Ajax {
           case 'manager':  //广告和导航开关修改  许涛
             config.baseURL = `${process.env.DATA_API}/api-manager-web/manager/api.do`;
             break;
+          case 'data':  //数据
+            config.baseURL = `${process.env.DATA_API}/api-behavior-web/behavior/api.do`;
+            break;
         }
       }
     }

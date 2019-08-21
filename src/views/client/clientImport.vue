@@ -183,6 +183,9 @@ export default {
 /deep/ .el-upload-list__item{
     width: 300px !important;
 }
+.marL20{
+    margin-left: 20px;
+}
 .c_container{
     background-color: #fff;
     padding: 16px 20px;

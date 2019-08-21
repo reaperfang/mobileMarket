@@ -123,6 +123,12 @@ export default {
             display: inline-block;
         }
     }
+    .marR20{
+        margin-right: 20px;
+    }
+    .marB10{
+        margin-bottom: 10px;
+    }
 }
 </style>
 

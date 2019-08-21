@@ -167,7 +167,23 @@ export default {
                     this.goodListFinished = true;
                 }
             }, 500);
-        }
+        },
+
+        //根据ids拉取数据
+        fetch() {
+            this.loading = true;
+            this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
+                this.tableList = response.list;
+                this.total = response.total;
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                title: '错误',
+                message: error
+                });
+                this.loading = false;
+            });
+        },
     }
 }
 </script>

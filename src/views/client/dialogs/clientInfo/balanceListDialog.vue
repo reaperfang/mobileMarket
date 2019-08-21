@@ -73,6 +73,9 @@ export default {
   p {
     text-align: left;
   }
+  .marB20{
+    margin-bottom: 20px;
+  }
 }
 </style>
 

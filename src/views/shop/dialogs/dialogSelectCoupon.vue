@@ -82,6 +82,7 @@ export default {
       ruleForm: {
         pageNum: 1,
         name: '',
+        couponType: 0
       },
       rules: {}
     };

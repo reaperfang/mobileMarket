@@ -170,6 +170,12 @@ export default {
 .c_label{
     margin: 5px 0 0 15px;
 }
+.marT10{
+    margin-top: 10px;
+}
+.marL20{
+    margin-left: 20px;
+}
 .form_container{
     width: 266px;
     .a_d{
