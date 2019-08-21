@@ -4,7 +4,7 @@
             <p class="user_id">用户ID：{{ data.memberSn }}</p>
             <div class="clearfix">
                 <p class="c_label fl">禁用选择：</p>
-                <el-checkbox v-model="checks[0].checked" label="优惠券" class="fl marT10"></el-checkbox>
+                <el-checkbox v-model="checkCoupon" label="优惠券" class="fl marT10"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in couponIds" :key="index">
                         <el-select v-model="i.id" style="margin-bottom: 10px">
@@ -16,7 +16,7 @@
                 <span class="add" @click="addCouponSel">添加</span>
             </div>
             <div class="clearfix">
-                <el-checkbox v-model="checks[1].checked" label="优惠码" class="fl marT10"></el-checkbox>
+                <el-checkbox v-model="checkCode" label="优惠码" class="fl marT10"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in codeIds" :key="index">
                         <el-select v-model="i.id" style="margin-bottom: 10px">
@@ -46,64 +46,66 @@ export default {
             blackCheck1: false,
             checks: [],
             couponIds: [{id:""}],
-            codeIds: [{id:""}]
+            codeIds: [{id:""}],
+            checkCoupon: "",
+            checkCode:""
         }
     },
     methods: {
         submit() {
             let params = {};
             let blackListMapDtos = [];
+            if(this.checkCoupon && this.couponIds.length !== 0) {
+                let arr = [];
+                this.couponIds.map((item) => {
+                    this.allCoupons.map((i) => {
+                        let obj = {};
+                        if(item.id == i.id) {
+                            obj[item.id] = i.name;
+                            arr.push(obj);
+                        }
+                    })
+                })
+                let str = "";
+                arr.map((v) => {str += "" + JSON.stringify(v) + ','});
+                str = str.replace(/{|}/g, "");
+                str = str.substring(0, str.length - 1);
+                let obj = {
+                    blackInfoId: v.id,
+                    blackInfoName: v.name,
+                    disableItemValue: str
+                }
+                blackListMapDtos.push(obj);
+            }
+            if(this.checkCode && this.codeIds.length !== 0) {
+                let arr = [];
+                this.codeIds.map((item) => {
+                    this.allCodes.map((i) => {
+                        let obj = {};
+                        if(item.id == i.id) {
+                            obj[item.id] = i.name;
+                            arr.push(obj);
+                        }
+                    })
+                })
+                let str = "";
+                arr.map((v) => {str += "" + JSON.stringify(v) + ','});
+                str = str.replace(/{|}/g, "");
+                str = str.substring(0, str.length - 1);
+                let obj = {
+                    blackInfoId: v.id,
+                    blackInfoName: v.name,
+                    disableItemValue: str
+                }
+                blackListMapDtos.push(obj);
+            }
             this.checks.map((v) => {
                 if(v.checked) {
-                    if(v.name == "优惠券" && this.couponIds.length !== 0) {
-                        let arr = [];
-                        this.couponIds.map((item) => {
-                            this.allCoupons.map((i) => {
-                                let obj = {};
-                                if(item.id == i.id) {
-                                    obj[item.id] = i.name;
-                                    arr.push(obj);
-                                }
-                            })
-                        })
-                        let str = "";
-                        arr.map((v) => {str += "" + JSON.stringify(v) + ','});
-                        str = str.replace(/{|}/g, "");
-                        str = str.substring(0, str.length - 1);
-                        let obj = {
-                            blackInfoId: v.id,
-                            blackInfoName: v.name,
-                            disableItemValue: str
-                        }
-                        blackListMapDtos.push(obj);
-                    }else if(v.name == "优惠码" && this.codeIds.length !== 0) {
-                        let arr = [];
-                        this.codeIds.map((item) => {
-                            this.allCodes.map((i) => {
-                                let obj = {};
-                                if(item.id == i.id) {
-                                    obj[item.id] = i.name;
-                                    arr.push(obj);
-                                }
-                            })
-                        })
-                        let str = "";
-                        arr.map((v) => {str += "" + JSON.stringify(v) + ','});
-                        str = str.replace(/{|}/g, "");
-                        str = str.substring(0, str.length - 1);
-                        let obj = {
-                            blackInfoId: v.id,
-                            blackInfoName: v.name,
-                            disableItemValue: str
-                        }
-                        blackListMapDtos.push(obj);
-                    }else{
-                        let obj = {
-                            blackInfoId: v.id,
-                            disableItemValue: "1"
-                        }
-                        blackListMapDtos.push(obj);
+                    let obj = {
+                        blackInfoId: v.id,
+                        disableItemValue: "1"
                     }
+                    blackListMapDtos.push(obj);
                 }
             });
             params.memberInfoId = this.data.id;
@@ -123,11 +125,10 @@ export default {
         },
         getBlackChecks() {
             this._apis.client.blackChecks({}).then((response) => {
-                console.log(response);
-                // response.map((v) => {
-                //     this.$set(v, 'checked', false);
-                // });
-                // this.checks = [].concat(response);
+                response.map((v) => {
+                    this.$set(v, 'checked', false);
+                });
+                this.checks = [].concat(response);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -185,6 +186,9 @@ export default {
 .user_id{
     text-align: left;
     padding: 0 0 10px 15px;
+}
+.marL20{
+    margin-left: 20px;
 }
 .c_label{
     margin: 5px 0 0 15px;

@@ -90,6 +90,9 @@ export default {
     display: inline-block;
     width: 230px;
   }
+  .marB20{
+    margin-bottom: 20px;
+  }
 }
 </style>
 

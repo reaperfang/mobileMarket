@@ -62,6 +62,12 @@ export default {
 .c_container{
     padding: 32px 36px;
     background-color: #fff;
+    .marL20{
+        margin-left: 20px;
+    }
+    .marR100{
+        margin-right: 100px;
+    }
     .c_line{
         margin-bottom: 30px;
         span{

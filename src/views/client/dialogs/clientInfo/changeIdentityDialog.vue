@@ -1,11 +1,11 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="变更客户身份" :hasCancel="hasCancel">
         <div class="c_container">
-            <p class="user_id">用户ID：{{data.id}}</p>
-            <p class="user_id">当前身份：非会员身份</p>
+            <p class="user_id">用户ID：{{ data.memberSn }}</p>
+            <p class="user_id">当前身份：{{ data.identity }}</p>
             <div class="s_cont">
                 <span>变更为：</span>
-                <el-select v-model="selectLevel" style="margin-bottom: 10px">
+                <el-select v-model="selectLevel" style="margin-bottom: 10px" @change="handleChange">
                     <el-option v-for="item in levelList" :label="item.alias" :value="item.id" :key="item.id"></el-option>
                 </el-select>
             </div>
@@ -28,14 +28,13 @@ export default {
     methods: {
         submit() {
             if(this.selectLevel.length > 0) {
-                let levelInfoId, levelInfoName;
+                let id;
                 this.levelList.map((v) => {
                     if(v.id == this.selectLevel) {
-                        levelInfoId = v.id;
-                        levelInfoName = v.name;
+                        id = v.id;
                     }
                 });
-                let params = {id: this.data.id, levelInfoId: levelInfoId, levelInfoName: levelInfoName};
+                let params = {id: id, oldLevelId: this.data.oldLevelId, memberInfoId: this.data.id};
                 this._apis.client.identityChange(params).then((response) => {
                     this.$notify({
                         title: '成功',
@@ -66,6 +65,21 @@ export default {
                     message: error
                 });
             })
+        },
+        handleChange(val) {
+            let currentLevel = null;
+            this.levelList.map((v) => {
+                if(v.id == val) {
+                    currentLevel = v.level;
+                }
+            })
+            if(currentLevel < this.data.oldLevel) {
+                this.$notify({
+                    title: '警告',
+                    message: '只能高于当前身份等级',
+                    type: 'warning'
+                });
+            }
         }
     },
     computed: {
