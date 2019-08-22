@@ -44,12 +44,12 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
-        layout="sizes, prev, pager, next"
-        :total="100">
-      </el-pagination>
+        :current-page="Number(startIndex) || 1"
+        :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
+        :page-size="pageSize*1"
+        :total="total*1"
+        layout="total, sizes, prev, pager, next, jumper"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -69,20 +69,22 @@ export default {
 
   },
   methods: {
+    handleCurrentChange(val) {
+      this.getLkList(val, this.pageSize);
+    },
+    handleSizeChange(val) {
+      this.getLkList(1, val);
+      this.pageSize = val;
+    },
     getLkList(startIndex, pageSize) {
       let params = {};
-      if(Object.keys(this.lkParams).length == 0) {
-        params = {
-          startIndex: startIndex || 1,
-          pageSize: pageSize || 10,
-        }
-      }else{
-        params = Object.assign({}, this.lkParams);
-        params.startIndex = startIndex;
-        params.pageSize = pageSize;
-      }
-      this._apis.client.getLkList(params).then((response) => {
+      this._apis.client.getLkList(Object.assign(this.lkParams, {startIndex, pageSize})).then((response) => {
         this.lklist = [].concat(response.list);
+        this.lklist.map((v) => {
+          v.enable = v.enable == 0?'禁用':'启用';
+          v.receiveWay = v.receiveWay == 0?'手动发放':'无门槛领取';
+        })
+        this.total = response.total;
       }).catch((error) => {
         this.$notify.error({
           title: '错误',
@@ -92,12 +94,12 @@ export default {
     }
   },
   mounted() {
-    this.getLkList(1,10);
+    this.getLkList(1,this.pageSize);
   },
   components: {},
   watch: {
     lkParams() {
-      this.getLkList(1,10);
+      this.getLkList(1,this.pageSize);
     }
   }
 };

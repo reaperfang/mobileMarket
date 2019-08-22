@@ -107,8 +107,11 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                        <span @click="updateStatus(scope.row)">同意</span>
-                        <span @click="updateRejectStatus(scope.row)">拒绝</span>
+                        <span v-if="scope.row.orderAfterSaleStatus == 0" @click="updateStatus(scope.row)">同意</span>
+                        <span v-if="scope.row.orderAfterSaleStatus == 0" @click="updateRejectStatus(scope.row)">拒绝</span>
+                        <span v-if="scope.row.orderAfterSaleStatus == 2">查看物流</span>
+                        <span v-if="scope.row.orderAfterSaleStatus == 2">确认收货</span>
+                        <span v-if="scope.row.orderAfterSaleStatus == 2">退款</span>
                     </template>
                 </el-table-column>
             </el-table>

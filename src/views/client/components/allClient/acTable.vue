@@ -31,6 +31,7 @@
     </el-table>
     <div class="page_styles">
       <el-pagination
+        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="Number(startIndex) || 1"
         :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
@@ -94,11 +95,15 @@ export default {
     }
   },
   mounted() {
-    this.getMembers(1,10);
+    this.getMembers(1, this.pageSize);
   },
   methods: {
     handleCurrentChange(val) {
-      this.getMembers(val, 10);
+      this.getMembers(val, this.pageSize);
+    },
+    handleSizeChange(val) {
+      this.getMembers(1, val);
+      this.pageSize = val;
     },
     handelDelete(id) {
       this.dialogVisible = true;
@@ -191,15 +196,15 @@ export default {
     },
     deleteFeedback(msg) {
       if (msg == "success") {
-        this.getMembers(1,10);
+        this.getMembers(1, this.pageSize);
       }
     }
   },
   watch: {
     newForm() {
-      this.getMembers(1,10);
+      this.getMembers(1, this.pageSize);
     }
-  }
+  },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

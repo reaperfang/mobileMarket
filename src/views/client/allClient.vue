@@ -162,7 +162,7 @@
         </div>
         <div>
             <div class="btn_container">
-                <el-button type="primary">导入</el-button>
+                <el-button type="primary" @click="_routeTo('clientImport')">导入</el-button>
                 <el-button>导出</el-button>
             </div>
             <acTable :newForm="newForm"></acTable>
@@ -326,6 +326,9 @@ export default {
   mounted() {
       this.getLabels();
       this.getChannels();
+      if(this.$route.query.memberLabels) {
+          this.newForm = Object.assign({}, this.$route.query);
+      }
   }
 }
 </script>

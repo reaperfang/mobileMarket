@@ -6,30 +6,72 @@ import chartBase from "@/components/ChartBase";
 export default {
   name: "pfChart",
   extends: chartBase,
+   computed:{
+      // flow(){
+      //     return this.$store._modules.root.state.data.dataChart
+      // }
+  },
+  props:{
+  },
   data() {
-    return {};
+    return {
+      flow:{},
+      type:1
+    };
   },
   created() {
     // this.engine.registerMap("china", chinaMap);
     //  this.engine.registerMap('world', worldMap);
+    // console.log(this.$store._modules.root.state.data.dataChart)
+    // console.log(this.flow['xAxisData'])
   },
   methods: {
-    //设置图表数据项
-    makeOption(data) {
+    // 数据显示控制
+    dataType(val,l){
+      if(val == 1){
+        this.option.title.text = "浏览/访问",
+        this.option.legend.data = ["浏览量","访客量"],
+        this.option.series = [{name:"访客",type: "line",stack: "总量",data: this.flow['yAxisUvData']},
+        {name:"浏览",type: "line",stack: "总量",data: this.flow['yAxisPvData']}]
+      }else if(val == 2){
+         this.option.title.text = "到店时段",
+         this.option.legend.data = ["到店时段"],
+         this.option.series =[{name:"到店时段",type: "line",stack: "总量",data: this.flow['yAxisData']},
+         ]
+      }else if(val == 3){
+         this.option.title.text = "访问次数",
+         this.option.legend.data = ["访问次数"],
+         this.option.series =[{name:"到店时段",type: "line",stack: "总量",data: this.flow['yAxisData']},
+         ]
+      }else if(val == 4){
+         this.option.title.text = "访问来源",
+         this.option.legend.data = ["小程序","公众号"],
+         this.option.series =[{name:"小程序",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxisPvData']},
+         {name:"公众号",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxisPvData']},
+         ]
+      }
+    },
+    // 小程序公众号
+    allType(val){
+        if(val != 0){
+
+        }
+    },
+    con(n,t,type,l){
       this.option = {
         title: {
-          text: "折线图堆叠"
+          text: ["浏览/访问"]
         },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
         legend: {
-          data: ["邮件营销", "联盟广告", "视频广告", "直接访问", "搜索引擎"]
+          data: ["浏览", "访客"]
         },
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom: "2%",
           containLabel: true
         },
         toolbox: {
@@ -40,45 +82,40 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+          data: this.flow['xAxisData']
         },
         yAxis: {
-          type: "value"
+          type: "value",
         },
         series: [
           {
-            name: "邮件营销",
+            name:"访客",
             type: "line",
             stack: "总量",
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: this.flow['yAxisUvData']
           },
           {
-            name: "联盟广告",
+            name:"浏览",
             type: "line",
             stack: "总量",
-            data: [220, 182, 191, 234, 290, 330, 310]
-          },
-          {
-            name: "视频广告",
-            type: "line",
-            stack: "总量",
-            data: [150, 232, 201, 154, 190, 330, 410]
-          },
-          {
-            name: "直接访问",
-            type: "line",
-            stack: "总量",
-            data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name: "搜索引擎",
-            type: "line",
-            stack: "总量",
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
+            data: this.flow['yAxisPvData'] 
           }
         ]
       };
+      console.log(n,t,type,l);
+      this.flow = n;
+      this.type = type;
+      this.dataType(type,l);
+      console.log(this.option)
+      this.makeOption(n);
+      this.oChart.setOption(this.option, true);
+    },
+    //设置图表数据项
+    makeOption(data) {
+      this.option
     }
+  },
+  mounted(){
   },
   components: {}
 };

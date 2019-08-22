@@ -1,99 +1,179 @@
 <template>
-    <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
-                <div class="pane_container">
-                    <div class="p_line">
-                        <div class="input_wrap">
-                            <el-date-picker
-                                v-model="range"
-                                type="daterange"
-                                range-separator="—"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
-                            </el-date-picker>
-                        </div>
-                        <span>最近7天</span>
-                        <span>最近15天</span>
-                        <span>最近30天</span>
-                    </div>
-                    <div class="btn_tabs clearfix">
-                        <el-button class="fr marL10" round>访问来源</el-button>
-                        <el-button class="fr" round>到店时段</el-button>
-                        <el-button class="fr" round>访问次数</el-button>
-                        <el-button class="active_btn fr" round>浏览量/访问量</el-button>
-                    </div>
-                    <div class="chart_container">
-                        <pfChart :title="'测试图表'"></pfChart>
-                    </div>
-                </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
-    </div>
+  <div class="p_container">
+      <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
+        <div class="pane_container">
+          <div class="p_line">
+            <el-radio-group v-model="dateType" @change="changeDay">
+              <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+              <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+              <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
+            </el-radio-group>
+            <div class="input_wrap" v-if="dateType == 4">
+              <el-date-picker
+                v-model="range"
+                type="daterange"
+                range-separator="—"
+                value-format="yyyy-MM-dd"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                @change="changeTime"
+              ></el-date-picker>
+            </div>
+          </div>
+          <div class="btn_tabs clearfix">
+            <el-radio-group class="fr" v-model="analysisType" @change="changeType">
+              <el-radio-button class="btn_bor" label="1">浏览量/访问量</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">到店时段</el-radio-button>
+              <el-radio-button class="btn_bor" label="3">访问次数</el-radio-button>
+              <el-radio-button class="btn_bor" label="4"  v-if="visitSourceType ==0 ">访问来源</el-radio-button>
+            </el-radio-group>
+          </div>
+          <div class="chart_container">
+            <pfChart :title="'测试图表'"  ref="prChart"></pfChart>
+          </div>
+        </div>
+        <div class="btn_tabs clearfix">
+            <el-radio-group class="fr" v-model="duration" @change="changeDp">
+              <el-radio-button class="btn_bor" label="1">停留时长</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">跳出率</el-radio-button>
+            </el-radio-group>
+        </div>
+        <div>
+            <durationChare  :title="'测试图表'"  ref="dprChart"></durationChare>
+        </div>
+  </div>
 </template>
 <script>
-import pfChart from './components/pfChart'
+import pfChart from "./components/pfChart";
+import durationChare from "./components/durationChare";
 export default {
-    name: 'passengerFlow',
-    components: { pfChart },
-    data() {
-        return {
-            activeName: "first", 
-            range: ""
+  name: "passengerFlow",
+  components: { pfChart,durationChare },
+  data() {
+    return {
+      activeName: "first",
+      range: "",
+      startTime: "",
+      endTime: "",
+      visitSourceType: 0, //1 小程序 2 公众号
+      analysisType: 1, //数据类型
+      dateType: 1, //1 7天 2:15天 3 30天 4：具体日期
+      dataChart: {},
+      title:'浏览/访问',
+      duration:1
+
+    };
+  },
+ 
+  methods: {
+    // 获取数据
+    getData() {
+      let data = {
+        startTime: this.startTime,
+        endTime: this.endTime,
+        visitSourceType: this.visitSourceType,
+        analysisType: this.analysisType,
+        dateType: this.dateType
+      };
+      this._apis.data.flowAnalysis(data).then(response => {
+            this.dataChart = response;
+            this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+    },
+    // 时间选择
+    changeTime(val) {
+      this.startTime = val[0]
+      this.endTime = val[1]
+      this.getData();
+    },
+    // 最近时间
+    changeDay(val) {
+        if(val != 4){
+        this.getData();
         }
     },
-    methods:{
-               getData(){
-                   let data ={
-                       cid:1,
-                       startTime:'',
-                       endTime:'',
-                       visitSourceType:'',
-                       analysisType:'',
-                       dateType:''
-                   }
-       this._apis.data.flowAnalysis(data).then((response)=>{
-      console.log(222,response)
-        }).catch((error)=>{
-            console.log(123)
-            this.$message.error(error);
-        })
+    //来源
+    changeType() {
+      this.getData();
+    },
+    // 图标标题
+    titleChang(val){
+        if(val == 1){
+            this.title = '直径/跳出率'
         }
     },
-    created(){
+    all(){
+        this.dateType = 1;
+        this.analysisType = 1;
         this.getData()
+    },
+    // 路径跳出率
+    getPathOut(){
+        let data = {
+        startTime: this.startTime,
+        endTime: this.endTime,
+        analysisType: this.duration,
+        dateType: this.dateType
+      };
+      this._apis.data.pathOut(data).then(response => {
+            this.dataChart = response;
+            this.$refs.dprChart.con(response,this.duration)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+    },
+    changeDp(){
+        this.getPathOut()
     }
-}
+  },
+  created() {
+    this.getData();
+    this.getPathOut()
+  }
+};
 </script>
 <style lang="scss" scoped>
-.p_container{
-    padding: 20px;
-    background-color: #fff;
-    .pane_container{
-        .p_line{
-            .input_wrap{
-                width: 350px;
-                display: inline-block;
-            }
-            span{
-                color: #655EFF;
-                margin-left: 20px;
-            }
-        }
-        .btn_tabs{
-            margin: 30px 0 22px 0;
-            .active_btn{
-                background:rgba(101,94,255,0.1);
-                color: #655EFF;
-            }
-        }
-        .chart_container{
-            padding-top: 20px;
-            border-top: 1px dashed #D3D3D3;
-        }
+.p_container {
+  padding: 20px;
+  background-color: #fff;
+  .pane_container {
+    .p_line {
+      .input_wrap {
+        width: 350px;
+        display: inline-block;
+      }
+      span {
+        color: #655eff;
+        margin-left: 20px;
+      }
     }
+    .btn_tabs {
+      margin: 30px 0 22px 0;
+      .active_btn {
+        background: rgba(101, 94, 255, 0.1);
+        color: #655eff;
+      }
+      .btn_bor {
+        // margin: 0 10px;
+        // border-radius: 20px;
+      }
+    }
+    .chart_container {
+      padding-top: 20px;
+      border-top: 1px dashed #d3d3d3;
+    }
+  }
 }
 </style>
 

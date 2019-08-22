@@ -142,10 +142,10 @@ export default {
         goodsStyle: 1,
         goodsChamfer: 1,
         goodsRatio: 1,
-        goodsFill: 1,
+        goodsFill: 2,
         textStyle: 1,
         textAlign: 1,
-        showContents: [],
+        showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],
         buttonStyle: 1,
         hideSaledGoods: true,
         hideEndGoods: false,
@@ -166,7 +166,8 @@ export default {
       handler(newValue) {
         this.ruleForm.ids = [];
         for(let item of newValue) {
-          this.ruleForm.ids.push(item.spuId);
+          // this.ruleForm.ids.push(item.spuId);
+          this.ruleForm.ids.push('1156003937296453632');
         }
       },
       deep: true

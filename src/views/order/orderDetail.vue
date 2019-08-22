@@ -2,17 +2,17 @@
     <div class="order-detail">
         <div class="header">
             <div class="lefter">
-                <span>订单编号：{{orderDetail.orderInfo.code}} | </span>
-                <span>{{orderDetail.orderInfo.channelInfoId}} | </span>
-                <span>{{orderDetail.orderInfo.sendType}} | </span>
-                <span>拼团编号：{{orderDetail.orderInfo.assembleCode}}</span>
+                <span>订单编号：{{orderDetail.orderInfo.code}}</span>
+                <span>{{orderDetail.orderInfo.channelInfoId | channelInfoIdFilter}}</span>
+                <span>{{orderDetail.orderInfo.orderType | orderTypeFilter}}</span>
+                <span v-if="orderDetail.orderInfo.orderType == 1">拼团编号：{{orderDetail.orderInfo.assembleCode}}</span>
             </div>
             <div class="righter">
-                <img src="../../assets/images/order/customerImg.png" alt="">
+                <i class="memberLevelImg" :style="{background: `url(${orderDetail.memberLevelImg})`}"></i>
                 <span>客户ID：{{orderDetail.orderInfo.memberSn}}</span>
             </div>
         </div>
-        <orderState :orderState="orderDetail.orderInfo.orderStatus" :payWay="orderDetail.orderInfo.payWay" :closeReaosn="orderDetail.orderInfo.closeReaosn" class="order-state"></orderState>
+        <orderState :orderInfo="orderDetail.orderInfo" :orderState="orderDetail.orderInfo.orderStatus" :payWay="orderDetail.orderInfo.payWay" :closeReaosn="orderDetail.orderInfo.closeReaosn" @orderStatusSuccess="getDetail" class="order-state"></orderState>
         <div class="message">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="订单信息" name="order">
@@ -161,30 +161,10 @@ export default {
                 
             ],
             goodsListMessage: {
-                reducePriceVisible: false,
-                freight: '1',
-                payAmount: '1',
-                coupon: '1',
-                discount: '1',
-                memberDiscount: '1',
-                favourable: '1',
-                freeShipping: '1',
-                consultMoney: '',
-                amountInHand: '1',
-                consultType: '1',
-                reducePriceTypeList: [
-                    {
-                        label: '协商减价',
-                        value: '2'
-                    },
-                    {
-                        label: '协商加价',
-                        value: '1'
-                    },
-                ]
+               
             },
             operateRecord: [
-                {}
+                
             ],
             currentDialog: '',
             dialogVisible: false,
@@ -219,6 +199,28 @@ export default {
                     return '关闭订单'
                 case 7:
                     return '提前关闭订单'
+            }
+        },
+        channelInfoIdFilter(code) {
+            switch(code) {
+                case '1':
+                    return '小程序'
+                case '2':
+                    return '公众号'
+            }
+        },
+        orderTypeFilter(code) {
+            switch(code + '') {
+                case '0':
+                    return '普通订单'
+                case '1':
+                    return '拼团订单'
+                case '2':
+                    return '优惠套餐订单'
+                case '3':
+                    return '特权价'
+                case '4':
+                    return '赠品订单'
             }
         }
     },
@@ -268,6 +270,16 @@ export default {
             background-color: #fff;
             height: 60px;
             line-height: 60px;
+            padding: 0 20px;
+            .lefter {
+                span {
+                    border-right: 1px solid #cacfcb;
+                    padding-right: 5px;
+                    &:last-child {
+                        border: none;
+                    }
+                }
+            }
         }
         .order-state {
             margin-top: 20px;
@@ -321,6 +333,12 @@ export default {
     }
     .reduce-price-input {
         width: auto;
+    }
+    .memberLevelImg {
+        display: inline-block;
+        width: 14px;
+        height: 13px;
+        margin-right: 5px;
     }
 </style>
 

@@ -528,7 +528,7 @@ export function changeSwitchStatus(data) {
   //N元N件C端展示
   export function getNyuanListByIds(data) {
       return request({
-        url: 'api/v1/b/goodsbale/page-list',
+        url: `api/v1/c/goodsbale/list/${data.baleIds}`,
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data

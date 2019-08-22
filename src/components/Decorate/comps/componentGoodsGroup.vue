@@ -3,7 +3,7 @@
     <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data">
         <div class="componentGoodsGroup_tab" id="componentGoodsGroup_tab" :class="'menuStyle'+menuStyle" :style="{width:componentGoodsGroup_tabWidth}">
             <p class="active" v-if="showAllGroup==1">全部</p>
-            <p v-for="(item,key) of goodsGroups" :class="{active:showAllGroup!=1&&key==0}" :key="key">{{item.title}}</p>
+            <p v-for="(item,key) of goodsGroups" :class="{active:showAllGroup!=1&&key==0}" :key="key">{{item.name}}</p>
         </div>
         <div class="componentGoodsGroup_content">
             <componentGoods :data='currentComponentData'></componentGoods>
@@ -78,18 +78,23 @@ export default {
 
         //根据ids拉取数据
         fetch() {
-            this.loading = true;
-            this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
-                this.tableList = response.list;
-                this.total = response.total;
-                this.loading = false;
-            }).catch((error)=>{
-                this.$notify.error({
-                title: '错误',
-                message: error
+            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
+                this.loading = true;
+                this._apis.goods.fetchSpuGoodsList({
+                    status: '1',
+                    ids: this.currentComponentData.data.ids.join(',')
+                }).then((response)=>{
+                    this.tableList = response.list;
+                    this.total = response.total;
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                    title: '错误',
+                    message: error
+                    });
+                    this.loading = false;
                 });
-                this.loading = false;
-            });
+            }
         },
     }
 }

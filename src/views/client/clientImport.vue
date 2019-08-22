@@ -15,7 +15,7 @@
                                 </el-option>
                             </el-select>
                         </div>
-                        <span class="addMainColor pointer">新建</span>
+                        <span class="addMainColor pointer" @click="handleNew">新建</span>
                     </el-form-item>
                     <el-form-item label="身份：" prop="memberType">
                         <div class="input_wrap">
@@ -27,9 +27,10 @@
                         <div class="input_wrap marL">
                             <el-upload
                                 class="upload-block"
-                                action="https://jsonplaceholder.typicode.com/posts/"
+                                action="/data-server/web-file/file-server/api_file_remote_upload.do"
                                 :on-preview="handlePreview"
                                 :on-remove="handleRemove"
+                                :on-success="handleSuccess"
                                 multiple
                                 :file-list="fileList">
                                 <el-button size="small" type="primary">点击上传</el-button>
@@ -70,16 +71,16 @@
             </div>
             <ciTable style="margin-top: 68px" :params="params"></ciTable>
         </div>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
     </div>
 </template>
 <script type="es6">
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
-import clientCont from '@/system/constant/client';
 import ciTable from './components/clientImport/ciTable';
-import utils from "@/utils";
+import addChannelDialog from './dialogs/clientImport/addChannelDialog';
 export default {
-    components: { ciTable },
+    components: { ciTable, addChannelDialog },
     name: 'clientImport',
     data() {
         return {
@@ -101,7 +102,11 @@ export default {
             importTime: '',
             channelId2:"",
             channelOptions:[],
-            params: {}
+            params: {},
+            //dialog所需
+            currentDialog: "",
+            dialogVisible: false,
+            currentData: {}
         }
     },
     methods: {
@@ -137,17 +142,21 @@ export default {
                     message: error
                 });
             })
+        },
+        handleNew() {
+            this.dialogVisible = true;
+            this.currentDialog = "addChannelDialog"; 
         }
     },
     computed: {
-        memberLabels() {
-            return clientCont.memberLabels
-        },
         handleRemove(file, fileList) {
             //console.log(file, fileList);
         },
         handlePreview(file) {
            // console.log(file);
+        },
+        handleSuccess(res, file) {
+            console.log(res);
         },
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${ file.name }？`);

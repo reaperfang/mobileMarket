@@ -63,7 +63,8 @@ export default {
       tableList: [],
       multipleSelection: [],
       ruleForm: {
-        name: ""
+        name: "",
+        status: '1'
       },
       rules: {}
     };
@@ -84,7 +85,7 @@ export default {
 
     fetch() {
       this.loading = true;
-      this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
+      this._apis.goods.fetchSpuGoodsList(this.ruleForm).then((response)=>{
         this.tableList = response.list;
         this.total = response.total;
         this.loading = false;

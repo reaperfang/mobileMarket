@@ -1,10 +1,10 @@
 <template>
   <div class="query">
     <section>
-      <el-form :inline="true" :model="formInline" ref="formInline" class="form-inline">
+      <el-form :inline="true" :model="listQuery" ref="formInline" class="form-inline">
         <el-form-item label>
-          <el-input placeholder="请输入内容" v-model="formInline.searchValue" class="input-with-select">
-            <el-select v-model="formInline.searchType" slot="prepend" placeholder="请输入">
+          <el-input placeholder="请输入内容" v-model="listQuery.searchValue" class="input-with-select">
+            <el-select v-model="listQuery.searchType" slot="prepend" placeholder="请输入">
               <el-option label="订单编号" value="code"></el-option>
               <el-option label="商品名称" value="goodsName"></el-option>
               <el-option label="客户ID" value="memberSn"></el-option>
@@ -14,14 +14,14 @@
           </el-input>
         </el-form-item>
         <el-form-item label="订单来源">
-          <el-select v-model="formInline.channelInfoId" placeholder>
+          <el-select v-model="listQuery.channelInfoId" placeholder>
             <el-option label="全部" value></el-option>
             <el-option label="小程序" :value="1"></el-option>
             <el-option label="公众号" :value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="订单类型">
-          <el-select v-model="formInline.orderType" placeholder>
+          <el-select v-model="listQuery.orderType" placeholder>
             <el-option label="全部" value></el-option>
             <el-option label="普通订单" :value="1"></el-option>
             <el-option label="拼团订单" :value="2"></el-option>
@@ -30,7 +30,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="支付方式">
-          <el-select v-model="formInline.payWay" placeholder>
+          <el-select v-model="listQuery.payWay" placeholder>
             <el-option label="全部" value></el-option>
             <el-option label="线上支付" :value="1"></el-option>
             <el-option label="货到付款" :value="2"></el-option>
@@ -38,7 +38,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="发货类型">
-          <el-select v-model="formInline.sendType" placeholder>
+          <el-select v-model="listQuery.sendType" placeholder>
             <el-option label="全部" value></el-option>
             <el-option label="正常发货" :value="1"></el-option>
             <el-option label="自动发货" :value="2"></el-option>
@@ -46,7 +46,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="订单状态">
-          <el-select v-model="formInline.orderStatus" placeholder>
+          <el-select v-model="listQuery.orderStatus" placeholder>
             <el-option label="全部" value></el-option>
             <el-option label="待付款" :value="0"></el-option>
             <el-option label="待成团" :value="1"></el-option>
@@ -58,13 +58,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label>
-          <el-select class="date-picker-select" v-model="formInline.searchTimeType" placeholder>
+          <el-select class="date-picker-select" v-model="listQuery.searchTimeType" placeholder>
             <el-option label="下单时间" value="createTime"></el-option>
             <el-option label="完成时间" value="complateTime"></el-option>
             <el-option label="发货时间" value="sendTime"></el-option>
           </el-select>
           <el-date-picker
-            v-model="formInline.orderTimeValue"
+            v-model="listQuery.orderTimeValue"
             type="daterange"
             range-separator="-"
             value-format="yyyy-MM-dd hh:mm:ss"
@@ -73,7 +73,7 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item style="float: right;">
-          <span @click="resetForm('formInline')" class="resetting">重置</span>
+          <span @click="resetForm('formInline')" class="resetting pointer">重置</span>
           <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
       </el-form>
@@ -95,7 +95,7 @@
       </p>
       <el-tabs class="tabs" v-model="activeName">
         <el-tab-pane label="商城订单" name="shop">
-          <shop ref="shop" :params="formInline"></shop>
+          <shop ref="shop" :params="listQuery"></shop>
         </el-tab-pane>
         <el-tab-pane label="积分商城订单" name="integralShop">
           <integralShop></integralShop>
@@ -105,16 +105,21 @@
   </div>
 </template>
 <script>
-import Pagination from "@/components/Pagination";
 import Shop from "./components/shop";
 import IntegralShop from "./components/integralShop";
 import { fetchOrderList } from "@/api/order";
 import appConfig from '@/system/appConfig';
+import { search } from '@/mixins/orderMixin'
 
 export default {
   data() {
     return {
-      formInline: {
+      list: [
+        
+      ],
+      checkedLength: 0,
+      total: 0,
+      listQuery: {
         searchType: "code",
         searchValue: "",
         code: "", // 订单编号
@@ -130,52 +135,10 @@ export default {
         searchTimeType: "createTime", // 下单时间: createTime 完成时间: complateTime 发货时间: sendTime
         orderTimeValue: ""
       },
-      list: [
-        {
-          number: "1",
-          orderTime: "2019-06-04 12:00:00",
-          orderMode: "拼团",
-          customer: "小李",
-          origin: "小程序",
-          checked: false,
-          payAmount: "1000",
-          paymentMode: "微信支付",
-          receiver: "张三",
-          mobile: "13800000000",
-          shippingMethod: "普通快递",
-          state: "已完成",
-          goodsList: [
-            {
-              goodsName: "苹果",
-              spec: "5斤",
-              quantity: 10
-            },
-            {
-              goodsName: "梨",
-              spec: "5斤",
-              quantity: 10,
-              state: "已完成"
-            }
-          ]
-        }
-      ],
-      checkedLength: 0,
-      total: 0,
-      listQuery: {
-        page: 1,
-        limit: 20
-      },
       activeName: "shop"
     };
   },
   created() {
-    // fetchOrderList()
-    // .then(res => {
-    //     console.log(res)
-    // })
-    // .catch(error => {
-
-    // });
     this._globalEvent.$on("checkedLength", number => {
       this.checkedLength = number;
     });
@@ -203,11 +166,25 @@ export default {
       this.$refs["shop"].getList();
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
-    }
+        this.listQuery = {
+        searchType: "code",
+        searchValue: "",
+        code: "",
+        goodsName: "",
+        memberSn: "",
+        receivedPhone: "",
+        receivedName: "",
+        channelInfoId: "",
+        orderType: "",
+        payWay: "",
+        sendType: "",
+        orderStatus: "",
+        searchTimeType: "createTime",
+        orderTimeValue: ""
+      }
+    },
   },
   components: {
-    Pagination,
     Shop,
     IntegralShop
   }
@@ -244,6 +221,9 @@ export default {
 /deep/ .el-date-editor {
   margin-left: -6px;
   border-radius: 0 0 4px 4px;
+}
+/deep/ .date-picker-select {
+  width: 100px;
 }
 /deep/ .date-picker-select .el-input__inner {
   border-radius: 4px 0 0 4px;

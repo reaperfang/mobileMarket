@@ -16,8 +16,10 @@
           type="selection"  
           width="55">
         </el-table-column>
-        <el-table-column prop="title" label="分组名称"></el-table-column>
+        <el-table-column prop="name" label="分组名称"></el-table-column>
         <el-table-column prop="number" label="商品数量"></el-table-column>
+        <el-table-column prop="level" label="层级"></el-table-column>
+        <el-table-column prop="parentId" label="父id"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
       </el-table>
       <div class="pagination">
@@ -56,7 +58,8 @@ export default {
       tableList: [],
       multipleSelection: [],
       ruleForm: {
-        name: ''
+        name: '',
+        enable: '1'
       },
       rules: {}
     };
@@ -74,30 +77,18 @@ export default {
   created() {
   },
   methods: {
-    fetch() {
-      this.tableList = [
-         {
-          id: uuid(),
-          title: '商品分组1',
-          desc: '这是商品描述',
-          createTime: '2019-08-23 12:44:23',
-          number: 20
-        },
-        {
-          id: uuid(),
-          title: '商品分组2',
-          desc: '这是商品描述2',
-          createTime: '2019-08-23 12:44:23',
-          number: 37
-        },
-        {
-          id: uuid(),
-          title: '商品分组3',
-          desc: '这是商品描述2',
-          createTime: '2019-08-23 12:44:23',
-          number: 78
-        }
-      ]
+     fetch() {
+      this.loading = true;
+      this._apis.goods.fetchCategoryList(this.ruleForm).then((response)=>{
+        this.tableList = response;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
     },
 
     /* 向父组件提交选中的数据 */
