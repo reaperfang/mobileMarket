@@ -4,7 +4,8 @@ const user = {
   state: {
     token: getToken(),
     roles: [],
-    userInfo: null
+    userInfo: null,
+    cid:''
   },
 
   mutations: {
@@ -17,15 +18,17 @@ const user = {
     SET_USER_INFO: (state, userInfo) => {
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
       state.userInfo = userInfo
+    },
+    SET_CID:(state, cid) =>{
+      state.cid = cid
     }
   },
 
   actions: {
-
     // 用户名登录
     login({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        this.$api.login(userInfo).then(response => {
+        this._apis.login.login(userInfo).then(response => {
           if(response.accessToken){
             commit('SET_TOKEN', response.accessToken);
             setToken(response.accessToken);
@@ -43,6 +46,16 @@ const user = {
         })
       })
     },
+     
+    //获取店铺id
+    getCid({commit},id){
+      return new Promise((resolve, reject) => {
+        commit('SET_CID',id)
+        resolve()
+        reject(error)
+      })
+    },
+
 
     // 获取用户信息
     GetUserInfo({ commit, state }) {
@@ -64,7 +77,7 @@ const user = {
       })
     },
 
-    // 登出
+    //退出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         // logout(state.token).then(() => {

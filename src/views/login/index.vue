@@ -27,7 +27,7 @@
           <span>
             <el-checkbox v-model="checked">记住用户名</el-checkbox>            
           </span>
-          <span @click="_routeTo('profile/passwordChange')">修改密码</span>
+          <!-- <span @click="_routeTo('profile/passwordChange')">修改密码</span> -->
         </el-form-item>
         <el-button :loading="loading" type="primary" class="btn-login" @click.native.prevent="handleLogin">登 录</el-button>
       </div>
@@ -44,7 +44,7 @@
         <el-button @click="dialogVisible = false">暂不创建</el-button>
       </span>
     </el-dialog>
-    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose"></shopsDialog>
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList"></shopsDialog>
   </div>
 </template>
 
@@ -55,25 +55,25 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (validateUsername == null) {
-        callback(new Error('请输入正确的管理员用户名'))
+        callback(new Error('请输入正确的用户名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('管理员密码长度应大于6'))
+        callback(new Error('用户密码长度应大于6'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        userName: 'admin-lqx',
-        password: '111111',
+        userName: '',
+        password: '',
         validateCodeKey: '700233df-30c6-4412-92cd-6eebd24af07a',
         validateCode: 'K5UW',
-        platform: '133EFB922DF3'
+        platform: '13416032592F'
       },
       loginRules: {
         userName: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -86,6 +86,7 @@ export default {
       showShopsDialog:false,
       checked:false,
       shopName:'',
+      shopList:[]
     }
   },
   components: {
@@ -98,14 +99,12 @@ export default {
       },
       immediate: true
     }
-
   },
   created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-    this.autoLogin()
+    // this.autoLogin()
   },
   destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+
   },
   methods: {
     showPwd() {
@@ -116,53 +115,52 @@ export default {
       }
     },
     handleLogin() {
-      this.showShopsDialog = true
-      // this.dialogVisible = true
-      // this.$refs.loginForm.validate(valid => {
-      //   if (valid && !this.loading) {
-      //     this.loading = true
-      //     this.$store.dispatch('login', this.loginForm).then(() => {
-      //       this.loading = false
-      //       const userName = this.loginForm.userName
-      //       this.$router.push({ path: '/profile/profile' })
-      //       // if (userName === 'admin') {
-      //       //   this.$router.push({ path: '/platform/admin' })
-      //       // } else {
-      //       //   this.$router.push({ path: '/shop/decoration' })
-      //       // }
-      //     }).catch(error => {
-      //       this.$notify.error({
-      //         title: '失败',
-      //         message: error
-      //       })
-      //       this.loading = false
-      //     })
-      //   } else {
-      //     return false
-      //   }
-      // })
-    },
-    login(userName, password) {
-      this.loading = true
-      this.loginForm = Object.assign({}, this.loginForm, {userName, password})
-      this.$store.dispatch('login', this.loginForm).then(() => {
-        this.loading = false
-        this.$router.push({ path: '/profile/profile' })
-      }).catch(error => {
-        this.$notify.error({
-          title: '失败',
-          message: error
-        })
-        this.loading = false
+      this.$refs.loginForm.validate(valid => {
+        if (valid && !this.loading) {
+          this.loading = true
+          this.$store.dispatch('login', this.loginForm).then((response) => {
+            this.loading = false
+            let info = this.$store.state.user.userInfo
+            let arr = Object.keys(info.shopInfoMap) 
+            if(arr.length == 0){
+              this.dialogVisible = true
+            }else{
+              this.shopList = info.shopInfoMap
+              this.showShopsDialog = true
+            }
+          }).catch(error => {
+            this.$notify.error({
+              title: '失败',
+              message: error
+            })
+            this.loading = false
+          })
+        } else {
+          return false
+        }
       })
     },
-    autoLogin() {
-      let userName = this.$route.query.name
-      let password = this.$route.query.password
-      if(userName!=undefined && password!=undefined) {
-        this.login('admin-lqx', '111111')
-      }
-    },
+    // login(userName, password) {
+    //   this.loading = true
+    //   this.loginForm = Object.assign({}, this.loginForm, {userName, password})
+    //   this.$store.dispatch('login', this.loginForm).then(() => {
+    //     this.loading = false
+    //     this.$router.push({ path: '/profile/profile' })
+    //   }).catch(error => {
+    //     this.$notify.error({
+    //       title: '失败',
+    //       message: error
+    //     })
+    //     this.loading = false
+    //   })
+    // },
+    // autoLogin() {
+    //   let userName = this.$route.query.name
+    //   let password = this.$route.query.password
+    //   if(userName!=undefined && password!=undefined) {
+    //     this.login('admin-lqx', '111111')
+    //   }
+    // },
     handleCloses(){
       this.dialogVisible = false
     },

@@ -3,7 +3,7 @@
     <p class="title">创建普通图文</p>
     <div class="content">
       <div>
-        <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></RichEditor>
+        <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="this.ruleForm.sourceMaterial"></RichEditor>
       </div>
       <div class="c_right">
         <p class="head">图文信息</p>
@@ -75,7 +75,7 @@ export default {
         serverUrl: 'http://35.201.165.105:8000/controller.php',
         // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
         UEDITOR_HOME_URL: '/static/UEditor/'
-      }
+      },
     }
   },
   created() {
@@ -103,20 +103,45 @@ export default {
     },
     //保存
     save(){
-      this._apis.file.saveArticle(this.ruleForm).then((response)=>{
-        this.$notify.success({
-          title: '成功',
-          message: '创建图文成功！'
-        });
-        this.$router.push({
-          name: 'fileManageIndex',
+      let id = this.$route.query.id
+      if(id){
+        let query = {
+          id:id,
+          title: this.ruleForm.title,
+          fileCover: this.ruleForm.fileCover,
+          isCover: this.ruleForm.isCover,
+          sourceMaterial:this.ruleForm.sourceMaterial
+        }
+        this._apis.file.editArticle(query).then((response)=>{
+          this.$notify.success({
+            title: '成功',
+            message: '修改图文成功！'
+          });
+          this.$router.push({
+            name: 'fileManageIndex',
+          })
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
         })
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
+      }else{
+        this._apis.file.saveArticle(this.ruleForm).then((response)=>{
+          this.$notify.success({
+            title: '成功',
+            message: '创建图文成功！'
+          });
+          this.$router.push({
+            name: 'fileManageIndex',
+          })
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+        })
+      }
     },
     //图片上传成功
     handleAvatarSuccess(res, file) {

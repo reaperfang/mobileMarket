@@ -15,15 +15,15 @@
       <p class="list_top">视频素材<span>{{total*1}}</span>条</p>
       <div class="list_main">
         <div class="list_img">
-           <div class="imgs" v-for="item in list" :key="item.id">
-            <div class="item_img">
+           <div class="imgs">
+            <div class="item_img" v-for="item in list" :key="item.id">
               <p class="img_head">
                 <span>
                   <el-checkbox v-model="checked"></el-checkbox>
                   {{item.updateTime}}
                   </span>
                   <span>
-                    <i class="wx_icon"></i>
+                    <i class="wx_icon" v-if="item.isSyncWechat"></i>
                     {{item.fileSize}} MB
                   </span>
               </p>
@@ -231,7 +231,7 @@ export default {
             this.handleSyncImage()
           break;
           case 'uploadVideo':
-            this.getList()
+            this.uploadVideo(data.uploadVideo.query)
           break;
         }
       }
@@ -313,6 +313,21 @@ export default {
         this.$notify.success({
           title: '成功',
           message: '删除成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //上传视频
+    uploadVideo(query){
+      this._apis.file.uploadVideo(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '上传图片成功！'
         });
         this.getList()
       }).catch((error)=>{

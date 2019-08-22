@@ -99,6 +99,16 @@ export function saveArticle(data) {
   })
 }
 
+//修改图文素材
+export function editArticle(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-UPDATE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 //根据id获取图文详情
 export function getArticle(data) {
   return request({

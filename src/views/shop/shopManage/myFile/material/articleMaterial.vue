@@ -227,6 +227,7 @@ export default {
         border-bottom: 1px solid #e6e6e6;
         display: flex;
         flex: 1;
+        justify-content: space-between;
         span{
           font-size: 14px;
           color: #92929B;

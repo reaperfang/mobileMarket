@@ -7,6 +7,7 @@ import user from './modules/user'
 import menu from './modules/menu'
 import decorate from './modules/decorate'
 import getters from './getters'
+import api from '@/api';
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     decorate
   },
   getters
-})
+});
+store._apis = api;
 
 export default store
