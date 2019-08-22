@@ -59,14 +59,10 @@ module.exports = {
         //target: 'http://172.22.146.10:8080',
         // target: 'http://120.133.1.130:8012',//营销测试机
         //target:'http://172.22.145.115:8080',//耿士龙
-<<<<<<< HEAD
-          target:'http://172.22.145.113:8083',//李权宇
-=======
         // target:'http://172.22.145.113:8083',//李权宇
         //target:'http://172.22.146.119:8080', //郑艳华
         //target: 'http://172.22.146.3:8080',//张昌超
          //target:'http://hhq3bj.natappfree.cc/',//数据
->>>>>>> ef0d9a5fe835e2fe627ebe9fdcaa9e1f32f1c21b
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
