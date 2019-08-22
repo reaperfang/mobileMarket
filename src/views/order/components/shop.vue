@@ -16,7 +16,8 @@ export default {
                 startIndex: 1,
                 pageSize: 20,
             },
-            list: []
+            list: [],
+            memberLevelImg: ''
         }
     },
     created() {
@@ -31,8 +32,8 @@ export default {
 
             _params = Object.assign({}, this.params, {
                 [this.params.searchType]: this.params.searchValue,
-                //[this.params.searchTimeType + 'Start']: this.orderTimeValue[0],
-                //[this.params.searchTimeType + 'End']: this.orderTimeValue[1]
+                [`${this.params.searchTimeType}Start`]: this.params.orderTimeValue ? this.params.orderTimeValue[0] : '',
+                [`${this.params.searchTimeType}End`]: this.params.orderTimeValue ? this.params.orderTimeValue[1] : ''
             }, this.listQuery)
             this._apis.order.fetchOrderList(_params).then((res) => {
                 console.log(res)

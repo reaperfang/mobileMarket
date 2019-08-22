@@ -3,110 +3,102 @@
         <div class="header">
             打印配送单预览
         </div>
-        <div class="content">
-            <div class="title">配送单</div>
-            <div class="table-box">
-                <div class="table-headers">
-                    <div class="row">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    订单编号：
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    客户ID：
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    收货人： 
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    发货日期：
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    客户昵称：
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    收货地址： 
-                                </div>
-                                <div class="col">
-                                    
-                                </div>
-                            </div>
-                        </div>
+        <div class="content print-content" style="color: #161617;">
+            <div v-for="(item, index) in tableData" :key="index" style="page-break-after:always;">
+                <div class="title" style="color: #161617; font-size: 18px; text-align: center; margin-bottom: 18px;">配送单</div>
+                <div class="table-head" style="border: 1px solid #ccc; border-bottom: none; color: #161617; font-size: 14px; padding: 20px 25px; padding-bottom: 10px;">
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <div class="item" style="width: 280px;">订单编号：{{item.orderCode}}</div>
+                        <div class="item">发货日期：{{item.updateTime}}</div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <div class="item" style="width: 280px;">客户ID：{{item.memberSn}}</div>
+                        <div class="item">客户昵称：{{item.nickName}}</div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <div class="item" style="width: 280px;">收货人：{{item.receivedName}}</div>
+                        <div class="item">收货地址：{{item.receivedDetail}}</div>
                     </div>
                 </div>
-                <el-table
-                    :data="tableData"
-                    border
-                    style="width: 100%">
-                    <el-table-column
-                    prop="number"
-                    label="序号"
-                    width="180">
-                    </el-table-column>
-                    <el-table-column
-                    prop="name"
-                    label="商品名称"
-                    width="180">
-                    </el-table-column>
-                    <el-table-column
-                    prop="quantity"
-                    label="数量">
-                    </el-table-column>
-                    <el-table-column
-                    prop="price"
-                    label="单价">
-                    </el-table-column>
-                    <el-table-column
-                    prop="money"
-                    label="金额">
-                    </el-table-column>
-                </el-table>
-                <div class="table-footer">
-                    <span>商户账号：</span>
-                    <span>店铺名称：</span>
-                    <span>商户联系方式：</span>
+                <table border="1" style="border-collapse:collapse; width: 100%; border-color: rgb(205, 208, 206); border: 1px solid rgb(205, 208, 206);">
+                    <tr style="background: rgba(243, 244, 243);">
+                        <td style="height: 45px; text-align: center;">序号</td>
+                        <td style="height: 45px; text-align: center;">商品名称</td>
+                        <td style="height: 45px; text-align: center;">数量</td>
+                        <td style="height: 45px; text-align: center;">单价</td>
+                        <td style="height: 45px; text-align: center;">优惠</td>
+                        <td style="height: 45px; text-align: center;">金额</td>
+                    </tr>
+                    <tr v-for="(sendItem, index) in item.orderSendItemViewList" :key="index">
+                        <td style="height: 45px; text-align: center;">{{index + 1}}</td>
+                        <td style="height: 45px; text-align: center;">{{sendItem.goodsName}}</td>
+                        <td style="height: 45px; text-align: center;">{{sendItem.sendCount}}</td>
+                        <td style="height: 45px; text-align: center;">1</td>
+                        <td style="height: 45px; text-align: center;">¥80.00</td>
+                        <td style="height: 45px; text-align: center;">$100</td>
+                    </tr>
+                </table>
+                <div class="table-footer" style="border: 1px solid rgb(205, 208, 206); border-top: none; color: #161617; font-size: 14px; padding: 20px 25px; padding-bottom: 10px;">
+                    <div style="display: flex;">
+                        <div class="item" style="margin-right: 40px;">商户账号：11111111</div>
+                        <div class="item" style="margin-right: 40px;">店铺名称：11111111</div>
+                        <div class="item">商户联系方式：11111111</div>
+                    </div>
+                </div>
+                <div class="footer" style="color: #161617; text-align: right; padding-top: 12px;">
+                    <p>打印时间：{{printTime}}</p>
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <p>打印时间：</p>
-            <p><el-button type="primary">打印</el-button></p>
+        <div class="tc" style="margin-top: 20px;">
+            <el-button @click="print" type="primary">打印</el-button>
         </div>
     </div>  
 </template>
 <script>
+import utils from "@/utils";
+
 export default {
     data() {
         return {
-            tableData: []
+            tableData: [],
+            printTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss")
+        }
+    },
+    created() {
+        this.getPrintInfo()
+    },
+    methods: {
+        getPrintInfo() {
+            this._apis.order.orderSendInfoPrint({ids: this.$route.query.ids.split(',')}).then((res) => {
+                this.tableData = res
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        print() {
+            this.printTime = utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss")
+            setTimeout(() => {
+                let _href = window.location.href
+                //1.获取当前页的html代码  
+
+                var body = window.document.body.innerHTML; 
+
+                //2.要打印的部分（#print里面的内容就是要打印的内容）
+
+                window.document.body.innerHTML = document.getElementsByClassName("print-content")[0].innerHTML; 
+
+                window.print();
+
+                window.document.body.innerHTML = body;
+
+                //重新载入当前文档:
+
+                window.location.href = _href
+            }, 0)
         }
     }
 }
@@ -115,35 +107,11 @@ export default {
     .print-distribution-sheet {
         background-color: #fff;
         padding: 20px;
-        .content {
-            padding: 20px 40px;
-            .title {
-                text-align: center;
-                padding: 20px 15px;
-                font-size: 18px;
-            }
-            .table-box {
-                border: 1px solid #EBEEF5;
-                .table-headers {
-                    padding: 20px 25px;
-                }
-                .table-footer {
-                    padding: 20px 15px;
-                }
-            }
-        }
-        .footer {
-            padding: 0 40px;
-            p:first-child {
-                text-align: right;
-            }
-            p:last-child {
-                text-align: center;
-                margin-top: 40px;
-            }
+        color: rgb(205, 208, 206);
+        .header {
+            margin-bottom: 20px;
         }
     }
-    
 </style>
 
 

@@ -36,7 +36,7 @@ export function orderSendPageList(data) {
   return request({
     apiType: 'order',
     method: 'post',
-    target: 'ORDERSENDPAGELISTPROCESS',
+    target: 'ORDER-SEND-PAGE-LIST-PROCESSOR',
     data
   })
 }
@@ -46,7 +46,7 @@ export function SendPageList(data) {
   return request({
     apiType: 'order',
     method: 'post',
-    target: 'ORDERSENDPAGELISTPROCESS',
+    target: 'ORDER-AFTER-SALE-SEND-INFO-LIST-PROCESSOR',
     data
   })
 }
@@ -367,6 +367,36 @@ export function getOrderAfterSaleList(data) {
     apiType: 'order',
     method: 'post',
     target: 'ORDER-AFTER-SALE-PAGE-LIST-PROCESSOR',
+    data
+  })
+}
+
+// 打印配送单
+export function orderSendInfoPrint(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-SEND-INFO-PRINT-PROCESSOR',
+    data
+  })
+}
+
+// 批量打印电子面单
+export function printElectronicForm(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'EXPRESS-ELECTRONIC-TEMPLATE-LIST-PROCESSOR',
+    data
+  })
+}
+
+// 售后单打印电子面单
+export function afterSalePrintElectronicForm(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-EXPRESS-ELE-TEMPLATE-LIST-PROCESSOR',
     data
   })
 }

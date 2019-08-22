@@ -49,7 +49,7 @@ module.exports = {
         // target: 'http://172.22.146.12:8091', // 订单 李刚
         // target: 'http://172.22.146.133:8081',  //李雯廷
         // target: 'http://172.22.146.114:8080', // 商品 王浩2
-        target: 'http://172.22.146.133:8081',  //李雯廷
+        //target: 'http://172.22.146.133:8081',  //李雯廷
         //target:'http://172.22.146.124:8090',//许涛
         //target: 'http://172.22.134.125:8012',//陈程
         //target: 'http://172.22.146.12:8091', // 订单 李刚
@@ -59,7 +59,7 @@ module.exports = {
         //target: 'http://172.22.146.10:8080',
         // target: 'http://120.133.1.130:8012',//营销测试机
         //target:'http://172.22.145.115:8080',//耿士龙
-        //  target:'http://172.22.145.113:8083',//李权宇
+          target:'http://172.22.145.113:8083',//李权宇
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
@@ -87,7 +87,8 @@ module.exports = {
         }
       },
       '/order_server/**': {
-        target: 'http://172.22.145.113:8080/',
+        //target: 'http://172.22.145.113:8080/',
+        target: 'http://localhost:3000/',
         changeOrigin: true,
         pathRewrite: {
           '^/order_server': ''

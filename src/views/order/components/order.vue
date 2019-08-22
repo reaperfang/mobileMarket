@@ -18,18 +18,18 @@
                 <div class="container-item-header">
                     <div class="item">
                         <el-checkbox @change="checkedChange" v-model="order.checked"></el-checkbox>
-                        <span>订单编号：{{order.code}}/下单时间：{{order.createTime}}</span>
+                        <span class="order-code">订单编号：{{order.code}}/下单时间：{{order.createTime}}</span>
                     </div>
                     <div class="item righter">
-                        <span>订单类型：{{order.orderType}}</span>
-                        <span>客户：{{order.receivedName}}</span>
+                        <span>订单类型：{{order.orderType | orderTypeFilter}}</span>
+                        <span><i class="memberLevelImg" :style="{background: `url(${order.memberLevelImg})`}"></i>客户ID：{{order.orderInfo.memberSn}}</span>
                         <span>订单来源：{{order.channelName}}</span>
                     </div>
                 </div>
                 <div class="container-item-content">
                     <div class="item goods">
                         <ul>
-                            <li class="goods-li" v-for="(goods, index) in order.orderItem" :key="index">
+                            <li class="goods-li" v-for="(goods, index) in order.orderItems" :key="index">
                                 <div class="row justify-between align-center goods-box">
                                     <div class="col">
                                         <div class="row align-center">
@@ -38,7 +38,7 @@
                                             </div>
                                             <div class="col">
                                                 <p>{{goods.goodsName}}</p>
-                                                <p>{{goods.goodsSpecs}}</p>
+                                                <p class="goods-specs">{{goods.goodsSpecs}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -51,50 +51,48 @@
                     </div>
                     <div class="item">
                         <p class="pay-amount">实收：¥{{order.actualMoney}}</p>
-                        <p class="payment-mode">{{order.channelName}}</p>
+                        <p class="payment-mode">{{order.channelName}}支付</p>
                     </div>
                     <div class="item">{{order.receivedName}}/{{order.receivedPhone}}</div>
-                    <div class="item">{{order.deliveryWay}}</div>
+                    <div class="item">{{order.deliveryWay | deliveryWayFilter}}</div>
                     <div class="item">{{order.orderStatus | orderStatusFilter}}</div>
                     <div class="item operate">
-                        <div @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</div>
-                        <div class="delivery">发货信息</div>
-                        <template v-if="order.orderStatus == 0">
+                        <template v-if="order.orderInfo.orderStatus == 0">
                             <!-- 待付款 -->
-                            <p>查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                             <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">订单改价</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
                             <p @click="makeCollections(order)">确认收款</p>
                         </template>
-                        <template v-else-if="order.orderStatus == 1">
+                        <template v-else-if="order.orderInfo.orderStatus == 1">
                             <!-- 待成团 -->
-                            
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                         </template>
-                        <template v-else-if="order.orderStatus == 2">
+                        <template v-else-if="order.orderInfo.orderStatus == 2">
                             <!-- 关闭 -->
-                            <p>查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                         </template>
-                        <template v-else-if="order.orderStatus == 3">
+                        <template v-else-if="order.orderInfo.orderStatus == 3">
                             <!-- 待发货 -->
-                            <p>查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                             <p>发货</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
                         </template>
-                        <template v-else-if="order.orderStatus == 4">
+                        <template v-else-if="order.orderInfo.orderStatus == 4">
                             <!-- 部分发货 -->
-                            <p>查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                             <p>继续发货</p>
                             <p>发货信息</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">提前关闭订单</p>
                         </template>
-                        <template v-else-if="order.orderStatus == 5">
+                        <template v-else-if="order.orderInfo.orderStatus == 5">
                             <!-- 待收货 -->
-                            <p>查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                             <p>发货信息</p>
                         </template>
-                        <template v-else-if="order.orderStatus == 6">
+                        <template v-else-if="order.orderInfo.orderStatus == 6">
                             <!-- 完成 -->
-                            <p>查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                             <p>发货信息</p>
                         </template>
                     </div>
@@ -111,33 +109,7 @@ export default {
     data() {
         return {
             orderList: [
-                {
-                    number: '1',
-                    orderTime: '2019-06-04 12:00:00',
-                    orderMode: '拼团',
-                    customer: '小李',
-                    origin: '小程序',
-                    checked: false,
-                    payAmount: '1000',
-                    paymentMode: '微信支付',
-                    receiver: '张三',
-                    mobile: '13800000000',
-                    shippingMethod: '普通快递',
-                    state: '已完成',
-                    goodsList: [
-                        {
-                            goodsName: '苹果',
-                            spec: '5斤',
-                            quantity: 10,
-                        },
-                        {
-                            goodsName: '梨',
-                            spec: '5斤',
-                            quantity: 10,
-                            state: '已完成'
-                        }
-                    ]
-                }
+                
             ],
             currentDialog: '',
             currentData: '',
@@ -149,6 +121,30 @@ export default {
     },
     watch: {
 
+    },
+    filters: {
+        orderTypeFilter(code) {
+            switch(code) {
+                case 0:
+                    return '普通订单'
+                case 1:
+                    return '拼团订单'
+                case 2:
+                    return '优惠套餐订单'
+                case 3:
+                    return '特权价'
+                case 4:
+                    return '赠品订单'
+            }
+        },
+        deliveryWayFilter(code) {
+            switch(code) {
+                case 1:
+                    return '普通快递'
+                case 2:
+                    return '商家自送'
+            }
+        }
     },
     methods: {
         submit(value) {
@@ -235,6 +231,9 @@ export default {
                     border-radius: 10px 10px 0 0;
                     .righter {
                         color: rgb(173, 174, 177);
+                        span {
+                            margin-right: 20px;
+                        }
                     }
                 }
                 .container-item-content {
@@ -274,6 +273,10 @@ export default {
                             .goods-li {
                                 border-bottom: 1px solid #CACFCB;
                                 padding: 9px 0;
+                                .goods-specs {
+                                    color: #9FA29F;
+                                    margin-top: 6px;
+                                }
                                 &:last-child {
                                     border: none;
                                 }
@@ -281,6 +284,10 @@ export default {
                         }
                         &.operate {
                             color: $globalMainColor;
+                            p {
+                                margin-bottom: 6px;
+                                cursor: pointer;
+                            }
                             .delivery {
                                 margin-top: 6px;
                             }
@@ -289,6 +296,15 @@ export default {
                 }
             }
         }
+    }
+    .order-code {
+        margin-left: 4px;
+    }
+    .memberLevelImg {
+        display: inline-block;
+        width: 14px;
+        height: 13px;
+        margin-right: 5px;
     }
 </style>
 
