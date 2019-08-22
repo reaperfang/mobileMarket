@@ -11,7 +11,7 @@
             <div v-if="distinguish == '0'">
                 <span>获得</span>
                 <div class="input_wrap">
-                    <el-input placeholder="请输入整数"></el-input>
+                    <el-input placeholder="请输入整数" v-model="allMember"></el-input>
                 </div>
                 <span>积分</span>
             </div>

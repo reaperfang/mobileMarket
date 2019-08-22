@@ -1,0 +1,84 @@
+<template>
+    <DialogBase :visible.sync="visible" @submit="submit" title="添加渠道" :hasCancel="hasCancel">
+        <div class="c_container">
+            <span>请输入渠道名称: </span>
+            <div class="input_wrap">
+                <el-input v-model="channerlName"></el-input>
+            </div>
+        </div>
+    </DialogBase>
+</template>
+<script>
+import clientApi from '@/api/client';
+import DialogBase from '@/components/DialogBase'
+export default {
+    props: ['data'],
+    name: "addTagDialog",
+    data() {
+        return {
+            hasCancel: true,
+            channerlName:""
+        }
+    },
+    methods: {
+        submit() {
+            if(this.channerlName == "") {
+                this.$notify({
+                    title: '警告',
+                    message: '请输入渠道名称',
+                    type: 'warning'
+                });
+            }else{
+                this._apis.client.addChannel({channerlName: this.channerlName}).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: "添加渠道成功",
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })   
+            }
+        }
+    },
+    computed: {
+        visible: {
+            get() {
+                return this.dialogVisible
+            },
+            set(val) {
+                this.$emit('update:dialogVisible', val)
+            }
+        }
+    },
+    mounted() {
+        
+    },
+    props: {
+        data: {
+
+        },
+        dialogVisible: {
+            type: Boolean,
+            required: true
+        },
+    },
+    components: {
+        DialogBase
+    }
+}
+</script>
+<style lang="scss" scoped>
+.c_container{
+    padding: 0 30px;
+    .input_wrap{
+        width: 200px;
+        display: inline-block;
+    }
+}
+</style>
+
+

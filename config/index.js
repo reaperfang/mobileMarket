@@ -42,7 +42,7 @@ module.exports = {
         //target: 'http://120.133.1.130:8012',//营销
         //target: 'http://172.22.146.109:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080', // 客户 崔建
-        target: 'http://172.22.146.12:8080', //客户 刘亚凯
+        //target: 'http://172.22.146.12:8080', //客户 刘亚凯
         //target: 'http://172.22.146.123:8080', // 客户 王杰
         // target:'https://172.22.146.124:9002',//许涛
         //target: 'http://172.22.134.125:8012',//陈程
@@ -62,7 +62,7 @@ module.exports = {
         // target:'http://172.22.145.113:8083',//李权宇
         //target:'http://172.22.146.119:8080', //郑艳华
         //target: 'http://172.22.146.3:8080',//张昌超
-         target:'http://hhq3bj.natappfree.cc/',//数据
+         //target:'http://hhq3bj.natappfree.cc/',//数据
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''

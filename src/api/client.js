@@ -120,7 +120,7 @@ export function getMemberInfo(data) {
 //客户个人资料保存
 export function saveMemberInfo(data) {
     return request({
-        target:'MEMBERINFO-PERSONALDATA-PROCESSOR',
+        target:'MEMBER-INFO-PERSONALDATA-PROCESSOR',
         method: 'post',
         apiType: 'member',
         data
@@ -483,6 +483,15 @@ export function getSkuList(data) {
         target:'PRODUCT-SKU-PAGE-LIST-PROCESSOR',
         method: 'post',
         apiType: 'goods',
+        data
+    })
+}
+//添加渠道
+export function addChannel(data) {
+    return request({
+        target:'MEMBER-SOURCECHANNELADD-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
         data
     })
 }

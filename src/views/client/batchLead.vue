@@ -200,6 +200,7 @@ export default {
                         message: "标签编辑成功",
                         type: 'success'
                     });
+                    this.$router.go(-1);
                 }).catch((error) => {
                     this.$notify.error({
                         title: '错误',
