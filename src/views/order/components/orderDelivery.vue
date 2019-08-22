@@ -52,8 +52,8 @@
                     <div class="lefter">
                         <el-button class="border-button" @click="$router.push('/order/batchImportAndDelivery')">批量导入发货</el-button>
                         <el-button class="border-button" @click="$router.push('/order/deliverGoods')">批量发货</el-button>
-                        <el-button class="border-button" @click="$router.push('/order/printDistributionSheet')">批量打印配送单</el-button>
-                        <el-button class="border-button" @click="$router.push('/order/printingElectronicForm')">批量打印电子面单</el-button>
+                        <el-button class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
+                        <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
@@ -106,7 +106,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
-                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id + '&orderId=' + scope.row.orderId)">发货</span>
+                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">发货</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -250,6 +250,16 @@ export default {
         this.getList()
     },
     methods: {
+        batchPrintElectronicForm() {
+            let ids = this.multipleSelection.map(val => val.id).join(',')
+
+            this.$router.push('/order/printingElectronicForm?ids=' + ids)
+        },
+        batchPrintDistributionSlip() {
+            let ids = this.multipleSelection.map(val => val.id).join(',')
+
+            this.$router.push('/order/printDistributionSheet?ids=' + ids)
+        },
         onSubmit() {
 
         },

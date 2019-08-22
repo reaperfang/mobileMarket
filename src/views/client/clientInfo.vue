@@ -72,14 +72,16 @@
             <p>标签信息：</p>
             <div class="labels">
                 <div class="label_list">
-                    <p v-for="(item) in clientInfoById.labelRecordViews" :key="item.id">
+                    <p v-for="item in clientInfoById.labelRecordViews" :key="item.id">
                         <span>{{item.memberLabelInfoName}}
                             <img src="../../assets/images/client/icon_manual.png" alt="" v-if="item.memberLabelInfoType == 0">
                             <img src="../../assets/images/client/icon_auto.png" alt="" v-if="item.memberLabelInfoType == 1">
                         </span>
-                        <img src="../../assets/images/client/icon_remove.png" alt="" v-if="item.memberLabelInfoType == 0" @click="deleteTag(item.memberLabelInfoId)"></p>
+                        <img src="../../assets/images/client/icon_remove.png" alt="" v-if="item.memberLabelInfoType == 0" @click="deleteTag(item.memberLabelInfoId)">
+                    </p>
+                    <img src="../../assets/images/client/icon_add.png" alt="" @click="addTag" class="add_tag">
                 </div>
-                <img src="../../assets/images/client/icon_add.png" alt="" @click="addTag">
+                
             </div>
         </div>
         <div class="c_mid">
@@ -151,7 +153,7 @@ import adjustCreditDialog from './dialogs/clientInfo/adjustCreditDialog';
 import discountCouponDialog from './dialogs/clientInfo/discountCouponDialog';
 import issueCouponDialog from './dialogs/clientInfo/issueCouponDialog';
 import issueCodeDialog from './dialogs/clientInfo/issueCodeDialog';
-import addBlackDialog from './dialogs/allClient/addBlackDialog';
+import addBlackDialog from './dialogs/clientInfo/addBlackDialog';
 import sendCardDialog from './dialogs/clientInfo/sendCardDialog';
 import changeCardDialog from './dialogs/clientInfo/changeCardDialog';
 export default {
@@ -190,9 +192,12 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "changeIdentityDialog";
             this.currentData.id = this.userId;
+            this.currentData.oldLevelId = this.clientInfoById.levelInfoId;
+            this.currentData.identity = this.clientInfoById.levelName;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
+            this.currentData.oldLevel = this.clientInfoById.level;
         },
         deleteTag(id) {
-            //this.memberLabels.splice(index,1);
             this._apis.client.removeLabel({id:id}).then((response) => {
                 this.$notify({
                     title: '成功',
@@ -253,6 +258,8 @@ export default {
         showAddBlack() {
             this.dialogVisible = true;
             this.currentDialog = "addBlackDialog";
+            this.currentData.memberSn = this.clientInfoById.memberSn;
+            this.currentData.id = this.clientInfoById.id;
         },
         showSendCard() {
             this.dialogVisible = true;
@@ -315,7 +322,7 @@ export default {
                 selected: this.clientInfoById.selected
             }
             Object.keys(formObj).forEach((key) => {
-                if(formObj[key].length == 0) {
+                if(!formObj[key]) {
                     errFlag = true
                 }
             });
@@ -355,7 +362,6 @@ export default {
                     });
                 })
             }
-            
         },
         getUsedCoupon() {
             let params = {usedType:"1", couponType: "0", memberId: "1"};
@@ -396,8 +402,12 @@ export default {
     },
     computed: {
     },
-    mounted() {
-        this.getMemberInfo();
+    created() {
+        this.$nextTick(function() {
+            if(this.$route.query.id) {
+                this.getMemberInfo();
+            }
+        })
         this.userTag = this.memberLabels;
         this.getAllCoupons();
         this.getAllCodes();
@@ -501,9 +511,10 @@ export default {
             display: flex;
             margin: 12px 0 0 30px;
             .label_list{
-                width: 680px;
+                max-width: 680px;
                 display: flex;
                 flex-wrap: wrap;
+                position: relative;
                 p{
                     margin: 0 15px 10px 0;
                     display: flex;
@@ -531,6 +542,12 @@ export default {
                         margin-top: 3px;
                         cursor: pointer;
                     }
+                }
+                .add_tag{
+                    cursor: pointer;
+                    position: absolute;
+                    right: -17px;
+                    top: 0;
                 }
             }
             img{

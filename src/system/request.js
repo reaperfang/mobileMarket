@@ -91,7 +91,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '3c59dc048e8850243be8079a5c74d079',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dc9c833ee645d67cb6cedf0040101fab2',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -154,6 +154,9 @@ class Ajax {
             break;
           case 'manager':  //广告和导航开关修改  许涛
             config.baseURL = `${process.env.DATA_API}/api-manager-web/manager/api.do`;
+            break;
+          case 'data':  //数据
+            config.baseURL = `${process.env.DATA_API}/api-behavior-web/behavior/api.do`;
             break;
         }
       }

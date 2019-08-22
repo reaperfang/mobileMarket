@@ -40,7 +40,7 @@
                         <el-button>批量导入发货</el-button>
                         <el-button>批量发货</el-button>
                         <el-button>批量打印配送单</el-button>
-                        <el-button>批量打印电子面单</el-button>
+                        <el-button @click="batchPrintElectronicForm">批量打印电子面单</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
@@ -92,8 +92,8 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
-                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id + '&orderId=' + scope.row.orderId)">发货</span>
+                        <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
+                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -222,6 +222,11 @@ export default {
         },
     },
     methods: {
+        batchPrintElectronicForm() {
+            let ids = this.multipleSelection.map(val => val.id).join(',')
+
+            this.$router.push('/order/printingElectronicForm?ids=' + ids + '&afterSale=' + true)
+        },
         onSubmit() {
 
         },
@@ -232,7 +237,7 @@ export default {
             this.multipleSelection = val;
         },
         getList() {
-            this._apis.order.getOrderAfterSaleList(this.listQuery).then((res) => {
+            this._apis.order.SendPageList(this.listQuery).then((res) => {
                 console.log(res)
                 this.total = +res.total
                 this.tableData = res.list

@@ -11,7 +11,7 @@
                                 <el-radio v-model="ruleForm.useCredits" label="1">不开启</el-radio><span class="c_warn">说明：开启用用户可以使用积分抵现（但不支持积分商城订单）</span><br>
                                 <el-radio v-model="ruleForm.useCredits" label="2">开启</el-radio>
                                 <div style="width: 140px; display: inline-block">
-                                    <el-input placeholder="请输入整数" v-model="jf"></el-input>
+                                    <el-input placeholder="请输入整数" v-model="ruleForm.jf"></el-input>
                                 </div>
                                 <span>积分</span>
                                 <div style="width: 54px; display: inline-block">

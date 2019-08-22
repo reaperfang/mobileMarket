@@ -120,7 +120,7 @@ export function getMemberInfo(data) {
 //客户个人资料保存
 export function saveMemberInfo(data) {
     return request({
-        target:'MEMBERINFO-PERSONALDATA-PROCESSOR',
+        target:'MEMBER-INFO-PERSONALDATA-PROCESSOR',
         method: 'post',
         apiType: 'member',
         data
@@ -138,7 +138,7 @@ export function getLevelList(data) {
 //变换客户身份
 export function identityChange(data) {
     return request({
-        target:'MEMBERINFO-IDENTITYCHANGE-PROCESSOR',
+        target:'UPDATE-MEMBER-LEVEL-PROCESSOR',
         method: 'post',
         apiType: 'member',
         data
@@ -477,4 +477,21 @@ export function getProductClass(data) {
         data
     })
 }
-
+//获取sku商品分页列表
+export function getSkuList(data) {
+    return request({
+        target:'PRODUCT-SKU-PAGE-LIST-PROCESSOR',
+        method: 'post',
+        apiType: 'goods',
+        data
+    })
+}
+//添加渠道
+export function addChannel(data) {
+    return request({
+        target:'MEMBER-SOURCECHANNELADD-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}

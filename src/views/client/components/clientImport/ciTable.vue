@@ -52,12 +52,12 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
-        layout="sizes, prev, pager, next"
-        :total="100">
-      </el-pagination>
+        :current-page="Number(startIndex) || 1"
+        :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
+        :page-size="pageSize*1"
+        :total="total*1"
+        layout="total, sizes, prev, pager, next, jumper"
+      ></el-pagination>
     </div>
     <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
@@ -89,9 +89,17 @@ export default {
 
   },
   methods: {
-    getImportList() {
-      this._apis.client.importMemberList(this.params).then((response) => {
+    handleSizeChange(val) {
+      this.getImportList(1, val);
+      this.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      this.getImportList(val, this.pageSize);
+    },
+    getImportList(startIndex, pageSize) {
+      this._apis.client.importMemberList(Object.assign(this.params,{startIndex, pageSize})).then((response) => {
         this.importList = [].concat(response.list);
+        this.total = response.total;
       }).catch((error) => {
         this.$notify.error({
           title: '错误',
@@ -114,7 +122,7 @@ export default {
   },
   watch: {
     params(val) {
-      this.getImportList();
+      this.getImportList(1, this.pageSize);
     }
   },
 };

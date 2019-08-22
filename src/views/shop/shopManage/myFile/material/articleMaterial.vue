@@ -16,36 +16,36 @@
           <el-input v-model="form.name" placeholder="请填写标题、描述或作者"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <el-button type="primary" @click="getList">搜索</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div>
       <el-button type="primary" plain @click="_routeTo('generalArticle')">新建图文素材</el-button>
-      <el-button type="primary" plain @click="syncImage">同步图文</el-button>
+      <el-button type="primary" plain @click="handleSyncImage">同步图文</el-button>
     </div>
     <div class="list">
-      <p class="list_top">图片素材<span>{{num}}</span>条</p>
+      <p class="list_top">图文素材<span>{{total*1}}</span>条</p>
       <div class="list_main">
         <div class="list_img">
-            <div class="item_img" @mouseenter="onMouseOver" @mouseleave="onMouseOut">
+            <div class="item_img" v-for="(item,index) in list" :key="item.id" @mouseenter="onMouseOver(index)" @mouseleave="onMouseOut(index)">
               <p class="img_head">
-                <span>7月12日</span>
-                <i class="wx_icon"></i>
+                <span>{{item.updateTime}}</span>
+                <i class="wx_icon" v-if="item.isSyncWechat"></i>
               </p>
               <div class="img_body">
-                <p class="title">美丽的天空之城</p>
-                <img src="" class="imgs">
+                <p class="title">{{item.title}}</p>
+                <img :src="item.fileCover" class="imgs">
                 <p class="content">
-                  内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试
+                  {{item.sourceMaterialNoHtml}}
                 </p>
               </div>
               <p class="img_bottom">
-                <span><i class="el-icon-edit"></i></span>
-                <span><i class="el-icon-delete"></i></span>
+                <span><i class="el-icon-edit" @click="_routeTo('generalArticle',{id:item.id})"></i></span>
+                <span><i class="el-icon-delete" @click="handleDeleteArticle(item.id,'articleId')"></i></span>
               </p>
-              <div ref="operate">
-                <i class="el-icon-view lookArticle"> 预览文章</i>
+              <div ref="operate" class="operate">
+                <i class="el-icon-view" @click="_routeTo('generalArticle',{id:item.id})"> 预览文章</i>
               </div>
             </div>
         </div>
@@ -56,23 +56,25 @@
           @current-change="handleCurrentChange"
           :current-page="currentPage"
           :page-sizes="[10, 20, 30, 40]"
-          :page-size="10"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
+          :total="total*1"
           class="page_nav">
           </el-pagination>
       </p>
     </div>
     <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :arrayData="arrayData" :data="data" @submit="handleSubmit"></component>
   </div>
 </template>
 
 <script>
+import utils from "@/utils";
 import dialogSync from '../../../dialogs/dialogSync';
+import dialogDelete from '../../../dialogs/dialogDelete';
 export default {
   name: 'articleMaterial',
-  components: {dialogSync},
+  components: {dialogSync,dialogDelete},
   data () {
     return {
       pickerNowDateBefore: {
@@ -80,35 +82,118 @@ export default {
           return time.getTime() > new Date();
         }
       },
-      dialogVisible: false,
-      currentDialog: '',
       form:{
         timeValue:'',
-        
-      },
-      num:10,
+        name:''
+      }, 
+      data:'',
+      arrayData:[],
+      dialogVisible: false,
+      currentDialog: '',
+      imgsArr:[
+
+      ],
+      loading:false,
+      checked:false,
+      list:[],
+      groupList:[],
       currentPage:1,
-      total:0
+      pageSize:10,
+      total:0,
     }
   },
   created() {
-
+    this.getList()
   },
   methods: {
-    onSubmit(){},
-    syncImage(){
+    //获取图文列表
+    getList(){
+      let startDate = '',
+          endDate = '',
+          timeValue = this.form.timeValue
+
+      if(timeValue){
+        startDate = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        endDate = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
+
+      let query ={
+        startIndex:this.currentPage,
+        pageSize:this.pageSize,
+        startTime :startDate,
+        endTime:endDate,
+        title:this.form.name,
+        sourceMaterialType:'1'
+      }
+      this._apis.file.getMaterialList(query).then((response)=>{
+        this.list = response.list
+        this.total = response.total
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //弹窗反馈
+    handleSubmit(data){
+      for(let key in data){
+        switch (key) {
+          case 'deleteActicle':  
+            this.deleteActicle(data.deleteActicle.articleId) 
+          break;
+        }
+      }
+    },
+
+    handleSyncImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogSync'
     },
-    onMouseOver(){
-      this.$refs.operate.style.display="block"
+
+    handleDeleteArticle(id,type){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogDelete'
+      let arrayId = []
+      arrayId.push(id)
+      this.data = {
+        id:arrayId,
+        type:type
+      }
     },
-    onMouseOut(){
-      this.$refs.operate.style.display="none"
+    //删除图文素材
+    deleteActicle(id){
+      let query ={
+        ids:id,
+      }
+      this._apis.file.deleteMaterial(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '删除成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
-    //分页相关
-    handleSizeChange(){},
-    handleCurrentChange(){},
+    onMouseOver(index){
+      this.$refs.operate[index].style.display="block"
+    },
+    onMouseOut(index){
+      this.$refs.operate[index].style.display="none"
+    },
+   /**********************************        分页相关      **********************/
+    handleSizeChange(val){
+      this.pageSize = val || this.pageSize
+      this.getList()
+    },
+    handleCurrentChange(pIndex){
+      this.currentPage = pIndex || this.currentPage
+      this.getList()
+    },
   }
 }
 </script>
@@ -134,6 +219,7 @@ export default {
       width: 250px;
       border: 1px solid #e6e6e6;
       position: relative;
+      margin:0px 30px 50px 0px;
       .img_head{
         height: 25px;
         line-height: 25px;
@@ -188,7 +274,7 @@ export default {
           border-left:1px solid #fff;
         }
       }
-      .lookArticle{
+      .operate{
         width: 100%;
         height: 218px;
         position: absolute;

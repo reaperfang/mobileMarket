@@ -100,6 +100,9 @@ export default {
 <style lang="scss" scoped>
 .c_container {
     text-align: left;
+    .marB20{
+      margin-bottom: 20px;
+    }
   .input_wrap{
       width: 188px;
       display: inline-block;

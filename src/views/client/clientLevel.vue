@@ -41,6 +41,12 @@ export default {
 .c_container{
     padding: 20px;
     background-color: #fff;
+    .marR10{
+        margin-right: 10px;
+    }
+    .marL20{
+        margin-left: 20px;
+    }
 }
 </style>
 

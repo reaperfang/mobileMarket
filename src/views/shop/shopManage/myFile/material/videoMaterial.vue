@@ -32,10 +32,10 @@
                 <img :src="item.filePath" class="imgs">
               </div>
               <p class="img_bottom">
-                <span><i class="el-icon-edit"></i></span>
-                <span><i class="el-icon-folder"></i></span>
-                <span><i class="el-icon-download"></i></span>
-                <span><i class="el-icon-delete" @click="deleteImage"></i></span>
+                <!-- <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span> -->
+                <span @click="moveGroups(item.id)"><i class="el-icon-folder"></i></span>
+                <span @click="downVideo(item.filePath,item.fileName)"><i class="el-icon-download"></i></span>
+                <span @click="deleteImage(item.id,'videoId')"><i class="el-icon-delete"></i></span>
               </p>
             </div>
            </div>
@@ -45,7 +45,7 @@
               @current-change="handleCurrentChange"
               :current-page="currentPage"
               :page-sizes="[10, 20, 30, 40]"
-              :page-size="10"
+              :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total*1"
               class="page_nav">
@@ -111,11 +111,11 @@ export default {
   },
   methods: {
     //获取视频列表
-    getList(){
+    getList(id){
       let query ={
-        // fileGroupInfoId:id || '',
+        fileGroupInfoId:id || '',
         fileGroupInfoId:'',
-        pageNum:this.currentPage,
+        startIndex:this.currentPage,
         pageSize:this.pageSize,
         sourceMaterialType:'2'
       }
@@ -225,10 +225,13 @@ export default {
             this.moveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
           break;
           case 'deleteImage':
-            this.deleteImages(data.deleteImage.imageId)
+            this.deleteVideo(data.deleteImage.imageId)
           break;
           case 'syncImage':
             this.handleSyncImage()
+          break;
+          case 'uploadVideo':
+            this.getList()
           break;
         }
       }
@@ -256,20 +259,70 @@ export default {
         this.arrayData.push(id)
       }
     },
-    moveGroup(){
+    moveGroups(id){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroupsMove'
+      this.data = 'video'
+      this.arrayData = []
+      this.arrayData.push(id)
     },
-    uploadImage(){
+    uploadImage(id,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogUploadImage'
-      this.data = '上传视频'
+      this.data = {
+        txt:'上传视频',
+      }
     },
     syncImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogSync'
     },
     /**********************************        单个视频      **********************/
+    //下载视频
+    downVideo(filepath,fileName){
+      let a = document.createElement('a')
+          a.download = fileName || '图片名称'
+          a.href = filepath;
+          a.click();
+    },
+    //分组
+    moveGroup(id,groupId){
+      let query ={
+        ids:id,
+        toFileGroupInfoId:groupId
+      }
+      this._apis.file.moveGroup(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '移动分组成功！'
+        });
+        this.getGroups()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //删除视频
+    deleteVideo(id){
+      let query ={
+        ids:id,
+      }
+      this._apis.file.deleteMaterial(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '删除成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    /**********************************        分页相关      **********************/
     //分页相关
     handleSizeChange(){},
     handleCurrentChange(){},
@@ -344,7 +397,7 @@ export default {
           display: flex;
           justify-content:space-between;
           span{
-            width: 25%;
+            width: 33%;
             display: inline-block;
             background: #DDDDDD;
             text-align: center;

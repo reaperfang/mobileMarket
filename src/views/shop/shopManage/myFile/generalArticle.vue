@@ -1,9 +1,4 @@
 <template>
-  <!-- <p>普通图文
-    <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">图片素材</el-button>
-    {{ruleForm.coverUrl}}
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
-  </p> -->
   <div class="main">
     <p class="title">创建普通图文</p>
     <div class="content">
@@ -13,32 +8,35 @@
       <div class="c_right">
         <p class="head">图文信息</p>
         <div class="bodys">
-          <el-input v-model="input" placeholder="标题请勿超过64个字，必填"></el-input>
+          <el-input v-model="ruleForm.title" placeholder="标题请勿超过64个字，必填"></el-input>
           <p class="mt10">封面图片</p>
+          <img :src="ruleForm.fileCover" class="coverImage" v-if="ruleForm.fileCover">
           <p class="uploadImage">
             <el-upload
               class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action="uploadUrl"
+              :data="{json: JSON.stringify({cid: 222})}"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :before-remove="beforeRemove"
               multiple
-              :limit="3"
+              :limit="1"
               :on-exceed="handleExceed"
-              :file-list="fileList">
+              :on-success="handleAvatarSuccess"
+              :show-file-list="false">
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb，建议尺寸900*500</div>
             </el-upload>
             <el-button type="primary" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'" class="imgSource">图片素材</el-button>
           </p>
-          <el-checkbox v-model="checked" class="mt10">正文中显示封面</el-checkbox>
+          <el-checkbox v-model="ruleForm.isCover" class="mt10">正文中显示封面</el-checkbox>
         </div>
       </div>
     </div>
     <p class="btns">
       <el-button type="primary">预览</el-button>
-      <el-button type="primary" plain>取消</el-button>
-      <el-button type="primary">保存</el-button>
+      <el-button type="primary" plain @click="_routeTo('fileManageIndex')">取消</el-button>
+      <el-button type="primary" @click="save">保存</el-button>
     </p>
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </div>
@@ -52,15 +50,18 @@ export default {
   components: {dialogSelectImageMaterial, RichEditor},
   data () {
     return {
+      uploadUrl:`${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
       dialogVisible: false,
       currentDialog: '',
       ruleForm: {
-        articalTitle: '',
-        coverUrl: '',
-        showCover: true
+        title: '',
+        fileCover: '',
+        isCover: false,
+        sourceMaterial:''
       },
       rules: {},
       fileList:[],
+      fileData:'',
       checked:false,
       input:'',
       myConfig: {
@@ -78,19 +79,59 @@ export default {
     }
   },
   created() {
-
+    this.$route.query.id && this.getArticle()
   },
   methods: {
-
+    getArticle(){
+      let query ={
+        id:this.$route.query.id,
+        sourceMaterialType:'1'
+      }
+      this._apis.file.getArticle(query).then((response)=>{
+        this.ruleForm = {
+          title: response.title,
+          fileCover: response.fileCover,
+          isCover: response.isCover == 1 ? true : false,
+          sourceMaterial:response.sourceMaterial
+        }
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //保存
+    save(){
+      this._apis.file.saveArticle(this.ruleForm).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '创建图文成功！'
+        });
+        this.$router.push({
+          name: 'fileManageIndex',
+        })
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //图片上传成功
+    handleAvatarSuccess(res, file) {
+      this.fileData = res.data
+      this.ruleForm.fileCover = res.data.url
+    },
      /* 
      * 富文本数据更新
     */
     editorValueUpdate(value) {
-      this.editorData = value;
+      this.ruleForm.sourceMaterial = value;
     },
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      this.ruleForm.coverUrl= dialogData.filePath;
+      this.ruleForm.fileCover= dialogData.filePath;
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -142,6 +183,10 @@ export default {
       }
     }
   }
+}
+.coverImage{
+  width: 230px;
+  height: 230px;
 }
 .btns{
   text-align: right;

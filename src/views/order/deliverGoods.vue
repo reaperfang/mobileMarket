@@ -179,6 +179,15 @@ export default {
         this.getOrderDetail()
         this.getExpressCompanyList()
     },
+    computed: {
+        afterSale() {
+            if(this.$route.query.afterSale) {
+                return true
+            } else {
+                return false
+            }
+        }
+    },
     methods: {
         getExpressCompanyList() {
             this._apis.order.fetchExpressCompanyList().then((res) => {
@@ -252,8 +261,8 @@ export default {
         onSubmit() {
             this.getOrderDetail()
         },
-        getOrderDetail() {
-            let id = this.$route.query.orderId || this.$route.query.id
+        _orderDetail() {
+            let id = this.$route.query.id
 
             this._apis.order.fetchOrderDetail({id}).then((res) => {
                 this.orderDetail = res
@@ -263,6 +272,25 @@ export default {
             }).catch(error => {
 
             })
+        },
+        afterSaleOrderDetail() {
+            let id = this.$route.query.id
+
+            this._apis.order.getOrderAfterSaleDetail({id}).then((res) => {
+                this.orderDetail = res
+                this.tableData = this.orderDetail.orderItems
+                this.orderInfo = res.orderInfo
+                this.orderSendInfo = res.orderSendInfo
+            }).catch(error => {
+
+            })
+        },
+        getOrderDetail() {
+            if(this.afterSale) {
+                this.afterSaleOrderDetail()
+            } else {
+                this._orderDetail()
+            }
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
