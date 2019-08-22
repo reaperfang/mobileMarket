@@ -1,7 +1,14 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
+        <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
                 <div class="pane_container">
                     <div class="p_line">
                         <div class="input_wrap">
@@ -9,20 +16,16 @@
                                 v-model="range"
                                 type="daterange"
                                 range-separator="—"
+                                value-format="yyyy-MM-dd"
                                 start-placeholder="开始日期"
-                                end-placeholder="结束日期">
+                                end-placeholder="结束日期"
+                                @change="changeTime">
                             </el-date-picker>
                         </div>
                         <span>最近7天</span>
                         <span>最近15天</span>
                         <span>最近30天</span>
                     </div>
-                    <!-- <div class="btn_tabs clearfix">
-                        <el-button class="fr marL10" round>访问来源</el-button>
-                        <el-button class="fr" round>到店时段</el-button>
-                        <el-button class="fr" round>访问次数</el-button>
-                        <el-button class="active_btn fr" round>浏览量/访问量</el-button>
-                    </div> -->
                     <div class="chart_container">
                         <div class="path_line clearfix">
                             <div class="p_l">
@@ -30,25 +33,9 @@
                                 <p>访客（人）</p>
                             </div>
                             <div class="p_r p_1">
-                                <div>
-                                    <p>首页</p>
-                                    <p>560</p>
-                                </div>
-                                <div>
-                                    <p>商品列表页</p>
-                                    <p>567</p>
-                                </div>
-                                <div>
-                                    <p>购物车</p>
-                                    <p>230</p>
-                                </div>
-                                <div>
-                                    <p>商详页</p>
-                                    <p>567</p>
-                                </div>
-                                <div>
-                                    <p>其他页</p>
-                                    <p>567</p>
+                                <div v-for="(item,index) in dataObj.oneDataArr">
+                                    <p>{{item.pageDescribe}}</p>
+                                    <p>{{item.uniqueViewCount}}</p>
                                 </div>
                             </div>
                         </div>
@@ -59,15 +46,11 @@
                             </div>
                             <div class="p_r p_2">
                                 <div class="p_top">
-                                    <p>4.35%</p>
-                                    <p>0.00%</p>
-                                    <p>0.00%</p>
-                                    <p>25.45%</p>
-                                    <p>25.45%</p>
+                                    <p  v-for="(item,index) in dataObj.twoDataArr">{{item.inversionRate}}</p>
                                 </div>
                                 <div class="p_bottom">
-                                    <p>商品列表页</p>
-                                    <p>567</p>
+                                    <p v-for="(item,index) in dataObj.twoDataArr">{{item.pageDescribe}}</p>
+                                    <!-- <p v-for="(item,index) in dataObj.twoDataArr">{{item.uniqueViewCount}}</p> -->
                                 </div>
                             </div>
                         </div>
@@ -78,32 +61,18 @@
                             </div>
                             <div class="p_r p_3">
                                 <div class="p_top">
-                                    <p>4.35%</p>
-                                    <p>0.00%</p>
-                                    <p>0.00%</p>
+                                    <p  v-for="(item,index) in dataObj.threeDataArr">{{item.inversionRate}}</p>
                                 </div>
                                 <div class="p_bottom">
-                                    <div>
-                                        <p>支付成功</p>
-                                        <p>567</p>
-                                    </div>
-                                    <div>
-                                        <p>直接退出</p>
-                                        <p>567</p>
-                                    </div>
-                                    <div>
-                                        <p>其他</p>
-                                        <p>567</p>
+                                    <div v-for="(item,index) in dataObj.threeDataArr">
+                                        <p>{{item.pageDescribe}}</p>
+                                        <p>{{item.uniqueViewCount}}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
     </div>
 </template>
 <script>
@@ -113,9 +82,40 @@ export default {
     components: { apChart },
     data() {
         return {
-            activeName: "first", 
-            range: ""
+            range: "",
+            visitSourceType:0,
+            startTime:'',
+            endTime:'',
+            dateType:1,
+            dataObj:{}
         }
+    },
+    methods:{
+        getPathConversion(){
+           let data = {
+            startTime: this.startTime,
+            endTime: this.endTime,
+            visitSourceType: this.visitSourceType,
+            dateType: this.dateType
+        };
+      this._apis.data.pathConversion(data).then(response => {
+          console.log(response)
+          this.dataObj = response
+        }).catch(error => {
+          this.$message.error(error);
+        }); 
+        },
+        changeTime(val){
+        this.startTime = val[0]
+        this.endTime = val[1]
+        this.getPathConversion();
+        },
+    all(){
+        this.getPathConversion();
+    },
+    },
+    created(){
+        this.getPathConversion()
     }
 }
 </script>
@@ -188,16 +188,19 @@ export default {
                             padding: 0 180px 0 190px;
                             display: flex;
                             flex-wrap: nowrap;
-                            justify-content: space-between;
+                            justify-content: space-evenly;
                         }
                         .p_bottom{
-                            text-align: center;
-                            p:first-child{
-                                font-size: 16px;
-                            }
-                            p:last-child{
-                                font-size: 24px;
-                            }
+                            padding: 0 180px 0 190px;
+                            display: flex;
+                            flex-wrap: nowrap;
+                            justify-content: space-evenly;
+                            // p:first-child{
+                            //     font-size: 16px;
+                            // }
+                            // p:last-child{
+                            //     font-size: 24px;
+                            // }
                         }
                     }
                     &.p_3{
@@ -218,12 +221,12 @@ export default {
                             div{
                                 width: 70px;
                                 text-align: center;
-                                p:first-child{
-                                    font-size: 16px;
-                                }
-                                p:last-child{
-                                    font-size: 24px;
-                                }
+                                // p:first-child{
+                                //     font-size: 16px;
+                                // }
+                                // p:last-child{
+                                //     font-size: 24px;
+                                // }
                             }
                         }
                     }

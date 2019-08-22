@@ -20,7 +20,7 @@ export function pathConversion(data) {
   return request({
     target:'SHOP-CONVERSION-ANALYSIS-PROCESSOR',
     method: 'post',
-    baseURL: process.env.DATA_API,
+    apiType: 'data',
     data
   })
 }
@@ -30,7 +30,7 @@ export function pathOut(data) {
   return request({
     target:'CUSTOMER-SKIP-RATE-ANALYSIS-PROCESSOR',
     method: 'post',
-    baseURL: process.env.DATA_API,
+    apiType: 'data',
     data
   })
 }
@@ -42,7 +42,7 @@ export function attributeRatio(data) {
     return request({
       target:'SHOP-ATTRIBUTE-RATIO-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -51,7 +51,7 @@ export function memberTrend(data) {
     return request({
       target:'SHOP-VIP-RISE-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -60,7 +60,7 @@ export function paymentTrend(data) {
     return request({
       target:'SHOP-PAY-TIMES-RISE-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -69,7 +69,7 @@ export function memberConsumption(data) {
     return request({
       target:'SHOP-MEMBER-CONSUMPTION-DATA-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -81,7 +81,7 @@ export function generalCondition(data) {
     return request({
       target:'SHOP-TRADING-GOODS-SURVEY-DATA-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -90,7 +90,7 @@ export function hotGoods(data) {
     return request({
       target:'SHOP-TRADING-HOT-SELL-GOODS-DATA-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -99,7 +99,7 @@ export function productDetails(data) {
     return request({
       target:'SHOP-TRADING-GOODS-SELL-INFO-DATA-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -108,7 +108,7 @@ export function tradingTrendchart(data) {
     return request({
       target:'SHOP-TRADING-TREND-ANALYSIS-DATA-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -117,7 +117,7 @@ export function tradingOverview(data) {
     return request({
       target:'SHOP-TRADING-SURVEYVIEW-DATA-PROCESSOR',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       params
     })
   }
@@ -130,7 +130,7 @@ export function realTimeOverview(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-AVERAGE-ORDER-PAYMENT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -139,7 +139,7 @@ export function historyRecord(data) {
     return request({
       target:'HISTORY-AUTOMATIC-ANALYSE-PAYMENT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -148,7 +148,7 @@ export function historyExport(data) {
     return request({
       target:'HISTORY-AUTOMATIC-ANALYSE-PAYMENT-EXPORT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -160,7 +160,7 @@ export function memberInformation(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-MEMBER-INFO-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -169,7 +169,7 @@ export function integralconsumption(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-SCORE-PAYMENT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -178,7 +178,7 @@ export function integralConsumptionExport(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-SCORE-PAYMENT-EXPORT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -187,7 +187,7 @@ export function memberInformationExport(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-MEMBER-INFO-EXPORT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -196,7 +196,7 @@ export function channelConversion(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-MEMBER-CHANNEL-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -205,7 +205,7 @@ export function channelConversionExport(data) {
     return request({
       target:' AUTOMATIC-ANALYSE-MEMBER-CHANNEL-EXPORT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -214,7 +214,7 @@ export function channelQuery(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-MEMBER-CHANNEL-INFO-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -223,7 +223,7 @@ export function channelConversionDetails(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-MEMBER-CHANNEL-DETAIL-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -232,7 +232,7 @@ export function channelConversionDetailsExport(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-MEMBER-CHANNEL-DETAIL-EXPORT',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -244,7 +244,7 @@ export function evaluation(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-APPRAISE-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -253,7 +253,7 @@ export function evaluationExport(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-APPRAISE-EXPORT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -262,7 +262,7 @@ export function exportOfrights(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-PROTECTION-EXPORT-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -271,7 +271,7 @@ export function rightsProtection(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-PROTECTION-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -280,7 +280,7 @@ export function rightsTypeQuery(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-PROTECTION-TYPE-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
   }
@@ -289,7 +289,7 @@ export function ownershipReasonQuery(data) {
     return request({
       target:'AUTOMATIC-ANALYSE-PROTECTION-REASON-PROCESSOR',
       method: 'post',
-      baseURL: process.env.DATA_API,
+      apiType: 'data',
       data
     })
  }
