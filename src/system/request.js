@@ -30,7 +30,7 @@ class Ajax {
           e.headers = {
             businessId: 1,
             tenantId: 1,
-            merchantId: 1,
+            merchantId: 2,
             loginUserId: 1
           }
         }

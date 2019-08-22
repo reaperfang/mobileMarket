@@ -164,10 +164,10 @@ export default {
         goodsStyle: 1,
         goodsChamfer: 1,
         goodsRatio: 1,
-        goodsFill: 1,
+        goodsFill: 2,
         textStyle: 1,
         textAlign: 1,
-        showContents: [],
+        showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],
         hideSaledGoods: true,
         buttonStyle: 1,
         ids: []

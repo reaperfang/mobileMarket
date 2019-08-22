@@ -6,14 +6,14 @@
             <li v-for="(item,key) in goods" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img" >
                     <div class="imgAbsolute">
-                        <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
+                        <img :src="item.mainImage" alt="" :class="{goodsFill:goodsFill!=1}">
                     </div>
                 </div>
                 <div class="text" v-if="showContents.length>0">
-                    <p class="title" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.title}}</p>
-                    <p class="fTitle" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('3')!=-1">{{item.desc}}</p>
+                    <p class="title" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.name}}</p>
+                    <p class="fTitle" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('3')!=-1">{{item.description}}</p>
                     <div class="priceLine" v-if="showContents.indexOf('2')!=-1">
-                        <p class="price">￥<font>{{item.price}}</font></p>
+                        <p class="price">￥<font>{{item.goodsInfos[0].salePrice}}</font></p>
                     </div>
                     <componentButton :decorationStyle="buttonStyle" decorationText="加入购物车" v-if="showContents.indexOf('4')!=-1" class="button"></componentButton>
                 </div>
@@ -171,18 +171,23 @@ export default {
 
         //根据ids拉取数据
         fetch() {
-            this.loading = true;
-            this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
-                this.tableList = response.list;
-                this.total = response.total;
-                this.loading = false;
-            }).catch((error)=>{
-                this.$notify.error({
-                title: '错误',
-                message: error
+            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
+                this.loading = true;
+                this._apis.goods.fetchSpuGoodsList({
+                    status: '1',
+                    ids: this.currentComponentData.data.ids.join(',')
+                }).then((response)=>{
+                    this.tableList = response.list;
+                    this.total = response.total;
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                    title: '错误',
+                    message: error
+                    });
+                    this.loading = false;
                 });
-                this.loading = false;
-            });
+            }
         },
     }
 }

@@ -12,20 +12,21 @@
                         <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
                         <div class="content">
                             <p class="caption">距开始仅剩</p>
-                            <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p>
+                            <!-- <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p> -->
+                            <p class="time">{{item.endTime}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="info_box" v-if="showContents.length > 0">
-                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">减{{item.activitReduction}}元</font>{{item.goodsName}}</p>
+                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">减{{item.skuMidGoodsLimitDiscountEtcViewList[0].activitReduction}}元</font>{{item.goodsName}}</p>
                     <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.description}}</p>
                     <div class="limit_line">
                         <p class="limit" v-if="showContents.indexOf('7')!=-1">限 {{item.activityJoinLimit}}件/人</p>
-                        <p class="remainder" v-if="showContents.indexOf('6')!=-1">仅剩{{item.spuStock}}件</p>
+                        <p class="remainder" v-if="showContents.indexOf('6')!=-1">仅剩{{item.remainStock}}件</p>
                     </div>
                     <div class="price_line">
-                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.reductionPrice}}</font></p>
-                        <p class="yPrice" v-if="showContents.indexOf('4')!=-1">￥{{item.salePrice}}</p>
+                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.skuMidGoodsLimitDiscountEtcViewList[0].reductionPrice}}</font></p>
+                        <p class="yPrice" v-if="showContents.indexOf('4')!=-1">￥{{item.skuMidGoodsLimitDiscountEtcViewList[0].salePrice}}</p>
                     </div>
                     <componentButton :decorationStyle="buttonStyle" decorationText="立即购买" class="button" v-if="showContents.indexOf('8')!=-1&&item.soldOut!=1&&item.activityEnd!=1"></componentButton>
                     <p class="activity_end" v-if="item.soldOut==1&&item.activityEnd!=1">已售罄</p>
@@ -112,6 +113,7 @@ export default {
             this.hideEndGoods = this.currentComponentData.data.hideEndGoods;
             this.hideType = this.currentComponentData.data.hideType;
 
+            
             this.fetch();
         },
 

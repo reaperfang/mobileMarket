@@ -27,10 +27,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="reductionUnitPrice" label="优惠单价"></el-table-column>
+      <!-- <el-table-column prop="reductionUnitPrice" label="优惠单价"></el-table-column>
       <el-table-column prop="remainStock" label="剩余库存"></el-table-column>
       <el-table-column prop="activeName" label="活动名称"></el-table-column>
-      <el-table-column prop="buyLimit" label="商品限购件/人"></el-table-column>
+      <el-table-column prop="buyLimit" label="商品限购件/人"></el-table-column> -->
       <el-table-column prop="" label="活动时间">
           <template slot-scope="scope">
             {{scope.row.startTime}} - {{scope.row.endTime}}

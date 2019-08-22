@@ -57,6 +57,11 @@ export default {
             this.shoppingCartBtn = this.currentComponentData.data.shoppingCartBtn;
             this.searchStyle = this.currentComponentData.data.searchStyle;
         }
+    },
+    watch:{
+        currentComponentData(){
+            this.decoration();
+        }
     }
 }
 </script>

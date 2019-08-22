@@ -17,11 +17,8 @@ export default {
       this.decoration && this.decoration();
   },
   watch: {
-      data: {
-        handler(newValue) {
-          this.decoration && this.decoration();
-        },
-        deep: true
+      currentComponentData(){
+         this.decoration && this.decoration();
       },
       'currentComponentData.data.ids': { 
         handler(newValue) {

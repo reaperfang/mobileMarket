@@ -4,8 +4,8 @@
         <ul>
             <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
-                    <div class="label" v-if="showContents.indexOf('6')!=-1">已售{{item.alreadySell}}件</div>
-                    <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
+                    <div class="label" v-if="showContents.indexOf('6')!=-1">已售{{item.packageNum}}件</div>
+                    <img :src="item.activityPic" alt="" :class="{goodsFill:goodsFill!=1}">
                 </div>
                 <div class="countdown_Bar" v-if="showContents.indexOf('3')!=-1">
                     <h1 class="title">N元N件</h1>
@@ -13,18 +13,19 @@
                         <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
                         <div class="content">
                             <p class="caption">距开始仅剩</p>
-                            <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p>
+                            <!-- <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p> -->
+                            <p class="time">{{item.endTime}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="info_box" v-if="showContents.length > 0">
-                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.title}}</p>
-                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('5')!=-1">{{item.nY}}元任选{{item.nJ}}件商品</p>
+                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.name}}</p>
+                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('5')!=-1">{{item.setMealPrice}}元任选{{item.goodsTotalNumber}}件商品</p>
                     <div class="limit_line">
-                        <p class="limit" v-if="showContents.indexOf('4')!=-1">限 1件/人</p>
+                        <p class="limit" v-if="showContents.indexOf('4')!=-1">限 {{item.joinLimit}}件/人</p>
                     </div>
                     <div class="price_line">
-                        <p class="price" v-if="showContents.indexOf('2')!=-1">￥<font>{{item.price}}</font></p>
+                        <p class="price" v-if="showContents.indexOf('2')!=-1">￥<font>{{item.setMealPrice}}</font></p>
                     </div>
                     <componentButton :decorationStyle="buttonStyle" decorationText="查看活动" class="button" v-if="showContents.indexOf('7')!=-1&&item.soldOut!=1&&item.activityEnd!=1"></componentButton>
                     <p class="activity_end" v-if="item.soldOut==1&&item.activityEnd!=1">已售罄</p>
@@ -113,6 +114,9 @@ export default {
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.hideEndGoods = this.currentComponentData.data.hideEndGoods;
             this.hideType = this.currentComponentData.data.hideType;
+
+
+
             this.fetch();
         },
 
@@ -123,7 +127,7 @@ export default {
                 this._apis.shop.getNyuanListByIds({
                     baleIds : this.currentComponentData.data.ids.join(',')
                 }).then((response)=>{
-                    this.createList(response.list);
+                    this.createList(response);
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({
@@ -148,7 +152,7 @@ export default {
             else{
                 this.list = datas;
             }
-            var list = this.goodList;
+            var list = this.list;
             this.list = [];
             if(this.hideEndGoods==true){
                 for(var i in list){
@@ -1099,3 +1103,4 @@ export default {
     }
 }
 </style>
+

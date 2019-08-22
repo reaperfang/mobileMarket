@@ -4,29 +4,30 @@
         <ul>
             <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
-                    <p class="label" v-if="showContents.indexOf('6')!=-1">{{item.alreadyTeamPeople}}人已团</p>
-                    <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
+                    <p class="label" v-if="showContents.indexOf('6')!=-1">{{item.sold}}人已团</p>
+                    <img :src="item.goodImg" alt="" :class="{goodsFill:goodsFill!=1}">
                 </div>
                 <div class="countdown_Bar" v-if="showContents.indexOf('5')!=-1">
-                    <h1 class="title">拼团</h1>
+                    <h1 class="title">{{item.activeName}}</h1>
                     <div class="countdown">
                         <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
                         <div class="content">
                             <p class="caption">距开始仅剩</p>
-                            <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p>
+                            <!-- <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p> -->
+                            <p class="time">{{item.endTime}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="info_box"  v-if="showContents.length > 0">
-                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">{{item.teamPeople}}人团</font>{{item.title}}</p>
-                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.desc}}</p>
+                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">{{item.teamPeople}}人团</font>{{item.goodName}}</p>
+                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.goodDes}}</p>
                     <div class="limit_line">
-                        <div class="label">{{item.teamPeople}}人团</div>
-                        <p class="limit" v-if="showContents.indexOf('7')!=-1">限 1件/人</p>
+                        <div class="label">{{item.peopleNum}}人团</div>
+                        <p class="limit" v-if="showContents.indexOf('7')!=-1">限 {{item.buyLimit}}件/人</p>
                     </div>
                     <div class="price_line">
-                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.price}}</font></p>
-                        <p class="yPrice" v-if="showContents.indexOf('4')!=-1">￥{{item.yPrice}}</p>
+                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.reductionUnitPrice}}</font></p>
+                        <p class="yPrice" v-if="showContents.indexOf('4')!=-1">￥{{item.unitPrice}}</p>
                     </div>
                     <componentButton :decorationStyle="buttonStyle" decorationText="开团" v-if="showContents.indexOf('8')!=-1&&item.soldOut!=1" class="kai"></componentButton>
                     <componentButton :decorationStyle="buttonStyle" decorationText="拼团" v-if="showContents.indexOf('8')!=-1&&item.soldOut!=1" class="pin"></componentButton>

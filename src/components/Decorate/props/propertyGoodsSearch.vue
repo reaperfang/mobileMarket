@@ -90,9 +90,9 @@ export default {
       currentDialog: '',
       ruleForm: {
         hotWords: [],
-        borderStyle: 1,
+        borderStyle: 2,
         borderHeight: 40,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#f2f2f2',
         borderColor: '#ffffff',
         fontColor: 'rgb(153,153,153)',
         textPosition: 1,

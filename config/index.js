@@ -66,9 +66,9 @@ module.exports = {
         }
       },
       '/sale_server/**': {
-        // target: 'http://120.133.1.130:8012',
+        target: 'http://120.133.1.130:8012',
         // target: 'http://172.22.134.138:8012',  //曹帅
-        target: 'http://172.22.134.125:8012',  //陈程
+        // target: 'http://172.22.134.125:8012',  //陈程
         changeOrigin: true,
         pathRewrite: {
           '^/sale_server': ''

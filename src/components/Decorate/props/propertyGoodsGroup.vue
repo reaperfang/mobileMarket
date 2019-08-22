@@ -5,10 +5,10 @@
         <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
         <div class="goods_groups">
           <el-tag
-            v-for="tag in ruleForm.goodsGroups"
+            v-for="tag in item"
             :key="tag.title"
             closable
-            type="success" @close="deleteGoodsGroup(tag)">
+            type="success" @close="deleteItem(tag)">
             {{tag.title}}
           </el-tag>
         </div>
@@ -147,7 +147,6 @@ export default {
   data () {
     return {
       ruleForm: {
-        goodsGroups: [],
         showAllGroup: 1,
         showTemplate: 1,
         menuStyle: 1,
@@ -162,7 +161,8 @@ export default {
         textStyle: 1,
         textAlign: 1,
         showContents: [],
-        buttonStyle: 1
+        buttonStyle: 1,
+        items: []
       },
       rules: {
 
@@ -172,23 +172,19 @@ export default {
 
     }
   },
+  watch: {
+    'items': {
+      handler(newValue) {
+        this.ruleForm.ids = [];
+        for(let item of newValue) {
+          this.ruleForm.ids.push(item.id);
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
 
-    /* 删除商品分组 */
-    deleteGoodsGroup(item) {
-      const tempGoodsGroups = [...this.ruleForm.goodsGroups];
-      for(let i=0;i<tempGoodsGroups.length;i++) {
-        if(item === tempGoodsGroups[i]) {
-          tempGoodsGroups.splice(i, 1);
-        }
-      }
-      this.ruleForm.goodsGroups = tempGoodsGroups;
-    },
-
-    /* 弹窗选中了商品分组 */
-    dialogGoodsGroupSelected(goodsGroup) {
-      this.ruleForm.goodsGroups = goodsGroup;
-    }
   }
 }
 </script>

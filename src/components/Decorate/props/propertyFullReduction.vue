@@ -70,22 +70,6 @@ export default {
     }
   },
   methods: {
-
-    /* 删除满减活动 */
-    deleteFullReduction(item) {
-      const tempGoodsList = [...this.ruleForm.promotions];
-      for(let i=0;i<tempGoodsList.length;i++) {
-        if(item === tempGoodsList[i]) {
-          tempGoodsList.splice(i, 1);
-        }
-      }
-      this.ruleForm.promotions = tempGoodsList;
-    },
-
-     /* 弹窗选中了商品 */
-    dialogDataSelected(list) {
-      this.ruleForm.promotions = list;
-    },
   }
 }
 </script>

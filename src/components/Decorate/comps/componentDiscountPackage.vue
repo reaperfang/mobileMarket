@@ -4,27 +4,28 @@
         <ul>
             <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
-                    <div class="label">已售{{item.alreadySell}}件</div>
-                    <img :src="item.url" alt="" :class="{goodsFill:goodsFill!=1}">
+                    <div class="label">已售{{item.participateActivityNum}}件</div>
+                    <img :src="item.activityPic" alt="" :class="{goodsFill:goodsFill!=1}">
                 </div>
                 <div class="countdown_Bar" v-if="showContents.indexOf('4')!=-1">
-                    <h1 class="title">优惠套餐</h1>
+                    <h1 class="title">{{item.name}}</h1>
                     <div class="countdown">
                         <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
                         <div class="content">
                             <p class="caption">距开始仅剩</p>
-                            <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p>
+                            <!-- <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p> -->
+                            <p class="time">{{item.endTime}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="info_box" v-if="showContents.length > 0">
-                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.title}}</p>
-                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">套餐包含商品{{item.desc}}件</p>
+                    <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.name}}</p>
+                    <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">套餐包含商品{{item.totalGoodsNum}}件</p>
                     <div class="limit_line" v-if="showContents.indexOf('5')!=-1">
-                        <p class="limit">限 1件/人</p>
+                        <p class="limit">限 {{item.joinLimit}}件/人</p>
                     </div>
                     <div class="price_line">
-                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.price}}</font></p>
+                        <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.packagePrice}}</font></p>
                     </div>
                     <componentButton :decorationStyle="buttonStyle" decorationText="查看活动" class="button" v-if="showContents.indexOf('6')!=-1&&item.soldOut!=1&&item.activityEnd!=1"></componentButton>
                     <p class="activity_end" v-if="item.soldOut==1&&item.activityEnd!=1">已售罄</p>
@@ -124,7 +125,7 @@ export default {
                 this._apis.shop.getDiscountPackageListByIds({
                     ids: this.currentComponentData.data.ids.join(',')
                 }).then((response)=>{
-                    this.createList(response.list);
+                    this.createList(response);
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({

@@ -49,7 +49,7 @@ export default {
                 this._apis.shop.getFullReductionListByIds({
                     ids: this.currentComponentData.data.ids.join(',')
                 }).then((response)=>{
-                    this.createList(response.list);
+                    this.createList(response);
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({
