@@ -3,12 +3,10 @@
         <div class="c_container">
             <p>ID:<span>{{ data.memberSn }}</span></p>
             <p>当前冻结：</p>
-            <div class="clearfix">
-                <p class="fl">优惠券：</p>
+            <div class="clearfix" v-for="item in disableItemValue" :key="item.id">
+                <p class="fl">{{item.blackInfoName}}</p>
                 <div class="fl">
-                    <span>漏洞优惠券</span>
-                    <span>漏洞优惠券</span>
-                    <span>漏洞优惠券</span>
+                    <span class="d_span" v-for="(i, index) in item.disableItemText" :key="index">{{ i }}</span>
                 </div>
             </div>
             <p class="red">确定将该客户冻结权限全部解冻吗？</p>
@@ -23,7 +21,8 @@ export default {
     props: ['data'],
     data() {
         return {
-            hasCancel: true
+            hasCancel: true,
+            disableItemValue: []
         }
     },
     methods: {
@@ -43,7 +42,17 @@ export default {
         },
         getFreezeList() {
             this._apis.client.getFreezeList({memberInfoId: this.data.id}).then((response) => {
-                console.log(response);
+                response.map((v) => {
+                    v.disableItemValue = v.disableItemValue.split(',');
+                    v.disableItemText = [];
+                    v.disableItemValue.map((item) => {
+                        if(item.split(':')[1]) {
+                            v.disableItemText.push(item.split(':')[1])
+                        }
+                    });
+                });
+                this.disableItemValue = [].concat(response);
+                console.log(this.disableItemValue);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -83,12 +92,15 @@ export default {
 .c_container{
     p{
         text-align: left;
-        margin-bottom: 20px;
+        margin: 0 20px 20px 0;
         &.red{
             text-align: center;
             color: #F55858;
             margin: 20px 0 5px 0;
         }
+    }
+    .d_span{
+        margin-right: 20px;
     }
 }
 </style>

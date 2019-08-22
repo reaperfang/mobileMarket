@@ -44,6 +44,8 @@ export default {
     submit() {
       if(this.data.type == 'groupId'){
         this.$emit('submit',{deleteGroup:{groupId:this.data.id}})
+      }else if(this.data.type == 'articleId'){
+        this.$emit('submit',{deleteActicle:{articleId:this.data.id}})
       }else{
         this.$emit('submit',{deleteImage:{imageId:this.arrayData}})
       }

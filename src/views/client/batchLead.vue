@@ -108,7 +108,7 @@
             <el-button type="primary" @click="saveLabel">保 存</el-button>
             <el-button>取 消</el-button>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @getSelected="getSelected"></component>
     </div>
 </template>
 <script type="es6">
@@ -142,7 +142,8 @@ export default {
                 productInfoIds:"",
                 isProduct: false,
                 labelConditon:"",
-                enable: "1"
+                enable: "1",
+                selectedIds: ""
             },
             rules: {
                 tagName: [
@@ -177,6 +178,9 @@ export default {
                 return 0;
             }
         },
+        getSelected(val) {
+            this.selectedIds = val;
+        },
         saveLabel() {
             let formObj = Object.assign({}, this.ruleForm);
             formObj.consumeTimeStart = formObj.consumeTime ? formObj.consumeTime[0]:"";
@@ -188,7 +192,7 @@ export default {
             formObj.isPreUnitPrice = this.convertUnit(formObj.isPreUnitPrice);
             formObj.isTotalScore = this.convertUnit(formObj.isTotalScore);
             formObj.isProduct = this.convertUnit(formObj.isProduct);
-            formObj.productInfoIds = "";
+            formObj.productInfoIds = this.selectedIds || "";
             if(this.$route.query.id) {
                 this._apis.client.updateTag(formObj).then((response) => {
                     this.$notify({
@@ -196,6 +200,7 @@ export default {
                         message: "标签编辑成功",
                         type: 'success'
                     });
+                    this.$router.go(-1);
                 }).catch((error) => {
                     this.$notify.error({
                         title: '错误',
@@ -223,6 +228,8 @@ export default {
         if(this.$route.query.id) {
             this._apis.client.getLabelInfo({id:this.$route.query.id}).then((response) => {
                 this.ruleForm = Object.assign({}, response);
+                console.log(this.ruleForm);
+                this.currentData.productInfoIds = this.ruleForm.productInfoIds;
                 this.ruleForm.tagType = this.ruleForm.tagType.toString();
                 this.ruleForm.anyOrAllCondition = this.ruleForm.anyOrAllCondition.toString();
                 this.ruleForm.consumeTimeType = this.ruleForm.consumeTimeType.toString();
@@ -246,6 +253,9 @@ export default {
 .c_container{
     padding: 16px 0 30px 20px;
     background-color: #fff;
+    .marL20{
+        margin-left: 20px;
+    }
     .c_title{
         color:#3D434A;
         margin-bottom: 17px;

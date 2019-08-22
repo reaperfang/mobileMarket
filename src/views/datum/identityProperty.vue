@@ -74,7 +74,23 @@ export default {
     data() {
         return {
             activeName: "first", 
-            range: ""
+            range: "",
+            visitSourceType:0,
+        }
+    },
+    methods:{
+        /*
+        ** */ 
+        getAttributeRatio(){
+             let data = {
+        visitSourceType: this.visitSourceType,
+      };
+      this._apis.data.pathOut(data).then(response => {
+            this.dataChart = response;
+            this.$refs.dprChart.con(response,this.duration)
+        }).catch(error => {
+          this.$message.error(error);
+        });
         }
     }
 }

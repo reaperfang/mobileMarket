@@ -130,6 +130,9 @@ export default {
     padding: 20px;
     background-color: #fff;
 }
+.marL20{
+    margin-left: 20px;
+}
 .pane_container{
     padding: 12px 20px;
     .c_card{

@@ -89,10 +89,36 @@ export function uploadImage(data) {
 
 
 /********************************  图文  ********************************/
+//保存图文素材
+export function saveArticle(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-UP-LOAD-TEXT-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
 
-
+//根据id获取图文详情
+export function getArticle(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
 
 /********************************  视频  ********************************/
+//上传视频
+export function uploadVideo(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-UP-LOAD-VIDEO-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
 
 
 

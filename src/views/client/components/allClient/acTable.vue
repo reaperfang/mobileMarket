@@ -68,8 +68,8 @@ import batchAddTagDialog from "../../dialogs/allClient/batchAddTagDialog";
 import batchRemoveBlackDialog from "../../dialogs/allClient/batchRemoveBlackDialog";
 export default {
   name: "acTable",
-  props: ["newForm"],
   extends: TableBase,
+  props: ["newForm"],
   components: {
     deleteUserDialog,
     addTagDialog,
@@ -95,9 +95,16 @@ export default {
     }
   },
   mounted() {
-    this.getMembers();
+    this.getMembers(1, this.pageSize);
   },
   methods: {
+    handleCurrentChange(val) {
+      this.getMembers(val, this.pageSize);
+    },
+    handleSizeChange(val) {
+      this.getMembers(1, val);
+      this.pageSize = val;
+    },
     handelDelete(id) {
       this.dialogVisible = true;
       this.currentDialog = "deleteUserDialog";
@@ -173,11 +180,12 @@ export default {
         this.$refs.allClientTable.toggleRowSelection(row);
       });
     },
-    getMembers() {
+    getMembers(startIndex, pageSize) {
       this._apis.client
-        .getMemberList(this.newForm)
+        .getMemberList(Object.assign(this.newForm,{startIndex, pageSize}))
         .then(response => {
           this.memberList = [].concat(response.list);
+          this.total = response.total;
         })
         .catch(error => {
           this.$notify.error({
@@ -188,15 +196,15 @@ export default {
     },
     deleteFeedback(msg) {
       if (msg == "success") {
-        this.getMembers();
+        this.getMembers(1, this.pageSize);
       }
     }
   },
   watch: {
     newForm() {
-      this.getMembers();
+      this.getMembers(1, this.pageSize);
     }
-  }
+  },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

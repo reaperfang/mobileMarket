@@ -20,9 +20,10 @@
         prop="tagType"
         label="标签类型">
       </el-table-column>
-      <el-table-column
-        prop="labelContains"
-        label="包含人数">
+      <el-table-column label="包含人数">
+        <template slot-scope="scope">
+            <span class="edit_span" @click="_routeTo('allClient', {memberLabels: scope.row.id})">{{scope.row.labelContains}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="labelCondition"
@@ -46,12 +47,12 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
-        layout="sizes, prev, pager, next"
-        :total="100">
-      </el-pagination>
+        :current-page="Number(startIndex) || 1"
+        :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
+        :page-size="pageSize*1"
+        :total="total*1"
+        layout="total, sizes, prev, pager, next, jumper"
+      ></el-pagination>
     </div>
     <div class="a_line">
       <el-checkbox v-model="checkAll" @change="handleChange"></el-checkbox>
@@ -80,14 +81,25 @@ export default {
 
   },
   methods: {
+    handleSizeChange(val) {
+      this.getLabelList(1, val);
+      this.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      this.getLabelList(val, this.pageSize);
+    },
     handleChange() {
       this.tagList.forEach(row => {
         this.$refs.clientLabelTable.toggleRowSelection(row)
       });
     },
-    getLabelList() {
-      this._apis.client.getLabelList(this.params).then((response) => {
+    getLabelList(startIndex, pageSize) {
+      this._apis.client.getLabelList(Object.assign(this.params, {startIndex, pageSize})).then((response) => {
+        response.list.map((v) => {
+          v.tagType = v.tagType == 0 ? '手工':'自动';
+        })
         this.tagList = [].concat(response.list);
+        this.total = response.total;
       }).catch((error) => {
         this.$notify.error({
             title: '错误',
@@ -117,7 +129,7 @@ export default {
             message: "批量删除标签成功",
             type: 'success'
           });
-          this.getLabelList();
+          this.getLabelList(1, this.pageSize);
         }).catch((error) => {
           this.$notify.error({
             title: '错误',
@@ -129,11 +141,11 @@ export default {
   },
   watch: {
     params() {
-      this.getLabelList();
+      this.getLabelList(1, this.pageSize);
     }
   },
   mounted() {
-    this.getLabelList();
+    this.getLabelList(1, this.pageSize);
   } 
 };
 </script>
