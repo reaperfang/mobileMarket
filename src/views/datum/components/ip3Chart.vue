@@ -1,33 +1,37 @@
 /* 身份属性会员增长趋势图表 */
 <script type='es6'>
 import chartBase from "@/components/ChartBase";
-// import chinaMap from "@/assets/js/chinaMap.js";
-// import worldMap from "@/assets/js/worldMap.js";
 export default {
   name: "ip3Chart",
   extends: chartBase,
   data() {
-    return {};
+    return {
+      flow:{}
+    };
   },
   created() {
-    // this.engine.registerMap("china", chinaMap);
-    //  this.engine.registerMap('world', worldMap);
+
   },
   methods: {
+    con(n){
+      this.flow = n;
+      this.makeOption(n);
+      this.oChart.setOption(this.option, true);
+    },
     //设置图表数据项
     makeOption(data) {
       this.option = {
         title: {
           x: "center",
-          //text: "ECharts例子个数统计",
+          text: "支付趋势",
           //subtext: "Rainbow bar example",
           link: "http://echarts.baidu.com/doc/example.html"
         },
-        tooltip: {
-          trigger: "item"
-        },
+        // tooltip: {
+        //   trigger: "item"
+        // },
         toolbox: {
-          show: true,
+          show: false,
           feature: {
             dataView: { show: true, readOnly: false },
             restore: { show: true },
@@ -44,19 +48,7 @@ export default {
           {
             type: "category",
             show: false,
-            data: [
-              "Line",
-              "Bar",
-              "Scatter",
-              "K",
-              "Pie",
-              "Radar",
-              "Chord",
-              "Force",
-              "Map",
-              "Gauge",
-              "Funnel"
-            ]
+            // data: this.flow['xAxisData']
           }
         ],
         yAxis: [
@@ -67,42 +59,31 @@ export default {
         ],
         series: [
           {
-            name: "ECharts例子个数统计",
+            name: "支付趋势",
             type: "bar",
             itemStyle: {
               normal: {
                 color: function(params) {
                   // build a color map as your need.
                   var colorList = [
-                    "#C1232B",
-                    "#B5C334",
-                    "#FCCE10",
-                    "#E87C25",
-                    "#27727B",
-                    "#FE8463",
-                    "#9BCA63",
-                    "#FAD860",
-                    "#F3A43B",
-                    "#60C0DD",
-                    "#D7504B",
-                    "#C6E579",
-                    "#F4E001",
-                    "#F0805A",
-                    "#26C0C0"
+                    "#8FDE80",
+                    "#358FF4",
+                    "#FF9235",
+                    "#FF501E"
                   ];
                   return colorList[params.dataIndex];
                 },
                 label: {
-                  show: true,
+                  show: false,
                   position: "top",
                   formatter: "{b}\n{c}"
                 }
               }
             },
-            data: [12, 21, 10, 4],
+            data: this.flow['xAxisData'],
             markPoint: {
               tooltip: {
-                trigger: "item",
+                // trigger: "item",
                 backgroundColor: "rgba(0,0,0,0)",
                 formatter: function(params) {
                   return (
@@ -114,32 +95,28 @@ export default {
               },
               data: [
                 {
-                  xAxis: 0,
+                  xAxis: 1,
                   y: 350,
                   name: "Line",
                   symbolSize: 20,
-                  //symbol: "image://../asset/ico/折线图.png"
-                },
-                {
-                  xAxis: 1,
-                  y: 350,
-                  name: "Bar",
-                  symbolSize: 20,
-                  //symbol: "image://../asset/ico/柱状图.png"
                 },
                 {
                   xAxis: 2,
                   y: 350,
-                  name: "Scatter",
+                  name: "Bar",
                   symbolSize: 20,
-                  //symbol: "image://../asset/ico/散点图.png"
                 },
                 {
                   xAxis: 3,
                   y: 350,
+                  name: "Scatter",
+                  symbolSize: 20,
+                },
+                {
+                  xAxis: 4,
+                  y: 350,
                   name: "K",
                   symbolSize: 20,
-                 // symbol: "image://../asset/ico/K线图.png"
                 }
               ]
             }

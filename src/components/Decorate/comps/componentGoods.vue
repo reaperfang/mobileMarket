@@ -2,7 +2,7 @@
 <!-- 组件-商品列表 -->
 <div class="componentGoods" :class="'listStyle'+listStyle" :style="{padding:pageMargin+'px'}" v-if="currentComponentData && currentComponentData.data">
     <!-- <van-list v-model="goodListLoading" :finished="goodListFinished" finished-text="没有更多了" @load="goodListLoad" > -->
-        <ul>
+        <ul v-if="list && list.length">
             <li v-for="(item,key) in list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img" >
                     <div class="imgAbsolute">
@@ -19,6 +19,7 @@
                 </div>
             </li>
         </ul>
+        <div v-else>暂无数据</div>
     <!-- </van-list> -->
 </div>
 </template>

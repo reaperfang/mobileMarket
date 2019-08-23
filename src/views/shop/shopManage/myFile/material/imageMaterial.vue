@@ -8,7 +8,7 @@
       </div>
       <div>
         <el-button type="primary" plain @click="syncImage">同步图片</el-button>
-        <el-button type="primary" plain @click="uploadImage">上传图片</el-button>
+        <el-button type="primary" plain @click="handleUploadImage">上传图片</el-button>
       </div>
     </div>
     <div class="list">
@@ -238,7 +238,7 @@ export default {
             this.handleSyncImage()
           break;
           case 'uploadImage':
-            this.getList()
+            this.uploadImage(data.uploadImage.query)
           break;
         }
       }
@@ -265,7 +265,7 @@ export default {
         this.arrayData.push(id)
       }
     },
-    uploadImage(){
+    handleUploadImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogUploadImage'
       this.data = {
@@ -318,6 +318,22 @@ export default {
         this.$notify.success({
           title: '成功',
           message: '删除成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+    //上传图片
+    uploadImage(query){
+      this._apis.file.uploadImage(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '上传图片成功！'
         });
         this.getList()
       }).catch((error)=>{
@@ -402,7 +418,7 @@ export default {
             padding:0 10px;
             position: absolute;
             left:0px;
-            bottom:-25px;
+            bottom:-30px;
             z-index: 1;
             background:rgba(0,0,0,1);
             opacity: 0.5;
@@ -418,7 +434,7 @@ export default {
           }
           .operate{
             width: 100%;
-            height: 175px;
+            height: 150px;
             position: absolute;
             top:0;
             left:0;

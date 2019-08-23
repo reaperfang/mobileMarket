@@ -65,6 +65,7 @@ export default {
             }
             this.menuStyle = this.currentComponentData.data.menuStyle;
             this.menuPosition = this.currentComponentData.data.menuPosition;
+            this.fetch();
         },
         // handleScroll(){
         //     let componentGoodsGroupHeight = document.getElementById("componentGoodsGroup").clientHeight;  

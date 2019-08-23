@@ -5,6 +5,7 @@ export function login(data) {
   return request({
     target: 'MANAGER-API-100',
     method: 'post',
+    apiType: 'manager',
     data
   })
 }

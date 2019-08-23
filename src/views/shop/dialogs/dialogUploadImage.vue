@@ -1,7 +1,7 @@
 <template>
-  <DialogBase :visible.sync="visible" width="600px" :title="title" @submit="title == '上传图片' ? uploadImage : uploadVideo">
+  <DialogBase :visible.sync="visible" width="600px" :title="title" @submit="uploadImage">
     <el-form :model="form" class="demo-form-inline" label-width="90px">
-        <el-form-item label="本地上传">
+        <el-form-item label="本地上传" v-if="title == '上传图片'">
           <el-upload
             class="avatar-uploader"
             :action="uploadUrl"
@@ -13,8 +13,21 @@
             <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-          <p class="note" v-if="title == '上传图片'">仅支持gif,jpeg,png,bmp4种格式，大小不超过3.0MB</p>
-          <p class="note" v-if="title == '上传视频'">视频大小不超过10mb，支持mp4,mov,m4v,flv,x-flv,mkv,wmv,avi,rmvb,3gp格式</p>
+          <p class="note">仅支持jpg,png格式，大小不超过3.0MB</p>
+        </el-form-item>
+        <el-form-item label="本地上传" v-if="title == '上传视频'">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :limit="1"
+            :data="{json: JSON.stringify({cid: 222})}"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <p class="note">视频大小不超过10mb，支持mp4,mov,m4v,flv,x-flv,mkv,wmv,avi,rmvb,3gp格式</p>
         </el-form-item>
         <el-form-item label="名称" v-if="title == '上传视频'">
           <el-input v-model="form.name" placeholder="请勿超过20字" style="width:195px"></el-input>
@@ -41,7 +54,7 @@
             <img v-if="form.imageUrls" :src="form.imageUrls" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-          <p class="note">建议尺寸：800*800，支持jpg,gif,jpeg,png三种格式，大小不超过3.0MB。</p>
+          <p class="note">建议尺寸：800*800，支持jpg,png格式，大小不超过3.0MB。</p>
           <p class="note">如果不添加封面，系统会默认截取视频的第一个画面作为封面</p>
         </el-form-item>
       </el-form>
@@ -94,10 +107,8 @@ export default {
   methods: {
     //查询分组
     getGroups(){
-      let query ={
-        type:'0'
-      }
-      this._apis.file.getGroup(query).then((response)=>{
+      let type = this.title == '上传图片' ? '0' : '2'
+      this._apis.file.getGroup({type:type}).then((response)=>{
         this.groupList = response
       }).catch((error)=>{
         this.$notify.error({
@@ -108,47 +119,37 @@ export default {
     },
    //上传图片
     uploadImage(){
-      let query ={
-        fileGroupInfoId:this.form.groupValue,
-        data:[
-          {
-            fileName:this.fileData.original,
-            filePath:this.fileData.url,
-            imgPixelWidth:this.fileData.width,
-            imgPixelHeight:this.fileData.height,
-            fileSize:this.fileData.size,
-            sign:this.fileData.sign
-          }
-        ]
+      if(this.title == '上传图片'){
+        let query ={
+          fileGroupInfoId:this.form.groupValue,
+          data:[
+            {
+              fileName:this.fileData.original,
+              filePath:this.fileData.url,
+              imgPixelWidth:this.fileData.width,
+              imgPixelHeight:this.fileData.height,
+              fileSize:this.fileData.size,
+              sign:this.fileData.sign
+            }
+          ]
+        }
+        this.$emit('submit',{uploadImage:{query:query}})
+      }else{
+        let query ={
+          fileGroupInfoId:this.form.groupValue,
+          fileName:this.fileData.original,
+          filePath:this.fileData.url,
+          fileSize:this.fileData.size,
+          name:this.form.name,
+          fileover:this.form.imageUrls,
+          sign:this.fileData.sign,
+        }
+        this.$emit('submit',{uploadVideo:{query:query}})
       }
-      this._apis.file.uploadImage(query).then((response)=>{
-        this.$emit('submit',{uploadImage:''})
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
     },
     //上传视频
     uploadVideo(){
-      let query ={
-        fileGroupInfoId:this.form.groupValue,
-        fileName:this.fileData.original,
-        filePath:this.fileData.url,
-        fileSize:this.fileData.size,
-        name:this.form.name,
-        fileover:this.form.imageUrls,
-        sign:sign,
-      }
-      this._apis.file.uploadVideo(query).then((response)=>{
-        this.$emit('submit',{uploadVideo:''})
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
+      
     },
     handleAvatarSuccess(res, file) {
       this.fileData = res.data
