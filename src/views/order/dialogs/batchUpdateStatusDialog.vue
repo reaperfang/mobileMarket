@@ -47,6 +47,11 @@ export default {
             //this.$emit('audit', this.auditStatus)
             if(this.auditStatus == 2) {
                 this.showReject = true
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        document.querySelector('.v-modal').style.display = 'none'
+                    }, 0)
+                })
             } else {
                 this.$emit('submit', {status: 1})
                 this.visible = false
@@ -91,6 +96,9 @@ export default {
    /deep/ .v-modal {
        display: none!important;
        z-index: 0!important;
+   }
+   /deep/ .el-dialog__wrapper {
+       background: rgba(0, 0, 0, 0.5);
    }
 </style>
 

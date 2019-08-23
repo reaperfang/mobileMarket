@@ -92,8 +92,8 @@ module.exports = {
         }
       },
       '/order_server/**': {
-        //target: 'http://172.22.145.113:8080/',
-        target: 'http://localhost:3000/',
+        target: 'http://172.22.145.113:8080/',
+        //target: 'http://localhost:3000/',
         changeOrigin: true,
         pathRewrite: {
           '^/order_server': ''

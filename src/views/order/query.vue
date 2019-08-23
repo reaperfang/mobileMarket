@@ -83,7 +83,7 @@
           class="border-button"
           @click="$router.push('/order/batchImportAndDelivery')"
         >批量导入发货</el-button>
-        <el-button class="border-button" @click="$router.push('/order/deliverGoods')">批量发货</el-button>
+        <el-button class="border-button" @click="$router.push('/order/bulkDelivery')">批量发货</el-button>
         <el-button class="border-button" @click="$router.push('/order/richLogistics')">批量补填物流</el-button>
       </div>
     </section>

@@ -1,8 +1,9 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" :title="title" width="500px" :showFooter="showFooter">
+    <DialogBase :visible.sync="visible" @submit="submit" title="换货确认" width="500px" :showFooter="showFooter">
         <div>
-            <el-radio v-model="refuseReason" label="人为破坏拒绝售后">人为破坏拒绝售后</el-radio>
-            <el-radio v-model="refuseReason" label="其他">其他</el-radio>
+            <p>是否需要客户ID发货：</p>
+            <el-radio v-model="exchangeConfirmation" :label="1">是</el-radio>
+            <el-radio v-model="exchangeConfirmation" :label="0">否</el-radio>
             <div class="footer">
                 <el-button>取消</el-button>
                 <el-button @click="submit" type="primary">确定</el-button>
@@ -17,12 +18,12 @@ export default {
     data() {
         return {
             showFooter: false,
-            refuseReason: ''
+            exchangeConfirmation: 1
         }
     },
     methods: {
         submit() {
-            this.$emit('reject', this.refuseReason)
+            this.$emit('confirm', this.exchangeConfirmation)
             this.visible = false
         }
     },

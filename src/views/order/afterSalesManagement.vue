@@ -48,8 +48,8 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button @click="exportOrder">导出</el-button>
-                        <el-button @click="batchUpdateStatus">批量审核</el-button>
+                        <el-button class="border-button" @click="exportOrder">导出</el-button>
+                        <el-button class="border-button" @click="batchUpdateStatus">批量审核</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
@@ -104,20 +104,20 @@
                     prop="createTime"
                     label="申请时间">
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="220">
                     <template slot-scope="scope">
-                        <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                        <span v-if="scope.row.orderAfterSaleStatus == 0" @click="updateStatus(scope.row)">同意</span>
-                        <span v-if="scope.row.orderAfterSaleStatus == 0" @click="updateRejectStatus(scope.row)">拒绝</span>
-                        <span v-if="scope.row.orderAfterSaleStatus == 2">查看物流</span>
-                        <span v-if="scope.row.orderAfterSaleStatus == 2">确认收货</span>
-                        <span v-if="scope.row.orderAfterSaleStatus == 2">退款</span>
+                        <span class="blue pointer" @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
+                        <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateStatus(scope.row)">同意</span>
+                        <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateRejectStatus(scope.row)">拒绝</span>
+                        <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 2">查看物流</span>
+                        <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 2">确认收货</span>
+                        <span class="blue pointer" @click="drawback(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">退款</span>
                     </template>
                 </el-table-column>
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit" :title="title"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit" :title="title" @reject="rejectHandler" @confirm="confirmHandler"></component>
     </div>
 </template>
 <script>
@@ -125,6 +125,7 @@ import Pagination from '@/components/Pagination'
 import RejectDialog from '@/views/order/dialogs/rejectDialog'
 import AuditDialog from '@/views/order/dialogs/auditDialog'
 import BatchUpdateStatusDialog from '@/views/order/dialogs/batchUpdateStatusDialog'
+import ExchangeGoodsDialog from '@/views/order/dialogs/exchangeGoodsDialog'
 
 export default {
     data() {
@@ -255,6 +256,24 @@ export default {
         }
     },
     methods: {
+        drawback(row) {
+            this._apis.order.orderAfterSaleDrawback({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
+                console.log(res)
+                this.$notify({
+                    title: '成功',
+                    message: '已发起退款，系统处理中。',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+            // this.confirm({title: '提示', text: '微信账户余额不足，无法退款。'}).then(() => {
+                
+            // })
+        },
         exportOrder() {
            this._apis.order.orderAfterSaleExport({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
                 console.log(res)
@@ -309,7 +328,7 @@ export default {
                     this.getList()
                     this.$notify({
                         title: '成功',
-                        message: '审核成功！',
+                        message: '拒绝审核成功！',
                         type: 'success'
                     });
                 }).catch(error => {
@@ -321,7 +340,25 @@ export default {
             }
         },
         updateRejectStatus(row) {
-
+            this.currentDialog = 'RejectDialog'
+            this.currentData = row
+            this.title = '拒绝审核'
+            this.dialogVisible = true
+        },
+        rejectHandler(value) {
+            this._apis.order.orderAfterSaleUpdateStatus({id: this.currentData.id, orderAfterSaleStatus: 5, refuseReason: value.refuseReason}).then((res) => {
+                this.getList()
+                this.$notify({
+                    title: '成功',
+                    message: '拒绝审核成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         },
         updateStatus(row) {
             this._apis.order.orderAfterSaleUpdateStatus({id: row.id, orderAfterSaleStatus: 1}).then((res) => {
@@ -330,6 +367,27 @@ export default {
                 this.$notify({
                     title: '成功',
                     message: '审核成功！',
+                    type: 'success'
+                });
+                // this.confirm({title: '换货确认', icon: true, text: `是否确认${_title}？`}).then(() => {
+                    
+                // })
+                this.currentDialog = 'ExchangeGoodsDialog'
+                this.currentData = row
+                this.dialogVisible = true
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        // 换货确认
+        confirmHandler(value) {
+            this._apis.order.orderAfterSaleConfirmExchange({id: this.currentData.id, exchangeConfirmation: value.exchangeConfirmation}).then((res) => {
+                this.$notify({
+                    title: '成功',
+                    message: '换货确认成功！',
                     type: 'success'
                 });
             }).catch(error => {
@@ -364,7 +422,8 @@ export default {
         Pagination,
         RejectDialog,
         AuditDialog,
-        BatchUpdateStatusDialog
+        BatchUpdateStatusDialog,
+        ExchangeGoodsDialog
     }
 }
 </script>
