@@ -71,6 +71,14 @@ export default {
     created(){
         this.decoration();
     },
+    watch: {
+        'currentComponentData.data.ids': { 
+            handler(newValue) {
+                this.fetch && this.fetch();
+            },
+            deep: true
+        }
+    },
     components:{
         componentButton
     },

@@ -35,6 +35,14 @@ export default {
   created() {
     this.fetch();
   },
+  watch: {
+      'currentComponentData.data.ids': { 
+          handler(newValue) {
+              this.fetch && this.fetch();
+          },
+          deep: true
+      }
+  },
   computed: {
     reductionStyle() {
       return `style${this.currentComponentData.data.displayStyle}`;

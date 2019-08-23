@@ -45,6 +45,12 @@ export default {
           this.decoration();
         },
         deep: true
+      },
+      'currentComponentData.data.ids': { 
+          handler(newValue) {
+              this.fetch && this.fetch();
+          },
+          deep: true
       }
     },
     // mounted: function() {

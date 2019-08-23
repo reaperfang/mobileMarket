@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import utils from '@/utils';
 export default {
   name: 'shopStyle',
   components: {},
