@@ -2,18 +2,18 @@
 <!-- 组件-商品分组 -->
     <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data">
         <div class="componentGoodsGroup_tab" id="componentGoodsGroup_tab" :class="'menuStyle'+menuStyle" :style="{width:componentGoodsGroup_tabWidth}">
-            <p class="active" v-if="showAllGroup==1">全部</p>
-            <p v-for="(item,key) of goodsGroups" :class="{active:showAllGroup!=1&&key==0}" :key="key">{{item.name}}</p>
+            <p class="active" v-if="showAllGroup==1" @click="currentCatagory=null">全部</p>
+            <p v-for="(item,key) of list" :class="{active:showAllGroup!=1&&key==0}" :key="key" @click="currentCatagory=item">{{item.name}}</p>
         </div>
         <div class="componentGoodsGroup_content">
-            <componentGoods :data='currentComponentData'></componentGoods>
+            <componentGoods :data='currentComponentData' :currentCatagoryId="currentCatagory? currentCatagory.id : ''"></componentGoods>
         </div> 
     </div>
 </template>
 <script>
 import componentButton from './componentButton';
 import componentGoods from './componentGoods';
-import componentMixin from './mixin';
+import componentMixin from './mixinComps';
 export default {
     name:"componentGoodsGroup",
     mixins:[componentMixin],
@@ -22,7 +22,7 @@ export default {
         // 商品列表
         componentGoodsItemData: {},
         // 商品分组列表
-        goodsGroups: [],
+        list: [],
         // 样式属性
         listStyle: "",
         showAllGroup: "",
@@ -30,6 +30,7 @@ export default {
         menuStyle: "",
         menuPosition: "",
         componentGoodsGroup_tabWidth: "",
+        currentCatagory: null
       }
     },
     components: {
@@ -78,14 +79,17 @@ export default {
 
         //根据ids拉取数据
         fetch() {
-            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
+            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids) {
+                let ids = [];
+                for(let item in this.currentComponentData.data.ids) {
+                  ids.push(item);
+                }
+                if(!ids.length) {
+                  return;
+                }
                 this.loading = true;
-                this._apis.goods.fetchSpuGoodsList({
-                    status: '1',
-                    ids: this.currentComponentData.data.ids.join(',')
-                }).then((response)=>{
-                    this.tableList = response.list;
-                    this.total = response.total;
+                this._apis.goods.fetchCategoryList({ids}).then((response)=>{
+                    this.list = response;
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({

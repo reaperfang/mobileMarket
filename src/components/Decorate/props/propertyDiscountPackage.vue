@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectPackage from '@/views/shop/dialogs/dialogSelectPackage';
 import uuid from 'uuid/v4';
 export default {

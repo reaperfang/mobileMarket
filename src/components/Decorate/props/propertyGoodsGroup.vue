@@ -5,11 +5,11 @@
         <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
         <div class="goods_groups">
           <el-tag
-            v-for="tag in item"
-            :key="tag.title"
+            v-for="(tag, key) in items"
+            :key="key"
             closable
             type="success" @close="deleteItem(tag)">
-            {{tag.title}}
+            {{tag.catagoryData.categoryName}}
           </el-tag>
         </div>
       </el-form-item>
@@ -133,12 +133,12 @@
     </div>
 
      <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected"></component>
   </el-form>
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectGoodsGroup from '@/views/shop/dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyGoodsGroup',
@@ -157,12 +157,12 @@ export default {
         goodsStyle: 1,
         goodsChamfer: 1,
         goodsRatio: 1,
-        goodsFill: 1,
+        goodsFill: 2,
         textStyle: 1,
         textAlign: 1,
-        showContents: [],
+        showContents: ['1', '2', '3', '4'],
         buttonStyle: 1,
-        items: []
+        ids: []
       },
       rules: {
 
@@ -175,10 +175,15 @@ export default {
   watch: {
     'items': {
       handler(newValue) {
-        this.ruleForm.ids = [];
-        for(let item of newValue) {
-          this.ruleForm.ids.push(item.id);
+        const catagoryIds = {};
+        for(let k in newValue) {
+          catagoryIds[k] = [];
+          for(let item of newValue[k].goods) {
+            catagoryIds[k].push(item.id);
+          }
         }
+        this.ruleForm.ids = catagoryIds;
+        console.log(catagoryIds);
       },
       deep: true
     }

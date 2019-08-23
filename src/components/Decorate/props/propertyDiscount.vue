@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectDiscount from '@/views/shop/dialogs/dialogSelectDiscount';
 import uuid from 'uuid/v4';
 export default {

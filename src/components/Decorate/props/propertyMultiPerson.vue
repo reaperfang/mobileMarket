@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectMultiPerson from '@/views/shop/dialogs/dialogSelectMultiPerson';
 import dialogMultiPersonDemo from '@/views/shop/dialogs/dialogMultiPersonDemo';
 import uuid from 'uuid/v4';

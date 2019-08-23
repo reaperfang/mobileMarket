@@ -65,6 +65,8 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch('getShopInfo');
+    this.$store.dispatch('getShopStyle');
     this.getQrcode();
   },
   methods: {

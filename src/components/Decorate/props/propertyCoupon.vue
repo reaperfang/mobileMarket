@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectCoupon from '@/views/shop/dialogs/dialogSelectCoupon';
 export default {
   name: 'propertyCoupon',

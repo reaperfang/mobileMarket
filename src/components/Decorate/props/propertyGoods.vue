@@ -11,7 +11,7 @@
         <div class="goods_list">
           <ul>
             <li v-for="(item, key) of items" :key="key">
-              <img :src="item.url" alt="">
+              <img :src="item.mainImage" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 import dialogSelectGoodsGroup from '@/views/shop/dialogs/dialogSelectGoodsGroup';
 export default {
@@ -154,12 +154,12 @@ export default {
         goodsStyle: 1,
         goodsChamfer: 1,
         goodsRatio: 1,
-        goodsFill: 1,
+        goodsFill: 2,
         textStyle: 1,
         textAlign: 1,
-        showContents: [],
+        showContents: ['1', '2', '3', '4'],
         buttonStyle: 1,
-        items: []
+        ids: []
       },
       rules: {
 

@@ -76,7 +76,7 @@ export default {
     align-items: center;
     img{
       width:50px;
-      height:30px;
+      height:50px;
       margin-right:10px;
     }
 }

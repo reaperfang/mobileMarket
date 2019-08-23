@@ -126,7 +126,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectSecondkill from '@/views/shop/dialogs/dialogSelectSecondkill';
 import uuid from 'uuid/v4';
 export default {

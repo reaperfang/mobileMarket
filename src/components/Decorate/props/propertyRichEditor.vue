@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';;
+import propertyMixin from './mixinProps';;
 import RichEditor from '@/components/RichEditor';
 export default {
   name: 'propertyRichEditor',
