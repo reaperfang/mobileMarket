@@ -1,7 +1,5 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
                 <div class="pane_container">
                     <p class="i_title">属性比例：</p>
                     <div class="chart1_container clearfix">
@@ -58,10 +56,6 @@
                         </div>
                     </div>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
     </div>
 </template>
 <script>

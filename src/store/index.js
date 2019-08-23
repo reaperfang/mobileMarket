@@ -6,6 +6,7 @@ import tagsView from './modules/tagsView'
 import user from './modules/user'
 import menu from './modules/menu'
 import decorate from './modules/decorate'
+import data from './modules/data'
 import getters from './getters'
 import api from '@/api';
 
@@ -18,7 +19,8 @@ const store = new Vuex.Store({
     tagsView,
     user,
     menu,
-    decorate
+    decorate,
+    data
   },
   getters
 });
