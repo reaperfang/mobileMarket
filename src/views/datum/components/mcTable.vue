@@ -2,40 +2,40 @@
 <template>
   <div>
     <el-table
-      :data="dataObj.dataList"
+      :data="dataObj.shopMemberConsumerList"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
+        type="index"
         label="排行">
       </el-table-column>
       <el-table-column
-        prop="channel"
+        prop="memberNickName"
         label="会员昵称">
       </el-table-column>
       <el-table-column
-        prop="importNum"
+        prop="memberPhone"
         label="手机号">
       </el-table-column>
       <el-table-column
-        prop="successNum"
+        prop="memberLevel"
         label="等级"
       >
       </el-table-column>
       <el-table-column
-        prop="failNum"
+        prop="integral"
         label="积分（余额）"
       >
       </el-table-column>
       <el-table-column
-        prop="buyTime"
+        prop="totalConsumerAmount"
         label="消费金额（累计）"
       >
       </el-table-column>
       <el-table-column
-        prop="operator"
+        prop="totalOrder"
         label="计单数（累计）"
       >
       </el-table-column>
@@ -48,7 +48,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="100">
+        :total="dataObj.totalPage">
       </el-pagination>
     </div>
   </div>
@@ -61,7 +61,7 @@ export default {
   extends: TableBase,
   data() {
     return {
-   
+      
     };
   },
   props:{
@@ -74,7 +74,13 @@ export default {
 
   },
   methods: {
-    
+    handleSizeChange(val){
+      console.log(1,val)
+      this.$emit('getMember',1,val)
+    },
+    handleCurrentChange(val){
+      console.log(2,val)
+    }
   },
   components: {}
 };

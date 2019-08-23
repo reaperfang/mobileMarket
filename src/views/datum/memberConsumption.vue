@@ -23,7 +23,7 @@
                             </el-input>
                         </div>
                     </div>
-                    <mcTable style="margin-top: 50px" :dataObj="dataObj"></mcTable>
+                    <mcTable style="margin-top: 50px" :dataObj="dataObj" @getMember="getMemberConsumption"></mcTable>
                 </div>
     </div>
 </template>
@@ -67,8 +67,9 @@ export default {
         keyWords: this.keyWords,
       };
       this._apis.data.memberConsumption(data).then(response => {
-            this.dataChart = response;
-            this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+           this.dataObj = response;
+            console.log(response) ;
+            // this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
         }).catch(error => {
           this.$message.error(error);
         });
