@@ -6,8 +6,8 @@ export default [
         component: Layout,
         name: 'intelligentOperation',
         meta: {
-        title: '智能运营',
-        icon: 'el-icon-setting'
+        title: '运营',
+        icon: 'icon_opera'
         },
         children: [
             {

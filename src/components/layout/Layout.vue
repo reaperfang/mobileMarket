@@ -178,6 +178,10 @@ export default {
     background: url('../../assets/images/icons/datum.png') no-repeat;
     background-size: cover;
   }
+  .icon_opera{
+    background: url('../../assets/images/icons/opera.png') no-repeat;
+    background-size: cover;
+  }
   .icon_finance{
     background: url('../../assets/images/icons/finance.png') no-repeat;
     background-size: cover;

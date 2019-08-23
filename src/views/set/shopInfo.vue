@@ -3,14 +3,14 @@
     <div class="shopInfo">
         <h1>基本信息</h1>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="商户名称:" prop="name">
-                <el-input v-model="form.name" style="width:200px;"></el-input>
+            <el-form-item label="商户名称:" prop="shopName">
+                <el-input v-model="form.shopName" style="width:200px;"></el-input>
             </el-form-item>
             <el-form-item label="主营类目:">
-                食品
+              {{form.business}}
             </el-form-item>
             <el-form-item label="创建日期:">
-                2019-07-23 20:50:00
+                <!-- {{form}} -->
             </el-form-item>
             <el-form-item label="商户LOGO:">
                 <el-upload
@@ -19,18 +19,19 @@
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <img v-if="form.logo" :src="form.logo" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="客服电话:" prop="name4">
-                <el-input v-model="form.name4" placeholder="区号" style="width:70px;"></el-input>
-                ——
-                <el-input v-model="form.name5" placeholder="如输入手机号，不填区号" style="width:190px;"></el-input>
+            <el-form-item label="客服电话:" prop="phone">
+                <!-- <el-input v-model="form.phone" placeholder="区号" style="width:70px;"></el-input>
+                —— -->
+                <el-input v-model="form.phone" placeholder="如输入手机号，不填区号" style="width:190px;"></el-input>
             </el-form-item>
             <el-form-item label="联系地址:" prop="address">
-                <el-cascader :options="area" v-model="form.address" expand-trigger="hover"/>
-                <el-input v-model="form.addressDetail" style="width: 70%;" placeholder="详细地址"/>
+                <area-cascader :level="2" :data='$pcaa' v-model='form.addressCode' style="display:inline-block"></area-cascader>
+                <!-- <el-cascader :options="area" v-model="form.address" expand-trigger="hover"/> -->
+                <el-input v-model="form.address" style="width: 70%;" placeholder="详细地址"/>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -46,31 +47,27 @@ export default {
   data() {
     return {
       form: {
-          name: '',
-          name1: '',
-          name2: '',
-          name3: '',
-          name4: '',
-          name5: '',
-          name6: ''
+          shopName: '',
+          logo:'',
+          phone:'',
+          addressCode:[],
+          address:'',
       },
       rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
+        shopName: [
+          { required: true, message: '请输入商户名称', trigger: 'blur' },
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
-        name4:[
-          { required: true, message: '请输入区号', trigger: 'blur' },
-        ],
-        name5:[
+        phone:[
           { required: true, message: '请输入电话号码', trigger: 'blur' },
         ],
         address:[
-          { required: true, message: '请输入电话号码', trigger: 'blur' },
+          { required: true, message: '请输入详细地址', trigger: 'blur' },
         ],
       },
       imageUrl: '',
       area: [],
+      shopInfo:{}
     }
   },
   components: {},
@@ -78,16 +75,57 @@ export default {
     
   },
   created() {
-
+    this.getShopInfo()
   },
   destroyed() {
     
   },
   methods: {
-    init(){
-        // listArea({}).then(response => {
-        //     this.area = response.data.data.children
-        // })
+    getShopInfo(){
+      let id = this.$store.getters.cid || '2'
+      this._apis.set.getShopInfo({id:id}).then(response =>{
+        this.form = response
+        this.form.shopName = response.shopName
+        this.form.logo = response.logo
+        this.form.phone = response.phone
+        this.form.address = response.address
+        if(response.provinceCode){
+          let arr = []
+          arr.push(response.provinceCode)
+          arr.push(response.cityCode)
+          arr.push(response.areaCode)
+          this.form.addressCode = arr
+        }
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+    onSubmit(){
+      let id = this.$store.getters.cid || '2'
+      let data = {
+        shopName:this.form.shopName,
+        logo:this.form.logo,
+        phone:this.form.phone,
+        provinceCode:this.form.addressCode[0],
+        cityCode:this.form.addressCode[1],
+        areaCode:this.form.addressCode[2],
+        address:this.form.address
+      }
+      this._apis.set.updateShopInfo(data).then(response =>{
+        this.$notify.error({
+          title: '成功',
+          message: '保存成功！'
+        });
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
 
     handleAvatarSuccess(res, file) {
@@ -147,5 +185,8 @@ export default {
        font-weight:500;
        margin-bottom: 30px;
      }
+}
+/deep/ .area-select .area-selected-trigger{
+  padding:0 0 0 10px;
 }
 </style>
