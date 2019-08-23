@@ -39,7 +39,7 @@
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixin';
+import componentMixin from './mixinComps';
 export default {
     name:"componentSecondkill",
     mixins:[componentMixin],
@@ -68,6 +68,14 @@ export default {
     },
     components:{
         componentButton
+    },
+    watch: {
+        'currentComponentData.data.ids': { 
+            handler(newValue) {
+                this.fetch && this.fetch();
+            },
+            deep: true
+        }
     },
     methods:{
         decoration(){
@@ -112,8 +120,6 @@ export default {
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.hideEndGoods = this.currentComponentData.data.hideEndGoods;
             this.hideType = this.currentComponentData.data.hideType;
-
-            
             this.fetch();
         },
 

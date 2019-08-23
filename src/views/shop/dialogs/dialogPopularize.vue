@@ -180,6 +180,7 @@ export default {
   },
   created() {
     this.fetch();
+    this.$store.dispatch('getShopInfo');
     this.getQrcode();
   },
   methods: {

@@ -302,6 +302,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('getShopInfo');
     this.initnavMap();
     this.fetch();
   },

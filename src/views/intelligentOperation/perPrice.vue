@@ -66,9 +66,29 @@ export default {
         }
     },
     methods: {
+        handleClick(){},
         checkDay(item) {
             this.day = item;
-        }
+        },
+        // 实时概况
+        getRealTimeOverview(){
+            let data = {
+                startTime:'',
+                endTime:''
+            }
+            this._apis.data.realTimeOverview(data).then(response => {
+            // this.dataChart = response;
+            // this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        //历史记录
+        // 详细数据
+        
+    },
+    created(){
+        this.getRealTimeOverview()
     }
 }
 </script>

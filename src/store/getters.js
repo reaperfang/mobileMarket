@@ -11,8 +11,8 @@ const getters = {
 
   mapLoaded: state => state.app.mapLoaded,
 
-  shopInfo: state => state.app.shopInfo,   //店铺信息
-  colorStyle: state => state.app.colorStyle,   //店铺风格
+  shopInfo: state => state.shop.shopInfo,   //店铺信息
+  colorStyle: state => state.shop.colorStyle,   //店铺风格
   
   currentComponentId: state => state.decorate.currentComponentId,   //当前装修组件id
   componentDataIds: state => state.decorate.componentDataIds,   //装修组件顺序列表

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 export default {
   name: 'propertyBuyNotice',

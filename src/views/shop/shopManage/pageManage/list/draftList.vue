@@ -81,7 +81,6 @@ export default {
   },
   created() {
     this.getClassifyList();
-    this.fetch();
   },
   methods: {
 

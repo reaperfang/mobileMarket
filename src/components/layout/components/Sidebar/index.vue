@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div>
     <!-- <div class="logo-con">
       <img :src="require('@/assets/images/logo.png')" class="logo">

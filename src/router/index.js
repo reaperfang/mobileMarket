@@ -23,7 +23,7 @@ export const asyncRouterMap = [  //异步路由表
   ...order,
   ...client,
   ...datum,
-  // ...intelligentOperation,
+  ...intelligentOperation,
   ...finance,
   ...apply,
   ...set,

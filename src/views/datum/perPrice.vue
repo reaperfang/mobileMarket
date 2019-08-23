@@ -34,17 +34,13 @@
             <p class="p_title">关键指标详解</p>
             <el-button class="export_btn" icon="el-icon-share">导出</el-button>
             <el-button class="minor_btn fr" style="margin: 20px -78px 0 0">重新筛选</el-button>
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="客单价" name="first">
+            
                     <div class="pane_container">
                         <div>
                             <pp1Chart :title="'测试图表'"></pp1Chart>
                         </div>
                     </div>
-                </el-tab-pane>
-                <el-tab-pane label="订单量" name="second"></el-tab-pane>
-                <el-tab-pane label="人均消费金额趋势" name="third"></el-tab-pane>
-            </el-tabs>
+               
         </div>
         <div class="p_block marT20">
             <p class="p_title">详细数据</p>
@@ -62,13 +58,27 @@ export default {
         return {
             day: "",
             days: ['7天','15天','30天'],
-            activeName:"first"
         }
     },
     methods: {
         checkDay(item) {
             this.day = item;
+        },
+        getRealTimeOverview(){
+            let data = {
+                startTime:'',
+                endTime:''
+            }
+            this._apis.data.realTimeOverview(data).then(response => {
+            // this.dataChart = response;
+            // this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+        }).catch(error => {
+          this.$message.error(error);
+        });
         }
+    },
+    created(){
+        this.getRealTimeOverview()
     }
 }
 </script>

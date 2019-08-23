@@ -114,7 +114,7 @@ export default {
     }
   },
   created() {
-    this.fetch();
+    this.$store.dispatch('getShopInfo');
   },
   methods: {
 

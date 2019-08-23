@@ -38,7 +38,7 @@ export default [
         path: 'customerBalance',
         component: () => import('@/views/finance/customerBalance'),
         name: 'customerBalance',
-        meta: { title: '客户ID余额', noCache: true, tabTitle: '成本核算' }
+        meta: { title: '客户余额', noCache: true, tabTitle: '成本核算' }
       },
       {
         path: 'integralDetails',
@@ -62,7 +62,7 @@ export default [
         path: 'smsGroupSends',
         component: () => import('@/views/finance/smsGroupSends'),
         name: 'smsGroupSends',
-        meta: { title: '短信群发', noCache: true, tabTitle: '成本核算' }
+        meta: { title: '短信成本', noCache: true, tabTitle: '成本核算' }
       },
     ]
 	}

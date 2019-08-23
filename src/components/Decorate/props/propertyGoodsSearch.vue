@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogGoodsSearchDemo from '@/views/shop/dialogs/dialogGoodsSearchDemo';
 export default {
   name: 'propertyGoodsSearch',

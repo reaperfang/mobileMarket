@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import utils from '@/utils';
 export default {
   name: 'shopStyle',
   components: {},
@@ -92,7 +93,7 @@ export default {
     }
   },
   created() {
-    
+    this.$store.dispatch('getShopStyle');
   },
   computed: {
      colorStyle() {

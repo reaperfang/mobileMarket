@@ -1,19 +1,24 @@
 /* 身份属性属性比例图表 */
 <script type='es6'>
 import chartBase from "@/components/ChartBase";
-// import chinaMap from "@/assets/js/chinaMap.js";
-// import worldMap from "@/assets/js/worldMap.js";
+
 export default {
   name: "ip1Chart",
   extends: chartBase,
   data() {
-    return {};
+    return {
+      flow:[]
+    };
   },
   created() {
-    // this.engine.registerMap("china", chinaMap);
-    //  this.engine.registerMap('world', worldMap);
+  
   },
   methods: {
+    con(n){
+      this.flow = n;
+      this.makeOption(n);
+      this.oChart.setOption(this.option, true);
+    },
     //设置图表数据项
     makeOption(data) {
       this.option = {
@@ -59,13 +64,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "直接访问" },
-              { value: 310, name: "邮件营销" },
-              { value: 234, name: "联盟广告" },
-              { value: 135, name: "视频广告" },
-              { value: 1548, name: "搜索引擎" }
-            ]
+            data: this.flow
           }
         ]
       };

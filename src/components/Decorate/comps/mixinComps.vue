@@ -20,12 +20,12 @@ export default {
       currentComponentData(){
          this.decoration && this.decoration();
       },
-      'currentComponentData.data.ids': { 
-        handler(newValue) {
-            this.fetch && this.fetch();
-        },
-        deep: true
-      }
+      // 'currentComponentData.data.ids': { 
+      //   handler(newValue) {
+      //       this.fetch && this.fetch();
+      //   },
+      //   deep: true
+      // }
     },
 };
 </script>	

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectJumpPage from '@/views/shop/dialogs/dialogSelectJumpPage';
 import RichEditor from '@/components/RichEditor';
 export default {

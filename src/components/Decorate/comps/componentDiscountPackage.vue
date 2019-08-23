@@ -38,7 +38,7 @@
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixin';
+import componentMixin from './mixinComps';
 export default {
     name:"componentDiscountPackage",
     mixins:[componentMixin],
@@ -70,6 +70,14 @@ export default {
     },
     created(){
         this.decoration();
+    },
+    watch: {
+        'currentComponentData.data.ids': { 
+            handler(newValue) {
+                this.fetch && this.fetch();
+            },
+            deep: true
+        }
     },
     methods:{
         decoration(){
