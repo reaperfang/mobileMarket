@@ -1,19 +1,23 @@
 /* 身份属性会员增长趋势图表 */
 <script type='es6'>
 import chartBase from "@/components/ChartBase";
-// import chinaMap from "@/assets/js/chinaMap.js";
-// import worldMap from "@/assets/js/worldMap.js";
 export default {
   name: "ip2Chart",
   extends: chartBase,
   data() {
-    return {};
+    return {
+      flow:{}
+    };
   },
   created() {
-    // this.engine.registerMap("china", chinaMap);
-    //  this.engine.registerMap('world', worldMap);
   },
   methods: {
+    con(n){
+      console.log(n)
+      this.flow = n;
+      this.makeOption(n);
+      this.oChart.setOption(this.option, true);
+    },
     //设置图表数据项
     makeOption(data) {
       this.option = {
@@ -42,29 +46,22 @@ export default {
           {
             type: "category",
             boundaryGap: false,
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+            data: this.flow['xAxisData']
           }
         ],
         yAxis: [
           {
             type: "value",
-            axisLabel: {
-              formatter: "{value} °C"
-            }
+            
           }
         ],
         series: [
           {
-            name: "最低气温",
+            name:"访客",
             type: "line",
-            data: [1, -2, 2, 5, 3, 2, 0],
-            markPoint: {
-              data: [{ name: "周最低", value: -2, xAxis: 1, yAxis: -1.5 }]
-            },
-            markLine: {
-              data: [{ type: "average", name: "平均值" }]
-            }
-          }
+            stack: "总量",
+            data: this.flow['yAxisData']
+          },
         ]
       };
     }

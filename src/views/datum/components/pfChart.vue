@@ -51,12 +51,6 @@ export default {
          ]
       }
     },
-    // 小程序公众号
-    allType(val){
-        if(val != 0){
-
-        }
-    },
     con(n,t,type,l){
       this.option = {
         title: {

@@ -1,13 +1,20 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
+        <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
                 <div class="pane_container">
                     <div class="i_line">
                         <div class="input_wrap">
-                            <el-select placeholder="排序">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+                            <el-select placeholder="排序" v-model="value" @change="changeSelet">
+                                <el-option label="订单数" value="1"></el-option>
+                                <el-option label="消费金额" value="2"></el-option>
                             </el-select>
                         </div>
                         <div class="input_wrap">
@@ -16,12 +23,8 @@
                             </el-input>
                         </div>
                     </div>
-                    <mcTable style="margin-top: 50px"></mcTable>
+                    <mcTable style="margin-top: 50px" :dataObj="dataObj"></mcTable>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
     </div>
 </template>
 <script>
@@ -31,9 +34,55 @@ export default {
     components: { mcTable },
     data() {
         return {
-            activeName: "first", 
-            range: ""
+            value:'',
+            visitSourceType:0,
+            startIndex:1,
+            pageSize:15,
+            orderSortType:1,
+            keyWords:'',
+            dataObj:{
+                dataList:[
+                    {
+                        choose: true,
+                        importTime:"",
+                        channel:"",    
+                         
+                        importNum:"",
+                        successNum:"",
+                        failNum:"",
+                        buyTime:"",
+                        operator:""
+                    },
+                ]
+            }
         }
+    },
+    methods:{
+        getMemberConsumption(){ 
+            let data = {
+        visitSourceType: this.visitSourceType,
+        pageSize: this.pageSize,
+        orderSortType: this.orderSortType,
+        startIndex: this.startIndex,
+        keyWords: this.keyWords,
+      };
+      this._apis.data.memberConsumption(data).then(response => {
+            this.dataChart = response;
+            this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        all(){
+            this.getMemberConsumption()
+        },
+        changeSelet(val){
+            this.startIndex = 1
+            this.orderSortType = val
+        }
+    },
+    created(){
+        this.getMemberConsumption()
     }
 }
 </script>

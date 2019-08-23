@@ -1,58 +1,83 @@
 <template>
     <div class="p_container">
+        <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
                 <div class="pane_container">
                     <p class="i_title">属性比例：</p>
                     <div class="chart1_container clearfix">
                         <div class="chart1">
-                            <ip1Chart :title="'测试图表'"></ip1Chart>
+                            <ip1Chart :title="'测试图表'" ref="ip1"></ip1Chart>
                         </div>
                         <div class="chart1_info">
-                            <p>累计客户数：7600</p>
-                            <p>非会员：占比 60% <span>人数 1200</span></p>
-                            <p>会员：占比 40% <span>人数 6400</span></p>
+                            <p>累计客户数：{{oneData[0].value + oneData[1].value}}</p>
+                            <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.value}}</span></p>
                         </div>
                     </div>
                     <p class="i_title">会员增长趋势：</p>
                     <div class="i_line">
-                        <div class="input_wrap">
+                        <el-radio-group v-model="dateTypeM" @change="changeDayM">
+                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
+                            <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
+                        </el-radio-group>
+                        <div class="input_wrap" v-if="dateTypeM == 4 || dateTypeM == 5">
                             <el-date-picker
-                                v-model="value1"
-                                type="date"
-                                placeholder="选择日期">
+                                v-model="valueM"
+                                :type="dateM"
+                                :value-format="formatM"
+                                placeholder="选择日期"
+                                @change="changeTimeM">
                             </el-date-picker>
                         </div>
-                        <span>最近7天</span>
-                        <span>最近15天</span>
-                        <span>最近30天</span>
-                        <el-button type="primary" class="marL20">查 询</el-button>
                     </div>
                     <div class="chart2_container">
-                        <ip2Chart :title="'测试图表'"></ip2Chart>
+                        <ip2Chart :title="'测试图表'" ref="ip2"></ip2Chart>
                     </div>
                     <p class="i_title">支付趋势：</p>
-                    <div class="i_line">
-                        <div class="input_wrap">
+                    <div class="i_line clearfix" >
+                        <el-radio-group v-model="dateTypePay" @change="changeDayPay">
+                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
+                            <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
+                        </el-radio-group>
+                        <div class="input_wrap" v-if="dateTypePay == 4 || dateTypePay == 5">
                             <el-date-picker
-                                v-model="value1"
-                                type="date"
-                                placeholder="选择日期">
+                                v-model="valuePay"
+                                :type="datePay"
+                                :value-format="formatPay"
+                                placeholder="选择日期"
+                                @change="changeTimePay">
                             </el-date-picker>
                         </div>
-                        <span>最近7天</span>
-                        <span>最近15天</span>
-                        <span>最近30天</span>
-                        <el-button type="primary" class="marL20">查 询</el-button>
-                        <span>会员消费</span>
+                         <span class="fr">会员消费</span>
                     </div>
+                   
                     <div class="chart3_container clearfix">
                         <div class="chart3">
-                            <ip3Chart :title="'测试图表'"></ip3Chart>
+                            <ip3Chart :title="'测试图表'" ref="ip3"></ip3Chart>
                         </div>
                         <div class="chart3_info">
-                            <p><span class="color_block" style="background-color:#A1E174"></span><span>支付0次</span><span>12765人</span></p>
-                            <p><span class="color_block" style="background-color:#578EFA"></span><span>支付 1-3 次</span><span>676人</span></p>
-                            <p><span class="color_block" style="background-color:#FD932B"></span><span>支付 4-10 次</span><span>43人</span></p>
-                            <p><span class="color_block" style="background-color:#FD4C2B"></span><span>支付 11 次及以上</span><span>374人</span></p>
+                            <el-row :gutter="20">
+                                <el-col :span="4">
+                                    <p><span class="color_block" style="background-color:#A1E174 "></span></p>
+                                    <p><span class="color_block" style="background-color:#578EFA "></span></p>
+                                    <p><span class="color_block" style="background-color:#FD932B "></span></p>
+                                    <p><span class="color_block" style="background-color:#FD4C2B "></span></p>
+                                    </el-col>
+                                <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxisData"> 支付 {{item}} 次 </p></el-col>
+                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxisData">{{item}}人</p></el-col>
+                            </el-row>
                         </div>
                     </div>
                 </div>
@@ -67,25 +92,118 @@ export default {
     components: { ip1Chart, ip2Chart, ip3Chart },
     data() {
         return {
-            activeName: "first", 
-            range: "",
+            oneData:[],
+            dateM:'month',
+            datePay:'month',
+            formatM:'yyyy-MM',
+            formatPay:'yyyy-MM',
             visitSourceType:0,
+            valueM:'',
+            valuePay:'',
+            timeM:'',
+            timePay:'',
+            dateTypePay:1,
+            dateTypeM:1,
+            attrData:{},
+            membeData:{},
+            payData:{},
+            threeData:{}
         }
     },
     methods:{
         /*
-        ** */ 
+        **属性比例
+         */ 
         getAttributeRatio(){
              let data = {
         visitSourceType: this.visitSourceType,
       };
-      this._apis.data.pathOut(data).then(response => {
-            this.dataChart = response;
-            this.$refs.dprChart.con(response,this.duration)
+      this._apis.data.attributeRatio(data).then(response => {
+            this.oneData = response;
+            let oneArr = response;
+            oneArr.forEach(e => {
+                delete e.ratioValue
+            });
+            this.$refs.ip1.con(oneArr)
         }).catch(error => {
           this.$message.error(error);
         });
+        },
+        /*
+        **会员增长趋势
+         */ 
+        getMemberTrend(){ 
+            let data ={
+                visitSourceType: this.visitSourceType,
+                queryTime: this.timeM,
+                dateType: this.dateTypeM == 5 ? 4 : this.dateTypeM
+            }
+            this._apis.data.memberTrend(data).then(response => {
+                this.$refs.ip2.con(response)
+            }).catch(error => {
+            this.$message.error(error);
+            });
+        },
+        changeDayM(val){
+            if(val == 4){
+                this.formatM = "yyyy-MM"
+                this.dateM = 'month'
+            }else if(val == 5){
+                this.formatM = "yyyy-MM-dd"
+                this.dateM = 'date'
+            }else if(val == 1 || val == 2 || val == 3){
+                this.dateTypeM = val
+                this.getMemberTrend()
+            }
+            
+        },
+        changeTimeM(val){
+            this.timeM = val
+            this.getMemberTrend()
+        },
+        /*
+        **支付趋势
+         */
+        getPaymentTrend(){ 
+            let data ={
+                visitSourceType: this.visitSourceType,
+                queryTime: this.timePay,
+                dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay
+            }
+            this._apis.data.paymentTrend(data).then(response => {
+                this.threeData = response;
+                this.$refs.ip3.con(response)
+            }).catch(error => {
+            this.$message.error(error);
+            });
+        },
+        changeDayPay(val){
+            if(val == 4){
+                this.formatPay = "yyyy-MM"
+                this.datePay = 'month'
+            }else if(val == 5){
+                this.formatPay = "yyyy-MM-dd"
+                this.datePay = 'date'
+            }else if(val == 1 || val == 2 || val == 3){
+                this.dateTypeM = val
+                this.getPaymentTrend()
+            }
+        },
+        changeTimePay(val){
+            this.timePay = val
+            this.getPaymentTrend()
+        },
+        // 全部
+        all(){
+            this.getAttributeRatio()
+            this.getMemberTrend()
+            this.getPaymentTrend()
         }
+    },
+    created(){
+        this.getAttributeRatio();
+        this.getMemberTrend();
+        this.getPaymentTrend();
     }
 }
 </script>
@@ -153,7 +271,7 @@ export default {
                             margin-right: 10px;
                         }
                         &:nth-child(2) {
-                            width: 150px;
+                            width: 240px;
                         }
                     }
                 }
