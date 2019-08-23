@@ -38,7 +38,7 @@
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixin';
+import componentMixin from './mixinComps';
 export default {
     name:"componentNyuan",
     mixins:[componentMixin],
@@ -114,9 +114,6 @@ export default {
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.hideEndGoods = this.currentComponentData.data.hideEndGoods;
             this.hideType = this.currentComponentData.data.hideType;
-
-
-
             this.fetch();
         },
 

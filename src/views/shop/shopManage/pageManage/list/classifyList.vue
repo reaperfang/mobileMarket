@@ -76,7 +76,6 @@ export default {
     }
   },
   created() {
-    this.fetch();
   },
   methods: {
 

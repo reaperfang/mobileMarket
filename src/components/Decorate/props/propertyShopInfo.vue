@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectImageMaterial from '@/views/shop/dialogs/dialogSelectImageMaterial';
 export default {
   name: 'propertyShopInfo',

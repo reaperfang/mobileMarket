@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectNyuan from '@/views/shop/dialogs/dialogSelectNyuan';
 import uuid from 'uuid/v4';
 export default {

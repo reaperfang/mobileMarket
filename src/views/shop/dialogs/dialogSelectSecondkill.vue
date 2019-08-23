@@ -134,7 +134,7 @@ export default {
   align-items: center;
   img {
     width: 50px;
-    height: 30px;
+    height: 50px;
     display: block;
     margin-right: 10px;
     border: 1px solid #ddd;

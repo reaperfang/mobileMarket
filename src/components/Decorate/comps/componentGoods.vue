@@ -2,8 +2,8 @@
 <!-- 组件-商品列表 -->
 <div class="componentGoods" :class="'listStyle'+listStyle" :style="{padding:pageMargin+'px'}" v-if="currentComponentData && currentComponentData.data">
     <!-- <van-list v-model="goodListLoading" :finished="goodListFinished" finished-text="没有更多了" @load="goodListLoad" > -->
-        <ul>
-            <li v-for="(item,key) in goods" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
+        <ul v-if="list && list.length">
+            <li v-for="(item,key) in list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img" >
                     <div class="imgAbsolute">
                         <img :src="item.mainImage" alt="" :class="{goodsFill:goodsFill!=1}">
@@ -19,15 +19,17 @@
                 </div>
             </li>
         </ul>
+        <div v-else>暂无数据</div>
     <!-- </van-list> -->
 </div>
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixin';
+import componentMixin from './mixinComps';
 export default {
     name:"componentGoods",
     mixins:[componentMixin],
+    props: ['currentCatagoryId', 'origin'],
     data(){
         return{
             // 样式属性
@@ -43,15 +45,15 @@ export default {
             showContents:'',
             buttonStyle:'',
             showTemplate:'',
-            // 商品列表
-            goods:[],
 
             // 自定义
             goodWidth:'',
             goodMargin:'',
             // 上拉加载
             goodListLoading: false,
-            goodListFinished: false
+            goodListFinished: false,
+            list: [],
+            currentCatagoryId: ''
         }
     },
     components:{
@@ -61,12 +63,10 @@ export default {
         this.decoration();
     },
     watch: {
-      data: {
-        handler(newValue) {
-          this.decoration();
-        },
-        deep: true
-      }
+        currentCatagoryId(newValue) {
+            this.currentCatagoryId = newValue;
+            this.fetch();
+        }
     },
     methods:{
         decoration(){
@@ -145,49 +145,79 @@ export default {
             this.textAlign = this.currentComponentData.data.textAlign;
             this.showContents = this.currentComponentData.data.showContents; 
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
-            // 商品列表
-            if(this.currentComponentData.data.goodsGroups.length > 0){
-                this.goods = this.currentComponentData.data.goodsGroups[0].goods;
-            }
-            else{
-                this.goods = this.currentComponentData.data.goods;
-            }
+            this.fetch();
+            // // 商品列表
+            // if(this.currentComponentData.data.goodsGroups.length > 0){
+            //     this.goods = this.currentComponentData.data.goodsGroups[0].goods;
+            // }
+            // else{
+            //     this.goods = this.currentComponentData.data.goods;
+            // }
         },
-        goodListLoad() {
-        // 异步更新数据
-            setTimeout(() => {
-            for (let i = 0; i < 10; i++) {
-                this.goodList.push(this.goodList.length + 1);
-                }
-                // 加载状态结束
-                this.goodListLoading = false;
+        // goodListLoad() {
+        // // 异步更新数据
+        //     setTimeout(() => {
+        //     for (let i = 0; i < 10; i++) {
+        //         this.goodList.push(this.goodList.length + 1);
+        //         }
+        //         // 加载状态结束
+        //         this.goodListLoading = false;
 
-                // 数据全部加载完成
-                if (this.goodList.length >= 40) {
-                    this.goodListFinished = true;
-                }
-            }, 500);
-        },
+        //         // 数据全部加载完成
+        //         if (this.goodList.length >= 40) {
+        //             this.goodListFinished = true;
+        //         }
+        //     }, 500);
+        // },
 
         //根据ids拉取数据
         fetch() {
-            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
+            if(this.currentComponentData && this.currentComponentData.data) {
+                let params = {};
+                const ids = this.currentComponentData.data.ids;
+                if(ids && Object.prototype.toString.call(ids) === '[object Object]') {
+                    params = {
+                        status: '1',
+                        ids: ids[this.currentCatagoryId],
+                        productCatalogInfoId: this.currentCatagoryId
+                    }
+                }else if(Array.isArray(ids) && ids.length){
+                    params = {
+                        status: '1',
+                        ids: ids,
+                    }
+                }else{
+                    return;
+                }
                 this.loading = true;
-                this._apis.goods.fetchSpuGoodsList({
-                    status: '1',
-                    ids: this.currentComponentData.data.ids.join(',')
-                }).then((response)=>{
-                    this.tableList = response.list;
-                    this.total = response.total;
+                this._apis.goods.fetchSpuGoodsList(params).then((response)=>{
+                    this.createList(response.list);
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({
-                    title: '错误',
-                    message: error
+                        title: '错误',
+                        message: error
                     });
                     this.loading = false;
                 });
             }
+
+
+            var list = [
+                {
+                    id:111,
+                    goosName: '节哀顺变极寒风暴',
+                    specs:JSON.stringify({
+                        '颜色':'红色',
+                        '尺寸':'12g'
+                    })
+                }
+            ]
+        },
+
+          /* 创建数据 */
+        createList(datas) {
+            this.list = datas;
         },
     }
 }

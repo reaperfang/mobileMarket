@@ -1,6 +1,6 @@
 /* 选择商品弹框 */
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'选择已上架商品'" @submit="submit">
+  <DialogBase :visible.sync="visible" width="816px" :title="categoryName ? '选择 ['+categoryName+'] 分类下的已上架商品' : '选择已上架商品'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
       <div class="inline-head">
         <el-form-item label prop="name">
@@ -16,13 +16,14 @@
       stripe
       ref="multipleTable"
       @selection-change="handleSelectionChange"
+      v-loading="loading"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="title" label="商品标题">
+      <el-table-column prop="title" label="商品标题" :width="500">
         <template slot-scope="scope">
           <div class="name_wrapper">
-            <img :src="scope.row.url" alt="加载错误" />
-            <p>{{scope.row.title}}</p>
+            <img :src="scope.row.mainImage" alt="加载错误" />
+            <p>{{scope.row.name}}</p>
           </div>
         </template>
       </el-table-column>
@@ -56,6 +57,12 @@ export default {
     dialogVisible: {
       type: Boolean,
       required: true
+    },
+    categoryName: {
+      type: String
+    },
+    categoryId: {
+      type: String
     }
   },
   data() {
@@ -64,7 +71,8 @@ export default {
       multipleSelection: [],
       ruleForm: {
         name: "",
-        status: '1'
+        status: '1',
+        productCatalogInfoId: this.categoryId || ''
       },
       rules: {}
     };
@@ -113,7 +121,7 @@ export default {
   align-items: center;
   img {
     width: 50px;
-    height: 30px;
+    height: 50px;
     display: block;
     margin-right: 10px;
     border: 1px solid #ddd;

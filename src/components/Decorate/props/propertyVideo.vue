@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectVideo from '@/views/shop/dialogs/dialogSelectVideo';
 import dialogSelectImageMaterial from '@/views/shop/dialogs/dialogSelectImageMaterial';
 export default {

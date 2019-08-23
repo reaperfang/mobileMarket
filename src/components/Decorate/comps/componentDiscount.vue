@@ -44,7 +44,7 @@
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixin';
+import componentMixin from './mixinComps';
 export default {
     name:"componentDiscount",
     mixins:[componentMixin],

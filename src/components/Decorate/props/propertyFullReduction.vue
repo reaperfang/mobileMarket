@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixin';
+import propertyMixin from './mixinProps';
 import dialogSelectFullReduction from '@/views/shop/dialogs/dialogSelectFullReduction';
 import uuid from 'uuid/v4';
 export default {
