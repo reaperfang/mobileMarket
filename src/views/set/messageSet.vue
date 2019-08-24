@@ -31,13 +31,13 @@
       <el-table-column
         prop="amount4"
         label="短信通知">
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
             <el-switch
             v-model="scope.row"
             active-color="#13ce66"
             inactive-color="#ff4949">
             </el-switch>
-        </template>
+        </template> -->
       </el-table-column>
     </el-table>
   </div>     
@@ -93,12 +93,20 @@ export default {
     
   },
   created() {
-
+    this.getShopMessage()
   },
   destroyed() {
     
   },
   methods: {
+    getShopMessage(){
+      let id = this.$store.getters.cid || '10'
+      this._apis.set.getShopMessage({cid:id}).then(response =>{
+        console.log('11111',response)
+      }).catch(error =>{
+
+      })
+    },
     handleClick(comp) {
       this.currentTab = comp.name;
     },

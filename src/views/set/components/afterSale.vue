@@ -5,18 +5,18 @@
         <div class="item">
             <h2>自动收货： <span>说明：仅对有物流信息的订单生效，对没有物流信息的订单需要手动确认</span></h2>
             <el-form-item label="买家自动确认收货时间："></el-form-item>
-            <el-form-item label="买家物流签收" prop="name1">
+            <el-form-item label="买家物流签收" prop="memberAutoConfirmReceive">
                 <el-input 
-                v-model="form.name1" 
+                v-model="form.memberAutoConfirmReceive" 
                 style="width:260px;" 
                 placeholder="请输入整数，清空数值则关闭该功能">
                 </el-input>
                 天后，自动确认收货
             </el-form-item>
             <el-form-item label="卖家自动确认收货时间："></el-form-item>
-            <el-form-item label="卖家物流签收" prop="name2">
+            <el-form-item label="卖家物流签收" prop="shopAutoConfirmReceive">
                 <el-input 
-                v-model="form.name2" 
+                v-model="form.shopAutoConfirmReceive" 
                 style="width:260px;" 
                 placeholder="请输入整数，清空数值则关闭该功能">
                 </el-input>
@@ -25,9 +25,9 @@
         </div>
         <div class="item">
             <h2>售后自动关闭时间：</h2>
-            <el-form-item label="订单完成" prop="name3">
+            <el-form-item label="订单完成" prop="orderAutoFinished">
                 <el-input 
-                v-model="form.name3" 
+                v-model="form.orderAutoFinished" 
                 style="width:260px;" 
                 placeholder="请输入整数，清空数值则关闭该功能">
                 </el-input>
@@ -36,16 +36,16 @@
         </div>
         <div class="item">
             <h2>评价相关：</h2>
-            <el-form-item label="评价功能开启" prop="name4">
-                <el-radio-group v-model="form.name4">
+            <el-form-item label="评价功能开启" prop="orderComment">
+                <el-radio-group v-model="form.orderComment">
                     <el-radio :label="3">是</el-radio>
                     <el-radio :label="6">否</el-radio>
                 </el-radio-group>
                 说明：启用后买家可以对购买商品进行评论，您可以根据评论内容进行回复。
             </el-form-item>
-            <el-form-item label="订单完成" prop="name5">
+            <el-form-item label="订单完成" prop="orderCommentGood">
                 <el-input 
-                v-model="form.name5" 
+                v-model="form.orderCommentGood" 
                 style="width:96px;" 
                 placeholder="请输入整数，清空数值则关闭该功能">
                 </el-input>
@@ -54,8 +54,8 @@
         </div>
         <div class="item">
             <h2>资产相关：</h2>
-            <el-form-item label="发票功能开启" prop="name6">
-                <el-radio-group v-model="form.name6">
+            <el-form-item label="发票功能开启" prop="invoiceOpen">
+                <el-radio-group v-model="form.invoiceOpen">
                     <el-radio :label="3">是</el-radio>
                     <el-radio :label="6">否</el-radio>
                 </el-radio-group>
@@ -94,7 +94,7 @@
             </el-form-item>
         </div>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">保存</el-button>
+            <el-button type="primary" @click="onSubmit('form')">保存</el-button>
         </el-form-item>
     </el-form>
   </div>     
@@ -107,12 +107,12 @@ export default {
     return {
       currentTab: 'afterSale',
       form: {
-            name1: '',
-            name2: '',
-            name3: '',
-            name4: '',
-            name5: '',
-            name6: '',
+            memberAutoConfirmReceive: '',
+            shopAutoConfirmReceive: '',
+            orderAutoFinished: '',
+            orderComment: '',
+            orderCommentGood: '',
+            invoiceOpen: '',
             name7: '',
             name8: '',
             name9:'',
@@ -142,13 +142,60 @@ export default {
     
   },
   created() {
+      this.getShopInfo()
+  },
 
-  },
-  destroyed() {
-    
-  },
   methods: {
-      onSubmit(){},
+    getShopInfo(){
+      let id = this.$store.getters.cid || '2'
+      this._apis.set.getShopInfo({id:id}).then(response =>{
+        this.form = response
+        this.form.shopName = response.shopName
+        this.form.logo = response.logo
+        this.form.phone = response.phone
+        this.form.address = response.address
+        if(response.provinceCode){
+          let arr = []
+          arr.push(response.provinceCode)
+          arr.push(response.cityCode)
+          arr.push(response.areaCode)
+          this.form.addressCode = arr
+        }
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    onSubmit(formName){
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let id = this.$store.getters.cid || '2'
+            let data = {
+              id:id,
+              shopName:this.form.shopName,
+              logo:this.form.logo,
+              phone:this.form.phone,
+              provinceCode:this.form.addressCode[0],
+              cityCode:this.form.addressCode[1],
+              areaCode:this.form.addressCode[2],
+              address:this.form.address
+            }
+            this._apis.set.updateShopInfo(data).then(response =>{
+              this.$notify.error({
+                title: '成功',
+                message: '保存成功！'
+              });
+            }).catch(error =>{
+              this.$notify.error({
+                title: '错误',
+                message: error
+              });
+            })
+          }
+      })
+    },
   }
 }
 </script>

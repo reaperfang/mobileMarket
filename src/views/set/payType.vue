@@ -11,24 +11,26 @@
           </div>
           <div class="right_cont">
             <el-switch
-              v-model="value1"
+              v-model="wechatPay"
+              @change="handleWechatPay"
               active-color="#13ce66"
               inactive-color="#ff4949">
             </el-switch>
-            <a class="wxinfo_set" @click="dialogVisible = true">设置支付信息</a>
+            <a class="wxinfo_set" @click="_routeTo('wxSet')">设置支付信息</a>
           </div>
         </div>
         <div class="pay_item">
           <div class="left_cont">
             <img src="@/assets/images/set/set-pay2.png"/>
             <div class="note">
-              <h3>微信支付</h3>
-              <p>资金结算至店铺余额，结算微信会扣除对应的交易手续费</p>
+              <h3>账户余额</h3>
+              <p>开启后，客户可以用账户余额在商城消费。</p>
             </div>
           </div>
           <div class="right_cont">
             <el-switch
-              v-model="value2"
+              v-model="balanceOfAccountPay"
+              @change="handleBalanceOfAccountPay"
               active-color="#13ce66"
               inactive-color="#ff4949">
             </el-switch>
@@ -38,13 +40,14 @@
           <div class="left_cont">
             <img src="@/assets/images/set/set-pay3.png"/>
             <div class="note">
-              <h3>微信支付</h3>
-              <p>资金结算至店铺余额，结算微信会扣除对应的交易手续费</p>
+              <h3>货到付款</h3>
+              <p>启用货到付款后，请自行安排合作快递完成收款和结算，系统不提供代收货款服务。</p>
             </div>
           </div>
           <div class="right_cont">
             <el-switch
-              v-model="value3"
+              v-model="payOnDelivery"
+              @change="handlePayOnDelivery"
               active-color="#13ce66"
               inactive-color="#ff4949">
             </el-switch>
@@ -68,24 +71,78 @@ export default {
   name: 'payType',
   data() {
     return {
-      value1:'',
-      value2:'',
-      value3:'',
-      dialogVisible:false
+      wechatPay:false,
+      balanceOfAccountPay:false,
+      payOnDelivery:false,
+      wechatBinding:0,
+      dialogVisible:false,
     }
   },
   components: {},
-  watch: {
-    
-  },
-  created() {
+  watch: { },
 
+  created() {
+    this.getShopInfo()
   },
-  destroyed() {
-    
-  },
-  methods: {
-    
+
+  methods: {    
+    getShopInfo(){
+      let id = this.$store.getters.cid || '2'
+      this._apis.set.getShopInfo({id:id}).then(response =>{
+        this.wechatPay = response.wechatPay == 1 ? true : false
+        this.balanceOfAccountPay = response.balanceOfAccountPay == 1 ? true : false
+        this.payOnDelivery = response.payOnDelivery == 1 ? true : false
+        this.wechatBinding = response.wechatBinding
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //微信支付开关
+    handleWechatPay(val){
+      if(val == true && this.wechatBinding == 0){
+        this.wechatPay = false
+        this.dialogVisible = true
+      }else{
+        let data = {
+          wechatPay:this.wechatPay == true ? 1 : 0,
+        }
+        this.onSubmit(data)
+      }
+    },
+    //账户余额支付开关
+    handleBalanceOfAccountPay(){
+        let data = {
+          balanceOfAccountPay:this.balanceOfAccountPay == true ? 1 : 0,
+        }
+        this.onSubmit(data)
+    },
+    //货到付款开关
+    handlePayOnDelivery(){
+        let data = {
+          payOnDelivery:this.payOnDelivery == true ? 1 : 0,
+        }
+        this.onSubmit(data)
+    },
+
+    onSubmit(data){
+      let id = this.$store.getters.cid || '2'
+      let query = Object.assign({id:id},data)
+      this._apis.set.updateShopInfo(query).then(response =>{
+        this.$notify.error({
+          title: '成功',
+          message: '保存成功！'
+        });
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
   }
 }
 </script>

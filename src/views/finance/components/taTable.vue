@@ -97,7 +97,7 @@ export default {
       dataList:[],
       total:0,
       inline:true,
-      times:'',
+      times:[],
       ruleForm:{
         memberId:'',
         presentType:0,
@@ -147,7 +147,7 @@ export default {
         pageNum:1,
         pageSize:10,
       }
-      this.times= ''
+      this.times= []
     },
      //当前页码改变
     handleCurrentChange(pIndex=1) {

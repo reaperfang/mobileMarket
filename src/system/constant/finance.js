@@ -97,6 +97,7 @@ export default {
     ],
     //短信群---状态??????
     smsStatus:[
+        { value: 0, label: '全部' },
         { value: 1, label: '成功' },
         { value: 2, label: '失败' },
     ],

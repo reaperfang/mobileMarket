@@ -5,7 +5,7 @@
       <div class="title">
         <div>
           <span class="name">概况分析</span>
-          <el-select v-model="svalue" placeholder="开店以来" style="margin-left:10px;">
+          <el-select v-model="flag" placeholder="开店以来" style="margin-left:10px;">
             <el-option
               v-for="item in surveyStatus"
               :key="item.value"
@@ -36,31 +36,31 @@
         <div class="item">
           <span class="money">累计充值金额</span>
           <span class="num">
-            <em>1000.00元</em>
+            <em>{{survey.rechargeSum || 0}}元</em>
           </span>
         </div>
         <div class="item">
           <span class="money">预计可发送短信条数</span>
           <span class="num">
-            <em>10000</em>
+            <em>{{survey.smsLeftCount || 0}}条</em>
           </span>
         </div>
         <div class="item">
           <span class="money">当前短信余额</span>
           <span class="num">
-            <em>500.00元</em>
+            <em>{{survey.accountBalance || 0}}元</em>
           </span>
         </div>
         <div class="item">
           <span class="money">已发送短信（营销）</span>
           <span class="num">
-            <em>300条</em>
+            <em>{{survey.marketingSmsSentCount || 0}}条</em>
           </span>
         </div>
         <div class="item">
           <span class="money">已发送短信（通知）</span>
           <span class="num">
-            <em>300条</em>
+            <em>{{survey.notifySmsSentCount || 0}}条</em>
           </span>
         </div>
         <div>
@@ -69,42 +69,7 @@
         </div>
       </div>
     </div>
-    <div class="top_part">
-      <el-form ref="form" :model="form" :inline="inline">
-        <el-form-item label="状态">
-          <el-select v-model="form.value4" style="width:200px;">
-            <el-option
-              v-for="item in smsStatus"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-         <el-form-item label="发送时间">
-          <el-date-picker
-            v-model="form.value3"
-            type="datetimerange"
-            align="right"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :default-time="['00:00:00', '00:00:00']"
-            :picker-options="pickerNowDateBefore">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="under_part">
-      <div class="total">
-        <span>全部 <em>700</em> 项</span>
-        <el-button icon="document" @click='exportToExcel()'>导出</el-button>
-      </div>
-      <sgsTable style="margin-top:20px"></sgsTable>
-    </div>
+    <sgsTable style="margin-top:20px"></sgsTable>
   </div>
 </template>
 
@@ -119,24 +84,15 @@ export default {
   components:{ sgsTable },
   data() {
     return {
-      pickerNowDateBefore: {
-        disabledDate: (time) => {
-          return time.getTime() > new Date();
-        }
+      flag:1,
+      survey:{
+        accountBalance:0,
+        marketingSmsSentCount:0,
+        notifySmsSentCount:0,
+        rechargeSum:0,
+        smsLeftCount:0
       },
-      inline:true,
-      form:{
-        value1:'',
-        value2:'',
-        value3:'',
-        value4:1
-      },
-      svalue:'',
-      dataList:[],
     }
-  },
-  watch: {
-
   },
   computed:{
     surveyStatus(){
@@ -146,35 +102,20 @@ export default {
       return financeCons.smsStatus;
     }
   },
-  created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-    
+  watch: {
+
   },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+  created() {
+    this.getSurvey();
   },
   methods: {
-    onSubmit(){},
-    //重置
-    resetForm(){
-
-    },
-    //导出
-    exportToExcel() {
-        //excel数据导出
-        require.ensure([], () => {
-            const {
-                export_json_to_excel
-            } = require('@/excel/Export2Excel.js');
-            const tHeader = ['消息内容','消息类型', '是否拆分', '消息数量', '状态','发送时间'];
-            const filterVal = ['expressSn','expressCompany', 'businessType', 'relationSn', 'createUserName','createTime'];
-            const list = this.dataList;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '短信群发列表');
-        })
-    },
-    formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
+    //概况
+    getSurvey(){
+      this._apis.finance.smsStatistics({flag:this.flag}).then((response)=>{
+        this.survey = response
+      }).catch((error)=>{
+        this.$message.error(error);
+      })
     },
   }
 }
@@ -246,31 +187,6 @@ export default {
       text-align: center;
       color: #655EFF;
       cursor: pointer;
-    }
-  }
-}
-.top_part{
-  width: 100%;
-  background: #fff;
-  border-radius: 3px;
-  margin-top: 20px;
-  padding: 15px 20px;
-}
-.under_part{
-  width: 100%;
-  background: #fff;
-  margin-top: 20px;
-  padding: 15px 20px;
-  .total{
-    display: flex;
-    justify-content: space-between;
-    span{
-      font-size: 16px;
-      color: #B6B5C8;
-      em{
-        font-style: normal;
-        color: #000;
-      }
     }
   }
 }

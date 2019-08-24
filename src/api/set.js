@@ -20,6 +20,15 @@ export function updateShopInfo(data) {
   })
 }
 
+/* 获取店铺消息列表 */
+export function getShopMessage(data) {
+  return request({
+    target: 'SHOP-API-107-PROCESSOR',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
 
 
 

@@ -36,31 +36,31 @@
         <div class="item">
           <span class="money">累计发放红包</span>
           <span class="num">
-            <em>{{survey.hongbao}}元</em>
+            <em>{{survey.hongbao || 0}}元</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放积分</span>
           <span class="num">
-            <em>{{survey.integrate}}</em>
+            <em>{{survey.integrate || 0}}</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放优惠券</span>
           <span class="num">
-            <em>{{survey.coupon}}张</em>
+            <em>{{survey.coupon || 0}}张</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放优惠码</span>
           <span class="num">
-            <em>{{survey.couponCode}}个</em>
+            <em>{{survey.couponCode || 0}}个</em>
           </span>
         </div>
         <div class="item">
           <span class="money">累计发放赠品</span>
           <span class="num">
-            <em>{{survey.gift}}个</em>
+            <em>{{survey.gift || 0}}个</em>
           </span>
         </div>
       </div>

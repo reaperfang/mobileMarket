@@ -2,18 +2,20 @@
 <template>
     <div class="main">
         <h1>成为老会员条件：</h1>
-        <el-form ref="form" :model="form" :rules="rules">
+        <el-form ref="form" :model="form">
             <el-form-item label="新会员交易次数达到" prop="num">
-                <el-input 
-                v-model="form.num" 
+                <el-input-number 
+                v-model="form.oldMemberSet" 
+                :min="1" 
+                :max="10" 
                 style="width:200px;" 
-                placeholder="请输入阿拉伯数字进行设置">
-                </el-input>
+                label="请输入阿拉伯数字进行设置">
+                </el-input-number>
                 即为老会员
                 <span class="note">（交易次数：已付款订单数量）</span>
             </el-form-item>
             <el-form-item class="mtb200">
-                <el-button type="primary" @click="onSubmit">保存</el-button>
+                <el-button type="primary" @click="onSubmit('form')">保存</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -25,17 +27,47 @@ export default {
   data() {
     return {
         form:{
-            num:''
-        },
-        rules:{
-            num:[
-                { required: true, message: '请输入阿拉伯数字进行设置', trigger: 'blur' }
-            ]
+            oldMemberSet:''
         }
     }
   },
+  created(){
+      this.getShopInfo()
+  },
   methods:{
-     
+    getShopInfo(){
+      let id = this.$store.getters.cid || '2'
+      this._apis.set.getShopInfo({id:id}).then(response =>{
+        this.form = response
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    onSubmit(formName){
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let id = this.$store.getters.cid || '2'
+            let data = {
+              id:id,
+              oldMemberSet:this.form.oldMemberSet
+            }
+            this._apis.set.updateShopInfo(data).then(response =>{
+              this.$notify.error({
+                title: '成功',
+                message: '保存成功！'
+              });
+            }).catch(error =>{
+              this.$notify.error({
+                title: '错误',
+                message: error
+              });
+            })
+          }
+      })
+    },
   }
 }
 </script>

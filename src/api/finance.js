@@ -196,6 +196,36 @@ export function getListLi(data) {
   })
 }
 
+//短信成本 ------
+export function smsStatistics(data) {
+  return request({
+    url: 'api/v1/b/sms/statistics',
+    method: 'get',
+    baseURL: process.env.DATA_API,
+    params:data
+  })
+}
+
+export function smsPagelist(data) {
+  return request({
+    url: 'api/v1/b/sms/send-record/accept/pagelist',
+    method: 'get',
+    baseURL: process.env.DATA_API,
+    params:data
+  })
+}
+
+export function smsExport(data) {
+  return request({
+    url: 'api/v1/b/sms/send-record/accept/list/export',
+    method: 'get',
+    baseURL: process.env.DATA_API,
+    params:data
+  })
+}
+
+
+
 
 
 

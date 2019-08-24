@@ -10,12 +10,13 @@
               {{form.business}}
             </el-form-item>
             <el-form-item label="创建日期:">
-                <!-- {{form}} -->
+              {{form.createTime}}
             </el-form-item>
             <el-form-item label="商户LOGO:">
                 <el-upload
                 class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                :action="uploadUrl"
+                :data="{json: JSON.stringify({cid: 222})}"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
@@ -29,19 +30,18 @@
                 <el-input v-model="form.phone" placeholder="如输入手机号，不填区号" style="width:190px;"></el-input>
             </el-form-item>
             <el-form-item label="联系地址:" prop="address">
-                <area-cascader :level="2" :data='$pcaa' v-model='form.addressCode' style="display:inline-block"></area-cascader>
+                <area-cascader :level="1" :data='$pcaa' v-model='form.addressCode' style="display:inline-block"></area-cascader>
                 <!-- <el-cascader :options="area" v-model="form.address" expand-trigger="hover"/> -->
                 <el-input v-model="form.address" style="width: 70%;" placeholder="详细地址"/>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">保存</el-button>
+                <el-button type="primary" @click="onSubmit('form')">保存</el-button>
             </el-form-item>
         </el-form>
     </div>    
 </template>
-
 <script>
-// import { listArea } from '@/api/area'
+
 export default {
   name: 'shopInfo',
   data() {
@@ -61,13 +61,17 @@ export default {
         phone:[
           { required: true, message: '请输入电话号码', trigger: 'blur' },
         ],
+        addressCode:[
+          { required: true, message: '请输入联系地址', trigger: 'blur' },
+        ],
         address:[
           { required: true, message: '请输入详细地址', trigger: 'blur' },
         ],
       },
       imageUrl: '',
       area: [],
-      shopInfo:{}
+      shopInfo:{},
+      uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
     }
   },
   components: {},
@@ -85,10 +89,6 @@ export default {
       let id = this.$store.getters.cid || '2'
       this._apis.set.getShopInfo({id:id}).then(response =>{
         this.form = response
-        this.form.shopName = response.shopName
-        this.form.logo = response.logo
-        this.form.phone = response.phone
-        this.form.address = response.address
         if(response.provinceCode){
           let arr = []
           arr.push(response.provinceCode)
@@ -104,32 +104,37 @@ export default {
       })
     },
 
-    onSubmit(){
-      let id = this.$store.getters.cid || '2'
-      let data = {
-        shopName:this.form.shopName,
-        logo:this.form.logo,
-        phone:this.form.phone,
-        provinceCode:this.form.addressCode[0],
-        cityCode:this.form.addressCode[1],
-        areaCode:this.form.addressCode[2],
-        address:this.form.address
-      }
-      this._apis.set.updateShopInfo(data).then(response =>{
-        this.$notify.error({
-          title: '成功',
-          message: '保存成功！'
-        });
-      }).catch(error =>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+    onSubmit(formName){
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let id = this.$store.getters.cid || '2'
+            let data = {
+              id:id,
+              shopName:this.form.shopName,
+              logo:this.form.logo,
+              phone:this.form.phone,
+              provinceCode:this.form.addressCode[0],
+              cityCode:this.form.addressCode[1],
+              areaCode:this.form.addressCode[2],
+              address:this.form.address
+            }
+            this._apis.set.updateShopInfo(data).then(response =>{
+              this.$notify.error({
+                title: '成功',
+                message: '保存成功！'
+              });
+            }).catch(error =>{
+              this.$notify.error({
+                title: '错误',
+                message: error
+              });
+            })
+          }
       })
     },
 
     handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+        this.form.logo = res.data.url
     },
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

@@ -4,14 +4,14 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <div class="item">
             <h2>自动关闭未付款订单：</h2>
-            <el-form-item label="拍下未付款:" prop="name1">
+            <el-form-item label="拍下未付款:" prop="autoCancelUnpayOrder">
                 <el-input 
-                v-model="form.name1" 
+                v-model="form.autoCancelUnpayOrder" 
                 style="width:260px;" 
                 placeholder="当前未启动该功能，输入数值即生效">
                 </el-input>
                 <el-select 
-                v-model="form.name2" 
+                v-model="form.acuoType" 
                 placeholder="请选择" 
                 style="width:100px;">
                     <el-option
@@ -26,12 +26,12 @@
         </div>
         <div class="item">
             <h2>发货方式：</h2>
-            <el-form-item  prop="name2">
-                <el-checkbox v-model="form.name3">快递发货</el-checkbox>
+            <el-form-item  prop="deliverGoodsType">
+                <el-checkbox v-model="deliverGoodsTypeCheckout">快递发货</el-checkbox>
                 选择计费方式：
-                <el-radio-group v-model="form.name4">
-                    <el-radio :label="1">组合运费（推荐）</el-radio>
-                    <el-radio :label="2">按商品累计运费</el-radio>
+                <el-radio-group v-model="form.transportationExpenseType">
+                    <el-radio :label="0">组合运费（推荐）</el-radio>
+                    <el-radio :label="1">按商品累计运费</el-radio>
                 </el-radio-group>
                 <el-checkbox  
                 disabled 
@@ -49,14 +49,14 @@
         </div>
         <div class="item">
             <h2>自动发货：<span>开启后立即对所有订单生效，若需要关闭该功能则清空输入框数值</span></h2>
-            <el-form-item  prop="name7" label="下单">
+            <el-form-item  prop="orderAutoSend" label="下单">
                 <el-input 
-                v-model="form.name7" 
+                v-model="form.orderAutoSend" 
                 style="width:260px;" 
                 placeholder="当前未启动该功能，输入数值即生效">
                 </el-input>
                 <el-select 
-                v-model="form.name8" 
+                v-model="form.oasType" 
                 placeholder="请选择" 
                 style="width:100px;">
                     <el-option
@@ -70,7 +70,7 @@
             </el-form-item>
         </div>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">保存</el-button>
+            <el-button type="primary" @click="onSubmit('form')">保存</el-button>
         </el-form-item>
     </el-form>
   </div>     
@@ -83,28 +83,28 @@ export default {
     return {
       currentTab: 'preSale',
       form: {
-            name1: '',
-            name2: '',
-            name3: '',
-            name4: '',
-            name5: '',
-            name6: '',
-            name7: '',
-            name8: ''
+            autoCancelUnpayOrder: '',
+            acuoType: 1,
+            deliverGoodsType:1,
+            transportationExpenseType: 1,
+            orderAutoSend: '',
+            oasType: ''
         },
      rules: {
-        name1: [
-        // { required: true, message: '请输入活动名称', trigger: 'blur' },
-        { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        autoCancelUnpayOrder: [
+            { required: true, message: '请输入订单自动关闭时间', trigger: 'blur' }
         ],
+        orderAutoSend: [
+            { required: true, message: '请输入订单自动发货时间', trigger: 'blur' }
+        ]
      },
      options: [
         {
-          value: '1',
+          value: 1,
           label: '小时'
         }, 
         {
-          value: '2',
+          value: 2,
           label: '分钟'
         }, 
      ]
@@ -112,16 +112,63 @@ export default {
   },
   components: {},
   watch: {
-    
   },
+  computed:{
+      deliverGoodsTypeCheckout:{
+        get: function () {
+            return this.form.deliverGoodsType == 1 ? true : false
+        },
+        set: function (newValue) {
+            this.form.deliverGoodsType = newValue == true ? 1 : ''
+        }
+      }
+   },
   created() {
-
+      this.getShopInfo()
   },
   destroyed() {
     
   },
   methods: {
-      onSubmit(){},
+    getShopInfo(){
+      let id = this.$store.getters.cid || '2'
+      this._apis.set.getShopInfo({id:id}).then(response =>{
+        this.form = response
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
+    onSubmit(formName){
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let id = this.$store.getters.cid || '2'
+            let data = {
+              id:id,
+              autoCancelUnpayOrder:this.form.autoCancelUnpayOrder,
+              acuoType:this.form.acuoType,
+              deliverGoodsType:this.form.deliverGoodsType,
+              transportationExpenseType:this.form.transportationExpenseType,
+              orderAutoSend:this.form.orderAutoSend,
+              oasType:this.form.oasType
+            }
+            this._apis.set.updateShopInfo(data).then(response =>{
+              this.$notify.error({
+                title: '成功',
+                message: '保存成功！'
+              });
+            }).catch(error =>{
+              this.$notify.error({
+                title: '错误',
+                message: error
+              });
+            })
+          }
+      })
+    },
   }
 }
 </script>
