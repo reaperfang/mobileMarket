@@ -104,6 +104,13 @@ export default [
         meta: { title: '批量发货', noCache: true, tabTitle: '订单处理' },
       },
       {
+        path: 'orderAfterDeliverGoods',
+        component: () => import('@/views/order/orderAfterDeliverGoods'),
+        name: 'orderAfterDeliverGoods',
+        hidden: true,
+        meta: { title: '售后发货', noCache: true, tabTitle: '订单处理' },
+      },
+      {
         path: 'quickDelivery',
         component: () => import('@/views/order/quickDelivery'),
         name: 'quickDelivery',

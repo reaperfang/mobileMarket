@@ -69,6 +69,14 @@ export default {
     components:{
         componentButton
     },
+    watch: {
+        'currentComponentData.data.ids': { 
+            handler(newValue) {
+                this.fetch && this.fetch();
+            },
+            deep: true
+        }
+    },
     methods:{
         decoration(){
             if(!this.currentComponentData || !this.currentComponentData.data) {

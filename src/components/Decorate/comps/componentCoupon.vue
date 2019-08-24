@@ -78,6 +78,14 @@ export default {
   created() {
     this.fetch();
   },
+  watch: {
+    'currentComponentData.data.ids': { 
+      handler(newValue) {
+          this.fetch && this.fetch();
+      },
+      deep: true
+    }
+  },
   computed: {
     style1() {
       // 样式为3的时候，颜色边框是什么就是是什么颜色否则走最外层默认定义的白色字体。同时当颜色为第三种的时候（白底），颜色为红色

@@ -535,3 +535,13 @@ export function changeSwitchStatus(data) {
       })
   }
 
+  //把装修的页面添加到模板中(临时)
+  export function saveToTemplate(data) {
+      return request({
+        target: 'DECORATION-PAGE-TEMPLATE-ITEM-INSERT-PROCESSOR',
+        method: 'post',
+        apiType: 'decorate',
+        data
+      })
+  }
+

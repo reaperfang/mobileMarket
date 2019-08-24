@@ -8,7 +8,7 @@
           <el-form-item label="背景图片" prop="backgroundImage">
             <div class="img_preview" v-if="ruleForm.backgroundImage">
               <img :src="ruleForm.backgroundImage" alt="">
-              <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
+              <span @click="currentModule=ruleForm; dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
             </div>
             <div class="add_button" v-if="!ruleForm.backgroundImage" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
               <i class="inner"></i>
@@ -51,7 +51,10 @@
           <el-form-item :label="item.title" prop=""  v-for="(item, key) in ruleForm.moduleList" :key="key" >
             <div class="module_block">
                 <el-input v-model="item.titleValue"></el-input>
-                <img :src="item.icon" alt="">
+                <div class="img_preview">
+                  <img :src="item.icon" alt="">
+                  <span @click="currentModule=item;dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换</span>
+                </div>
                 <colorPicker  v-model="item.color"></colorPicker >
                 <el-button type="text">重置</el-button>
             </div>
@@ -80,8 +83,9 @@ export default {
     return {
       dialogVisible: false,
       currentDialog: '',
+      currentModule: null,
       ruleForm: {
-        backgroundImage: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2829014450,3677490423&fm=26&gp=0.jpg',  //背景图
+        backgroundImage: '',  //背景图
         backgroundGradients: 1,  //背景渐变
         avatarPosition: 1,  //头像位置
         nickColor: '#000000',  //昵称颜色
@@ -157,7 +161,6 @@ export default {
     },
     ruleForm: {
       handler(newValue) {
-        newValue.backgroundImage= 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2829014450,3677490423&fm=26&gp=0.jpg';
         this.$emit('userCenterDataChanged', newValue);
       },
       deep: true
@@ -174,7 +177,12 @@ export default {
 
      /* 弹框选中图片 */
     imageSelected(dialogData) {
-      // this.ruleForm.backgroundImage = dialogData.filePath;
+      if(this.currentModule.icon) {
+        this.currentModule.icon = dialogData.filePath;
+      }
+      if(this.currentModule.backgroundImage) {
+        this.currentModule.backgroundImage = dialogData.filePath;
+      }
     }
   }
 }
@@ -196,11 +204,16 @@ export default {
     .el-input{
       margin-right:10px;
     }
-    img{
-      width:34px;
-      height:34px;
+    /deep/.img_preview{
+      width: 80px;
+      height: 40px;
       display: block;
-      margin-right:10px;
+      margin-right: 10px;
+      span{
+        font-size: 12px;
+        height: 16px;
+        line-height: 16px;
+      }
     }
     /deep/.colorBtn{
       width:25px!important;

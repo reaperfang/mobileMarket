@@ -19,6 +19,7 @@
 
 <script>
 import widget from '@/system/constant/widget';
+import uuid from 'uuid/v4';
 export default {
   name: 'widgetView',
   components: {},
@@ -28,21 +29,23 @@ export default {
     }
   },
   created() {
-    this.$store.commit('setCurrentComponentId', this.baseProperty.id);
+    // this.$store.commit('setCurrentComponentId', this.basePropertyId);
   },
   computed: {
     currentComponentId() {
       return this.$store.getters.currentComponentId;
     },
-    baseProperty() {
-      return this.$store.getters.baseProperty;
-    },
+    // basePropertyId() {
+    //   return this.$store.getters.basePropertyId;
+    // },
   },
   methods: {
 
     /* 选中控件 */
     addComponent(item) {
+      const id = uuid();
       this.$store.commit('addComponent', Object.assign(item, {
+        id,
         isBase: false,
         hidden: false,
       }));

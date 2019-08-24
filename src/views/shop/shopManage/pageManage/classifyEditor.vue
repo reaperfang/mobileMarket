@@ -13,12 +13,12 @@ export default {
   data() {
     return {
       loading: false,
-      id: this.$route.query.classifyId,
+      id: this.$route.query.pageId,
       homePageData: null,
       componentConfig: {
         type: 'classify',
         isBase: true,
-        hidden: true,
+        hidden: false,
         title: '微页面分类信息'
       }
     };
@@ -58,12 +58,16 @@ export default {
 
      /* 拼装基础数据 */
     setBaseInfo(data) {
-      this.$store.commit("setBaseInfo", {
-        name: data.name,
-        sortType: data.sortType,
-        explain: utils.uncompileStr(data.explain),
-        showType: data.showType,
-        pageIdList: data.pageIdList
+
+      this.$store.commit('updateComponent', {
+        id: this.basePropertyId,
+        data: {
+          name: data.name,
+          sortType: data.sortType,
+          explain: utils.uncompileStr(data.explain),
+          showType: data.showType,
+          pageIdList: data.pageIdList
+        }
       });
     },
 
@@ -76,7 +80,7 @@ export default {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
-            this.$store.commit('setCurrentComponentId', this.baseProperty.id);
+            this.$store.commit('setCurrentComponentId', this.basePropertyId);
           }
         });
         return;

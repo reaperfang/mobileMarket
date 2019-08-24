@@ -401,6 +401,46 @@ export function afterSalePrintElectronicForm(data) {
   })
 }
 
+// 售后单批量发货
+export function orderAfterSaleSend(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-BATCH-SEND-PROCESSOR',
+    data
+  })
+}
+
+// 换货确认
+export function orderAfterSaleConfirmExchange(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-CONFIRM-EXCHANGE-PROCESSOR',
+    data
+  })
+}
+
+// 退款
+export function orderAfterSaleDrawback(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: '',
+    data
+  })
+}
+
+// 售后发货详情列表
+export function orderAfterSaleDetail(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-SEND-INFO-DETIAL-LIST-PROCESSOR',
+    data
+  })
+}
+
 
 
 

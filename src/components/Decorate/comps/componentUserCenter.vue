@@ -290,6 +290,15 @@ export default {
     data: {
       handler(newValue) {
         this.ruleForm = newValue;
+        this.bg= {
+          background:
+            "linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255)),url('" +
+            this.data.backgroundImage +
+            "') no-repeat center"
+        };
+        this.bg1= {
+          background: "url('" + this.data.backgroundImage + "') no-repeat"
+        };
       },
       deep: true
     }

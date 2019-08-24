@@ -93,7 +93,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
+                        <span @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
                     </template>
                 </el-table-column>
             </el-table>

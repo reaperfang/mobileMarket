@@ -1,59 +1,67 @@
 <template>
     <div class="delivery-information">
-        <div class="header">
+        <!-- <div class="header">
             <ul>
-                <li>· 共计{{typeNumber}}种商品，还有{{failNumber}}种商品未发货完成 <span @click="currentDialog = 'StatisticsDialog'; dialogVisible = true" class="blue">统计详情</span></li>
-                <li>· 已发货{{deliveryNumber}}单，还有{{unconfirmedNumber}}单未进行收货确认</li>
+                <li>· 共计{{typeNumber}}种商品，还有{{typeNumber}}种商品未发货完成 <span @click="currentDialog = 'StatisticsDialog'; dialogVisible = true" class="blue">统计详情</span></li>
+                <li>· 已发货{{orderDetail.orderSendItems && orderDetail.orderSendItems.length}}单，还有{{typeNumber}}单未进行收货确认</li>
             </ul>
-        </div>
+        </div> -->
         <div class="container">
-            <div class="item" v-for="(item, index) in items" :key="index">
+            <div class="item" v-for="(item, index) in orderSendItems" :key="index">
                 <div class="header">
                     <div class="header-lefter">
                         <div class="header-lefter-item number">{{index + 1}}</div>
-                        <div class="header-lefter-item ">快递单号：{{item.expressNumber}}</div>
+                        <div class="header-lefter-item ">快递单号：{{item.expressNo}}</div>
                         <div @click="currentDialog = 'logisticsDialog'; dialogVisible = true; currentData = item" class="header-lefter-item  blue">查看物流</div>
                     </div>
                     <div class="header-righter">
                         <div class="header-righter-item">【客户发货】</div>
-                        <div class="header-righter-item">发货人：{{item.deliverier}}</div>
+                        <div class="header-righter-item">发货人：{{orderDetail.orderSendInfo.sendName}}</div>
                         <div class="header-righter-item">{{item.time}}</div>
-                        <div @click="item.showContent = !item.showContent">
+                        <div @click="showContent(index)">
                             <i v-if="item.showContent" class="el-icon-caret-top"></i>
-                            <i v-if="!item.showContent" class="el-icon-caret-top"></i>
+                            <i v-if="!item.showContent" class="el-icon-caret-bottom"></i>
                         </div>
                     </div>
                 </div>
-                <div v-if="item.showContent" class="content">
+                <div v-show="item.showContent" class="content">
                     <el-table
-                        :data="item.list"
+                        :data="[
+                            {
+                                goodsImage: item.goodsImage,
+                                goodsName: item.goodsName,
+                                goodsSpces: item.goodsSpces,
+                                goodsUnit: item.goodsUnit,
+                                sendCount: item.sendCount
+                            }
+                        ]"
                         style="width: 100%">
                         <el-table-column
                             label="商品"
-                            width="180">
+                            width="300">
                             <template slot-scope="scope">
                                 <div class="goods-detail">
                                     <div class="goods-detail-item">
-                                        <img src="" alt="">
+                                        <img :src="item.goodsImage" alt="">
                                     </div>
                                     <div class="goods-detail-item">
-                                        <p></p>
-                                        <p></p>
+                                        <p>{{item.goodsName}}</p>
+                                        <p>{{item.goodsSpces}}</p>
                                     </div>
                                 </div>
                             </template>
                         </el-table-column>
                         <el-table-column
-                            prop="unit"
+                            prop="goodsUnit"
                             label="单位"
-                            width="180">
+                            width="300">
                         </el-table-column>
                         <el-table-column
-                            prop="quantity"
+                            prop="sendCount"
                             label="本次发货数量">
                         </el-table-column>
                     </el-table>
-                    <div class="remark">快递单号：{{}}</div>
+                    <div class="remark">备注: {{orderDetail.orderInfo.sellerRemark}}</div>
                 </div>
             </div>
         </div>
@@ -84,7 +92,42 @@ export default {
             ],
             currentDialog: '',
             dialogVisible: false,
-            currentData: {}
+            currentData: {},
+            orderSendItems: []
+        }
+    },
+    created() {
+        this.orderSendItems = this.orderDetail.orderSendItems.map(val => ({...val, showContent: true}))
+    },
+    watch: {
+        orderDetail: {
+            deep: true,
+            handler() {
+                this.orderSendItems = this.orderDetail.orderSendItems
+            }
+        }
+    },
+    methods: {
+        showContent(index) {
+            let _orderSendItems = [...this.orderSendItems]
+
+            _orderSendItems.forEach((val, i) => {
+                if(i == index) {
+                    val.showContent = !val.showContent
+                }
+            })
+
+            this.orderSendItems = _orderSendItems
+        }
+    },
+    props: {
+        orderDetail: {
+            type: Object,
+            default: {
+                orderInfo: {},
+                orderItems: [],
+                orderSendItems: []
+            }
         }
     },
     components: {
@@ -99,6 +142,9 @@ export default {
             color: $globalMainColor;
         }
         .header {
+            ul {
+                margin-bottom: 10px;
+            }
             ul li {
                 margin-top: 10px;
             }
@@ -110,7 +156,7 @@ export default {
                 .header {
                     height: 60px;
                     background-color: rgb(243, 244, 244);
-                    border-radius: 10px 10px 0 0;
+                    border-radius: 10px;
                     padding: 0 20px;
                     line-height: 60px;
                     display: flex;
@@ -143,8 +189,12 @@ export default {
                     padding: 20px;
                     .goods-detail {
                         display: flex;
+                        align-items: center;
                         .goods-detail-item {
-
+                            margin-right: 5px;
+                            p:last-child {
+                                color: #9FA29F;
+                            }
                         }
                     }
                     .remark {

@@ -55,7 +55,8 @@ export default {
         name: '',
         sortType: 1,
         showType: 1,
-        explain: ''
+        explain: '',
+        isBaseComponent: true
       },
       rules: {
 

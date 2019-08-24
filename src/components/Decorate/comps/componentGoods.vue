@@ -52,8 +52,7 @@ export default {
             // 上拉加载
             goodListLoading: false,
             goodListFinished: false,
-            list: [],
-            currentCatagoryId: ''
+            list: []
         }
     },
     components:{
@@ -66,6 +65,12 @@ export default {
         currentCatagoryId(newValue) {
             this.currentCatagoryId = newValue;
             this.fetch();
+        },
+        'currentComponentData.data.ids': { 
+            handler(newValue) {
+                this.fetch && this.fetch();
+            },
+            deep: true
         }
     },
     methods:{

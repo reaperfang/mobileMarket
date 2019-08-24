@@ -16,10 +16,10 @@
         <div class="message">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="订单信息" name="order">
-                    <orderInformation :orderInfo="orderDetail.orderInfo" @getDetail="getDetail"></orderInformation>
+                    <orderInformation :orderInfo="orderDetail.orderInfo" :orderDetail="orderDetail" @getDetail="getDetail"></orderInformation>
                 </el-tab-pane>
                 <el-tab-pane label="发货信息" name="delivery">
-                    <deliveryInformation></deliveryInformation>
+                    <deliveryInformation :orderDetail="orderDetail"></deliveryInformation>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -27,18 +27,19 @@
             <p class="header">订单清单</p>
             <el-table
                 :data="orderDetail.orderItems"
-                style="width: 100%">
+                style="width: 100%"
+                :header-cell-style="{background:'#ebeafa', color:'#655EFF'}">
                 <el-table-column
                     label="商品"
                     width="180">
                     <template slot-scope="scope">
                         <div class="goods-detail">
-                            <div class="item">
+                            <div class="item image-box">
                                 <img :src="scope.row.goodsImage" alt="">
                             </div>
                             <div class="item">
                                 <p>{{scope.row.goodsName}}</p>
-                                <p>{{scope.row.goodsSpecs}}</p>
+                                <p class="goods-specs">{{scope.row.goodsSpecs}}</p>
                             </div>
                         </div>
                     </template>
@@ -68,7 +69,7 @@
             <div class="goods-list-message">
                 <div class="item">
                     <div class="label">运费：</div>
-                    <div class="value">¥{{orderDetail.orderInfo.freight}}</div>
+                    <div class="value">+ ¥{{orderDetail.orderInfo.freight}}</div>
                 </div>
                 <div class="item">
                     <div class="label">应收金额：</div>
@@ -78,38 +79,38 @@
                     <div class="label">优惠券金额：</div>
                     <div class="value">
                         {{goodsListMessage.coupon}}
-                        <i @click="currentDialog = 'CouponDialog'; dialogVisible = true" class="coupon-img"></i>
+                        <i @click="currentDialog = 'CouponDialog'; currentData = {usedCouponList, usedPromotionList}; dialogVisible = true" class="coupon-img"></i>
                     </div>
                 </div>
                 <div class="item">
                     <div class="label">满减/满折：</div>
-                    <div class="value">¥{{orderDetail.orderInfo.discountMoney}}</div>
+                    <div class="value">- ¥{{orderDetail.orderInfo.discountMoney}}</div>
                 </div>
                 <div class="item">
                     <div class="label">会员折扣：</div>
-                    <div class="value">¥{{orderDetail.orderInfo.memberDiscountMoney}}</div>
+                    <div class="value">- ¥{{orderDetail.orderInfo.memberDiscountMoney}}</div>
                 </div>
                 <div class="item">
                     <div class="label">优惠套装：</div>
-                    <div class="value">¥{{orderDetail.orderInfo.discountPackageMoney}}</div>
+                    <div class="value">- ¥{{orderDetail.orderInfo.discountPackageMoney}}</div>
                 </div>
-                <div class="item">
+                <div class="item" v-if="orderDetail.orderInfo && orderDetail.orderInfo.discountFreight">
                     <div class="label">满包邮：</div>
-                    <div class="value">¥{{orderDetail.orderInfo.discountFreight}}</div>
+                    <div class="value">- ¥{{orderDetail.orderInfo.discountFreight}}</div>
                 </div>
                 <div class="item reduce-price">
                     <el-select style="margin-right: 5px;" v-model="goodsListMessage.consultType" placeholder="请选择">
                         <el-option
-                        v-for="item in goodsListMessage.reducePriceTypeList"
+                        v-for="item in reducePriceTypeList"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
                         </el-option>
                     </el-select>
                     <div class="value">
-                         <el-input class="reduce-price-input" @change="reducePriceHandler" v-if="goodsListMessage.reducePriceVisible" v-model="goodsListMessage.consultMoney"></el-input>
-                         <span v-if="!goodsListMessage.reducePriceVisible">{{goodsListMessage.reducePrice}}</span>
-                        <span @click="goodsListMessage.reducePriceVisible = !goodsListMessage.reducePriceVisible">改价</span>
+                         <el-input type="number" class="reduce-price-input" @change="reducePriceHandler" v-model="goodsListMessage.consultMoney"></el-input>
+                         <!-- <span v-if="!goodsListMessage.reducePriceVisible">{{goodsListMessage.consultMoney}}</span>
+                        <span @click="goodsListMessage.reducePriceVisible = !goodsListMessage.reducePriceVisible">改价</span> -->
                     </div>
                 </div>
                 <div class="item">
@@ -121,7 +122,8 @@
                 <p class="header">操作记录</p>
                 <el-table
                     :data="orderDetail.orderOperationRecordList"
-                    style="width: 100%">
+                    style="width: 100%"
+                    :header-cell-style="{background:'#ebeafa', color:'#655EFF'}">
                     <el-table-column
                         label="操作"
                         width="180">
@@ -161,7 +163,9 @@ export default {
                 
             ],
             goodsListMessage: {
-               
+               consultType: 1,
+               consultMoney: 0,
+               reducePriceVisible: false
             },
             operateRecord: [
                 
@@ -175,12 +179,32 @@ export default {
                 code: '1'
             },
             orderDetail: {
-                orderInfo: {}
-            }
+                orderInfo: {},
+                orderCouponList: [],
+                orderPromotionCodeList: []
+            },
+            reducePriceTypeList: [
+                {
+                    label: '协商加减',
+                    value: 1
+                },
+                {
+                    label: '协商减减',
+                    value: 2
+                }
+            ]
         }
     },
     created() {
         this.getDetail()
+    },
+    computed: {
+        usedCouponList() {
+            return this.orderDetail.orderCouponList.filter(val => val.couponType == 1) || []
+        },
+        usedPromotionList() {
+            return this.orderDetail.orderPromotionCodeList.filter(val => val.promotionCodeType == 1) || []
+        }
     },
     filters: {
         operationTypeFilter(code) {
@@ -291,6 +315,7 @@ export default {
         }
         .goods-detail {
             display: flex;
+            align-items: center;
         }
         .goods-list, .operate-record {
             background-color: #fff;
@@ -338,6 +363,9 @@ export default {
         display: inline-block;
         width: 14px;
         height: 13px;
+        margin-right: 5px;
+    }
+    .image-box {
         margin-right: 5px;
     }
 </style>

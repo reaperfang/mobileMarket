@@ -20,7 +20,7 @@
             <el-col :span="8"><div class="grid-content center">
                 <div class="item">
                     <div class="label">付款人</div>
-                    <div class="value">{{orderInfo.payer}}</div> <!-- <span class="blue">详情</span> -->
+                    <div class="value">{{orderDetail.orderSendInfo && orderDetail.orderSendInfo.sendName}}</div> <!-- <span class="blue">详情</span> -->
                 </div>
                 <div class="item">
                     <div class="label">付款方式</div>
@@ -32,15 +32,15 @@
                 </div>
                 <div class="item">
                     <div class="label">交易流水号</div>
-                    <div class="value">{{orderInfo.transactionCodeList && orderInfo.transactionCodeList.join(',')}}</div>
+                    <div class="value">{{orderInfo.transactionCode}}</div>
                 </div>
                 <div class="item">
                     <div class="label">本单获得</div>
                     <div class="value">
                         <p>积分 {{orderInfo.gainScore}}</p>
                         <p>赠品 {{orderInfo.gift}}</p>
-                        <p>优惠券 </p>
-                        <p>优惠码 </p>
+                        <p>优惠券 {{gainCoupon}}</p>
+                        <p>优惠码 {{gainPromotionCode}}</p>
                     </div>
                 </div>
             </div></el-col>
@@ -55,8 +55,8 @@
                     </div>
                 </div>
                 <div class="item">
-                    <div class="label">客户留言</div>
-                    <div class="value">{{message}}</div>
+                    <div class="label">客户备注</div>
+                    <div class="value">{{orderInfo.buyerRemark}}</div>
                 </div>
                 <div class="item remark-box">
                     <div class="label">商户备注</div>
@@ -106,6 +106,42 @@ export default {
     },
     created() {
         //this.getOrderPayRecordList()
+    },
+    computed: {
+        gainCoupon() {
+            // couponType 0:获得优惠券 1:使用优惠券
+            let couponStr = ''
+
+            if(this.orderDetail.orderCouponList) {
+                let gainCouponList = this.orderDetail.orderCouponList.filter(val => val.couponType == 0)
+
+                if(gainCouponList && gainCouponList.length) {
+                    gainCouponList.forEach(coupon => {
+                        couponStr += coupon.couponName + ' 有效期至 ' + coupon.endTime
+                    })
+                }
+            }
+
+            return couponStr
+            
+        },
+        gainPromotionCode() {
+            // promotionCodeType 0:获得优惠码 1:使用优惠码
+            let promotionCodeStr = ''
+
+            if(this.orderDetail.orderPromotionCodeList) {
+                let gainPromotionCodeList = this.orderDetail.orderPromotionCodeList.filter(val => val.promotionCodeType == 0)
+
+                if(gainPromotionCodeList && gainPromotionCodeList.length) {
+                    gainPromotionCodeList.forEach(promotionCode => {
+                        promotionCodeStr += promotionCode.promotionCodeName + ' 有效期至 ' + promotionCode.endTime
+                    })
+                }
+            }
+
+            return promotionCodeStr
+            
+        },
     },
     methods: {
         // getOrderPayRecordList() {
@@ -161,6 +197,8 @@ export default {
                 return '货到付款'
             } else if(code === 3) {
                 return '找人代付'
+            } else if(code === 4) {
+                return '线下支付'
             }
         },
         invoiceTypeFilter(code) {
@@ -173,6 +211,10 @@ export default {
     },
     props: {
         orderInfo: {
+            type: Object,
+            required: true
+        },
+        orderDetail: {
             type: Object,
             required: true
         }
@@ -188,9 +230,11 @@ export default {
             color: $globalMainColor;
         }
         .grid-content {
-            border-right: 1px solid #9FA29F;
             margin-right: 19px;
             padding-right: 19px;
+            p {
+                line-height: 21px;
+            }
             &.lefter {
                 height: 146px;
                 .change {
@@ -206,6 +250,11 @@ export default {
                         margin-top: 8px;
                     }
                 }
+            }
+            &.center {
+                padding-left: 10px;
+                border-left: 1px solid #9FA29F;
+                border-right: 1px solid #9FA29F;
             }
             .item {
                 display: flex;

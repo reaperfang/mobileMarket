@@ -50,7 +50,7 @@ module.exports = {
         // target: 'http://172.22.146.133:8081',  //李雯廷
         // target: 'http://172.22.146.114:8080', // 商品 王浩2
         // target: 'http://172.22.146.133:8081',  //李雯廷
-        target:'http://172.22.146.124:80',//许涛
+        // target:'http://172.22.146.124:80',//许涛
         // target:' http://dkmamb.natappfree.cc',//许涛
         //target: 'http://172.22.134.125:8012',//陈程
         //target: 'http://172.22.146.12:8091', // 订单 李刚
@@ -93,8 +93,8 @@ module.exports = {
         }
       },
       '/order_server/**': {
-        //target: 'http://172.22.145.113:8080/',
-        target: 'http://localhost:3000/',
+        target: 'http://172.22.145.113:8080/',
+        //target: 'http://localhost:3000/',
         changeOrigin: true,
         pathRewrite: {
           '^/order_server': ''

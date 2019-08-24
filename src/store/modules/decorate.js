@@ -1,9 +1,8 @@
-import uuid from 'uuid/v4';
 
 const decorate = {
 	state: {
 		currentComponentId: "",  //当前组件id
-		baseProperty: {},  //基础属性
+		basePropertyId: '',  //基础属性组件id
 		baseInfo: {},  //店铺装修页面基础信息
 		componentDataIds: [],  //组件列表id序列
 		componentDataMap: {}   //组件数据集合映射
@@ -13,6 +12,11 @@ const decorate = {
 		/* 设置当前组件id */
 		setCurrentComponentId: (state, id) => {
 			state.currentComponentId = id;
+		},
+
+		/* 设置当前组件id */
+		setBasePropertyId: (state, id) => {
+			state.basePropertyId = id;
 		},
 
 
@@ -33,7 +37,7 @@ const decorate = {
 				this.commit("setCurrentComponentId", prevId);
 			} else {
 				// 当前组件为基础组件
-				this.commit("setCurrentComponentId", state.baseProperty.id);
+				this.commit("setCurrentComponentId", state.basePropertyId);
 			}
 			state.componentDataIds.splice(index, 1);
 
@@ -42,28 +46,15 @@ const decorate = {
 
 		/* 添加组件 */
 		addComponent: (state, component) => {
-			const id = uuid();
-			const obj = {
-				id,
-				type: component.type,
-				title: component.title,
-				hidden: component.hidden,
-				data: null   //默认必须是null，否则首次渲染模板会出错!
-			};
 
 			// 添加组件id到ids顺序表
-			state.componentDataIds.push(id);
+			state.componentDataIds.push(component.id);
 
-			// 添加组件数据到数据以映射表
-			state.componentDataMap[id] = obj;
+			// 添加组件数据到数据映射表
+			state.componentDataMap[component.id] = Object.assign(component, {data: null});
 
 			// 设置当前组件id
-			state.currentComponentId = id;
-
-			// 设置基础组件
-			if(component.isBase) {
-				state.baseProperty = obj;
-			}
+			state.currentComponentId = component.id;
 
 		},
 
@@ -71,36 +62,31 @@ const decorate = {
 		/* 更新组件数据 */
 		updateComponent(state, params) {
 			//对基础信息组件特殊处理
-			if (params.id === state.baseProperty.id) {
+			if (params.id === state.basePropertyId) {
 				state.baseInfo = params.data;
-			} else {
-				//对列表组件处理
-				const tempComponentDataMap = { ...state.componentDataMap };
-				const componentData = tempComponentDataMap[params.id];
-				if (componentData) {
-					componentData['data'] = params.data;
-					state.componentDataMap = tempComponentDataMap;
-				}
+			}
+			//对列表组件处理
+			const tempComponentDataMap = { ...state.componentDataMap };
+			const componentData = tempComponentDataMap[params.id];
+			if (componentData) {
+				componentData['data'] = params.data;
+				state.componentDataMap = tempComponentDataMap;
 			}
 		},
 
 		//设置基本信息
 		setBaseInfo(state, baseInfo) {
 			state.baseInfo = baseInfo;
-			// state.baseProperty.data = baseInfo;
-			// state.componentDataMap[state.baseProperty.id].data = baseInfo;
 		},
 
 		//外部设置ids顺序表
 		setComponentDataIds(state, ids) {
 			state.componentDataIds = ids;
-			// state.componentDataIds = [state.baseProperty.id].concat(ids);
 		},
 
 		//外部设置数据map列表
 		setComponentDataMap(state, componentDataMap) {
 			state.componentDataMap = componentDataMap;
-			// state.componentDataMap = Object.assign(state.baseProperty, componentDataMap);
 		},
 
 		//初始化所有数据

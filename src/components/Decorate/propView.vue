@@ -18,6 +18,7 @@
           <el-button @click="saveData.call(parentScope)" type="primary">{{id ? '保   存' : '创   建'}}</el-button>
           <el-button type="primary" @click="saveAndApplyData.call(parentScope)" v-if="saveAndApplyData && id">保存并生效</el-button>
           <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
+          <el-button @click="saveToTemplate.call(parentScope)" v-if="saveToTemplate">保存到模板</el-button>
         </div>
       </div>
       <!-- 动态弹窗 -->
@@ -31,7 +32,7 @@ import dialogDecoratePreview from '@/views/shop/dialogs/dialogDecoratePreview';
 export default {
   name: 'propView', 
   components: {dialogDecoratePreview},
-  props: ['saveData', 'saveAndApplyData', 'resetData', 'parentScope', 'homePageData'],
+  props: ['saveData', 'saveAndApplyData', 'resetData', 'saveToTemplate', 'parentScope', 'homePageData'],
   data () {
     return {
       currentComponent: null,  //当前组件名称
@@ -52,8 +53,8 @@ export default {
     componentDataMap() {
       return this.$store.getters.componentDataMap;
     },
-    baseProperty() {
-      return this.$store.getters.baseProperty;
+    basePropertyId() {
+      return this.$store.getters.basePropertyId;
     },
     baseInfo() {
       return this.$store.getters.baseInfo;
@@ -63,9 +64,9 @@ export default {
     'currentComponentId'(newValue, oldValue) {
       this.loadPropTemplate();
     },
-    'baseProperty'(newValue, oldValue) {
-      this.loadPropTemplate();
-    }
+    // 'basePropertyId'(newValue, oldValue) {
+    //   this.loadPropTemplate();
+    // }
   },
   created() {
   },
@@ -78,11 +79,8 @@ export default {
     loadPropTemplate() {
       let currentComponentData = this.componentDataMap[this.currentComponentId];
       let type = currentComponentData && currentComponentData.type || '';
-      if(this.baseProperty.id === this.currentComponentId) {
-        type = this.baseProperty.type;
-      }
       if(type){
-        import(`./props/property${this.utils.titleCase(currentComponentData.type)}.vue`).then(loadedComponent => {
+        import(`./props/property${this.utils.titleCase(type)}.vue`).then(loadedComponent => {
           this.currentComponent = '';
           this.$nextTick(()=>{  //清除缓存组件以后下一帧处理
             this.currentComponent = loadedComponent.default
