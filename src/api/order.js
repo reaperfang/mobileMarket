@@ -391,6 +391,16 @@ export function printElectronicForm(data) {
   })
 }
 
+// 售后单打印配送单
+export function afterSalePrintSendInfo(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-BATCH-PRINT-DELIVERY-PROCESSOR',
+    data
+  })
+}
+
 // 售后单打印电子面单
 export function afterSalePrintElectronicForm(data) {
   return request({

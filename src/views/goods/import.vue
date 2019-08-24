@@ -31,7 +31,17 @@
                 <li>一次最多导入1000个SKU商品；</li>
             </ol>
             <p class="import-box tc">
-                <el-button class="import-button" type="primary"><i></i>批量导入商品</el-button>
+                <el-upload
+                    :action="uploadUrl"
+                    :limit="1"
+                    list-type="picture-card"
+                    :data="{json: JSON.stringify({cid: 2})}"
+                    :on-success="success"
+                    class="p_imgsCon">
+                    <i class="el-icon-plus"></i>
+                    <p style="line-height: 21px; margin-top: -39px; color: #92929B;">上传文件</p>
+                </el-upload>
+                <el-button @click="importGoods" class="import-button" type="primary"><i></i>批量导入商品</el-button>
             </p>
             <p class="download-box">导入规则：请先<a class="download" href="javascript:;">下载商品导入模板</a>，在模板中按要求填写商品信息，然后上传该文件</p>
         </section>
@@ -87,12 +97,22 @@ export default {
                 startIndex: 1,
                 pageSize: 20,
             },
+            uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
+            url: ''
         }
     },
     created() {
         this.getList()
     },
     methods: {
+        success(response, file, fileList){
+            if(file.status == "success"){
+                this.$message.success(response.msg);
+                this.url = response.data.url;
+            }else{
+                this.$message.error(response.msg);
+            }
+        },
         getList(param) {
             //this.listLoading = true
             let _param
@@ -103,6 +123,23 @@ export default {
                 console.log(res)
             }).catch(error => {
                 //this.listLoading = false
+            })
+        },
+        importGoods() {
+            this._apis.goods.importGoods({cid: '2', importUrl: this.url}).then((res) => {
+                console.log(res)
+                this.url = res.url
+                this.$notify({
+                    title: '成功',
+                    message: '导入成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             })
         },
         next() {

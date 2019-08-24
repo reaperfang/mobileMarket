@@ -37,10 +37,10 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button>批量导入发货</el-button>
-                        <el-button>批量发货</el-button>
-                        <el-button>批量打印配送单</el-button>
-                        <el-button @click="batchPrintElectronicForm">批量打印电子面单</el-button>
+                        <el-button class="border-button">批量导入发货</el-button>
+                        <el-button @click="batchSendGoods" class="border-button">批量发货</el-button>
+                        <el-button class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
+                        <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting">重置</span>
@@ -80,10 +80,10 @@
                     label="收货人电话">
                 </el-table-column>
                 <el-table-column
-                    prop="status"
+                    prop="orderAfterSaleStatus"
                     label="状态">
                     <template slot-scope="scope">
-                        <span>{{scope.row.status | statusFilter}}</span>
+                        <span>{{scope.row.orderAfterSaleStatus | orderAfterSaleStatusFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -92,8 +92,10 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                        <span @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
+                        <div class="operate-box">
+                            <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
+                            <span v-if="scope.row.orderAfterSaleStatus == 2" @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -208,20 +210,36 @@ export default {
         this.getList()
     },
     filters: {
-        statusFilter(code) {
-            switch(code) {
+        orderAfterSaleStatusFilter(code) {
+            switch(+code) {
+                case 0:
+                    return '提交申请'
+                case 1:
+                    return '待退货'
+                case 2:
+                    return '待处理'
                 case 3:
-                    return '待发货'
-                case 4:
-                    return '部分发货'
-                case 5:
                     return '待收货'
-                case 6:
-                    return '完成'
+                case 4:
+                    return '已完成'
+                case 5:
+                    return '已关闭'
             }
         },
     },
     methods: {
+        batchSendGoods() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请选择需要发货的售后单'})
+                return
+            }
+            this.$router.push('/order/afterSaleBulkDelivery?ids=' + this.multipleSelection.map(val => val.id).join(','))
+        },
+        batchPrintDistributionSlip() {
+            let ids = this.multipleSelection.map(val => val.id).join(',')
+
+            this.$router.push('/order/printDistributionSheet?ids=' + ids + '&afterSale=' + true)
+        },
         batchPrintElectronicForm() {
             let ids = this.multipleSelection.map(val => val.id).join(',')
 

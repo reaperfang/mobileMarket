@@ -3,10 +3,10 @@
         <template v-if="sendGoods == 'send'">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="发货人姓名" prop="receivedName">
-                    <el-input v-model="ruleForm.receivedName" placeholder="请选择"></el-input>
+                    <el-input v-model="ruleForm.sendName" placeholder="请选择"></el-input>
                 </el-form-item>
                 <el-form-item label="发货人电话" prop="receivedPhone">
-                    <el-input v-model="ruleForm.receivedPhone" placeholder="请输入快递单号"></el-input>
+                    <el-input v-model="ruleForm.sendPhone" placeholder="请输入快递单号"></el-input>
                 </el-form-item>
                 <el-form-item label="发货地址" prop="deliveryAddress">
                     <area-cascader type="all" :level="2" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
@@ -16,7 +16,7 @@
                         type="textarea"
                         :rows="2"
                         placeholder="街道、楼牌号等"
-                        v-model="ruleForm.receivedDetail">
+                        v-model="ruleForm.sendDetail">
                     </el-input>
                 </el-form-item>
                 <div class="footer">
@@ -69,6 +69,17 @@ export default {
                 receivedCityName: '',
                 receivedAreaCode: '',
                 receivedAreaName: '',
+
+                sendName: '',
+                sendPhone: '',
+                deliveryAddress: [],
+                sendDetail: '',
+                sendProvinceCode: '',
+                sendProvinceName: '',
+                sendCityCode: '',
+                sendCityName: '',
+                sendAreaCode: '',
+                sendAreaName: '',
             },
             rules: {
 
@@ -89,7 +100,18 @@ export default {
     },
     methods: {
         getDetail() {
-            this.ruleForm = Object.assign({}, this.ruleForm, this.data)
+            let obj = {}
+
+            if(this.sendGoods == 'received') {
+                obj[this.data.receivedProvinceCode] = this.data.receivedProvinceName
+                obj[this.data.receivedCityCode] = this.data.receivedCityName
+                obj[this.data.receivedAreaCode] = this.data.receivedAreaName
+            } else {
+                obj[this.data.sendProvinceCode] = this.data.sendProvinceName
+                obj[this.data.sendCityCode] = this.data.sendCityName
+                obj[this.data.sendAreaCode] = this.data.sendAreaName
+            }
+            this.ruleForm = Object.assign({}, this.ruleForm, this.data, {deliveryAddress: obj})
         },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
@@ -111,9 +133,9 @@ export default {
                             CityName: name1,
                             AreaCode: codes2,
                             AreaName: name2,
-                            Detail: this.ruleForm.receivedDetail,
-                            Phone: this.ruleForm.receivedPhone,
-                            Name: this.ruleForm.receivedName
+                            Detail: this.sendGoods == 'send' ? this.ruleForm.sendDetail : this.ruleForm.receivedDetail,
+                            Phone: this.sendGoods == 'send' ? this.ruleForm.sendPhone : this.ruleForm.receivedPhone,
+                            Name: this.sendGoods == 'send' ? this.ruleForm.sendName : this.ruleForm.receivedName
                         })
                         this.visible = false
                         return

@@ -153,6 +153,7 @@ export default {
             .item {
                 border-radius: 10px;
                 border: 1px solid #cacfcb;
+                margin-bottom: 10px;
                 .header {
                     height: 60px;
                     background-color: rgb(243, 244, 244);
