@@ -35,13 +35,14 @@ export default {
     return {
       classifyList: [],
       ruleForm: {
-        name: '',
-        title: '',
+        name: '微页面名称',
+        title: '微页面标题',
         explain: '',
         pageCategoryInfoId: '',
         colorStyle: 'rgb(242,242,249)',
         pageKey: '',
-        status: 0
+        status: 0,
+        isBaseComponent: true
       },
       rules: {
         name: [
@@ -51,10 +52,10 @@ export default {
           { required: true, message: "请输入内容", trigger: "blur" }
         ],
         explain: [
-          { required: true, message: "请输入内容", trigger: "blur" }
+          { required: false, message: "请输入内容", trigger: "blur" }
         ],
         pageCategoryInfoId: [
-          { required: true, message: "请输入内容", trigger: "change" }
+          { required: false, message: "请输入内容", trigger: "change" }
         ],
         colorStyle: [
           { required: true, message: "请输入内容", trigger: "change" }

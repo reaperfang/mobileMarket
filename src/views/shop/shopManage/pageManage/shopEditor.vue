@@ -1,10 +1,11 @@
 <template>
-  <Decorate :componentConfig="componentConfig" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :homePageData="homePageData"></Decorate>
+  <Decorate :componentConfig="componentConfig" :saveData="saveData" :saveAndApplyData="saveAndApplyData" :homePageData="homePageData" :saveToTemplate="saveToTemplate"></Decorate>
 </template>
 
 <script>
 import Decorate from '@/components/Decorate';
 import decorateMixin from '@/components/Decorate/decorateMixin';
+import utils from '@/utils';
 export default {
   name: "shopEditor",
   props: ["pageId"],
@@ -71,13 +72,17 @@ export default {
      /* 拼装基础数据 */
     setBaseInfo(data) {
        //还原页面基础信息
-      this.$store.commit("setBaseInfo", {
-        name: data.name,
-        title: data.title,
-        explain: data.explain,
-        pageCategoryInfoId: data.pageCategoryInfoId,
-        colorStyle: data.colorStyle,
-        pageKey: data.pageKey
+
+      this.$store.commit('updateComponent', {
+        id: this.basePropertyId,
+        data: {
+          name: data.name,
+          title: data.title,
+          explain: data.explain,
+          pageCategoryInfoId: data.pageCategoryInfoId,
+          colorStyle: data.colorStyle,
+          pageKey: data.pageKey
+        }
       });
     },
 
@@ -95,13 +100,42 @@ export default {
       this.submit(resultData);
     },
 
+    /* 保存到模板 */
+    saveToTemplate() {
+      let result = this.baseInfo;
+      result['id'] = this.id;
+      let pageData = [];
+      for(let item of this.componentDataIds) {
+        const componentData = this.componentDataMap[item];
+        if(componentData) {
+          pageData.push(componentData);
+        }
+      }
+      result['page_data'] = utils.compileStr(JSON.stringify(pageData));;
+      result['pageTemplateId'] = '1';
+      result['sort'] = '1';
+      this._apis.shop.saveToTemplate(result).then((response)=>{
+          this.$notify({
+            title: '成功',
+            message: '保存成功！',
+            type: 'success'
+          });
+          this._routeTo('templateManageIndex');
+        }).catch((error)=>{
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+        });
+    },
+
     submit(resultData) {
       if(!resultData.name) {
          this.$alert('请填写基础信息后重试，点击确认开始编辑页面信息!', '警告', {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
-            this.$store.commit('setCurrentComponentId', this.baseProperty.id);
+            this.$store.commit('setCurrentComponentId', this.basePropertyId);
           }
         });
         return;

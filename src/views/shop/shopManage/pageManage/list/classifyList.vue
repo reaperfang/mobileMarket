@@ -26,7 +26,7 @@
         <el-table-column prop="updateUserName" label="操作账号"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">
-            <span class="table-btn" @click="_routeTo('classifyEditor', {classifyId: scope.row.id})">编辑</span>
+            <span class="table-btn" @click="_routeTo('classifyEditor', {pageId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deleteClassify(scope.row)">删除</span>
             <el-popover
               placement="right"

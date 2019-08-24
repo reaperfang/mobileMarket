@@ -1,4 +1,5 @@
 // import Cookies from 'js-cookie'
+import utils from '@/utils';
 
 const app = {
   state: {
@@ -28,11 +29,11 @@ const app = {
       })
     },
 
-    // 获取店铺信息
+    // 获取店铺样式
     getShopStyle({ commit }) {
       return new Promise((resolve, reject) => {
         this._apis.shop.getShopStyle({}).then((response)=>{
-          commit('setColorStyle', JSON.parse(response.colorStyle));
+          commit('setColorStyle', JSON.parse(utils.uncompileStr(response.colorStyle)));
           resolve()
         }).catch((error)=>{
           commit('setColorStyle', {});
