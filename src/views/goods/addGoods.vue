@@ -30,7 +30,7 @@
                     :action="uploadUrl"
                     :limit="6"
                     list-type="picture-card"
-                    :data="{json: JSON.stringify({cid: 222})}"
+                    :data="{json: JSON.stringify({cid: 2})}"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove"
                     :on-success="centerFileUrl"
@@ -425,7 +425,7 @@ export default {
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
             },
-            uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file/api_file_remote_upload.do`,
+            uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
             optionsTypeList: [],
             imageVisible: false,
             currentDialog: '',

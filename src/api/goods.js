@@ -232,6 +232,16 @@ export function fetchSpuGoodsList(data) {
   })
 }
 
+// 商品批量导入
+export function importGoods(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-IMPORT-PROCESSOR',
+    data
+  })
+}
+
 
 
 

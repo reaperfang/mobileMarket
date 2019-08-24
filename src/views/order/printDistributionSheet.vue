@@ -70,14 +70,25 @@ export default {
     },
     methods: {
         getPrintInfo() {
-            this._apis.order.orderSendInfoPrint({ids: this.$route.query.ids.split(',')}).then((res) => {
-                this.tableData = res
-            }).catch(error => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
-            })
+            if(this.$route.query.afterSale) {
+                this._apis.order.afterSalePrintSendInfo({ids: this.$route.query.ids.split(',')}).then((res) => {
+                    this.tableData = res
+                }).catch(error => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            } else {
+                this._apis.order.orderSendInfoPrint({ids: this.$route.query.ids.split(',')}).then((res) => {
+                    this.tableData = res
+                }).catch(error => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }
         },
         print() {
             this.printTime = utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss")

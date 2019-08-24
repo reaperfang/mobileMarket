@@ -104,6 +104,13 @@ export default [
         meta: { title: '批量发货', noCache: true, tabTitle: '订单处理' },
       },
       {
+        path: 'afterSaleBulkDelivery',
+        component: () => import('@/views/order/afterSaleBulkDelivery'),
+        name: 'afterSaleBulkDelivery',
+        hidden: true,
+        meta: { title: '售后单批量发货', noCache: true, tabTitle: '订单处理' },
+      },
+      {
         path: 'orderAfterDeliverGoods',
         component: () => import('@/views/order/orderAfterDeliverGoods'),
         name: 'orderAfterDeliverGoods',

@@ -18,7 +18,7 @@
                 <div class="container-item-header">
                     <div class="item">
                         <el-checkbox @change="checkedChange" v-model="order.checked"></el-checkbox>
-                        <span class="order-code">订单编号：{{order.code}}/下单时间：{{order.createTime}}</span>
+                        <span class="order-code"><i v-if="order.orderInfo.sendType == 2" class="auto"></i>订单编号：{{order.code}}/下单时间：{{order.createTime}}</span>
                     </div>
                     <div class="item righter">
                         <span>订单类型：{{order.orderType | orderTypeFilter}}</span>
@@ -304,6 +304,15 @@ export default {
         display: inline-block;
         width: 14px;
         height: 13px;
+        margin-right: 5px;
+    }
+    .auto {
+        display: inline-block;
+        width: 28px;
+        height: 16px;
+        background: url(../../../assets/images/order/auto.png) no-repeat;
+        position: relative;
+        top: 3px;
         margin-right: 5px;
     }
 </style>
