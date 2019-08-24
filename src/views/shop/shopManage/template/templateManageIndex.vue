@@ -49,38 +49,7 @@ export default {
   data () {
     return {
       loading: true,
-      templateList: [
-        // {
-        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-        //   title: '商城首页',
-        //   price: 2300,
-        //   state: 1
-        // },
-        // {
-        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-        //   title: '会员中心',
-        //   price: 0,
-        //   state: 2
-        // },
-        // {
-        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-        //   title: '商品详情页',
-        //   price: 0,
-        //   state: 2
-        // },
-        // {
-        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-        //   title: '购物车',
-        //   price: 540,
-        //   state: 1
-        // },
-        // {
-        //   img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564061413366&di=418832f031f143ce57d64378c9371964&imgtype=0&src=http%3A%2F%2Ftpai.qq.com%2Fupload%2Fpublic%2Fcommon%2Fimages%2F2014%2F05%2F30092952732.jpg',
-        //   title: '订单详情页',
-        //   price: 247,
-        //   state: 2
-        // },
-      ]
+      templateList: []
     }
   },
   created() {
@@ -91,7 +60,6 @@ export default {
       this.loading = true;
       this._apis.shop.getTemplateList({}).then((response)=>{
         this.templateList = response;
-        // this.total = response.total;
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({

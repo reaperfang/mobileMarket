@@ -19,18 +19,20 @@
         @end="onEndHandler"
         :disabled='disable'
         :move='onMoveHandler'>
-          <div 
-          class="component_wrapper" 
-          v-for="(item, key) of componentDataIds"
-          :key="key" 
-          :class="{'actived': item === currentComponentId}"
-          @click="selectComponent(item)" 
-          @dragstart.self="selectItem = item" 
-          @dragend.self="selectItem = {}">
-            <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)" ></component>
-            <!-- {{getComponentData(item).title}}组件 -->
-            <i v-if="item !== baseProperty.id" class="delete_btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
-          </div>
+          <template v-for="(item, key) of componentDataIds">
+            <div 
+            class="component_wrapper" 
+            v-if="!getComponentData(item).hidden"
+            :key="key" 
+            :class="{'actived': item === currentComponentId}"
+            @click="selectComponent(item)" 
+            @dragstart.self="selectItem = item" 
+            @dragend.self="selectItem = {}">
+              <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)" ></component>
+              <!-- {{getComponentData(item).title}}组件 -->
+              <i v-if="item !== basePropertyId" class="delete_btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
+            </div>
+          </template>
     </vuedraggable>
 
     <!-- 不可拖拽调整顺序,可用来预览 -->
@@ -85,8 +87,8 @@ export default {
     baseInfo() {
       return this.$store.getters.baseInfo;
     },
-    baseProperty() {
-      return this.$store.getters.baseProperty;
+    basePropertyId() {
+      return this.$store.getters.basePropertyId;
     },
   },
   created() {
@@ -151,7 +153,7 @@ export default {
         return;
       }
       if(!event || (event.target.className.indexOf('phone-head') > -1 || event.target.className.indexOf('phone-body') > -1)) {
-       this.$store.commit('setCurrentComponentId',  this.baseProperty.id);
+       this.$store.commit('setCurrentComponentId',  this.basePropertyId);
       }
     }
   }

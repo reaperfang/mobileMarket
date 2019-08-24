@@ -132,7 +132,7 @@ export default {
     },
 
     submit() {
-      this._apis.shop.setShopStyle({colorStyle: JSON.stringify(this.selectedItem)}).then((response)=>{
+      this._apis.shop.setShopStyle({colorStyle: utils.compileStr(JSON.stringify(this.selectedItem))}).then((response)=>{
          this.$notify({
           title: '成功',
           message: '设置成功！',

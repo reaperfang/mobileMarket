@@ -257,8 +257,8 @@ export function getDictLabel(obj, group, value) {
   return rst
 }
 
-//对字符串进行加密(店铺装修数据)     
-export function compileStr(code) {
+//对字符串进行加密(偏移加密)     
+export function compileStr1(code) {
   var c = String.fromCharCode(code.charCodeAt(0) + code.length);
   for (var i = 1; i < code.length; i++) {
     c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
@@ -266,14 +266,23 @@ export function compileStr(code) {
   return escape(c);
 }
 
-//对字符串进行解密(店铺装修数据)     
-export function uncompileStr(code) {
+//对字符串进行解密(偏移解密)     
+export function uncompileStr1(code) {
   code = unescape(code);
   var c = String.fromCharCode(code.charCodeAt(0) - code.length);
   for (var i = 1; i < code.length; i++) {
     c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
   }
   return c;
+}
+//对字符串进行加密(无偏移)     
+export function compileStr(code) {
+  return escape(code);
+}
+
+//对字符串进行解密(无偏移)     
+export function uncompileStr(code) {
+  return unescape(code);
 }
 
 //订单状态过滤器   

@@ -24,10 +24,7 @@ export default {
       if (this.data) {
         this.ruleForm = this.data;
       }
-      this.$emit("change", {
-        id: this.$parent.currentComponentId,
-        data: this.ruleForm
-      });
+      this.emitChangeRuleForm(this.ruleForm);
     },
 
     /* 发送数据改变事件 */

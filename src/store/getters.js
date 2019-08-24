@@ -17,7 +17,7 @@ const getters = {
   currentComponentId: state => state.decorate.currentComponentId,   //当前装修组件id
   componentDataIds: state => state.decorate.componentDataIds,   //装修组件顺序列表
   componentDataMap: state => state.decorate.componentDataMap,   //装修组件数据映射
-  baseProperty: state => state.decorate.baseProperty,   //基础属性类型
+  basePropertyId: state => state.decorate.basePropertyId,   //基础属性类型
   baseInfo: state => state.decorate.baseInfo   //店铺装修页面基础信息
 }
 export default getters

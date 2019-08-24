@@ -10,10 +10,10 @@
       <el-form-item label="" v-if="source === 1" prop="videoUrl">
         <div class="img_preview" v-if="ruleForm.videoUrl">
           <video
-            :src="item.videoUrl"
+            :src="ruleForm.videoUrl"
             controls="controls"
             class="video"
-            :poster="item.videoUrl"
+            :poster="ruleForm.videoUrl"
           >您的浏览器不支持 video 标签。</video>
           <span @click="dialogVisible=true; currentDialog='dialogSelectVideo'">选择视频</span>
         </div>
@@ -88,5 +88,10 @@ export default {
 </script>
 
 <style lang="scss">
-
+.img_preview{
+  video{
+    width: 80px;
+    height: 80px;
+  }
+}
 </style>
