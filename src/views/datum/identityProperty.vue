@@ -60,7 +60,7 @@
                                 @change="changeTimePay">
                             </el-date-picker>
                         </div>
-                         <span class="fr">会员消费</span>
+                         <span class="fr" @click="toLink()">会员消费</span>
                     </div>
                    
                     <div class="chart3_container clearfix">
@@ -198,6 +198,10 @@ export default {
             this.getAttributeRatio()
             this.getMemberTrend()
             this.getPaymentTrend()
+        },
+        // 会员消费跳转
+        toLink(){
+            this.$router.push({ path: '/datum/memberConsumption'})
         }
     },
     created(){

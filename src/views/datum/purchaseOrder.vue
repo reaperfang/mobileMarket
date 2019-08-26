@@ -1,7 +1,14 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
+        <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
                 <div class="pane_container">
                     <p class="p_title">交易总况：</p>
                     <div class="order_list">
@@ -48,35 +55,50 @@
                     <div class="c_line">
                         <span class="c_title">交易趋势</span>
                         <span class="c_label">筛选日期：</span>
-                        <div class="input_wrap">
+                        <!-- <div class="input_wrap">
                             <el-date-picker
                                 v-model="value1"
                                 type="date"
                                 placeholder="选择日期">
                             </el-date-picker>
+                        </div> -->
+                        <el-radio-group v-model="dateTypeM" @change="changeDayM">
+                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
+                            <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
+                        </el-radio-group>
+                        <div class="input_wrap" v-if="dateTypeM == 4 || dateTypeM == 5">
+                            <el-date-picker
+                                v-model="valueM"
+                                :type="dateM"
+                                :value-format="formatM"
+                                placeholder="选择日期"
+                                @change="changeTimeM">
+                            </el-date-picker>
                         </div>
-                        <span>最近7天</span>
-                        <span>最近15天</span>
-                        <span>最近30天</span>
                         <el-button type="primary" class="marL20">查 询</el-button>
                     </div>
+                    <ip4Chart :title="'测试图表'"  ref="ip4"></ip4Chart>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
     </div>
 </template>
 <script>
+import ip4Chart from "./components/ip4Chart";
 import datumCont from '@/system/constant/datum';
+
 export default {
     name: 'purchaseOrder',
     data() {
         return {
-            activeName: "first", 
-            range: ""
+            formatM: "yyyy-MM",
+            dateM:"month",
+            range: "",
+            dateTypeM:1,
         }
     },
+    components:{ip4Chart},
     computed: {
         placeOrderData() {
             return datumCont.placeOrderData;
@@ -90,6 +112,45 @@ export default {
         orderProbabilityData() {
             return datumCont.orderProbabilityData
         }
+    },
+    methods:{
+        // 获取交易总况
+        getTradingOverview(){
+            let data ={
+                visitSourceType: this.visitSourceType,
+            }
+            this._apis.data.tradingOverview(data).then(response => {
+                console.log(response)
+            }).catch(error => {
+            this.$message.error(error);
+            });
+        },
+        // 获取交易趋势
+        getTradingTrendchart(){
+            let data ={
+                visitSourceType: this.visitSourceType,
+                queryTime: this.timeM,
+                dateType: this.dateTypeM == 5 ? 4 : this.dateTypeM
+            }
+            this._apis.data.tradingTrendchart(data).then(response => {
+                this.$refs.ip4.con(response)
+            }).catch(error => {
+            this.$message.error(error);
+            });
+        },
+        changeDayM(val){
+            if(val == 4){
+                this.formatM = "yyyy-MM"
+                this.dateM = 'month'
+            }else if(val == 5){
+                this.formatM = "yyyy-MM-dd"
+                this.dateM = 'date'
+            }else if(val == 1 || val == 2 || val == 3){
+                this.dateTypeM = val
+                this.getTradingTrendchart()
+            }
+            
+        },
     }
 }
 </script>
