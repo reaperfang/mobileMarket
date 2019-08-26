@@ -3,19 +3,26 @@
     <div class="main">
       <div class="top_part">
         <div class="search">
-          <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="70px">
-            <el-form-item label="店铺:" prop="shop">
-              <el-select v-model="form.shop" placeholder="请选择">
+          <el-form ref="form" :inline="true" :model="form" label-width="70px">
+            <el-form-item label="店铺:" prop="name">
+              <el-select v-model="form.name" placeholder="请选择">
                 <el-option
                   v-for="item in shops"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.shopName"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="角色:" prop="name">
-                <el-input v-model="form.name" style="width:182px;" placeholder="全部"></el-input>
+            <el-form-item label="角色:" prop="role">
+              <el-select v-model="form.role" placeholder="请选择">
+                <el-option
+                  v-for="item in roles"
+                  :key="item.id"
+                  :label="item.shopName"
+                  :value="item.id">
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-button type="primary" @click="submit">查询</el-button>
             <el-button type="primary" @click="reset">重置</el-button>
@@ -26,54 +33,119 @@
         </div>
       </div>
       <div class="bottom_part">
-        <saTable></saTable>
+        <el-table
+        :data="dataList"
+        style="width: 100%"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'name9', order: 'descending'}"
+        @selection-change="handleSelectionChange"
+        >
+        <el-table-column
+        type="selection"
+        width="55">
+        </el-table-column>
+        <el-table-column
+          prop="cashoutSn"
+          label="姓名">
+        </el-table-column>
+        <el-table-column
+          prop="memberInfoId"
+          label="角色">
+        </el-table-column>
+        <el-table-column
+          prop="amount"
+          label="手机号">
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="添加人">
+        </el-table-column>
+        <el-table-column
+          prop="tradeDetailSn"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+          prop="applyTime"
+          label="初始密码"
+          sortable>
+        </el-table-column>
+        <el-table-column
+        label="操作">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small" style="color:#FD4C2B">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+        <el-button style="margin-top:10px;">批量删除</el-button>
+        <div class="page_styles">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="10"
+            layout="sizes, prev, pager, next"
+            :total="100">
+          </el-pagination>
+        </div>
       </div>
     </div>    
 </template>
 
 <script>
-import saTable from './components/saTable'
+import TableBase from "@/components/TableBase";
 export default {
   name: 'subaccountManage',
+  extends: TableBase,
   data() {
     return {
       form:{
-        shop:'',
         name:'',
+        role:'',
+        startIndex:1,
+        pageSize:10
       },
-      shops:[
-        {
-          label:'店铺1',
-          value:1
-        }
-      ],
-      tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      shops:[ ],
+      roles:[],
+      dataList: [],
       multipleSelection:[]
     }
   },
-  components: {saTable},
   watch: {
     
   },
   created() {
-
+    this.getSubAccount()
+    this.getShops()
   },
   destroyed() {
     
   },
   methods: {
+    getShops(){
+      let data = this.$store.state.user.userInfo.shopInfoMap
+      for(let key in data){
+        let shopObj = data[key]
+        this.shops.push(shopObj)
+      }
+    },
+
+    getRoles(){
+
+    },
+    
+    getSubAccount(){
+      this._apis.set.getSubAccount(this.form).then(response =>{
+        console.log('11111',response)
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+
     submit(){},
     reset(){},
     handleSelectionChange(val) {

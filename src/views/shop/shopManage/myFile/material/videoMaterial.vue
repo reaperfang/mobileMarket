@@ -29,7 +29,11 @@
               </p>
               <div class="img_body">
                 <p class="title">{{item.title}}</p>
-                <img :src="item.filePath" class="imgs">
+                <video v-if="item.filePath !=''"  
+                :src="item.filePath"
+                class="avatar video-avatar"
+                controls="controls">您的浏览器不支持视频播放</video> 
+                <!-- <img :src="item.filePath" class="imgs"> -->
               </div>
               <p class="img_bottom">
                 <!-- <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span> -->
