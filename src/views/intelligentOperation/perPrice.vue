@@ -73,8 +73,8 @@ export default {
         // 实时概况
         getRealTimeOverview(){
             let data = {
-                startTime:'',
-                endTime:''
+                startTime:new Date(new Date().toLocaleDateString()).getTime(),
+                endTime:new Date().getTime()
             }
             this._apis.data.realTimeOverview(data).then(response => {
             // this.dataChart = response;

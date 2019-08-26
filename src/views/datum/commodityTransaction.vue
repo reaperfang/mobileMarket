@@ -12,11 +12,11 @@
                 <div class="pane_container">
                     <p class="p_title">商品总况：</p>
                     <div class="p_blocks">
-                        <div class="p_item" v-for="item in goodsTotleData" :key="item.id" >
+                        <div class="p_item" v-for="item in Condition" :key="item.id" >
                             <img :src="item.url" alt="" class="fl">
                             <div class="fr">
                                 <p>{{item.text}}</p>
-                                <p :style="{color: item.color}">43</p>
+                                <p :style="{color: item.color}">{{item.num}}</p>
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         <span class="c_label">筛选日期：</span>
                         <div class="input_wrap">
                             <el-date-picker
-                                v-model="value1"
+                                v-model="value"
                                 type="date"
                                 placeholder="选择日期">
                             </el-date-picker>
@@ -46,7 +46,7 @@
                         <span>最近30天</span>
                         <el-button type="primary" class="marL20">查 询</el-button>
                     </div>
-                    <ct2Table style="margin-top: 26px"></ct2Table>
+                    <ct2Table style="margin-top: 26px" :hotData="hotData"></ct2Table>
                 </div>
     </div>
 </template>
@@ -60,20 +60,19 @@ export default {
     data() {
         return {
             activeName: "first", 
+            value:'',
             range: "",
             visitSourceType:0,
             dateType:1,
             queryTime:'',
             startIndex:'',
             pageSize:'',
-            dataObj:{}
+            dataObj:{},
+            Condition:[],
+            hotData:{}
         }
     },
-    computed: {
-        goodsTotleData() {
-            return datumCont.goodsTotleData;
-        }
-    },
+    computed: {},
     methods:{
         //获取商品总况
         getGeneralCondition(){
@@ -81,7 +80,29 @@ export default {
                 visitSourceType:this.visitSourceType
             }
             this._apis.data.generalCondition(data).then(response => {
-            console.log(response);
+                let nums = response.shopGoodsSurveyView;
+                console.log(datumCont.goodsTotleData)
+                datumCont.goodsTotleData.forEach(e => {
+                    switch (e.id){
+                        case '001': e.num = nums.saleGoodsTotal
+                         break;
+                        case '002': e.num = nums.visitGoodsTotal
+                         break;
+                        case '003': e.num = nums.addPurchasesTotal
+                         break;
+                        case '004': e.num = nums.submitOrderTotal
+                         break;
+                        case '005': e.num = nums.rightsGoodsTotal
+                         break;
+                        case '006': e.num = nums.goodsSoldOutTotal
+                         break;
+                        case '007': e.num = nums.payGoodsTotal
+                         break;
+                        case '008': e.num = nums.againBuyGoodsTotal
+                         break;
+                    }                        
+                    this.Condition = datumCont.goodsTotleData
+                });
         }).catch(error => {
           this.$message.error(error);
         });
@@ -92,6 +113,7 @@ export default {
                 visitSourceType:this.visitSourceType
             }
             this._apis.data.hotGoods(data).then(response => {
+                this.hotData = response.shopHotSellGoodsList
             console.log(response);
         }).catch(error => {
           this.$message.error(error);
@@ -103,6 +125,7 @@ export default {
                 visitSourceType:this.visitSourceType
             }
             this._apis.data.productDetails(data).then(response => {
+
             console.log(response);
         }).catch(error => {
           this.$message.error(error);
@@ -113,6 +136,9 @@ export default {
             this.getHotGoods()
             this.getProductDetails()
         }
+    },
+    created(){
+        this.getGeneralCondition()
     }
 }
 </script>
