@@ -11,21 +11,25 @@
       </div>
                 <div class="pane_container">
                     <div class="p_line">
-                        <div class="input_wrap">
-                            <el-date-picker
-                                v-model="range"
-                                type="daterange"
-                                range-separator="—"
-                                value-format="yyyy-MM-dd"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                                @change="changeTime">
-                            </el-date-picker>
+                    <el-radio-group v-model="dateType" @change="changeDay">
+                        <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
+                        </el-radio-group>
+                        <div class="input_wrap" v-if="dateType == 4">
+                        <el-date-picker
+                            v-model="range"
+                            type="daterange"
+                            range-separator="—"
+                            value-format="yyyy-MM-dd"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            @change="changeTime"
+                        ></el-date-picker>
                         </div>
-                        <span>最近7天</span>
-                        <span>最近15天</span>
-                        <span>最近30天</span>
                     </div>
+                    
                     <div class="chart_container">
                         <div class="path_line clearfix">
                             <div class="p_l">
@@ -113,6 +117,11 @@ export default {
     all(){
         this.getPathConversion();
     },
+    changeDay(val){
+        if(val != 4){
+                    this.getPathConversion();
+        }
+    }
     },
     created(){
         this.getPathConversion()

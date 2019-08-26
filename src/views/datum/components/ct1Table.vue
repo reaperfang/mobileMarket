@@ -2,25 +2,30 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="hotData"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
         label="商品名称">
+        <template slot-scope="scope">
+          <div  style="height:60px; display:flex">
+            <img :src="scope.row.goodsImgUrl" alt="" style="width:60px;height:60px;display:inline-block" />
+             <span style="line-height:60px;display:inline-block">{{scope.row.goodsName}}</span>
+            </div>
+        </template>
       </el-table-column>
       <el-table-column
-        prop="channel"
+        prop="visitGoodsTotal"
         label="访问人数">
       </el-table-column>
       <el-table-column
-        prop="importNum"
+        prop="payOrderTotal"
         label="支付人数">
       </el-table-column>
       <el-table-column
-        prop="successNum"
+        prop="conversionRate"
         label="访问支付转化率"
       >
       </el-table-column>
@@ -33,6 +38,12 @@ import TableBase from "@/components/TableBase";
 export default {
   name: "ct1Table",
   extends: TableBase,
+  props:{
+    hotData:{
+      type:Array,
+      default:[]
+    }
+  },
   data() {
     return {
       dataList:[

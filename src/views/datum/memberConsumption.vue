@@ -13,13 +13,14 @@
                     <div class="i_line">
                         <div class="input_wrap">
                             <el-select placeholder="排序" v-model="value" @change="changeSelet">
+                                <el-option label="全部" value="0"></el-option>
                                 <el-option label="订单数" value="1"></el-option>
                                 <el-option label="消费金额" value="2"></el-option>
                             </el-select>
                         </div>
                         <div class="input_wrap">
-                            <el-input placeholder="会员名/手机号">
-                                <el-button slot="append" icon="el-icon-search"></el-button>
+                            <el-input placeholder="会员名/手机号" v-model="keyWords">
+                                <el-button slot="append" icon="el-icon-search" @click="changKeyWord(keyWords)"></el-button>
                             </el-input>
                         </div>
                     </div>
@@ -38,27 +39,16 @@ export default {
             visitSourceType:0,
             startIndex:1,
             pageSize:15,
-            orderSortType:1,
+            orderSortType:0,
             keyWords:'',
             dataObj:{
-                dataList:[
-                    {
-                        choose: true,
-                        importTime:"",
-                        channel:"",    
-                         
-                        importNum:"",
-                        successNum:"",
-                        failNum:"",
-                        buyTime:"",
-                        operator:""
-                    },
-                ]
             }
         }
     },
     methods:{
-        getMemberConsumption(){ 
+        getMemberConsumption(idx,pages){
+            this.startIndex = idx;
+            this.pageSize = pages;
             let data = {
         visitSourceType: this.visitSourceType,
         pageSize: this.pageSize,
@@ -68,22 +58,28 @@ export default {
       };
       this._apis.data.memberConsumption(data).then(response => {
            this.dataObj = response;
-            console.log(response) ;
-            // this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
         }).catch(error => {
           this.$message.error(error);
         });
         },
         all(){
-            this.getMemberConsumption()
+            this.value = '';
+            this.keyWords = '';
+            this.orderSortType = 0;
+            this.getMemberConsumption(1,10)
         },
         changeSelet(val){
             this.startIndex = 1
             this.orderSortType = val
+            this.getMemberConsumption()
+        },
+        changKeyWord(val){
+            console.log(val)
+            this.getMemberConsumption(1,10)
         }
     },
     created(){
-        this.getMemberConsumption()
+        this.getMemberConsumption(1,10)
     }
 }
 </script>

@@ -73,8 +73,8 @@ export default {
         // 实时概况
         getRealTimeOverview(){
             let data = {
-                startTime:'',
-                endTime:''
+                startTime:new Date(new Date().toLocaleDateString()).getTime(),
+                endTime:new Date().getTime()
             }
             this._apis.data.realTimeOverview(data).then(response => {
             // this.dataChart = response;
@@ -84,8 +84,31 @@ export default {
         });
         },
         //历史记录
+        getHistoryRecord(){
+            let data = {
+                startTime:'',
+                endTime:''
+            }
+            this._apis.data.historyRecord(data).then(response => {
+                console.log(response)
+            // this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
         // 详细数据
-        
+        getHistoryRecord(){
+            let data = {
+                startTime:'',
+                endTime:''
+            }
+            this._apis.data.historyRecord(data).then(response => {
+                console.log(response)
+            // this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        }
     },
     created(){
         this.getRealTimeOverview()

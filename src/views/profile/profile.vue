@@ -87,6 +87,24 @@ export default {
         activeData() {
             return profileCont.activeData
         } 
+    },
+    methods:{
+        // 待办详情
+        getOverviewDetails(){ 
+         this._apis.overview.overviewDetails({}).then(response => {
+
+         })
+        },
+        // 待办提醒
+        getOerviewRemind(){
+             this._apis.overview.overviewRemind({}).then(response => {
+
+         })
+        }
+    },
+    created(){
+        this.getOverviewDetails()
+        this.getOerviewRemind()
     }
 }
 </script>

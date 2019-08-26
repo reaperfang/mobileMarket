@@ -1,7 +1,14 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
+        <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
                 <div class="pane_container">
                     <p class="p_title">交易总况：</p>
                     <div class="order_list">
@@ -48,48 +55,144 @@
                     <div class="c_line">
                         <span class="c_title">交易趋势</span>
                         <span class="c_label">筛选日期：</span>
-                        <div class="input_wrap">
+                        <el-radio-group v-model="dateTypeM" @change="changeDayM">
+                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
+                        </el-radio-group>
+                        <div class="input_wrap" v-if="dateTypeM == 4">
                             <el-date-picker
-                                v-model="value1"
-                                type="date"
-                                placeholder="选择日期">
-                            </el-date-picker>
+                                v-model="range"
+                                type="daterange"
+                                range-separator="—"
+                                value-format="yyyy-MM-dd"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                @change="changeTime"
+                            ></el-date-picker>
                         </div>
-                        <span>最近7天</span>
-                        <span>最近15天</span>
-                        <span>最近30天</span>
-                        <el-button type="primary" class="marL20">查 询</el-button>
                     </div>
+                    <ip4Chart :title="'测试图表'" ref="ip4"></ip4Chart>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
     </div>
 </template>
 <script>
+import ip4Chart from "./components/ip4Chart";
 import datumCont from '@/system/constant/datum';
+
 export default {
     name: 'purchaseOrder',
     data() {
         return {
-            activeName: "first", 
-            range: ""
+            range: "",
+            dateTypeM:1,
+            visitSourceType:0,
+            startTime: "",
+            endTime: "",
+            placeOrderData:[],
+            nonPaymentData:[],
+            paymentData:[],
+            orderProbabilityData:[]
         }
     },
+    components:{ip4Chart},
     computed: {
-        placeOrderData() {
-            return datumCont.placeOrderData;
+    },
+    methods:{
+        // 获取交易总况
+        getTradingOverview(){
+            let data ={
+                visitSourceType: this.visitSourceType,
+                dateType:1
+            }
+            this._apis.data.tradingOverview(data).then(response => {
+                let nums = response.shopTradingSurvey
+                    datumCont.placeOrderData.forEach(e => {
+                          switch (e.id){
+                        case '01': e.num = nums.submitOrderPersonTotal
+                         break;
+                        case '02': e.num = nums.submitOrderTotal
+                         break;
+                        case '03': e.num = nums.submitOrderAmountTotal
+                         break;
+                        case '04': e.num = nums.visitSubmitOrderConversionRate
+                         break;
+                         }
+                    });
+                    datumCont.nonPaymentData.forEach(e => {
+                          switch (e.id){
+                        case '01': e.num = nums.nonPayOrderPersonTotal
+                         break;
+                        case '02': e.num = nums.nonPayOrderTotal
+                         break;
+                        case '03': e.num = nums.nonPayOrderAmountTotal
+                         break;
+                         }
+                    });
+                    datumCont.paymentData.forEach(e => {
+                          switch (e.id){
+                        case '01': e.num = nums.payOrderPersonTotal
+                         break;
+                        case '02': e.num = nums.payOrderTotal
+                         break;
+                        case '03': e.num = nums.payOrderAmountTotal
+                         break;
+                        case '04': e.num = nums.submitOrderPayAmountConversionRate
+                         break;
+                         }
+                    });
+                    datumCont.orderProbabilityData.forEach(e => {
+                        console.log(e)
+                          switch (e.id){
+                        case '001': e.num = nums.shopRepurchaseRate
+                         break;
+                        case '002': e.num = nums.shopPayConversionRate
+                         break;
+                         }
+                    });
+                    this.placeOrderData = datumCont.placeOrderData;
+                    this.nonPaymentData = datumCont.nonPaymentData;
+                    this.paymentData = datumCont.paymentData;
+                    this.orderProbabilityData = datumCont.orderProbabilityData;
+            }).catch(error => {
+            this.$message.error(error);
+            });
         },
-        nonPaymentData() {
-            return datumCont.nonPaymentData;
+        // 获取交易趋势
+        getTradingTrendchart(){
+            let data ={
+                visitSourceType: this.visitSourceType,
+                // queryTime: this.timeM | 2019-8-9,
+                startTime:this.startTime,
+                endTime:this.endTime,
+                dateType: this.dateTypeM
+            }
+            this._apis.data.tradingTrendchart(data).then(response => {
+                this.$refs.ip4.con(response)
+            }).catch(error => {
+            this.$message.error(error);
+            });
         },
-        paymentData() {
-            return datumCont.paymentData;
+        changeDayM(val){
+             if(val !=4 ){
+                this.dateTypeM = val
+                this.getTradingTrendchart()
+            }
         },
-        orderProbabilityData() {
-            return datumCont.orderProbabilityData
+        changeTime(val){
+            this.startTime = val[0];
+            this.endTime = val[1];
+            this.getTradingTrendchart()
+        },
+        all(){
+            this.getTradingOverview()
+            this.getTradingTrendchart()
         }
+    },
+    created(){
+        this.getTradingOverview()
+        this.getTradingTrendchart()
     }
 }
 </script>

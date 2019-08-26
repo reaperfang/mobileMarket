@@ -109,7 +109,7 @@
                         <span class="blue pointer" @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
                         <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateStatus(scope.row)">同意</span>
                         <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateRejectStatus(scope.row)">拒绝</span>
-                        <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 2">查看物流</span>
+                        <span class="blue pointer" @click="showLogistics(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">查看物流</span>
                         <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 2">确认收货</span>
                         <span class="blue pointer" @click="drawback(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">退款</span>
                     </template>
@@ -256,6 +256,9 @@ export default {
         }
     },
     methods: {
+        showLogistics(row) {
+            
+        },
         drawback(row) {
             this._apis.order.orderAfterSaleDrawback({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
                 console.log(res)
