@@ -1,7 +1,14 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
+        <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
                 <div class="pane_container">
                     <p class="p_title">商品总况：</p>
                     <div class="p_blocks">
@@ -41,10 +48,6 @@
                     </div>
                     <ct2Table style="margin-top: 26px"></ct2Table>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
     </div>
 </template>
 <script>
@@ -57,12 +60,58 @@ export default {
     data() {
         return {
             activeName: "first", 
-            range: ""
+            range: "",
+            visitSourceType:0,
+            dateType:1,
+            queryTime:'',
+            startIndex:'',
+            pageSize:'',
+            dataObj:{}
         }
     },
     computed: {
         goodsTotleData() {
             return datumCont.goodsTotleData;
+        }
+    },
+    methods:{
+        //获取商品总况
+        getGeneralCondition(){
+            let data ={
+                visitSourceType:this.visitSourceType
+            }
+            this._apis.data.generalCondition(data).then(response => {
+            console.log(response);
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        // 获取热销商品
+        getHotGoods(){
+            let data ={
+                visitSourceType:this.visitSourceType
+            }
+            this._apis.data.hotGoods(data).then(response => {
+            console.log(response);
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        // 获取商品详情
+        getProductDetails(){
+            let data ={
+                visitSourceType:this.visitSourceType
+            }
+            this._apis.data.productDetails(data).then(response => {
+            console.log(response);
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        all(){
+            this.getGeneralCondition()
+            this.getHotGoods()
+            this.getProductDetails()
         }
     }
 }

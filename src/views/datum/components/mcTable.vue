@@ -61,7 +61,7 @@ export default {
   extends: TableBase,
   data() {
     return {
-      
+      pageSize:10,
     };
   },
   props:{
@@ -75,11 +75,11 @@ export default {
   },
   methods: {
     handleSizeChange(val){
-      console.log(1,val)
+      this.pageSize = val;
       this.$emit('getMember',1,val)
     },
     handleCurrentChange(val){
-      console.log(2,val)
+      this.$emit('getMember',val,this.pageSize)
     }
   },
   components: {}
