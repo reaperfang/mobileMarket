@@ -126,10 +126,10 @@ export default {
             });
             this.$refs.ip1.con(oneArr)
         }).catch(error => {
-          this.$message.error(error);
+        //   this.$message.error(error);
         });
         },
-        /*
+        /*  
         **会员增长趋势
          */ 
         getMemberTrend(){ 
@@ -141,7 +141,7 @@ export default {
             this._apis.data.memberTrend(data).then(response => {
                 this.$refs.ip2.con(response)
             }).catch(error => {
-            this.$message.error(error);
+            // this.$message.error(error);
             });
         },
         changeDayM(val){
@@ -174,7 +174,7 @@ export default {
                 this.threeData = response;
                 this.$refs.ip3.con(response)
             }).catch(error => {
-            this.$message.error(error);
+            // this.$message.error(error);
             });
         },
         changeDayPay(val){
@@ -208,6 +208,7 @@ export default {
         this.getAttributeRatio();
         this.getMemberTrend();
         this.getPaymentTrend();
+        this.all()
     }
 }
 </script>

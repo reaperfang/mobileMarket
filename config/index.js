@@ -63,7 +63,7 @@ module.exports = {
         // target:'http://172.22.145.113:8083',//李权宇
         //target:'http://172.22.146.119:8080', //郑艳华
         //target: 'http://172.22.146.3:8080',//张昌超
-         target:'http://rvmfm9.natappfree.cc',//数据
+         target:'http://3at93v.natappfree.cc',//数据
         //  target:'http://vc3fhm.natappfree.cc/',//智能运营
         changeOrigin: true,
         pathRewrite: {

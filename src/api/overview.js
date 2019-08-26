@@ -5,10 +5,20 @@ import request from '@/system/request'
 // 概况详情首页
 export function overviewDetails(data) {
   return request({
-    target: 'SHOP-OVERVIEW-PROCESSOR',
-    method: 'get',
-    baseURL: process.env.DATA_API,
-    params
+    target: 'CUSTOMER-SHOPX-OVERVIEWX-DATA-PROCESSOR',
+    method: 'post',
+    apiType: 'data',
+    data
   })
 }
+// 代办提醒 
+export function overviewRemind(data) {
+    return request({
+      target: 'ORDER-REMIND-PROCESSOR',
+      method: 'post',
+      apiType: 'data',
+      data
+    })
+  }
+
    

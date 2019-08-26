@@ -28,12 +28,12 @@ export default [
         name: 'accountInfo',
         meta: { title: '账号信息', noCache: true, tabTitle: '概况' }
       },
-      // {
-      //   path: 'passwordChange',
-      //   component: () => import('@/views/profile/passwordChange'),
-      //   name: 'passwordChange',
-      //   meta: { title: '修改密码', noCache: true, tabTitle: '概况' }
-      // }
+      {
+        path: 'passwordChange',
+        component: () => import('@/views/profile/passwordChange'),
+        name: 'passwordChange',
+        meta: { title: '修改密码', noCache: true, tabTitle: '概况' }
+      }
     ]
 	}
 ]

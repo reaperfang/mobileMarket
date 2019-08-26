@@ -55,32 +55,25 @@
                     <div class="c_line">
                         <span class="c_title">交易趋势</span>
                         <span class="c_label">筛选日期：</span>
-                        <!-- <div class="input_wrap">
-                            <el-date-picker
-                                v-model="value1"
-                                type="date"
-                                placeholder="选择日期">
-                            </el-date-picker>
-                        </div> -->
                         <el-radio-group v-model="dateTypeM" @change="changeDayM">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                             <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                             <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
-                            <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="dateTypeM == 4 || dateTypeM == 5">
+                        <div class="input_wrap" v-if="dateTypeM == 4">
                             <el-date-picker
-                                v-model="valueM"
-                                :type="dateM"
-                                :value-format="formatM"
-                                placeholder="选择日期"
-                                @change="changeTimeM">
-                            </el-date-picker>
+                                v-model="range"
+                                type="daterange"
+                                range-separator="—"
+                                value-format="yyyy-MM-dd"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                @change="changeTime"
+                            ></el-date-picker>
                         </div>
-                        <el-button type="primary" class="marL20">查 询</el-button>
                     </div>
-                    <ip4Chart :title="'测试图表'"  ref="ip4"></ip4Chart>
+                    <ip4Chart :title="'测试图表'" ref="ip4"></ip4Chart>
                 </div>
     </div>
 </template>
@@ -92,35 +85,76 @@ export default {
     name: 'purchaseOrder',
     data() {
         return {
-            formatM: "yyyy-MM",
-            dateM:"month",
             range: "",
             dateTypeM:1,
+            visitSourceType:0,
+            startTime: "",
+            endTime: "",
+            placeOrderData:[],
+            nonPaymentData:[],
+            paymentData:[],
+            orderProbabilityData:[]
         }
     },
     components:{ip4Chart},
     computed: {
-        placeOrderData() {
-            return datumCont.placeOrderData;
-        },
-        nonPaymentData() {
-            return datumCont.nonPaymentData;
-        },
-        paymentData() {
-            return datumCont.paymentData;
-        },
-        orderProbabilityData() {
-            return datumCont.orderProbabilityData
-        }
     },
     methods:{
         // 获取交易总况
         getTradingOverview(){
             let data ={
                 visitSourceType: this.visitSourceType,
+                dateType:1
             }
             this._apis.data.tradingOverview(data).then(response => {
-                console.log(response)
+                let nums = response.shopTradingSurvey
+                    datumCont.placeOrderData.forEach(e => {
+                          switch (e.id){
+                        case '01': e.num = nums.submitOrderPersonTotal
+                         break;
+                        case '02': e.num = nums.submitOrderTotal
+                         break;
+                        case '03': e.num = nums.submitOrderAmountTotal
+                         break;
+                        case '04': e.num = nums.visitSubmitOrderConversionRate
+                         break;
+                         }
+                    });
+                    datumCont.nonPaymentData.forEach(e => {
+                          switch (e.id){
+                        case '01': e.num = nums.nonPayOrderPersonTotal
+                         break;
+                        case '02': e.num = nums.nonPayOrderTotal
+                         break;
+                        case '03': e.num = nums.nonPayOrderAmountTotal
+                         break;
+                         }
+                    });
+                    datumCont.paymentData.forEach(e => {
+                          switch (e.id){
+                        case '01': e.num = nums.payOrderPersonTotal
+                         break;
+                        case '02': e.num = nums.payOrderTotal
+                         break;
+                        case '03': e.num = nums.payOrderAmountTotal
+                         break;
+                        case '04': e.num = nums.submitOrderPayAmountConversionRate
+                         break;
+                         }
+                    });
+                    datumCont.orderProbabilityData.forEach(e => {
+                        console.log(e)
+                          switch (e.id){
+                        case '001': e.num = nums.shopRepurchaseRate
+                         break;
+                        case '002': e.num = nums.shopPayConversionRate
+                         break;
+                         }
+                    });
+                    this.placeOrderData = datumCont.placeOrderData;
+                    this.nonPaymentData = datumCont.nonPaymentData;
+                    this.paymentData = datumCont.paymentData;
+                    this.orderProbabilityData = datumCont.orderProbabilityData;
             }).catch(error => {
             this.$message.error(error);
             });
@@ -129,8 +163,10 @@ export default {
         getTradingTrendchart(){
             let data ={
                 visitSourceType: this.visitSourceType,
-                queryTime: this.timeM,
-                dateType: this.dateTypeM == 5 ? 4 : this.dateTypeM
+                // queryTime: this.timeM | 2019-8-9,
+                startTime:this.startTime,
+                endTime:this.endTime,
+                dateType: this.dateTypeM
             }
             this._apis.data.tradingTrendchart(data).then(response => {
                 this.$refs.ip4.con(response)
@@ -139,20 +175,25 @@ export default {
             });
         },
         changeDayM(val){
-            if(val == 4){
-                this.formatM = "yyyy-MM"
-                this.dateM = 'month'
-            }else if(val == 5){
-                this.formatM = "yyyy-MM-dd"
-                this.dateM = 'date'
-            }else if(val == 1 || val == 2 || val == 3){
+             if(val !=4 ){
                 this.dateTypeM = val
                 this.getTradingTrendchart()
             }
-            
         },
+        changeTime(val){
+            this.startTime = val[0];
+            this.endTime = val[1];
+            this.getTradingTrendchart()
+        },
+        all(){
+            this.getTradingOverview()
+            this.getTradingTrendchart()
+        }
     },
-    created(){}
+    created(){
+        this.getTradingOverview()
+        this.getTradingTrendchart()
+    }
 }
 </script>
 <style lang="scss" scoped>

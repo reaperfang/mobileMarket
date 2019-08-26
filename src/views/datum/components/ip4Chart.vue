@@ -1,60 +1,37 @@
 /* 访问客流分析 */
 <script type='es6'>
 import chartBase from "@/components/ChartBase";
-// import chinaMap from "@/assets/js/chinaMap.js";
-// import worldMap from "@/assets/js/worldMap.js";
+
 export default {
   name: "pfChart",
   extends: chartBase,
    computed:{
-      // flow(){
-      //     return this.$store._modules.root.state.data.dataChart
-      // }
+      
   },
   props:{
   },
   data() {
     return {
-      flow:{},
-      type:1
+      flow:{}
     };
   },
   created() {
-    // this.engine.registerMap("china", chinaMap);
-    //  this.engine.registerMap('world', worldMap);
-    // console.log(this.$store._modules.root.state.data.dataChart)
-    // console.log(this.flow['xAxisData'])
+
   },
   methods: {
     // 数据显示控制
-    dataType(val,l){
-      if(val == 1){
-        this.option.title.text = "浏览/访问",
-        this.option.legend.data = ["浏览量","访客量"],
-        this.option.series = [{name:"访客",type: "line",stack: "总量",data: this.flow['yAxisUvData']},
-        {name:"浏览",type: "line",stack: "总量",data: this.flow['yAxisPvData']}]
-      }else if(val == 2){
-         this.option.title.text = "到店时段",
-         this.option.legend.data = ["到店时段"],
-         this.option.series =[{name:"到店时段",type: "line",stack: "总量",data: this.flow['yAxisData']},
-         ]
-      }else if(val == 3){
-         this.option.title.text = "访问次数",
-         this.option.legend.data = ["访问次数"],
-         this.option.series =[{name:"到店时段",type: "line",stack: "总量",data: this.flow['yAxisData']},
-         ]
-      }else if(val == 4){
-         this.option.title.text = "访问来源",
-         this.option.legend.data = ["小程序","公众号"],
-         this.option.series =[{name:"小程序",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxisPvData']},
-         {name:"公众号",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxisPvData']},
-         ]
-      }
+    con(n){
+      console.log(n)
+      this.flow = n;
+      console.log(n,this.flow)
+      this.makeOption(n);
+      this.oChart.setOption(this.option, true);
     },
-    con(n,t,type,l){
+    //设置图表数据项
+    makeOption(data) {
       this.option = {
         title: {
-          text: ["浏览/访问"]
+          text: [""]
         },
         tooltip: {
           trigger: "axis",
@@ -83,30 +60,25 @@ export default {
         },
         series: [
           {
-            name:"访客",
+            name:"下单单数",
             type: "line",
             stack: "总量",
-            data: this.flow['yAxisUvData']
+            data: this.flow['yAxisSubmitOrderData']
           },
           {
-            name:"浏览",
+            name:"支付单数",
             type: "line",
             stack: "总量",
-            data: this.flow['yAxisPvData'] 
+            data: this.flow['yAxisPayOrderData'] 
+          },
+          {
+            name:"单数转化",
+            type: "line",
+            stack: "总量",
+            data: this.flow['yAxisOrderConversionData'] 
           }
         ]
-      };
-      console.log(n,t,type,l);
-      this.flow = n;
-      this.type = type;
-      this.dataType(type,l);
-      console.log(this.option)
-      this.makeOption(n);
-      this.oChart.setOption(this.option, true);
-    },
-    //设置图表数据项
-    makeOption(data) {
-      this.option
+      }
     }
   },
   mounted(){
