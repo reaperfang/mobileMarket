@@ -451,6 +451,16 @@ export function orderAfterSaleDetail(data) {
   })
 }
 
+// 订单批量发货详情
+export function orderSendDetail(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-SEND-LISTP-ROCESSOR',
+    data
+  })
+}
+
 
 
 

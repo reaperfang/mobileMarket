@@ -75,6 +75,14 @@
                     width="55">
                 </el-table-column>
                 <el-table-column
+                    prop="isAutoSend"
+                    label=""
+                    width="35">
+                    <template slot-scope="scope">
+                        <i class="auto"></i>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="orderCode"
                     label="订单编号"
                     width="120">
@@ -106,7 +114,12 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
-                        <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">发货</span>
+                        <template v-if="scope.row.orderStatus == 4">
+                            <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">部分发货</span>
+                        </template>
+                        <template v-else>
+                            <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">发货</span>
+                        </template>
                     </template>
                 </el-table-column>
             </el-table>
@@ -332,6 +345,15 @@ export default {
 /deep/ .date-picker-select .el-input__inner:focus {
   border-color: #dcdfe6;
 }
+.auto {
+        display: inline-block;
+        width: 28px;
+        height: 16px;
+        background: url(../../../assets/images/order/auto.png) no-repeat;
+        position: relative;
+        top: 3px;
+        margin-right: 5px;
+    }
 </style>
 
 

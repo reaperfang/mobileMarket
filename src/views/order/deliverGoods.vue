@@ -264,11 +264,11 @@ export default {
         _orderDetail() {
             let id = this.$route.query.id
 
-            this._apis.order.fetchOrderDetail({id}).then((res) => {
-                this.orderDetail = res
-                this.tableData = this.orderDetail.orderItems
-                this.orderInfo = res.orderInfo
-                this.orderSendInfo = res.orderSendInfo
+            this._apis.order.orderSendDetail({ids: [this.$route.query.id]}).then((res) => {
+                this.orderDetail = res[0]
+                this.tableData = this.orderDetail.orderItemList
+                this.orderInfo = res[0]
+                this.orderSendInfo = res[0]
             }).catch(error => {
 
             })
