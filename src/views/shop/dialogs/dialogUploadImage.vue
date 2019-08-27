@@ -16,18 +16,32 @@
           <p class="note">仅支持jpg,png格式，大小不超过3.0MB</p>
         </el-form-item>
         <el-form-item label="本地上传" v-if="title == '上传视频'">
-          <el-upload
-            class="avatar-uploader"
-            :action="uploadUrl"
-            :show-file-list="false"
-            :limit="1"
+          <el-upload class="avatar-uploader el-upload--text"
+            :action="uploadUrl" 
             :data="{json: JSON.stringify({cid: 222})}"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            :show-file-list="false"
+            accept=".mp4"
+            :on-success="handleVideoSuccess" 
+            :before-upload="beforeUploadVideo" 
+            :on-progress="uploadVideoProcess"> 
+          <video v-if="this.fileData.url !='' && !videoFlag"  
+            :src="this.fileData.url"
+            class="avatar video-avatar"
+            controls="controls">您的浏览器不支持视频播放</video> 
+          <i v-else-if="this.fileData.url =='' && !videoFlag"
+            class="el-icon-plus avatar-uploader-icon"></i>  
+          <el-progress v-if="videoFlag == true"
+              type="circle"
+              :percentage="videoUploadPercent"
+              style="width:80px;height:80px;">
+          </el-progress>
+          <el-button class="video-btn"
+                slot="trigger"
+                size="small"
+                v-if="isShowUploadVideo"
+                type="primary">选取文件</el-button>
           </el-upload>
-          <p class="note">视频大小不超过10mb，支持mp4,mov,m4v,flv,x-flv,mkv,wmv,avi,rmvb,3gp格式</p>
+          <p v-if="isShowUploadVideo">视频大小不超过10mb，支持mp4,mov,m4v,flv,x-flv,mkv,wmv,avi,rmvb,3gp格式</p>
         </el-form-item>
         <el-form-item label="名称" v-if="title == '上传视频'">
           <el-input v-model="form.name" placeholder="请勿超过20字" style="width:195px"></el-input>
@@ -49,7 +63,7 @@
             :show-file-list="false"
             :limit="1"
             :data="{json: JSON.stringify({cid: 222})}"
-            :on-success="handleAvatarSuccess"
+            :on-success="handleCoverSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="form.imageUrls" :src="form.imageUrls" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -62,8 +76,8 @@
 </template>
 
 <script>
-import DialogBase from "@/components/DialogBase";
-import utils from "@/utils";
+import DialogBase from "@/components/DialogBase"
+import utils from "@/utils"
 export default {
   name: "dialogUploadImage",
   components: {DialogBase},
@@ -88,7 +102,10 @@ export default {
         imageUrls:''
       },
       fileData:{},
-      groupList:[]
+      groupList:[],
+      videoFlag:false , //是否显示进度条
+		  videoUploadPercent:"", //进度条的进度，
+		  isShowUploadVideo:false
     };
   },
   computed: {
@@ -148,28 +165,64 @@ export default {
       }
     },
     //上传视频
-    uploadVideo(){
+    // uploadVideo(){
       
-    },
+    // },
+
     handleAvatarSuccess(res, file) {
       this.fileData = res.data
       this.form.imageUrl = res.data.url
     },
+    handleCoverSuccess(res, file){
+      this.fileData = res.data
+      this.form.imageUrls = res.data.url
+    },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 3;
 
       if (!isJPG) {
         this.$message.error('上传头像图片只能是 JPG 格式!');
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过 3MB!');
       }
       return isJPG && isLt2M;
     },
 
+    //上传成功回调
+	  handleVideoSuccess (res, file) {
+        this.isShowUploadVideo = true;
+        this.videoFlag = false;
+        this.videoUploadPercent = 0;
+        if (res.status == "success") {
+            this.fileData.url = res.data.url;
+        } else {
+            this.$message.error('视频上传失败，请重新上传！');
+        }
+    },
+    //进度条
+	  uploadVideoProcess (event, file, fileList) {
+        this.videoFlag = true;
+        this.videoUploadPercent = file.percentage.toFixed(0) * 1;
+    },
+    //上传前回调
+	  beforeUploadVideo (file) {
+        const isLt20M = file.size / 1024 / 1024 < 10;
+        if (['video/mp4'].indexOf(file.type) == -1) { //'video/ogg', 'video/flv', 'video/avi', 'video/wmv', 'video/rmvb'
+            this.$message.error('请上传正确的视频格式');
+            return false;
+        }
+        if (!isLt20M) {
+            this.$message.error('上传视频大小不能超过10MB哦!');
+            return false;
+        }
+        this.isShowUploadVideo = false;
+    },
+
+
   }
-};
+}
 </script>
 
 <style>

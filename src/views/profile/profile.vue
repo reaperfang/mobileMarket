@@ -18,10 +18,10 @@
             <div class="p_top_r">
                 <p class="p_title">待办提醒：</p>
                 <div class="p_r_list">
-                    <p>待办售罄<span>(12)</span></p>
-                    <p>待发货订单<span>(234)</span></p>
-                    <p>售后待处理<span>(45)</span></p>
-                    <p>售后单待审核<span>(23)</span></p>
+                    <p>待办售罄<span>({{toBeSoldOut}})</span></p>
+                    <p>待发货订单<span>({{staySendCount}})</span></p>
+                    <p>售后待处理<span>({{stayProcessedCount}})</span></p>
+                    <p>售后单待审核<span>({{stayAuthCount}})</span></p>
                     <p>积分商城订单待发货<span>(23)</span></p>
                 </div>
             </div>
@@ -40,10 +40,10 @@
                 <p class="p_title">营销活动：</p>
                 <div class="p_list">
                     <div class="p_m_item" v-for="item in activeData" :key="item.id">
-                        <img :src="item.url" alt="">
+                        <img :src="item.appImage" alt="" style="height:40px;">
                         <div>
-                            <p>{{item.title}}</p>
-                            <p>{{item.sub}}</p>
+                            <p>{{item.appName}}</p>
+                            <p>{{item.description}}</p>
                         </div>
                     </div>
                 </div>
@@ -74,19 +74,76 @@ export default {
     name: 'profile',
     data() {
         return {
-
+            realTimeData:[],
+            toBeSoldOut:'',
+            stayProcessedCount:'',
+            staySendCount:'',
+            stayAuthCount:'',
+            activeData:[],
+            selectList:{merchantId:'2',tenantId:1,loginUserId:'1',businessId:'2'}
         }
     },
     computed: {
-        realTimeData() {
-            return profileCont.realTimeData
-        },
         commonData() {
             return profileCont.commonData
         },
-        activeData() {
-            return profileCont.activeData
-        } 
+        // activeData() {
+        //     return profileCont.activeData
+        // } 
+    },
+    methods:{
+        // 概况详情
+        getOverviewDetails(){ 
+         this._apis.overview.overviewDetails({}).then(response => {
+            let nums = response.shopOverviewView
+             console.log(profileCont.realTimeData)
+           profileCont.realTimeData.forEach(e => {
+                    switch (e.id){
+                        case '001': e.price = nums.payAmount
+                         break;
+                        case '002': e.price = nums.payOrderNum
+                         break;
+                        case '003': e.price = nums.refundAmount
+                         break;
+                        case '004': e.price = nums.refundAOrderNum
+                         break;
+                        case '005': e.price = nums.perCustomerPrice
+                         break;
+                        case '006': e.price = nums.payCustomerNum
+                         break;
+                        case '007': e.price = nums.vipPayOrder
+                         break;
+                         }
+             this.realTimeData = profileCont.realTimeData
+         })
+         })
+        },
+        // 待办提醒
+        getOerviewRemind(){
+             this._apis.overview.overviewRemind({}).then(response => {
+                 this.stayProcessedCount = response.stayProcessedCount
+                 this.staySendCount = response.staySendCount
+                 this.stayAuthCount = response.stayAuthCount
+         })
+        },
+        // 待办售罄
+        getOverviewSelling(){
+              this._apis.overview.overviewSelling({}).then(response => {
+                  this.toBeSoldOut = response
+         })
+        },
+        // 营销活动 
+        getMarketing(){
+             this._apis.overview.getMarketing(this.selectList).then(response => {
+                 this.activeData = response
+         })
+        }
+    },
+    created(){
+        this.getMarketing()
+        this.getOverviewDetails()
+        this.getOerviewRemind()
+        this.getOverviewSelling()
     }
 }
 </script>
@@ -179,7 +236,7 @@ export default {
     float: left;
     background-color: #fff;
     width: 578px;
-    height: 337px;
+    min-height: 337px;
     padding: 13px 0 0px 14px;
     margin: 20px 0 0 20px;
     .p_m_item{

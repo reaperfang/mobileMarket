@@ -48,7 +48,7 @@ export default {
             id: "007",
             url: require("@/assets/images/datum/c_07.png"),
             color: "#FFBF0E",
-            text: "售罄商品数",
+            text: "支付商品数",
             num: 43
         },
         {

@@ -116,9 +116,9 @@ export function tradingTrendchart(data) {
 export function tradingOverview(data) {
     return request({
       target:'SHOP-TRADING-SURVEYVIEW-DATA-PROCESSOR',
-      method: 'get',
+      method: 'post',
       apiType: 'data',
-      params
+      data
     })
   }
 /**************************************************************智能运营分析********************************************************/

@@ -5,10 +5,37 @@ import request from '@/system/request'
 // 概况详情首页
 export function overviewDetails(data) {
   return request({
-    target: 'SHOP-OVERVIEW-PROCESSOR',
-    method: 'get',
-    baseURL: process.env.DATA_API,
-    params
+    target: 'CUSTOMER-SHOPX-OVERVIEWX-DATA-PROCESSOR',
+    method: 'post',
+    apiType: 'data',
+    data
   })
+}
+// 代办提醒 
+export function overviewRemind(data) {
+    return request({
+      target: 'ORDER-REMIND-PROCESSOR',
+      method: 'post',
+      apiType: 'overview1',
+      data
+    })
+  }
+//待办售罄
+export function overviewSelling(data) {
+    return request({
+      target: 'PRODUCT-SELLING-CHIME-PROCESSOR',
+      method: 'post',
+      apiType: 'overview',
+      data
+    })
+  }
+// 营销活动
+export function getMarketing(data) {
+    return request({
+      url: 'api/v1/b/app/my',
+      method: 'get',
+      baseURL: process.env.SALE_API,
+      params:data
+    })
 }
    

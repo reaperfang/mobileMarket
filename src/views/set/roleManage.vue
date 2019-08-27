@@ -21,15 +21,66 @@
         <el-button type="primary" @click="_routeTo('createRole')">新建角色</el-button>
       </div>
       <div class="bottom_part">
-        <rlTable></rlTable>
+        <el-table
+        :data="dataList"
+        style="width: 100%"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort = "{prop: 'name9', order: 'descending'}"
+        @selection-change="handleSelectionChange"
+        >
+        <el-table-column
+        type="selection"
+        width="55">
+        </el-table-column>
+        <el-table-column
+          prop="cashoutSn"
+          label="角色名称">
+        </el-table-column>
+        <el-table-column
+          prop="memberInfoId"
+          label="角色描述">
+        </el-table-column>
+        <el-table-column
+          prop="amount"
+          label="包含人数">
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="创建人">
+        </el-table-column>
+        <el-table-column
+          prop="tradeDetailSn"
+          label="创建时间">
+        </el-table-column>
+        <el-table-column
+        label="操作">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small" style="color:#FD4C2B">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-button style="margin-top:10px;">批量删除</el-button>
+      <div class="page_styles">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="10"
+          layout="sizes, prev, pager, next"
+          :total="100">
+        </el-pagination>
+      </div>
       </div>
     </div>       
 </template>
 
 <script>
-import rlTable from './components/rlTable'
+import TableBase from "@/components/TableBase";
 export default {
   name: 'roleManage',
+  extends: TableBase,
   data() {
     return {
       form:{
@@ -57,7 +108,6 @@ export default {
       multipleSelection:[]
     }
   },
-  components: {rlTable},
   watch: {
     
   },

@@ -20,7 +20,10 @@
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-                <img v-if="form.logo" :src="form.logo" class="avatar">
+                <span v-if="form.logo">
+                  <img :src="form.logo" class="avatar">
+                  <canvas ref="canvas1" width="80" height="80"></canvas>
+                </span>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
@@ -72,6 +75,7 @@ export default {
       area: [],
       shopInfo:{},
       uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
+      canvas:{}
     }
   },
   components: {},
@@ -81,8 +85,8 @@ export default {
   created() {
     this.getShopInfo()
   },
-  destroyed() {
-    
+  mounted() {
+    this.canvas = this.$refs.canvas1 
   },
   methods: {
     getShopInfo(){
@@ -134,8 +138,29 @@ export default {
     },
 
     handleAvatarSuccess(res, file) {
-        this.form.logo = res.data.url
+      this.form.logo = res.data.url
+      //圆形图片处理
+      var ctx = this.canvas.getContext('2d');      
+      let _self = this
+      var img = new Image();
+      img.setAttribute("crossOrigin",'Anonymous')
+      img.onload = function () {
+          ctx.beginPath();
+          // 绘制圆，参数（x坐标，y坐标，圆半径，起始角度，终止角度）
+          ctx.arc(40, 40, 40, 0, 2*Math.PI);
+          ctx.save();
+          // 剪切形状
+          ctx.clip();
+
+          // 绘制头像，参数（图片资源，x坐标，y坐标，宽度，高度）
+          ctx.drawImage(img, 0, 0, 80, 80);
+          ctx.restore();
+          ctx.closePath();
+          const base64 = _self.canvas.toDataURL("image/png"); 
+      }
+      img.src = res.data.url;
     },
+
     beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;

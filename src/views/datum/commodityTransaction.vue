@@ -1,50 +1,52 @@
 <template>
     <div class="p_container">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="全部" name="first">
+        <div class="clearfix">
+          <div class="fr">
+            <el-radio-group class="fr" v-model="visitSourceType" @change="all">
+              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+            </el-radio-group>
+          </div>
+      </div>
                 <div class="pane_container">
                     <p class="p_title">商品总况：</p>
                     <div class="p_blocks">
-                        <div class="p_item" v-for="item in goodsTotleData" :key="item.id" >
+                        <div class="p_item" v-for="item in Condition" :key="item.id" >
                             <img :src="item.url" alt="" class="fl">
                             <div class="fr">
                                 <p>{{item.text}}</p>
-                                <p :style="{color: item.color}">43</p>
+                                <p :style="{color: item.color}">{{item.num}}</p>
                             </div>
                         </div>
                     </div>
                     <div class="title_line clearfix">
                         <p class="fl" style="font-size: 16px">热销TOP5商品榜单：</p>
-                        <div class="p_item fr" style="background:rgba(101,94,255,0.5);">
-                            <img src="../../assets/images/datum/c_08.png" alt="" class="fl">
-                            <div class="fr">
-                                <p style="line-height: 20px; color: #fff">复购商品数</p>
-                                <p style="line-height: 20px; color: #fff">43</p>
-                            </div>
-                        </div>
                     </div>
-                    <ct1Table></ct1Table>
+                    <ct1Table  :hotData="hotData"></ct1Table>
                     <div class="c_line">
                         <span class="c_title">商品详情</span>
                         <span class="c_label">筛选日期：</span>
-                        <div class="input_wrap">
+                         <el-radio-group v-model="dateType" @change="changeDayM">
+                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
+                        </el-radio-group>
+                        <div class="input_wrap" v-if="dateType == 4">
                             <el-date-picker
-                                v-model="value1"
-                                type="date"
-                                placeholder="选择日期">
-                            </el-date-picker>
+                                v-model="range"
+                                type="daterange"
+                                range-separator="—"
+                                value-format="yyyy-MM-dd"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                @change="changeTime"
+                            ></el-date-picker>
                         </div>
-                        <span>最近7天</span>
-                        <span>最近15天</span>
-                        <span>最近30天</span>
-                        <el-button type="primary" class="marL20">查 询</el-button>
                     </div>
-                    <ct2Table style="margin-top: 26px"></ct2Table>
+                    <ct2Table style="margin-top: 26px" :listObj="listObj" @getProductDetails="getProductDetails"></ct2Table>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="公众号" name="second">公众号</el-tab-pane>
-            <el-tab-pane label="小程序" name="third">角色管理</el-tab-pane>
-        </el-tabs>
     </div>
 </template>
 <script>
@@ -57,13 +59,105 @@ export default {
     data() {
         return {
             activeName: "first", 
-            range: ""
+            value:'',
+            range: "",
+            visitSourceType:0,
+            dateType:1,
+            queryTime:'',
+            startTime:'',
+            endTime:'',
+            startIndex:1,
+            pageSize:10,
+            dataObj:{},
+            Condition:[],
+            hotData:[],
+            listObj:{}
         }
     },
-    computed: {
-        goodsTotleData() {
-            return datumCont.goodsTotleData;
+    computed: {},
+    methods:{
+        //获取商品总况
+        getGeneralCondition(){
+            let data ={
+                visitSourceType:this.visitSourceType
+            }
+            this._apis.data.generalCondition(data).then(response => {
+                let nums = response.shopGoodsSurveyView;
+                datumCont.goodsTotleData.forEach(e => {
+                    switch (e.id){
+                        case '001': e.num = nums.saleGoodsTotal
+                         break;
+                        case '002': e.num = nums.visitGoodsTotal
+                         break;
+                        case '003': e.num = nums.addPurchasesTotal
+                         break;
+                        case '004': e.num = nums.submitOrderTotal
+                         break;
+                        case '005': e.num = nums.rightsGoodsTotal
+                         break;
+                        case '006': e.num = nums.goodsSoldOutTotal
+                         break;
+                        case '007': e.num = nums.payGoodsTotal
+                         break;
+                        case '008': e.num = nums.againBuyGoodsTotal
+                         break;
+                    }                        
+                    this.Condition = datumCont.goodsTotleData
+                });
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        // 获取热销商品
+        getHotGoods(){
+            let data ={
+                visitSourceType:this.visitSourceType
+            }
+            this._apis.data.hotGoods(data).then(response => {
+                this.hotData = response.shopHotSellGoodsList
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        // 获取商品详情
+        getProductDetails(idx,pages){
+            this.startIndex = idx;
+            this.pageSize = pages;
+            let data ={
+                visitSourceType:this.visitSourceType,
+                dateType:this.dateType,
+                // queryTime:this.queryTime,
+                startTime:this.startTime,
+                endTime:this.endTime,
+                pageSize:this.pageSize,
+                startIndex:this.startIndex
+            }
+            this._apis.data.productDetails(data).then(response => {
+                this.listObj = response
+        }).catch(error => {
+          this.$message.error(error);
+        });
+        },
+        changeDayM(val){
+            if(val != 4){
+                this.getProductDetails(1,10)
+            }
+        },
+        changeTime(val){
+            this.startTime = val[0];
+            this.endTime = val[1];
+            this.getProductDetails(1,10)
+        },
+        all(){
+            this.getGeneralCondition()
+            this.getHotGoods()
+            this.getProductDetails(1,10)
         }
+    },
+    created(){
+        this.getGeneralCondition()
+        this.getHotGoods()
+        this.getProductDetails(1,10)
     }
 }
 </script>

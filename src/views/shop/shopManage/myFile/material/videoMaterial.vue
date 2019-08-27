@@ -2,9 +2,9 @@
   <div>
     <div class="head">
       <div>
-        <el-checkbox v-model="checkedAll">全选</el-checkbox>
-        <el-button type="warning" plain class="ml10" @click="deleteImage">批量删除</el-button>
-        <el-button type="warning" plain class="ml10" @click="moveGroup">移动分组</el-button>
+        <el-checkbox v-model="checkedAll" @change="allChecked">全选</el-checkbox>
+        <el-button type="warning" plain class="ml10" @click="deleteImages">批量删除</el-button>
+        <el-button type="warning" plain class="ml10" @click="moveGroups">移动分组</el-button>
       </div>
       <div>
         <el-button type="primary" plain @click="syncImage">同步微信</el-button>
@@ -19,7 +19,7 @@
             <div class="item_img" v-for="item in list" :key="item.id">
               <p class="img_head">
                 <span>
-                  <el-checkbox v-model="checked"></el-checkbox>
+                  <el-checkbox v-model="item.checked" @change="handleChecked"></el-checkbox>
                   {{item.updateTime}}
                   </span>
                   <span>
@@ -29,11 +29,15 @@
               </p>
               <div class="img_body">
                 <p class="title">{{item.title}}</p>
-                <img :src="item.filePath" class="imgs">
+                <video v-if="item.filePath !=''"  
+                :src="item.filePath"
+                class="avatar video-avatar"
+                controls="controls">您的浏览器不支持视频播放</video> 
+                <!-- <img :src="item.filePath" class="imgs"> -->
               </div>
               <p class="img_bottom">
                 <!-- <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span> -->
-                <span @click="moveGroups(item.id)"><i class="el-icon-folder"></i></span>
+                <span @click="moveGroup(item.id)"><i class="el-icon-folder"></i></span>
                 <span @click="downVideo(item.filePath,item.fileName)"><i class="el-icon-download"></i></span>
                 <span @click="deleteImage(item.id,'videoId')"><i class="el-icon-delete"></i></span>
               </p>
@@ -120,10 +124,12 @@ export default {
         sourceMaterialType:'2'
       }
       this._apis.file.getMaterialList(query).then((response)=>{
+        this.list = []
         response.list.map((item) => {
           item.updateTime = item.updateTime.slice(0,10)
+          let data = Object.assign({checked:false}, item)
+          this.list.push(data)
         })
-        this.list = [].concat(response.list)
         this.total = response.total
       }).catch((error)=>{
         this.$notify.error({
@@ -131,6 +137,13 @@ export default {
           message: error
         });
       })
+    },
+    //下载视频
+    downVideo(filepath,fileName){
+      let a = document.createElement('a')
+          a.download = fileName || '图片名称'
+          a.href = filepath;
+          a.click();
     },
     /**********************************        分组相关      **********************/
     //查询分组
@@ -222,7 +235,7 @@ export default {
             this.deleteGroup(data.deleteGroup.groupId)
           break;
           case 'moveGroup':
-            this.moveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
+            this.handleMoveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
           break;
           case 'deleteImage':
             this.deleteVideo(data.deleteImage.imageId)
@@ -236,7 +249,7 @@ export default {
         }
       }
     },
-
+    //新建分组
     newGroup(id,name,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroups'
@@ -246,6 +259,7 @@ export default {
         name:name || ''
       }
     },
+    //删除分组或是视频
     deleteImage(id,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogDelete'
@@ -259,13 +273,38 @@ export default {
         this.arrayData.push(id)
       }
     },
-    moveGroups(id){
+    //批量删除
+    deleteImages(){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogDelete'
+      this.data = {}
+      this.arrayData=[]
+      this.list.map(item =>{
+        item.checked == true && this.arrayData.push(item.id)       
+      })
+    },
+
+    //分组
+    moveGroup(id){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroupsMove'
       this.data = 'video'
       this.arrayData = []
       this.arrayData.push(id)
     },
+
+    //移动分组
+    moveGroups(){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogGroupsMove'
+      this.data = 'video'
+      this.arrayData = []
+      this.list.map(item =>{
+        item.checked == true && this.arrayData.push(item.id)        
+      })
+    },
+
+    //上传视频
     uploadImage(id,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogUploadImage'
@@ -273,20 +312,30 @@ export default {
         txt:'上传视频',
       }
     },
+    //同步视频
     syncImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogSync'
     },
-    /**********************************        单个视频      **********************/
-    //下载视频
-    downVideo(filepath,fileName){
-      let a = document.createElement('a')
-          a.download = fileName || '图片名称'
-          a.href = filepath;
-          a.click();
+
+    handleSyncImage(){
+      this._apis.file.syncMaterial({sourceMaterialType:2}).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '同步微信视频成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
+    /**********************************        单个视频      **********************/
+    
     //分组
-    moveGroup(id,groupId){
+    handleMoveGroup(id,groupId){
       let query ={
         ids:id,
         toFileGroupInfoId:groupId
@@ -327,7 +376,7 @@ export default {
       this._apis.file.uploadVideo(query).then((response)=>{
         this.$notify.success({
           title: '成功',
-          message: '上传图片成功！'
+          message: '上传视频成功！'
         });
         this.getList()
       }).catch((error)=>{
@@ -339,8 +388,37 @@ export default {
     },
     /**********************************        分页相关      **********************/
     //分页相关
-    handleSizeChange(){},
-    handleCurrentChange(){},
+    handleSizeChange(val){
+      this.pageSize = val || this.pageSize
+      this.getList()
+    },
+    handleCurrentChange(pIndex){
+      this.currentPage = pIndex || this.currentPage
+      this.getList()
+    },
+    /**********************************        全选相关      **********************/
+    allChecked(val){
+      if(val){
+        this.list.map(item =>{
+          item.checked = true
+          return this.list
+        })
+      }else{
+        this.list.map(item =>{
+          item.checked = false
+          return this.list
+        })
+      }
+    },
+    handleChecked(val){
+      if(val){
+        this.checkedAll = this.list.every(item => {
+          return item.checked == true
+        })
+      }else{
+        this.checkedAll = false
+      }
+    },
   }
 }
 </script>
