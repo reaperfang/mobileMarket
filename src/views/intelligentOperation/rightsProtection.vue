@@ -70,7 +70,8 @@ export default {
     methods: {
         checkDay(item) {
             this.day = item;
-        }
+        },
+        // 获取维权全部数据
     }
 }
 </script>

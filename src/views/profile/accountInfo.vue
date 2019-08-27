@@ -2,7 +2,7 @@
 <template>
     <div class="main">
         <el-form ref="form" :model="form" label-width="120px">
-            <el-form-item label="登录账号:" prop="name">
+            <el-form-item label="登录账号:" >
                 17625412586
             </el-form-item>
             <el-form-item label="昵称:" prop="nickName">
@@ -15,10 +15,10 @@
                     <el-radio :label="3">保密</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="QQ:" prop="qq">
+            <el-form-item label="QQ:" >
                 <el-input v-model="form.qq" style="width:200px;"></el-input>
             </el-form-item>
-            <el-form-item label="邮箱:" prop="email">
+            <el-form-item label="邮箱:" >
                 <el-input v-model="form.email" style="width:200px;"></el-input>
             </el-form-item>
             <el-form-item>
@@ -60,7 +60,9 @@ export default {
         // listArea({}).then(response => {
         //     this.area = response.data.data.children
         // })
-    }
+    },
+    // 修改账号信息
+    onSubmit(){}
   }
 }
 </script>
