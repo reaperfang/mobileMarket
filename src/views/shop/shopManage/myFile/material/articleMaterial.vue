@@ -22,7 +22,7 @@
     </div>
     <div>
       <el-button type="primary" plain @click="_routeTo('generalArticle')">新建图文素材</el-button>
-      <el-button type="primary" plain @click="handleSyncImage">同步图文</el-button>
+      <el-button type="primary" plain @click="syncImage">同步图文</el-button>
     </div>
     <div class="list">
       <p class="list_top">图文素材<span>{{total*1}}</span>条</p>
@@ -142,13 +142,32 @@ export default {
           case 'deleteActicle':  
             this.deleteActicle(data.deleteActicle.articleId) 
           break;
+          case 'syncImage':
+            this.handleSyncImage()
+          break;
         }
       }
     },
 
-    handleSyncImage(){
+    //同步图片
+    syncImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogSync'
+    },
+
+    handleSyncImage(){
+      this._apis.file.syncMaterial({sourceMaterialType:1}).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '同步微信图文成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
 
     handleDeleteArticle(id,type){
