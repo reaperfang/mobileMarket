@@ -9,7 +9,8 @@
         <div class="nwwest-roll" id="nwwest-roll">
           <ul id="roll-ul" :style="{'color':currentComponentData.data.fontColor}">
             <li ref="rollul" v-for="item in list" class="ellipsis" :class="{anim:animate===true}">
-              <span class="name">{{item.title}}</span>
+              <img :src="item.mainImage" alt="">
+              <span class="name">{{item.name}}</span>
             </li>
           </ul>
         </div>
@@ -25,11 +26,19 @@ export default {
   name: "componentBuyNotice",
   mixins: [componentMixin],
   components: {},
-  // list: this.componentMixin.data.good  获取商品列表信息，放入此处
   data() {
-    return { animate: true, list: this.componentMixin.data.goods, timer: null };
+    return { 
+      animate: true, 
+      list: [], 
+      timer: null 
+    };
   },
-  created() {},
+  created() {
+    this.fetch();
+    this._globalEvent.$on('fetchBuyNotice', () =>{
+      this.fetch();
+    });
+  },
   computed: {},
   methods: {
     scroll() {
@@ -47,21 +56,33 @@ export default {
       }
     },
 
-     //根据ids拉取数据
-      fetch() {
-          this.loading = true;
-          this._apis.shop.getCouponList(this.ruleForm).then((response)=>{
-              this.tableList = response.list;
-              this.total = response.total;
-              this.loading = false;
-          }).catch((error)=>{
-              this.$notify.error({
-              title: '错误',
-              message: error
+    //根据ids拉取数据
+    fetch() {
+        if(this.currentComponentData && this.currentComponentData.data) {
+            const ids = this.currentComponentData.data.ids;
+            if(Array.isArray(ids) && ids.length){
+              this.loading = true;
+              this._apis.goods.fetchSpuGoodsList({
+                      status: '1',
+                      ids,
+                  }).then((response)=>{
+                  this.createList(response.list);
+                  this.loading = false;
+              }).catch((error)=>{
+                  this.$notify.error({
+                      title: '错误',
+                      message: error
+                  });
+                  this.loading = false;
               });
-              this.loading = false;
-          });
-      },
+          }
+        }
+    },
+
+      /* 创建数据 */
+    createList(datas) {
+        this.list = datas;
+    },
   },
   mounted() {
     this.timer = setInterval(this.scroll, 2000);
@@ -84,6 +105,13 @@ export default {
     & > li {
       height: 35px;
       line-height: 35px;
+      display:flex;
+      img{
+        width:35px;
+        height:35px;
+        margin-right:10px;
+        border-radius: 50%;
+      }
     }
   }
 }

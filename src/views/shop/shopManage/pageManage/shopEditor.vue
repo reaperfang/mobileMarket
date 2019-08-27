@@ -111,7 +111,7 @@ export default {
           pageData.push(componentData);
         }
       }
-      result['page_data'] = utils.compileStr(JSON.stringify(pageData));;
+      result['pageData'] = utils.compileStr(JSON.stringify(pageData));;
       result['pageTemplateId'] = '1';
       result['sort'] = '1';
       this._apis.shop.saveToTemplate(result).then((response)=>{

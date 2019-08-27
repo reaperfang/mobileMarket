@@ -16,19 +16,6 @@
           <p class="note">仅支持jpg,png格式，大小不超过3.0MB</p>
         </el-form-item>
         <el-form-item label="本地上传" v-if="title == '上传视频'">
-          <!-- <el-upload
-            class="avatar-uploader"
-            :action="uploadUrl"
-            :show-file-list="false"
-            accept=".mp4" 
-            :limit="1"
-            :data="{json: JSON.stringify({cid: 222})}"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload> -->
-
           <el-upload class="avatar-uploader el-upload--text"
             :action="uploadUrl" 
             :data="{json: JSON.stringify({cid: 222})}"
@@ -192,13 +179,13 @@ export default {
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 3;
 
       if (!isJPG) {
         this.$message.error('上传头像图片只能是 JPG 格式!');
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过 3MB!');
       }
       return isJPG && isLt2M;
     },
@@ -221,13 +208,13 @@ export default {
     },
     //上传前回调
 	  beforeUploadVideo (file) {
-        const isLt20M = file.size / 1024 / 1024 < 20;
+        const isLt20M = file.size / 1024 / 1024 < 10;
         if (['video/mp4'].indexOf(file.type) == -1) { //'video/ogg', 'video/flv', 'video/avi', 'video/wmv', 'video/rmvb'
             this.$message.error('请上传正确的视频格式');
             return false;
         }
         if (!isLt20M) {
-            this.$message.error('上传视频大小不能超过20MB哦!');
+            this.$message.error('上传视频大小不能超过10MB哦!');
             return false;
         }
         this.isShowUploadVideo = false;

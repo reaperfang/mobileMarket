@@ -59,19 +59,22 @@ export default {
         componentButton
     },
     created(){
+        this.fetch();
+        this._globalEvent.$on('fetchGoods', () =>{
+            this.fetch();
+        });
+    },
+    mounted() {
         this.decoration();
     },
     watch: {
+        currentComponentData(){
+            this.decoration();
+        },
         currentCatagoryId(newValue) {
             this.currentCatagoryId = newValue;
             this.fetch();
         },
-        'currentComponentData.data.ids': { 
-            handler(newValue) {
-                this.fetch && this.fetch();
-            },
-            deep: true
-        }
     },
     methods:{
         decoration(){
@@ -150,30 +153,7 @@ export default {
             this.textAlign = this.currentComponentData.data.textAlign;
             this.showContents = this.currentComponentData.data.showContents; 
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
-            this.fetch();
-            // // 商品列表
-            // if(this.currentComponentData.data.goodsGroups.length > 0){
-            //     this.goods = this.currentComponentData.data.goodsGroups[0].goods;
-            // }
-            // else{
-            //     this.goods = this.currentComponentData.data.goods;
-            // }
         },
-        // goodListLoad() {
-        // // 异步更新数据
-        //     setTimeout(() => {
-        //     for (let i = 0; i < 10; i++) {
-        //         this.goodList.push(this.goodList.length + 1);
-        //         }
-        //         // 加载状态结束
-        //         this.goodListLoading = false;
-
-        //         // 数据全部加载完成
-        //         if (this.goodList.length >= 40) {
-        //             this.goodListFinished = true;
-        //         }
-        //     }, 500);
-        // },
 
         //根据ids拉取数据
         fetch() {
@@ -181,10 +161,23 @@ export default {
                 let params = {};
                 const ids = this.currentComponentData.data.ids;
                 if(ids && Object.prototype.toString.call(ids) === '[object Object]') {
-                    params = {
-                        status: '1',
-                        ids: ids[this.currentCatagoryId],
-                        productCatalogInfoId: this.currentCatagoryId
+                    if(this.currentCatagoryId === 'all') {
+                        const allIds = [];
+                        for(let k in ids) {
+                            for(let item of ids[k]) {
+                                allIds.push(item);
+                            }
+                        }
+                        params = {
+                            status: '1',
+                            ids: allIds
+                        }
+                    }else{
+                        params = {
+                            status: '1',
+                            ids: ids[this.currentCatagoryId],
+                            productCatalogInfoId: this.currentCatagoryId
+                        }
                     }
                 }else if(Array.isArray(ids) && ids.length){
                     params = {
@@ -195,8 +188,8 @@ export default {
                     return;
                 }
                 this.loading = true;
-                this._apis.goods.fetchSpuGoodsList(params).then((response)=>{
-                    this.createList(response.list);
+                this._apis.goods.fetchAllSpuGoodsList(params).then((response)=>{
+                    this.createList(response);
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({
@@ -206,18 +199,6 @@ export default {
                     this.loading = false;
                 });
             }
-
-
-            var list = [
-                {
-                    id:111,
-                    goosName: '节哀顺变极寒风暴',
-                    specs:JSON.stringify({
-                        '颜色':'红色',
-                        '尺寸':'12g'
-                    })
-                }
-            ]
         },
 
           /* 创建数据 */

@@ -19,13 +19,7 @@ export default {
   watch: {
       currentComponentData(){
          this.decoration && this.decoration();
-      },
-      // 'currentComponentData.data.ids': { 
-      //   handler(newValue) {
-      //       this.fetch && this.fetch();
-      //   },
-      //   deep: true
-      // }
+      }
     },
 };
 </script>	

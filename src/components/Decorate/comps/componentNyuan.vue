@@ -69,15 +69,18 @@ export default {
         componentButton
     },
     created(){
+        this.fetch();
+        this._globalEvent.$on('fetchNyuan', () =>{
+            this.fetch();
+        });
+    },
+    mounted() {
         this.decoration();
     },
     watch: {
-        'currentComponentData.data.ids': { 
-            handler(newValue) {
-                this.fetch && this.fetch();
-            },
-            deep: true
-        }
+      currentComponentData(){
+        this.decoration();
+      }
     },
     methods:{
         decoration(){
@@ -122,7 +125,6 @@ export default {
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.hideEndGoods = this.currentComponentData.data.hideEndGoods;
             this.hideType = this.currentComponentData.data.hideType;
-            this.fetch();
         },
 
          //根据ids拉取数据

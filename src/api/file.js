@@ -71,6 +71,16 @@ export function moveGroup(data) {
   })
 }
 
+//同步素材
+export function syncMaterial(data) {
+  return request({
+    target: 'DECORATION-MY-FILE-SYNCHRONIZATION-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 
 /********************************  图片  ********************************/
 //上传图片
@@ -82,11 +92,6 @@ export function uploadImage(data) {
     data
   })
 }
-
-
-
-
-
 
 /********************************  图文  ********************************/
 //保存图文素材
