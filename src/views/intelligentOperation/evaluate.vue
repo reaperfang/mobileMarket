@@ -2,75 +2,149 @@
 <template>
     <div class="m_container">
          <div class="pane_container">
-                    <el-form ref="form" :model="form" class="clearfix">
+                    <el-form class="clearfix">
                         <el-form-item label="交易时间">
-                            <div class="input_wrap">
-                                <el-checkbox-group v-model="form.time">
-                                    <el-checkbox label="7天" border></el-checkbox>
-                                    <el-checkbox label="15天" border></el-checkbox>
-                                    <el-checkbox label="30天" border></el-checkbox>
-                                    <el-checkbox label="本季度" border></el-checkbox>
-                                </el-checkbox-group>
-                            </div>
-                            <el-date-picker
-                                v-model="dateRange"
-                                type="daterange"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
-                            </el-date-picker>
+                            <div class="p_line">
+                    <el-radio-group v-model="form.type" @change="changeDay">
+                        <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="5">最近一季度</el-radio-button>
+                        <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
+                        </el-radio-group>
+                        <div class="input_wrap" v-if="form.type == 4">
+                        <el-date-picker
+                            v-model="range"
+                            type="daterange"
+                            range-separator="—"
+                            value-format="yyyy-MM-dd"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            @change="changeTime"
+                        ></el-date-picker>
+                        </div>
+                    </div>
                         </el-form-item>
-                        <el-form-item label="转化渠道">
+                        <el-form-item label="满意率">
                             <div class="input_wrap2">
-                                <el-select v-model="form.value">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
+                                <el-select v-model="form.niceRatioRange">
+                                    <el-option label="不限" value="0"></el-option>
+                                    <el-option label="0-1%" value="1"></el-option>
+                                    <el-option label="2-5%" value="1"></el-option>
+                                    <el-option label="5%以上" value="3"></el-option>
                                 </el-select>
                             </div>
-                            <span class="span_label">交转化率</span>
+                            <span class="span_label">差评率</span>
                             <div class="input_wrap2 marR20">
-                                <el-select v-model="form.value2">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
+                                <el-select v-model="form.badRatioRange">
+                                    <el-option label="不限" value="0"></el-option>
+                                    <el-option label="0-1%" value="1"></el-option>
+                                    <el-option label="2-5%" value="1"></el-option>
+                                    <el-option label="5%以上" value="3"></el-option>
                                 </el-select>
                             </div>
-                        </el-form-item>
-                        <el-form-item class="fr marT20">
-                            <el-button class="minor_btn" icon="el-icon-search">查询</el-button>
-                            <el-button class="border_btn">重 置</el-button>
+                            <span class="span_label">会员类型</span>
+                            <div class="input_wrap2 marR20">
+                                <el-select v-model="form.memberType">
+                                    <el-option label="全部" value="0"></el-option>
+                                    <el-option label="非会员" value="1"></el-option>
+                                    <el-option label="新会员" value="1"></el-option>
+                                    <el-option label="老会员" value="3"></el-option>
+                                </el-select>
+                            </div>
+                            <el-button class="minor_btn" icon="el-icon-search" @click="getRightsProtection()">查询</el-button>
+                            <el-button class="border_btn" @click="resetAll()">重 置</el-button>
                         </el-form-item>
                     </el-form>
                     <div class="m_line clearfix">
                         <div class="fr marT20">
-                            <el-button class="border_btn">查看详情</el-button>
-                            <el-button class="minor_btn">重新筛选</el-button>
+                            <el-button class="minor_btn" @click="rescreen()">重新筛选</el-button>
                             <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
                         </div>
                     </div>
-                    <ma2Table class="marT20"></ma2Table>
+                    <ma1Table class="marT20" :listObj="listObj" @getRightsProtection="getRightsProtection"></ma1Table>
                 </div>
     </div>
 </template>
 <script>
-import ma2Table from './components/ma2Table';
+import ma1Table from './components/ma1Table';
 export default {
-    name: 'evaluate',
-    components: { ma2Table },
+    name: 'rightsProtection',
+    components: { ma1Table },
     data() {
         return {
             form: {
-                time:['7天'],
                 dateRange:"",
-                value:"",
-                value3: false,
-                value4: "1"
+                niceRatioRange:null,
+                badRatioRange: null,
+                endTime:'',
+                startTime:'',
+                type:1,
+                memberType:null
+            },
+            range:'',
+            listObj:{
+                members:[{}],
+                count:100
             }
+
         }
     },
     methods: {
-        checkDay(item) {
-            this.day = item;
+        // 获取维权全部数据
+        getRightsProtection(idx,pageS){
+            let data ={
+                type:this.form.type,
+                startTime:this.form.startTime,
+                endTime:this.form.endTime,
+                niceRatioRange:this.form.niceRatioRange,
+                badRatioRange:this.form.badRatioRange,
+            }
+            this._apis.data.historyRecord(data).then(response => {
+                this.listObj = response;
+            })
+        },
+        changeTime(val){
+            this.form.startTime = val[0]
+            this.form.endTime = val[1]
+        },
+        // 重置
+        resetAll(){
+            this.form = {
+                dateRange:"",
+                niceRatioRange:null,
+                badRatioRange: null,
+                endTime:'',
+                startTime:'',
+                type:1,
+            },
+            this.getRightsProtection(1,10)
+        },
+        // 重新筛选
+        rescreen(){
+            this.getRightsProtection()
+        },
+         getDay(day){
+        　　var today = new Date();  
+        　　var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        　　today.setTime(targetday_milliseconds); //注意，这行是关键代码
+        　　var tYear = today.getFullYear();
+        　　var tMonth = today.getMonth();
+        　　var tDate = today.getDate();
+        　　tMonth = doHandleMonth(tMonth + 1);
+        　　tDate = doHandleMonth(tDate);
+        　　return tYear+"-"+tMonth+"-"+tDate;
+        },
+        doHandleMonth(month){
+        　　var m = month;
+        　　if(month.toString().length == 1){
+        　　　　m = "0" + month;
+        　　}
+        　　return m;
         }
+    },
+    created(){
+        this.getRightsProtection()
     }
 }
 </script>

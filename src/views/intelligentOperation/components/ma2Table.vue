@@ -2,23 +2,54 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="listObj.members"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
-        label="排序">
+        prop="orderNumber"
+        label="订单号">
       </el-table-column>
       <el-table-column
-        prop="channel"
-        label="转化渠道">
+        prop="id"
+        label="ID">
       </el-table-column>
       <el-table-column
-        prop="importNum"
-        label="转化率"
-        sortable>
+        label="会员类型">
+        <template slot-scope="scope">
+             <span style="line-height:60px;display:inline-block">{{{1:'非会员',2:'老会员',3:'新会员'}[scope.row.memberType]}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="会员昵称">
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        label="手机号">
+      </el-table-column>
+      <el-table-column
+        prop="tradeTime"
+        label="维权时间">
+      </el-table-column>
+      <el-table-column
+        prop="protectionGoodsCount"
+        label="维权商品数">
+      </el-table-column>
+      <el-table-column
+        label="维权类型"
+        >
+        <template slot-scope="scope">
+             <span style="line-height:60px;display:inline-block">{{{1:'退款（仅退款不退货）',2:'退款退货',3:'换货'}[scope.row.protectionType]}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="维权原因"
+        >
+        <template slot-scope="scope">
+             <span style="line-height:60px;display:inline-block">{{{1:'不想要了',2:'卖家缺货',3:'拍错了订单信息错误',4:'其他'}[scope.row.protectionReason]}}</span>
+        </template>
       </el-table-column>
     </el-table>
     <div class="page_styles">
@@ -29,7 +60,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="100">
+        :total="listObj.count">
       </el-pagination>
     </div>
   </div>
@@ -41,26 +72,27 @@ export default {
   name: "mcTable",
   extends: TableBase,
   data() {
-    return {
-      dataList:[
-        {
-            choose: true,
-            importTime:"",
-            channel:"",
-            importNum:"",
-            successNum:"",
-            failNum:"",
-            buyTime:"",
-            operator:""
-        },
-      ],
+    return { 
+      pageSize:10
     };
+  },
+  props:{
+    listObj:{
+      type:Object,
+      default:{}
+    }
   },
   created() {
 
   },
   methods: {
-    
+    handleSizeChange(val){
+      this.pageSize = val;
+      this.$emit('getRightsProtection',1,val)
+    },
+    handleCurrentChange(val){
+      this.$emit('getRightsProtection',val,this.pageSize)
+    }
   },
   components: {}
 };

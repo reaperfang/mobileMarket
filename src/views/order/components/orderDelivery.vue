@@ -51,7 +51,7 @@
                 <div class="buttons">
                     <div class="lefter">
                         <el-button class="border-button" @click="$router.push('/order/batchImportAndDelivery')">批量导入发货</el-button>
-                        <el-button class="border-button" @click="$router.push('/order/deliverGoods')">批量发货</el-button>
+                        <el-button class="border-button" @click="batchSendGoods">批量发货</el-button>
                         <el-button class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
                         <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
                     </div>
@@ -114,10 +114,10 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
-                        <template v-if="scope.row.orderStatus == 4">
-                            <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">部分发货</span>
+                        <template v-if="scope.row.status == 4">
+                            <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">继续发货</span>
                         </template>
-                        <template v-else>
+                        <template v-else-if="scope.row.status == 3">
                             <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">发货</span>
                         </template>
                     </template>
@@ -263,6 +263,13 @@ export default {
         this.getList()
     },
     methods: {
+        batchSendGoods() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
+                return
+            }
+            this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.id).join(','))
+        },
         batchPrintElectronicForm() {
             let ids = this.multipleSelection.map(val => val.id).join(',')
 
