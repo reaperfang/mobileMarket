@@ -16,9 +16,26 @@ export function overviewRemind(data) {
     return request({
       target: 'ORDER-REMIND-PROCESSOR',
       method: 'post',
-      apiType: 'data',
+      apiType: 'overview1',
       data
     })
   }
-
+//待办售罄
+export function overviewSelling(data) {
+    return request({
+      target: 'PRODUCT-SELLING-CHIME-PROCESSOR',
+      method: 'post',
+      apiType: 'overview',
+      data
+    })
+  }
+// 营销活动
+export function getMarketing(data) {
+    return request({
+      url: 'api/v1/b/app/my',
+      method: 'get',
+      baseURL: process.env.SALE_API,
+      params:data
+    })
+}
    

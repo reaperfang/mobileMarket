@@ -4,8 +4,20 @@
             <el-tab-pane label="会员卡管理" name="first">
                 <div class="pane_container">
                     <div class="c_card">
-                        <el-button size="mini" class="mini_1">待上传</el-button>
-                        <el-button size="mini" class="mini_2">更改</el-button>
+                        <img v-if="imgUrl" :src="imgUrl" class="cardImg" />
+                        <img v-else src="../../assets/images/client/card.png" alt class="cardImg" />
+                        <el-upload
+                            class="avatar-uploader"
+                            :action="uploadUrl"
+                            :show-file-list="false"
+                            :limit="1"
+                            :data="{json: JSON.stringify({cid: 222})}"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                        >
+                            <el-button v-if="!imgUrl" size="small" type="primary" class="upload_btn mini_1">待上传</el-button>
+                            <el-button v-else size="small" type="primary" class="upload_btn mini_2">更改</el-button>
+                        </el-upload>
                         <el-popover
                             ref="popover"
                             placement="right"
@@ -59,6 +71,9 @@ export default {
     components: { cdTable, lkTable },
     data() {
         return {
+            uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
+            imgUrl:"",
+            oldImg: require('../../assets/images/client/card.png'),
             activeName: 'first',
             popVisible: false,
             selected:"",
@@ -69,6 +84,22 @@ export default {
         }
     },
     methods: {
+        handleAvatarSuccess(res, file) {
+            this.imgUrl = res.data.url;
+            this.addCardBg();
+        },
+        beforeAvatarUpload(file) {
+        //const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        // if (!isJPG) {
+        //     this.$message.error('上传图片只能是 JPG 格式!');
+        // }
+        if (!isLt2M) {
+            this.$message.error("上传图片大小不能超过 2MB!");
+        }
+        return isLt2M;
+        },
         handleFind() {
             let obj = {
                 name: this.selected,
@@ -114,11 +145,36 @@ export default {
                     message: error
                 })
             })
+        },
+        addCardBg() {
+            this._apis.client.addCardBg({imgUrl: this.imgUrl}).then((response) => {
+                this.$notify({
+                    title: '成功',
+                    message: '上传会员卡宣传图片成功',
+                    type: 'success'
+                });
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                })
+            })
+        },
+        checkCardBg() {
+            this._apis.client.checkCardBg({}).then((response) => {
+                this.imgUrl = response.imgUrl;
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                })
+            })
         }
     },
     mounted() {
         this.getCardList();
         this.getCardNames();
+        this.checkCardBg();
     }
 }
 </script>
@@ -138,7 +194,9 @@ export default {
     .c_card{
         width: 324px;
         height: 140px;
-        background: url("../../assets/images/client/card.png") 0 0 no-repeat;
+        //background: url("../../assets/images/client/card.png") 0 0 no-repeat;
+        background-position: 0 0;
+        background-repeat: no-repeat;
         position: relative;
         .mini_1{
             position: absolute;
@@ -146,7 +204,7 @@ export default {
             color:#655EFF;
             background: transparent;
             right: 7px;
-            bottom: 35px;
+            bottom: 6px;
         }
         .mini_2{
             position: absolute;

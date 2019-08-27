@@ -47,13 +47,13 @@ module.exports = {
         //target: 'http://172.22.146.109:8080', // 商品 王浩
         //target: 'http://172.22.146.31:8080', // 客户 崔建
         // target: 'http://172.22.146.12:8080', //客户 刘亚凯
-        //target: 'http://172.22.146.123:8080', // 客户 王杰
+        target: 'http://172.22.146.123:8085', // 客户 王杰
         // target:'https://172.22.146.124:9002',//许涛
         //target: 'http://172.22.134.125:8012',//陈程
         // target: 'http://172.22.146.12:8091', // 订单 李刚
         // target: 'http://172.22.146.133:8081',  //李雯廷
         // target: 'http://172.22.146.114:8080', // 商品 王浩2
-        target: 'http://172.22.146.133:8081',  //李雯廷
+        //target: 'http://172.22.146.133:8081',  //李雯廷
         //target:'http://172.22.146.124:80',//许涛
         // target: 'http://172.22.146.133:8081',  //李雯廷
         // target:'http://172.22.146.124:80',//许涛
@@ -69,7 +69,7 @@ module.exports = {
         // target:'http://172.22.145.113:8083',//李权宇
         //target:'http://172.22.146.119:8080', //郑艳华
         //target: 'http://172.22.146.3:8080',//张昌超
-        //  target:'http://3at93v.natappfree.cc',//数据
+         target:'http://120.133.1.130:8012',//数据
         //  target:'http://vc3fhm.natappfree.cc/',//智能运营
         changeOrigin: true,
         pathRewrite: {
@@ -77,8 +77,8 @@ module.exports = {
         }
       },
       '/sale_server/**': {
-        // target: 'http://120.133.1.130:8012',
-        target: 'http://172.22.134.138:8012',  //曹帅
+        target: 'http://120.133.1.130:8012/',
+        // target: 'http://172.22.134.138:8012',  //曹帅
         // target: 'http://172.22.134.125:8012',  //陈程
         changeOrigin: true,
         pathRewrite: {

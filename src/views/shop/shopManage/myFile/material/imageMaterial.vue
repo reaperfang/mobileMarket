@@ -2,8 +2,8 @@
   <div>
     <div class="head">
       <div>
-        <el-checkbox v-model="checkedAll">全选</el-checkbox>
-        <el-button type="warning" plain class="ml10" @click="deleteImage">批量删除</el-button>
+        <el-checkbox v-model="checkedAll" @change="allChecked">全选</el-checkbox>
+        <el-button type="warning" plain class="ml10" @click="deleteImages">批量删除</el-button>
         <el-button type="warning" plain @click="moveGroups">移动分组</el-button>
       </div>
       <div>
@@ -22,7 +22,7 @@
                 <div class="img_bottom">
                   <p>
                     <span>
-                      <el-checkbox v-model="checked"></el-checkbox>
+                      <el-checkbox v-model="item.checked" @change="handleChecked"></el-checkbox>
                       <i class="wx_icon" v-if="item.isSyncWechat"></i>
                     </span>
                     <span>
@@ -35,7 +35,7 @@
                   </p>
                 </div>
                 <div class="operate" ref="operate">
-                  <el-button type="primary" plain class="block mt10 ml10" @click="moveGroups(item.id)">分组</el-button>
+                  <el-button type="primary" plain class="block mt10 ml10" @click="moveGroup(item.id)">分组</el-button>
                   <!-- <el-button type="primary" plain class="block mt10">剪裁</el-button> -->
                   <el-button type="primary" plain class="block mt10" @click="deleteImage(item.id,'imageId')">删除</el-button>
                 </div>
@@ -118,7 +118,11 @@ export default {
         sourceMaterialType:'0'
       }
       this._apis.file.getMaterialList(query).then((response)=>{
-        this.list = response.list
+        this.list = []
+        response.list.map(item => {
+          let data = Object.assign({checked:false}, item)
+          this.list.push(data)
+        })
         this.total = response.total
       }).catch((error)=>{
         this.$notify.error({
@@ -229,10 +233,10 @@ export default {
             this.deleteGroup(data.deleteGroup.groupId)
           break;
           case 'moveGroup':
-            this.moveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
+            this.handleMoveGroup(data.moveGroup.imageId,data.moveGroup.groupId)
           break;
           case 'deleteImage':
-            this.deleteImages(data.deleteImage.imageId)
+            this.handleDeleteImage(data.deleteImage.imageId)
           break;
           case 'syncImage':
             this.handleSyncImage()
@@ -243,6 +247,7 @@ export default {
         }
       }
     },
+    //新建分组
     newGroup(id,name,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroups'
@@ -252,19 +257,33 @@ export default {
         name:name || ''
       }
     },
+    //删除图片或是分组
     deleteImage(id,type){
       this.dialogVisible = true;
       this.currentDialog = 'dialogDelete'
+      this.arrayData=[]
       if(type == 'groupId'){
         this.data = {
           id:id || '',
           type:type
         }
       }else{
-        this.arrayData=[]
+        this.data = {}
         this.arrayData.push(id)
       }
     },
+    //批量删除
+    deleteImages(){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogDelete'
+      this.data = {}
+      this.arrayData=[]
+      this.list.map(item =>{
+        item.checked == true && this.arrayData.push(item.id)                
+      })
+    },
+
+    //上传图片
     handleUploadImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogUploadImage'
@@ -272,16 +291,31 @@ export default {
         txt:'上传图片'
       }
     },
+
+    //同步图片
     syncImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogSync'
     },
-    moveGroups(id){
+
+    //分组
+    moveGroup(id){
       this.dialogVisible = true;
       this.currentDialog = 'dialogGroupsMove'
       this.data = 'image'
       this.arrayData = []
       this.arrayData.push(id)
+    },
+
+    //移动分组
+    moveGroups(){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogGroupsMove'
+      this.data = 'image'
+      this.arrayData = []
+      this.list.map(item =>{
+        item.checked == true && this.arrayData.push(item.id)        
+      })
     },
     /**********************************        单张图片      **********************/
     onMouseOver(index){
@@ -291,7 +325,7 @@ export default {
       this.$refs.operate[index].style.display="none"
     },
     //分组
-    moveGroup(id,groupId){
+    handleMoveGroup(id,groupId){
       let query ={
         ids:id,
         toFileGroupInfoId:groupId
@@ -310,7 +344,7 @@ export default {
       })
     },
     //删除
-    deleteImages(id){
+    handleDeleteImage(id){
       let query ={
         ids:id,
       }
@@ -346,23 +380,19 @@ export default {
 
     //同步图片
     handleSyncImage(){
-      this.$notify.error({
-          title: '提示',
-          message: '微信接口'
+      this._apis.file.syncMaterial({sourceMaterialType:0}).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '同步微信图片成功！'
         });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
-
-    //  /* 成功加载图片 */
-    // loadImg(event, item) {
-    //   this.$set(item, 'loaded', true);
-    //   this.allImgLoaded();
-    // },
-
-    // /* 图片加载失败 */
-    // loadError(event, item) {
-    //   this.$set(item, 'loaded', true);  //只要加载了都算成功，用来后面统计
-    //   this.allImgLoaded();
-    // },
     /**********************************        分页相关      **********************/
     handleSizeChange(val){
       this.pageSize = val || this.pageSize
@@ -371,6 +401,30 @@ export default {
     handleCurrentChange(pIndex){
       this.currentPage = pIndex || this.currentPage
       this.getList()
+    },
+
+    /**********************************        全选相关      **********************/
+    allChecked(val){
+      if(val){
+        this.list.map(item =>{
+          item.checked = true
+          return this.list
+        })
+      }else{
+        this.list.map(item =>{
+          item.checked = false
+          return this.list
+        })
+      }
+    },
+    handleChecked(val){
+      if(val){
+        this.checkedAll = this.list.every(item => {
+          return item.checked == true
+        })
+      }else{
+        this.checkedAll = false
+      }
     },
 
   }

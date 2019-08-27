@@ -28,9 +28,9 @@
        <el-form-item label="公告商品" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of ruleForm.goods" :key="key">
-              <img :src="item.url" alt="">
-              <i class="delete_btn" @click.stop="deleteGoods(item)"></i>
+            <li v-for="(item, key) of items" :key="key">
+              <img :src="item.mainImage" alt="">
+              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">
               <i class="inner"></i>
@@ -71,23 +71,20 @@ export default {
   },
   created() {
   },
+  watch: {
+    'items': {
+      handler(newValue) {
+        this.ruleForm.ids = [];
+        for(let item of newValue) {
+          this.ruleForm.ids.push(item.id);
+        }
+        this._globalEvent.$emit('fetchBuyNotice');
+      },
+      deep: true
+    }
+  },
   methods: {
 
-     /* 删除商品 */
-    deleteGoods(item) {
-      const tempGoodsList = [...this.goodsList];
-      for(let i=0;i<tempGoodsList.length;i++) {
-        if(item === tempGoodsList[i]) {
-          tempGoodsList.splice(i, 1);
-        }
-      }
-      this.ruleForm.goods = tempGoodsList;
-    },
-
-    /* 弹窗选中了商品 */
-    dialogDataSelected(goods) {
-      this.ruleForm.goods = goods;
-    }
   }
 }
 </script>

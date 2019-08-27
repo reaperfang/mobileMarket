@@ -15,13 +15,14 @@ class Ajax {
 
     this.initGlobal();
   }
-
   static getInstance() {
     return (this.instance = this.instance || new this());
   }
 
   // request拦截器
   requestGlobal() {
+    console.log(11)
+
     this.service.interceptors.request.use(
       e => {
         if(this.systemType === 'market') {
@@ -91,7 +92,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d3f6bd17dd442f00b8c413cc52ce02351',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d167f048cc05b577cd77c76d7ec30c1a4',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -158,6 +159,12 @@ class Ajax {
             break;
           case 'data':  //数据
             config.baseURL = `${process.env.DATA_API}/api-behavior-web/behavior/api.do`;
+            break;
+          case 'overview':  //概况待办
+            config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`;
+            break;
+          case 'over':  //待办2-4 
+            config.baseURL = `${process.env.DATA_API}/order-api/order/api.do`;
             break;
         }
       }

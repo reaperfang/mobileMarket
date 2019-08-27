@@ -16,7 +16,7 @@
                             <ip1Chart :title="'测试图表'" ref="ip1"></ip1Chart>
                         </div>
                         <div class="chart1_info">
-                            <p>累计客户数：{{oneData[0].value + oneData[1].value}}</p>
+                            <p>累计客户数：{{grandTotal}}</p>
                             <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.value}}</span></p>
                         </div>
                     </div>
@@ -107,7 +107,8 @@ export default {
             attrData:{},
             membeData:{},
             payData:{},
-            threeData:{}
+            threeData:{},
+            grandTotal:''
         }
     },
     methods:{
@@ -120,6 +121,7 @@ export default {
       };
       this._apis.data.attributeRatio(data).then(response => {
             this.oneData = response;
+            this.grandTotal = response[0].value + response[1].value
             let oneArr = response;
             oneArr.forEach(e => {
                 delete e.ratioValue

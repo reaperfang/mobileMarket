@@ -167,6 +167,7 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.id);
         }
+        this._globalEvent.$emit('fetchDiscountPackage');
       },
       deep: true
     }

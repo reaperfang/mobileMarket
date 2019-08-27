@@ -64,13 +64,11 @@
                         <div class="input_wrap" v-if="dateTypeM == 4">
                             <el-date-picker
                                 v-model="range"
-                                type="daterange"
-                                range-separator="—"
+                                type="date"
                                 value-format="yyyy-MM-dd"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                                @change="changeTime"
-                            ></el-date-picker>
+                                placeholder="选择日期"
+                                @change="changeTime">
+                            </el-date-picker>
                         </div>
                     </div>
                     <ip4Chart :title="'测试图表'" ref="ip4"></ip4Chart>

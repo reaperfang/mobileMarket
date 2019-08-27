@@ -4,52 +4,54 @@
                     <el-form ref="form" :model="form" class="clearfix">
                         <el-form-item label="交易时间">
                             <div class="input_wrap">
-                                <el-checkbox-group v-model="form.time">
-                                    <el-checkbox label="7天" border></el-checkbox>
-                                    <el-checkbox label="15天" border></el-checkbox>
-                                    <el-checkbox label="30天" border></el-checkbox>
-                                    <el-checkbox label="本季度" border></el-checkbox>
-                                </el-checkbox-group>
+                                <el-radio-group v-model="form.time" @change="changeDay">
+                                    <el-radio-button class="btn_bor" label="1">7天</el-radio-button>
+                                    <el-radio-button class="btn_bor" label="2">15天</el-radio-button>
+                                    <el-radio-button class="btn_bor" label="3">30天</el-radio-button>
+                                    <el-radio-button class="btn_bor" label="4">本季度</el-radio-button>
+                                </el-radio-group>
                             </div>
                             <el-date-picker
-                                v-model="form.dateRange"
+                                v-model="form.daterange"
                                 type="daterange"
                                 range-separator="至"
                                 start-placeholder="开始日期"
-                                end-placeholder="结束日期">
+                                end-placeholder="结束日期"
+                                @change="getData"
+                            >
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="会员类型">
                             <div class="input_wrap2">
-                                <el-select v-model="form.value">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
+                                <el-select v-model="form.memberType"  @change="getData">
+                                    <el-option v-for="item in customType" :label="item.name" :value="item.id" :key="item.id"></el-option>
                                 </el-select>
                             </div>
                             <span class="span_label">交易次数</span>
                             <div class="input_wrap2 marR20">
-                                <el-select v-model="form.value2">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
+                                <el-select v-model="form.tradeCountRange"  @change="getData">
+                                    <el-option v-for="item in tradeCount" :label="item.name" :value="item.id" :key="item.id"></el-option>
                                 </el-select>
                             </div>
-                            <el-checkbox v-model="form.value3">是否查询复购率</el-checkbox>
+                            <el-checkbox-group v-model="form.queryRepeatPaymentRatio">
+                                <el-checkbox label="是否查询复购率" name="type"></el-checkbox>
+                            </el-checkbox-group>
                         </el-form-item>
                         <el-form-item label="订单金额">
                             <div class="input_wrap3">
-                                <el-radio v-model="form.value4" label="1">单次</el-radio>
-                                <el-radio v-model="form.value4" label="2">总额</el-radio>
+                                <el-radio v-model="form.queryOrderMoneyType" label="0" @change="getData">单次</el-radio>
+                                <el-radio v-model="form.queryOrderMoneyType" label="1" @change="getData">总额</el-radio>
                             </div>
                             <div class="input_wrap2">
-                                <el-input placeholder="最低金额（元）"></el-input>
+                                <el-input placeholder="最低金额（元）" v-model="form.lowprice"></el-input>
                             </div>
                             <span>—</span>
                             <div class="input_wrap2">
-                                <el-input placeholder="最高金额（元）"></el-input>
+                                <el-input placeholder="最高金额（元）" v-model="form.highprice"></el-input>
                             </div>
                         </el-form-item>
                         <el-form-item class="fr marT20">
-                            <el-button class="minor_btn" icon="el-icon-search">查询</el-button>
+                            <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
                             <el-button class="border_btn">重 置</el-button>
                         </el-form-item>
                     </el-form>
@@ -73,16 +75,89 @@ export default {
         return {
             form: {
                 time:['7天'],
-                dateRange:"",
-                value:"",
-                value3: false,
-                value4: "1"
-            }
+                cid:"",
+                startTime:"",
+                endTime:"",
+                daterange:"",
+                memberType:"",
+                tradeCountRange:"",
+
+                queryRepeatPaymentRatio: false,
+                queryOrderMoneyType: "",
+                MoneyRange:""
+            },
+            customType: [
+                {
+                    id: "",
+                    name: "全部"
+                },
+                {
+                    id: "0",
+                    name: "非会员"
+                },{
+                    id: "1",
+                    name: "新会员"
+                },{
+                    id: "2",
+                    name: "老会员"
+                }
+            ],
+            tradeCount: [
+                {
+                    id: "",
+                    name: "不限"
+                },
+                {
+                    id: "1",
+                    name: "1次"
+                },{
+                    id: "2-5",
+                    name: "2-5次"
+                },{
+                    id: "6-8",
+                    name: "6-8次"
+                },{
+                    id: "8",
+                    name: "8次以上"
+                }
+            ],
+
         }
     },
     methods: {
         checkDay(item) {
             this.day = item;
+        },
+        changeDay(){
+            console.log(this.form)
+        },
+        //获取筛选数据
+        getData(){
+            if(this.form.daterange){
+                Object.assign(this.form,{
+                    startTime:this.form.daterange[0].getTime(),
+                    endTime:this.form.daterange[1].getTime()
+                });
+            }else{
+                Object.assign(this.form,{
+                    startTime:"",
+                    endTime:""
+                });
+            }
+            console.log(this.form)
+        },
+
+        //查询
+        goSearch(){
+            if(this.form.lowprice&&this.form.highprice){
+                this.form.MoneyRange =  String(this.form.lowprice)+'-'+String(this.form.highprice);
+            }
+            console.log(this.form)
+            this._apis.data.memberInformation(this.form).then(res => {
+                console.log(res)
+            }).catch(error => {
+            this.$message.error(error);
+            });
         }
     }
 }

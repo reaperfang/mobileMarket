@@ -34,14 +34,9 @@ export default {
   },
   created() {
     this.fetch();
-  },
-  watch: {
-      'currentComponentData.data.ids': { 
-          handler(newValue) {
-              this.fetch && this.fetch();
-          },
-          deep: true
-      }
+    this._globalEvent.$on('fetchFullReduction', () =>{
+        this.fetch();
+    });
   },
   computed: {
     reductionStyle() {

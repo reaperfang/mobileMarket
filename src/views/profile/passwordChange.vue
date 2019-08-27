@@ -1,18 +1,18 @@
 /*修改密码 */
 <template>
     <div class="main">
-        <el-form ref="form" :model="form" label-width="120px">
-            <el-form-item label="请输入旧密码:" prop="name">
-                <el-input v-model="form.nickName" style="width:200px;"></el-input>
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+            <el-form-item label="请输入旧密码:" prop="oldPass">
+                <el-input type="password" v-model="form.oldPass" style="width:200px;"></el-input>
             </el-form-item>
-            <el-form-item label="请输入新密码:" prop="nickName">
-                <el-input v-model="form.nickName" style="width:200px;"></el-input>
+            <el-form-item label="请输入新密码:" prop="newPass">
+                <el-input type="password" v-model="form.newPass" style="width:200px;"></el-input>
             </el-form-item>
-            <el-form-item label="重复新密码:" prop="qq">
-                <el-input v-model="form.qq" style="width:200px;"></el-input>
+            <el-form-item label="重复新密码:" prop="confirmPass">
+                <el-input type="password" v-model="form.confirmPass" style="width:200px;"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit" class="mtb200">确认修改</el-button>
+                <el-button type="primary" @click="onSubmit('form')" class="mtb200">确认修改</el-button>
             </el-form-item>
         </el-form>
     </div>    
@@ -23,16 +23,49 @@
 export default {
   name: 'passwordChange',
   data() {
+      var valOldPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入旧密码'));
+        } else {
+          callback();
+        }
+      };
+      var valNewPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入旧密码'));
+        } else {
+         
+          callback();
+        }
+      };
+      var valConfirmPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入新密码'));
+        } else if(value != this.form.newPass) {
+            callback(new Error('请确认新密码'));
+        }else{
+          callback();
+        }
+      };
     return {
       form: {
-          name: '',
-          nickName: '',
-          sex: 1,
-          qq: '',
-          email: ''
+          oldPass:'',
+          newPass:'',
+          confirmPass:''
       },
+      rules: {
+          oldPass: [
+            { validator: valOldPass, trigger: 'blur' }
+          ],
+          newPass: [
+            { validator: valNewPass, trigger: 'blur' }
+          ],
+          confirmPass: [
+            { validator: valConfirmPass, trigger: 'blur' }
+          ],
       imageUrl: '',
       area: [],
+    }
     }
   },
   components: {},
@@ -50,6 +83,17 @@ export default {
         // listArea({}).then(response => {
         //     this.area = response.data.data.children
         // })
+    },
+    // 修改密码
+    onSubmit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
     }
   }
 }
