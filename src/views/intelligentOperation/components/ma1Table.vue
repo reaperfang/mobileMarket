@@ -1,4 +1,4 @@
-/* 商品交易热销Top5列表 */
+/* 渠道转化列表 */
 <template>
   <div>
     <el-table
@@ -8,21 +8,49 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
-        label="时间">
+        type="index"
+        label="排序">
       </el-table-column>
       <el-table-column
-        prop="channel"
-        label="客单价（元）">
+        prop="id"
+        label="用户ID">
       </el-table-column>
       <el-table-column
-        prop="importNum"
-        label="订单量（笔）">
+        prop="name"
+        label="会员昵称">
       </el-table-column>
       <el-table-column
-        prop="successNum"
-        label="人均消费金额（元）"
-      >
+        label="会员类型">
+       <template slot-scope="scope">
+             <span style="line-height:60px;display:inline-block">{{{1:'非会员',2:'老会员',3:'新会员'}[scope.row.memberType]}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        label="手机号">
+      </el-table-column>
+      <el-table-column
+        prop="niceGoodsCount"
+        label="满意商品数">
+      </el-table-column>
+      <el-table-column
+        prop="niceRatio"
+        label="满意率">
+      </el-table-column>
+      <el-table-column
+        prop="badGoodsCount"
+        label="差评商品数"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="badRatio"
+        label="差评率"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="goodsCount"
+        label="订单商品（总）数"
+        >
       </el-table-column>
     </el-table>
     <div class="page_styles">
@@ -42,10 +70,11 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "ct1Table",
+  name: "mcTable",
   extends: TableBase,
   data() {
-    return {
+    return { 
+      pageSize:10
     };
   },
   props:{
@@ -58,11 +87,12 @@ export default {
 
   },
   methods: {
-    handleCurrentChange(){
-
+    handleSizeChange(val){
+      this.pageSize = val;
+      this.$emit('getRightsProtection',1,val)
     },
-    handleSizeChange(){
-
+    handleCurrentChange(val){
+      this.$emit('getRightsProtection',val,this.pageSize)
     }
   },
   components: {}

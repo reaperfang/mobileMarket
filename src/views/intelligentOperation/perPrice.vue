@@ -48,7 +48,7 @@
         </div>
         <div class="p_block marT20">
             <p class="p_title">详细数据</p>
-            <ppTable style="margin-top: 20px"></ppTable>
+            <ppTable style="margin-top: 20px" :listObj="listObj"></ppTable>
         </div>
     </div>
 </template>
@@ -62,7 +62,11 @@ export default {
         return {
             day: "",
             days: ['7天','15天','30天'],
-            activeName:"first"
+            activeName:"first",
+            listObj:{
+                members:[],
+                count:100
+            }
         }
     },
     methods: {

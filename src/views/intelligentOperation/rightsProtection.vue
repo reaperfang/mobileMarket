@@ -5,13 +5,14 @@
                     <el-form class="clearfix">
                         <el-form-item label="交易时间">
                             <div class="p_line">
-                    <el-radio-group v-model="type" @change="changeDay">
+                    <el-radio-group v-model="form.type" @change="changeDay">
                         <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                         <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                         <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="5">最近一季度</el-radio-button>
                         <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="type == 4">
+                        <div class="input_wrap" v-if="form.type == 4">
                         <el-date-picker
                             v-model="range"
                             type="daterange"
@@ -26,7 +27,7 @@
                         </el-form-item>
                         <el-form-item label="维权类型">
                             <div class="input_wrap2">
-                                <el-select v-model="form.value1">
+                                <el-select v-model="form.protectionType">
                                     <el-option label="不限" value="0"></el-option>
                                     <el-option label="退款（仅退款不退货）" value="1"></el-option>
                                     <el-option label="退款退货" value="1"></el-option>
@@ -35,7 +36,7 @@
                             </div>
                             <span class="span_label">维权原因</span>
                             <div class="input_wrap2 marR20">
-                                <el-select v-model="form.value2">
+                                <el-select v-model="form.ProtectionReason">
                                     <el-option label="不限" value="0"></el-option>
                                     <el-option label="不想要了" value="1"></el-option>
                                     <el-option label="卖家缺货" value="2"></el-option>
@@ -43,17 +44,26 @@
                                     <el-option label="其他" value="4"></el-option>
                                 </el-select>
                             </div>
-                            <el-button class="minor_btn" icon="el-icon-search">查询</el-button>
-                            <el-button class="border_btn">重 置</el-button>
+                             <span class="span_label">会员类型</span>
+                            <div class="input_wrap2 marR20">
+                                <el-select v-model="form.memberType">
+                                    <el-option label="全部" value="0"></el-option>
+                                    <el-option label="非会员" value="1"></el-option>
+                                    <el-option label="新会员" value="2"></el-option>
+                                    <el-option label="老会员" value="3"></el-option>
+                                </el-select>
+                            </div>
+                            <el-button class="minor_btn" icon="el-icon-search" @click="getRightsProtection()">查询</el-button>
+                            <el-button class="border_btn" @click="resetAll()">重 置</el-button>
                         </el-form-item>
                     </el-form>
                     <div class="m_line clearfix">
                         <div class="fr marT20">
-                            <el-button class="minor_btn">重新筛选</el-button>
+                            <el-button class="minor_btn" @click="rescreen()">重新筛选</el-button>
                             <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
                         </div>
                     </div>
-                    <ma2Table class="marT20"></ma2Table>
+                    <ma2Table class="marT20" :listObj="listObj" @getRightsProtection="getRightsProtection"></ma2Table>
                 </div>
     </div>
 </template>
@@ -65,35 +75,55 @@ export default {
     data() {
         return {
             form: {
-                time:['7天'],
                 dateRange:"",
-                value1:0,
-                value2: 0,
+                protectionType:null,
+                ProtectionReason: null,
+                endTime:'',
                 startTime:'',
+                type:1,
+                memberType:null
             },
-            type:1,
+            range:'',
+            listObj:{
+                members:[{}],
+                count:100
+            }
 
         }
     },
     methods: {
-        checkDay(item) {
-            this.day = item;
-        },
         // 获取维权全部数据
-        getRightsProtection(){
+        getRightsProtection(idx,pageS){
             let data ={
-                startTime:this.startTime,
-                endTime:this.endTime,
-                protectionType:this.protectionType,
-                ProtectionReason:this.ProtectionReason,
+                type:this.form.type,
+                startTime:this.form.startTime,
+                endTime:this.form.endTime,
+                protectionType:this.form.protectionType,
+                ProtectionReason:this.form.ProtectionReason,
             }
-            this._apis.data.historyRecord(data).then(response => {})
+            this._apis.data.historyRecord(data).then(response => {
+                this.listObj = response;
+            })
         },
-        changeDay(){
-
+        changeTime(val){
+            this.form.startTime = val[0]
+            this.form.endTime = val[1]
         },
-        changeTime(){
-
+        // 重置
+        resetAll(){
+            this.form = {
+                dateRange:"",
+                protectionType:null,
+                ProtectionReason: null,
+                endTime:'',
+                startTime:'',
+                type:1,
+            },
+            this.getRightsProtection(1,10)
+        },
+        // 重新筛选
+        rescreen(){
+            this.getRightsProtection()
         },
          getDay(day){
         　　var today = new Date();  
