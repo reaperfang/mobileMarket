@@ -34,7 +34,7 @@
                                     <div class="col">
                                         <div class="row align-center">
                                             <div class="col image-box">
-                                                <img :src="goods.goodsImage" alt="">
+                                                <img width="66" :src="goods.goodsImage" alt="">
                                             </div>
                                             <div class="col">
                                                 <p>{{goods.goodsName}}</p>
@@ -75,7 +75,8 @@
                         <template v-else-if="order.orderInfo.orderStatus == 3">
                             <!-- 待发货 -->
                             <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
-                            <p>发货</p>
+                            <p v-if="order.orderInfo.sendType == 2" @click="$router.push('/order/supplementaryLogistics?id=' + order.orderInfo.id)">补填物流</p>
+                            <p v-else>发货</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
                         </template>
                         <template v-else-if="order.orderInfo.orderStatus == 4">
