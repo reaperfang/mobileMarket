@@ -8,28 +8,28 @@
       border
       style="width: 100%;">
       <el-table-column
-        prop="id"
+        prop="msgType"
         label="消息类别"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="msgTitle"
         label="消息标题">
       </el-table-column>
       <el-table-column
-        prop="amount1"
+        prop="triggerRule"
         label="推送规则">
       </el-table-column>
       <el-table-column
-        prop="amount2"
+        prop="msgWechatPublic"
         label="公众号模版消息">
       </el-table-column>
       <el-table-column
-        prop="amount3"
+        prop="msgWechatApp"
         label="小程序模版消息">
       </el-table-column>
       <el-table-column
-        prop="amount4"
+        prop="msgSms"
         label="短信通知">
         <!-- <template slot-scope="scope">
             <el-switch
@@ -50,42 +50,7 @@ export default {
   name: 'messageSet',
   data() {
     return {
-      tableData: [{
-          id: '12987122',
-          name: '王小虎',
-          amount1: '234',
-          amount2: '3.2',
-          amount3: 10,
-          amount4: true
-        }, {
-          id: '12987123',
-          name: '王小虎',
-          amount1: '165',
-          amount2: '4.43',
-          amount3: 12,
-          amount4: false
-        }, {
-          id: '12987124',
-          name: '王小虎',
-          amount1: '324',
-          amount2: '1.9',
-          amount3: 9,
-          amount4: true
-        }, {
-          id: '12987125',
-          name: '王小虎',
-          amount1: '621',
-          amount2: '2.2',
-          amount3: 17,
-          amount4: true
-        }, {
-          id: '12987126',
-          name: '王小虎',
-          amount1: '539',
-          amount2: '4.1',
-          amount3: 15,
-          amount4: false
-        }]
+      tableData: [],
     }
   },
   components: {buyer, seller},
@@ -103,6 +68,7 @@ export default {
       let id = this.$store.getters.cid || '10'
       this._apis.set.getShopMessage({cid:id}).then(response =>{
         console.log('11111',response)
+        this.tableData = response
       }).catch(error =>{
 
       })

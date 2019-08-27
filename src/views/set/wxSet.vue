@@ -1,18 +1,26 @@
 /*微信设置 */
 <template>
     <div class="main">
-        <h1>微信支付信息设置</h1>
-        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+        <h1>
+          微信支付信息设置
+          <span style="color:#FC3D42;font-size:12px;">
+            如果开通支付，公众号和小程序的appid依据自己开通的售卖渠道必须填写一项
+          </span>
+        </h1>
+        <el-form ref="form" :model="form" :rules="rules" label-width="180px">
             <el-form-item label="微信商户名称:" prop="wechatName">
                 <el-input v-model="form.wechatName" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="微信商户号:" prop="wechatNum">
-                <el-input v-model="form.wechatNum" style="width:250px;" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="AppId:" prop="wechatAppId">
+            <el-form-item label="公众号（AppId）:" prop="wechatAppId">
                 <el-input v-model="form.wechatAppId" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="密钥:" prop="wechatKey">
+            <el-form-item label="小程序（AppId）:" prop="wechatAppId">
+                <el-input v-model="form.wechatAppId" style="width:250px;" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="支付商户号（Mch_Id）:" prop="wechatNum">
+                <el-input v-model="form.wechatNum" style="width:250px;" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="支付密钥（APIKEY）:" prop="wechatKey">
                 <el-input v-model="form.wechatKey" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="证书密码:" prop="wechatValue">
