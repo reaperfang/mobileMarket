@@ -77,13 +77,27 @@ export default {
   },
   created() {
     this.fetch();
+    this._globalEvent.$on('fetchCoupon', () =>{
+      this.fetch();
+    });
   },
   watch: {
-    'currentComponentData.data.ids': { 
-      handler(newValue) {
-          this.fetch && this.fetch();
-      },
-      deep: true
+
+    /* 监听添加类型，自动获取状态则拉取一下数据 */
+    'currentComponentData.data.addType'(newValue) {
+      if(newValue == 2) {
+        this.fetch();
+      }
+    },
+
+    /* 监听显示个数类型 */
+    'currentComponentData.data.couponNumberType'(newValue) {
+      this.fetch();
+    },
+
+    /* 监听显示个数 */
+    'currentComponentData.data.showNumber'(newValue) {
+      this.fetch();
     }
   },
   computed: {

@@ -10,12 +10,12 @@
           <el-radio :label="2">创建时间越早越靠前</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="展示方式" prop="showType">
+      <!-- <el-form-item label="展示方式" prop="showType">
         <el-radio-group v-model="ruleForm.showType">
           <el-radio :label="1">名称列表</el-radio>
           <el-radio :label="2">期刊列表</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
       <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.explain"></RichEditor>
     </div>
 

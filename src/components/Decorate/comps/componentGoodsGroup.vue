@@ -6,7 +6,7 @@
             <p v-for="(item,key) of list" :class="{active:showAllGroup!=1&&key==0}" :key="key" @click="currentCatagory=item">{{item.name}}</p>
         </div>
         <div class="componentGoodsGroup_content">
-            <componentGoods :data='currentComponentData' :currentCatagoryId="currentCatagory? currentCatagory.id : ''"></componentGoods>
+            <componentGoods :data='currentComponentData' :currentCatagoryId="currentCatagory? currentCatagory.id : 'all'"></componentGoods>
         </div> 
     </div>
 </template>
@@ -37,7 +37,13 @@ export default {
       componentGoods
     },
     created() {
-      this.decoration();
+      this.fetch();
+      this._globalEvent.$on('fetchGoodsGroup', () =>{
+          this.fetch();
+      });
+    },
+    mounted() {
+        this.decoration();
     },
     watch: {
       data: {
@@ -46,11 +52,8 @@ export default {
         },
         deep: true
       },
-      'currentComponentData.data.ids': { 
-          handler(newValue) {
-              this.fetch && this.fetch();
-          },
-          deep: true
+      currentComponentData(){
+         this.decoration();
       }
     },
     // mounted: function() {
@@ -71,7 +74,6 @@ export default {
             }
             this.menuStyle = this.currentComponentData.data.menuStyle;
             this.menuPosition = this.currentComponentData.data.menuPosition;
-            this.fetch();
         },
         // handleScroll(){
         //     let componentGoodsGroupHeight = document.getElementById("componentGoodsGroup").clientHeight;  

@@ -158,6 +158,7 @@ export default {
           // this.ruleForm.ids.push(item.spuId);
           this.ruleForm.ids.push('1155672084941246464');
         }
+        this._globalEvent.$emit('fetchDiscount');
       },
       deep: true
     }
