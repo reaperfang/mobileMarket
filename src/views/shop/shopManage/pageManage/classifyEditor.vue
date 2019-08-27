@@ -74,7 +74,8 @@ export default {
     /* 保存数据 */
     saveData() {
       const resultData = this.collectData();
-      resultData['explain'] = utils.compileStr(JSON.stringify(resultData.explain || {}));
+      const copyResultData = {...resultData};
+      copyResultData['explain'] = utils.compileStr(copyResultData.explain);
        if(!resultData.name) {
          this.$alert('请填写基础信息后重试，点击确认开始编辑分类信息!', '警告', {
           confirmButtonText: '确定',
@@ -87,7 +88,7 @@ export default {
       }
       this.loading = true;
       if(this.id) {
-        this._apis.shop.editClassifyInfo(resultData).then((response)=>{
+        this._apis.shop.editClassifyInfo(copyResultData).then((response)=>{
           this.$notify({
             title: '成功',
             message: '编辑成功！',
@@ -103,7 +104,7 @@ export default {
           this.loading = false;
         });
       }else{
-        this._apis.shop.createClassify(resultData).then((response)=>{
+        this._apis.shop.createClassify(copyResultData).then((response)=>{
           this.$notify({
             title: '成功',
             message: '创建成功！',

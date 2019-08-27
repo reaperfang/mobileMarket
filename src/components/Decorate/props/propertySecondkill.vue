@@ -169,6 +169,7 @@ export default {
           // this.ruleForm.ids.push(item.spuId);
           this.ruleForm.ids.push('1156003937296453632');
         }
+        this._globalEvent.$emit('fetchSecondkill');
       },
       deep: true
     }

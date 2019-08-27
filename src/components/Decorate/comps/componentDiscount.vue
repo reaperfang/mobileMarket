@@ -72,15 +72,18 @@ export default {
         componentButton
     },
     created(){
+        this.fetch();
+        this._globalEvent.$on('fetchDiscount', () =>{
+            this.fetch();
+        });
+    },
+    mounted() {
         this.decoration();
     },
     watch: {
-        'currentComponentData.data.ids': { 
-            handler(newValue) {
-                this.fetch && this.fetch();
-            },
-            deep: true
-        }
+      currentComponentData(){
+        this.decoration();
+      }
     },
     methods:{
         decoration(){
@@ -122,7 +125,6 @@ export default {
             this.textAlign = this.currentComponentData.data.textAlign;
             this.showContents = this.currentComponentData.data.showContents;
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
-            this.fetch();
         },
 
           //根据ids拉取数据

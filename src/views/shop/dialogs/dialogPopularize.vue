@@ -51,7 +51,7 @@
           </div>
           <div>
             <el-button type="text" @click="openSetting = true">更多设置</el-button>
-            <el-button type="text" @click="getPoster">下载海报图片</el-button>
+            <el-button type="text" @click="getPoster" :disabled="!downloadPosterAble">下载海报图片</el-button>
             <el-button type="text" @click="openQrcode('h5')" v-if="currentType === 'h5'">下载二维码</el-button>
             <el-button type="text" @click="openQrcode('mini')" v-if="currentType === 'mini'">下载小程序码</el-button>
           </div>
@@ -157,7 +157,8 @@ export default {
         ],
       },
       qrCode: '',
-      openSetting: false  //是否开启设置
+      openSetting: false,  //是否开启设置
+      downloadPosterAble: false  //是否可下载海报
     };
   },
   watch: {
@@ -192,6 +193,9 @@ export default {
         pageInfoId: this.ruleForm.pageInfoId
       }).then((response)=>{
         if(response && response.pageInfoId) {
+          if(response.title && response.describe) {
+            this.downloadPosterAble = true;
+          }
           this.ruleForm = response;
         }else{
           this.ruleForm = {

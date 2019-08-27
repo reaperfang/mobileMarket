@@ -69,14 +69,25 @@ export default {
         }
     },
     created(){
+        this.fetch();
+        this._globalEvent.$on('fetchMultiPerson', () =>{
+            this.fetch();
+        });
+    },
+    mounted() {
         this.decoration();
     },
     watch: {
-        'currentComponentData.data.ids': { 
-            handler(newValue) {
-                this.fetch && this.fetch();
-            },
-            deep: true
+        currentComponentData(){
+            this.decoration();
+        },
+        'currentComponentData.data.addType'(newValue) {
+            if(newValue == 2) {
+                this.fetch();
+            }
+        },
+        'currentComponentData.data.showNumber'(newValue) {
+            this.fetch();
         }
     },
     components:{
@@ -126,7 +137,6 @@ export default {
             this.showContents = this.currentComponentData.data.showContents;
             this.hideSaledGoods = this.currentComponentData.data.hideSaledGoods;
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
-            this.fetch();
         },
 
          //根据ids拉取数据

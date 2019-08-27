@@ -1,4 +1,4 @@
-/* 商品交易热销Top5列表 */
+/* 渠道转化列表 */
 <template>
   <div>
     <el-table
@@ -8,21 +8,42 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
-        label="时间">
+        prop="orderNumber"
+        label="订单号">
       </el-table-column>
       <el-table-column
-        prop="channel"
-        label="客单价（元）">
+        prop="id"
+        label="ID">
       </el-table-column>
       <el-table-column
-        prop="importNum"
-        label="订单量（笔）">
+        prop="memberType"
+        label="会员类型">
       </el-table-column>
       <el-table-column
-        prop="successNum"
-        label="人均消费金额（元）"
-      >
+        prop="name"
+        label="会员昵称">
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        label="手机号">
+      </el-table-column>
+      <el-table-column
+        prop="tradeTime"
+        label="维权时间">
+      </el-table-column>
+      <el-table-column
+        prop="protectionGoodsCount"
+        label="维权商品数">
+      </el-table-column>
+      <el-table-column
+        prop="protectionType"
+        label="维权类型"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="protectionReason"
+        label="维权原因"
+        >
       </el-table-column>
     </el-table>
     <div class="page_styles">
@@ -42,10 +63,11 @@
 <script type='es6'>
 import TableBase from "@/components/TableBase";
 export default {
-  name: "ct1Table",
+  name: "mcTable",
   extends: TableBase,
   data() {
-    return {
+    return { 
+      pageSize:10
     };
   },
   props:{
@@ -58,11 +80,12 @@ export default {
 
   },
   methods: {
-    handleCurrentChange(){
-
+    handleSizeChange(val){
+      this.pageSize = val;
+      this.$emit('getRightsProtection',1,val)
     },
-    handleSizeChange(){
-
+    handleCurrentChange(val){
+      this.$emit('getRightsProtection',val,this.pageSize)
     }
   },
   components: {}

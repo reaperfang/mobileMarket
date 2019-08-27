@@ -495,3 +495,30 @@ export function addChannel(data) {
         data
     })
 }
+//会员卡上传背景宣传图片
+export function addCardBg(data) {
+    return request({
+        target:'MEMBERCARD-PIC-ADD-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//查询会员卡宣传背景图片
+export function checkCardBg(data) {
+    return request({
+        target:'MEMBERCARD-PIC-FIND-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//批量导入会员
+export function importMemberFile(data) {
+    return request({
+        target:'MEMBERINFO-IMPORT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}

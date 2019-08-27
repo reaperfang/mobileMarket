@@ -27,11 +27,13 @@
                         <div class="input_wrap marL">
                             <el-upload
                                 class="upload-block"
-                                action="/data-server/web-file/file-server/api_file_remote_upload.do"
-                                :on-preview="handlePreview"
+                                ref="upload"
+                                :action="uploadUrl"
+                                :on-success="handleAvatarSuccess"
                                 :on-remove="handleRemove"
-                                :on-success="handleSuccess"
-                                multiple
+                                :before-upload="beforeAvatarUpload"
+                                :limit="1"
+                                :data="{json: JSON.stringify({cid: 222})}"
                                 :file-list="fileList">
                                 <el-button size="small" type="primary">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">支持文件格式：.csv .xsl ，单个文件不能超过10M</div>
@@ -42,8 +44,8 @@
                 </el-form>
             </div>
             <div class="btn_container btns">
-                <el-button type="primary">导入</el-button>
-                <el-button>取消</el-button>
+                <el-button type="primary" @click="importMemberFile">导入</el-button>
+                <el-button @click="cancel">取消</el-button>
             </div>
         </div>
         <div class="table_container clearfix">
@@ -84,18 +86,20 @@ export default {
     name: 'clientImport',
     data() {
         return {
+            uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
             ruleForm: {
                 channelId:"",
                 memberType: "1"
             },
             rules: {
                 channelId: [
-                    { required: true, message: "请选择渠道" }
+                    { required: true, message: "请选择渠道", trigger:'blur' }
                 ],
                 memberType: [
-                    { required: true, message: "请选择身份" }
+                    { required: true, message: "请选择身份", trigger:'blur' }
                 ]
             },
+            channelName:"",
             //上传参数
             fileList: [],
             //查询导入记录所需要的参数：
@@ -110,6 +114,25 @@ export default {
         }
     },
     methods: {
+        handleAvatarSuccess(res, file) {
+            // this.fileData = res.data
+            this.importUrl = res.data.url;
+        },
+        beforeAvatarUpload(file) {
+            const isCSV = file.type.indexOf('ms-excel') !== -1 || file.type.indexOf('sheet') !== -1;
+            const isLt10M = file.size / 1024 / 1024 < 10;
+
+            if (!isCSV) {
+                this.$message.error('上传图片只能是 .csv或.xsl 格式!');
+            }
+            if (!isLt10M) {
+                this.$message.error("上传图片大小不能超过 10MB!");
+            }
+            return isLt10M && isCSV;
+        },
+        handleRemove(file) {
+            this.importUrl = "";
+        },
         handleCheck() {
             if(this.importTime == "") {
                 this.$notify({
@@ -146,21 +169,48 @@ export default {
         handleNew() {
             this.dialogVisible = true;
             this.currentDialog = "addChannelDialog"; 
+        },
+        importMemberFile() {
+            if(this.ruleForm.channelId == "") {
+                this.$notify({
+                    title: '警告',
+                    message: '请选择渠道',
+                    type: 'warning'
+                });
+            }else if(this.importUrl == ""){
+                this.$notify({
+                    title: '警告',
+                    message: '请上传文件',
+                    type: 'warning'
+                });
+            }else{
+                this.channelOptions.map((v) => {
+                    if(v.id == this.ruleForm.channelId) {
+                        this.channelName = v.channerlName
+                    }
+                })
+                let params = {
+                    channelId: this.ruleForm.channelId,
+                    channelName: this.channelName,
+                    memberType: this.ruleForm.memberType,
+                    importUrl: this.importUrl
+                }
+                this._apis.client.importMemberFile(params).then((response) => {
+                    console.log(response);
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }
+        },
+        cancel() {
+            this.$refs.ruleForm.resetFields();
+            this.$refs.upload.clearFiles();
         }
     },
     computed: {
-        handleRemove(file, fileList) {
-            //console.log(file, fileList);
-        },
-        handlePreview(file) {
-           // console.log(file);
-        },
-        handleSuccess(res, file) {
-            console.log(res);
-        },
-        beforeRemove(file, fileList) {
-            return this.$confirm(`确定移除 ${ file.name }？`);
-        },
         importTimeStart() {
             if(this.importTime) {
                 return this.importTime[0]

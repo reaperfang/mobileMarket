@@ -25,7 +25,6 @@
         class="goodsCategory"
         :data="categoryData"
         :props="defaultProps"
-        show-checkbox
         node-key="id"
         ref="category"
         :check-strictly="true"
@@ -35,7 +34,7 @@
       </el-tree>
     </div>
      <!-- 动态弹窗 -->
-    <component  v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible2" @dialogDataSelected="dialogDataSelected" :categoryId="currentCategory.id" :categoryName="currentCategory.categoryName"></component>
+    <component  v-if="dialogVisible2" :is="currentDialog" :dialogVisible.sync="dialogVisible2" @dialogDataSelected="dialogDataSelected" :categoryId="currentCategory.id" :categoryName="currentCategory.categoryName"></component>
   </DialogBase>
 </template>
 
@@ -190,6 +189,7 @@ export default {
         catagoryData: this.currentCategory,
         goods: items
       }
+      this.currentDialog = '';
     } 
   }
 };

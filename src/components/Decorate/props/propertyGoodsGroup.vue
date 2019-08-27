@@ -183,7 +183,7 @@ export default {
           }
         }
         this.ruleForm.ids = catagoryIds;
-        console.log(catagoryIds);
+        this._globalEvent.$emit('fetchGoodsGroup');
       },
       deep: true
     }

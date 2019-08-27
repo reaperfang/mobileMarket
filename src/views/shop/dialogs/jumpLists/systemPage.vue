@@ -1,12 +1,8 @@
 <template>
   <div>
-      <el-table :data="tableData[currentTab]" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick">
-          <el-table-column
-            type="selection"  
-            width="55">
-          </el-table-column>
-          <el-table-column prop="pageName" label="页面名称"></el-table-column>
-        </el-table>
+      <el-table  :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick">
+        <el-table-column prop="title" label="页面名称"></el-table-column>
+      </el-table>
       <div class="pagination">
         <el-pagination
           @size-change="handleSizeChange"
@@ -37,7 +33,28 @@ export default {
         name: ''
       },
       rules: {},
-      tableData: [],
+      tableData: [
+        {
+          id: 'index',
+          name: 'index',
+          title: '首页'
+        },
+        {
+          id: 'userCenter',
+          name: 'userCenter',
+          title: '个人中心'
+        },
+        {
+          id: 'shoppingCart',
+          name: 'shoppingCart',
+          title: '购物车'
+        },
+        {
+          id: 'customLink',
+          name: 'customLink',
+          title: '自定义链接'
+        },
+      ],
     };
   },
   created() {

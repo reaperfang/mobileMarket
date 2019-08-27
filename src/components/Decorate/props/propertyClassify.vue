@@ -1,5 +1,6 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
+    {{ruleForm}}
     <div class="block form">
       <el-form-item label="分类名称" prop="name">
         <el-input placeholder="请勿超过10个字" v-model="ruleForm.name"></el-input>
@@ -10,17 +11,17 @@
           <el-radio :label="2">创建时间越早越靠前</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="展示方式" prop="showType">
+      <!-- <el-form-item label="展示方式" prop="showType">
         <el-radio-group v-model="ruleForm.showType">
           <el-radio :label="1">名称列表</el-radio>
           <el-radio :label="2">期刊列表</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
       <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.explain"></RichEditor>
     </div>
 
     <div class="block form">
-      <el-button type="primary">添加页面</el-button>
+      <el-button type="primary" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">添加页面</el-button>
     </div>
 
      <!-- 动态弹窗 -->
@@ -52,7 +53,7 @@ export default {
           UEDITOR_HOME_URL: '/static/UEditor/'
       },
       ruleForm: {
-        name: '',
+        name: '微页面分类',
         sortType: 1,
         showType: 1,
         explain: '',
