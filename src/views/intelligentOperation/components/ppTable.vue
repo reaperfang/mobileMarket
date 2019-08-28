@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="listObj.list"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
@@ -26,7 +26,7 @@
       </el-table-column>
     </el-table>
     <div class="page_styles">
-      <!-- <el-pagination
+      <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
@@ -34,15 +34,7 @@
         :page-size="10"
         layout="sizes, prev, pager, next"
         :total="listObj.totalPage">
-      </el-pagination> -->
-          <el-pagination @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="index" 
-          :page-sizes="[5, 10, 15, 20, 25, 30]" 
-          :page-size="size" 
-          layout="total, sizes, prev, pager, next, jumper" 
-          :total="tableCopyTableList.length">
-          </el-pagination>
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -54,50 +46,23 @@ export default {
   extends: TableBase,
   data() {
     return {
-      tableData:[],
-      tableCopyTableList: [],
-      index: 1,
-      size: 10
+      listObj:{
+        list:[],
+        totalPage:100,
+      }
     };
   },
   props:{
-    listObj:{
-      type:Object,
-      default:{}
-    }
   },
   created() {
-    this.tableData = this.listObj.list;
-    this.tableCopyTableList = JSON.parse(JSON.stringify(this.tableData));
-    this.tableData = this.paging(this.size, this.index);
+
   },
   methods: {
-    // handleCurrentChange(){
+    handleCurrentChange(){
 
-    // },
-    // handleSizeChange(){
+    },
+    handleSizeChange(){
 
-    // }
-    // 页数改变事件
-    handleSizeChange(size) {
-      this.size = size;
-      this.tableData = this.paging(size, this.index);
-    },
-    // 页码改变事件
-    handleCurrentChange(current) {
-      this.index = current;
-      this.tableData = this.paging(this.size, current);
-    },
-    // 本地分页的方法
-    paging(size, current) {
-      const tableList = JSON.parse(JSON.stringify(this.tableCopyTableList));
-      const tablePush = [];
-      tableList.forEach((item, index) => {
-        if (size * (current - 1) <= index && index <= size * current - 1) {
-          tablePush.push(item);
-        }
-      });
-      return tablePush;
     }
   },
   components: {}
