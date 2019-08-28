@@ -95,6 +95,7 @@ export default {
       this.$emit('getEvaluation',val,this.pageSize)
     }
   },
+ 
   components: {}
 };
 </script>
