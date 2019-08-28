@@ -38,7 +38,7 @@
                                             </div>
                                             <div class="col">
                                                 <p>{{goods.goodsName}}</p>
-                                                <p class="goods-specs">{{goods.goodsSpecs}}</p>
+                                                <p class="goods-specs">{{goods.goodsSpecs | goodsSpecsFilter}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -76,7 +76,7 @@
                             <!-- 待发货 -->
                             <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
                             <p v-if="order.orderInfo.sendType == 2" @click="$router.push('/order/supplementaryLogistics?id=' + order.orderInfo.id)">补填物流</p>
-                            <p v-else>发货</p>
+                            <p @click="$router.push('/order/deliverGoods?id=' + order.orderInfo.id)" v-else>发货</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
                         </template>
                         <template v-else-if="order.orderInfo.orderStatus == 4">
@@ -145,6 +145,22 @@ export default {
                 case 2:
                     return '商家自送'
             }
+        },
+        goodsSpecsFilter(value) {
+            let _value
+            if(!value) return ''
+            if(typeof value == 'string') {
+                _value = JSON.parse(value)
+            }
+            let str = ''
+            for(let i in _value) {
+                if(_value.hasOwnProperty(i)) {
+                    str += i + ':'
+                    str += _value[i] + ','
+                }
+            }
+
+            return str
         }
     },
     methods: {

@@ -6,47 +6,29 @@
                 <div class="item">状态</div>
             </div> -->
             <div class="content">
-                <el-timeline>
+                <el-timeline v-show="data.length" :reverse="reverse">
                     <el-timeline-item
-                    v-for="(activity, index) in activities"
+                    v-for="(activity, index) in data"
                     :key="index"
-                    :icon="activity.icon"
-                    :type="activity.type"
-                    :color="activity.color"
-                    :size="activity.size"
-                    :timestamp="activity.timestamp">
-                    {{activity.content}}
+                    :timestamp="activity.AcceptTime">
+                    {{activity.AcceptStation}}
                     </el-timeline-item>
                 </el-timeline>
+                <Empty v-show="!data.length"></Empty>
             </div>
         </div>
     </DialogBase>
 </template>
 <script>
 import DialogBase from '@/components/DialogBase'
+import Empty from '@/components/Empty'
 
 export default {
     data() {
         return {
             showFooter: false,
-            activities: [{
-                content: '支持使用图标',
-                timestamp: '2018-04-12 20:46',
-                size: 'large',
-                type: 'primary',
-                icon: 'el-icon-more'
-                }, {
-                content: '支持自定义颜色',
-                timestamp: '2018-04-03 20:46',
-                color: '#0bbd87'
-                }, {
-                content: '支持自定义尺寸',
-                timestamp: '2018-04-03 20:46',
-                size: 'large'
-                }, {
-                content: '默认样式的节点',
-                timestamp: '2018-04-03 20:46'
-            }]
+            reverse: true,
+            activities: []
         }
     },
     methods: {
@@ -69,7 +51,8 @@ export default {
     },
     props: {
         data: {
-
+            type: Array,
+            default: []
         },
         dialogVisible: {
             type: Boolean,
@@ -77,7 +60,8 @@ export default {
         },
     },
     components: {
-        DialogBase
+        DialogBase,
+        Empty
     }
 }
 </script>

@@ -83,7 +83,7 @@
           class="border-button"
           @click="$router.push('/order/batchImportAndDelivery')"
         >批量导入发货</el-button>
-        <el-button class="border-button" @click="$router.push('/order/bulkDelivery')">批量发货</el-button>
+        <el-button class="border-button" @click="batchSendGoods">批量发货</el-button>
         <el-button class="border-button" @click="batchSupplementaryLogistics">批量补填物流</el-button>
       </div>
     </section>
@@ -147,6 +147,13 @@ export default {
     });
   },
   methods: {
+    batchSendGoods() {
+      if(!this.$refs['shop'].list.filter(val => val.checked).length) {
+            this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
+            return
+        }
+        this.$router.push('/order/orderBulkDelivery?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.orderInfo.id).join(','))
+    },
     batchSupplementaryLogistics() {
       if(!this.$refs['shop'].list.filter(val => val.checked).length) {
           this.confirm({title: '提示', icon: true, text: '请选择需要补填物流的订单'})
