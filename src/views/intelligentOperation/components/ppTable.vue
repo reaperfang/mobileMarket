@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       listObj:{
-        list:[],
+        list:[{date:"",averagePayment:"",orderCount:"",averageOrderPayment:""}],
         totalPage:100,
       }
     };

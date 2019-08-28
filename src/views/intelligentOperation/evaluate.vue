@@ -64,15 +64,15 @@
                             </el-tooltip>
                         </div>
                     </div>
-                    <ma1Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma1Table>
+                    <ma4Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma4Table>
                 </div>
     </div>
 </template>
 <script>
-import ma1Table from './components/ma1Table';
+import ma4Table from './components/ma4Table';
 export default {
     name: 'rightsProtection',
-    components: { ma1Table },
+    components: { ma4Table },
     data() {
         return {
             form: {
