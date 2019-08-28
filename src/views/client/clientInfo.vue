@@ -113,7 +113,7 @@
                 </div>
                 <div class="assets_item rb">
                     <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p>积分：<span>{{clientInfoById.score}}</span></p>
+                    <p>积分：<span class="pointer" @click="showScoreList">{{clientInfoById.score}}</span></p>
                     <span @click="showAdjustScore">变更</span>
                 </div>
             </div>
@@ -156,6 +156,7 @@ import issueCodeDialog from './dialogs/clientInfo/issueCodeDialog';
 import addBlackDialog from './dialogs/clientInfo/addBlackDialog';
 import sendCardDialog from './dialogs/clientInfo/sendCardDialog';
 import changeCardDialog from './dialogs/clientInfo/changeCardDialog';
+import scoreListDialog from './dialogs/clientInfo/scoreListDialog';
 export default {
     name: 'clientInfo',
     components: { 
@@ -169,7 +170,8 @@ export default {
         sendCardDialog,
         changeCardDialog,
         adjustCreditDialog,
-        issueCodeDialog
+        issueCodeDialog,
+        scoreListDialog
     },
     data() {
         return {
@@ -271,6 +273,13 @@ export default {
             this.currentDialog = "changeCardDialog";
             this.currentData.id = this.userId;
             this.currentData.level = this.clientInfoById.levelName;
+        },
+        showScoreList() {
+            this.dialogVisible = true;
+            this.currentDialog = "scoreListDialog";
+            this.currentData.score = this.clientInfoById.score;
+            this.currentData.frozenScore = this.clientInfoById.frozenScore;
+            this.currentData.id = this.userId;
         },
         getAllCoupons() {
             this._apis.client.getAllCoupons({couponType: 0}).then((response) => {

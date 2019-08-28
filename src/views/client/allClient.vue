@@ -16,7 +16,7 @@
                     </el-col>
                     <el-col :span="6">
                         <el-form-item prop="labelValue">
-                            <el-input v-model="form.labelValue" placeholder="昵称/姓名/手机号码/用户ID"><el-button slot="append" icon="el-icon-search"></el-button></el-input>
+                            <el-input v-model="form.labelValue" placeholder="昵称/姓名/手机号码/用户ID" maxlength="20"><el-button slot="append" icon="el-icon-search" @click="getClientList"></el-button></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
