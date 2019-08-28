@@ -4,11 +4,11 @@
                     <el-form ref="form" :model="form" class="clearfix">
                         <el-form-item label="交易时间">
                             <div class="input_wrap">
-                                <el-radio-group v-model="form.time" @change="changeDay">
+                                <el-radio-group v-model="form.timeType" @change="changeDay">
                                     <el-radio-button class="btn_bor" label="1">7天</el-radio-button>
                                     <el-radio-button class="btn_bor" label="2">15天</el-radio-button>
                                     <el-radio-button class="btn_bor" label="3">30天</el-radio-button>
-                                    <el-radio-button class="btn_bor" label="4">本季度</el-radio-button>
+                                    <el-radio-button class="btn_bor" label="5">本季度</el-radio-button>
                                 </el-radio-group>
                             </div>
                             <el-date-picker
@@ -55,13 +55,16 @@
                             <el-button class="border_btn">重 置</el-button>
                         </el-form-item>
                     </el-form>
+
                     <div class="m_line clearfix">
-                        <p class="fl">该筛选条件下：会员共计<span>326</span>人；占会员总数的<span>76%</span>; 复购率为<span>23%</span>。</p>
+                        <p class="fl" v-if="textTips">该筛选条件下：<i v-if="form.memberType==1" style="font-style:normal">新</i><i v-if="form.memberType==2" style="font-style:normal">老</i>会员共计<span>{{memberNum}}</span>人；占会员总数的<span>{{memberCount}}%</span>; 复购率为<span>{{repeatPaymentRatio}}</span>。</p>
+                        <p class="fl" v-else>-</p>
                         <div class="fr marT20">
                             <el-button class="minor_btn">重新筛选</el-button>
                             <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
                         </div>
                     </div>
+
                     <maTable class="marT20"></maTable>
         </div>
         </div>
@@ -74,21 +77,27 @@ export default {
     data() {
         return {
             form: {
-                time:['7天'],
-                cid:"",
-                startTime:"",
-                endTime:"",
-                daterange:"",
-                memberType:"",
-                tradeCountRange:"",
+                // cid:"",
+                startTime:null, //2019-08-07 12:12:12
+                endTime:null,
+                daterange:null,
+                memberType:null,  //客户是0，新会员是1，老会员是2
 
+                tradeCountRange:null,
                 queryRepeatPaymentRatio: false,
-                queryOrderMoneyType: "",
-                MoneyRange:""
+                queryOrderMoneyType: null, // 单次和总额 0和1
+                MoneyRange:null,
+                timeType:1,
+                startIndex:1,
+                pageSize:10
             },
+            textTips:false,
+            repeatPaymentRatio:0.1, //复购率
+            memberNum:0, //会员人数
+            memberCount:0, //会员占比
             customType: [
                 {
-                    id: "",
+                    id: null,
                     name: "全部"
                 },
                 {
@@ -153,10 +162,25 @@ export default {
                 this.form.MoneyRange =  String(this.form.lowprice)+'-'+String(this.form.highprice);
             }
             console.log(this.form)
+
+            let memberType = this.form.memberType;
             this._apis.data.memberInformation(this.form).then(res => {
+                this.repeatPaymentRatio = res.repeatPaymentRatio;
+                if(memberType == 1){ //新会员
+                    this.textTips = true;
+                    this.memberNum = res.newMemberCount;
+                    this.memberCount = res.newMemberRatio;
+                }else if(memberType == 2){ //老会员
+                    this.textTips = true;
+                    this.memberNum = res.oldMemberCount;
+                    this.memberCount = res.oldMemberRatio;
+                }else{ //其他
+                    this.textTips = false;
+                }
                 console.log(res)
+                console.log(this.repeatPaymentRatio)
             }).catch(error => {
-            this.$message.error(error);
+                this.$message.error(error);
             });
         }
     }
