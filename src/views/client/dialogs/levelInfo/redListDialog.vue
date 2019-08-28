@@ -1,5 +1,5 @@
 <template>
-  <DialogBase :visible.sync="visible" @submit="submit" title="选择红包" :hasCancel="hasCancel">
+  <DialogBase :visible.sync="visible" @submit="submit" title="选择红包1" :hasCancel="hasCancel">
     <div class="table_container">
       <div class="fr marB20">
         <div class="input_wrap">
@@ -12,10 +12,11 @@
           :data="redList"
           style="width: 100%"
           ref="redTable"
+          highlight-current-row
           :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
           :default-sort="{prop: 'date', order: 'descending'}"
+          @current-change="handleCurrentChange"
         >
-          <el-table-column type="selection"></el-table-column>
           <el-table-column prop="id" label="编号"></el-table-column>
           <el-table-column prop="name" label="红包名称"></el-table-column>
           <el-table-column prop="name" label="红包类型"></el-table-column>
@@ -34,12 +35,13 @@ export default {
   data() {
     return {
       hasCancel: true,
-      key: ""
+      key: "",
+      selectedRow: {}
     };
   },
   methods: {
     submit() {
-        this.$emit('getSelectedRed', {selection: this.$refs.redTable.selection});
+        this.$emit('getSelectedRed', {selection: this.selectedRow});
     },
     getSel() {
       let redArr = this.data.redArr;
@@ -50,6 +52,9 @@ export default {
           }
         });
       })
+    },
+    handleCurrentChange(val) {
+      this.selectedRow = Object.assign({},val);
     }
   },
   computed: {

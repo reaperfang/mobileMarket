@@ -43,8 +43,8 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <span class="edit_span" @click="edit(scope.row.id)" v-if="scope.row.name">编辑</span>
-            <span class="edit_span" @click="edit(scope.row.id)" v-if="!scope.row.name">待配置</span>
+            <span class="edit_span" @click="edit(scope.row)" v-if="scope.row.name">编辑</span>
+            <span class="edit_span" @click="edit(scope.row)" v-if="!scope.row.name" :style="{color:scope.row.isGray?'#eee':'#655EFF'}">待配置</span>
         </template>
       </el-table-column>
     </el-table>
@@ -78,6 +78,14 @@ export default {
       this._apis.client.getLevelsList(this.params).then((response) => {
         response.list.map((v) => {v.status = Boolean(v.status)});
         this.levelList = [].concat(response.list);
+        let i = this.levelList.findIndex((value,index,arr) => {
+            return value.name == "";
+        });
+        this.levelList.map((v,index) => {
+          if(index > 2) {
+            v.isGray = true
+          }
+        });
       }).catch((error) => {
         this.$notify.error({
           title: '错误',
@@ -85,8 +93,10 @@ export default {
         });
       })
     },
-    edit(id) {
-      this._routeTo('levelInfo',{id: id});
+    edit(row) {
+      if(!row.isGray) {
+        this._routeTo('levelInfo',{id: row.id});
+      }
     },
     handleSwitch(row) {
       let status = row.status ? "1":"0";

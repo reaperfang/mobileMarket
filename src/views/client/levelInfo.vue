@@ -3,17 +3,20 @@
         <p class="l_title">等级信息：</p><br>
         <div class="clearfix">
             <span class="icon_title">等级图标：</span>
-            <img src="../../assets/images/client/icon_level.png" alt="" class="level_icon">
+            <img v-if="ruleForm.levelImageUrl" :src="ruleForm.levelImageUrl" alt="" class="level_icon">
+            <img v-else src="../../assets/images/client/icon_level.png" alt="" class="level_icon">
             <el-upload
-                class="upload_btn"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                multiple
-                :on-preview="handlePicturePreview"
+                class="avatar-uploader"
+                :action="uploadUrl"
+                :show-file-list="false"
                 :limit="1"
-                :file-list="fileList">
-                <el-button size="small" class="border_btn">上传图片</el-button>
+                :data="{json: JSON.stringify({cid: 222})}"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+            >
+                <el-button size="small" class="border_btn upload_btn">上传图片</el-button>
             </el-upload>
-            <span class="l_warn fl" style="margin: 16px 0 0 10px">大小不超过2M</span>
+            <span class="l_warn fl" style="margin: 16px 0 0 32px">大小不超过2M</span>
         </div>
         <div class="level_order"><span class="red">*</span>等级序号：{{ levelName }}<span class="l_warn">（等级序号为等级在系统的排序，不展示给用户）</span></div>
         <div class="form_container">
@@ -146,6 +149,7 @@ export default {
     components: { levelInfoDialog, giftListDialog, couponListDialog, redListDialog },
     data() {
         return {
+            uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
             fileList: [],
             ruleForm:{
                 id: this.$route.query.id,
@@ -188,8 +192,21 @@ export default {
         }
     },
     methods: {
-        handlePicturePreview(file) {
-            console.log(file);
+        handleAvatarSuccess(res, file) {
+            // this.fileData = res.data
+            this.ruleForm.levelImageUrl = res.data.url;
+        },
+        beforeAvatarUpload(file) {
+            //const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            // if (!isJPG) {
+            //     this.$message.error('上传图片只能是 JPG 格式!');
+            // }
+            if (!isLt2M) {
+                this.$message.error("上传图片大小不能超过 2MB!");
+            }
+            return isLt2M;
         },
         openDialog() {
             this.currentDialog = "levelInfoDialog";
@@ -200,59 +217,65 @@ export default {
                 this.levelName = response.alias;
                 this.ruleForm = Object.assign({}, response);
                 //用于回显升级条件
-                this.ruleForm.levelConditionList.map((v) => {
-                    if(v.levelConditionId == this.getId(this.conditionList, '完善信息')) {
-                        this.condition1 = true;
-                        this.currentData.info = JSON.parse(v.conditionValue);
-                        this.selectedInfos = this.currentData.info;
-                    }
-                    if(v.levelConditionId == this.getId(this.conditionList, '消费金额满')) {
-                        this.condition2 = "消费金额满";
-                        this.xfjem = v.conditionValue;
-                    }
-                    if(v.levelConditionId == this.getId(this.conditionList, '消费次数满')) {
-                        this.condition2 = "消费次数满";
-                        this.xfcsm = v.conditionValue;
-                    }
-                    if(v.levelConditionId == this.getId(this.conditionList, '积分获得满')) {
-                        this.condition2 = "积分获得满";
-                        this.jfhdm = v.conditionValue;
-                    }
-                })
+                if(this.ruleForm.levelConditionListgetSelectedRed) {
+                    this.ruleForm.levelConditionList.map((v) => {
+                        if(v.levelConditionId == this.getId(this.conditionList, '完善信息')) {
+                            this.condition1 = true;
+                            this.currentData.info = JSON.parse(v.conditionValue);
+                            this.selectedInfos = this.currentData.info;
+                        }
+                        if(v.levelConditionId == this.getId(this.conditionList, '消费金额满')) {
+                            this.condition2 = "消费金额满";
+                            this.xfjem = v.conditionValue;
+                        }
+                        if(v.levelConditionId == this.getId(this.conditionList, '消费次数满')) {
+                            this.condition2 = "消费次数满";
+                            this.xfcsm = v.conditionValue;
+                        }
+                        if(v.levelConditionId == this.getId(this.conditionList, '积分获得满')) {
+                            this.condition2 = "积分获得满";
+                            this.jfhdm = v.conditionValue;
+                        }
+                    })
+                }
                 //用于回显等级权益
-                this.ruleForm.rightsList.map((v) => {
-                    if(v.rightsInfoId == this.getId(this.rightsList, '满包邮')) {
-                        this.right1 = true;
-                        this.mby = v.rightsValue;
-                    }
-                    if(v.rightsInfoId == this.getId(this.rightsList, '会员折扣')) {
-                        this.right2 = true;
-                        this.hyzk = v.rightsValue;
-                    }
-                })
+                if(this.ruleForm.rightsList) {
+                    this.ruleForm.rightsList.map((v) => {
+                        if(v.rightsInfoId == this.getId(this.rightsList, '满包邮')) {
+                            this.right1 = true;
+                            this.mby = v.rightsValue;
+                        }
+                        if(v.rightsInfoId == this.getId(this.rightsList, '会员折扣')) {
+                            this.right2 = true;
+                            this.hyzk = v.rightsValue;
+                        }
+                    })
+                }
                 //用于回显升级奖励
                 let redArr = [], giftArr = [], couponArr = [];
-                this.ruleForm.upgradeRewardList.map((v) => {
-                    if(v.upgradeRewardInfoId == this.getId(this.rewardList, '赠送积分')) {
-                        this.upgrade1 = true;
-                        this.zsjf = v.giftNumber;
-                    }
-                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送红包')) {
-                        this.upgrade2 = true;
-                        this.selectedReds.push({name: v.giftName, id: v.giftProduct});
-                        redArr.push(v.giftProduct);
-                    }
-                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送赠品')) {
-                        this.upgrade3 = true;
-                        this.selectedGifts.push({id: v.giftProduct, goodsName: v.giftName, number: v.giftNumber });
-                        giftArr.push(v.giftProduct);
-                    }
-                    if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送优惠券')) {
-                        this.upgrade4 = true;
-                        this.selectedCoupons.push({id: v.giftProduct, name: v.giftName, number: v.giftNumber});
-                        couponArr.push(v.giftProduct);
-                    }
-                })
+                if(this.ruleForm.upgradeRewardList) {
+                    this.ruleForm.upgradeRewardList.map((v) => {
+                        if(v.upgradeRewardInfoId == this.getId(this.rewardList, '赠送积分')) {
+                            this.upgrade1 = true;
+                            this.zsjf = v.giftNumber;
+                        }
+                        if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送红包')) {
+                            this.upgrade2 = true;
+                            this.selectedReds.push({name: v.giftName, id: v.giftProduct});
+                            redArr.push(v.giftProduct);
+                        }
+                        if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送赠品')) {
+                            this.upgrade3 = true;
+                            this.selectedGifts.push({id: v.giftProduct, goodsName: v.giftName, number: v.giftNumber });
+                            giftArr.push(v.giftProduct);
+                        }
+                        if(v.upgradeRewardInfoId == this.getId(this.rewardList,'赠送优惠券')) {
+                            this.upgrade4 = true;
+                            this.selectedCoupons.push({id: v.giftProduct, name: v.giftName, number: v.giftNumber});
+                            couponArr.push(v.giftProduct);
+                        }
+                    })
+                }
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -373,7 +396,8 @@ export default {
             this.selectedCoupons.splice(index, 1);
         },
         getSelectedRed(obj) {
-            this.selectedReds = [].concat(obj.selection);
+            this.selectedReds = [];
+            this.selectedReds.push(obj.selection);
         },
         deleteRed(index) {
             this.selectedReds.splice(index, 1);
@@ -571,6 +595,7 @@ export default {
                     message: "等级编辑成功",
                     type: 'success'
                 });
+                this._routeTo('clientLevel');
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -583,7 +608,6 @@ export default {
         this.getLevelCondition();
         this.getRightsList();
         this.getRewardList();
-        
     }
 }
 </script>
@@ -609,7 +633,7 @@ export default {
     }
     .upload_btn{
         float: left;
-        margin: 8px 0 0 13px;
+        margin: 8px 0 0 30px;
     }
     .l_warn{
         color: #92929B;

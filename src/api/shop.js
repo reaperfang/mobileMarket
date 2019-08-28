@@ -419,7 +419,7 @@ export function changeSwitchStatus(data) {
       return request({
         url: 'api/v1/b/seckill/app-goods-page-list',
         method: 'get',
-        baseURL: process.env.SALE_API,
+        baseURL: process.env.CAOSHUAI_API,
         params:data
       })
   }
@@ -429,7 +429,7 @@ export function changeSwitchStatus(data) {
       return request({
         url: 'api/v1/b/limit-discount/app-goods-page-list',
         method: 'get',
-        baseURL: process.env.SALE_API,
+        baseURL: process.env.CAOSHUAI_API,
         params:data
       })
   }
@@ -439,7 +439,7 @@ export function changeSwitchStatus(data) {
       return request({
         url: 'api/v1/b/package-buy/app-page-list',
         method: 'get',
-        baseURL: process.env.SALE_API,
+        baseURL: process.env.CAOSHUAI_API,
         params:data
       })
   }
@@ -490,7 +490,7 @@ export function changeSwitchStatus(data) {
       return request({
         url: 'api/v1/c/seckill/get-activity-goods',
         method: 'get',
-        baseURL: process.env.SALE_API,
+        baseURL: process.env.CAOSHUAI_API,
         params:data
       })
   }
@@ -500,7 +500,7 @@ export function changeSwitchStatus(data) {
       return request({
         url: 'api/v1/c/limit-discount/get-activity-goods',
         method: 'get',
-        baseURL: process.env.SALE_API,
+        baseURL: process.env.CAOSHUAI_API,
         params:data
       })
   }
@@ -510,7 +510,7 @@ export function changeSwitchStatus(data) {
       return request({
         url: 'api/v1/c/package-buy/get-package-buy-list',
         method: 'get',
-        baseURL: process.env.SALE_API,
+        baseURL: process.env.CAOSHUAI_API,
         params:data
       })
   }

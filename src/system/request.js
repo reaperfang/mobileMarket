@@ -8,7 +8,6 @@ import appConfig from '@/system/appConfig';
 class Ajax {
   constructor() {
     this.systemRequest = 'head';
-    this.systemType = 'onlineBusiness';
     this.service = axios.create({
       timeout: 10000, // request timeout
     });
@@ -20,25 +19,33 @@ class Ajax {
   }
 
   // request拦截器
-  requestGlobal() {
-    console.log(11)
+  requestGlobal(config) {
+    // this.service.interceptors.request.use(
+    //   e => {
+    //     e.params = e.params || {}
+    //     // e.headers = e.headers || {}
+    //     e.headers = {
+    //       businessId: 1,
+    //       tenantId: 1,
+    //       merchantId: 2,
+    //       loginUserId: 1
+    //     }
+    //     return e
+    //   },
+    //   error => ({ status: 0, msg: error.message })
+    // )
 
-    this.service.interceptors.request.use(
-      e => {
-        if(this.systemType === 'market') {
-          e.params = e.params || {}
-          // e.headers = e.headers || {}
-          e.headers = {
-            businessId: 1,
-            tenantId: 1,
-            merchantId: 2,
-            loginUserId: 1
-          }
-        }
-        return e
-      },
-      error => ({ status: 0, msg: error.message })
-    )
+    /* 上面的处理方案会导致电商接口参数异常调用失败，
+    当添加了请求区分之后电商接口好了但是会导致营销的接口异常，
+    所以最终改为以下方案(跟电商的处理方式相似，
+    给config对象配置营销独有的参数，
+    即可解决这2个问题) */
+    config.headers = {
+      businessId: 1,
+      tenantId: 1,
+      merchantId: 2,
+      loginUserId: 1
+    }
   }
 
   // respone拦截器
@@ -70,11 +77,9 @@ class Ajax {
   request(config) {
     this.setApiAddress(config);
     if (config.target) {
-      this.systemType = 'onlineBusiness';
       config = this.setRequestParams(config);
     } else {
-      this.systemType = 'market';
-      this.requestGlobal();
+      this.requestGlobal(config);
     }
     return this.service(config);
   }
@@ -92,7 +97,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149da76fc6faf5f20c620f144a0f144b3f9d',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d6196181c96e420b84739273022b7b6b4',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),

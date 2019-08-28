@@ -55,7 +55,7 @@ export default {
           { required: false, message: "请输入内容", trigger: "blur" }
         ],
         pageCategoryInfoId: [
-          { required: false, message: "请输入内容", trigger: "change" }
+          { required: true, message: "请输入内容", trigger: "change" }
         ],
         colorStyle: [
           { required: true, message: "请输入内容", trigger: "change" }
@@ -72,6 +72,7 @@ export default {
     getClassifyList() {
       this._apis.shop.selectAllClassify({}).then((response)=>{
         this.classifyList = response;
+        // this.ruleForm.pageCategoryInfoId = response[0].id;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',

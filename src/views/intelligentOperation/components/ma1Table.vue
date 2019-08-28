@@ -61,7 +61,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="listObj.count">
+        :total="listObj.totalPage">
       </el-pagination>
     </div>
   </div>
@@ -89,12 +89,13 @@ export default {
   methods: {
     handleSizeChange(val){
       this.pageSize = val;
-      this.$emit('getRightsProtection',1,val)
+      this.$emit('getEvaluation',1,val)
     },
     handleCurrentChange(val){
-      this.$emit('getRightsProtection',val,this.pageSize)
+      this.$emit('getEvaluation',val,this.pageSize)
     }
   },
+ 
   components: {}
 };
 </script>

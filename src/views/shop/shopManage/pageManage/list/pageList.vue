@@ -28,7 +28,7 @@
           type="selection"  
           width="55">
         </el-table-column>
-        <el-table-column prop="name" label="页面名称" :width="200">
+        <el-table-column prop="name" label="页面名称" :width="250">
           <template slot-scope="scope">
             {{scope.row.name}} 
             <span class="index_page_flag" v-if="scope.row.isHomePage == 1">首页</span>
