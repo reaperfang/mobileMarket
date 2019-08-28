@@ -59,7 +59,9 @@
                     <div class="m_line clearfix">
                         <div class="fr marT20">
                             <el-button class="minor_btn" @click="rescreen()">重新筛选</el-button>
+                            <el-tooltip content="当前最多支持导出1000条数据" placement="top">
                             <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl()">导出</el-button>
+                            </el-tooltip>
                         </div>
                     </div>
                     <ma1Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma1Table>
