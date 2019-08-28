@@ -19,7 +19,7 @@ const app = {
     // 获取店铺信息
     getShopInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        this._apis.shop.getShopInfo({id: '2'}).then((response)=>{
+        this._apis.shop.getShopInfo({id: '7'}).then((response)=>{
           commit('setShopInfo', response);
           resolve()
         }).catch((error)=>{
