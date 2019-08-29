@@ -32,7 +32,7 @@ export default [
                 path: 'channelDetail',
                 component: () => import('@/views/intelligentOperation/channelDetail'),
                 name: 'channelDetail',
-                meta: { title: '渠道转化', noCache: true, tabTitle: '会员分析' },
+                meta: { title: '渠道转化详情', noCache: true, tabTitle: '会员分析' },
                 hidden: true
             },
             {

@@ -1,6 +1,6 @@
 <template>
     <div class="m_container">
-         <div class="pane_container">
+        <div class="pane_container">
                 <el-form>
                     <el-form-item label="交易时间">
                         <div class="p_line">
@@ -116,29 +116,17 @@ export default {
                     return time.getTime() > Date.now()
                 }
             },
-            channelData: [
-                {
-                    id: null,
-                    name: "不限"
-                },
-                {
-                    id: 401,
-                    name: "显示抢购"
-                },{
-                    id: 506,
-                    name: "限时秒杀"
-                }
-            ],
         }
     },
+    mounted(){
+        this.goSearch();
+    },
     methods: {
-        checkDay(item) {
-            this.day = item;
-        },
         changeTime(val){
             this.form.startTime = val[0]
             this.form.endTime = val[1]
         },
+        //查询
         goSearch(){
             this._apis.data.channelConversion(this.form).then(response => {
                 this.listObj = response;
@@ -161,8 +149,7 @@ export default {
         },
         //重新筛选
         reScreening(){
-            this._routeTo('channel');
-            console.log(222)
+            this.goSearch();
             // this.$router.push('/intelligentOperation/channel')
         },
         //导出
