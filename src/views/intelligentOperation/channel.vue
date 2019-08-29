@@ -1,74 +1,135 @@
 <template>
     <div class="m_container">
          <div class="pane_container">
-                    <el-form ref="form" :model="form" class="clearfix">
-                        <el-form-item label="交易时间">
-                            <div class="input_wrap">
-                                <el-checkbox-group v-model="form.time">
-                                    <el-checkbox label="7天" border></el-checkbox>
-                                    <el-checkbox label="15天" border></el-checkbox>
-                                    <el-checkbox label="30天" border></el-checkbox>
-                                    <el-checkbox label="本季度" border></el-checkbox>
-                                </el-checkbox-group>
+                <el-form>
+                    <el-form-item label="交易时间">
+                        <div class="p_line">
+                            <el-radio-group v-model="form.timeType">
+                                <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                                <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                                <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                                <el-radio-button class="btn_bor" label="5">最近一季度</el-radio-button>
+                                <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
+                            </el-radio-group>
+                            <div class="input_wrap" v-if="form.timeType == 4">
+                                <el-date-picker
+                                    v-model="dateRange"
+                                    type="daterange"
+                                    :picker-options="pickerOptions"
+                                    range-separator="—"
+                                    value-format="yyyy-MM-dd"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    @change="changeTime"
+                                ></el-date-picker>
                             </div>
-                            <el-date-picker
-                                v-model="dateRange"
-                                type="daterange"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="转化渠道">
-                            <div class="input_wrap2">
-                                <el-select v-model="form.value">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
-                                </el-select>
-                            </div>
-                            <span class="span_label">交转化率</span>
-                            <div class="input_wrap2 marR20">
-                                <el-select v-model="form.value2">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
-                                </el-select>
-                            </div>
-                        </el-form-item>
-                        <el-form-item class="fr marT20">
-                            <el-button class="minor_btn" icon="el-icon-search">查询</el-button>
-                            <el-button class="border_btn">重 置</el-button>
-                        </el-form-item>
-                    </el-form>
-                    <div class="m_line clearfix">
-                        <div class="fr marT20">
-                            <el-button class="border_btn">查看详情</el-button>
-                            <el-button class="minor_btn">重新筛选</el-button>
-                            <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
                         </div>
+                    </el-form-item>
+                        
+                    <el-form-item label="转化渠道">
+                        <div class="input_wrap2">
+                            <el-select v-model="form.channel">
+                                <el-option label="不限" value="null"></el-option>
+                                <el-option label="限时折扣" value="401"></el-option>
+                                <el-option label="限时秒杀" value="506"></el-option>
+                            </el-select>
+                        </div>
+                        <span class="span_label">（成功）支付转化率</span>
+                        <div class="input_wrap2 marR20">
+                            <el-select v-model="form.changeRatioRange">
+                                <el-option label="不限" value="null"></el-option>
+                                <el-option label="10%以上" value="10"></el-option>
+                                <el-option label="5%-10%" value="5-10"></el-option>
+                                <el-option label="3%-5%" value="3-5"></el-option>
+                                <el-option label="1%-3%" value="1-3"></el-option>
+                                <el-option label="0%-1%" value="0-1"></el-option>
+                            </el-select>
+                        </div>
+                    </el-form-item>
+                    <el-form-item class="fr marT20">
+                        <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
+                        <el-button class="border_btn">重 置</el-button>
+                    </el-form-item>
+                </el-form>
+                <div class="m_line clearfix">
+                    <div class="fr marT20">
+                        <el-button class="border_btn">查看详情</el-button>
+                        <el-button class="minor_btn">重新筛选</el-button>
+                        <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
                     </div>
-                    <ma2Table class="marT20"></ma2Table>
                 </div>
+                <channel-table class="marT20" :listObj="listObj"></channel-table>
+            </div>
     </div>
 </template>
 <script>
-import ma2Table from './components/ma2Table';
+import channelTable from './components/channelTable';
 export default {
     name: 'channel',
-    components: { ma2Table },
+    components: { channelTable },
     data() {
         return {
             form: {
-                time:['7天'],
-                dateRange:"",
-                value:"",
-                value3: false,
-                value4: "1"
-            }
+                cid:"",
+                startTime:null,
+                endTime:null,
+                channel:null,
+                changeRatioRange:null,
+                timeType:1,
+                startIndex:1,
+                pageSize: '10',
+            },
+            listObj:{
+                list:[]
+            },
+            pickerMinDate: '',
+            dateRange: [],
+            pickerOptions: {
+                onPick: ({ maxDate, minDate }) => {
+                    this.pickerMinDate = minDate.getTime()
+                    if (maxDate) {
+                    this.pickerMinDate = ''
+                    }
+                },
+                disabledDate: (time) => {
+                    if (this.pickerMinDate !== '') {
+                        const day30 = (90 - 1) * 24 * 3600 * 1000
+                    let maxTime = this.pickerMinDate + day30
+                    if (maxTime > new Date()) {
+                        maxTime = new Date()
+                    }
+                    return time.getTime() > maxTime
+                }
+                    return time.getTime() > Date.now()
+                }
+            },
+            channelData: [
+                {
+                    id: null,
+                    name: "不限"
+                },
+                {
+                    id: 401,
+                    name: "显示"
+                },{
+                    id: 407,
+                    name: "新会员"
+                }
+            ],
         }
     },
     methods: {
         checkDay(item) {
             this.day = item;
+        },
+        changeTime(val){
+            this.form.startTime = val[0]
+            this.form.endTime = val[1]
+        },
+        goSearch(){
+            this._apis.data.channelConversion(this.form).then(response => {
+                this.listObj = response;
+            })
         }
     }
 }
