@@ -5,11 +5,12 @@
                 <p class="c_title">积分使用规则：</p>
                 <div>
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-                        <el-form-item label="是否开启积分抵现：" prop="useCredits">
+                        <el-form-item label="是否开启积分抵现：" prop="scoreToCash">
                             <div class="marL20">
                                 <br>
-                                <el-radio v-model="ruleForm.useCredits" label="1">不开启</el-radio><span class="c_warn">说明：开启用用户可以使用积分抵现（但不支持积分商城订单）</span><br>
-                                <el-radio v-model="ruleForm.useCredits" label="2">开启</el-radio>
+                                <el-radio v-model="ruleForm.scoreToCash" label="1">不开启</el-radio><span class="c_warn">说明：开启用用户可以使用积分抵现（但不支持积分商城订单）</span><br>
+                                <el-radio v-model="ruleForm.scoreToCash" label="2">开启</el-radio><br>
+                                <span>抵现比例：</span>
                                 <div style="width: 140px; display: inline-block">
                                     <el-input placeholder="请输入整数" v-model="ruleForm.jf"></el-input>
                                 </div>
@@ -21,6 +22,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item label="积分抵现条件：">
+                            <el-checkbox></el-checkbox>
                             <span class="marR50">订单满</span>
                             <div style="width: 222px; display: inline-block">
                                 <el-input placeholder="请输入整数，不填则不生效"></el-input>
@@ -36,11 +38,11 @@
                         </el-form-item>
                         <div class="c_line"></div>
                         <p class="c_title">积分清零规则：</p>
-                        <el-form-item label="是否开启积分抵现：" prop="useReset">
+                        <el-form-item label="是否开启积分抵现：" prop="scoreCleanType">
                             <div class="marL20">
                                 <br>
-                                <el-radio v-model="ruleForm.useReset" label="1">不清零</el-radio><br>
-                                <el-radio v-model="ruleForm.useReset" label="2">自然年清零上一年获得的积分</el-radio><span class="c_warn">每年12月31日清空上一年获得的积分</span>
+                                <el-radio v-model="ruleForm.scoreCleanType" label="1">不清零</el-radio><br>
+                                <el-radio v-model="ruleForm.scoreCleanType" label="2">自然年清零上一年获得的积分</el-radio><span class="c_warn">每年12月31日清空上一年获得的积分</span>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -76,16 +78,16 @@ export default {
     data() {
         return {
             ruleForm: {
-                useCredits: "1",
+                scoreToCash: "1",
                 jf:"",
                 yuan:"",
-                useReset: "1"
+                scoreCleanType: "1"
             },
             rules: {
-                useCredits: [
+                scoreToCash: [
                     { required: true, message: '请选择是否开启积分抵现', trigger: 'blur'}
                 ],
-                useReset: [
+                scoreCleanType: [
                     { required: true, message: '请选择是否开启积分抵现', trigger: 'blur'}
                 ]
             },

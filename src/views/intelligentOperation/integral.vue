@@ -4,66 +4,214 @@
          <div class="pane_container">
             <el-form ref="form" :model="form" class="clearfix">
                 <el-form-item label="交易时间">
-                    <div class="input_wrap">
-                        <el-checkbox-group v-model="form.time">
-                            <el-checkbox label="7天" border></el-checkbox>
-                            <el-checkbox label="15天" border></el-checkbox>
-                            <el-checkbox label="30天" border></el-checkbox>
-                            <el-checkbox label="本季度" border></el-checkbox>
-                        </el-checkbox-group>
-                    </div>
-                    <el-date-picker
-                        v-model="dateRange"
+                    <div class="p_line">
+                        <el-radio-group v-model="form.timeType">
+                            <el-radio-button class="btn_bor" label="1">7天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="2">15天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="3">30天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="5">本季度</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
+                        </el-radio-group>
+                        <el-date-picker
+                        v-if="form.timeType == 4"
+                        v-model="daterange"
                         type="daterange"
+                        value-format="yyyy-MM-dd hh:mm:ss"
                         range-separator="至"
                         start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+                        end-placeholder="结束日期"
+                        @change="getData">
                     </el-date-picker>
+                    </div>
                 </el-form-item>
                 <el-form-item label="消耗次数">
                     <div class="input_wrap2">
-                        <el-select v-model="form.value">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-select v-model="form.scorePaymentCountRange" @change="getData">
+                            <el-option v-for="item in consumTimes" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                        </el-select>
+                    </div>
+                </el-form-item>
+                <el-form-item label="会员类型">
+                    <div class="input_wrap2">
+                        <el-select v-model="form.memberType"  @change="getData">
+                            <el-option v-for="item in customType" :label="item.name" :value="item.id" :key="item.id"></el-option>
                         </el-select>
                     </div>
                 </el-form-item>
                 <el-form-item class="fr marT20">
-                    <el-button class="minor_btn" icon="el-icon-search">查询</el-button>
-                    <el-button class="border_btn">重 置</el-button>
+                    <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
+                    <el-button class="border_btn" @click="reSet">重 置</el-button>
                 </el-form-item>
             </el-form>
             <div class="m_line clearfix">
-                <p class="fl">该筛选条件下：会员共计<span>326</span>人；占会员总数的<span>76%</span>; 复购率为<span>23%</span>。</p>
+                <p class="fl">该筛选条件下：会员共计<span>{{memberCount}}</span>人；占会员总数的<span>{{ratio}}%</span>
                 <div class="fr marT20">
-                    <el-button class="border_btn">查看详情</el-button>
-                    <el-button class="minor_btn">重新筛选</el-button>
-                    <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
+                    <el-button class="minor_btn" @click="reScreening()">重新筛选</el-button>
+                    <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl">导出</el-button>
                 </div>
             </div>
-            <ma2Table class="marT20"></ma2Table>
+            <ma3Table 
+                class="marT20" 
+                @sizeChange="sizeChange"
+                @currentChange="currentChange"
+                :pageSize="10"
+                :listObj="listObj"
+                :totalCount="listObj.totalSize">
+            </ma3Table>
         </div>
     </div>
 </template>
 <script>
-import ma2Table from './components/ma2Table';
+import ma3Table from './components/ma3Table';
 export default {
     name: 'integral',
-    components: { ma2Table },
+    components: { ma3Table },
     data() {
         return {
+            daterange:'',
             form: {
-                time:['7天'],
-                dateRange:"",
-                value:"",
-                value3: false,
-                value4: "1"
-            }
+                cid:'',
+                startTime:null,
+                endTime:null,
+                scorePaymentCountRange:null,
+                memberType:null,
+                timeType:null,
+                startIndex:1,
+                pageSize:10
+            },
+            memberCount:0, //会员数
+            ratio:0, //会员占比
+            listObj:{}, //表格数据
+            totalCount:0,//总条数
+            consumTimes: [
+                {
+                    id: "1-5",
+                    name: "1-5次"
+                },
+                {
+                    id: "5-10",
+                    name: "5-10次"
+                },{
+                    id: "10-15",
+                    name: "10-15次"
+                },{
+                    id: "15",
+                    name: "15次以上"
+                },{
+                    id: "null",
+                    name: "不限"
+                }
+            ],
+            customType: [
+                {
+                    id: null,
+                    name: "全部"
+                },
+                {
+                    id: "0",
+                    name: "非会员"
+                },{
+                    id: "1",
+                    name: "新会员"
+                },{
+                    id: "2",
+                    name: "老会员"
+                }
+            ],
         }
+    },
+    created(){
+        this.goSearch()
     },
     methods: {
         checkDay(item) {
             this.day = item;
+        },
+        getData() {
+            if(this.daterange){
+                this.form.timeType = 4;
+                Object.assign(this.form,{
+                    startTime:this.daterange[0],
+                    endTime:this.daterange[1]
+                });
+            }else{
+                Object.assign(this.form,{
+                    startTime:null,
+                    endTime:null
+                });
+            }
+            console.log(this.form)
+        },
+        //
+        //查询
+        goSearch(){
+            let memberType = this.form.memberType;
+            this._apis.data.integralconsumption(this.form).then(res => {
+                this.memberCount = res.memberCount;
+                this.ratio = res.ratio;
+                this.listObj = res; //信息列表数据
+                this.totalCount = res.totalPage * this.form.pageSize;
+                // if(memberType == 1){ //新会员
+                //     this.textTips = true;
+                //     this.memberNum = res.newMemberCount;
+                //     this.memberCount = res.newMemberRatio;
+                // }else if(memberType == 2){ //老会员
+                //     this.textTips = true;
+                //     this.memberNum = res.oldMemberCount;
+                //     this.memberCount = res.oldMemberRatio;
+                // }else{ //其他
+                //     this.textTips = false;
+                // }
+                console.log(res)
+                // console.log(this.repeatPaymentRatio)
+            }).catch(error => {
+                this.$message.error(error);
+            });
+        },
+        // 重置
+        reSet(){
+            this.form = {
+                cid:'',
+                startTime:null,
+                endTime:null,
+                scorePaymentCountRange:null,
+                memberType:null,
+                timeType:null,
+                startIndex:1,
+                pageSize:10
+            }
+            this.goSearch();
+        },
+        //重新筛选
+        reScreening(){
+            this.form.startIndex = 1;
+            this.goSearch()
+        },
+        //导出
+        exportExl(){
+            let data = {};
+            data.cid = ""
+            data.startTime = this.form.startTime
+            data.endTime = this.form.endTime
+            data.scorePaymentCountRange = this.form.scorePaymentCountRange
+            data.queryRepeatPaymentRatio = this.form.queryRepeatPaymentRatio
+            data.memberType = this.form.memberType            
+            data.timeType = this.form.timeType
+            this._apis.data.integralConsumptionExport(data)
+            .then(res => {
+                window.open(res);
+            })
+            .catch(err=>{
+                this.$message.error(err);
+            })
+        },
+        sizeChange(val){
+            this.form.pageSize = val;
+            this.goSearch();
+        },
+        currentChange(val){
+            this.form.startIndex = val;
+            this.goSearch();
         }
     }
 }

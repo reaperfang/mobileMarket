@@ -44,14 +44,16 @@
         label="维权类型"
         >
         <template slot-scope="scope">
-             <span style="line-height:60px;display:inline-block">{{{1:'退款（仅退款不退货）',2:'退款退货',3:'换货'}[scope.row.protectionType]}}</span>
+             <span style="line-height:60px;display:inline-block" v-if="scope.row.protectionType">{{{1:'退款（仅退款不退货）',2:'退款退货',3:'换货'}[scope.row.protectionType]}}</span>
+             <span style="line-height:60px;display:inline-block" v-else>-</span>
         </template>
       </el-table-column>
       <el-table-column
         label="维权原因"
         >
         <template slot-scope="scope">
-             <span style="line-height:60px;display:inline-block">{{{1:'不想要了',2:'卖家缺货',3:'拍错了订单信息错误',4:'其他'}[scope.row.protectionReason]}}</span>
+             <span style="line-height:60px;display:inline-block" v-if="scope.row.protectionReason">{{{1:'不想要了',2:'卖家缺货',3:'拍错了订单信息错误',4:'其他'}[scope.row.protectionReason]}}</span>
+             <span style="line-height:60px;display:inline-block" v-else>-</span>
         </template>
       </el-table-column>
     </el-table>
@@ -63,7 +65,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="listObj.totalPage">
+        :total="listObj.totalSize">
       </el-pagination>
     </div>
   </div>
