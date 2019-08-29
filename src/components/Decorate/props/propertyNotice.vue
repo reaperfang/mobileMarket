@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';;
+import propertyMixin from '../mixins/mixinProps';;
 export default {
   name: 'propertyNotice',
   mixins: [propertyMixin],

@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <div class="block header">
           <p class="title">个人信息页设置</p>
           <p class="state">生效中</p>
@@ -221,4 +221,17 @@ export default {
       margin-right:10px;
     }
   }
+
+.el-radio-group{
+  margin-top: 9px;
+  .el-radio {
+      margin-bottom: 10px;
+      margin-right: 10px;
+  }
+}
+.el-checkbox-group{
+  .el-checkbox{
+    margin-right: 10px;
+  }
+}
 </style>

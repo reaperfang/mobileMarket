@@ -94,12 +94,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .block{
-      &.button{
-        padding: 30px 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-      }
-    }
+.block{
+  &.button{
+    padding: 30px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.el-radio-group{
+  margin-top: 9px;
+  .el-radio {
+      margin-bottom: 10px;
+      margin-right: 10px;
+  }
+}
+.el-checkbox-group{
+  .el-checkbox{
+    margin-right: 10px;
+  }
+}
 </style>

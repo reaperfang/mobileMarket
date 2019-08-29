@@ -8,8 +8,8 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="间隔时间" v-if="ruleForm.buyType === 2">
-        <el-input v-model="ruleForm.intervalStart"></el-input> - 
-        <el-input v-model="ruleForm.intervalEnd"></el-input>秒
+        <el-input v-model="ruleForm.intervalStart" style="width:60px"></el-input> - 
+        <el-input v-model="ruleForm.intervalEnd" style="width:60px"></el-input>秒
       </el-form-item>
       <el-form-item label="背景颜色" prop="backgroundColor">
         <div class="color_block">
@@ -28,7 +28,7 @@
        <el-form-item label="公告商品" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of items" :key="key">
+            <li v-for="(item, key) of list" :key="key">
               <img :src="item.mainImage" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
@@ -46,11 +46,12 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinBuyNotice from "../mixins/mixinBuyNotice";
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 export default {
   name: 'propertyBuyNotice',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinBuyNotice],
   components: {dialogSelectGoods},
   data () {
     return {
@@ -60,11 +61,12 @@ export default {
         intervalEnd: 60,
         backgroundColor: 'rgb(255,248,233)',
         fontColor: 'rgb(102,102,102)',
-        goods: []
+        ids: []
       },
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: ''
     }

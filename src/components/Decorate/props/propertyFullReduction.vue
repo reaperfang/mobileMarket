@@ -11,7 +11,7 @@
         <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectFullReduction'">选择活动</el-button>
         <div>
           <el-tag
-            v-for="tag in items"
+            v-for="tag in list"
             :key="tag.name"
             closable
             style="margin-right:5px;"
@@ -35,12 +35,13 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinFullReduction from "../mixins/mixinFullReduction";
 import dialogSelectFullReduction from '@/views/shop/dialogs/dialogSelectFullReduction';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyFullReduction',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinFullReduction],
   components: {dialogSelectFullReduction},
   data () {
     return {
@@ -52,6 +53,7 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: ''
     }

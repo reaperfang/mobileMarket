@@ -44,10 +44,11 @@
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixinComps';
+import componentMixin from '../mixins/mixinComps';
+import mixinDiscount from '../mixins/mixinDiscount';
 export default {
     name:"componentDiscount",
-    mixins:[componentMixin],
+    mixins:[componentMixin, mixinDiscount],
     data(){
         return{
             // 样式属性
@@ -70,12 +71,6 @@ export default {
     },
     components:{
         componentButton
-    },
-    created(){
-        this.fetch();
-        this._globalEvent.$on('fetchDiscount', () =>{
-            this.fetch();
-        });
     },
     mounted() {
         this.decoration();
@@ -125,31 +120,6 @@ export default {
             this.textAlign = this.currentComponentData.data.textAlign;
             this.showContents = this.currentComponentData.data.showContents;
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
-        },
-
-          //根据ids拉取数据
-        fetch() {
-            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
-                this.loading = true;
-                this._apis.shop.getDiscountListByIds({
-                    rightsDiscount: 1, 
-                    spuIds: this.currentComponentData.data.ids.join(',')
-                }).then((response)=>{
-                    this.createList(response);
-                    this.loading = false;
-                }).catch((error)=>{
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
-                    this.loading = false;
-                });
-            }
-        },
-
-         /* 创建数据 */
-        createList(datas) {
-            this.list = datas;
         },
 
     }

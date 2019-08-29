@@ -10,7 +10,7 @@
       <el-form-item label="商品" v-if="ruleForm.source === 1" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of items" :key="key">
+            <li v-for="(item, key) of list" :key="key">
               <img :src="item.mainImage" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
@@ -135,12 +135,13 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinGoods from '../mixins/mixinGoods';
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 import dialogSelectGoodsGroup from '@/views/shop/dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyGoods',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinGoods],
   components: {dialogSelectGoods, dialogSelectGoodsGroup},
   data () {
     return {
@@ -164,6 +165,7 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: ''
     }
@@ -198,6 +200,57 @@ export default {
         }
       }
       this.ruleForm.goodsGroups = tempGoodsGroups;
+    },
+
+    //根据ids拉取数据
+    fetch() {
+        if(this.currentComponentData && this.currentComponentData.data) {
+            let params = {};
+            const ids = this.currentComponentData.data.ids;
+            if(ids && Object.prototype.toString.call(ids) === '[object Object]') {
+                if(this.currentCatagoryId === 'all') {
+                    const allIds = [];
+                    for(let k in ids) {
+                        for(let item of ids[k]) {
+                            allIds.push(item);
+                        }
+                    }
+                    params = {
+                        status: '1',
+                        ids: allIds
+                    }
+                }else{
+                    params = {
+                        status: '1',
+                        ids: ids[this.currentCatagoryId],
+                        productCatalogInfoId: this.currentCatagoryId
+                    }
+                }
+            }else if(Array.isArray(ids) && ids.length){
+                params = {
+                    status: '1',
+                    ids: ids,
+                }
+            }else{
+                return;
+            }
+            this.loading = true;
+            this._apis.goods.fetchAllSpuGoodsList(params).then((response)=>{
+                this.createList(response);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.loading = false;
+            });
+        }
+    },
+
+      /* 创建数据 */
+    createList(datas) {
+        this.list = datas;
     },
   }
 }
