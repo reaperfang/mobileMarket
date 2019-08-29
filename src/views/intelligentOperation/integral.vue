@@ -56,7 +56,7 @@
                 @currentChange="currentChange"
                 :pageSize="10"
                 :listObj="listObj"
-                :totalCount="totalCount">
+                :totalCount="listObj.totalSize">
             </ma3Table>
         </div>
     </div>

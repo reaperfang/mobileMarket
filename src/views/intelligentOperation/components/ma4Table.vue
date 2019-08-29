@@ -61,7 +61,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="listObj.totalPage">
+        :total="listObj.totalSize">
       </el-pagination>
     </div>
   </div>
