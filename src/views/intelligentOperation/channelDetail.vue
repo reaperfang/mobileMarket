@@ -24,7 +24,7 @@
             >
             </el-table-column>
             <el-table-column
-                prop="activityName"
+                prop="customerId"
                 label="客户ID"
                 align="center"
             >
@@ -97,7 +97,7 @@ export default {
         getData(){
             this._apis.data.channelConversionDetails(this.ruleForm).then(response => {
                 this.list = response.list;
-                this.totalCount = this.ruleForm.pageSize * response.totalPage;
+                this.totalCount = response.totalSize;
             })
         },
         //导出

@@ -40,7 +40,7 @@
                 :page-sizes="[10, 20, 30, 40]"
                 :page-size="pageSize"
                 layout="sizes, prev, pager, next"
-                :total="totalCount">
+                :total="listObj.totalSize">
             </el-pagination>
         </div>
     </div>
@@ -51,7 +51,7 @@ import TableBase from "@/components/TableBase";
 export default {
     name: "channelTable",
     extends: TableBase,
-    props:['listObj','totalCount'],
+    props:['listObj'],
     data() {
         return {
             pageSize:10,
