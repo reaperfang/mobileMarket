@@ -196,7 +196,11 @@ export default {
                     importUrl: this.importUrl
                 }
                 this._apis.client.importMemberFile(params).then((response) => {
-                    console.log(response);
+                    this.$notify({
+                        title: '成功',
+                        message: '导入成功',
+                        type: 'success'
+                    });
                 }).catch((error) => {
                     this.$notify.error({
                         title: '错误',

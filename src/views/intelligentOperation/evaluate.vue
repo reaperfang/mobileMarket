@@ -5,14 +5,14 @@
                     <el-form class="clearfix">
                         <el-form-item label="交易时间">
                             <div class="p_line">
-                    <el-radio-group v-model="form.type" @change="changeDay">
+                    <el-radio-group v-model="form.timeType">
                         <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                         <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                         <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
                         <el-radio-button class="btn_bor" label="5">最近一季度</el-radio-button>
                         <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="form.type == 4">
+                        <div class="input_wrap" v-if="form.timeType == 4">
                         <el-date-picker
                             v-model="range"
                             type="daterange"
@@ -28,79 +28,85 @@
                         <el-form-item label="满意率">
                             <div class="input_wrap2">
                                 <el-select v-model="form.niceRatioRange">
-                                    <el-option label="不限" value="0"></el-option>
+                                    <el-option label="不限" value="null"></el-option>
                                     <el-option label="0-1%" value="1"></el-option>
-                                    <el-option label="2-5%" value="1"></el-option>
+                                    <el-option label="2-5%" value="2"></el-option>
                                     <el-option label="5%以上" value="3"></el-option>
                                 </el-select>
                             </div>
                             <span class="span_label">差评率</span>
                             <div class="input_wrap2 marR20">
                                 <el-select v-model="form.badRatioRange">
-                                    <el-option label="不限" value="0"></el-option>
+                                    <el-option label="不限" value="null"></el-option>
                                     <el-option label="0-1%" value="1"></el-option>
-                                    <el-option label="2-5%" value="1"></el-option>
+                                    <el-option label="2-5%" value="2"></el-option>
                                     <el-option label="5%以上" value="3"></el-option>
                                 </el-select>
                             </div>
                             <span class="span_label">会员类型</span>
                             <div class="input_wrap2 marR20">
                                 <el-select v-model="form.memberType">
-                                    <el-option label="全部" value="0"></el-option>
+                                    <el-option label="全部" value="null"></el-option>
                                     <el-option label="非会员" value="1"></el-option>
-                                    <el-option label="新会员" value="1"></el-option>
+                                    <el-option label="新会员" value="2"></el-option>
                                     <el-option label="老会员" value="3"></el-option>
                                 </el-select>
                             </div>
-                            <el-button class="minor_btn" icon="el-icon-search" @click="getRightsProtection()">查询</el-button>
+                            <el-button class="minor_btn" icon="el-icon-search" @click="getEvaluation()">查询</el-button>
                             <el-button class="border_btn" @click="resetAll()">重 置</el-button>
                         </el-form-item>
                     </el-form>
                     <div class="m_line clearfix">
                         <div class="fr marT20">
                             <el-button class="minor_btn" @click="rescreen()">重新筛选</el-button>
-                            <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
+                            <el-tooltip content="当前最多支持导出1000条数据" placement="top">
+                            <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl()">导出</el-button>
+                            </el-tooltip>
                         </div>
                     </div>
-                    <ma1Table class="marT20" :listObj="listObj" @getRightsProtection="getRightsProtection"></ma1Table>
+                    <ma4Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma4Table>
                 </div>
     </div>
 </template>
 <script>
-import ma1Table from './components/ma1Table';
+import ma4Table from './components/ma4Table';
 export default {
     name: 'rightsProtection',
-    components: { ma1Table },
+    components: { ma4Table },
     data() {
         return {
             form: {
-                dateRange:"",
                 niceRatioRange:null,
                 badRatioRange: null,
                 endTime:'',
                 startTime:'',
-                type:1,
-                memberType:null
+                timeType:1,
+                memberType:null,
+                pageSize:10,
+                startIndex:1,
             },
             range:'',
             listObj:{
-                members:[{}],
-                count:100
+               
             }
 
         }
     },
     methods: {
-        // 获取维权全部数据
-        getRightsProtection(idx,pageS){
-            let data ={
-                type:this.form.type,
-                startTime:this.form.startTime,
-                endTime:this.form.endTime,
-                niceRatioRange:this.form.niceRatioRange,
-                badRatioRange:this.form.badRatioRange,
-            }
-            this._apis.data.historyRecord(data).then(response => {
+        // 获取评价全部数据
+        getEvaluation(idx,pageS){
+            this.form.pageSize = pageS;
+            this.form.startIndex = idx;
+            // let data ={
+            //     timeType:this.form.timeType,
+            //     startTime:this.form.startTime,
+            //     endTime:this.form.endTime,
+            //     niceRatioRange:this.form.niceRatioRange,
+            //     badRatioRange:this.form.badRatioRange,
+            //     pageSize:this.form.pageSize,
+            //     startIndex:this.form.startIndex,
+            // }
+            this._apis.data.evaluation(this.form).then(response => {
                 this.listObj = response;
             })
         },
@@ -111,18 +117,25 @@ export default {
         // 重置
         resetAll(){
             this.form = {
-                dateRange:"",
                 niceRatioRange:null,
                 badRatioRange: null,
                 endTime:'',
                 startTime:'',
-                type:1,
+                timeType:1,
+                pageSize:10,
+                startIndex:1,
             },
-            this.getRightsProtection(1,10)
+            this.getEvaluation(1,10)
         },
         // 重新筛选
         rescreen(){
-            this.getRightsProtection()
+            this.getEvaluation()
+        },
+        // 导出
+        exportExl(){
+            this._apis.data.exportOfrights(this.form).then(response => {
+                window.open(response);
+            })
         },
          getDay(day){
         　　var today = new Date();  
@@ -144,7 +157,7 @@ export default {
         }
     },
     created(){
-        this.getRightsProtection()
+        this.getEvaluation()
     }
 }
 </script>

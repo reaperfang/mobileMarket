@@ -491,6 +491,16 @@ export function orderLogistics(data) {
   })
 }
 
+// 确认收货
+export function orderConfirmReceived(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-CONFIRM-RECEIVED-PROCESSOR',
+    data
+  })
+}
+
 
 
 

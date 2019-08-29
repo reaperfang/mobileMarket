@@ -524,7 +524,8 @@ export default {
       this.selectedCoupons = [].concat(obj.selection);
     },
     getSelectedRed(obj) {
-      this.selectedReds = [].concat(obj.selection);
+      this.selectedReds = [];
+      this.selectedReds.push(obj.selection);
     },
     getSelection(obj) {
       obj.selection.map(v => {
@@ -725,7 +726,6 @@ export default {
         formObj.rights = rights;
         formObj.levelRightsInfoDtoList = [].concat(rightsDtoList);
         formObj.upgradeRewardDtoList = [].concat(upgradeRewardDtoList);
-        //console.log(formObj);
         this._apis.client
           .editCard(formObj)
           .then(response => {

@@ -136,7 +136,7 @@ export default {
         // 营销活动 
         getMarketing(){
              this._apis.overview.getMarketing(this.selectList).then(response => {
-                 this.activeData = response
+                 this.activeData = response.slice(0,10)
          })
         }
     },

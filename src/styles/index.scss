@@ -456,6 +456,9 @@ table.yuan-table{
 
 .row {
   display: flex;
+  &.justify-center {
+      justify-content: center;
+  }
   &.justify-between {
       justify-content: space-between;
   }

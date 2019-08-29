@@ -30,8 +30,11 @@
         label="手机号">
       </el-table-column>
       <el-table-column
-        prop="tradeTime"
-        label="维权时间">
+        label="维权时间"
+        width="150">
+        <template slot-scope="scope">
+          <span>{{Number(scope.row.tradeTime) | time}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="protectionGoodsCount"
@@ -60,7 +63,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="listObj.count">
+        :total="listObj.totalPage">
       </el-pagination>
     </div>
   </div>
@@ -85,10 +88,23 @@ export default {
   created() {
 
   },
+   filters:{
+      //时间戳过滤
+       time:function(value) {
+        let date = new Date(value)
+        let Y = date.getFullYear() + '-'
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
+        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':'
+        let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + '' : date.getMinutes()
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+        return Y + M + D + h + m
+      }
+    },
   methods: {
     handleSizeChange(val){
       this.pageSize = val;
-      this.$emit('getRightsProtection',1,val)
+      this.$emit('getRightsProtection',1,val)    
     },
     handleCurrentChange(val){
       this.$emit('getRightsProtection',val,this.pageSize)

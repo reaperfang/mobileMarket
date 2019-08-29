@@ -1,12 +1,13 @@
 <template>
   <div>
-       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
+       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true" style="overflow-y: initial;">
           <div class="inline-head">
             <el-form-item label="" prop="name">
-              <el-select v-if="classifyList.length" v-model="ruleForm.pageCategoryInfoId" placeholder="请选择分类">
-                <el-option label="全部分类" value=""></el-option>
-                <el-option v-for="(item, key) of classifyList" :key="key" :label="item.name" :value="item.id"></el-option>
-              </el-select>
+              <treeselect
+                :multiple="true"
+                :options="options"
+                placeholder="请选择分类"
+                v-model="value"></treeselect>
             </el-form-item>
             <el-form-item label="" prop="name">
               <el-input v-model="ruleForm.name" placeholder="请输入商品名称"></el-input>
@@ -47,10 +48,14 @@
 
 <script>
 import tableBase from '@/components/TableBase';
+// import the component
+import Treeselect from '@riophae/vue-treeselect'
+  // import the styles
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: "goodsDetail",
   extends: tableBase,
-  components: {},
+  components: { Treeselect },
   props: {
      
   },
@@ -61,21 +66,108 @@ export default {
       },
       rules: {},
       tableData: [],
+
+      value: [],
+      options: [ {
+        id: 'fruits',
+        label: 'Fruits',
+        children: [ {
+          id: 'apple',
+          label: 'Apple 🍎',
+          isNew: true,
+        }, {
+          id: 'grapes',
+          label: 'Grapes 🍇',
+        }, {
+          id: 'pear',
+          label: 'Pear 🍐',
+        }, {
+          id: 'strawberry',
+          label: 'Strawberry 🍓',
+        }, {
+          id: 'watermelon',
+          label: 'Watermelon 🍉',
+        } ],
+      }, {
+        id: 'vegetables',
+        label: 'Vegetables',
+        children: [ {
+          id: 'corn',
+          label: 'Corn 🌽',
+        }, {
+          id: 'carrot',
+          label: 'Carrot 🥕',
+        }, {
+          id: 'eggplant',
+          label: 'Eggplant 🍆',
+        }, {
+          id: 'tomato',
+          label: 'Tomato 🍅',
+        } ],
+      } ],
     };
   },
   created() {
   },
+  watch: {
+    multiple(newValue) {
+      if (newValue) {
+        this.value = this.value ? [ this.value ] : []
+      } else {
+        this.value = this.value[0]
+      }
+    },
+  },
   methods: {
+    //根据ids拉取数据
     fetch() {
-      this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
-        this.tableData = response.list;
-        this.total = response.total;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      });
+        if(this.currentComponentData && this.currentComponentData.data) {
+            let params = {};
+            const ids = this.currentComponentData.data.ids;
+            if(ids && Object.prototype.toString.call(ids) === '[object Object]') {
+                if(this.currentCatagoryId === 'all') {
+                    const allIds = [];
+                    for(let k in ids) {
+                        for(let item of ids[k]) {
+                            allIds.push(item);
+                        }
+                    }
+                    params = {
+                        status: '1',
+                        ids: allIds
+                    }
+                }else{
+                    params = {
+                        status: '1',
+                        ids: ids[this.currentCatagoryId],
+                        productCatalogInfoId: this.currentCatagoryId
+                    }
+                }
+            }else if(Array.isArray(ids) && ids.length){
+                params = {
+                    status: '1',
+                    ids: ids,
+                }
+            }else{
+                return;
+            }
+            this.loading = true;
+            this._apis.goods.fetchAllSpuGoodsList(params).then((response)=>{
+                this.createList(response);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.loading = false;
+            });
+        }
+    },
+
+      /* 创建数据 */
+    createList(datas) {
+        this.list = datas;
     },
 
    /* 选中某一行 */
