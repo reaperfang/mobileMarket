@@ -38,7 +38,7 @@
                 <div class="c_line">
                     <span>卡名称：</span>
                     <div class="input_wrap">
-                        <el-select placeholder="全部" v-model="selected">
+                        <el-select placeholder="全部" v-model="selected" clearable>
                             <el-option
                                 v-for="item in cardNames"
                                 :key="item.id"

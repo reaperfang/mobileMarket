@@ -540,3 +540,12 @@ export function getBalanceLists(data) {
         data
     })
 }
+//保存积分通用规则
+export function saveCreditRule(data) {
+    return request({
+        target:'SHOP-API-100-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}

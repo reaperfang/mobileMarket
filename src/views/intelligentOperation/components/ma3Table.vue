@@ -20,9 +20,11 @@
         label="手机号码">
       </el-table-column>
       <el-table-column
-        prop="memberType"
         label="客户类型"
       >
+      <template slot-scope="scope">
+             <span style="line-height:60px;display:inline-block">{{{1:'非会员',2:'老会员',3:'新会员'}[scope.row.memberType]}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="name"
@@ -55,7 +57,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="pageSize"
         layout="sizes, prev, pager, next"
-        :total="totalCount">
+        :total="listObj.totalSize">
       </el-pagination>
     </div>
   </div>
