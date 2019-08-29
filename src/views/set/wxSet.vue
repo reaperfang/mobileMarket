@@ -42,11 +42,11 @@
                 </el-upload>
             </div>
             <div class="tip" v-if="certFileUrlOk">
-                <span class="status">未上传</span>下载证书cert.zip中的apiclient_cert.pem文件
+                <span class="status">未上传</span>下载证书cert.zip中的apiclient_cert.p12文件
             </div>
             </el-form-item>
 
-            <el-form-item label="KEY秘钥文件" prop="keyLocalPath">
+            <!-- <el-form-item label="KEY秘钥文件" prop="keyLocalPath">
             <div class="upload_file">
                 <span class="tip">{{form.keyFileName}}</span>
                 <el-upload
@@ -64,7 +64,7 @@
               <span class="status">未上传</span>下载证书cert.zip中的apiclient_key.pem文件
             </div>
             </el-form-item>
-            
+             -->
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">保存</el-button>
                 <el-button  @click="_routeTo('payType')">返回</el-button>
@@ -89,7 +89,7 @@ export default {
           certFileName:'',
           certLocalPath: '',
           keyFileName:'',
-          keyLocalPath: ''
+          // keyLocalPath: ''
       },
       rules: {
         // mchName: [
@@ -108,15 +108,12 @@ export default {
         key:[
           { required: true, message: '请输入密钥', trigger: 'blur' },
         ],
-        certPassword:[
-          { required: true, message: '请输入证书密码', trigger: 'blur' },
-        ],
         certLocalPath:[
           { required: true, message: '请输入CERT证书文件', trigger: 'blur' },
         ],
-        keyLocalPath:[
-          { required: true, message: '请输入KEY秘钥文件', trigger: 'blur' },
-        ]
+        // keyLocalPath:[
+        //   { required: true, message: '请输入KEY秘钥文件', trigger: 'blur' },
+        // ]
       },
       id:'',
       imageUrl: '',
@@ -150,15 +147,15 @@ export default {
         this.form.certLocalPath = param.certLocalPath
         this.form.certPassword = param.certPassword
         this.form.mpAppId = param.mpAppId
-        this.form.keyLocalPath = param.keyLocalPath
+        // this.form.keyLocalPath = param.keyLocalPath
         this.form.certFileName = param.certFileName
         this.form.keyFileName = param.keyFileName
         this.form.certLocalPath && (this.certFileUrlOk = false)
-        this.form.keyLocalPath && (this.keyFileUrlOk = false)
+        // this.form.keyLocalPath && (this.keyFileUrlOk = false)
       }).catch(error =>{
-        this.$notify.error({
-          title: '错误',
-          message: error
+        this.$notify.info({
+          title: '提示',
+          message: '商户未设置支付信息'
         });
       })
     },
@@ -180,7 +177,7 @@ export default {
         certLocalPath:this.form.certLocalPath,
         certPassword:this.form.certPassword,
         mpAppId:this.form.mpAppId,
-        keyLocalPath:this.form.keyLocalPath,
+        // keyLocalPath:this.form.keyLocalPath,
         certFileName:this.form.certFileName,
         keyFileName:this.form.keyFileName
       }
@@ -218,7 +215,7 @@ export default {
         certLocalPath:this.form.certLocalPath,
         certPassword:this.form.certPassword,
         mpAppId:this.form.mpAppId,
-        keyLocalPath:this.form.keyLocalPath,
+        // keyLocalPath:this.form.keyLocalPath,
         certFileName:this.form.certFileName,
         keyFileName:this.form.keyFileName
       }
@@ -226,7 +223,8 @@ export default {
         // mchId:this.$store.user.cid || '2',
         mchId:'2',
         channelId:'WX_JSAPI',
-        mchName:this.$store.user.userInfo.shopName,
+        // mchName:this.$store.user.userInfo.shopName,
+        mchName:'店铺名称',
         channelName:'WX',
         channelMchId:this.form.channelMchId,
         param:JSON.stringify(param)
@@ -249,10 +247,10 @@ export default {
         this.loading3  = true
     },
 
-    handlKeyFileUrlOk(){
-        this.keyFileUrlOk = false
-        this.loading2 = true
-    },
+    // handlKeyFileUrlOk(){
+    //     this.keyFileUrlOk = false
+    //     this.loading2 = true
+    // },
     uploadCertFileUrl(response, file, fileList){
         this.certFileUrlOk = false
         if(file.status == "success"){
@@ -264,17 +262,17 @@ export default {
           this.$message.error(response.msg);
         }
       },
-    uploadKeyFileUrl(response, file, fileList){
-      this.keyFileUrlOk = false
-      if(file.status == "success"){
-        this.form.keyFileName = file.name
-        this.$message.success(response.msg);
-        this.form.keyLocalPath = response.data.url;
-        this.loading2 = false
-      }else{
-        this.$message.error(response.msg);
-      }
-    },
+    // uploadKeyFileUrl(response, file, fileList){
+    //   this.keyFileUrlOk = false
+    //   if(file.status == "success"){
+    //     this.form.keyFileName = file.name
+    //     this.$message.success(response.msg);
+    //     // this.form.keyLocalPath = response.data.url;
+    //     this.loading2 = false
+    //   }else{
+    //     this.$message.error(response.msg);
+    //   }
+    // },
   }
 }
 </script>
