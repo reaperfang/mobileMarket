@@ -3,7 +3,7 @@
         <div class="p_top clearfix">
             <div class="p_top_l">
                 <p class="p_title">
-                    实时概况：<span>今日数据更新时间：{{time}}</span>
+                    实时概况：<i class="el-icon-time"></i><span>今日数据更新时间：{{new Date() | formatDate('yyyy-MM-dd hh:mm:ss')}}</span>
                 </p>
                 <div class="p_t_list">
                     <div class="p_t_item clearfix" v-for="item in realTimeData" :key="item.id">
@@ -80,8 +80,7 @@ export default {
             staySendCount:'',
             stayAuthCount:'',
             activeData:[],
-            selectList:{merchantId:'2',tenantId:1,loginUserId:'1',businessId:'2'},
-            time:''
+            selectList:{merchantId:'2',tenantId:1,loginUserId:'1',businessId:'2'}
         }
     },
     computed: {
@@ -145,15 +144,6 @@ export default {
         this.getOverviewDetails()
         this.getOerviewRemind()
         this.getOverviewSelling()
-    },
-    mounted(){
-        let date = new Date()
-        let Y = date.getFullYear();
-        let M = date.getMonth() + 1;
-        let D = date.getDate();
-        let H = date.getHours();
-        let Min = date.getMinutes();
-        this.time = Y+'-'+M+'-'+D+'  '+' '+H+':'+Min
     }
 }
 </script>

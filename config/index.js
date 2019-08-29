@@ -73,7 +73,7 @@ module.exports = {
         //target:'http://172.22.146.119:8080', //郑艳华
         // target: 'http://172.22.146.7:8080',//张昌超
         //  target:'http://120.133.1.130:8012',//数据
-        //  target:'http://vc3fhm.natappfree.cc/',//智能运营
+         target:'http://if4jyy.natappfree.cc',//智能运营
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
