@@ -44,13 +44,15 @@
             <div class="m_line clearfix">
                 <p class="fl">该筛选条件下：会员共计<span>{{memberCount}}</span>人；占会员总数的<span>{{ratio}}%</span>
                 <div class="fr marT20">
-                    <el-button class="border_btn">查看详情</el-button>
-                    <el-button class="minor_btn">重新筛选</el-button>
+                    <el-button class="minor_btn" @="reScreening">重新筛选</el-button>
                     <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl">导出</el-button>
                 </div>
             </div>
             <ma3Table 
                 class="marT20" 
+                @sizeChange="sizeChange"
+                @currentChange="currentChange"
+                :pageSize="10"
                 :listObj="listObj"
                 :totalCount="totalCount">
             </ma3Table>
@@ -175,29 +177,36 @@ export default {
             }
             this.goSearch();
         },
-        //导出
+        //重新筛选
+        reScreening(){
+            this.$router.push('/intelligentOperation/integral')
+        },
         //导出
         exportExl(){
-            // let data = {};
-            // data.cid = ""
-            // data.startTime = this.form.startTime || null
-            // data.endTime = this.form.endTime || null
-            // data.memberType = this.form.memberType
-            // data.tradeCountRange = this.form.tradeCountRange
-            // data.queryRepeatPaymentRatio = this.form.queryRepeatPaymentRatio
-            // data.queryOrderMoneyType = this.form.queryOrderMoneyType
-            // data.MoneyRange = this.form.MoneyRange
-            // data.timeType = this.form.timeType
-
-            // console.log(data)
-            // this._apis.data.memberInformationExport(data)
-            // .then(res => {
-            //     window.open(res);
-            // })
-            // .catch(err=>{
-            //     this.$message.error(err);
-            // })
+            let data = {};
+            data.cid = ""
+            data.startTime = this.form.startTime
+            data.endTime = this.form.endTime
+            data.scorePaymentCountRange = this.form.scorePaymentCountRange
+            data.queryRepeatPaymentRatio = this.form.queryRepeatPaymentRatio
+            data.memberType = this.form.memberType            
+            data.timeType = this.form.timeType
+            this._apis.data.integralConsumptionExport(data)
+            .then(res => {
+                window.open(res);
+            })
+            .catch(err=>{
+                this.$message.error(err);
+            })
         },
+        sizeChange(val){
+            this.form.pageSize = val;
+            this.goSearch();
+        },
+        currentChange(val){
+            this.form.startIndex = val;
+            this.goSearch();
+        }
     }
 }
 </script>

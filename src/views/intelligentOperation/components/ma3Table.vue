@@ -92,15 +92,15 @@ export default {
   },
   methods: {
     //更改每页条数
-    // handleSizeChange(val){
-    //   this.pageSize = val;
-    //   this.$emit('sizeChange',val)
-    // },
-    // //选择页数
-    // handleCurrentChange(val){
-    //   console.log(val)
-    //   this.$emit('currentChange',val)
-    // }
+    handleSizeChange(val){
+      this.pageSize = val;
+      this.$emit('sizeChange',val)
+    },
+    //选择页数
+    handleCurrentChange(val){
+      console.log(val)
+      this.$emit('currentChange',val)
+    }
     
   },
   filters:{
