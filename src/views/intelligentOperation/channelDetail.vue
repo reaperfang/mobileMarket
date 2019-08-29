@@ -1,8 +1,12 @@
 /* 会员分析列表 */
 <template>
   <div>
+    <div class="chennelDetailHead">
+        <p style="font-size: 16px">渠道转化订单具体信息：</p>
+        <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl">导出到Excel</el-button>
+    </div>
     <el-table
-      :data="listObj.list"
+      :data="list"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'changeRatio', order: 'descending'}"
@@ -55,7 +59,13 @@ export default {
   data() {
     return {
       pageSize:10,
+      ruleForm:[],
+      list:[],//列表
+
     };
+  },
+  mounted(){
+      console.log()
   },
   computed:{
 
@@ -101,5 +111,10 @@ export default {
                 }
             }
         }
+.chennelDetailHead{
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
 
 </style>

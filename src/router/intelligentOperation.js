@@ -26,7 +26,14 @@ export default [
                 path: 'channel',
                 component: () => import('@/views/intelligentOperation/channel'),
                 name: 'channel',
-                meta: { title: '渠道转化', noCache: true, tabTitle: '会员分析' }
+                meta: { title: '渠道转化', noCache: true, tabTitle: '会员分析' },
+            },
+            {
+                path: 'channelDetail',
+                component: () => import('@/views/intelligentOperation/channelDetail'),
+                name: 'channelDetail',
+                meta: { title: '渠道转化', noCache: true, tabTitle: '会员分析' },
+                hidden: true
             },
             {
                 path: 'integral',

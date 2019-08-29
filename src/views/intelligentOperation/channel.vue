@@ -46,19 +46,31 @@
                             </el-select>
                         </div>
                     </el-form-item>
-                    <el-form-item class="fr marT20">
-                        <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
-                        <el-button class="border_btn">重 置</el-button>
+
+                    <el-form-item class="marT20">
+                        <div class="buttonfl">
+                            <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
+                            <el-button class="border_btn" @click="reSet">重 置</el-button>
+                        </div>
                     </el-form-item>
                 </el-form>
+
                 <div class="m_line clearfix">
                     <div class="fr marT20">
-                        <el-button class="border_btn">查看详情</el-button>
-                        <el-button class="minor_btn">重新筛选</el-button>
-                        <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
+                        <el-button class="border_btn" @click="showDetails">查看详情</el-button>
+                        <el-button class="minor_btn" @click="reScreening">重新筛选</el-button>
+                        <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl">导出</el-button>
                     </div>
                 </div>
-                <channel-table class="marT20" :listObj="listObj"></channel-table>
+                
+                <channel-table 
+                    class="marT20" 
+                    :listObj="listObj" 
+                    :totalCount="totalCount"
+                    @sizeChange="sizeChange"
+                    @currentChange="currentChange"
+                >
+                </channel-table>
             </div>
     </div>
 </template>
@@ -82,6 +94,7 @@ export default {
             listObj:{
                 list:[]
             },
+            totalCount:0,//总页数
             pickerMinDate: '',
             dateRange: [],
             pickerOptions: {
@@ -110,10 +123,10 @@ export default {
                 },
                 {
                     id: 401,
-                    name: "显示"
+                    name: "显示抢购"
                 },{
-                    id: 407,
-                    name: "新会员"
+                    id: 506,
+                    name: "限时秒杀"
                 }
             ],
         }
@@ -129,7 +142,61 @@ export default {
         goSearch(){
             this._apis.data.channelConversion(this.form).then(response => {
                 this.listObj = response;
+                this.totalCount = this.form.pageSize * response.totalPage;
             })
+        },
+        // 重置
+        reSet(){
+            this.form = {
+                cid:"",
+                startTime:null,
+                endTime:null,
+                channel:null,
+                changeRatioRange:null,
+                timeType:1,
+                startIndex:1,
+                pageSize: '10',
+            }
+            this.goSearch();
+        },
+        //重新筛选
+        reScreening(){
+            this._routeTo('channel');
+            console.log(222)
+            // this.$router.push('/intelligentOperation/channel')
+        },
+        //导出
+        exportExl(){
+            let data = {};
+            data.cid = ""
+            data.startTime = this.form.startTime
+            data.endTime = this.form.endTime
+            if(this.form.channel!='null'){
+                data.channel = Number(this.form.channel);
+            }else{
+                data.channel = null
+            }
+            data.changeRatioRange = this.form.changeRatioRange     
+            data.timeType = this.form.timeType
+            this._apis.data.channelConversionExport(data)
+            .then(res => {
+                window.open(res);
+            })
+            .catch(err=>{
+                this.$message.error(err);
+            })
+        },
+        //查看详情
+        showDetails(){
+            this._routeTo('channelDetail',this.form)
+        },
+        sizeChange(val){
+            this.form.pageSize = val;
+            this.goSearch();
+        },
+        currentChange(val){
+            this.form.startIndex = val;
+            this.goSearch();
         }
     }
 }
@@ -185,5 +252,9 @@ export default {
             }
         }
     }
+}
+.buttonfl{
+    -webkit-box-pack: end;
+    display: -webkit-box;
 }
 </style>
