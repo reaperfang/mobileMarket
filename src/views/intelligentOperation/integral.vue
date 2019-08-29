@@ -4,15 +4,16 @@
          <div class="pane_container">
             <el-form ref="form" :model="form" class="clearfix">
                 <el-form-item label="交易时间">
-                    <div class="input_wrap">
-                        <el-radio-group v-model="form.time">
+                    <div class="p_line">
+                        <el-radio-group v-model="form.timeType">
                             <el-radio-button class="btn_bor" label="1">7天</el-radio-button>
                             <el-radio-button class="btn_bor" label="2">15天</el-radio-button>
                             <el-radio-button class="btn_bor" label="3">30天</el-radio-button>
                             <el-radio-button class="btn_bor" label="5">本季度</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
                         </el-radio-group>
-                    </div>
-                    <el-date-picker
+                        <el-date-picker
+                        v-if="form.timeType == 4"
                         v-model="daterange"
                         type="daterange"
                         value-format="yyyy-MM-dd hh:mm:ss"
@@ -21,6 +22,7 @@
                         end-placeholder="结束日期"
                         @change="getData">
                     </el-date-picker>
+                    </div>
                 </el-form-item>
                 <el-form-item label="消耗次数">
                     <div class="input_wrap2">
@@ -44,7 +46,7 @@
             <div class="m_line clearfix">
                 <p class="fl">该筛选条件下：会员共计<span>{{memberCount}}</span>人；占会员总数的<span>{{ratio}}%</span>
                 <div class="fr marT20">
-                    <el-button class="minor_btn" @="reScreening">重新筛选</el-button>
+                    <el-button class="minor_btn" @click="reScreening()">重新筛选</el-button>
                     <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl">导出</el-button>
                 </div>
             </div>
@@ -118,6 +120,9 @@ export default {
             ],
         }
     },
+    created(){
+        this.goSearch()
+    },
     methods: {
         checkDay(item) {
             this.day = item;
@@ -179,7 +184,8 @@ export default {
         },
         //重新筛选
         reScreening(){
-            this.$router.push('/intelligentOperation/integral')
+            this.form.startIndex = 1;
+            this.goSearch()
         },
         //导出
         exportExl(){

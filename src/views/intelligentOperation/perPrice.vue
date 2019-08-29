@@ -4,7 +4,7 @@
             <p class="p_title">实时概况
                 <span class="lb">更新时间：</span>
                 <i class="el-icon-time"></i>
-                <span>2019-03-25 16:00:00</span>
+                <span>{{new Date() | formatDate('yyyy-MM-dd hh:mm:ss')}}</span>
             </p>
             <div class="clearfix marT20">
                 <img src="../../assets/images/datum/icon_head.png" alt="" class="fl">
@@ -99,9 +99,6 @@ export default {
     components: { pp1Chart, pp2Chart, ppTable },
     data() {
         return {
-            day: "",
-            days: ['7天','15天','30天'],
-            activeName:"first",
             listObj:{},
             startTime:'',
             endTime:'',
@@ -122,11 +119,7 @@ export default {
     methods: {
         // 实时概况
         getRealTimeOverview(){
-            let data = {
-                startTime:new Date(new Date().toLocaleDateString()).getTime(),
-                endTime:new Date().getTime()
-            }
-            this._apis.data.realTimeOverview(data).then(response => {
+            this._apis.data.realTimeOverview({}).then(response => {
                 let xyData = {
                     xAxisData : [],
                     yAxisData : []

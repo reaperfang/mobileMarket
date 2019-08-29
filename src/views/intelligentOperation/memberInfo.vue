@@ -3,15 +3,16 @@
         <div class="pane_container">
                     <el-form ref="form" :model="form" class="clearfix">
                         <el-form-item label="交易时间">
-                            <div class="input_wrap">
+                            <div class="p_line">
                                 <el-radio-group v-model="form.timeType" @change="changeDay">
                                     <el-radio-button class="btn_bor" label="1">7天</el-radio-button>
                                     <el-radio-button class="btn_bor" label="2">15天</el-radio-button>
                                     <el-radio-button class="btn_bor" label="3">30天</el-radio-button>
                                     <el-radio-button class="btn_bor" label="5">本季度</el-radio-button>
+                                    <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
                                 </el-radio-group>
-                            </div>
-                            <el-date-picker
+                                <el-date-picker
+                                v-if="form.timeType == 4"
                                 v-model="form.daterange"
                                 type="daterange"
                                 value-format="yyyy-MM-dd hh:mm:ss"
@@ -21,6 +22,8 @@
                                 @change="getData"
                             >
                             </el-date-picker>
+                            </div>
+                            
                         </el-form-item>
                         <el-form-item label="会员类型">
                             <div class="input_wrap2">
@@ -38,21 +41,24 @@
                                 <el-checkbox label="是否查询复购率" name="type"></el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="订单金额" prop="lowprice">
+                        <el-form-item label="订单金额">
                             <div class="input_wrap3">
-                                <el-radio v-model="form.queryOrderMoneyType" label="0" @change="getData">单次</el-radio>
-                                <el-radio v-model="form.queryOrderMoneyType" label="1" @change="getData">总额</el-radio>
+                                 <el-radio-group v-model="form.queryOrderMoneyType">
+                                    <el-radio :label="null">全部</el-radio>
+                                    <el-radio :label="0">单次</el-radio>
+                                    <el-radio :label="1">总额</el-radio>
+                                </el-radio-group>
                             </div>
                             <div class="input_wrap2">
-                                <el-input placeholder="最低金额（元）" v-model="form.lowprice"></el-input>
+                                <el-input placeholder="最低金额（元）" v-model="lowprice" type="number"></el-input>
                             </div>
                             <span>—</span>
                             <div class="input_wrap2">
-                                <el-input placeholder="最高金额（元）" v-model="form.highprice"></el-input>
+                                <el-input placeholder="最高金额（元）" v-model="highprice" type="number"></el-input>
                             </div>
                         </el-form-item>
                         <el-form-item class="fr marT20">
-                            <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
+                            <el-button class="minor_btn" icon="el-icon-search" @click="goSearch()">查询</el-button>
                             <el-button class="border_btn" @click="reSet">重 置</el-button>
                         </el-form-item>
                     </el-form>
@@ -65,7 +71,6 @@
                             <el-button class="yellow_btn" icon="el-icon-share" @click="mIexport">导出</el-button>
                         </div>
                     </div>
-
                     <maTable class="marT20" 
                         @sizeChange = "sizeChange"
                         @currentChange = "currentChange"                   
@@ -88,7 +93,6 @@ export default {
                 endTime:null,
                 daterange:null,
                 memberType:null,  //客户是0，新会员是1，老会员是2
-
                 tradeCountRange:null,
                 queryRepeatPaymentRatio: 0,
                 queryOrderMoneyType: null, // 单次和总额 0和1
@@ -97,6 +101,8 @@ export default {
                 startIndex:1,
                 pageSize:10
             },
+            lowprice:'',
+            highprice:'',
             textTips:false,
             repeatPaymentRatio:0.1, //复购率
             memberNum:0, //会员人数
@@ -137,43 +143,15 @@ export default {
                     id: "8",
                     name: "8次以上"
                 }
-            ],
-            rules: {
-                lowprice: [
-                    { required: true, message: '最低和最高金额必须同时输入', trigger: 'blur' }
-                ],
-                name: [
-                    { required: true, message: '请输入活动名称', trigger: 'blur' },
-                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-                ],
-                region: [
-                    { required: true, message: '请选择活动区域', trigger: 'change' }
-                ],
-                date1: [
-                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                ],
-                date2: [
-                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-                ],
-                type: [
-                    { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-                ],
-                resource: [
-                    { required: true, message: '请选择活动资源', trigger: 'change' }
-                ],
-                desc: [
-                    { required: true, message: '请填写活动形式', trigger: 'blur' }
-                ]
-            }
+            ]
 
         }
     },
+    created(){
+        this.goSearch()
+    },
     methods: {
-        checkDay(item) {
-            this.day = item;
-        },
         changeDay(){
-            console.log(this.form)
         },
         //获取筛选数据
         getData(){
@@ -194,11 +172,15 @@ export default {
 
         //查询
         goSearch(){
-            if(this.form.lowprice&&this.form.highprice){
-                this.form.MoneyRange =  String(this.form.lowprice)+'-'+String(this.form.highprice);
-            }
-            console.log(this.form)
-
+            if((this.lowprice != '' && this.highprice == '' ) || (this.lowprice == '' && this.highprice != '' )){
+                this.$message.warning('最低金额于最高金额需要同时输入')
+                return
+            }else if(this.lowprice > this.highprice){
+                this.$message.warning('最高金额不能低于最低金额')
+                return
+            }else if(this.lowprice&&this.highprice){
+                this.form.MoneyRange =  String(this.lowprice)+'-'+String(this.highprice);
+            } 
             let memberType = this.form.memberType;
             this._apis.data.memberInformation(this.form).then(res => {
                 this.repeatPaymentRatio = res.repeatPaymentRatio;
@@ -215,7 +197,6 @@ export default {
                 }else{ //其他
                     this.textTips = false;
                 }
-                console.log(res)
                 console.log(this.repeatPaymentRatio)
             }).catch(error => {
                 this.$message.error(error);
@@ -241,8 +222,9 @@ export default {
         },
         //重新筛选
         reScreening(){
-            console.log(11)
-            this.$router.push('/intelligentOperation/memberInfo');
+            this.form.startIndex = 1;
+            this.goSearch()
+            // this.$router.push('/intelligentOperation/memberInfo');
         },
         //导出
         mIexport(){
