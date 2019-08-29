@@ -22,7 +22,7 @@
                 :before-upload="beforeAvatarUpload">
                 <span v-if="form.logo">
                   <img :src="form.logo" class="avatar">
-                  <canvas ref="canvas1" width="80" height="80"></canvas>
+                  <canvas ref="canvas1" width="80px" height="80px"></canvas>
                 </span>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -75,18 +75,23 @@ export default {
       area: [],
       shopInfo:{},
       uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
-      canvas:{}
+      //canvas:{}
     }
   },
   components: {},
   watch: {
     
   },
+  computed: {
+    canvas() {
+      return this.$refs.canvas1
+    }
+  },
   created() {
     this.getShopInfo()
   },
   mounted() {
-    this.canvas = this.$refs.canvas1 
+
   },
   methods: {
     getShopInfo(){
@@ -138,9 +143,9 @@ export default {
     },
 
     handleAvatarSuccess(res, file) {
-      this.form.logo = res.data.url
+      this.form.logo = res.data.url;
       //圆形图片处理
-      var ctx = this.canvas.getContext('2d');      
+      var ctx = this.canvas.getContext('2d'); 
       let _self = this
       var img = new Image();
       img.setAttribute("crossOrigin",'Anonymous')

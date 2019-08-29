@@ -284,7 +284,6 @@ export default {
         getAllCoupons() {
             this._apis.client.getAllCoupons({couponType: 0}).then((response) => {
                 this.allCoupons = [].concat(response.list);
-                localStorage.setItem('allCoupons', JSON.stringify(this.allCoupons));
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -372,8 +371,13 @@ export default {
                 })
             }
         },
-        getUsedCoupon() {
-            let params = {usedType:"1", couponType: "0", memberId: "1"};
+        getUsedCoupon(status) {
+            let params;
+            if(status == 2) {
+                params = {usedType:"1", couponType: "0", memberId: "1", usedStatus: ""};
+            }else{
+                params = {usedType:"1", couponType: "0", memberId: "1", usedStatus: status};
+            }
             this._apis.client.getUsedCoupon(params).then((response) => {
                 response.map((v) => {
                     this.couponList.push(v.appCoupon);
