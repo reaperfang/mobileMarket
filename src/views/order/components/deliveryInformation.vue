@@ -12,7 +12,7 @@
                     <div class="header-lefter">
                         <div class="header-lefter-item number">{{index + 1}}</div>
                         <div class="header-lefter-item ">快递单号：{{item.expressNo}}</div>
-                        <div @click="currentDialog = 'logisticsDialog'; dialogVisible = true; currentData = item" class="header-lefter-item  blue">查看物流</div>
+                        <div @click="showLogistics(item.expressNo)" class="header-lefter-item  blue">查看物流</div>
                     </div>
                     <div class="header-righter">
                         <div class="header-righter-item">【客户发货】</div>
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" v-if="dialogVisible" :data="currentData"></component>
     </div>
 </template>
 <script>
@@ -108,6 +108,19 @@ export default {
         }
     },
     methods: {
+        showLogistics(expressNo) {
+            this._apis.order.orderLogistics({expressNo}).then(res => {
+                console.log(res)
+                this.currentDialog = 'LogisticsDialog'
+                this.currentData = res.traces
+                this.dialogVisible = true
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+        },
         showContent(index) {
             let _orderSendItems = [...this.orderSendItems]
 

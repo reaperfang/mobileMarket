@@ -461,6 +461,46 @@ export function orderSendDetail(data) {
   })
 }
 
+// 获取补填物流详情
+export function orderSendInfoFillUpExpressPage(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-SENDINFO-FILLUP-EXPRESS-PAGE-PROCESS',
+    data
+  })
+}
+
+// 单个/批量补填物流
+export function orderSendInfoFillUpExpress(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-SENDINFO-FILLUP-EXPRESS-PROCESS',
+    data
+  })
+}
+
+// 查询物流轨迹
+export function orderLogistics(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-EXPRESSINFOTRACE-EXPRESSCODE-PROCESS',
+    data
+  })
+}
+
+// 确认收货
+export function orderConfirmReceived(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-CONFIRM-RECEIVED-PROCESSOR',
+    data
+  })
+}
+
 
 
 

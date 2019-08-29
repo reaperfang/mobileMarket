@@ -2,37 +2,40 @@
 <template>
   <div>
     <el-table
-      :data="dataList"
+      :data="listObj.list"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
+        prop="date"
         label="时间">
       </el-table-column>
       <el-table-column
-        prop="channel"
+        prop="averagePayment"
         label="客单价（元）">
       </el-table-column>
       <el-table-column
-        prop="importNum"
-        label="单次购买金额（元）">
-      </el-table-column>
-      <el-table-column
-        prop="importNum"
-        label="购买频次（次）">
-      </el-table-column>
-      <el-table-column
-        prop="importNum"
+        prop="orderCount"
         label="订单量（笔）">
       </el-table-column>
       <el-table-column
-        prop="successNum"
+        prop="averageOrderPayment"
         label="人均消费金额（元）"
       >
       </el-table-column>
     </el-table>
+    <div class="page_styles">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
+        layout="sizes, prev, pager, next"
+        :total="listObj.totalPage">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -43,25 +46,24 @@ export default {
   extends: TableBase,
   data() {
     return {
-      dataList:[
-        {
-            choose: true,
-            importTime:"",
-            channel:"",
-            importNum:"",
-            successNum:"",
-            failNum:"",
-            buyTime:"",
-            operator:""
-        },
-      ],
+      listObj:{
+        list:[{date:"",averagePayment:"",orderCount:"",averageOrderPayment:""}],
+        totalPage:100,
+      }
     };
+  },
+  props:{
   },
   created() {
 
   },
   methods: {
-    
+    handleCurrentChange(){
+
+    },
+    handleSizeChange(){
+
+    }
   },
   components: {}
 };

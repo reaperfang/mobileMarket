@@ -118,6 +118,27 @@ export default [
         meta: { title: '售后发货', noCache: true, tabTitle: '订单处理' },
       },
       {
+        path: 'orderBulkDelivery',
+        component: () => import('@/views/order/orderBulkDelivery'),
+        name: 'orderBulkDelivery',
+        hidden: true,
+        meta: { title: '订单批量发货', noCache: true, tabTitle: '订单处理' },
+      },
+      {
+        path: 'supplementaryLogistics',
+        component: () => import('@/views/order/supplementaryLogistics'),
+        name: 'supplementaryLogistics',
+        hidden: true,
+        meta: { title: '补填物流', noCache: true, tabTitle: '订单处理' },
+      },
+      {
+        path: 'batchSupplementaryLogistics',
+        component: () => import('@/views/order/batchSupplementaryLogistics'),
+        name: 'batchSupplementaryLogistics',
+        hidden: true,
+        meta: { title: '补填物流', noCache: true, tabTitle: '订单处理' },
+      },
+      {
         path: 'quickDelivery',
         component: () => import('@/views/order/quickDelivery'),
         name: 'quickDelivery',

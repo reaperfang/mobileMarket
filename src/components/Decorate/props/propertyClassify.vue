@@ -1,5 +1,6 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px">
+    {{ruleForm}}
     <div class="block form">
       <el-form-item label="分类名称" prop="name">
         <el-input placeholder="请勿超过10个字" v-model="ruleForm.name"></el-input>
@@ -20,7 +21,7 @@
     </div>
 
     <div class="block form">
-      <el-button type="primary">添加页面</el-button>
+      <el-button type="primary" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">添加页面</el-button>
     </div>
 
      <!-- 动态弹窗 -->
@@ -52,7 +53,7 @@ export default {
           UEDITOR_HOME_URL: '/static/UEditor/'
       },
       ruleForm: {
-        name: '',
+        name: '微页面分类',
         sortType: 1,
         showType: 1,
         explain: '',
