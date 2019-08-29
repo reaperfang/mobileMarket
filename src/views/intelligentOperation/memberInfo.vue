@@ -14,6 +14,7 @@
                             <el-date-picker
                                 v-model="form.daterange"
                                 type="daterange"
+                                value-format="yyyy-MM-dd hh:mm:ss"
                                 range-separator="至"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
@@ -37,7 +38,7 @@
                                 <el-checkbox label="是否查询复购率" name="type"></el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
-                        <el-form-item label="订单金额">
+                        <el-form-item label="订单金额" prop="lowprice">
                             <div class="input_wrap3">
                                 <el-radio v-model="form.queryOrderMoneyType" label="0" @change="getData">单次</el-radio>
                                 <el-radio v-model="form.queryOrderMoneyType" label="1" @change="getData">总额</el-radio>
@@ -52,7 +53,7 @@
                         </el-form-item>
                         <el-form-item class="fr marT20">
                             <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
-                            <el-button class="border_btn">重 置</el-button>
+                            <el-button class="border_btn" @click="reSet">重 置</el-button>
                         </el-form-item>
                     </el-form>
 
@@ -60,12 +61,17 @@
                         <p class="fl" v-if="textTips">该筛选条件下：<i v-if="form.memberType==1" style="font-style:normal">新</i><i v-if="form.memberType==2" style="font-style:normal">老</i>会员共计<span>{{memberNum}}</span>人；占会员总数的<span>{{memberCount}}%</span>; 复购率为<span>{{repeatPaymentRatio}}</span>。</p>
                         <p class="fl" v-else>-</p>
                         <div class="fr marT20">
-                            <el-button class="minor_btn">重新筛选</el-button>
-                            <el-button class="yellow_btn" icon="el-icon-share">导出</el-button>
+                            <el-button class="minor_btn" @click="reScreening">重新筛选</el-button>
+                            <el-button class="yellow_btn" icon="el-icon-share" @click="mIexport">导出</el-button>
                         </div>
                     </div>
 
-                    <maTable class="marT20"></maTable>
+                    <maTable class="marT20" 
+                        @sizeChange = "sizeChange"
+                        @currentChange = "currentChange"                   
+                        :listObj="listObj" 
+                        :totalCount="totalCount">
+                    </maTable>
         </div>
         </div>
 </template>
@@ -77,14 +83,14 @@ export default {
     data() {
         return {
             form: {
-                // cid:"",
+                cid:"",
                 startTime:null, //2019-08-07 12:12:12
                 endTime:null,
                 daterange:null,
                 memberType:null,  //客户是0，新会员是1，老会员是2
 
                 tradeCountRange:null,
-                queryRepeatPaymentRatio: false,
+                queryRepeatPaymentRatio: 0,
                 queryOrderMoneyType: null, // 单次和总额 0和1
                 MoneyRange:null,
                 timeType:1,
@@ -95,6 +101,8 @@ export default {
             repeatPaymentRatio:0.1, //复购率
             memberNum:0, //会员人数
             memberCount:0, //会员占比
+            listObj:{},//会员信息列表
+            totalCount:0,//总条数
             customType: [
                 {
                     id: null,
@@ -113,11 +121,11 @@ export default {
             ],
             tradeCount: [
                 {
-                    id: "",
+                    id: null,
                     name: "不限"
                 },
                 {
-                    id: "1",
+                    id: "0-1",
                     name: "1次"
                 },{
                     id: "2-5",
@@ -130,6 +138,33 @@ export default {
                     name: "8次以上"
                 }
             ],
+            rules: {
+                lowprice: [
+                    { required: true, message: '最低和最高金额必须同时输入', trigger: 'blur' }
+                ],
+                name: [
+                    { required: true, message: '请输入活动名称', trigger: 'blur' },
+                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                region: [
+                    { required: true, message: '请选择活动区域', trigger: 'change' }
+                ],
+                date1: [
+                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                ],
+                date2: [
+                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                ],
+                type: [
+                    { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                ],
+                resource: [
+                    { required: true, message: '请选择活动资源', trigger: 'change' }
+                ],
+                desc: [
+                    { required: true, message: '请填写活动形式', trigger: 'blur' }
+                ]
+            }
 
         }
     },
@@ -143,14 +178,15 @@ export default {
         //获取筛选数据
         getData(){
             if(this.form.daterange){
+                this.form.timeType = 4;
                 Object.assign(this.form,{
-                    startTime:this.form.daterange[0].getTime(),
-                    endTime:this.form.daterange[1].getTime()
+                    startTime:this.form.daterange[0],
+                    endTime:this.form.daterange[1]
                 });
             }else{
                 Object.assign(this.form,{
-                    startTime:"",
-                    endTime:""
+                    startTime:null,
+                    endTime:null
                 });
             }
             console.log(this.form)
@@ -166,6 +202,8 @@ export default {
             let memberType = this.form.memberType;
             this._apis.data.memberInformation(this.form).then(res => {
                 this.repeatPaymentRatio = res.repeatPaymentRatio;
+                this.listObj = res; //信息列表数据
+                this.totalCount = res.totalPage * this.form.pageSize;
                 if(memberType == 1){ //新会员
                     this.textTips = true;
                     this.memberNum = res.newMemberCount;
@@ -182,6 +220,59 @@ export default {
             }).catch(error => {
                 this.$message.error(error);
             });
+        },
+        // 重置
+        reSet(){
+            this.form = {
+                startTime:null, //2019-08-07 12:12:12
+                endTime:null,
+                daterange:null,
+                memberType:null,  //客户是0，新会员是1，老会员是2
+
+                tradeCountRange:null,
+                queryRepeatPaymentRatio: false,
+                queryOrderMoneyType: null, // 单次和总额 0和1
+                MoneyRange:null,
+                timeType:1,
+                startIndex:1,
+                pageSize:10
+            }
+            this.goSearch();
+        },
+        //重新筛选
+        reScreening(){
+            console.log(11)
+            this.$router.push('/intelligentOperation/memberInfo');
+        },
+        //导出
+        mIexport(){
+            let data = {};
+            data.cid = ""
+            data.startTime = this.form.startTime || null
+            data.endTime = this.form.endTime || null
+            data.memberType = this.form.memberType
+            data.tradeCountRange = this.form.tradeCountRange
+            data.queryRepeatPaymentRatio = this.form.queryRepeatPaymentRatio
+            data.queryOrderMoneyType = this.form.queryOrderMoneyType
+            data.MoneyRange = this.form.MoneyRange
+            data.timeType = this.form.timeType
+
+            console.log(data)
+            this._apis.data.memberInformationExport(data)
+            .then(res => {
+                window.open(res);
+            })
+            .catch(err=>{
+                this.$message.error(err);
+            })
+        },
+        sizeChange(val){
+            this.form.pageSize = val;
+            this.goSearch();
+        },
+        currentChange(val){
+            this.form.startIndex = val;
+            this.goSearch();
         }
     }
 }
