@@ -105,7 +105,8 @@ export default {
                 if(v.checked) {
                     let obj = {
                         blackInfoId: v.id,
-                        disableItemValue: "1"
+                        disableItemValue: "1",
+                        blackInfoName: v.name
                     }
                     blackListMapDtos.push(obj);
                 }

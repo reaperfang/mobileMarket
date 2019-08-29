@@ -14,8 +14,9 @@
                         </el-radio-group>
                         <div class="input_wrap" v-if="form.timeType == 4">
                         <el-date-picker
-                            v-model="range"
+                            v-model="dateRange"
                             type="daterange"
+                            :picker-options="pickerOptions"
                             range-separator="—"
                             value-format="yyyy-MM-dd"
                             start-placeholder="开始日期"
@@ -64,15 +65,15 @@
                             </el-tooltip>
                         </div>
                     </div>
-                    <ma1Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma1Table>
+                    <ma4Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma4Table>
                 </div>
     </div>
 </template>
 <script>
-import ma1Table from './components/ma1Table';
+import ma4Table from './components/ma4Table';
 export default {
     name: 'rightsProtection',
-    components: { ma1Table },
+    components: { ma4Table },
     data() {
         return {
             form: {
@@ -88,7 +89,28 @@ export default {
             range:'',
             listObj:{
                
+            },
+            pickerMinDate: '',
+            dateRange: [],
+            pickerOptions: {
+          onPick: ({ maxDate, minDate }) => {
+            this.pickerMinDate = minDate.getTime()
+            if (maxDate) {
+              this.pickerMinDate = ''
             }
+          },
+          disabledDate: (time) => {
+            if (this.pickerMinDate !== '') {
+              const day30 = (90 - 1) * 24 * 3600 * 1000
+              let maxTime = this.pickerMinDate + day30
+              if (maxTime > new Date()) {
+                maxTime = new Date()
+              }
+              return time.getTime() > maxTime
+            }
+            return time.getTime() > Date.now()
+          }
+        },
 
         }
     },

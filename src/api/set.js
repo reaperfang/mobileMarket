@@ -23,9 +23,19 @@ export function updateShopInfo(data) {
 /* 店铺微信支付信息 */
 export function getShopPayInfo(data) {
   return request({
-    target: 'SHOP-API-105-PROCESSOR',
+    target: 'PAYMENT-106-PROCESSOR',
     method: 'post',
-    apiType: 'manager',
+    apiType: 'pay',
+    data
+  })
+}
+
+/* 添加店铺微信支付信息 */
+export function addShopPayInfo(data) {
+  return request({
+    target: 'PAYMENT-104-PROCESSOR',
+    method: 'post',
+    apiType: 'pay',
     data
   })
 }
@@ -33,9 +43,9 @@ export function getShopPayInfo(data) {
 /* 更新店铺微信支付信息 */
 export function updateShopPayInfo(data) {
   return request({
-    target: 'SHOP-API-106-PROCESSOR',
+    target: 'PAYMENT-105-PROCESSOR',
     method: 'post',
-    apiType: 'manager',
+    apiType: 'pay',
     data
   })
 }
@@ -45,6 +55,16 @@ export function updateShopPayInfo(data) {
 export function getShopMessage(data) {
   return request({
     target: 'SHOP-API-107-PROCESSOR',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
+/* 设置店铺消息列表 */
+export function setShopMessage(data) {
+  return request({
+    target: 'SHOP-API-108-PROCESSOR',
     method: 'post',
     apiType: 'manager',
     data

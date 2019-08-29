@@ -30,8 +30,11 @@
         label="手机号">
       </el-table-column>
       <el-table-column
-        prop="tradeTime"
-        label="维权时间">
+        label="维权时间"
+        width="150">
+        <template slot-scope="scope">
+          <span>{{Number(scope.row.tradeTime) | time}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="protectionGoodsCount"
@@ -41,14 +44,16 @@
         label="维权类型"
         >
         <template slot-scope="scope">
-             <span style="line-height:60px;display:inline-block">{{{1:'退款（仅退款不退货）',2:'退款退货',3:'换货'}[scope.row.protectionType]}}</span>
+             <span style="line-height:60px;display:inline-block" v-if="scope.row.protectionType">{{{1:'退款（仅退款不退货）',2:'退款退货',3:'换货'}[scope.row.protectionType]}}</span>
+             <span style="line-height:60px;display:inline-block" v-else>-</span>
         </template>
       </el-table-column>
       <el-table-column
         label="维权原因"
         >
         <template slot-scope="scope">
-             <span style="line-height:60px;display:inline-block">{{{1:'不想要了',2:'卖家缺货',3:'拍错了订单信息错误',4:'其他'}[scope.row.protectionReason]}}</span>
+             <span style="line-height:60px;display:inline-block" v-if="scope.row.protectionReason">{{{1:'不想要了',2:'卖家缺货',3:'拍错了订单信息错误',4:'其他'}[scope.row.protectionReason]}}</span>
+             <span style="line-height:60px;display:inline-block" v-else>-</span>
         </template>
       </el-table-column>
     </el-table>
@@ -60,7 +65,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="listObj.totalPage">
+        :total="listObj.totalSize">
       </el-pagination>
     </div>
   </div>
@@ -85,10 +90,23 @@ export default {
   created() {
 
   },
+   filters:{
+      //时间戳过滤
+       time:function(value) {
+        let date = new Date(value)
+        let Y = date.getFullYear() + '-'
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
+        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':'
+        let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + '' : date.getMinutes()
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+        return Y + M + D + h + m
+      }
+    },
   methods: {
     handleSizeChange(val){
       this.pageSize = val;
-      this.$emit('getRightsProtection',1,val)
+      this.$emit('getRightsProtection',1,val)    
     },
     handleCurrentChange(val){
       this.$emit('getRightsProtection',val,this.pageSize)

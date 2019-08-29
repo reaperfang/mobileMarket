@@ -1,54 +1,55 @@
 <template>
   <DialogBase :visible.sync="visible" @submit="submit" title="积分记录" :hasCancel="hasCancel">
     <div class="c_container">
-        <div class="marB20"><span>总余额：{{ data.balance }}</span></div>
+        <div class="marB20"><span>总积分：{{ data.score }}</span><span class="marL20">可用积分：{{ data.score-data.frozenScore }}</span></div>
         <el-table
-            :data="balanceList"
+            :data="scoreList"
             style="width: 100%"
             :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
             :default-sort="{prop: 'date', order: 'descending'}"
           >
             <el-table-column prop="createUserName" label="操作人"></el-table-column>
             <el-table-column prop="createTime" label="操作时间"></el-table-column>
-            <el-table-column prop="businessType" label="交易类型"></el-table-column>
-            <el-table-column prop="changeReason" label="原因"></el-table-column>
-            <el-table-column prop="changeAmount" label="数量"></el-table-column>
+            <el-table-column prop="businessTypeName" label="交易类型"></el-table-column>
+            <el-table-column prop="remarks" label="原因"></el-table-column>
+            <el-table-column prop="changeScore" label="数量"></el-table-column>
         </el-table>
         <div class="page_styles">
             <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="Number(startIndex) || 1"
-              :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
-              :page-size="pageSize*1"
-              :total="total*1"
-              layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="Number(startIndex) || 1"
+            :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
+            :page-size="pageSize*1"
+            :total="total*1"
+            layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
         </div>
     </div>
   </DialogBase>
 </template>
 <script>
+import clientApi from "@/api/client";
 import DialogBase from "@/components/DialogBase";
 export default {
   props: ["data"],
-  name: "balanceListDialog",
+  name: "discountCouponDialog",
   data() {
     return {
       hasCancel: true,
       pageSize: 10,
       startIndex: 1,
       total: 0,
-      balanceList: []
+      scoreList: []
     };
   },
   methods: {
     submit() {
       
     },
-    getBalanceLists(startIndex, pageSize) {
-        this._apis.client.getBalanceLists({startIndex, pageSize, memberInfoId: this.data.id, sort:'desc'}).then((response) => {
-            this.balanceList = [].concat(response.list);
+    getPointList(startIndex, pageSize) {
+        this._apis.client.getPointList({startIndex, pageSize, memberInfoId: this.data.id, sort:'desc'}).then((response) => {
+            this.scoreList = [].concat(response.list);
             this.total = response.total;
         }).catch((error) => {
             this.$notify.error({
@@ -58,11 +59,11 @@ export default {
         })
     },
     handleSizeChange(val) {
-      this.getBalanceLists(this.startIndex, val);
+      this.getPointList(this.startIndex, val);
       this.pageSize = val;
     },
     handleCurrentChange(val) {
-      this.getBalanceLists(val, this.pageSize);
+      this.getPointList(val, this.pageSize);
     },
   },
   computed: {
@@ -76,7 +77,7 @@ export default {
     }
   },
   mounted() {
-      this.getBalanceLists(this.startIndex, this.pageSize);
+      this.getPointList(this.startIndex, this.pageSize);
   },
   props: {
     data: {},

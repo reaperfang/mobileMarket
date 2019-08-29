@@ -2,25 +2,25 @@
 <template>
   <div>
     <el-table
-      :data="listObj.members"
+      :data="listObj.list"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
-        prop="importTime"
+        prop="date"
         label="时间">
       </el-table-column>
       <el-table-column
-        prop="channel"
+        prop="averagePayment"
         label="客单价（元）">
       </el-table-column>
       <el-table-column
-        prop="importNum"
+        prop="orderCount"
         label="订单量（笔）">
       </el-table-column>
       <el-table-column
-        prop="successNum"
+        prop="averageOrderPayment"
         label="人均消费金额（元）"
       >
       </el-table-column>
@@ -33,7 +33,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="sizes, prev, pager, next"
-        :total="listObj.count">
+        :total="listObj.totalPage">
       </el-pagination>
     </div>
   </div>
@@ -46,13 +46,13 @@ export default {
   extends: TableBase,
   data() {
     return {
+      listObj:{
+        list:[{date:"",averagePayment:"",orderCount:"",averageOrderPayment:""}],
+        totalPage:100,
+      }
     };
   },
   props:{
-    listObj:{
-      type:Object,
-      default:{}
-    }
   },
   created() {
 

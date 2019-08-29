@@ -1,12 +1,11 @@
 <template>
   <div class="l_container">
-    <p class="l_title">基本信息：</p>
+    <p class="l_title" @click="showRedDialog">基本信息：</p>
     <br />
     <div class="level_order">
       <span class="red">*</span>
       会员卡等级：{{cardData.alias}}
     </div>
-    <!-- <img src="../../assets/images/client/card.png" alt="" class="cardImg"> -->
     <div class="form_container">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="right">
         <el-form-item label="会员卡名称：" prop="name">
@@ -16,7 +15,6 @@
         </el-form-item>
         <el-form-item label="背景设置：" prop="backgroundType">
           <el-radio v-model="ruleForm.backgroundType" label="0">背景色：</el-radio>
-          <!-- <colorPicker v-model="ruleForm.background"></colorPicker><br> -->
           <span
             class="color_picker"
             v-for="item in colors"
@@ -491,12 +489,14 @@ export default {
       this.currentData.conditionList = this.conditionList;
     },
     showRedDialog(val) {
-      if (val) {
-        this.dialogVisible = true;
-        this.currentDialog = "redListDialog";
-      } else {
-        this.dialogVisible = false;
-      }
+      // if (val) {
+      //   this.dialogVisible = true;
+      //   this.currentDialog = "redListDialog";
+      // } else {
+      //   this.dialogVisible = false;
+      // }
+      this.dialogVisible = true;
+      this.currentDialog = "redListDialog";
     },
     showGiftDialog(val) {
       if (val) {
@@ -524,7 +524,8 @@ export default {
       this.selectedCoupons = [].concat(obj.selection);
     },
     getSelectedRed(obj) {
-      this.selectedReds = [].concat(obj.selection);
+      this.selectedReds = [];
+      this.selectedReds.push(obj.selection);
     },
     getSelection(obj) {
       obj.selection.map(v => {
@@ -725,7 +726,6 @@ export default {
         formObj.rights = rights;
         formObj.levelRightsInfoDtoList = [].concat(rightsDtoList);
         formObj.upgradeRewardDtoList = [].concat(upgradeRewardDtoList);
-        //console.log(formObj);
         this._apis.client
           .editCard(formObj)
           .then(response => {

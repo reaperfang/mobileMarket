@@ -498,7 +498,7 @@ export function addChannel(data) {
 //会员卡上传背景宣传图片
 export function addCardBg(data) {
     return request({
-        target:'MEMBERCARD-PIC-ADD-PROCESSOR',
+        target:'MEMBERCARD-PIC-UPDATE-PROCESSOR',
         method: 'post',
         apiType: 'member',
         data
@@ -517,6 +517,33 @@ export function checkCardBg(data) {
 export function importMemberFile(data) {
     return request({
         target:'MEMBERINFO-IMPORT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//获取积分列表
+export function getPointList(data) {
+    return request({
+        target:'MEMBER-SCOREDETAIL-PAGELIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//获取余额列表
+export function getBalanceLists(data) {
+    return request({
+        target:'MEMBER-BALANCEDETAIL-PAGELIST-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//保存积分通用规则
+export function saveCreditRule(data) {
+    return request({
+        target:'SHOP-API-100-PROCESSOR',
         method: 'post',
         apiType: 'member',
         data

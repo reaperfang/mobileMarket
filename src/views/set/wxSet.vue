@@ -8,27 +8,28 @@
           </span>
         </h1>
         <el-form ref="form" :model="form" :rules="rules" label-width="180px">
-            <el-form-item label="微信商户名称:" prop="wechatName">
-                <el-input v-model="form.wechatName" style="width:250px;" placeholder="请输入"></el-input>
+            <!-- <el-form-item label="微信商户名称:" prop="mchName">
+                <el-input v-model="form.mchName" style="width:250px;" placeholder="请输入"></el-input>
+            </el-form-item> -->
+            <el-form-item label="公众号（AppId）:" prop="appId">
+                <el-input v-model="form.appId" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="公众号（AppId）:" prop="wechatAppId">
-                <el-input v-model="form.wechatAppId" style="width:250px;" placeholder="请输入"></el-input>
+            <el-form-item label="小程序（AppId）:" prop="mpAppId">
+                <el-input v-model="form.mpAppId" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="小程序（AppId）:" prop="wechatAppId">
-                <el-input v-model="form.wechatAppId" style="width:250px;" placeholder="请输入"></el-input>
+            <el-form-item label="支付商户号（Mch_Id）:" prop="channelMchId">
+                <el-input v-model="form.channelMchId" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="支付商户号（Mch_Id）:" prop="wechatNum">
-                <el-input v-model="form.wechatNum" style="width:250px;" placeholder="请输入"></el-input>
+            <el-form-item label="支付密钥（APIKEY）:" prop="key">
+                <el-input v-model="form.key" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="支付密钥（APIKEY）:" prop="wechatKey">
-                <el-input v-model="form.wechatKey" style="width:250px;" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="证书密码:" prop="wechatValue">
-                <el-input v-model="form.wechatValue" style="width:250px;" placeholder="请输入"></el-input>
+            <el-form-item label="证书密码:" prop="certPassword">
+                <el-input v-model="form.certPassword" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
 
-            <el-form-item label="CERT证书文件" prop="wechatCertUrl">
+            <el-form-item label="CERT证书文件" prop="certLocalPath">
             <div class="upload_file">
+                <span class="tip">{{form.certFileName}}</span>
                 <el-upload
                 :action="uploadUrl"
                 :data="{json: JSON.stringify({cid: 222})}"
@@ -36,18 +37,18 @@
                 :on-success="uploadCertFileUrl"
                 :show-file-list="false"
                 v-loading="loading3"
-                v-model="form.wechatCertUrl">
-                <span class="handle" v-if="certFileUrlOk">选择文件</span>
-                <span class="tip">{{form.certFileName}}</span>
+                v-model="form.certLocalPath">
+                <span class="handle" v-if="certFileUrlOk || form.certFileName">选择文件</span>
                 </el-upload>
             </div>
             <div class="tip" v-if="certFileUrlOk">
-                <span class="status">未上传</span>下载证书cert.zip中的apiclient_cert.pem文件
+                <span class="status">未上传</span>下载证书cert.zip中的apiclient_cert.p12文件
             </div>
             </el-form-item>
 
-            <el-form-item label="KEY秘钥文件" prop="wechatKeyFileUrl">
+            <!-- <el-form-item label="KEY秘钥文件" prop="keyLocalPath">
             <div class="upload_file">
+                <span class="tip">{{form.keyFileName}}</span>
                 <el-upload
                 :action="uploadUrl"
                 :data="{json: JSON.stringify({cid: 222})}"
@@ -55,16 +56,15 @@
                 :on-success="uploadKeyFileUrl"
                 :show-file-list="false"
                 v-loading="loading2"
-                v-model="form.wechatKeyFileUrl">
-                <span class="handle" v-if="keyFileUrlOk">选择文件</span>
-                <span class="tip">{{form.keyFileName}}</span>
+                v-model="form.keyLocalPath">
+                <span class="handle" v-if="keyFileUrlOk || form.keyFileName">选择文件</span>
                 </el-upload>
             </div>
             <div class="tip" v-if="keyFileUrlOk">
               <span class="status">未上传</span>下载证书cert.zip中的apiclient_key.pem文件
             </div>
             </el-form-item>
-            
+             -->
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">保存</el-button>
                 <el-button  @click="_routeTo('payType')">返回</el-button>
@@ -80,40 +80,42 @@ export default {
   data() {
     return {
       form: {
-          wechatName: '',
-          wechatNum: '',
-          wechatAppId: '',
-          wechatKey: '',
-          wechatValue: '',
+          appId: '',
+          mpAppId:'',
+          key:'',
+          // mchName: '',
+          channelMchId: '',
+          certPassword: '',
           certFileName:'',
-          wechatCertUrl: '',
+          certLocalPath: '',
           keyFileName:'',
-          wechatKeyFileUrl: ''
+          // keyLocalPath: ''
       },
       rules: {
-        wechatName: [
-          { required: true, message: '请输入微信商户名称', trigger: 'blur' },
-          { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
-        ],
-        wechatNum:[
+        // mchName: [
+        //   { required: true, message: '请输入微信商户名称', trigger: 'blur' },
+        //   { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
+        // ],
+        channelMchId:[
           { required: true, message: '请输入微信商户号', trigger: 'blur' },
         ],
-        wechatAppId:[
-          { required: true, message: '请输入AppId', trigger: 'blur' },
+        appId:[
+          { required: true, message: '请输入公众号AppId', trigger: 'blur' },
         ],
-        wechatKey:[
+        mpAppId:[
+          { required: true, message: '请输入小程序AppId', trigger: 'blur' },
+        ],
+        key:[
           { required: true, message: '请输入密钥', trigger: 'blur' },
         ],
-        wechatValue:[
-          { required: true, message: '请输入证书密码', trigger: 'blur' },
-        ],
-        wechatCertUrl:[
+        certLocalPath:[
           { required: true, message: '请输入CERT证书文件', trigger: 'blur' },
         ],
-        wechatKeyFileUrl:[
-          { required: true, message: '请输入KEY秘钥文件', trigger: 'blur' },
-        ]
+        // keyLocalPath:[
+        //   { required: true, message: '请输入KEY秘钥文件', trigger: 'blur' },
+        // ]
       },
+      id:'',
       imageUrl: '',
       area: [],
       uploadUrl:`${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
@@ -130,13 +132,71 @@ export default {
   created() {
     this.getShopPayInfo()
   },
-  destroyed() {
-    
-  },
   methods: {
     getShopPayInfo(){
-      this._apis.set.getShopPayInfo().then(response =>{
-        this.form = response
+      let query = {
+        mchId:'2',
+        channelId:'WX_JSAPI',
+      }
+      this._apis.set.getShopPayInfo(query).then(response =>{
+        this.id = response.id
+        let param = JSON.parse(response.param)
+        this.form.channelMchId = response.channelMchId
+        this.form.appId = param.appId
+        this.form.key = param.key
+        this.form.certLocalPath = param.certLocalPath
+        this.form.certPassword = param.certPassword
+        this.form.mpAppId = param.mpAppId
+        // this.form.keyLocalPath = param.keyLocalPath
+        this.form.certFileName = param.certFileName
+        this.form.keyFileName = param.keyFileName
+        this.form.certLocalPath && (this.certFileUrlOk = false)
+        // this.form.keyLocalPath && (this.keyFileUrlOk = false)
+      }).catch(error =>{
+        this.$notify.info({
+          title: '提示',
+          message: '商户未设置支付信息'
+        });
+      })
+    },
+
+    onSubmit(){
+      if(this.id){
+        this.updateShopPayInfo()
+      }else{
+        this.addShopPayInfo()
+      }      
+    },
+    //修改商户支付信息
+    updateShopPayInfo(){
+      let param = {
+        // mchId:this.$store.user.cid || '2',
+        mchId:'2',
+        appId:this.form.appId,
+        key:this.form.key,
+        certLocalPath:this.form.certLocalPath,
+        certPassword:this.form.certPassword,
+        mpAppId:this.form.mpAppId,
+        // keyLocalPath:this.form.keyLocalPath,
+        certFileName:this.form.certFileName,
+        keyFileName:this.form.keyFileName
+      }
+      let query = {
+        id:this.id,
+        // mchId:this.$store.user.cid || '2',
+        mchId:'2',
+        channelId:'WX_JSAPI',
+        // mchName:this.$store.user.userInfo.shopName,
+        mchName:'店铺名称',
+        channelName:'WX',
+        channelMchId:this.form.channelMchId,
+        param:JSON.stringify(param)
+      }
+      this._apis.set.updateShopPayInfo(query).then(response =>{
+        this.$notify.success({
+          title: '成功',
+          message: '保存成功！'
+        });
       }).catch(error =>{
         this.$notify.error({
           title: '错误',
@@ -145,11 +205,34 @@ export default {
       })
     },
 
-    onSubmit(){
-      this._apis.set.updateShopPayInfo(this.form).then(response =>{
+    //添加商户支付信息
+    addShopPayInfo(){
+      let param = {
+        // mchId:this.$store.user.cid || '2',
+        mchId:'2',
+        appId:this.form.appId,
+        key:this.form.key,
+        certLocalPath:this.form.certLocalPath,
+        certPassword:this.form.certPassword,
+        mpAppId:this.form.mpAppId,
+        // keyLocalPath:this.form.keyLocalPath,
+        certFileName:this.form.certFileName,
+        keyFileName:this.form.keyFileName
+      }
+      let query = {
+        // mchId:this.$store.user.cid || '2',
+        mchId:'2',
+        channelId:'WX_JSAPI',
+        // mchName:this.$store.user.userInfo.shopName,
+        mchName:'店铺名称',
+        channelName:'WX',
+        channelMchId:this.form.channelMchId,
+        param:JSON.stringify(param)
+      }
+      this._apis.set.addShopPayInfo(query).then(response =>{
         this.$notify.success({
           title: '成功',
-          message: '保存成功！'
+          message: '添加成功！'
         });
       }).catch(error =>{
         this.$notify.error({
@@ -164,33 +247,32 @@ export default {
         this.loading3  = true
     },
 
-    handlKeyFileUrlOk(){
-        this.keyFileUrlOk = false
-        this.loading2 = true
-    },
+    // handlKeyFileUrlOk(){
+    //     this.keyFileUrlOk = false
+    //     this.loading2 = true
+    // },
     uploadCertFileUrl(response, file, fileList){
         this.certFileUrlOk = false
         if(file.status == "success"){
           this.form.certFileName = file.name
           this.$message.success(response.msg);
-          this.form.wechatCertUrl = response.data.url;
+          this.form.certLocalPath = response.data.url;
           this.loading3  = false
         }else{
           this.$message.error(response.msg);
         }
       },
-    uploadKeyFileUrl(response, file, fileList){
-      this.keyFileUrlOk = false
-      if(file.status == "success"){
-        this.form.keyFileName = file.name
-        this.$message.success(response.msg);
-        this.form.wechatKeyFileUrl = response.data.url;
-        this.loading2 = false
-      }else{
-        this.$message.error(response.msg);
-      }
-    },
-
+    // uploadKeyFileUrl(response, file, fileList){
+    //   this.keyFileUrlOk = false
+    //   if(file.status == "success"){
+    //     this.form.keyFileName = file.name
+    //     this.$message.success(response.msg);
+    //     // this.form.keyLocalPath = response.data.url;
+    //     this.loading2 = false
+    //   }else{
+    //     this.$message.error(response.msg);
+    //   }
+    // },
   }
 }
 </script>

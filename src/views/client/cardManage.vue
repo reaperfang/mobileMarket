@@ -38,7 +38,7 @@
                 <div class="c_line">
                     <span>卡名称：</span>
                     <div class="input_wrap">
-                        <el-select placeholder="全部" v-model="selected">
+                        <el-select placeholder="全部" v-model="selected" clearable>
                             <el-option
                                 v-for="item in cardNames"
                                 :key="item.id"
@@ -73,7 +73,7 @@ export default {
         return {
             uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
             imgUrl:"",
-            oldImg: require('../../assets/images/client/card.png'),
+            imgId: "",
             activeName: 'first',
             popVisible: false,
             selected:"",
@@ -121,6 +121,7 @@ export default {
                 response.list.map((v) => {
                     v.validity = "永久有效";
                     v.isGray = true;
+                    v.enable = v.enable == 0?true:false;
                 });
                 let i = response.list.findIndex((value,index,arr) => {
                     return value.name == "";
@@ -147,7 +148,13 @@ export default {
             })
         },
         addCardBg() {
-            this._apis.client.addCardBg({imgUrl: this.imgUrl}).then((response) => {
+            let params = {
+                imgUrl: this.imgUrl
+            };
+            if(this.imgId) {
+                params = Object.assign(params,{id: this.imgId})
+            }
+            this._apis.client.addCardBg(params).then((response) => {
                 this.$notify({
                     title: '成功',
                     message: '上传会员卡宣传图片成功',
@@ -162,7 +169,10 @@ export default {
         },
         checkCardBg() {
             this._apis.client.checkCardBg({}).then((response) => {
-                this.imgUrl = response.imgUrl;
+                if(response) {
+                    this.imgUrl = response.imgUrl;
+                    this.imgId = response.id;
+                }
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -194,7 +204,6 @@ export default {
     .c_card{
         width: 324px;
         height: 140px;
-        //background: url("../../assets/images/client/card.png") 0 0 no-repeat;
         background-position: 0 0;
         background-repeat: no-repeat;
         position: relative;
@@ -217,8 +226,13 @@ export default {
         }
         .pop_img{
             position: absolute;
-            left: 210px;
-            top: 52px;
+            left: 291px;
+            top: 10px;
+        }
+        .cardImg{
+            width: 324px;
+            height: 140px;
+            border-radius: 10px;
         }
     }
     .c_warn{

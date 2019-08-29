@@ -113,7 +113,7 @@
                 </div>
                 <div class="assets_item rb">
                     <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p>积分：<span>{{clientInfoById.score}}</span></p>
+                    <p>积分：<span class="pointer" @click="showScoreList">{{clientInfoById.score}}</span></p>
                     <span @click="showAdjustScore">变更</span>
                 </div>
             </div>
@@ -156,6 +156,7 @@ import issueCodeDialog from './dialogs/clientInfo/issueCodeDialog';
 import addBlackDialog from './dialogs/clientInfo/addBlackDialog';
 import sendCardDialog from './dialogs/clientInfo/sendCardDialog';
 import changeCardDialog from './dialogs/clientInfo/changeCardDialog';
+import scoreListDialog from './dialogs/clientInfo/scoreListDialog';
 export default {
     name: 'clientInfo',
     components: { 
@@ -169,7 +170,8 @@ export default {
         sendCardDialog,
         changeCardDialog,
         adjustCreditDialog,
-        issueCodeDialog
+        issueCodeDialog,
+        scoreListDialog
     },
     data() {
         return {
@@ -272,10 +274,16 @@ export default {
             this.currentData.id = this.userId;
             this.currentData.level = this.clientInfoById.levelName;
         },
+        showScoreList() {
+            this.dialogVisible = true;
+            this.currentDialog = "scoreListDialog";
+            this.currentData.score = this.clientInfoById.score;
+            this.currentData.frozenScore = this.clientInfoById.frozenScore;
+            this.currentData.id = this.userId;
+        },
         getAllCoupons() {
             this._apis.client.getAllCoupons({couponType: 0}).then((response) => {
                 this.allCoupons = [].concat(response.list);
-                localStorage.setItem('allCoupons', JSON.stringify(this.allCoupons));
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -363,8 +371,13 @@ export default {
                 })
             }
         },
-        getUsedCoupon() {
-            let params = {usedType:"1", couponType: "0", memberId: "1"};
+        getUsedCoupon(status) {
+            let params;
+            if(status == 2) {
+                params = {usedType:"1", couponType: "0", memberId: "1", usedStatus: ""};
+            }else{
+                params = {usedType:"1", couponType: "0", memberId: "1", usedStatus: status};
+            }
             this._apis.client.getUsedCoupon(params).then((response) => {
                 response.map((v) => {
                     this.couponList.push(v.appCoupon);
