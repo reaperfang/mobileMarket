@@ -35,10 +35,16 @@ export default {
                         order: this.currentComponentData.data.sortRule
                     };
                 }else{
-                    params = {
-                        spuIds: this.currentComponentData.data.ids.join(','),
-                        order: this.currentComponentData.data.sortRule
-                    };
+                    const ids = this.currentComponentData.data.ids;
+                    if(Array.isArray(ids) && ids.length){
+                        params = {
+                            spuIds: ids.join(','),
+                            order: this.currentComponentData.data.sortRule
+                        };
+                    }else{
+                        this.list = [];
+                        return;
+                    }
                 }
 
                 this.loading = true;
@@ -50,6 +56,7 @@ export default {
                         title: '错误',
                         message: error
                     });
+                    this.list = [];
                     this.loading = false;
                 });
             }

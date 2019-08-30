@@ -1,20 +1,23 @@
 <template>
   <!-- 满减瞒折 -->
-  <div class="componentFullReduction" v-if="currentComponentData && currentComponentData.data">
-    <div class="reduction">
+  <div class="componentFullReduction" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
+    <div class="reduction"  v-for="(item, key) in list" :key="key">
       <div class="reduction_first">
         <span>减</span>
-        <span>{{currentComponentData.data.title}}</span>
-        <span>2019.05.10-2019.06.10</span>
+        <span>{{item.name}}</span>
+        <span>{{item.startTime}}至{{item.endTime}}</span>
       </div>
       <div class="reduction_two">
         <ul>
           <li
+          v-for="(item2, key2) in item.typeList " :key="key2"
+          v-if="item2.orderRewardType"
             class="ellipsis"
             :class="reductionStyle"
-            v-for="(item, key) in list"
-            :key="key"
-          >{{item.name}}</li>
+          >
+            <span v-if="item2.orderRewardType == 1" :title="reduceData(item2)">{{reduceData(item2)}}</span>
+            <span v-else-if="item2.orderRewardType == 2" :title="discountData(item2)">{{discountData(item2)}}</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -39,6 +42,13 @@ export default {
     }
   },
   methods: {
+    reduceData(item2) {
+      return `满${item2.useCondition}${item2.unit == 1 ? '元' : '件'}减${item2.reduceMoney}元`;
+    },
+
+    discountData(item2) {
+      return `满${item2.useCondition}${item2.unit == 1 ? '元' : '件'}打${item2.discount * 10}折`;
+    }
   }
 };
 </script>
@@ -47,10 +57,17 @@ export default {
 .componentFullReduction {
   & > .reduction {
     padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin: 10px;
+    box-shadow: 0px 0px 9px rgba(0,0,0,0.1);
     & > .reduction_first {
       position: relative;
       & > span {
         margin-right: 8px;
+        margin-right: 8px;
+        color: rgba(171,171,171,1);
+        font-size: 11px;
       }
       & > span:first-child {
         width: 19px;

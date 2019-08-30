@@ -12,11 +12,11 @@
                                 <el-radio v-model="ruleForm.scoreToCash" label="2">开启</el-radio><br>
                                 <span>抵现比例：</span>
                                 <div style="width: 140px; display: inline-block">
-                                    <el-input placeholder="请输入整数" v-model="ruleForm.jf"></el-input>
+                                    <el-input placeholder="请输入整数" v-model="ruleForm.scorePercentage"></el-input>
                                 </div>
                                 <span>积分</span>
                                 <div style="width: 54px; display: inline-block">
-                                    <el-input v-model="ruleForm.yuan"></el-input>
+                                    <el-input v-model="ruleForm.scorePercentageMoney"></el-input>
                                 </div>
                                 <span>元</span>
                             </div>
@@ -25,14 +25,14 @@
                             <el-checkbox></el-checkbox>
                             <span class="marR50">订单满</span>
                             <div style="width: 222px; display: inline-block">
-                                <el-input placeholder="请输入整数，不填则不生效"></el-input>
+                                <el-input placeholder="请输入整数，不填则不生效" v-model="ruleForm.scoreToCashOrderMoney"></el-input>
                             </div>
                             <span>元</span>
                         </el-form-item>
                         <el-form-item>
                             <span class="marL105">最高可抵现订单金额的</span>
                             <div style="width: 222px; display: inline-block; margin-left: 20px">
-                                <el-input placeholder="请输入整数，不填则不生效"></el-input>
+                                <el-input placeholder="请输入整数，不填则不生效" v-model="scoreToCashOrderRate"></el-input>
                             </div>
                             <span>%</span>
                         </el-form-item>

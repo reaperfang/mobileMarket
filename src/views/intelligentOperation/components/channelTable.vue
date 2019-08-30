@@ -13,7 +13,7 @@
                 label="排序">
             </el-table-column>
             <el-table-column
-                prop="chanelType"
+                prop="chanelName"
                 label="渠道类型"
                 align="center"
             >

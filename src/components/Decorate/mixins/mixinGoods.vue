@@ -27,33 +27,20 @@ export default {
             if(this.currentComponentData && this.currentComponentData.data) {
                 let params = {};
                 const ids = this.currentComponentData.data.ids;
-                if(ids && Object.prototype.toString.call(ids) === '[object Object]') {
-                    if(this.currentCatagoryId === 'all') {
-                        const allIds = [];
-                        for(let k in ids) {
-                            for(let item of ids[k]) {
-                                allIds.push(item);
-                            }
-                        }
-                        params = {
-                            status: '1',
-                            ids: allIds
-                        }
+                if(ids) {
+                    if(Object.prototype.toString.call(ids) === '[object Object]') {
+                        params = this.setGroupGoodsParams(ids);
+                    }else if(Array.isArray(ids) && ids.length){
+                        params = this.setNormalGoodsParams(ids);
                     }else{
-                        params = {
-                            status: '1',
-                            ids: ids[this.currentCatagoryId],
-                            productCatalogInfoId: this.currentCatagoryId
-                        }
-                    }
-                }else if(Array.isArray(ids) && ids.length){
-                    params = {
-                        status: '1',
-                        ids: ids,
+                        this.list = [];
+                        return;
                     }
                 }else{
+                    this.list = [];
                     return;
                 }
+
                 this.loading = true;
                 this._apis.goods.fetchAllSpuGoodsList(params).then((response)=>{
                     this.createList(response);
@@ -63,6 +50,7 @@ export default {
                         title: '错误',
                         message: error
                     });
+                    this.list = [];
                     this.loading = false;
                 });
             }
@@ -72,6 +60,38 @@ export default {
         createList(datas) {
             this.list = datas;
         },
+
+        /* 设置分组商品参数 */
+        setGroupGoodsParams(ids) {
+            let params = {};
+            if(this.currentCatagoryId === 'all') {
+                const allIds = [];
+                for(let k in ids) {
+                    for(let item of ids[k]) {
+                        allIds.push(item);
+                    }
+                }
+                params = {
+                    status: '1',
+                    ids: allIds
+                }
+            }else{
+                params = {
+                    status: '1',
+                    ids: ids[this.currentCatagoryId],
+                    productCatalogInfoId: this.currentCatagoryId
+                }
+            }
+            return params;
+        },
+
+        /* 设置普通商品参数 */
+        setNormalGoodsParams(ids) {
+            return {
+                status: '1',
+                ids: ids,
+            }
+        }
     }
 }
 </script>

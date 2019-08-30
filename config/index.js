@@ -34,10 +34,10 @@ module.exports = {
 
     proxyTable: {
       '/data-server/**': {
-        //target: 'http://172.22.146.2:8080', // 订单 尹茂凯
+        // target: 'http://172.22.146.2:8080', // 订单 尹茂凯
         // target: 'http://172.22.134.106:8080', // 商品 王浩
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
-        target: 'http://www.lwt.com',  // nginx代理 李玟霆
+        // target: 'http://www.lwt.com',  // nginx代理 李玟霆
         // target: 'http://172.22.146.124:8099',// 开关 许涛
         // target: 'http://172.22.146.109:8080', // 商品 王浩
         // target: 'http://172.22.146.31:8080', // 客户 崔建
@@ -46,7 +46,6 @@ module.exports = {
         // target: 'https://172.22.146.124:9002',// 许涛
         // target: 'http://172.22.134.125:8012',// 陈程
         // target: 'http://172.22.146.12:8091', // 订单 李刚
-        // target: 'http://172.22.146.133:8081',  //李雯廷
         // target: 'http://172.22.146.114:8080', // 商品 王浩2
         // target: 'http://172.22.146.124:80',// 许涛
         // target: 'http://dkmamb.natappfree.cc',// 许涛
@@ -57,16 +56,16 @@ module.exports = {
         // target: 'http://172.22.145.115:8080',// 耿士龙
         // target: 'http://172.22.145.113:8083',// 李权宇
         // target: 'http://172.22.146.119:8080', // 郑艳华 商品
-        // target: 'http://if4jyy.natappfree.cc',// 智能运营
+        target: 'http://u2spmw.natappfree.cc',// 智能运营
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
         }
       },
+
+      /* 营销服务 */
       '/sale_server/**': {
         target: 'http://120.133.1.130:8012/',
-        // target: 'http://172.22.134.138:8012',  //曹帅
-        // target: 'http://172.22.134.125:8012',  //陈程
         changeOrigin: true,
         pathRewrite: {
           '^/sale_server': ''
@@ -93,7 +92,16 @@ module.exports = {
         pathRewrite: {
           '^/order_server': ''
         }
-      }
+      },
+
+      /* 曹帅接口单独联调 */
+      '/caoshaui_server/**': {
+        target: 'http://172.22.134.138:8012',  //曹帅
+        changeOrigin: true,
+        pathRewrite: {
+          '^/caoshaui_server': ''
+        }
+      },
     }
   },
 

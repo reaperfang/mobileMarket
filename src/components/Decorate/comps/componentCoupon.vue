@@ -1,6 +1,6 @@
 <template>
   <!-- 优惠券 -->
-  <div class="componentCoupon" v-if="currentComponentData && currentComponentData.data">
+  <div class="componentCoupon" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
     <!-- 样式一 -->
     <div class="coupon_first">
       <ul>
@@ -120,12 +120,16 @@ export default {
 
 <style lang="scss" scoped>
 .componentCoupon {
-  background: #f1f1f1;
+  // background: #f1f1f1;
   .coupon_first {
     & > ul {
       display: -webkit-box;
       overflow-x: scroll;
       padding: 10px 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      margin: 10px;
+      box-shadow: 0px 0px 9px rgba(0,0,0,0.1);
       & > li {
         width: 128px;
         height: 92px;

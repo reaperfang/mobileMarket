@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-商品列表 -->
-<div class="componentGoods" :class="'listStyle'+listStyle" :style="{padding:pageMargin+'px'}" v-if="currentComponentData && currentComponentData.data">
+<div class="componentGoods" :class="'listStyle'+listStyle" :style="{padding:pageMargin+'px'}" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
     <!-- <van-list v-model="goodListLoading" :finished="goodListFinished" finished-text="没有更多了" @load="goodListLoad" > -->
         <ul v-if="list && list.length">
             <li v-for="(item,key) in list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
@@ -73,7 +73,6 @@ export default {
             if(!this.currentComponentData || !this.currentComponentData.data) {
               return;
             }
-            console.log(this.currentComponentData);
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;
             this.goodsMargin = this.currentComponentData.data.goodsMargin;

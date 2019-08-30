@@ -10,10 +10,18 @@
      <el-form-item label="选择商品" v-if="ruleForm.addType === 1" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of list" :key="key">
-              <img :src="item.goodImg" alt="">
-              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
-            </li>
+            <template v-if="ruleForm.addType === 1">
+              <li v-for="(item, key) of list" :key="key">
+                <img :src="item.goodImg" alt="">
+                <i class="delete_btn" @click.stop="deleteItem(item)"></i>
+              </li>
+            </template>
+            <template v-else-if="ruleForm.addType === 2">
+              <li v-for="(item, key) of []" :key="key">
+                <img :src="item.goodImg" alt="">
+                <i class="delete_btn" @click.stop="deleteItem(item)"></i>
+              </li>
+            </template>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectMultiPerson'">
               <i class="inner"></i>
             </li>

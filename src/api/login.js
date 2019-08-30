@@ -17,10 +17,12 @@ export function logout() {
   })
 }
 
-export function getUserInfo() {
+export function getUserInfo(data) {
   return request({
-    target: '',
-    method: 'post'
+    target: 'MANAGER-API-105',
+    method: 'post',
+    apiType: 'manager',
+    data
   })
 }
 

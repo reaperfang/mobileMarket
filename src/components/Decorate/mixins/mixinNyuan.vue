@@ -17,20 +17,26 @@ export default {
 
          //根据ids拉取数据
         fetch() {
-            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
-                this.loading = true;
-                this._apis.shop.getNyuanListByIds({
-                    baleIds : this.currentComponentData.data.ids.join(',')
-                }).then((response)=>{
-                    this.createList(response);
-                    this.loading = false;
-                }).catch((error)=>{
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
+            if(this.currentComponentData && this.currentComponentData.data) {
+                const ids = this.currentComponentData.data.ids;
+                if(Array.isArray(ids) && ids.length){
+                    this.loading = true;
+                    this._apis.shop.getNyuanListByIds({
+                        baleIds : ids.join(',')
+                    }).then((response)=>{
+                        this.createList(response);
+                        this.loading = false;
+                    }).catch((error)=>{
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                        this.list = [];
+                        this.loading = false;
                     });
-                    this.loading = false;
-                });
+                }else{
+                    this.list = [];
+                }
             }
         },
 
