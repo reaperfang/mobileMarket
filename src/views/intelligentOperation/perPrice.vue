@@ -93,10 +93,9 @@
 <script>
 import pp1Chart from './components/pp1Chart';
 import pp2Chart from './components/pp2Chart';
-import ppTable from './components/ppTable';
 export default {
     name: 'perPrice',
-    components: { pp1Chart, pp2Chart, ppTable },
+    components: { pp1Chart, pp2Chart },
     data() {
         return {
             listObj:{},
