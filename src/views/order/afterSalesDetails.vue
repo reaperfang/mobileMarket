@@ -3,7 +3,7 @@
         <div class="header">
             <el-row>
                 <el-col :span="12">
-                    <span>售后单编号：{{orderAfterSale.code}}</span>
+                    <span>售后单编号：{{orderAfterSale.orderCode}}</span>
                     <span>【{{orderAfterSale.type | typeFilter}}】</span>
                 </el-col>
                 <el-col class="header-righter" :span="12">
@@ -14,10 +14,12 @@
         <section class="flow-path">
             <afterSalesState :orderAfterSale="orderAfterSale" @auth="auth" @reject="reject" @confirmTakeOver="confirmTakeOver"></afterSalesState>
         </section>
-        <el-tabs class="tabs" v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="售后信息" name="afterSalesInformation"></el-tab-pane>
-            <el-tab-pane label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
-        </el-tabs>
+        <section class="container">
+            <el-tabs class="tabs" v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="售后信息" name="afterSalesInformation"></el-tab-pane>
+                <el-tab-pane label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
+            </el-tabs>
+        </section>
         <component :is="currentView" :recordList="recordList" :orderAfterSale="orderAfterSale" :itemList="itemList" :sendItemList="sendItemList"></component>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @reject="onReject" title="审核"></component>
     </div>
@@ -171,6 +173,7 @@ export default {
             box-shadow:5px 5px 10px 0px rgba(227,233,228,1);
             .header-righter {
                 text-align: right;
+                color: #b8b8bb;
             }
         }
 
@@ -178,6 +181,9 @@ export default {
             background-color: #fff;
             padding: 20px;
             margin-top: 20px;
+            &.container {
+                padding-top: 0;
+            }
             .row {
                 margin: 10px 0;
             }
