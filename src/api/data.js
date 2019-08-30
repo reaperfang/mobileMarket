@@ -203,7 +203,7 @@ export function channelConversion(data) {
 // 渠道转化导出 
 export function channelConversionExport(data) {
     return request({
-      target:' AUTOMATIC-ANALYSE-MEMBER-CHANNEL-EXPORT-PROCESSOR',
+      target:'AUTOMATIC-ANALYSE-MEMBER-CHANNEL-EXPORT-PROCESSOR',
       method: 'post',
       apiType: 'data',
       data

@@ -4,6 +4,7 @@ export default {
   props: ["data"],
   data() {
     return {
+      currentComponentData: {},
       items: []
     }
   },
@@ -29,6 +30,7 @@ export default {
 
     /* 发送数据改变事件 */
     emitChangeRuleForm(newValue) {
+      this.currentComponentData['data'] = newValue;
       this.$emit("change", {
         id: this.$parent.currentComponentId,
         data: newValue
@@ -37,7 +39,7 @@ export default {
 
      /* 删除数据项 */
     deleteItem(item) {
-      const tempItems = [...this.items];
+      const tempItems = [...this.list];
       for(let i=0;i<tempItems.length;i++) {
         if(item === tempItems[i]) {
           tempItems.splice(i, 1);
@@ -53,3 +55,17 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.el-radio-group{
+  margin-top: 9px;
+  .el-radio {
+      margin-bottom: 10px;
+      margin-right: 10px;
+  }
+}
+.el-checkbox-group{
+  .el-checkbox{
+    margin-right: 10px;
+  }
+}
+</style>

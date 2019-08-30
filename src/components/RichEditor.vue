@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <vue-ueditor-wrap ref="editor" v-model="richValue" :config="myConfig" @ready="ready" :init="init"></vue-ueditor-wrap>
+    <vue-ueditor-wrap v-if="config" ref="editor" v-model="richValue" :config="config" @ready="ready" :init="init"></vue-ueditor-wrap>
   </div>
 </template>
 <script>
@@ -12,43 +12,38 @@ Vue.component('vue-ueditor-wrap', VueUeditorWrap)
 import utils from '@/utils';
 export default {
   name: 'RichEditor',
-  props: {
-    richValue:{
-      type: String,
-      default: ''
-    },
-    //配置
-    myConfig:{  
-      type: Object,
-      default: ()=>{  //默认编辑器配置
-        return {
-          // 编辑器不自动被内容撑高
-          autoHeightEnabled: false,
-          // 初始容器高度
-          initialFrameHeight: '100%',
-          // 初始容器宽度
-          initialFrameWidth: '100%',
-          // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-          serverUrl: 'http://35.201.165.105:8000/controller.php',
-          // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
-          UEDITOR_HOME_URL: '/static/UEditor/'
-        }
-      }
-    }
-  },
+  props: ['richValue', 'myConfig'],
   data() {
     return {
-      editor:null,//编辑器实例
+      editor:null,//编辑器实例,
+      defaultConfig: {
+        // 编辑器不自动被内容撑高
+        autoHeightEnabled: false,
+        // 初始容器高度
+        initialFrameHeight: '100%',
+        // 初始容器宽度
+        initialFrameWidth: '100%',
+        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
+        serverUrl: 'http://35.201.165.105:8000/controller.php',
+        // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
+        UEDITOR_HOME_URL: process.env.NODE_ENV === 'testing' ? '/bms/static/UEditor/' : '/static/UEditor/'
+      },
+      config: null
     }
   },
-
+  created() {
+    this.config = Object.assign(this.defaultConfig, this.myConfig);
+  },
   mounted() {
   },
 
   watch: {
     richValue(newValue, oldValue) {
-        this.$emit('editorValueUpdate', newValue);
-    }
+      const target = 'http://statics.xiumi.us/stc/';
+      const convertData = newValue.replace(new RegExp(target,'g'),"https://statics.xiumi.us/stc/");
+      this.$emit('editorValueUpdate', convertData);
+    },
+
   },
 
   methods: {
@@ -60,10 +55,10 @@ export default {
         var btn = new UE.ui.Button({
           name   : 'xiumi-connect',
           title  : '秀米',
-          cssRules : "background-image: url('" + _self.myConfig.UEDITOR_HOME_URL + "themes/default/images/xiumi_logo.png') !important;background-size: cover;",
+          cssRules : "background-image: url('" + _self.config.UEDITOR_HOME_URL + "themes/default/images/xiumi_logo.png') !important;background-size: cover;",
           onclick: function () {
               var dialog = new UE.ui.Dialog({
-                  iframeUrl: _self.myConfig.UEDITOR_HOME_URL + 'dialogs/xiumi/xiumi-ue-dialog-v5.html',
+                  iframeUrl: _self.config.UEDITOR_HOME_URL + 'dialogs/xiumi/xiumi-ue-dialog-v5.html',
                   editor   : editor,
                   name     : 'xiumi-connect',
                   title    : "秀米图文消息助手",

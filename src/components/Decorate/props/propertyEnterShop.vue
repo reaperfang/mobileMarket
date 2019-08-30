@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';;
+import propertyMixin from '../mixins/mixinProps';;
 export default {
   name: 'propertyEnterShop',
   mixins: [propertyMixin],

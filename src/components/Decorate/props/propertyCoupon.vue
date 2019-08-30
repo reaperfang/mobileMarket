@@ -10,7 +10,7 @@
       <el-form-item label="" prop="addType" v-if="ruleForm.addType === 1">
         <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">添加优惠券(最多添加10张优惠券)</el-button>
         <el-tag
-          v-for="tag in items"
+          v-for="tag in list"
           :key="tag.title"
           closable
           style="margin-right:5px;"
@@ -61,11 +61,12 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinCoupon from '../mixins/mixinCoupon';
 import dialogSelectCoupon from '@/views/shop/dialogs/dialogSelectCoupon';
 export default {
   name: 'propertyCoupon',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinCoupon],
   components: {dialogSelectCoupon},
   data () {
     return {
@@ -81,9 +82,13 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: '',
     }
+  },
+  created() {
+    this.fetch();
   },
    watch: {
     'items': {
@@ -92,12 +97,72 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.id);
         }
-        this._globalEvent.$emit('fetchCoupon');
+        this.fetch();
       },
       deep: true
+    },
+    /* 监听添加类型，自动获取状态则拉取一下数据 */
+    'currentComponentData.data.addType'(newValue) {
+      if(newValue == 2) {
+        this.fetch();
+      }
+    },
+
+    /* 监听显示个数类型 */
+    'currentComponentData.data.couponNumberType'(newValue) {
+      this.fetch();
+    },
+
+    /* 监听显示个数 */
+    'currentComponentData.data.showNumber'(newValue) {
+      this.fetch();
     }
   },
   methods: {
+     //根据ids拉取数据
+        fetch() {
+            let params = {};
+            if(this.ruleForm.addType == 2) {
+              if(this.ruleForm.couponNumberType === 1) {
+                params = {
+                  couponType: 0
+                };
+              }else {
+                params = {
+                  couponType: 0,
+                  limitedQuantity: this.ruleForm.showNumber
+                };
+              }
+            }else{
+              if(this.ruleForm.ids.length) {
+                params = {
+                  couponType: 0,
+                  ids: this.ruleForm.ids
+                };
+              }else{
+                 params = {
+                  couponType: 0
+                };
+              }
+            }
+
+            this.loading = true;
+            this._apis.shop.getCouponListByIds(params).then((response)=>{
+                this.createList(response);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.loading = false;
+            });
+        },
+
+         /* 创建数据 */
+        createList(datas) {
+            this.list = datas;
+        },
   }
 }
 </script>

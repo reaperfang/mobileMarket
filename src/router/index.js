@@ -34,7 +34,7 @@ export const syncRouterMap = [ //同步路由表
     path: '',
     component: Layout,
     // redirect: '/login',
-    redirect: '/demo/helloWorld'
+    redirect: '/profile/profile'
   },
   {
     path: '/redirect',

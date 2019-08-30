@@ -29,17 +29,19 @@
             @dragstart.self="selectItem = item" 
             @dragend.self="selectItem = {}">
               <component v-if="allTemplateLoaded && getComponentData(item).data" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)" ></component>
-              <!-- {{getComponentData(item).title}}组件 -->
               <i v-if="item !== basePropertyId" class="delete_btn" @click.stop="deleteComponent(item)" title="移除此组件"></i>
             </div>
           </template>
     </vuedraggable>
 
     <!-- 不可拖拽调整顺序,可用来预览 -->
-     <div v-else class="component_wrapper" style="cursor:text" v-for="(item, key) of componentDataIds" :key="key">
-        <component v-if="allTemplateLoaded" :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)" ></component>
-        <!-- {{getComponentData(item).title}}组件 -->
-      </div>
+    <template v-else>
+      <template v-for="(item, key) of componentDataIds">
+        <div class="component_wrapper" style="cursor:text"  :key="key" v-if="allTemplateLoaded && !getComponentData(item).hidden">
+          <component :is='templateList[getComponentData(item).type]' :key="key" :data="getComponentData(item)" ></component>
+        </div>
+      </template>
+    </template>
     </div>
 
   </div>

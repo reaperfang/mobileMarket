@@ -4,7 +4,7 @@
       <el-form-item label="选择活动" prop="promotions">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of items" :key="key">
+            <li v-for="(item, key) of list" :key="key">
               <img :src="item.activityPic" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
@@ -125,12 +125,13 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinNyuan from '../mixins/mixinNyuan';
 import dialogSelectNyuan from '@/views/shop/dialogs/dialogSelectNyuan';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyNyuan',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinNyuan],
   components: {dialogSelectNyuan},
   data () {
     return {
@@ -154,6 +155,7 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: ''
     }

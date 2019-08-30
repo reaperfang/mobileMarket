@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import componentMixin from './mixinComps';
+import componentMixin from '../mixins/mixinComps';
 export default {
   name: 'componentRichEditor',
   mixins:[componentMixin],

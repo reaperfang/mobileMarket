@@ -4,7 +4,7 @@
       <el-form-item label="选择套餐" prop="packages">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of items" :key="key">
+            <li v-for="(item, key) of list" :key="key">
               <img :src="item.activityPic" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
@@ -124,12 +124,13 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinDiscountPackage from '../mixins/mixinDiscountPackage';
 import dialogSelectPackage from '@/views/shop/dialogs/dialogSelectPackage';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyDiscountPackage',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinDiscountPackage],
   components: {dialogSelectPackage},
   data () {
     return {
@@ -153,6 +154,7 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: ''
 

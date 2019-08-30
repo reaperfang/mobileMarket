@@ -3,7 +3,8 @@
   <div class="componentBuyNotice" v-if="currentComponentData && currentComponentData.data">
     <ul :style="{'backgroundColor':currentComponentData.data.backgroundColor}">
       <li>
-        <img src="http://35.201.165.105:8000/storage/image/20190809/1565333783849805.png" alt />
+        <!-- <img src="http://35.201.165.105:8000/storage/image/20190809/1565333783849805.png" alt /> -->
+        <i class="van-icon van-icon-volume-o van-notice-bar__left-icon" style="color: #fc3d42;"><!----></i>
       </li>
       <li class="ellipsis">
         <div class="nwwest-roll" id="nwwest-roll">
@@ -21,25 +22,19 @@
 </template>
 
 <script>
-import componentMixin from "./mixinComps";
+import componentMixin from "../mixins/mixinComps";
+import mixinBuyNotice from "../mixins/mixinBuyNotice";
 export default {
   name: "componentBuyNotice",
-  mixins: [componentMixin],
+  mixins: [componentMixin, mixinBuyNotice],
   components: {},
   data() {
     return { 
       animate: true, 
-      list: [], 
+      list: [],
       timer: null 
     };
   },
-  created() {
-    this.fetch();
-    this._globalEvent.$on('fetchBuyNotice', () =>{
-      this.fetch();
-    });
-  },
-  computed: {},
   methods: {
     scroll() {
       let con1 = this.$refs.rollul;
@@ -56,33 +51,6 @@ export default {
       }
     },
 
-    //根据ids拉取数据
-    fetch() {
-        if(this.currentComponentData && this.currentComponentData.data) {
-            const ids = this.currentComponentData.data.ids;
-            if(Array.isArray(ids) && ids.length){
-              this.loading = true;
-              this._apis.goods.fetchSpuGoodsList({
-                      status: '1',
-                      ids,
-                  }).then((response)=>{
-                  this.createList(response.list);
-                  this.loading = false;
-              }).catch((error)=>{
-                  this.$notify.error({
-                      title: '错误',
-                      message: error
-                  });
-                  this.loading = false;
-              });
-          }
-        }
-    },
-
-      /* 创建数据 */
-    createList(datas) {
-        this.list = datas;
-    },
   },
   mounted() {
     this.timer = setInterval(this.scroll, 2000);
