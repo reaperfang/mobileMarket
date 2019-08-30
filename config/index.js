@@ -56,7 +56,8 @@ module.exports = {
         // target: 'http://172.22.145.115:8080',// 耿士龙
         // target: 'http://172.22.145.113:8083',// 李权宇
         // target: 'http://172.22.146.119:8080', // 郑艳华 商品
-        target: 'http://u2spmw.natappfree.cc',// 智能运营
+        // target: 'http://u2spmw.natappfree.cc',// 智能运营
+        target:'http://172.22.145.116:8080',//耿士龙
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''

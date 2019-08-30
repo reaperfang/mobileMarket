@@ -13,14 +13,41 @@ export function login(data) {
 export function logout() {
   return request({
     target: 'MANAGER-API-101',
-    method: 'post'
+    method: 'post',
+    apiType: 'manager',
+    data
   })
 }
 
-export function getUserInfo() {
+//修改账户信息
+export function updateUserInfo(data) {
   return request({
-    target: '',
-    method: 'post'
+    target: 'MANAGER-API-106',
+    method: 'post',
+    apiType: 'manager',
+    data
   })
 }
+
+//修改密码
+export function updatePass(data) {
+  return request({
+    target: 'MANAGER-API-129',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
+
+
+export function getUserInfo(data) {
+  return request({
+    target: 'MANAGER-API-105',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
 

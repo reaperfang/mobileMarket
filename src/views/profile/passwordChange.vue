@@ -2,11 +2,11 @@
 <template>
     <div class="main">
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="请输入旧密码:" prop="oldPass">
-                <el-input type="password" v-model="form.oldPass" style="width:200px;"></el-input>
+            <el-form-item label="请输入旧密码:" prop="oldPassWord">
+                <el-input type="password" v-model="form.oldPassWord" style="width:200px;"></el-input>
             </el-form-item>
-            <el-form-item label="请输入新密码:" prop="newPass">
-                <el-input type="password" v-model="form.newPass" style="width:200px;"></el-input>
+            <el-form-item label="请输入新密码:" prop="password">
+                <el-input type="password" v-model="form.password" style="width:200px;"></el-input>
             </el-form-item>
             <el-form-item label="重复新密码:" prop="confirmPass">
                 <el-input type="password" v-model="form.confirmPass" style="width:200px;"></el-input>
@@ -32,7 +32,7 @@ export default {
       };
       var valNewPass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入旧密码'));
+          callback(new Error('请输入新密码'));
         } else {
          
           callback();
@@ -41,7 +41,7 @@ export default {
       var valConfirmPass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入新密码'));
-        } else if(value != this.form.newPass) {
+        } else if(value != this.form.password) {
             callback(new Error('请确认新密码'));
         }else{
           callback();
@@ -49,15 +49,15 @@ export default {
       };
     return {
       form: {
-          oldPass:'',
-          newPass:'',
+          oldPassWord:'',
+          password:'',
           confirmPass:''
       },
       rules: {
-          oldPass: [
+          oldPassWord: [
             { validator: valOldPass, trigger: 'blur' }
           ],
-          newPass: [
+          password: [
             { validator: valNewPass, trigger: 'blur' }
           ],
           confirmPass: [
@@ -72,29 +72,43 @@ export default {
   watch: {
     
   },
+  computed:{
+    userInfo(){
+      return JSON.parse(this.$store.getters.userInfo)
+    }
+  },
   created() {
 
   },
-  destroyed() {
-    
-  },
   methods: {
-    init(){
-        // listArea({}).then(response => {
-        //     this.area = response.data.data.children
-        // })
-    },
     // 修改密码
     onSubmit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.updatePass()
           } else {
-            console.log('error submit!!');
             return false;
           }
         });
-    }
+    },
+    updatePass(){
+      let query = {
+        id:this.userInfo.id,
+        oldPassWord:this.form.oldPassWord,
+        password:this.form.password
+      }
+      this._apis.login.updatePass(query).then(response =>{
+        this.$notify.success({
+          title: '成功',
+          message: '更新成功！'
+        });
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
   }
 }
 </script>

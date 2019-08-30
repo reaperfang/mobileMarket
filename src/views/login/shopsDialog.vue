@@ -17,10 +17,10 @@
             <!-- <el-button>创建店铺</el-button> -->
             </div>
             <div class="content_main">
-            <div v-for="item in shopLists" :key="item.id" @click="toShop(item.id)">
-                <span>{{item.shopName}}</span>
-                <span>移动商城</span>
-            </div>
+              <div v-for="item in shopLists" :key="item.id" @click="toShop(item.id)">
+                  <span>{{item.shopName}}</span>
+                  <span>移动商城</span>
+              </div>
             </div>
         </div>
         </el-dialog>
@@ -99,6 +99,7 @@ export default {
       border-radius:4px;
       background:rgba(101,94,255,1);
       opacity:0.5;
+      margin-right:10px;
       span{
         padding:10px;
         height: 20px;
