@@ -78,7 +78,7 @@
           </div>
         </div>
       </section>
-      <section>
+      <section class="send-goods">
         <div class="container-item">
           <p>2.确认发货信息</p>
           <div class="container-item-content">
@@ -87,7 +87,7 @@
                 <i class="deliver-icon"></i>
                 <span>发货信息</span>
               </div>
-              <div @click="changeSendInfo" class="blue">修改发货信息</div>
+              <div @click="changeSendInfo" class="blue pointer">修改发货信息</div>
             </div>
             <div class="content">
               <div class="item">
@@ -106,7 +106,7 @@
           </div>
         </div>
       </section>
-      <div class="footer">
+      <div class="footer tc">
           <el-button @click="sendGoodsHandler" type="primary">批量发货</el-button>
       </div>
     </div>
@@ -215,29 +215,36 @@ export default {
         })
     },
       onSubmit(value) {
-          if(this.isReceived) {
-                let obj = {}
-                for(let i in value) {
-                    obj['received' + i] = value[i]
-                }
+          // if(this.isReceived) {
+          //       let obj = {}
+          //       for(let i in value) {
+          //           obj['received' + i] = value[i]
+          //       }
 
-                this.list.map((val, index) => {
-                    this.list.splice(index, 1, Object.assign({}, this.list[index], obj))
-                })
-            } else {
-                 let obj = {}
-                for(let i in value) {
-                    obj['send' + i] = value[i]
-                }
+          //       this.list.map((val, index) => {
+          //           this.list.splice(index, 1, Object.assign({}, this.list[index], obj))
+          //       })
+          //   } else {
+          //        let obj = {}
+          //       for(let i in value) {
+          //           obj['send' + i] = value[i]
+          //       }
 
-                this.list.map((val, index) => {
-                    console.log(obj)
-                    let listi = JSON.parse(JSON.stringify(this.list[index]))
+          //       this.list.map((val, index) => {
+          //           console.log(obj)
+          //           let listi = JSON.parse(JSON.stringify(this.list[index]))
 
-                    listi.orderAfterSaleSendInfo = Object.assign({}, listi.orderAfterSaleSendInfo, obj)
-                    this.list.splice(index, 1, listi)
-                })
-            }
+          //           listi.orderAfterSaleSendInfo = Object.assign({}, listi.orderAfterSaleSendInfo, obj)
+          //           this.list.splice(index, 1, listi)
+          //       })
+          //   }
+          let _list = JSON.parse(JSON.stringify(this.list))
+
+          _list.forEach((val, index) => {
+            _list[index].orderAfterSaleSendInfo = Object.assign({}, val.orderAfterSaleSendInfo, value)
+          })
+
+          this.list = _list
       },
       changeSendInfo() {
             this.currentDialog = 'ReceiveInformationDialog'
@@ -278,6 +285,7 @@ export default {
 .bulk-delivery {
   background-color: #fff;
   padding: 20px;
+  color: #333;
   > .title {
     font-size: 16px;
   }
@@ -285,6 +293,15 @@ export default {
     padding-top: 20px;
     padding-left: 60px;
     section {
+      &.send-goods {
+        .item {
+          margin-bottom: 10px;
+        }
+        .label {
+          width: 80px;
+          text-align: right;
+        }
+      }
       .goods-item {
         margin-top: 20px;
         border-radius: 10px;

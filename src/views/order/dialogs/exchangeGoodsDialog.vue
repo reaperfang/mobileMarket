@@ -1,6 +1,6 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="换货确认" width="500px" :showFooter="showFooter">
-        <div>
+        <div class="container">
             <p>是否需要客户ID发货：</p>
             <el-radio v-model="exchangeConfirmation" :label="1">是</el-radio>
             <el-radio v-model="exchangeConfirmation" :label="0">否</el-radio>
@@ -23,8 +23,20 @@ export default {
     },
     methods: {
         submit() {
-            this.$emit('confirm', this.exchangeConfirmation)
-            this.visible = false
+            this._apis.order.orderAfterSaleConfirmExchange({id: this.data.id, exchangeConfirmation: this.exchangeConfirmation }).then((res) => {
+                this.$notify({
+                    title: '成功',
+                    message: '换货确认成功',
+                    type: 'success'
+                });
+                this.visible = false
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.visible = false
+            })
         }
     },
     mounted() {
@@ -59,6 +71,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    .container {
+        font-size: 16px;
+        p {
+            margin-bottom: 20px;
+        }
+    }
    .footer {
        text-align: center;
        margin-top: 140px;

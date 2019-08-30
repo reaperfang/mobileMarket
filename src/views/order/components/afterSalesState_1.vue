@@ -18,7 +18,6 @@
                     <p>待审核</p>
                     <p class="des">客户申请售后，待审核</p>
                     <div>
-                        <span>查看</span>
                         <span @click="auth">同意</span>
                         <span @click="reject">拒绝</span>
                     </div>
@@ -41,9 +40,7 @@
                 <div class="col righter">
                     <p>待退货</p>
                     <p class="des">商户同意售后，客户未发货。</p>
-                    <div>
-                        <span>查看</span>
-                    </div>
+
                 </div>
             </div>
         </template>
@@ -64,8 +61,6 @@
                     <p>待处理</p>
                     <p class="des">客户发货，商户未确认收货，未退款</p>
                     <div>
-                        <span>查看</span>
-                        <span>查看物流</span>
                         <span @click="confirmTakeOver">确认收货</span>
                         <span>退款</span>
                     </div>
@@ -113,9 +108,6 @@
                 <div class="col righter">
                     <p>已完成</p>
                     <p class="des">商户确认收货且退款完成</p>
-                    <div>
-                        <span>查看</span>
-                    </div>
                 </div>
             </div>
         </template>

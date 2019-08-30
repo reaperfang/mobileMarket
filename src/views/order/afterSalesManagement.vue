@@ -240,13 +240,14 @@ export default {
             }) 
         },
         drawback(row) {
-            this._apis.order.orderAfterSaleDrawback({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
+            this._apis.order.orderAfterSaleDrawback({id: row.id}).then((res) => {
                 console.log(res)
                 this.$notify({
                     title: '成功',
                     message: '已发起退款，系统处理中。',
                     type: 'success'
                 });
+                this.getList()
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',

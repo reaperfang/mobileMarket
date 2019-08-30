@@ -30,8 +30,10 @@ export default {
 </script>
 <style lang="scss" scoped>
     .delivery-management {
+        background-color: #fff;
         section {
-          
+          padding: 20px;
+          padding-top: 0;
         }
     }
     /deep/ .el-tabs__nav-scroll {
@@ -42,6 +44,9 @@ export default {
     }
     /deep/ .el-tabs__header {
         margin-bottom: 0;
+    }
+    /deep/ #tab-order {
+        padding-left: 0;
     }
 </style>
 
