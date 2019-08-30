@@ -7,8 +7,8 @@
                     <div class="col">数量</div>
                 </div>
             </div>
-            <div class="item">实付金额/支付方式</div>
-            <div class="item">收货人及联系方式</div>
+            <div class="item" style="width: 120px;">实付金额/支付方式</div>
+            <div class="item" style="width: 120px;">收货人及联系方式</div>
             <div class="item">配送方式</div>
             <div class="item">状态</div>
             <div class="item">操作</div>
@@ -18,11 +18,16 @@
                 <div class="container-item-header">
                     <div class="item">
                         <el-checkbox @change="checkedChange" v-model="order.checked"></el-checkbox>
-                        <span class="order-code"><i v-if="order.orderInfo.sendType == 2" class="auto"></i>订单编号：{{order.code}}/下单时间：{{order.createTime}}</span>
+                        <span class="order-code">
+                            <el-tooltip content="自动发货" placement="bottom" effect="light">
+                                <i v-if="order.sendType == 2" class="auto"></i>
+                            </el-tooltip>
+                            订单编号：{{order.code}}/下单时间：{{order.createTime}}
+                        </span>
                     </div>
                     <div class="item righter">
                         <span>订单类型：{{order.orderType | orderTypeFilter}}</span>
-                        <span><i class="memberLevelImg" :style="{background: `url(${order.memberLevelImg})`}"></i>客户ID：{{order.orderInfo.memberSn}}</span>
+                        <span><i class="memberLevelImg" :style="{background: `url(${order.memberLevelImg})`}"></i>客户ID：{{order.memberSn}}</span>
                         <span>订单来源：{{order.channelName}}</span>
                     </div>
                 </div>
@@ -31,13 +36,13 @@
                         <ul>
                             <li class="goods-li" v-for="(goods, index) in order.orderItems" :key="index">
                                 <div class="row justify-between align-center goods-box">
-                                    <div class="col">
+                                    <div class="col" style="padding-right: 10px;">
                                         <div class="row align-center">
                                             <div class="col image-box">
                                                 <img width="66" :src="goods.goodsImage" alt="">
                                             </div>
                                             <div class="col">
-                                                <p>{{goods.goodsName}}</p>
+                                                <p class="ellipsis" style="width: 297px;">{{goods.goodsName}}</p>
                                                 <p class="goods-specs">{{goods.goodsSpecs | goodsSpecsFilter}}</p>
                                             </div>
                                         </div>
@@ -49,51 +54,55 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item">
-                        <p class="pay-amount">实收：¥{{order.actualMoney}}</p>
-                        <p class="payment-mode">{{order.channelName}}支付</p>
+                    <div class="item" style="width: 120px;">
+                        <!-- <p class="pay-amount">实收：¥{{order.actualMoney}}</p>
+                        <p class="payment-mode">{{order.channelName}}支付</p> -->
+                        <p>实收：¥{{order.actualMoney}}/{{order.channelName}}支付</p>
                     </div>
-                    <div class="item">{{order.receivedName}}/{{order.receivedPhone}}</div>
+                    <div class="item" style="width: 120px;">
+                        <p>{{order.receivedName}}</p>
+                        <p>{{order.receivedPhone}}</p>
+                    </div>
                     <div class="item">{{order.deliveryWay | deliveryWayFilter}}</div>
                     <div class="item">{{order.orderStatus | orderStatusFilter}}</div>
                     <div class="item operate">
-                        <template v-if="order.orderInfo.orderStatus == 0">
+                        <template v-if="order.orderStatus == 0">
                             <!-- 待付款 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">订单改价</p>
-                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">订单改价</p>
+                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
                             <p @click="makeCollections(order)">确认收款</p>
                         </template>
-                        <template v-else-if="order.orderInfo.orderStatus == 1">
+                        <template v-else-if="order.orderStatus == 1">
                             <!-- 待成团 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                         </template>
-                        <template v-else-if="order.orderInfo.orderStatus == 2">
+                        <template v-else-if="order.orderStatus == 2">
                             <!-- 关闭 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                         </template>
-                        <template v-else-if="order.orderInfo.orderStatus == 3">
+                        <template v-else-if="order.orderStatus == 3">
                             <!-- 待发货 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
-                            <p v-if="order.orderInfo.sendType == 2" @click="$router.push('/order/supplementaryLogistics?id=' + order.orderInfo.id)">补填物流</p>
-                            <p @click="$router.push('/order/deliverGoods?id=' + order.orderInfo.id)" v-else>发货</p>
-                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">关闭订单</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-if="order.sendType == 2" @click="$router.push('/order/supplementaryLogistics?id=' + order.id)">补填物流</p>
+                            <p @click="$router.push('/order/deliverGoods?id=' + order.id)" v-else>发货</p>
+                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
                         </template>
-                        <template v-else-if="order.orderInfo.orderStatus == 4">
+                        <template v-else-if="order.orderStatus == 4">
                             <!-- 部分发货 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                             <p>继续发货</p>
                             <p>发货信息</p>
-                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.orderInfo.id; dialogVisible = true">提前关闭订单</p>
+                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">提前关闭订单</p>
                         </template>
-                        <template v-else-if="order.orderInfo.orderStatus == 5">
+                        <template v-else-if="order.orderStatus == 5">
                             <!-- 待收货 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                             <p>发货信息</p>
                         </template>
-                        <template v-else-if="order.orderInfo.orderStatus == 6">
+                        <template v-else-if="order.orderStatus == 6">
                             <!-- 完成 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.orderInfo.id)">查看详情</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                             <p>发货信息</p>
                         </template>
                     </div>
@@ -224,8 +233,11 @@ export default {
             background-color: rgb(240, 239, 255);
             padding: 12px 20px;
             .item {
-                width: 130px;
+                width: 80px;
                 margin-right: 20px;
+                &:last-child {
+                    margin-right: 0;
+                }
                 &.goods {
                     flex: 1;
                 }
@@ -270,8 +282,14 @@ export default {
                         padding-top: 2px;
                     }
                     >.item {
-                        width: 130px;
+                        width: 80px;
                         margin-right: 20px;
+                        p {
+                            line-height: 21px;
+                        }
+                        &:last-child {
+                            margin-right: 0;
+                        }
                         &.goods {
                             flex: 1;
                             ul li {
@@ -302,7 +320,6 @@ export default {
                         &.operate {
                             color: $globalMainColor;
                             p {
-                                margin-bottom: 6px;
                                 cursor: pointer;
                             }
                             .delivery {

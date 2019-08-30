@@ -61,18 +61,16 @@
                 <div class="item remark-box">
                     <div class="label">商户备注</div>
                     <div class="value">
-                        <span v-if="!remarkVisible" @click="remarkVisible = true" class="blue">我要备注</span>
-                        <template v-if="remarkVisible">
-                            <el-input
-                                type="textarea"
-                                :rows="2"
-                                placeholder="请输入内容"
-                                v-model="orderInfo.sellerRemark">
-                            </el-input>
-                            <p class="tr blue">
-                                <span @click="remarkHandler">完成</span>
-                            </p>
-                        </template>
+                        <span v-if="!remarkVisible">{{orderInfo.sellerRemark}}</span>
+                        <el-input
+                            v-if="remarkVisible"
+                            type="textarea"
+                            :rows="2"
+                            placeholder="请输入内容"
+                            v-model="orderInfo.sellerRemark">
+                        </el-input>
+                        <span v-if="!remarkVisible" @click="remarkVisible = true" class="blue pointer">我要备注</span>
+                        <span v-if="remarkVisible" class="blue pointer" @click="remarkHandler">完成</span>
                     </div>
                 </div>
             </div></el-col>
@@ -169,12 +167,14 @@ export default {
         remarkHandler() {
             this.remarkVisible = true
             this._apis.order.orderRemark({id: this.orderInfo.id, sellerRemark: this.orderInfo.sellerRemark}).then(res => {
+                this.remarkVisible = false
                 this.$notify({
                     title: '成功',
                     message: '添加成功！',
                     type: 'success'
                 });
             }).catch(error => {
+                this.remarkVisible = false
                 this.$notify.error({
                     title: '错误',
                     message: error
@@ -253,8 +253,8 @@ export default {
             }
             &.center {
                 padding-left: 10px;
-                border-left: 1px solid #9FA29F;
-                border-right: 1px solid #9FA29F;
+                border-left: 1px solid #cacfcb;
+                border-right: 1px solid #cacfcb;
             }
             .item {
                 display: flex;
@@ -267,6 +267,9 @@ export default {
                 }
             }
         }
+    }
+    /deep/ .remark-box .el-textarea {
+        width: 180px;
     }
 </style>
 

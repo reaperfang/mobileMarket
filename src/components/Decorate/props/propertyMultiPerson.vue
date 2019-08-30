@@ -10,10 +10,18 @@
      <el-form-item label="选择商品" v-if="ruleForm.addType === 1" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of items" :key="key">
-              <img :src="item.url" alt="">
-              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
-            </li>
+            <template v-if="ruleForm.addType === 1">
+              <li v-for="(item, key) of list" :key="key">
+                <img :src="item.goodImg" alt="">
+                <i class="delete_btn" @click.stop="deleteItem(item)"></i>
+              </li>
+            </template>
+            <template v-else-if="ruleForm.addType === 2">
+              <li v-for="(item, key) of []" :key="key">
+                <img :src="item.goodImg" alt="">
+                <i class="delete_btn" @click.stop="deleteItem(item)"></i>
+              </li>
+            </template>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectMultiPerson'">
               <i class="inner"></i>
             </li>
@@ -143,13 +151,14 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinMultiPerson from '../mixins/mixinMultiPerson';
 import dialogSelectMultiPerson from '@/views/shop/dialogs/dialogSelectMultiPerson';
 import dialogMultiPersonDemo from '@/views/shop/dialogs/dialogMultiPersonDemo';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyMultiPerson',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinMultiPerson],
   components: {dialogSelectMultiPerson, dialogMultiPersonDemo},
   data () {
     return {
@@ -175,6 +184,7 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: ''
     }

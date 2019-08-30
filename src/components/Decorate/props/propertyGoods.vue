@@ -10,7 +10,7 @@
       <el-form-item label="商品" v-if="ruleForm.source === 1" prop="goods">
         <div class="goods_list">
           <ul>
-            <li v-for="(item, key) of items" :key="key">
+            <li v-for="(item, key) of list" :key="key">
               <img :src="item.mainImage" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
@@ -135,12 +135,13 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinGoods from '../mixins/mixinGoods';
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 import dialogSelectGoodsGroup from '@/views/shop/dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyGoods',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinGoods],
   components: {dialogSelectGoods, dialogSelectGoodsGroup},
   data () {
     return {
@@ -164,6 +165,7 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: ''
     }
@@ -198,7 +200,7 @@ export default {
         }
       }
       this.ruleForm.goodsGroups = tempGoodsGroups;
-    },
+    }
   }
 }
 </script>

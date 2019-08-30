@@ -3,9 +3,9 @@
     <div class="block form">
       <el-form-item label="商品分组" prop="goodsGroups">
         <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
-        <div class="goods_groups">
+        <div class="goods_groups">{{list}}
           <el-tag
-            v-for="(tag, key) in items"
+            v-for="(tag, key) in list"
             :key="key"
             closable
             type="success" @close="deleteItem(tag)">
@@ -138,11 +138,12 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinGoodsGroup from '../mixins/mixinGoodsGroup';
 import dialogSelectGoodsGroup from '@/views/shop/dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyGoodsGroup',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinGoodsGroup],
   components: {dialogSelectGoodsGroup},
   data () {
     return {
@@ -167,6 +168,7 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: '',
 

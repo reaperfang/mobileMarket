@@ -3,12 +3,12 @@
     <widgetView v-if="showWidget"></widgetView>
     <editView></editView>
     <propView :saveData="saveData" :saveAndApplyData="saveAndApplyData" :resetData="resetData" :parentScope="this" :homePageData="homePageData" :saveToTemplate="saveToTemplate"></propView>
-    <div style="width:500px;">
+    <div style="width:600px;">
       页面基础数据：
-      <el-tag type="primary">{{baseInfo}}</el-tag>
+      <el-tag type="primary" style="width: 100%;overflow-x: auto;">{{baseInfo}}</el-tag>
       <hr />组件数据映射：
       <ul style="height:770px;overflow-y:auto;">
-        <li v-for="(item,key) of componentDataIds" :key="key">
+        <li v-for="(item,key) of componentDataIds" :key="key" style="overflow-x: auto;">
           <el-tag type="success">{{componentDataMap[item].title}}</el-tag>
           <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
@@ -56,6 +56,7 @@ export default {
   },
   created() {
     const id = uuid();
+    console.log(id);
     this.$store.commit('addComponent', Object.assign({id}, this.componentConfig));
     this.$store.commit('setBasePropertyId', id);
   },

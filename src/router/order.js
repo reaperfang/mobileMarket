@@ -53,6 +53,7 @@ export default [
         path: 'afterSalesDetails',
         component: () => import('@/views/order/afterSalesDetails'),
         name: 'afterSalesDetails',
+        hidden: true,
         meta: { title: '售后详情', noCache: true, tabTitle: '订单处理' },
       },
       {

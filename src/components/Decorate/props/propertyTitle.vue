@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
 import dialogSelectJumpPage from '@/views/shop/dialogs/dialogSelectJumpPage';
 export default {
   name: 'propertyTitle',

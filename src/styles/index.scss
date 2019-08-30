@@ -126,7 +126,7 @@ background-color:#f8f8f8;
 }
 ::-webkit-scrollbar {//滚动条的宽度
 width:0px;
-height:0px;
+height:5px;
 }
 ::-webkit-scrollbar-thumb {//滚动条的设置
 background-color:#fdfcfc;
@@ -259,12 +259,14 @@ table.yuan-table{
 		margin-top: 2px;
 		width: 25px !important;
 		height: 25px !important;
+    border: 1px solid #ddd;
 	}
 }
 .m-colorPicker{
   z-index:10;
   .box{
-	width:230px!important;
+	  width:230px!important;
+    left: -185px!important;
   }
 }
 
@@ -531,6 +533,7 @@ table.yuan-table{
   span {
     color: $globalMainColor;
     margin-right: 20px;
+    cursor: pointer;
   }
 }
 
@@ -595,4 +598,44 @@ table.yuan-table{
 .goods-specs {
   color: #9FA29F;
   font-size: 12px;
+}
+
+.el-steps {
+  .el-step {
+    .el-step__head {
+      .el-step__icon {
+        width: 36px;
+        height: 36px;
+        box-shadow: 0px 0px 0 7px #ededed;
+        background-color: #cccccc;
+        color: #fff;
+        &.is-text {
+          border: none;
+        }
+      }
+      .el-step__line {
+        top: 17px;
+      }
+      &.is-finish {
+        .el-step__icon {
+          box-shadow: 0px 0px 0 7px #ededed;
+          background-color: #655EFF;
+          color: #fff;
+        }
+      }
+
+    }
+    .el-step__main {
+      .el-step__title {
+        color: #44434B;
+      }
+      .el-step__description {
+        color: #9FA29F;
+      }
+    }
+  }
+}
+
+.edui-editor{
+    z-index: initial!important;
 }

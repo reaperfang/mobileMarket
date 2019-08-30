@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-商品列表 -->
-<div class="componentGoods" :class="'listStyle'+listStyle" :style="{padding:pageMargin+'px'}" v-if="currentComponentData && currentComponentData.data">
+<div class="componentGoods" :class="'listStyle'+listStyle" :style="{padding:pageMargin+'px'}" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
     <!-- <van-list v-model="goodListLoading" :finished="goodListFinished" finished-text="没有更多了" @load="goodListLoad" > -->
         <ul v-if="list && list.length">
             <li v-for="(item,key) in list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
@@ -25,10 +25,11 @@
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixinComps';
+import componentMixin from '../mixins/mixinComps';
+import mixinGoods from '../mixins/mixinGoods';
 export default {
     name:"componentGoods",
-    mixins:[componentMixin],
+    mixins:[componentMixin, mixinGoods],
     props: ['currentCatagoryId', 'origin'],
     data(){
         return{
@@ -58,22 +59,12 @@ export default {
     components:{
         componentButton
     },
-    created(){
-        this.fetch();
-        this._globalEvent.$on('fetchGoods', () =>{
-            this.fetch();
-        });
-    },
     mounted() {
         this.decoration();
     },
     watch: {
         currentComponentData(){
             this.decoration();
-        },
-        currentCatagoryId(newValue) {
-            this.currentCatagoryId = newValue;
-            this.fetch();
         },
     },
     methods:{
@@ -82,7 +73,6 @@ export default {
             if(!this.currentComponentData || !this.currentComponentData.data) {
               return;
             }
-            console.log(this.currentComponentData);
             this.listStyle = this.currentComponentData.data.listStyle;
             this.pageMargin = this.currentComponentData.data.pageMargin;
             this.goodsMargin = this.currentComponentData.data.goodsMargin;
@@ -155,56 +145,6 @@ export default {
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
         },
 
-        //根据ids拉取数据
-        fetch() {
-            if(this.currentComponentData && this.currentComponentData.data) {
-                let params = {};
-                const ids = this.currentComponentData.data.ids;
-                if(ids && Object.prototype.toString.call(ids) === '[object Object]') {
-                    if(this.currentCatagoryId === 'all') {
-                        const allIds = [];
-                        for(let k in ids) {
-                            for(let item of ids[k]) {
-                                allIds.push(item);
-                            }
-                        }
-                        params = {
-                            status: '1',
-                            ids: allIds
-                        }
-                    }else{
-                        params = {
-                            status: '1',
-                            ids: ids[this.currentCatagoryId],
-                            productCatalogInfoId: this.currentCatagoryId
-                        }
-                    }
-                }else if(Array.isArray(ids) && ids.length){
-                    params = {
-                        status: '1',
-                        ids: ids,
-                    }
-                }else{
-                    return;
-                }
-                this.loading = true;
-                this._apis.goods.fetchAllSpuGoodsList(params).then((response)=>{
-                    this.createList(response);
-                    this.loading = false;
-                }).catch((error)=>{
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
-                    this.loading = false;
-                });
-            }
-        },
-
-          /* 创建数据 */
-        createList(datas) {
-            this.list = datas;
-        },
     }
 }
 </script>

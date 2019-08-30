@@ -1,6 +1,6 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="使用的优惠券/优惠码" width="346px" :showFooter="showFooter">
-        <div class="coupon-box">
+        <div class="coupon-box" v-show="data.usedCouponList.concat(data.usedPromotionList).length">
             <div class="coupon" v-for="(item, index) in data.usedCouponList" :key="index">
                 <div class="item lefter">
                     <p>{{item.couponMoney}}</p>
@@ -26,10 +26,12 @@
                 </div>
             </div>
         </div>
+        <Empty v-show="!data.usedCouponList.concat(data.usedPromotionList).length"></Empty>
     </DialogBase>
 </template>
 <script>
 import DialogBase from '@/components/DialogBase'
+import Empty from '@/components/Empty'
 
 export default {
     data() {
@@ -66,7 +68,8 @@ export default {
         },
     },
     components: {
-        DialogBase
+        DialogBase,
+        Empty
     }
 }
 </script>

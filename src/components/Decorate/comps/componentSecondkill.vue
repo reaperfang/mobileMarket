@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-限时秒杀 -->
-    <div class="componentSecondkill" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data">
+    <div class="componentSecondkill" :style="[{padding:pageMargin+'px'}]" :class="'listStyle'+listStyle" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
         <ul>
             <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
@@ -39,10 +39,11 @@
 </template>
 <script>
 import componentButton from './componentButton';
-import componentMixin from './mixinComps';
+import componentMixin from '../mixins/mixinComps';
+import mixinSecondkill from '../mixins/mixinSecondkill';
 export default {
     name:"componentSecondkill",
-    mixins:[componentMixin],
+    mixins:[componentMixin, mixinSecondkill],
     data(){
         return{
             // 样式属性
@@ -68,12 +69,6 @@ export default {
     },
     components:{
         componentButton
-    },
-    created() {
-        this.fetch();
-        this._globalEvent.$on('fetchSecondkill', () =>{
-            this.fetch();
-        });
     },
     watch: {
       currentComponentData(){
@@ -125,52 +120,6 @@ export default {
             this.hideType = this.currentComponentData.data.hideType;
         },
 
-        //根据ids拉取数据
-        fetch() {
-            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids && this.currentComponentData.data.ids.length) {
-                this.loading = true;
-                this._apis.shop.getSecondkillListByIds({
-                    rightsDiscount: 1, 
-                    spuIds: this.currentComponentData.data.ids.join(',')
-                }).then((response)=>{
-                    this.createList(response);
-                    this.loading = false;
-                }).catch((error)=>{
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
-                    this.loading = false;
-                });
-            }
-        },
-
-         /* 创建数据 */
-        createList(datas) {
-            this.list = [];
-            if(this.hideSaledGoods==true){
-                for(var i in datas){
-                    if(datas[i].soldOut!=1){
-                        this.list.push(datas[i]);
-                    }
-                }
-            }
-            else{
-                this.list = datas;
-            }
-            var list = this.list;
-            this.list = [];
-            if(this.hideEndGoods==true){
-                for(var i in list){
-                    if(list[i].activityEnd!=1){
-                        this.list.push(list[i]);
-                    }
-                }
-            }
-            else{
-                this.list = list;
-            }
-        },
     }
 }
 </script>

@@ -10,7 +10,7 @@
       <el-form-item label="" prop="addType" v-if="ruleForm.addType === 1">
         <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectCoupon'">添加优惠券(最多添加10张优惠券)</el-button>
         <el-tag
-          v-for="tag in items"
+          v-for="tag in list"
           :key="tag.title"
           closable
           style="margin-right:5px;"
@@ -61,11 +61,12 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
+import mixinCoupon from '../mixins/mixinCoupon';
 import dialogSelectCoupon from '@/views/shop/dialogs/dialogSelectCoupon';
 export default {
   name: 'propertyCoupon',
-  mixins: [propertyMixin],
+  mixins: [propertyMixin, mixinCoupon],
   components: {dialogSelectCoupon},
   data () {
     return {
@@ -81,9 +82,13 @@ export default {
       rules: {
 
       },
+      list: [],
       dialogVisible: false,
       currentDialog: '',
     }
+  },
+  created() {
+    this.fetch();
   },
    watch: {
     'items': {
@@ -92,12 +97,13 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.id);
         }
-        this._globalEvent.$emit('fetchCoupon');
+        this.fetch();
       },
       deep: true
     }
   },
   methods: {
+    
   }
 }
 </script>

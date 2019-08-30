@@ -351,7 +351,7 @@ ul.cube {
                   background: #fff;
                   position: relative;
                   cursor: pointer;
-
+                  box-shadow: 0px 1px 10px rgba(0,0,0,0.1);
                   img {
                         width: 100%;
                   }
@@ -370,11 +370,11 @@ ul.cube {
                   overflow-y: auto;
 
                   .component_wrapper {
-                        background: #fff;
-                        // min-height: 50px;
+                        // background: #fff;
+                        min-height: 50px;
                         // line-height: 50px;
                         position: relative;
-                        border: 1px solid #eee;
+                        // border: 1px solid #eee;
                         border-bottom: none;
                         cursor: pointer;
                   }

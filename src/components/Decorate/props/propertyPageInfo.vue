@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
 export default {
   name: 'propertyPageInfo',
   mixins: [propertyMixin],
@@ -39,7 +39,7 @@ export default {
         title: '微页面标题',
         explain: '',
         pageCategoryInfoId: '',
-        colorStyle: 'rgb(242,242,249)',
+        colorStyle: '#fff',
         pageKey: '',
         status: 0,
         isBaseComponent: true

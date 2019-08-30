@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-商品分组 -->
-    <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data">
+    <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
         <div class="componentGoodsGroup_tab" id="componentGoodsGroup_tab" :class="'menuStyle'+menuStyle" :style="{width:componentGoodsGroup_tabWidth}">
             <p class="active" v-if="showAllGroup==1" @click="currentCatagory=null">全部</p>
             <p v-for="(item,key) of list" :class="{active:showAllGroup!=1&&key==0}" :key="key" @click="currentCatagory=item">{{item.name}}</p>
@@ -13,10 +13,11 @@
 <script>
 import componentButton from './componentButton';
 import componentGoods from './componentGoods';
-import componentMixin from './mixinComps';
+import componentMixin from '../mixins/mixinComps';
+import mixinGoodsGroup from '../mixins/mixinGoodsGroup';
 export default {
     name:"componentGoodsGroup",
-    mixins:[componentMixin],
+    mixins:[componentMixin, mixinGoodsGroup],
     data() {
       return {
         // 商品列表
@@ -35,12 +36,6 @@ export default {
     },
     components: {
       componentGoods
-    },
-    created() {
-      this.fetch();
-      this._globalEvent.$on('fetchGoodsGroup', () =>{
-          this.fetch();
-      });
     },
     mounted() {
         this.decoration();
@@ -86,29 +81,6 @@ export default {
         //     // }  
         // }
 
-        //根据ids拉取数据
-        fetch() {
-            if(this.currentComponentData && this.currentComponentData.data && this.currentComponentData.data.ids) {
-                let ids = [];
-                for(let item in this.currentComponentData.data.ids) {
-                  ids.push(item);
-                }
-                if(!ids.length) {
-                  return;
-                }
-                this.loading = true;
-                this._apis.goods.fetchCategoryList({ids}).then((response)=>{
-                    this.list = response;
-                    this.loading = false;
-                }).catch((error)=>{
-                    this.$notify.error({
-                    title: '错误',
-                    message: error
-                    });
-                    this.loading = false;
-                });
-            }
-        },
     }
 }
 </script>

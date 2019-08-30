@@ -1,10 +1,10 @@
 <template>
-  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="50px">
     <div class="block form">
       <el-form-item label="视频" prop="source">
         <el-radio-group v-model="source">
           <el-radio :label="1">选择视频</el-radio>
-          <el-radio :label="2">粘贴视频地址(小程序v2.15及以上版本支持)</el-radio>
+          <el-radio :label="2">粘贴视频地址(小程序v2.15<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;及以上版本支持)</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="" v-if="source === 1" prop="videoUrl">
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import propertyMixin from './mixinProps';
+import propertyMixin from '../mixins/mixinProps';
 import dialogSelectVideo from '@/views/shop/dialogs/dialogSelectVideo';
 import dialogSelectImageMaterial from '@/views/shop/dialogs/dialogSelectImageMaterial';
 export default {

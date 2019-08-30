@@ -26,7 +26,7 @@
             v-if="scope.row.activityRule && scope.row.activityRule.length >=10"
             placement="top-start"
             title="满减满折规则"
-            width="200"
+            width="400"
             trigger="hover"
             :content="scope.row.activityRule">
             <span slot="reference">{{scope.row.activityRule.substring(0, 10)}}...</span>
@@ -37,13 +37,14 @@
         </template>
       </el-table-column>
       <!-- <el-table-column prop="remainStock" label="剩余库存"></el-table-column> -->
-      <el-table-column prop="status" label="活动状态">  <!-- 0是未生效  1是生效中 2是已失效-->
+      <!-- 0是未生效  1是生效中 2是已失效-->
+      <!-- <el-table-column prop="status" label="活动状态">  
         <template slot-scope="scope">
           <span v-if="scope.row.status === 0">未开始</span>
           <span v-else-if="scope.row.status === 1">开始中</span>
           <span v-else-if="scope.row.status === 2">已开始</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="startTime" label="创建时间"></el-table-column>
     </el-table>
     <div class="pagination">
@@ -84,6 +85,7 @@ export default {
       ruleForm: {
         pageNum: 1,
         name: '',
+        status: 1
       },
       rules: {}
     };

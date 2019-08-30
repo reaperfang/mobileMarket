@@ -2,7 +2,7 @@
     <div class="deliver-goods">
         <div class="deliver-goods-header">
             <div class="item">发货</div>
-            <div class="item"><el-button>返 回</el-button></div>
+            <div class="item"><el-button @click="$router.go(-1)">返 回</el-button></div>
         </div>
         <div class="container">
             <div class="container-item">
@@ -19,7 +19,8 @@
                             ref="table"
                             :data="tableData"
                             style="width: 100%"
-                            @selection-change="handleSelectionChange">
+                            @selection-change="handleSelectionChange"
+                            :header-cell-style="{background:'#ebeafa', color:'#655EFF'}">
                             <el-table-column
                                 type="selection"
                                 width="55">
@@ -73,7 +74,7 @@
                             <i class="take-in-icon"></i>
                             <span>收货信息</span>
                         </div>
-                        <div class="blue" @click="changeReceivedInfo">修改收货信息</div>
+                        <div class="blue pointer" @click="changeReceivedInfo">修改收货信息</div>
                     </div>
                     <div class="content">
                         <div class="item">
@@ -96,7 +97,7 @@
                             <i class="deliver-icon"></i>
                             <span>发货信息</span>
                         </div>
-                        <div class="blue">修改发货信息</div>
+                        <div class="blue pointer" @click="changeSendInfo">修改发货信息</div>
                     </div>
                     <div class="content">
                         <div class="item">
@@ -139,10 +140,10 @@
                 </div>
             </div>
             <div class="footer">
-                <el-button type="primary" @click="sendGoods">发 货</el-button>
+                <el-button type="primary" @click="sendGoodsHandler">发 货</el-button>
             </div>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods"></component>
     </div>
 </template>
 <script>
@@ -172,7 +173,8 @@ export default {
             currentDialog: '',
             dialogVisible: false,
             currentData: {},
-            expressCompanyList: []
+            expressCompanyList: [],
+            sendGoods: ''
         }
     },
     created() {
@@ -200,7 +202,7 @@ export default {
                 });
             })
         },
-        sendGoods() {
+        sendGoodsHandler() {
             let params
 
             this.ruleForm.expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == this.ruleForm.expressCompanyCode).expressCompany
@@ -256,10 +258,22 @@ export default {
         changeReceivedInfo() {
             this.currentDialog = 'ReceiveInformationDialog'
             this.currentData = this.orderInfo
+            this.sendGoods = 'received'
             this.dialogVisible = true
         },
-        onSubmit() {
-            this.getOrderDetail()
+        changeSendInfo() {
+            this.currentDialog = 'ReceiveInformationDialog'
+            this.currentData = this.orderSendInfo
+            this.sendGoods = 'send'
+            this.dialogVisible = true
+        },
+        onSubmit(value) {
+            //this.getOrderDetail()
+            if(this.sendGoods == 'received') {
+                this.orderInfo = Object.assign({}, this.orderInfo, value)
+            } else {
+                this.orderSendInfo = Object.assign({}, this.orderSendInfo, value)
+            }
         },
         _orderDetail() {
             let id = this.$route.query.id
@@ -312,8 +326,10 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 16px;
         }
         .container {
+            padding-left: 60px;
             .container-item {
                 margin-top: 20px;
                 p {

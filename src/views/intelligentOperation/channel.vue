@@ -65,8 +65,7 @@
                 
                 <channel-table 
                     class="marT20" 
-                    :listObj="listObj" 
-                    :totalCount="totalCount"
+                    :listObj="listObj"
                     @sizeChange="sizeChange"
                     @currentChange="currentChange"
                 >
@@ -130,7 +129,7 @@ export default {
         goSearch(){
             this._apis.data.channelConversion(this.form).then(response => {
                 this.listObj = response;
-                this.totalCount = this.form.pageSize * response.totalPage;
+                console.log(this.listObj.totalSize)
             })
         },
         // 重置

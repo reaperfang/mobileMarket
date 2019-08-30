@@ -97,7 +97,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149dfc2657c304e46008cbc509b3ad20b0e4',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d8ba0a680e9936bf340515d1e8181594a',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -165,7 +165,7 @@ class Ajax {
           case 'data':  //数据
             config.baseURL = `${process.env.DATA_API}/api-behavior-web/behavior/api.do`;
             break;
-          case 'overview':  //概况待办
+          case 'overview':  //概况待办售罄
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`;
             break;
           case 'over':  //待办2-4 

@@ -2,16 +2,16 @@
     <DialogBase class="receive-information-dialog" :visible.sync="visible" @submit="submit" :title="title" width="600px" :showFooter="showFooter">
         <template v-if="sendGoods == 'send'">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="发货人姓名" prop="receivedName">
+                <el-form-item label="发货人姓名" prop="sendName">
                     <el-input v-model="ruleForm.sendName" placeholder="请选择"></el-input>
                 </el-form-item>
-                <el-form-item label="发货人电话" prop="receivedPhone">
+                <el-form-item label="发货人电话" prop="sendPhone">
                     <el-input v-model="ruleForm.sendPhone" placeholder="请输入快递单号"></el-input>
                 </el-form-item>
                 <el-form-item label="发货地址" prop="deliveryAddress">
                     <area-cascader type="all" :level="2" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
                 </el-form-item>
-                <el-form-item label="详细地址" prop="detailAddress">
+                <el-form-item label="详细地址" prop="sendDetail">
                     <el-input
                         type="textarea"
                         :rows="2"
@@ -36,7 +36,7 @@
                 <el-form-item label="收货地址" prop="deliveryAddress">
                     <area-cascader type="all" :level="2" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
                 </el-form-item>
-                <el-form-item label="详细地址" prop="detailAddress">
+                <el-form-item label="详细地址" prop="receivedDetail">
                     <el-input
                         type="textarea"
                         :rows="2"
@@ -61,7 +61,7 @@ export default {
             ruleForm: {
                 receivedName: '',
                 receivedPhone: '',
-                deliveryAddress: [],
+                deliveryAddress: '',
                 receivedDetail: '',
                 receivedProvinceCode: '',
                 receivedProvinceName: '',
@@ -72,7 +72,6 @@ export default {
 
                 sendName: '',
                 sendPhone: '',
-                deliveryAddress: [],
                 sendDetail: '',
                 sendProvinceCode: '',
                 sendProvinceName: '',
@@ -82,7 +81,28 @@ export default {
                 sendAreaName: '',
             },
             rules: {
+                receivedName: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
+                receivedPhone: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
+                receivedDetail: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
+                deliveryAddress: [
+                    { required: true, message: '请选择收货地址', trigger: 'blur' },
+                ],
 
+                sendName: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
+                sendPhone: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
+                sendDetail: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
             },
             showFooter: false
         }
@@ -126,17 +146,34 @@ export default {
                     let name2 = codes[2][codes2]
 
                     if(this.sendGoods) {
-                        this.$emit('submit', {
-                            ProvinceCode: codes0,
-                            ProvinceName: name0,
-                            CityCode: codes1,
-                            CityName: name1,
-                            AreaCode: codes2,
-                            AreaName: name2,
-                            Detail: this.sendGoods == 'send' ? this.ruleForm.sendDetail : this.ruleForm.receivedDetail,
-                            Phone: this.sendGoods == 'send' ? this.ruleForm.sendPhone : this.ruleForm.receivedPhone,
-                            Name: this.sendGoods == 'send' ? this.ruleForm.sendName : this.ruleForm.receivedName
-                        })
+                        let obj = {}
+
+                        if(this.sendGoods == 'received') {
+                            obj = {
+                                receivedProvinceCode: codes0,
+                                receivedProvinceName: name0,
+                                receivedCityCode: codes1,
+                                receivedCityName: name1,
+                                receivedAreaCode: codes2,
+                                receivedAreaName: name2,
+                                receivedDetail: this.sendGoods == 'send' ? this.ruleForm.sendDetail : this.ruleForm.receivedDetail,
+                                receivedPhone: this.sendGoods == 'send' ? this.ruleForm.sendPhone : this.ruleForm.receivedPhone,
+                                receivedName: this.sendGoods == 'send' ? this.ruleForm.sendName : this.ruleForm.receivedName
+                            }
+                        } else if(this.sendGoods == 'send') {
+                            obj = {
+                                sendProvinceCode: codes0,
+                                sendProvinceName: name0,
+                                sendCityCode: codes1,
+                                sendCityName: name1,
+                                sendAreaCode: codes2,
+                                sendAreaName: name2,
+                                sendDetail: this.sendGoods == 'send' ? this.ruleForm.sendDetail : this.ruleForm.receivedDetail,
+                                sendPhone: this.sendGoods == 'send' ? this.ruleForm.sendPhone : this.ruleForm.receivedPhone,
+                                sendName: this.sendGoods == 'send' ? this.ruleForm.sendName : this.ruleForm.receivedName
+                            }
+                        }
+                        this.$emit('submit', obj)
                         this.visible = false
                         return
                     }
@@ -211,10 +248,20 @@ export default {
 </script>
 <style lang="scss" scoped>
     /deep/.el-input {
-        width: 100%;
+        width: 100%!important;
     }
     /deep/ .receive-information-dialog .area-select.large {
-        width: 100%;
+        width: 100%!important;
+    }
+    /deep/ .el-textarea {
+        width: 100%!important;
+        height: 96px!important;
+        textarea {
+            height: 96px!important;
+        }
+    }
+    .demo-ruleForm {
+        padding-right: 70px;
     }
 </style>
 <style lang="scss">
