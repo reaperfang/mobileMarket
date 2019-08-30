@@ -39,7 +39,7 @@
           </ul>
           <ul class="navs type2" v-if="ruleForm.navStyle.id == 2">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
-              <img :src="navMap[item].navIconActive" alt="">
+              <img :src="ruleForm.navMap[item].navIconActive" alt="">
             </li>
           </ul>
           <ul class="navs type3" v-if="ruleForm.navStyle.id == 3">
@@ -52,7 +52,7 @@
             </li>
           </ul>
           <ul class="navs type4" v-if="ruleForm.navStyle.id == 4">
-            <li >第四种导航样式</li>
+            <li >隐藏展开样式 TODU</li>
           </ul>
 
           <div class="add_btn" @click="addNav">
@@ -63,7 +63,7 @@
 
       <!-- 右侧属性区 -->
       <div class="module props">
-        <el-form :model="currentNav" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
+        <el-form :model="currentNav" :rules="rules" ref="ruleForm" label-width="90px" class="demo-ruleForm">
           <div class="block header">
             <p class="title">导航设置</p>
             <p class="state" @click="deleteNav" style="cursor:pointer;">删除导航</p>
@@ -103,10 +103,8 @@
                 <el-radio :label="2">自定义链接</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="" prop="navLinkUrl" v-if="navigation_type === '0'">
-              <div v-if="currentNav.navLinkType == 1">
-                <span>链接地址：</span>
-                <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
+            <el-form-item label="链接地址" prop="navLinkUrl" v-if="navigation_type === '0' && currentNav.navLinkType == 1">
+              <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
                   <el-option label="首页" value="1"></el-option>
                   <el-option label="购物车" value="2"></el-option>
                   <el-option label="个人中心" value="3"></el-option>
@@ -119,18 +117,9 @@
                   <el-option label="指定商品分类" value="10"></el-option>
                   <el-option label="营销活动" value="11"></el-option>
                 </el-select>
-              </div>
-              <div v-else >
-                <span>链接地址：</span>
-                <el-input style="width:150px" v-model="currentNav.customNavLinkUrl" placeholder="请输入链接地址"></el-input>
-              </div>
-              <!-- <el-tag
-                v-for="tag in currentNav.goodsGroups"
-                :key="tag.title"
-                closable
-                type="success">
-                {{tag.title}}
-              </el-tag> -->
+            </el-form-item>
+            <el-form-item label="链接地址" prop="navLinkUrl" v-if="navigation_type === '0' && currentNav.navLinkType == 2">
+              <el-input style="width:150px" v-model="currentNav.customNavLinkUrl" placeholder="请输入链接地址"></el-input>
             </el-form-item>
             <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '1'">
               <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
@@ -147,9 +136,11 @@
                 <el-option label="营销活动" value="11"></el-option>
               </el-select>
             </el-form-item>
-            <el-tag type="success" @close="deleteGoodsGroup()" v-if="navigation_type === '1' && seletedPage">
-              {{seletedPage.data.name}}
-            </el-tag>
+            <el-form-item label="" prop="" v-if="navigation_type === '0'">
+              <el-tag type="success" @close="deleteGoodsGroup()" v-if="navigation_type === '0' && seletedPage">
+                {{seletedPage.data.name}}
+              </el-tag>
+            </el-form-item>
           </div>
 
 
@@ -159,7 +150,7 @@
           </div>
           <div class="block form" v-if="navigation_type === '0'">
             <el-form-item label="导航风格" prop="navStyle">
-              公众号样式
+              {{ruleForm.navStyle.name || 'APP导航样式'}}
               <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectNavTemplate'">修改</el-button>
             </el-form-item>
             <el-form-item label="应用页面" prop="applyPage">
@@ -214,11 +205,12 @@
       </div>
         <!-- {{ruleForm}} -->
       <!-- 动态弹窗 -->
-      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
+      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected" @navTypeSelected="navTypeSelected" :navStyleId="ruleForm.navStyle.id"></component>
 
-      <DialogBase :visible.sync="pageDialogVisible" width="816px" :title="'选择跳转页面'" @submit="seletePage">
-        <component v-if="dialogVisible" :is="currentDialog" @seletedRow="rowSeleted"></component>
+      <DialogBase :visible.sync="pageDialogVisible" width="816px" :title="currentPageName" @submit="seletePage">
+        <component v-if="pageDialogVisible" :is="currentPageDialog" @seletedRow="rowSeleted"></component>
       </DialogBase>
+
     </div>
   </div>
 </template>
@@ -231,17 +223,21 @@ import DialogBase from "@/components/DialogBase";
 import microPage from "../dialogs/jumpLists/microPage";
 import microPageClassify from "../dialogs/jumpLists/microPageClassify";
 import marketCampaign from "../dialogs/jumpLists/marketCampaign";
+import dialogSelectGoods from "../dialogs/dialogSelectGoods";
 
 import utils from "@/utils";
 import uuid from 'uuid/v4';
 export default {
   name: 'shopNav',
-  components: {dialogSelectImageMaterial, dialogSelectNavTemplate, DialogBase, microPage, microPageClassify, marketCampaign},
+  components: {dialogSelectImageMaterial, dialogSelectNavTemplate, DialogBase, microPage, microPageClassify, marketCampaign, dialogSelectGoods},
   data () {
     return {
       dialogVisible: false,
-      pageDialogVisible: false,
       currentDialog: '',
+
+      pageDialogVisible: false,
+      currentPageDialog: '',
+      currentPageName: '',
       navigation_type: '0',  //导航类型
       utils,
       openNav: true,   //系统-是否打开导航
@@ -278,16 +274,23 @@ export default {
     'currentNav.systemNavLinkUrl'(newValue) {
       switch(newValue) {
         case '7':
+          this.currentPageDialog = 'microPage';
+          this.currentPageName = '选择微页面';
           this.pageDialogVisible = true;
-          this.currentDialog = 'microPage';
           break;
         case '8':
+          this.currentPageDialog = 'microPageClassify';
+          this.currentPageName = '选择微页面分类';
           this.pageDialogVisible = true;
-          this.currentDialog = 'microPageClassify';
+          break;
+        case '9':
+          this.currentDialog = 'dialogSelectGoods';
+          this.dialogVisible = true;
           break;
         case '11':
+          this.currentPageDialog = 'marketCampaign';
+          this.currentPageName = '选择营销活动';
           this.pageDialogVisible = true;
-          this.currentDialog = 'marketCampaign';
           break;
       }
     },
@@ -317,9 +320,9 @@ export default {
       }
     },
 
-     /* 弹窗选中了导航样式 */
-    dialogDataSelected(navStyle) {
-      this.ruleForm.navStyle = dialogData.src;
+    /* 选中导航样式 */
+    navTypeSelected(navType) {
+      this.ruleForm.navStyle = navType;
     },
 
     /* 初始化导航列表 */
@@ -517,6 +520,11 @@ export default {
       if(this.tempSelectPage) {
         this.seletedPage = this.tempSelectPage;
       }
+    },
+
+       /* 弹窗选中了商品和商品分组 */
+    dialogDataSelected(dialogData) {
+      this.seletedPage = dialogData;
     },
   }
 }

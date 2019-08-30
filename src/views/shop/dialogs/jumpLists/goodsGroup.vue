@@ -10,7 +10,7 @@
             </el-form-item>
           </div>
         </el-form>
-        <el-table :data="tableData[currentTab]" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick">
+        <el-table :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick" v-loading="loading">
           <el-table-column
             type="selection"  
             width="55">
@@ -48,16 +48,17 @@ export default {
         name: ''
       },
       rules: {},
-      tableData: [],
+      goodsClassifyList: []
     };
   },
   created() {
   },
   methods: {
     fetch() {
-      this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
-        this.tableData = response.list;
-        this.total = response.total;
+      this._apis.shop.getClassifyList({
+        enable: '1'
+      }).then((response)=>{
+        this.goodsClassifyList = response.list;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
@@ -76,6 +77,56 @@ export default {
           title: row.title
         }
       });
+    },
+
+     transTreeData(data, pid) {
+      var result = [], temp;
+      for (var i = 0; i < data.length; i++) {
+          if (data[i].parentId == pid) {
+              var obj = {
+                label: data[i].name,
+                id: data[i].id, 
+                parentId: data[i].parentId, 
+                level: data[i].level, 
+                sort: data[i].sort, 
+                image: data[i].image, 
+                enable: data[i].enable, 
+                goods: (data[i].goods || [])
+              };
+              temp = this.transTreeData(data, data[i].id);
+              if (temp.length > 0) {
+                  obj.children = temp;
+              }
+              result.push(obj);
+          }
+      }
+      return result;
+    },
+
+     flatTreeArray(array = [], childrenKey = 'children') {
+      var result = [];
+      let flat = (array = {}, childrenKey, floor) => {
+          array.forEach(item => {
+          let dataItem = {
+              floor: floor,
+              name: item.categoryName,
+              id: item.id,
+              parentId: item.parentId,
+          }
+          result.push(dataItem);
+
+          let childrenArr;
+          if (item.hasOwnProperty(childrenKey)) {
+              childrenArr = item[childrenKey];
+              delete item[childrenKey];
+          }
+          if (childrenArr && childrenArr.length > 0) {
+              flat(childrenArr, childrenKey, floor + 1)
+          }
+          });
+      }
+      flat(array, childrenKey, 1);
+      return result;
     },
 
   }

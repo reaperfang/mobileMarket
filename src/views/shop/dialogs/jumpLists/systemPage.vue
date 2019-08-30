@@ -60,17 +60,6 @@ export default {
   created() {
   },
   methods: {
-    fetch() {
-      this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
-        this.tableData = response.list;
-        this.total = response.total;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      });
-    },
 
    /* 选中某一行 */
     rowClick(row, column, event) {

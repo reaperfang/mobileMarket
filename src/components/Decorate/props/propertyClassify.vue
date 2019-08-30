@@ -20,22 +20,25 @@
     </div>
 
     <div class="block form">
-      <el-button type="primary" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">添加页面</el-button>
+      <el-button type="primary" @click="dialogVisible=true">添加页面</el-button>
+      <p v-for="(item, key) of ruleForm.pageList" :key="key">{{item.name}}</p>
     </div>
 
-     <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected"></component>
+     <DialogBase :visible.sync="dialogVisible" width="816px" title="选择微页面" @submit="seletePage">
+        <component v-if="dialogVisible" :is="'microPage'" @seletedRow="rowSeleted"></component>
+    </DialogBase>
   </el-form>
 </template>
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import dialogSelectJumpPage from '@/views/shop/dialogs/dialogSelectJumpPage';
+import microPage from "@/views/shop/dialogs/jumpLists/microPage";
 import RichEditor from '@/components/RichEditor';
+import DialogBase from "@/components/DialogBase";
 export default {
   name: 'propertyTitle',
   mixins: [propertyMixin],
-  components: {dialogSelectJumpPage, RichEditor},
+  components: {DialogBase, microPage, RichEditor},
   data () {
     return {
       editorData: '',  //富文本数据
@@ -53,20 +56,28 @@ export default {
         showType: 1,
         colorStyle: '#fff',
         explain: '',
-        isBaseComponent: true
+        isBaseComponent: true,
+        pageList: []
       },
       rules: {
 
       },
       dialogVisible: false,
       currentDialog: '',
+      tempSelectPage: null  //临时页面
     }
   },
   methods: {
 
-    /* 弹窗选中了跳转链接 */
-    dialogDataSelected(jumpLink) {
-      console.log(jumpLink);
+    rowSeleted(row) {
+      this.tempSelectPage = row;
+    },
+
+    /* 向父组件提交选中的数据 */
+    seletePage() {
+      if(this.tempSelectPage) {
+        this.ruleForm.pageList = this.tempSelectPage;
+      }
     },
 
      /* 富文本内容更新 */

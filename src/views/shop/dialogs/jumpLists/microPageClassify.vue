@@ -10,7 +10,7 @@
             </el-form-item>
           </div>
         </el-form>
-        <el-table :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick">
+        <el-table :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick" v-loading="loading">
           <el-table-column
             type="selection"  
             width="55">
@@ -57,14 +57,17 @@ export default {
   },
   methods: {
     fetch() {
+      this.loading = true;
       this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
         this.tableData = response.list;
         this.total = response.total;
+        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
+        this.loading = false;
       });
     },
 

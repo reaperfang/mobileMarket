@@ -6,7 +6,7 @@
         <el-tab-pane label="微页面" name="microPage"></el-tab-pane>
         <el-tab-pane label="微页面分类" name="microPageClassify"></el-tab-pane>
         <el-tab-pane label="商品分组" name="goodsGroup"></el-tab-pane>
-        <el-tab-pane label="商品详情" name="goodsDetail"></el-tab-pane>
+        <el-tab-pane label="商品详情" name="goods"></el-tab-pane>
         <el-tab-pane label="营销活动" name="marketCampaign"></el-tab-pane>
         <el-tab-pane label="系统页面" name="systemPage"></el-tab-pane>
       </el-tabs>
@@ -19,13 +19,13 @@
 import DialogBase from "@/components/DialogBase";
 import microPage from "./jumpLists/microPage";
 import microPageClassify from "./jumpLists/microPageClassify";
-import goodsDetail from "./jumpLists/goodsDetail";
+import goods from "./jumpLists/goods";
 import goodsGroup from "./jumpLists/goodsGroup";
 import marketCampaign from "./jumpLists/marketCampaign";
 import systemPage from "./jumpLists/systemPage";
 export default {
   name: "dialogSelectJumpPage",
-  components: {DialogBase, microPage, microPageClassify, goodsDetail, goodsGroup, marketCampaign, systemPage},
+  components: {DialogBase, microPage, microPageClassify, goods, goodsGroup, marketCampaign, systemPage},
   props: {
       dialogVisible: {
           type: Boolean,
