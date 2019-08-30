@@ -2,7 +2,7 @@
     <div class="deliver-goods">
         <div class="deliver-goods-header">
             <div class="item">售后发货</div>
-            <div class="item"><el-button>返 回</el-button></div>
+            <div class="item"><el-button @click="$router.go(-1)">返 回</el-button></div>
         </div>
         <div class="container">
             <div class="container-item">
@@ -92,7 +92,7 @@
                             <i class="deliver-icon"></i>
                             <span>发货信息</span>
                         </div>
-                        <div @click="changeSendInfo" class="blue">修改发货信息</div>
+                        <div @click="changeSendInfo" class="blue pointer">修改发货信息</div>
                     </div>
                     <div class="content">
                         <div class="item">
@@ -291,6 +291,7 @@ export default {
 </script>
 <style lang="scss" scoped>
     .deliver-goods {
+        color: #333;
         .blue {
             color: $globalMainColor;
         }

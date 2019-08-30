@@ -61,6 +61,7 @@ export default {
     init(){
         this._apis.login.getUserInfo({id:this.userInfo.id}).then(response =>{
             console.log('1111',response)
+            // this.form = response
         }).catch(error =>{
             this.$notify.error({
                 title: '失败',

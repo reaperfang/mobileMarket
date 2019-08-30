@@ -3,7 +3,7 @@
     <div class="block form">
       <el-form-item label="商品分组" prop="goodsGroups">
         <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
-        <div class="goods_groups">
+        <div class="goods_groups">{{list}}
           <el-tag
             v-for="(tag, key) in list"
             :key="key"

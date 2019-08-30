@@ -19,6 +19,10 @@ export default {
     'currentComponentData.data.addType'(newValue) {
       if(newValue == 2) {
         this.fetch();
+      }else{
+        this.items = [];
+        this.list = [];
+        this.fetch();
       }
     },
 
@@ -56,13 +60,13 @@ export default {
                   ids: this.currentComponentData.data.ids
                 };
               }else{
-                 params = {
-                  couponType: 0
-                };
+                this.list = [];
+                return;
               }
             }
 
             this.loading = true;
+            this.list = [];
             this._apis.shop.getCouponListByIds(params).then((response)=>{
                 this.createList(response);
                 this.loading = false;
@@ -71,6 +75,7 @@ export default {
                     title: '错误',
                     message: error
                 });
+                this.list = [];
                 this.loading = false;
             });
           }

@@ -89,7 +89,7 @@
                 <i class="deliver-icon"></i>
                 <span>发货信息</span>
               </div>
-              <div @click="changeSendInfo" class="blue">修改发货信息</div>
+              <div @click="changeSendInfo" class="blue pointer">修改发货信息</div>
             </div>
             <div class="content">
               <div class="item">
@@ -109,10 +109,12 @@
         </div>
       </section>
       <div class="footer">
-          <el-button @click="sendGoodsHandler" type="primary">批量发货</el-button>
+          <el-button class="border-button" @click="printingElectronicForm">打印电子面单</el-button>
+          <el-button class="border-button" @click="printDistributionSheet">打印配送单</el-button>
+          <el-button @click="sendGoodsHandler" type="primary">确定</el-button>
       </div>
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods" :title="title"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods" :title="title"></component>
   </div>
 </template>
 <script>
@@ -137,6 +139,12 @@ export default {
     this.getExpressCompanyList()
   },
   methods: {
+    printingElectronicForm() {
+      this.$router.push('/order/printingElectronicForm?ids=' + this.$route.query.ids)
+    },
+    printDistributionSheet() {
+      this.$router.push('/order/printDistributionSheet?ids=' + this.$route.query.ids)
+    },
       sendGoodsHandler() {
           try {
               let params
@@ -213,29 +221,36 @@ export default {
         })
     },
       onSubmit(value) {
-          if(this.isReceived) {
-                let obj = {}
-                for(let i in value) {
-                    obj['received' + i] = value[i]
-                }
+          // if(this.isReceived) {
+          //       let obj = {}
+          //       for(let i in value) {
+          //           obj['received' + i] = value[i]
+          //       }
 
-                this.list.map((val, index) => {
-                    this.list.splice(index, 1, Object.assign({}, this.list[index], obj))
-                })
-            } else {
-                 let obj = {}
-                for(let i in value) {
-                    obj['send' + i] = value[i]
-                }
+          //       this.list.map((val, index) => {
+          //           this.list.splice(index, 1, Object.assign({}, this.list[index], obj))
+          //       })
+          //   } else {
+          //        let obj = {}
+          //       for(let i in value) {
+          //           obj['send' + i] = value[i]
+          //       }
 
-                this.list.map((val, index) => {
-                    console.log(obj)
-                    let listi = JSON.parse(JSON.stringify(this.list[index]))
+          //       this.list.map((val, index) => {
+          //           console.log(obj)
+          //           let listi = JSON.parse(JSON.stringify(this.list[index]))
 
-                    listi.orderAfterSaleSendInfo = Object.assign({}, listi.orderAfterSaleSendInfo, obj)
-                    this.list.splice(index, 1, listi)
-                })
-            }
+          //           listi.orderAfterSaleSendInfo = Object.assign({}, listi.orderAfterSaleSendInfo, obj)
+          //           this.list.splice(index, 1, listi)
+          //       })
+          //   }
+          let _list = JSON.parse(JSON.stringify(this.list))
+
+          _list.forEach((val, index) => {
+            _list[index] = Object.assign({}, val, value)
+          })
+
+          this.list = _list
       },
       changeSendInfo() {
             this.currentDialog = 'ReceiveInformationDialog'

@@ -29,6 +29,7 @@
                         <span>订单类型：{{order.orderType | orderTypeFilter}}</span>
                         <span><i class="memberLevelImg" :style="{background: `url(${order.memberLevelImg})`}"></i>客户ID：{{order.memberSn}}</span>
                         <span>订单来源：{{order.channelName}}</span>
+                        <i @click="closeOrder(order.id)" v-if="order.orderStatus == 2" class="el-icon-delete"></i>
                     </div>
                 </div>
                 <div class="container-item-content">
@@ -173,6 +174,9 @@ export default {
         }
     },
     methods: {
+        closeOrder(id) {
+
+        },
         submit(value) {
             this._apis.order.orderClose({...value, id: this.currentData}).then((res) => {
                 this.$emit('getList')

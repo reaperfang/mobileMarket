@@ -11,12 +11,12 @@
           </div>
           <div class="item-content">
             <div class="row align-center table-title">
-              <div class="col" style="width: 660px;">
+              <div class="col" style="width: 590px; margin-right: 40px;">
                 <div class="row align-center row-margin">
                   <div class="col">
-                    <i class="checkbox"></i>
+                    <i @click="changeAll(item)" class="checkbox" :class="{checked: item.checked}"></i>
                   </div>
-                  <div class="col" style="width: 380px;">商品</div>
+                  <div class="col" style="width: 310px;">商品</div>
                   <div class="col" style="width: 60px;">应发数量</div>
                   <div class="col">本次发货数量</div>
                 </div>
@@ -29,23 +29,23 @@
               </div>
             </div>
             <div class="row align-center table-container">
-              <div class="col" style="width: 660px; flex-shrink: 0;">
+              <div class="col" style="width: 590px; flex-shrink: 0;">
                 <div
-                  class="row align-center row-margin"
+                  class="row align-center row-margin goodsItem"
                   v-for="(goods, i) in item.orderItemList"
                   :key="i"
                 >
                   <div class="col">
                     <i @click="select(index, i)" class="checkbox" :class="{checked: goods.checked}"></i>
                   </div>
-                  <div class="col" style="width: 380px;">
+                  <div class="col" style="width: 310px;">
                     <div class="row align-center">
                       <div class="col">
                         <img :src="goods.goodsImage" alt />
                       </div>
                       <div class="col">
                         <p>{{goods.goodsName}}</p>
-                        <p>{{goods.goodsSpecs}}</p>
+                        <p class="goods-specs">{{goods.goodsSpecs}}</p>
                       </div>
                     </div>
                   </div>
@@ -80,7 +80,7 @@
           </div>
         </div>
       </section>
-      <section>
+      <section class="send-goods">
         <div class="container-item">
           <p>2.确认发货信息</p>
           <div class="container-item-content">
@@ -89,7 +89,7 @@
                 <i class="deliver-icon"></i>
                 <span>发货信息</span>
               </div>
-              <div @click="changeSendInfo" class="blue">修改发货信息</div>
+              <div @click="changeSendInfo" class="blue pointer">修改发货信息</div>
             </div>
             <div class="content">
               <div class="item">
@@ -137,6 +137,19 @@ export default {
     this.getExpressCompanyList()
   },
   methods: {
+    changeAll(item) {
+      item.checked = !item.checked
+
+      if(item.checked) {
+        item.orderItemList.forEach(val => {
+          val.checked = true
+        })
+      } else {
+        item.orderItemList.forEach(val => {
+          val.checked = false
+        })
+      }
+    },
       sendGoodsHandler() {
           try {
               let params
@@ -205,6 +218,12 @@ export default {
               _list[index].orderItemList[i].checked = !_list[index].orderItemList[i].checked
 
               this.list = _list
+
+              if(this.list[index].orderItemList.filter(val => val.checked).length == this.list[index].orderItemList.length) {
+                this.list[index].checked = true
+              } else {
+                this.list[index].checked = false
+              }
           }catch(e) {
 
           }
@@ -221,33 +240,17 @@ export default {
         })
     },
       onSubmit(value) {
-          if(this.isReceived) {
-                let obj = {}
-                for(let i in value) {
-                    obj['received' + i] = value[i]
-                }
+          let _list = JSON.parse(JSON.stringify(this.list))
 
-                this.list.map((val, index) => {
-                    this.list.splice(index, 1, Object.assign({}, this.list[index], obj))
-                })
-            } else {
-                 let obj = {}
-                for(let i in value) {
-                    obj['send' + i] = value[i]
-                }
+          _list.forEach((val, index) => {
+            _list[index] = Object.assign({}, val, value)
+          })
 
-                this.list.map((val, index) => {
-                    console.log(obj)
-                    let listi = JSON.parse(JSON.stringify(this.list[index]))
-
-                    listi.orderAfterSaleSendInfo = Object.assign({}, listi.orderAfterSaleSendInfo, obj)
-                    this.list.splice(index, 1, listi)
-                })
-            }
+          this.list = _list
       },
       changeSendInfo() {
             this.currentDialog = 'ReceiveInformationDialog'
-            this.currentData = this.list[0].orderAfterSaleSendInfo
+            this.currentData = this.list[0]
             this.isReceived = false
             this.title = '修改发货信息'
             this.sendGoods = 'send'
@@ -261,6 +264,7 @@ export default {
         .then(res => {
           console.log(res)
           res.forEach(val => {
+              val.checked = false
               val.orderItemList.forEach(goods => {
                   goods.checked = false
               })
@@ -285,6 +289,8 @@ export default {
 .bulk-delivery {
   background-color: #fff;
   padding: 20px;
+  color: #333333;
+  font-size: 14px;
   > .title {
     font-size: 16px;
   }
@@ -292,6 +298,16 @@ export default {
     padding-top: 20px;
     padding-left: 60px;
     section {
+      padding-right: 30px;
+      &.send-goods {
+        .item {
+          margin-bottom: 10px;
+        }
+        .label {
+          width: 80px;
+          text-align: right;
+        }
+      }
       .goods-item {
         margin-top: 20px;
         border-radius: 10px;
@@ -317,11 +333,44 @@ export default {
           }
           .row-margin > .col {
             margin-right: 25px;
+            p {
+              line-height: 21px;
+            }
           }
         }
       }
     }
   }
+
+  .table-title {
+  background:#ebeafa;
+  color:#655EFF;
+  height: 46px;
+  padding-left: 15px;
+}
+.table-container {
+  padding-left: 15px;
+  .col:first-child {
+    margin-right: 40px;
+  }
+}
+.goodsItem {
+  padding-bottom: 44px;
+  padding-top: 20px;
+  border-bottom: 1px solid #d3d7d4;
+  &:last-child {
+    border: none;
+    padding-bottom: 0;
+  }
+}
+.goods-specs {
+  color: #9FA29F;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.footer {
+  text-align: center;
+}
 }
 .container-item {
   margin-top: 20px;

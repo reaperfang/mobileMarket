@@ -51,6 +51,7 @@ export default {
         name: '微页面分类',
         sortType: 1,
         showType: 1,
+        colorStyle: '#fff',
         explain: '',
         isBaseComponent: true
       },

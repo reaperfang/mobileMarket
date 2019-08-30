@@ -53,7 +53,7 @@
                     <p><a href="javascript:;" @click="uploadAgin">重新上传</a></p>
                     <p>
                         <el-button @click="cancelImport">取 消</el-button>
-                        <el-button type="primary">批量发货</el-button>
+                        <el-button @click="batchImport" type="primary">批量发货</el-button>
                     </p>
                 </div>
             </section>
@@ -77,6 +77,16 @@ export default {
         }
     },
     methods: {
+        batchImport() {
+            this._apis.order.orderSendInfoImportBatchDelever({importUrl: this.url}).then(res => {
+                console.log(res)
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
         onSubmit() {
 
         },

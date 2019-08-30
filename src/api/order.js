@@ -436,7 +436,7 @@ export function orderAfterSaleDrawback(data) {
   return request({
     apiType: 'order',
     method: 'post',
-    target: '',
+    target: 'ORDER-AFTER-SALE-REFUND-PROCESSOR',
     data
   })
 }
@@ -500,6 +500,19 @@ export function orderConfirmReceived(data) {
     data
   })
 }
+
+// 批量导入订单发货
+export function orderSendInfoImportBatchDelever(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-SENDINFO-IMPORT-BATCH-DELIVER-PROCESSOR',
+    data
+  })
+}
+
+
+
 
 
 

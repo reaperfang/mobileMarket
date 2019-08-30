@@ -23,6 +23,7 @@ export default {
                   ids.push(item);
                 }
                 if(!ids.length) {
+                  this.list = [];
                   return;
                 }
                 this.loading = true;
@@ -31,9 +32,10 @@ export default {
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({
-                    title: '错误',
-                    message: error
+                      title: '错误',
+                      message: error
                     });
+                    this.list = [];
                     this.loading = false;
                 });
             }
