@@ -74,7 +74,8 @@
                 :data="tableData"
                 tooltip-effect="dark"
                 style="width: 100%"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                :header-cell-style="{background:'#ebeafa', color:'#655EFF'}">
                 <el-table-column
                     type="selection"
                     width="55">
@@ -84,7 +85,7 @@
                     label=""
                     width="40">
                     <template slot-scope="scope">
-                        <el-tooltip content="自动发货" placement="bottom" effect="light">
+                        <el-tooltip v-if="scope.row.isAutoSend" content="自动发货" placement="bottom" effect="light">
                             <i class="auto"></i>
                         </el-tooltip>
                     </template>
@@ -127,7 +128,8 @@
                                 <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">继续发货</span>
                             </template>
                             <template v-else-if="scope.row.status == 3">
-                                <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">发货</span>
+                                <span v-if="!scope.row.isAutoSend" @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">发货</span>
+                                <span v-else @click="$router.push('/order/supplementaryLogistics?id=' + scope.row.id)">补填物流</span>
                             </template>
                         </div>
                     </template>

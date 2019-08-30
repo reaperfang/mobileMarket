@@ -5,8 +5,8 @@
             <!-- 待审核 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="active">
-                        <el-step title="提交申请" description=""></el-step>
+                    <el-steps :active="1">
+                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
                         <el-step title="商户处理" description=""></el-step>
                         <el-step title="客户退货" description=""></el-step>
                         <el-step title="商户发货" description=""></el-step>
@@ -18,9 +18,8 @@
                     <p>待审核</p>
                     <p class="des">客户申请售后，待审核</p>
                     <div>
-                        <span>查看</span>
-                        <span>同意</span>
-                        <span>拒绝</span>
+                        <span @click="auth">同意</span>
+                        <span @click="reject">拒绝</span>
                     </div>
                 </div>
             </div>
@@ -29,9 +28,9 @@
             <!-- 待退货 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="active">
-                        <el-step title="提交申请" description=""></el-step>
-                        <el-step title="商户处理" description=""></el-step>
+                    <el-steps :active="2">
+                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
+                        <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
                         <el-step title="客户退货" description=""></el-step>
                         <el-step title="商户发货" description=""></el-step>
                         <el-step title="客户收货" description=""></el-step>
@@ -41,9 +40,6 @@
                 <div class="col righter">
                     <p>待退货</p>
                     <p class="des">商户同意售后，客户未发货。</p>
-                    <div>
-                        <span>查看</span>
-                    </div>
                 </div>
             </div>
         </template>
@@ -51,10 +47,10 @@
             <!-- 待处理 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="active">
-                        <el-step title="提交申请" description=""></el-step>
-                        <el-step title="商户处理" description=""></el-step>
-                        <el-step title="客户退货" description=""></el-step>
+                    <el-steps :active="3">
+                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
+                        <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
+                        <el-step title="客户退货" :description="orderAfterSale.memberReturnGoodsTime"></el-step>
                         <el-step title="商户发货" description=""></el-step>
                         <el-step title="客户收货" description=""></el-step>
                         <el-step title="完成" description=""></el-step>
@@ -64,10 +60,8 @@
                     <p>待处理</p>
                     <p class="des">客户已退货，商户未发货</p>
                     <div>
-                        <span>查看</span>
-                        <span>查看物流</span>
-                        <span>确认收货</span>
-                        <span>发货</span>
+                        <span @click="confirmTakeOver">确认收货</span>
+                        <span @click="sendGoods">发货</span>
                     </div>
                 </div>
             </div>
@@ -76,10 +70,10 @@
             <!-- 待收货 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="active">
-                        <el-step title="提交申请" description=""></el-step>
-                        <el-step title="商户处理" description=""></el-step>
-                        <el-step title="客户退货" description=""></el-step>
+                    <el-steps :active="4">
+                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
+                        <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
+                        <el-step title="客户退货" :description="orderAfterSale.memberReturnGoodsTime"></el-step>
                         <el-step title="商户发货" description=""></el-step>
                         <el-step title="客户收货" description=""></el-step>
                         <el-step title="完成" description=""></el-step>
@@ -88,10 +82,6 @@
                 <div class="col righter">
                     <p>待收货</p>
                     <p class="des">商户已换货发货，客户未收货</p>
-                    <div>
-                        <span>查看</span>
-                        <span>查看物流</span>
-                    </div>
                 </div>
             </div>
         </template>
@@ -100,14 +90,14 @@
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
                     <template v-if="customerClose">
-                        <el-steps :active="active">
+                        <el-steps :active="3">
                             <el-step title="提交申请" description=""></el-step>
                             <el-step title="撤销申请" description=""></el-step>
                             <el-step title="申请已撤销" description=""></el-step>
                         </el-steps>
                     </template>
                     <template v-else>
-                        <el-steps :active="active">
+                        <el-steps :active="3">
                             <el-step title="提交申请" description=""></el-step>
                             <el-step title="商户处理" description=""></el-step>
                             <el-step title="拒绝申请，已完结" description=""></el-step>
@@ -117,9 +107,6 @@
                 <div class="col righter">
                     <p>已关闭</p>
                     <p class="des">客户撤销申请或商户拒绝售后。</p>
-                    <div>
-                        <span>查看</span>
-                    </div>
                 </div>
             </div>
         </template>
@@ -127,10 +114,10 @@
             <!-- 已完成 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="active">
-                        <el-step title="提交申请" description=""></el-step>
-                        <el-step title="商户处理" description=""></el-step>
-                        <el-step title="客户退货" description=""></el-step>
+                    <el-steps :active="6">
+                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
+                        <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
+                        <el-step title="客户退货" :description="orderAfterSale.memberReturnGoodsTime"></el-step>
                         <el-step title="商户发货" description=""></el-step>
                         <el-step title="客户收货" description=""></el-step>
                         <el-step title="完成" description=""></el-step>
@@ -139,9 +126,6 @@
                 <div class="col righter">
                     <p>已完成</p>
                     <p class="des">退款消息给客户，客户确认收款。</p>
-                    <div>
-                        <span>查看</span>
-                    </div>
                 </div>
             </div>
         </template>
@@ -170,6 +154,20 @@ export default {
                 case 4: // 已完成
                     return 6
             }
+        }
+    },
+    methods: {
+        sendGoods() {
+            this.$router.push('/order/orderAfterDeliverGoods?id=' + this.orderAfterSale.id)
+        },
+        confirmTakeOver() {
+            this.$emit('confirmTakeOver')
+        },
+        auth() {
+            this.$emit('auth')
+        },
+        reject() {
+            this.$emit('reject')
         }
     },
     props: {

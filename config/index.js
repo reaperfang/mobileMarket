@@ -12,8 +12,8 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    host: '127.0.0.1',
-    // host: '0.0.0.0',
+    //host: '127.0.0.1',
+     host: '0.0.0.0',
     port: 9000,
     autoOpenBrowser: true,
     errorOverlay: true,
@@ -86,7 +86,7 @@ module.exports = {
         }
       },
       '/order_server/**': {
-        target: 'http://172.22.145.113:8080/',
+        target: 'http://172.22.145.113:8080/',// 权宇172.22.145.113 李刚 172.22.146.15
         //target: 'http://localhost:3000/',
         changeOrigin: true,
         pathRewrite: {

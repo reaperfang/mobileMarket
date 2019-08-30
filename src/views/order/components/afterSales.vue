@@ -6,27 +6,26 @@
                 <el-form-item>
                     <el-input placeholder="请输入内容" v-model="listQuery.searchValue" class="input-with-select">
                         <el-select v-model="listQuery.searchType" slot="prepend" placeholder="请输入">
-                        <el-option label="售后单编号" value="orderCode"></el-option>
+                        <el-option label="售后单编号" value="orderAfterSaleCode"></el-option>
                         <el-option label="收货人联系电话" value="receivedPhone"></el-option>
-                        <el-option label="快递单号" value="expressNo"></el-option>
+                        <el-option label="快递单号" value="expressNos"></el-option>
                         <el-option label="客户ID" value="memberSn"></el-option>
                         </el-select>
                     </el-input>
                 </el-form-item>
-                <el-form-item label="订单状态">
+                <el-form-item label="状态">
                     <el-select v-model="listQuery.status">
                             <el-option label="全部" value=""></el-option>
                             <el-option label="待发货" value="3"></el-option>
-                            <el-option label="部分发货" value="4"></el-option>
-                            <el-option label="待收货" value="5"></el-option>
-                            <el-option label="完成" value="6"></el-option>
+                            <el-option label="待收货" value="4"></el-option>
+                            <el-option label="已完成" value="5"></el-option>
                         </el-select>
                 </el-form-item>
                 <el-form-item label="">
                     <el-input placeholder="请输入内容" v-model="listQuery.searchValue2" class="input-with-select">
                         <el-select v-model="listQuery.searchType2" slot="prepend" placeholder="请输入">
-                        <el-option label="商品名称" value="orderProductName"></el-option>
-                        <el-option label="快递公司" value="expressCompany"></el-option>
+                        <el-option label="商品名称" value="orderAfterSaleProductNames"></el-option>
+                        <el-option label="快递公司" value="expressCompanys"></el-option>
                         <el-option label="收货人" value="receivedName"></el-option>
                         </el-select>
                     </el-input>
@@ -34,8 +33,8 @@
                 <el-form-item label=""  class="searchTimeType">
                     <el-select class="date-picker-select" v-model="listQuery.searchTimeType" placeholder>
                         <el-option label="发货时间" value="send"></el-option>
-                        <el-option label="下单时间" value="order"></el-option>
-                        <el-option label="售后时间" value="afterSale"></el-option>
+                        <el-option label="下单时间" value="orderAfterSaleCreate"></el-option>
+                        <el-option label="售后时间" value="create"></el-option>
                     </el-select>
                     <el-date-picker
                         v-model="listQuery.orderTimeValue"
@@ -48,7 +47,7 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button class="border-button">批量导入发货</el-button>
+                        <el-button @click="$router.push('/order/batchImportAndDelivery')" class="border-button">批量导入发货</el-button>
                         <el-button @click="batchSendGoods" class="border-button">批量发货</el-button>
                         <el-button class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
                         <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
@@ -73,7 +72,7 @@
                     width="55">
                 </el-table-column>
                 <el-table-column
-                    prop="code"
+                    prop="orderAfterSaleCode"
                     label="售后单编号"
                     width="120">
                 </el-table-column>
@@ -94,7 +93,7 @@
                     prop="orderAfterSaleStatus"
                     label="状态">
                     <template slot-scope="scope">
-                        <span>{{scope.row.orderAfterSaleStatus | orderAfterSaleStatusFilter}}</span>
+                        <span>{{scope.row.status | statusFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -105,7 +104,7 @@
                     <template slot-scope="scope">
                         <div class="operate-box">
                             <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                            <span v-if="scope.row.orderAfterSaleStatus == 2" @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
+                            <span v-if="scope.row.status == 3" @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
                         </div>
                     </template>
                 </el-table-column>
@@ -128,21 +127,21 @@ export default {
             listQuery: {
                 startIndex: 1,
                 pageSize: 20,
-                searchType: 'orderCode',
+                searchType: 'orderAfterSaleCode',
                 searchValue: '',
                 status: '',
-                isAutosend: '',
-                searchType2: 'orderProductName',
+                searchType2: 'orderAfterSaleProductNames',
                 searchValue2: '',
                 searchTimeType: 'send',
                 orderTimeValue: '',
-                orderCode: '',
                 receivedPhone: '',
-                expressNo: '',
                 memberSn: '',
                 orderProductName: '',
                 expressCompany: '',
                 receivedName: '',
+                expressNos: '',
+                orderAfterSaleProductNames: '',
+                expressCompanys: '',
             },
             tableData: []
         }
@@ -151,20 +150,14 @@ export default {
         this.getList()
     },
     filters: {
-        orderAfterSaleStatusFilter(code) {
+        statusFilter(code) {
             switch(+code) {
-                case 0:
-                    return '提交申请'
-                case 1:
-                    return '待退货'
-                case 2:
-                    return '待处理'
                 case 3:
-                    return '待收货'
+                    return '待发货'
                 case 4:
-                    return '已完成'
+                    return '待收货'
                 case 5:
-                    return '已关闭'
+                    return '已完成'
             }
         },
     },
@@ -190,7 +183,25 @@ export default {
 
         },
         resetForm(formName) {
-            this.$refs[formName].resetFields();
+            this.listQuery = {
+                startIndex: 1,
+                pageSize: 20,
+                searchType: 'orderAfterSaleCode',
+                searchValue: '',
+                status: '',
+                searchType2: 'orderAfterSaleProductNames',
+                searchValue2: '',
+                searchTimeType: 'send',
+                orderTimeValue: '',
+                receivedPhone: '',
+                memberSn: '',
+                orderProductName: '',
+                expressCompany: '',
+                receivedName: '',
+                expressNos: '',
+                orderAfterSaleProductNames: '',
+                expressCompanys: '',
+            }
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
@@ -202,8 +213,8 @@ export default {
                 cid: 2,
                 [this.listQuery.searchType]: this.listQuery.searchValue,
                 [this.listQuery.searchType2]: this.listQuery.searchValue2,
-                [`${this.listQuery.searchTimeType}StartTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
-                [`${this.listQuery.searchTimeType}EndTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
+                [`${this.listQuery.searchTimeType}TimeStart`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
+                [`${this.listQuery.searchTimeType}TimeEnd`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
             })
             this._apis.order.SendPageList(params).then((res) => {
                 console.log(res)

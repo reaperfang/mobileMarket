@@ -3,26 +3,26 @@
     <div class="main">
         <el-form ref="form" :model="form" label-width="120px">
             <el-form-item label="登录账号:" >
-                17625412586
+                {{form.mobile}}
             </el-form-item>
-            <el-form-item label="昵称:" prop="nickName">
-                <el-input v-model="form.nickName" style="width:200px;"></el-input>
+            <el-form-item label="昵称:" prop="userName">
+                <el-input v-model="form.userName" style="width:200px;"></el-input>
             </el-form-item>
             <el-form-item label="性别:">
                 <el-radio-group v-model="form.sex">
                     <el-radio :label="1">男</el-radio>
-                    <el-radio :label="2">女</el-radio>
-                    <el-radio :label="3">保密</el-radio>
+                    <el-radio :label="2" class="ml10">女</el-radio>
+                    <el-radio :label="3" class="ml10">保密</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="QQ:" >
                 <el-input v-model="form.qq" style="width:200px;"></el-input>
             </el-form-item>
-            <el-form-item label="邮箱:" >
+            <el-form-item label="邮箱:" prop="email">
                 <el-input v-model="form.email" style="width:200px;"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit" class="mtb200">确认修改</el-button>
+                <el-button type="primary" @click="onSubmit()" class="mtb200">确认修改</el-button>
             </el-form-item>
         </el-form>
     </div>    
@@ -35,8 +35,8 @@ export default {
   data() {
     return {
       form: {
-          name: '',
-          nickName: '',
+          mobile:'',
+          userName: '',
           sex: 1,
           qq: '',
           email: ''
@@ -49,20 +49,50 @@ export default {
   watch: {
     
   },
-  created() {
-
+  computed:{
+    userInfo(){
+      return JSON.parse(this.$store.getters.userInfo)
+    }
   },
-  destroyed() {
-    
+  created() {
+      this.init()
   },
   methods: {
     init(){
-        // listArea({}).then(response => {
-        //     this.area = response.data.data.children
-        // })
+        this._apis.login.getUserInfo({id:this.userInfo.id}).then(response =>{
+            console.log('1111',response)
+            // this.form = response
+        }).catch(error =>{
+            this.$notify.error({
+                title: '失败',
+                message: error
+            })
+        })
+        // this.form = JSON.parse(this.$store.getters.userInfo)
     },
     // 修改账号信息
-    onSubmit(){}
+    onSubmit(){
+        let query = {
+            id:this.form.id,
+            userName:this.form.userName,
+            mobile:this.form.mobile,
+            email:this.form.email,
+            qq:this.form.qq,
+            sex:this.form.sex
+        }
+        this._apis.login.updateUserInfo(query).then(response =>{
+            this.$notify.success({
+                title: '成功',
+                message: '更新成功！'
+            });
+
+        }).catch(error =>{
+            this.$notify.error({
+                title: '失败',
+                message: error
+            })
+        })
+    },
   }
 }
 </script>
@@ -86,5 +116,8 @@ export default {
 }
 .mtb200{
     margin: 200px 0;
+}
+.ml10{
+    margin-left: 10px;
 }
 </style>

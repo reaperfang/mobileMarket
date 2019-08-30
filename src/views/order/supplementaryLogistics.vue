@@ -73,7 +73,7 @@
                             <i class="take-in-icon"></i>
                             <span>收货信息</span>
                         </div>
-                        <div class="blue" @click="changeReceivedInfo">修改收货信息</div>
+                        <div class="blue pointer" @click="changeReceivedInfo">修改收货信息</div>
                     </div>
                     <div class="content">
                         <div class="item">
@@ -96,20 +96,20 @@
                             <i class="deliver-icon"></i>
                             <span>发货信息</span>
                         </div>
-                        <div class="blue">修改发货信息</div>
+                        <div class="blue pointer" @click="changeSendInfo">修改发货信息</div>
                     </div>
                     <div class="content">
                         <div class="item">
                             <div class="label">发货人</div>
-                            <div class="value">{{orderSendInfo.sendName}}</div>
+                            <div class="value">{{orderInfo.sendName}}</div>
                         </div>
                         <div class="item">
                             <div class="label">联系电话</div>
-                            <div class="value">{{orderSendInfo.sendPhone}}</div>
+                            <div class="value">{{orderInfo.sendPhone}}</div>
                         </div>
                         <div class="item">
                             <div class="label">发货信息</div>
-                            <div class="value">{{orderSendInfo.sendRemark}}</div>
+                            <div class="value">{{orderInfo.sendRemark}}</div>
                         </div>
                     </div>
                 </div>
@@ -139,10 +139,12 @@
                 </div>
             </div>
             <div class="footer">
-                <el-button type="primary" @click="sendGoods">发 货</el-button>
+                <el-button class="border-button" @click="printingElectronicForm">打印电子面单</el-button>
+                <el-button class="border-button" @click="printDistributionSheet">打印配送单</el-button>
+                <el-button type="primary" @click="sendGoodsHandler">确定</el-button>
             </div>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods"></component>
     </div>
 </template>
 <script>
@@ -173,7 +175,8 @@ export default {
             currentDialog: '',
             dialogVisible: false,
             currentData: {},
-            expressCompanyList: []
+            expressCompanyList: [],
+            sendGoods: ''
         }
     },
     created() {
@@ -190,6 +193,12 @@ export default {
         }
     },
     methods: {
+        printDistributionSheet() {
+            this.$router.push('/order/printDistributionSheet?ids=' + this.$route.query.id)
+        },
+        printingElectronicForm() {
+            this.$router.push('/order/printingElectronicForm?ids=' + this.$route.query.id)
+        },
         getExpressCompanyList() {
             this._apis.order.fetchExpressCompanyList().then((res) => {
                 this.expressCompanyList = res
@@ -201,7 +210,7 @@ export default {
                 });
             })
         },
-        sendGoods() {
+        sendGoodsHandler() {
             let params
 
             this.ruleForm.expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == this.ruleForm.expressCompanyCode).expressCompany
@@ -249,10 +258,18 @@ export default {
         changeReceivedInfo() {
             this.currentDialog = 'ReceiveInformationDialog'
             this.currentData = this.orderInfo
+            this.sendGoods = 'received'
             this.dialogVisible = true
         },
-        onSubmit() {
-            this.getOrderDetail()
+        changeSendInfo() {
+            this.currentDialog = 'ReceiveInformationDialog'
+            this.currentData = this.orderInfo
+            this.sendGoods = 'send'
+            this.dialogVisible = true
+        },
+        onSubmit(value) {
+            //this.getOrderDetail()
+            this.orderInfo = Object.assign({}, this.orderInfo, value)
         },
         _orderDetail() {
             let id = this.$route.query.id
@@ -305,8 +322,10 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 16px;
         }
         .container {
+            padding-left: 60px;
             .container-item {
                 margin-top: 20px;
                 p {
