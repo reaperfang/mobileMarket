@@ -531,6 +531,7 @@ table.yuan-table{
   span {
     color: $globalMainColor;
     margin-right: 20px;
+    cursor: pointer;
   }
 }
 
@@ -595,4 +596,40 @@ table.yuan-table{
 .goods-specs {
   color: #9FA29F;
   font-size: 12px;
+}
+
+.el-steps {
+  .el-step {
+    .el-step__head {
+      .el-step__icon {
+        width: 36px;
+        height: 36px;
+        box-shadow: 0px 0px 0 7px #ededed;
+        background-color: #cccccc;
+        color: #fff;
+        &.is-text {
+          border: none;
+        }
+      }
+      .el-step__line {
+        top: 17px;
+      }
+      &.is-finish {
+        .el-step__icon {
+          box-shadow: 0px 0px 0 7px #ededed;
+          background-color: #655EFF;
+          color: #fff;
+        }
+      }
+
+    }
+    .el-step__main {
+      .el-step__title {
+        color: #44434B;
+      }
+      .el-step__description {
+        color: #9FA29F;
+      }
+    }
+  }
 }

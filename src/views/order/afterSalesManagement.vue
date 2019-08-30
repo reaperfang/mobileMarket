@@ -45,7 +45,7 @@
                         <el-button class="border-button" @click="batchUpdateStatus">批量审核</el-button>
                     </div>
                     <div class="righter">
-                        <span @click="resetForm('form')" class="resetting">重置</span>
+                        <span @click="resetForm('form')" class="resetting pointer">重置</span>
                         <el-button @click="getList" type="primary">搜 索</el-button>
                     </div>
                 </div>
@@ -171,7 +171,7 @@ export default {
                 pageSize: 20,
                 searchValue: '',
                 searchType: '',
-                applicationDate: [],
+                applicationDate: '',
                 orderAfterSaleStatus: ''
             },
             currentDialog: '',
@@ -381,7 +381,14 @@ export default {
             })
         },
         resetForm(formName) {
-            this.$refs[formName].resetFields();
+            this.listQuery = {
+                startIndex: 1,
+                pageSize: 20,
+                searchValue: '',
+                searchType: '',
+                applicationDate: '',
+                orderAfterSaleStatus: ''
+            }
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;

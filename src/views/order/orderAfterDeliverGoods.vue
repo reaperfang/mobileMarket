@@ -11,7 +11,7 @@
                     <div class="title">
                         <div>
                             <span>商品清单</span>
-                            <span>订单编号 {{orderAfterSale.code}}</span>
+                            <span>售后单编号 {{orderAfterSaleSendInfo.orderAfterSaleCode}}</span>
                         </div>
                     </div>
                     <div class="content">
@@ -54,7 +54,7 @@
                                 prop="sendCount"
                                 label="本次发货数量">
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.sendCount"></el-input>
+                                    <el-input :disabled="true"  v-model="scope.row.goodsCount"></el-input>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -69,7 +69,7 @@
                             <i class="take-in-icon"></i>
                             <span>收货信息</span>
                         </div>
-                        <div class="blue" @click="changeReceivedInfo">修改收货信息</div>
+                        <div class="blue pointer" @click="changeReceivedInfo">修改收货信息</div>
                     </div>
                     <div class="content">
                         <div class="item">
@@ -138,7 +138,7 @@
                 <el-button type="primary" @click="sendGoodsHandler">发 货</el-button>
             </div>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods" :title="title"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods" :title="title"></component>
     </div>
 </template>
 <script>
@@ -148,7 +148,7 @@ export default {
     data() {
         return {
             tableData: [
-                {}
+                
             ],
             multipleSelection: [],
             ruleForm: {
@@ -156,7 +156,8 @@ export default {
                 number: '',
                 remark: '',
                 expressCompanyCode: '',
-                expressCompany: ''
+                expressCompany: '',
+                expressNos: ''
             },
             rules: {
 
@@ -164,7 +165,6 @@ export default {
             orderDetail: {},
             nameList: [],
             itemList: [],
-            orderAfterSale: {},
             orderAfterSaleSendInfo: {},
             currentDialog: '',
             dialogVisible: false,
@@ -209,20 +209,20 @@ export default {
                 orderAfterSaleSendInfoDtoList: [
                     {
                         orderAfterSaleId: this.$route.query.id,
-                        memberInfoId: this.orderAfterSale.memberInfoId,
-                        orderAfterSaleCode: this.orderAfterSale.code,
+                        memberInfoId: this.orderAfterSaleSendInfo.memberInfoId,
+                        orderAfterSaleCode: this.orderAfterSaleSendInfo.orderAfterSaleCode,
                         expressCompanys: this.ruleForm.expressCompany,
                         expressCompanyCodes: this.ruleForm.expressCompanyCode,
                         expressNos: this.ruleForm.expressNos,
-                        receivedName: this.orderAfterSale.receivedName,
-                        receivedPhone: this.orderAfterSale.receivedPhone,
-                        receivedProvinceCode: this.orderAfterSale.receivedProvinceCode,
-                        receivedProvinceName: this.orderAfterSale.receivedProvinceName,
-                        receivedCityCode: this.orderAfterSale.receivedCityCode,
-                        receivedCityName: this.orderAfterSale.receivedCityName,
-                        receivedAreaCode: this.orderAfterSale.receivedAreaCode,
-                        receivedAreaName: this.orderAfterSale.receivedAreaName,
-                        receivedDetail: this.orderAfterSale.receivedDetail,
+                        receivedName: this.orderAfterSaleSendInfo.receivedName,
+                        receivedPhone: this.orderAfterSaleSendInfo.receivedPhone,
+                        receivedProvinceCode: this.orderAfterSaleSendInfo.receivedProvinceCode,
+                        receivedProvinceName: this.orderAfterSaleSendInfo.receivedProvinceName,
+                        receivedCityCode: this.orderAfterSaleSendInfo.receivedCityCode,
+                        receivedCityName: this.orderAfterSaleSendInfo.receivedCityName,
+                        receivedAreaCode: this.orderAfterSaleSendInfo.receivedAreaCode,
+                        receivedAreaName: this.orderAfterSaleSendInfo.receivedAreaName,
+                        receivedDetail: this.orderAfterSaleSendInfo.receivedDetail,
                         sendName: this.orderAfterSaleSendInfo.sendName,
                         sendPhone: this.orderAfterSaleSendInfo.sendPhone,
                         sendProvinceCode: this.orderAfterSaleSendInfo.sendProvinceCode,
@@ -252,7 +252,7 @@ export default {
         },
         changeReceivedInfo() {
             this.currentDialog = 'ReceiveInformationDialog'
-            this.currentData = this.orderInfo
+            this.currentData = this.orderAfterSaleSendInfo
             this.isReceived = true
             this.title = '修改收货信息'
             this.sendGoods = 'received'
@@ -260,28 +260,14 @@ export default {
         },
         changeSendInfo() {
             this.currentDialog = 'ReceiveInformationDialog'
-            this.currentData = this.orderInfo
+            this.currentData = this.orderAfterSaleSendInfo
             this.isReceived = false
             this.title = '修改发货信息'
             this.sendGoods = 'send'
             this.dialogVisible = true
         },
         onSubmit(value) {
-            if(this.isReceived) {
-                let obj = {}
-                for(let i in value) {
-                    obj['received' + i] = value[i]
-                }
-
-                this.orderAfterSale = Object.assign({}, this.orderAfterSale, obj)
-            } else {
-                 let obj = {}
-                for(let i in value) {
-                    obj['send' + i] = value[i]
-                }
-
-                this.orderAfterSaleSendInfo = Object.assign({}, this.orderAfterSaleSendInfo, obj)
-            }
+            this.orderAfterSaleSendInfo = Object.assign({}, this.orderAfterSaleSendInfo, value)
         },
         getOrderDetail() {
             this._apis.order.orderAfterSaleDetail({orderAfterSaleIds: [+this.$route.query.id]}).then((res) => {
@@ -314,8 +300,10 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 16px;
         }
         .container {
+            padding-left: 60px;
             .container-item {
                 margin-top: 20px;
                 p {

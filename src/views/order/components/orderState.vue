@@ -478,6 +478,7 @@ export default {
             &.righter {
                 width: 230px;
                 text-align: center;
+                font-size: 20px;
                 .button-box {
                     margin-top: 20px;
                 }

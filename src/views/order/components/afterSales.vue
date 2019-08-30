@@ -2,38 +2,49 @@
     <div class="after-sales">
         <div class="search">
             <div class="top">说明：当前已开启订单自动发货，自动发货后请尽快补充物流信息，您也可以到</div>
-            <el-form ref="form" :inline="true" :model="formInline" class="form-inline">
-                <el-form-item label="售后单编号">
-                    <el-select v-model="formInline.orderNumberType">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderNumberTypeList" :key="index"></el-option>
-                    </el-select>
-                    <el-input v-model="formInline.orderNumber" placeholder="请输入"></el-input>
+            <el-form ref="form" :inline="true" :model="listQuery" class="form-inline">
+                <el-form-item>
+                    <el-input placeholder="请输入内容" v-model="listQuery.searchValue" class="input-with-select">
+                        <el-select v-model="listQuery.searchType" slot="prepend" placeholder="请输入">
+                        <el-option label="售后单编号" value="orderCode"></el-option>
+                        <el-option label="收货人联系电话" value="receivedPhone"></el-option>
+                        <el-option label="快递单号" value="expressNo"></el-option>
+                        <el-option label="客户ID" value="memberSn"></el-option>
+                        </el-select>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="订单状态">
-                    <el-select v-model="formInline.orderState">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderStateList" :key="index"></el-option>
-                    </el-select>
+                    <el-select v-model="listQuery.status">
+                            <el-option label="全部" value=""></el-option>
+                            <el-option label="待发货" value="3"></el-option>
+                            <el-option label="部分发货" value="4"></el-option>
+                            <el-option label="待收货" value="5"></el-option>
+                            <el-option label="完成" value="6"></el-option>
+                        </el-select>
                 </el-form-item>
                 <el-form-item label="">
-                    <el-select v-model="formInline.goodsNameType">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in goodsNameTypeList" :key="index"></el-option>
-                    </el-select>
-                    <el-input v-model="formInline.goodsName" placeholder="请输入"></el-input>
+                    <el-input placeholder="请输入内容" v-model="listQuery.searchValue2" class="input-with-select">
+                        <el-select v-model="listQuery.searchType2" slot="prepend" placeholder="请输入">
+                        <el-option label="商品名称" value="orderProductName"></el-option>
+                        <el-option label="快递公司" value="expressCompany"></el-option>
+                        <el-option label="收货人" value="receivedName"></el-option>
+                        </el-select>
+                    </el-input>
                 </el-form-item>
-                <el-form-item label="">
-                    <el-select v-model="formInline.orderTimeType">
-                        <el-option :label="item.label" :value="item.value" v-for="(item, index) in orderTimeTypeList" :key="index"></el-option>
+                <el-form-item label=""  class="searchTimeType">
+                    <el-select class="date-picker-select" v-model="listQuery.searchTimeType" placeholder>
+                        <el-option label="发货时间" value="send"></el-option>
+                        <el-option label="下单时间" value="order"></el-option>
+                        <el-option label="售后时间" value="afterSale"></el-option>
                     </el-select>
                     <el-date-picker
-                        v-model="formInline.orderTime"
-                        type="datetimerange"
+                        v-model="listQuery.orderTimeValue"
+                        type="daterange"
                         range-separator="-"
+                        value-format="yyyy-MM-dd hh:mm:ss"
                         start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                        end-placeholder="结束日期"
+                    ></el-date-picker>
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
@@ -43,8 +54,8 @@
                         <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
                     </div>
                     <div class="righter">
-                        <span @click="resetForm('form')" class="resetting">重置</span>
-                        <el-button type="primary">搜 索</el-button>
+                        <span @click="resetForm('form')" class="resetting pointer">重置</span>
+                        <el-button @click="getList" type="primary">搜 索</el-button>
                     </div>
                 </div>
             </el-form>
@@ -99,7 +110,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
     </div>
 </template>
@@ -109,99 +120,29 @@ import Pagination from '@/components/Pagination'
 export default {
     data() {
         return {
-            formInline: {
-                orderNumber: '',
-                orderState: '',
-                goodsName: '',
-                orderNumberType: '订单编号',
-                goodsNameType: '商品名称',
-                orderTimeType: '发货时间',
-                orderTime: ''
-            },
-            orderNumberTypeList: [
-                {
-                    label: '订单编号',
-                    value: '订单编号'
-                },
-                {
-                    label: '收货人联系电话',
-                    value: '收货人联系电话'
-                },
-                {
-                    label: '快递单号',
-                    value: '快递单号'
-                },
-                {
-                    label: '客户ID',
-                    value: '客户ID'
-                },
-            ],
-            orderStateList: [
-                {
-                    label: '全部',
-                    value: ''
-                },
-                {
-                    label: '待处理',
-                    value: '待处理'
-                },
-                {
-                    label: '部分发货',
-                    value: '部分发货'
-                },
-                {
-                    label: '已收货',
-                    value: '已收货'
-                },
-                {
-                    label: '全部发货',
-                    value: '全部发货'
-                },
-                {
-                    label: '已拒收',
-                    value: '已拒收'
-                },
-                {
-                    label: '已关闭',
-                    value: '已关闭'
-                },
-            ],
-            goodsNameTypeList: [
-                {
-                    label: '商品名称',
-                    value: '商品名称'
-                },
-                {
-                    label: '快递公司',
-                    value: '快递公司'
-                },
-                {
-                    label: '收货人',
-                    value: '收货人'
-                },
-            ],
-            orderTimeTypeList: [
-                {
-                    label: '发货时间',
-                    value: '发货时间'
-                },
-                {
-                    label: '下单时间',
-                    value: '下单时间'
-                },
-                {
-                    label: '售后时间',
-                    value: '售后时间'
-                },
-            ],
             multipleSelection: [],
             multipleTable: [
-                {}
+                
             ],
             total: 0,
             listQuery: {
                 startIndex: 1,
                 pageSize: 20,
+                searchType: 'orderCode',
+                searchValue: '',
+                status: '',
+                isAutosend: '',
+                searchType2: 'orderProductName',
+                searchValue2: '',
+                searchTimeType: 'send',
+                orderTimeValue: '',
+                orderCode: '',
+                receivedPhone: '',
+                expressNo: '',
+                memberSn: '',
+                orderProductName: '',
+                expressCompany: '',
+                receivedName: '',
             },
             tableData: []
         }
@@ -255,7 +196,16 @@ export default {
             this.multipleSelection = val;
         },
         getList() {
-            this._apis.order.SendPageList(this.listQuery).then((res) => {
+            let params = {}
+
+            params = Object.assign({}, this.listQuery, {
+                cid: 2,
+                [this.listQuery.searchType]: this.listQuery.searchValue,
+                [this.listQuery.searchType2]: this.listQuery.searchValue2,
+                [`${this.listQuery.searchTimeType}StartTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
+                [`${this.listQuery.searchTimeType}EndTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
+            })
+            this._apis.order.SendPageList(params).then((res) => {
                 console.log(res)
                 this.total = +res.total
                 this.tableData = res.list
@@ -314,6 +264,22 @@ export default {
 /deep/ .el-input {
     width: auto;
 }
+/deep/ .input-with-select .el-input__inner {
+  width: 139px;
+}
+/deep/ .el-date-editor {
+  margin-left: -6px;
+  border-radius: 0 0 4px 4px;
+}
+/deep/ .date-picker-select .el-input__inner {
+  border-radius: 4px 0 0 4px;
+}
+/deep/ .date-picker-select .el-input__inner:focus {
+  border-color: #dcdfe6;
+}
+/deep/ .searchTimeType .el-input {
+        width: 100px;
+    }
 </style>
 
 

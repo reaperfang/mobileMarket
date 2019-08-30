@@ -9,7 +9,7 @@
             </div>
             <div class="righter">
                 <i class="memberLevelImg" :style="{background: `url(${orderDetail.memberLevelImg})`}"></i>
-                <span>客户ID：{{orderDetail.orderInfo.memberSn}}</span>
+                <span class="member-sn">客户ID：{{orderDetail.orderInfo.memberSn}}</span>
             </div>
         </div>
         <orderState :orderInfo="orderDetail.orderInfo" :orderState="orderDetail.orderInfo.orderStatus" :payWay="orderDetail.orderInfo.payWay" :closeReaosn="orderDetail.orderInfo.closeReaosn" @orderStatusSuccess="getDetail" class="order-state"></orderState>
@@ -67,55 +67,58 @@
                 </el-table-column>
             </el-table>
             <div class="goods-list-message">
-                <div class="item">
-                    <div class="label">运费：</div>
-                    <div class="value">+ ¥{{orderDetail.orderInfo.freight}}</div>
+                <div class="row">
+                    <div class="col">运费:</div>
+                    <div class="col">+ ¥{{orderDetail.orderInfo.freight}}</div>
                 </div>
-                <div class="item">
-                    <div class="label">应收金额：</div>
-                    <div class="value">¥{{orderDetail.orderInfo.receivableMoney}}</div>
+                <div class="row">
+                    <div class="col">应收金额:</div>
+                    <div class="col">¥{{orderDetail.orderInfo.receivableMoney}}</div>
                 </div>
-                <div class="item">
-                    <div class="label">优惠券金额：</div>
-                    <div class="value">
+                <div class="row">
+                    <div class="col">优惠券金额:</div>
+                    <div class="col">
                         {{goodsListMessage.coupon}}
                         <i @click="currentDialog = 'CouponDialog'; currentData = {usedCouponList, usedPromotionList}; dialogVisible = true" class="coupon-img"></i>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="label">满减/满折：</div>
-                    <div class="value">- ¥{{orderDetail.orderInfo.discountMoney}}</div>
+                <div class="row">
+                    <div class="col">满减/满折:</div>
+                    <div class="col">- ¥{{orderDetail.orderInfo.discountMoney}}</div>
                 </div>
-                <div class="item">
-                    <div class="label">会员折扣：</div>
-                    <div class="value">- ¥{{orderDetail.orderInfo.memberDiscountMoney}}</div>
+                <div class="row">
+                    <div class="col">会员折扣:</div>
+                    <div class="col">- ¥{{orderDetail.orderInfo.memberDiscountMoney}}</div>
                 </div>
-                <div class="item">
-                    <div class="label">优惠套装：</div>
-                    <div class="value">- ¥{{orderDetail.orderInfo.discountPackageMoney}}</div>
+                <div class="row">
+                    <div class="col">优惠套装:</div>
+                    <div class="col">- ¥{{orderDetail.orderInfo.discountPackageMoney}}</div>
                 </div>
-                <div class="item" v-if="orderDetail.orderInfo && orderDetail.orderInfo.discountFreight">
-                    <div class="label">满包邮：</div>
-                    <div class="value">- ¥{{orderDetail.orderInfo.discountFreight}}</div>
+                <div class="row" v-if="orderDetail.orderInfo && orderDetail.orderInfo.discountFreight">
+                    <div class="col">满包邮:</div>
+                    <div class="col">- ¥{{orderDetail.orderInfo.discountFreight}}</div>
                 </div>
-                <div class="item reduce-price">
-                    <el-select style="margin-right: 5px;" v-model="goodsListMessage.consultType" placeholder="请选择">
-                        <el-option
-                        v-for="item in reducePriceTypeList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <div class="value">
-                         <el-input type="number" class="reduce-price-input" @change="reducePriceHandler" v-model="goodsListMessage.consultMoney"></el-input>
-                         <!-- <span v-if="!goodsListMessage.reducePriceVisible">{{goodsListMessage.consultMoney}}</span>
-                        <span @click="goodsListMessage.reducePriceVisible = !goodsListMessage.reducePriceVisible">改价</span> -->
+                <div class="row align-center">
+                    <div class="col">
+                        <el-select style="margin-right: 5px;" v-model="goodsListMessage.consultType" placeholder="请选择">
+                            <el-option
+                            v-for="item in reducePriceTypeList"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <div class="col">
+                        <el-input v-if="changePriceVisible" type="number" class="reduce-price-input" v-model="goodsListMessage.consultMoney"></el-input>
+                        <span v-if="!changePriceVisible">{{goodsListMessage.consultMoney}}</span>
+                        <span class="blue pointer" v-if="!changePriceVisible" @click="changePriceVisible = true">改价</span>
+                        <span class="blue pointer" v-if="changePriceVisible" @click="reducePriceHandler">完成</span>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="label">实收金额：</div>
-                    <div class="value">¥{{orderDetail.orderInfo.actualMoney}}</div>
+                <div class="row">
+                    <div class="col">实收金额:</div>
+                    <div class="col">¥{{orderDetail.orderInfo.actualMoney}}</div>
                 </div>
             </div>
             <div class="operate-record">
@@ -192,7 +195,8 @@ export default {
                     label: '协商减减',
                     value: 2
                 }
-            ]
+            ],
+            changePriceVisible: false
         }
     },
     created() {
@@ -200,10 +204,10 @@ export default {
     },
     computed: {
         usedCouponList() {
-            return this.orderDetail.orderCouponList.filter(val => val.couponType == 1) || []
+            return this.orderDetail.orderCouponList && this.orderDetail.orderCouponList.filter(val => val.couponType == 1) || []
         },
         usedPromotionList() {
-            return this.orderDetail.orderPromotionCodeList.filter(val => val.promotionCodeType == 1) || []
+            return this.orderDetail.orderPromotionCodeList && this.orderDetail.orderPromotionCodeList.filter(val => val.promotionCodeType == 1) || []
         }
     },
     filters: {
@@ -255,12 +259,14 @@ export default {
         reducePriceHandler() {
             this._apis.order.orderPriceChange({id: this.orderDetail.orderInfo.id, 
             consultType: this.goodsListMessage.consultType, consultMoney: this.goodsListMessage.consultMoney}).then(res => {
+                this.changePriceVisible = false
                 this.$notify({
                     title: '成功',
                     message: '添加成功！',
                     type: 'success'
                 });
             }).catch(error => {
+                this.changePriceVisible = false
                 this.$notify.error({
                     title: '错误',
                     message: error
@@ -328,11 +334,9 @@ export default {
             }
         }
         .goods-list-message {
-            display: flex;
-            align-items: flex-end;
-            flex-direction: column;
             margin-top: 20px;
             padding-right: 50px;
+            float: right;
             .item {
                 display: flex;
                 margin-top: 10px;
@@ -351,9 +355,20 @@ export default {
                 background: url(../../assets/images/order/icon-coupon.png);
                 margin-left: 14px;
             }
+            .row {
+                margin-bottom: 10px;
+                .reduce-price-input {
+                    width: 100px;
+                }
+                .col:first-child {
+                    width: 110px;
+                    text-align: right;
+                    margin-right: 5px;
+                }
+            }
         }
         .operate-record {
-
+            clear: both;
         }
     }
     .reduce-price-input {
@@ -367,6 +382,9 @@ export default {
     }
     .image-box {
         margin-right: 5px;
+    }
+    .member-sn {
+        color: #b6b6b9;
     }
 </style>
 
