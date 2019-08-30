@@ -165,7 +165,7 @@ class Ajax {
           case 'data':  //数据
             config.baseURL = `${process.env.DATA_API}/api-behavior-web/behavior/api.do`;
             break;
-          case 'overview':  //概况待办
+          case 'overview':  //概况待办售罄
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`;
             break;
           case 'over':  //待办2-4 
