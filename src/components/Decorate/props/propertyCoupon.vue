@@ -100,69 +100,10 @@ export default {
         this.fetch();
       },
       deep: true
-    },
-    /* 监听添加类型，自动获取状态则拉取一下数据 */
-    'currentComponentData.data.addType'(newValue) {
-      if(newValue == 2) {
-        this.fetch();
-      }
-    },
-
-    /* 监听显示个数类型 */
-    'currentComponentData.data.couponNumberType'(newValue) {
-      this.fetch();
-    },
-
-    /* 监听显示个数 */
-    'currentComponentData.data.showNumber'(newValue) {
-      this.fetch();
     }
   },
   methods: {
-     //根据ids拉取数据
-        fetch() {
-            let params = {};
-            if(this.ruleForm.addType == 2) {
-              if(this.ruleForm.couponNumberType === 1) {
-                params = {
-                  couponType: 0
-                };
-              }else {
-                params = {
-                  couponType: 0,
-                  limitedQuantity: this.ruleForm.showNumber
-                };
-              }
-            }else{
-              if(this.ruleForm.ids.length) {
-                params = {
-                  couponType: 0,
-                  ids: this.ruleForm.ids
-                };
-              }else{
-                 params = {
-                  couponType: 0
-                };
-              }
-            }
-
-            this.loading = true;
-            this._apis.shop.getCouponListByIds(params).then((response)=>{
-                this.createList(response);
-                this.loading = false;
-            }).catch((error)=>{
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
-                this.loading = false;
-            });
-        },
-
-         /* 创建数据 */
-        createList(datas) {
-            this.list = datas;
-        },
+    
   }
 }
 </script>

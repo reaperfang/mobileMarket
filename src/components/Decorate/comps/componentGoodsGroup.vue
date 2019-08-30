@@ -1,6 +1,6 @@
 <template>
 <!-- 组件-商品分组 -->
-    <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data">
+    <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
         <div class="componentGoodsGroup_tab" id="componentGoodsGroup_tab" :class="'menuStyle'+menuStyle" :style="{width:componentGoodsGroup_tabWidth}">
             <p class="active" v-if="showAllGroup==1" @click="currentCatagory=null">全部</p>
             <p v-for="(item,key) of list" :class="{active:showAllGroup!=1&&key==0}" :key="key" @click="currentCatagory=item">{{item.name}}</p>

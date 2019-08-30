@@ -259,12 +259,14 @@ table.yuan-table{
 		margin-top: 2px;
 		width: 25px !important;
 		height: 25px !important;
+    border: 1px solid #ddd;
 	}
 }
 .m-colorPicker{
   z-index:10;
   .box{
-	width:230px!important;
+	  width:230px!important;
+    left: -185px!important;
   }
 }
 
@@ -632,4 +634,8 @@ table.yuan-table{
       }
     }
   }
+}
+
+.edui-editor{
+    z-index: initial!important;
 }
