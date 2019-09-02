@@ -44,7 +44,18 @@
           <el-button @click="resetData">重    置</el-button>
           <el-button @click="save">保    存</el-button>
           <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
-          <el-button>预    览  </el-button>
+          <el-popover
+            ref="popover2"
+            placement="bottom"
+            title=""
+            style="margin-left:10px;"
+            width="170"
+            trigger="click"
+            content="">
+            <img v-if="showCode" :src="qrCode" alt="">
+            <span v-else>无分享地址</span>
+            <el-button slot="reference" @click="showCode=true">预    览</el-button>
+          </el-popover>
         </div>
 
       </el-form>
@@ -65,13 +76,16 @@ export default {
         groupMargin: 20  //分组间距
       },
       rules: {},
-      bodyHeight: {}
+      bodyHeight: {},  //装修区高度
+      showCode: false,   //是否显示二维码
+      qrCode: ''
     }
   },
   watch:{
     data:{
       handler(newValue) {
         this.ruleForm = newValue;
+        this.getQrcode();
       },
       deep: true
     },
@@ -94,7 +108,25 @@ export default {
     
   },
   methods: {
-    
+      /* 获取二维码 */
+    getQrcode(codeType, callback) {
+      if(!this.ruleForm.shareUrl) {
+        return;
+      }
+      this._apis.shop.getQrcode({
+        url: this.ruleForm.shareUrl,
+        width: '150',
+        height: '150'
+      }).then((response)=>{
+        this.qrCode = `data:image/png;base64,${response}`;
+        callback && callback(response);
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    }
   }
 }
 </script>

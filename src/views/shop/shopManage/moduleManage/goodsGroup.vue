@@ -60,6 +60,7 @@ export default {
         if(pageData && pageData.groupStyle) {
           this.ruleForm = pageData;
           this.ruleForm['status'] = response.status;
+          this.ruleForm['shareUrl'] = response.shareUrl;
         }
         this.loading = false;
       }).catch((error)=>{
@@ -113,6 +114,8 @@ export default {
         }
         if(pageData && pageData.groupStyle) {
           this.ruleForm = pageData;
+          this.ruleForm['status'] = response.status;
+          this.ruleForm['shareUrl'] = response.shareUrl;
         }
         this.loading = false;
       }).catch((error)=>{
