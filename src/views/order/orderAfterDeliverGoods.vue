@@ -242,7 +242,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliveryManagement')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=orderAfterDeliverGoods')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -270,7 +270,7 @@ export default {
             this.orderAfterSaleSendInfo = Object.assign({}, this.orderAfterSaleSendInfo, value)
         },
         getOrderDetail() {
-            this._apis.order.orderAfterSaleDetail({orderAfterSaleIds: [+this.$route.query.id]}).then((res) => {
+            this._apis.order.orderAfterSaleDetail({orderAfterSaleIds: [this.$route.query.id]}).then((res) => {
                 this.itemList = res[0].itemList
                 this.orderAfterSaleSendInfo = res[0].orderAfterSaleSendInfo
             }).catch(error => {

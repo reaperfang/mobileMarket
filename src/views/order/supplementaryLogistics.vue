@@ -247,7 +247,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliveryManagement')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=supplementaryLogistics')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',

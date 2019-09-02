@@ -34,15 +34,15 @@
                             </el-table-column>
                             <el-table-column
                                 label="商品"
-                                width="180">
+                                width="380">
                                 <template slot-scope="scope">
                                     <div class="goods-detail">
                                         <div class="goods-detail-item">
-                                            <img src="" alt="">
+                                            <img width="66" src="" alt="">
                                         </div>
                                         <div class="goods-detail-item">
-                                            <p>{{scope.row.goodsName}}</p>
-                                            <p>{{scope.row.goodsSpecs}}</p>
+                                            <p class="ellipsis" style="width: 297px;">{{scope.row.goodsName}}</p>
+                                            <p>{{scope.row.goodsSpecs | goodsSpecsFilter}}</p>
                                         </div>
                                     </div>
                                 </template>
@@ -153,7 +153,7 @@ export default {
     data() {
         return {
             tableData: [
-                {}
+
             ],
             multipleSelection: [],
             ruleForm: {
@@ -181,6 +181,24 @@ export default {
         this.getOrderDetail()
         this.getExpressCompanyList()
     },
+    filters: {
+    goodsSpecsFilter(value) {
+            let _value
+            if(!value) return ''
+            if(typeof value == 'string') {
+                _value = JSON.parse(value)
+            }
+            let str = ''
+            for(let i in _value) {
+                if(_value.hasOwnProperty(i)) {
+                    str += i + ':'
+                    str += _value[i] + ','
+                }
+            }
+
+            return str
+        }
+  },
     computed: {
         afterSale() {
             if(this.$route.query.afterSale) {
@@ -212,7 +230,7 @@ export default {
                     {
                         orderId: this.$route.query.orderId || this.$route.query.id,
                         memberInfoId: this.orderInfo.memberInfoId,
-                        orderCode: this.orderInfo.code,
+                        orderCode: this.orderInfo.orderCode,
                         orderItems: this.multipleSelection,
                         id: this.orderSendInfo.id,
                         memberSn: this.orderInfo.memberSn,
@@ -247,7 +265,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliveryManagement')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=deliverGoods')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',

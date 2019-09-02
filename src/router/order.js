@@ -140,6 +140,13 @@ export default [
         meta: { title: '补填物流', noCache: true, tabTitle: '订单处理' },
       },
       {
+        path: 'deliverGoodsSuccess',
+        component: () => import('@/views/order/deliverGoodsSuccess'),
+        name: 'deliverGoodsSuccess',
+        hidden: true,
+        meta: { title: '发货成功', noCache: true, tabTitle: '订单处理' },
+      },
+      {
         path: 'quickDelivery',
         component: () => import('@/views/order/quickDelivery'),
         name: 'quickDelivery',

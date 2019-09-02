@@ -42,7 +42,6 @@
                     <el-select class="date-picker-select" v-model="listQuery.searchTimeType" placeholder>
                         <el-option label="发货时间" value="send"></el-option>
                         <el-option label="下单时间" value="order"></el-option>
-                        <el-option label="售后时间" value="afterSale"></el-option>
                     </el-select>
                     <el-date-picker
                         v-model="listQuery.orderTimeValue"
@@ -128,7 +127,7 @@
                                 <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">继续发货</span>
                             </template>
                             <template v-else-if="scope.row.status == 3">
-                                <span v-if="!scope.row.isAutoSend" @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">发货</span>
+                                <span v-if="!scope.row.isAutoSend" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>
                                 <span v-else @click="$router.push('/order/supplementaryLogistics?id=' + scope.row.id)">补填物流</span>
                             </template>
                         </div>
@@ -195,7 +194,7 @@ export default {
                 this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
                 return
             }
-            this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.id).join(','))
+            this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderId).join(','))
         },
         batchPrintElectronicForm() {
             let ids = this.multipleSelection.map(val => val.id).join(',')

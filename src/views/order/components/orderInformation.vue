@@ -14,7 +14,7 @@
                             <p>{{orderInfo.receivedDetail}}</p>
                         </div>
                     </div>
-                    <p @click="currentDialog = 'ReceiveInformationDialog'; currentData =orderInfo.id; dialogVisible = true" class="change"><span>修改</span></p>
+                    <p @click="currentDialog = 'ReceiveInformationDialog'; currentData =orderInfo; ajax = true; dialogVisible = true" class="change"><span class="pointer">修改</span></p>
                 </div>
             </el-col>
             <el-col :span="8"><div class="grid-content center">
@@ -75,7 +75,7 @@
                 </div>
             </div></el-col>
         </el-row>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="submit"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" :ajax="ajax" :sendGoods="sendGoods" @submit="submit"></component>
     </div>
 </template>
 <script>
@@ -99,6 +99,8 @@ export default {
             currentData: '',
             dialogVisible: false,
             remarkVisible: false,
+            ajax: false,
+            sendGoods: 'received'
             //replacePayWechatNames: ''
         }
     },

@@ -16,7 +16,7 @@
       <el-button @click="$router.push('/order/newTemplate?mode=new')" class="border-button new-template">新建模板</el-button>
     </section>
     <section class="search">
-      <el-form :inline="true" :model="listQuery" class="form-inline">
+      <el-form ref="inline" :inline="true" :model="listQuery" class="form-inline">
         <div class="row justify-between">
           <div class="col">
             <el-form-item label="模板名称">
@@ -35,7 +35,7 @@
           </div>
           <div class="col">
             <el-form-item>
-              <span class="orange resetting">重置</span>
+              <span @click="resetForm('inline')" class="orange resetting pointer">重置</span>
               <el-button type="primary" @click="getList">搜 索</el-button>
             </el-form-item>
           </div>
@@ -96,10 +96,11 @@ export default {
         time: ""
       },
       total: 0,
-      tableData: [{}],
+      tableData: [],
       listQuery: {
         startIndex: 1,
         pageSize: 20,
+        name: '',
         time: '',
         startTime: '',
         endTime: ''
@@ -124,6 +125,14 @@ export default {
     }
   },
   methods: {
+    resetForm(formName) {
+        this.listQuery = Object.assign({}, this.listQuery, {
+          name: '',
+          time: '',
+          startTime: '',
+          endTime: ''
+        })
+    },
     getList() {
       this._apis.order.fetchTemplatePageList(this.listQuery, {
         startTime: this.listQuery.time ? this.listQuery.time[0] : '',

@@ -123,13 +123,17 @@ export default {
             let obj = {}
 
             if(this.sendGoods == 'received') {
-                obj[this.data.receivedProvinceCode] = this.data.receivedProvinceName
-                obj[this.data.receivedCityCode] = this.data.receivedCityName
-                obj[this.data.receivedAreaCode] = this.data.receivedAreaName
+                if(this.data.receivedProvinceCode && this.data.receivedCityCode && this.data.receivedAreaCode) {
+                    obj[this.data.receivedProvinceCode] = this.data.receivedProvinceName
+                    obj[this.data.receivedCityCode] = this.data.receivedCityName
+                    obj[this.data.receivedAreaCode] = this.data.receivedAreaName
+                }
             } else {
-                obj[this.data.sendProvinceCode] = this.data.sendProvinceName
-                obj[this.data.sendCityCode] = this.data.sendCityName
-                obj[this.data.sendAreaCode] = this.data.sendAreaName
+                if(this.data.sendProvinceCode && this.data.sendCityCode && this.data.sendAreaCode) {
+                    obj[this.data.sendProvinceCode] = this.data.sendProvinceName
+                    obj[this.data.sendCityCode] = this.data.sendCityName
+                    obj[this.data.sendAreaCode] = this.data.sendAreaName
+                }
             }
             this.ruleForm = Object.assign({}, this.ruleForm, this.data, {deliveryAddress: obj})
         },
@@ -145,7 +149,7 @@ export default {
                     let name1 = codes[1][codes1]
                     let name2 = codes[2][codes2]
 
-                    if(this.sendGoods) {
+                    if(this.sendGoods && !this.ajax) {
                         let obj = {}
 
                         if(this.sendGoods == 'received') {
@@ -239,6 +243,10 @@ export default {
         title: {
             type: String,
             default: '修改收货信息'
+        },
+        ajax: {
+            type: Boolean,
+            default: false
         }
     },
     components: {
