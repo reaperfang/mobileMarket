@@ -1,8 +1,8 @@
 <template>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" :style="bodyHeight">
         <div class="block header">
           <p class="title">商品分组页设置</p>
-          <p class="state">生效中</p>
+          <p class="state" :class="{'normal': ruleForm.status === 0}">{{ruleForm.status === 0 ? '生效中' : '未生效'}}</p>
         </div>
         <div class="block form">
           <el-form-item label="分组样式" prop="groupStyle">
@@ -64,7 +64,8 @@ export default {
         pageMargin: 15,  //页面边距
         groupMargin: 20  //分组间距
       },
-      rules: {}
+      rules: {},
+      bodyHeight: {}
     }
   },
   watch:{
@@ -83,6 +84,11 @@ export default {
   },
   created() {
     this.$emit('goodsGroupPageDataChanged', this.ruleForm);
+  },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 190 - 20 + 'px'
+    }
   },
   computed: {
     

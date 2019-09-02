@@ -1,8 +1,8 @@
 <template>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" :style="bodyHeight">
         <div class="block header">
           <p class="title">个人信息页设置</p>
-          <p class="state">生效中</p>
+          <p class="state" :class="{'normal': ruleForm.status === 0}">{{ruleForm.status === 0 ? '生效中' : '未生效'}}</p>
         </div>
         <div class="block form">
           <el-form-item label="背景图片" prop="backgroundImage">
@@ -61,12 +61,22 @@
           </el-form-item>
         </div>  
 
-        <div class="block button">
+        <div class="block button" v-loading="loading">
+          <div class="help_blank"></div>
+          <div class="buttons">
+            <el-button @click="resetData">重    置</el-button>
+            <el-button @click="save">保    存</el-button>
+            <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
+            <el-button>预    览  </el-button>
+          </div>
+        </div>
+
+        <!-- <div class="block button">
           <el-button @click="resetData">重    置</el-button>
           <el-button @click="save">保    存</el-button>
           <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
           <el-button>预    览  </el-button>
-        </div>
+        </div> -->
         <!-- 动态弹窗 -->
         <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
       </el-form>
@@ -149,7 +159,8 @@ export default {
           },
         }
       },
-      rules: {}
+      rules: {},
+      bodyHeight: {}
     }
   },
   watch:{
@@ -170,6 +181,11 @@ export default {
     this.ruleForm.backgroundImage= 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2829014450,3677490423&fm=26&gp=0.jpg';
     this.$emit('userCenterDataChanged', this.ruleForm);
   },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 154 - 20 + 'px'
+    }
+  },
   computed: {
     
   },
@@ -189,14 +205,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .block{
-    &.button{
-      padding: 30px 0;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-    }
-  }
   .module_block{
     display:flex;
     flex-direction: row;

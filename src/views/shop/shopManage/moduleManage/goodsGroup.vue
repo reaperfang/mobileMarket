@@ -5,7 +5,7 @@
         <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
         <span>商品分组</span>
       </div>
-      <div class="phone-body">
+      <div class="phone-body" :style="bodyHeight">
         <componentGoodsGroupPageSetting 
         :data="ruleForm" 
         v-if="ruleForm"
@@ -34,10 +34,16 @@ export default {
   data() {
     return {
      ruleForm: null,
+     bodyHeight: {}
     };
   },
   created() {
     this.fetch();
+  },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 220 - 20 + 'px'
+    }
   },
   methods: {
     fetch() {
@@ -53,6 +59,7 @@ export default {
         }
         if(pageData && pageData.groupStyle) {
           this.ruleForm = pageData;
+          this.ruleForm['status'] = response.status;
         }
         this.loading = false;
       }).catch((error)=>{
@@ -142,17 +149,5 @@ export default {
 .group-wrapper{
   display:flex;
   flex-direction: row;
-}
-.module {
-  &.view {
-    width: 374px;
-    .phone-body {
-      height: 760px;
-    }
-  }
-  &.props{
-    width:346px;
-    border-right: 1px solid #e8e5e5;
-  }
 }
 </style>

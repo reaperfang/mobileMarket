@@ -1,7 +1,7 @@
 <template>
   <div class="preview_wrapper">
     <div class="module view" :style="{backgroundColor: baseInfo&&baseInfo.pageBackground}">
-      <editView :dragable="false"></editView>
+      <editView :dragable="false" v-if="height > 0" :height="height"></editView>
     </div>
     <div class="shop_info">
       <div class="shop_code">
@@ -50,7 +50,8 @@ export default {
   data() {
     return {
       utils,
-      qrCode: ''
+      qrCode: '',
+      height: 0
     };
   },
   computed: {
@@ -68,6 +69,9 @@ export default {
     this.$store.dispatch('getShopInfo');
     this.$store.dispatch('getShopStyle');
     this.getQrcode();
+  },
+  mounted() {
+    this.height = document.body.clientHeight - 238 - 20;
   },
   methods: {
 
