@@ -4,32 +4,16 @@
     <div class="rich_editor" v-if="currentComponentData.data.explain" v-html="currentComponentData.data.explain"></div>
     <div class="rich_editor default" v-else>分类简介预览</div>
     <ul class="page_list name_list" v-if="currentComponentData.data.showType === 1">
-      <li>
-        <span>页面名称</span>
-        <i class="el-icon-arrow-right"></i>
-      </li>
-      <li>
-        <span>页面名称</span>
-        <i class="el-icon-arrow-right"></i>
-      </li>
-      <li>
-        <span>页面名称</span>
+      <li v-for="(item, key) of currentComponentData.data.pageList" :key="key">
+        <span>{{item.name}}</span>
         <i class="el-icon-arrow-right"></i>
       </li>
     </ul>
 
     <ul class="page_list paper_list" v-if="currentComponentData.data.showType === 2">
-      <li>
+      <li v-for="(item, key) of currentComponentData.data.pageList" :key="key">
         <img src="http://img11.360buyimg.com/n1/jfs/t1/72253/36/6701/86164/5d4d4484E47be505a/fa7ff166e9661ccf.jpg" alt="">
-        <p>页面名称</p>
-      </li>
-      <li>
-        <img src="http://img11.360buyimg.com/n1/jfs/t1/72253/36/6701/86164/5d4d4484E47be505a/fa7ff166e9661ccf.jpg" alt="">
-        <p>页面名称</p>
-      </li>
-      <li>
-        <img src="http://img11.360buyimg.com/n1/jfs/t1/72253/36/6701/86164/5d4d4484E47be505a/fa7ff166e9661ccf.jpg" alt="">
-        <p>页面名称</p>
+        <p>{{item.name}}</p>
       </li>
     </ul>
   </div>

@@ -16,7 +16,7 @@
             </el-form-item>
           </div>
         </el-form>
-        <el-table :data="tableData[currentTab]" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick">
+        <el-table :data="tableData[currentTab]" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick" v-loading="loading">
           <el-table-column
             type="selection"  
             width="55">
