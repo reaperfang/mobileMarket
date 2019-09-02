@@ -19,7 +19,7 @@
               </el-dropdown-item>
             </router-link>
             <el-dropdown-item>
-              <span @click="showShopsDialog = true"> 
+              <span @click="init"> 
                 <i class="el-icon-s-operation"></i>
                 切换店铺 
               </span>            
@@ -40,19 +40,21 @@
         </el-dropdown>
       </div>
     </div>
-    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose"></shopsDialog>
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList"></shopsDialog>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, Store } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import shopsDialog from '@/views/login/shopsDialog'
+import { userInfo } from 'os';
 
 export default {
   data(){
     return{
-      showShopsDialog:false
+      showShopsDialog:false,
+      shopList:[]
     }
   },
   components: {
@@ -63,8 +65,14 @@ export default {
     ...mapGetters([
       'sidebar',
       'device',
-      'userInfo'
+      // 'userInfo'
     ]),
+    userInfo(){
+      return JSON.parse(this.$store.getters.userInfo)
+    }
+  },
+  created(){
+    this.init()
   },
   methods: {
     toggleSideBar() {
@@ -77,6 +85,16 @@ export default {
     },
     handleClose(){
       this.showShopsDialog = false
+    },
+    init(){
+      let info = this.$store.state.user.userInfo
+      let arr = Object.keys(info.shopInfoMap) 
+      if(arr.length == 0){
+        this.shopList = []
+      }else{
+        this.shopList = info.shopInfoMap
+        this.showShopsDialog = true
+      }
     }
   }
 }

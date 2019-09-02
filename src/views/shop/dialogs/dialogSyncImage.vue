@@ -1,0 +1,278 @@
+<template>
+  <DialogBase :visible.sync="visible" width="1000px" :title="'同步微信图片素材'" @submit="submit">
+      <div class="content">
+        <el-checkbox v-model="checkedAll" @change="allChecked">全选</el-checkbox>
+        <div class="list_main">
+          <div class="list_img">
+            <div class="imgs">
+              <div class="item_img" v-for="(item) in list" :key="item.id">
+                <div class="img_info">
+                  <img :src="item.filePath">
+                  <div class="img_bottom">
+                    <p>
+                      <span>
+                        <el-checkbox v-model="item.checked" @change="handleChecked"></el-checkbox>
+                        <!-- <i class="wx_icon" v-if="item.isSyncWechat"></i> -->
+                      </span>
+                      <!-- <span>
+                        {{item.imgPixelWidth || '0'}}*{{item.imgPixelHeight || '0'}}px
+                      </span>
+                      <span>
+                        <i class="el-icon-link oper" @click="copyLink(item.filePath)"></i>
+                        <i class="el-icon-download oper" @click="downImage(item.filePath,item.fileName)"></i>
+                      </span> -->
+                    </p>
+                  </div>
+                  <!-- <div class="operate" ref="operate">
+                    <el-button type="primary" plain class="block mt10 ml10" @click="moveGroup(item.id)">分组</el-button>
+                    <el-button type="primary" plain class="block mt10">剪裁</el-button>
+                    <el-button type="primary" plain class="block mt10" @click="deleteImage(item.id,'imageId')">删除</el-button>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <p class="pages">
+              <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total*1"
+              class="page_nav">
+              </el-pagination>
+            </p>
+          </div>
+        </div>
+      </div>
+  </DialogBase>
+</template>
+
+<script>
+import DialogBase from "@/components/DialogBase";
+import utils from "@/utils";
+export default {
+  name: "dialogSyncImage",
+  components: {DialogBase},
+  data() {
+    return {
+      checkedAll:false,
+      checked:false,
+      list:[],
+      currentPage:1,
+      pageSize:10,
+      total:0,
+    }
+  },
+  props: {
+      dialogVisible: {
+          type: Boolean,
+          required: true
+      },
+  },
+  computed: {
+    visible: {
+      get() {
+          return this.dialogVisible
+      },
+      set(val) {
+          this.$emit('update:dialogVisible', val)
+      }
+    }
+  },
+  created(){
+    this.getList()
+  },
+  methods: {
+    //获取微信图片列表
+    getList(){
+      let query ={
+        startIndex:this.currentPage,
+      }
+      this._apis.file.getWxImage(query).then((response)=>{
+        // console.log('1111111',response)
+        this.list = []
+        response.item.map(item => {
+          let data = Object.assign({checked:false}, item)
+          this.list.push(data)
+        })
+        this.total = response.total
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    submit() {
+      let datas = []
+      this.list.map(item =>{
+        if(item.checked == true){
+          let obj = {
+            cid:this.$store.getters.user.cid,
+            mediaId:item.mediaId,
+            sourceMaterialType:'0',
+            fileName:'',
+            filePath:'',
+            imgPixelWidth:'',
+            imgPixelHeight:'',
+            fileSize:'',
+          }
+          datas.push(obj)
+        }        
+      })
+      let query = {
+        fileGroupInfoId:'-1',
+        data:datas
+      }
+      this._apis.file.syncMaterial(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '同步微信图片成功！'
+        });
+        this.$emit('submit',{syncImage:''})
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+  /**********************************        分页相关      **********************/
+    handleSizeChange(val){
+      this.pageSize = val || this.pageSize
+      this.getList()
+    },
+    handleCurrentChange(pIndex){
+      this.currentPage = pIndex || this.currentPage
+      this.getList()
+    },
+
+    /**********************************        全选相关      **********************/
+    allChecked(val){
+      if(val){
+        this.list.map(item =>{
+          item.checked = true
+          return this.list
+        })
+      }else{
+        this.list.map(item =>{
+          item.checked = false
+          return this.list
+        })
+      }
+    },
+    handleChecked(val){
+      if(val){
+        this.checkedAll = this.list.every(item => {
+          return item.checked == true
+        })
+      }else{
+        this.checkedAll = false
+      }
+    },
+
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.content{
+  line-height: 30px;
+  font-size: 14px;
+  color: #443D4A;
+  // text-align: center;
+}
+.list_main{
+  display: flex;
+  justify-content: space-between;
+  .list_img{
+    width: 100%;
+    .imgs{
+      display: flex;
+      flex-flow: row wrap;
+      .item_img{
+        border: 1px solid #e6e6e6;
+        margin:0px 30px 50px 0px;
+        .img_info{
+          width: 240px;
+          height:150px;
+          position: relative;
+          img{
+            width: 240px;
+            height:150px;
+          }
+          .img_bottom{
+            width:100%;
+            height: 30px;
+            line-height: 30px;
+            padding:0 10px;
+            position: absolute;
+            left:0px;
+            bottom:-30px;
+            z-index: 1;
+            background:rgba(0,0,0,1);
+            opacity: 0.5;
+            p{
+              display:flex;
+              justify-content: space-between;
+              color: #fff;
+              font-weight: bold;
+              .oper{
+                cursor: pointer;
+              }
+            }
+          }
+          .operate{
+            width: 100%;
+            height: 150px;
+            position: absolute;
+            top:0;
+            left:0;
+            z-index: 2;
+            background-color:rgba(0,0,0,0.2);
+            padding: 20px 0px 0px 80px;
+            display:none;
+          }
+        }
+      }
+    }
+  }
+  .groups{
+    width: 200px;
+    border: 1px solid #e6e6e6;
+    font-size: 14px;
+    color: #44434B;
+    margin-left: 30px;
+    padding-bottom:20px;
+    .groups_head{
+      height: 30px;
+      line-height: 30px;
+      background: #EFEFEF;
+      padding-left: 20px;
+    }
+    .item{
+      height: 35px;
+      line-height: 35px;
+      padding:0 20px;
+      display: flex;
+      justify-content: space-between;
+      i{
+        margin: 0 5px;
+        cursor: pointer;
+      }
+    }
+    .item:hover{
+      background: #E0E0fc;
+      cursor: pointer;
+    }
+    .newClass{
+      height: 40px;
+      line-height: 40px;
+      padding-left: 20px;
+      cursor: pointer;
+    }
+  }
+}
+</style>
