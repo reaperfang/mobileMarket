@@ -76,7 +76,7 @@
 <script>
 import dialogCutImage from '../../../dialogs/dialogCutImage';
 import dialogUploadImage from '../../../dialogs/dialogUploadImage';
-import dialogSync from '../../../dialogs/dialogSync';
+import dialogSyncImage from '../../../dialogs/dialogSyncImage';
 import dialogDelete from '../../../dialogs/dialogDelete';
 import dialogGroups from '../../../dialogs/dialogGroups';
 import dialogGroupsMove from '../../../dialogs/dialogGroupsMove';
@@ -84,7 +84,7 @@ import dialogCopyLink from '../../../dialogs/dialogCopyLink';
 
 export default {
   name: 'imageMaterial',
-  components: {dialogCutImage, dialogUploadImage,dialogSync,dialogDelete,dialogGroups,dialogGroupsMove,dialogCopyLink},
+  components: {dialogCutImage, dialogUploadImage,dialogSyncImage,dialogDelete,dialogGroups,dialogGroupsMove,dialogCopyLink},
   data () {
     return {
       data:'',
@@ -92,9 +92,7 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       checkedAll:false,
-      imgsArr:[
-
-      ],
+      imgsArr:[ ],
       loading:false,
       checked:false,
       list:[],
@@ -295,7 +293,7 @@ export default {
     //同步图片
     syncImage(){
       this.dialogVisible = true;
-      this.currentDialog = 'dialogSync'
+      this.currentDialog = 'dialogSyncImage'
     },
 
     //分组
@@ -380,18 +378,7 @@ export default {
 
     //同步图片
     handleSyncImage(){
-      this._apis.file.syncMaterial({sourceMaterialType:0}).then((response)=>{
-        this.$notify.success({
-          title: '成功',
-          message: '同步微信图片成功！'
-        });
-        this.getList()
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
+      this.getList()
     },
     /**********************************        分页相关      **********************/
     handleSizeChange(val){

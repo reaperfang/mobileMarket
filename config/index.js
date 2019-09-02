@@ -12,8 +12,8 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    //host: '127.0.0.1',
-     host: '0.0.0.0',
+    host: '127.0.0.1',
+    //  host: '0.0.0.0',
     port: 9000,
     autoOpenBrowser: true,
     errorOverlay: true,
@@ -36,8 +36,8 @@ module.exports = {
       '/data-server/**': {
         // target: 'http://172.22.146.2:8080', // 订单 尹茂凯
         // target: 'http://172.22.134.106:8080', // 商品 王浩
-        // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
-        target: 'http://www.lwt.com',  // nginx代理 李玟霆
+        target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
+        // target: 'http://www.lwt.com',  // nginx代理 李玟霆
         // target: 'http://172.22.146.124:8099',// 开关 许涛
         // target: 'http://172.22.146.109:8080', // 商品 王浩
         // target: 'http://172.22.146.31:8080', // 客户 崔建
@@ -53,7 +53,7 @@ module.exports = {
         // target: 'http://172.22.146.116:8080', // 商品 王浩
         // target: 'http://172.22.146.10:8080',
         // target: 'http://120.133.1.130:8012',// 营销测试机、数据
-        // target: 'http://172.22.145.115:8080',// 耿士龙
+        // target: 'http://172.22.145.116:8080',// 耿士龙
         // target: 'http://172.22.145.113:8083',// 李权宇
         // target: 'http://172.22.146.119:8080', // 郑艳华 商品
         // target: 'http://u2spmw.natappfree.cc',// 智能运营

@@ -12,7 +12,7 @@
                 <el-radio-group v-model="form.sex">
                     <el-radio :label="1">男</el-radio>
                     <el-radio :label="2" class="ml10">女</el-radio>
-                    <el-radio :label="3" class="ml10">保密</el-radio>
+                    <!-- <el-radio :label="3" class="ml10">保密</el-radio> -->
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="QQ:" >
@@ -37,10 +37,11 @@ export default {
       form: {
           mobile:'',
           userName: '',
-          sex: 1,
+          sex: 2,
           qq: '',
           email: ''
       },
+      userNameOld:'',
       imageUrl: '',
       area: [],
     }
@@ -60,21 +61,21 @@ export default {
   methods: {
     init(){
         this._apis.login.getUserInfo({id:this.userInfo.id}).then(response =>{
-            console.log('1111',response)
-            // this.form = response
+            this.userNameOld = response.userName
+            this.form = response
         }).catch(error =>{
             this.$notify.error({
                 title: '失败',
                 message: error
             })
         })
-        // this.form = JSON.parse(this.$store.getters.userInfo)
     },
     // 修改账号信息
     onSubmit(){
         let query = {
             id:this.form.id,
             userName:this.form.userName,
+            userNameOld:this.userNameOld,
             mobile:this.form.mobile,
             email:this.form.email,
             qq:this.form.qq,
@@ -85,7 +86,7 @@ export default {
                 title: '成功',
                 message: '更新成功！'
             });
-
+            this.init()
         }).catch(error =>{
             this.$notify.error({
                 title: '失败',
