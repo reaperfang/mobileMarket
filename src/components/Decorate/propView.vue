@@ -100,32 +100,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.module{
-  &.props{
-    width:346px;
-    form{
-      height: 697px;
-    }
-    .block{
-      &.button{
-        width:346px;
-        position:absolute;
-        bottom:12px;
-        .help_blank{
-          height: 10px;
-          background: rgb(242,242,249);
-          width: 100%;
-        }
-        .buttons{
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          background:#fff;
-          padding-bottom: 30px;
-          margin-top: 30px;
-        }
-      }
-    }
-  }
-}
 </style>

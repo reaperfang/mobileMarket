@@ -5,11 +5,17 @@ export default {
   data() {
     return {
       currentComponentData: {},
-      items: []
+      items: [],
+      bodyHeight: {}
     }
   },
   created() {
     this.initRuleForm();
+  },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 128 - 116 - 20 + 'px'
+    }
   },
   watch: {
     ruleForm: {

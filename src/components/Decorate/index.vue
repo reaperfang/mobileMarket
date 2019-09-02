@@ -1,9 +1,9 @@
 <template>
   <div class="editor-wrapper">
     <widgetView v-if="showWidget"></widgetView>
-    <editView></editView>
+    <editView :dragable="true" v-if="height > 0" :height="height"></editView>
     <propView :saveData="saveData" :saveAndApplyData="saveAndApplyData" :resetData="resetData" :parentScope="this" :homePageData="homePageData" :saveToTemplate="saveToTemplate"></propView>
-    <div style="width:600px;">
+    <!-- <div style="width:600px;">
       页面基础数据：
       <el-tag type="primary" style="width: 100%;overflow-x: auto;">{{baseInfo}}</el-tag>
       <hr />组件数据映射：
@@ -13,7 +13,7 @@
           <el-tag type="success">{{componentDataMap[item].data}}</el-tag>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -52,6 +52,7 @@ export default {
   },
   data() {
     return {
+      height: 0
     };
   },
   created() {
@@ -59,6 +60,9 @@ export default {
     console.log(id);
     this.$store.commit('addComponent', Object.assign({id}, this.componentConfig));
     this.$store.commit('setBasePropertyId', id);
+  },
+  mounted() {
+    this.height = document.body.clientHeight - 145 - 10;
   },
   computed: {
     baseInfo() {

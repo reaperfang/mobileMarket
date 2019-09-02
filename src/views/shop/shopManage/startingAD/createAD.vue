@@ -5,7 +5,7 @@
         <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
         <span>页面广告</span>
       </div>
-      <div class="phone-body">
+      <div class="phone-body" :style="bodyHeight">
         <div class="img_wrapper">
           <img :src="ruleForm.imagePath" alt="">
           <i></i>
@@ -13,10 +13,10 @@
       </div>
     </div>
     <div class="module props" v-loading="loading">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm" :style="propsHeight">
         <div class="block header">
-          <p class="title">启动设置</p>
-          <p class="state">生效中</p>
+          <p class="title">启动广告设置</p>
+          <!-- <p class="state">生效中</p> -->
         </div>
         <div class="block form">
           <el-form-item label="出现页面" prop="type">
@@ -64,8 +64,11 @@
         </div>
 
         <div class="block button">
-          <el-button @click="saveData" type="primary">保    存</el-button>
-          <el-button @click="_routeTo('ADManageIndex')">取    消  </el-button>
+          <div class="help_blank"></div>
+          <div class="buttons">
+            <el-button @click="saveData" type="primary">保    存</el-button>
+            <el-button @click="_routeTo('ADManageIndex')">取    消  </el-button>
+          </div>
         </div>
 
       </el-form>
@@ -95,12 +98,21 @@ export default {
         startTime: '',
         endTime: '',
       },
-      rules: {}
+      rules: {},
+      bodyHeight: {}
     }
   },
   created() {
     if(this.currentADId) {
       this.getADdetail(); 
+    }
+  },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 146 - 20 + 'px'
+    },
+    this.propsHeight = {
+      height: document.body.clientHeight - 190 - 20 + 'px'
     }
   },
   methods: {
@@ -214,11 +226,9 @@ export default {
 }
 .module {
   &.view {
-    width: 374px;
     .phone-body {
       background: rgb(217,217,223);
       width:100%;
-      height:100%;
       position:relative;
       .img_wrapper{ 
         position:absolute;
@@ -238,17 +248,6 @@ export default {
           height:44px;
           margin-top:22px;
         }
-      }
-    }
-  }
-  &.props{
-    width:346px;
-    .block{
-      &.button{
-        padding: 30px 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
       }
     }
   }

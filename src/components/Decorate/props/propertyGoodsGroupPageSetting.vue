@@ -1,8 +1,8 @@
 <template>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" :style="bodyHeight">
         <div class="block header">
           <p class="title">商品分组页设置</p>
-          <p class="state">生效中</p>
+          <p class="state" :class="{'normal': ruleForm.status === 0}">{{ruleForm.status === 0 ? '生效中' : '未生效'}}</p>
         </div>
         <div class="block form">
           <el-form-item label="分组样式" prop="groupStyle">
@@ -44,7 +44,18 @@
           <el-button @click="resetData">重    置</el-button>
           <el-button @click="save">保    存</el-button>
           <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
-          <el-button>预    览  </el-button>
+          <el-popover
+            ref="popover2"
+            placement="bottom"
+            title=""
+            style="margin-left:10px;"
+            width="170"
+            trigger="click"
+            content="">
+            <img v-if="showCode" :src="qrCode" alt="">
+            <span v-else>无分享地址</span>
+            <el-button slot="reference" @click="showCode=true">预    览</el-button>
+          </el-popover>
         </div>
 
       </el-form>
@@ -64,13 +75,17 @@ export default {
         pageMargin: 15,  //页面边距
         groupMargin: 20  //分组间距
       },
-      rules: {}
+      rules: {},
+      bodyHeight: {},  //装修区高度
+      showCode: false,   //是否显示二维码
+      qrCode: ''
     }
   },
   watch:{
     data:{
       handler(newValue) {
         this.ruleForm = newValue;
+        this.getQrcode();
       },
       deep: true
     },
@@ -84,11 +99,34 @@ export default {
   created() {
     this.$emit('goodsGroupPageDataChanged', this.ruleForm);
   },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 190 - 20 + 'px'
+    }
+  },
   computed: {
     
   },
   methods: {
-    
+      /* 获取二维码 */
+    getQrcode(codeType, callback) {
+      if(!this.ruleForm.shareUrl) {
+        return;
+      }
+      this._apis.shop.getQrcode({
+        url: this.ruleForm.shareUrl,
+        width: '150',
+        height: '150'
+      }).then((response)=>{
+        this.qrCode = `data:image/png;base64,${response}`;
+        callback && callback(response);
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
+    }
   }
 }
 </script>
