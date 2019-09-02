@@ -17,9 +17,9 @@
                 <div class="col righter">
                     <p>待审核</p>
                     <p class="des">客户申请售后，待审核</p>
-                    <div>
-                        <span @click="auth">同意</span>
-                        <span @click="reject">拒绝</span>
+                    <div class="button-box">
+                        <el-button @click="reject">拒绝</el-button>
+                        <el-button type="primary" @click="auth">同意</el-button>
                     </div>
                 </div>
             </div>
@@ -59,9 +59,9 @@
                 <div class="col righter">
                     <p>待处理</p>
                     <p class="des">客户已退货，商户未发货</p>
-                    <div>
-                        <span @click="confirmTakeOver">确认收货</span>
-                        <span @click="sendGoods">发货</span>
+                    <div class="button-box">
+                        <el-button @click="confirmTakeOver">确认收货</el-button>
+                        <el-button type="primary" @click="sendGoods">发货</el-button>
                     </div>
                 </div>
             </div>
@@ -197,5 +197,8 @@ export default {
                 }
             }
         }
+    }
+    .button-box {
+        margin-top: 20px;
     }
 </style>

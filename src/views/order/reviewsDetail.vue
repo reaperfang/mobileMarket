@@ -5,7 +5,7 @@
         <div class="row justify-between">
           <div class="clo">客户评价</div>
           <div class="clo">
-            <el-button>返 回</el-button>
+            <el-button @click="$router.go(-1)">返 回</el-button>
           </div>
         </div>
       </div>

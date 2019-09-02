@@ -30,6 +30,7 @@ export default {
                     message: "批量加入黑名单成功",
                     type: 'success'
                 });
+                this.$emit('freshTable');
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

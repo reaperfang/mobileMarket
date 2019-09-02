@@ -31,15 +31,15 @@
                 :header-cell-style="{background:'#ebeafa', color:'#655EFF'}">
                 <el-table-column
                     label="商品"
-                    width="180">
+                    width="380">
                     <template slot-scope="scope">
                         <div class="goods-detail">
                             <div class="item image-box">
-                                <img :src="scope.row.goodsImage" alt="">
+                                <img width="66" :src="scope.row.goodsImage" alt="">
                             </div>
                             <div class="item">
-                                <p>{{scope.row.goodsName}}</p>
-                                <p class="goods-specs">{{scope.row.goodsSpecs}}</p>
+                                <p class="ellipsis" style="width: 300px">{{scope.row.goodsName}}</p>
+                                <p class="goods-specs">{{scope.row.goodsSpecs | goodsSpecsFilter}}</p>
                             </div>
                         </div>
                     </template>
@@ -78,7 +78,7 @@
                 <div class="row">
                     <div class="col">优惠券金额:</div>
                     <div class="col">
-                        {{goodsListMessage.coupon}}
+                        ¥{{orderDetail.orderInfo.consumeCouponMoney}}
                         <i @click="currentDialog = 'CouponDialog'; currentData = {usedCouponList, usedPromotionList}; dialogVisible = true" class="coupon-img"></i>
                     </div>
                 </div>
@@ -176,10 +176,10 @@ export default {
             currentDialog: '',
             dialogVisible: false,
             currentData: {
-                price: '500',
-                detail: '订单满2000元使用（不含邮费）',
-                limit: '2019',
-                code: '1'
+                price: '',
+                detail: '',
+                limit: '',
+                code: ''
             },
             orderDetail: {
                 orderInfo: {},
@@ -200,7 +200,11 @@ export default {
         }
     },
     created() {
-        this.getDetail()
+        this.getDetail().then(() => {
+            if(this.$route.query.tab == 2) {
+                this.activeName = 'delivery'
+            }
+        })
     },
     computed: {
         usedCouponList() {
@@ -250,6 +254,22 @@ export default {
                 case '4':
                     return '赠品订单'
             }
+        },
+        goodsSpecsFilter(value) {
+            let _value
+            if(!value) return ''
+            if(typeof value == 'string') {
+                _value = JSON.parse(value)
+            }
+            let str = ''
+            for(let i in _value) {
+                if(_value.hasOwnProperty(i)) {
+                    str += i + ':'
+                    str += _value[i] + ','
+                }
+            }
+
+            return str
         }
     },
     methods: {
@@ -274,12 +294,15 @@ export default {
             }) 
         },
         getDetail() {
-            let id = this.$route.query.id
+            return new Promise((resolve, reject) => {
+                let id = this.$route.query.id
 
-            this._apis.order.fetchOrderDetail({id}).then((res) => {
-                this.orderDetail = res
-            }).catch(error => {
-
+                this._apis.order.fetchOrderDetail({id}).then((res) => {
+                    this.orderDetail = res
+                    resolve(res)
+                }).catch(error => {
+                    reject(error)
+                })
             })
         }
     },

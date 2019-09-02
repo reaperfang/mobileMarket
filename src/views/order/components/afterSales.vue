@@ -104,7 +104,7 @@
                     <template slot-scope="scope">
                         <div class="operate-box">
                             <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                            <span v-if="scope.row.status == 3" @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.id + '&afterSale=' + true)">发货</span>
+                            <span v-if="scope.row.status == 3" @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.orderAfterSaleId + '&afterSale=' + true)">发货</span>
                         </div>
                     </template>
                 </el-table-column>
@@ -167,7 +167,7 @@ export default {
                 this.confirm({title: '提示', icon: true, text: '请选择需要发货的售后单'})
                 return
             }
-            this.$router.push('/order/afterSaleBulkDelivery?ids=' + this.multipleSelection.map(val => val.id).join(','))
+            this.$router.push('/order/afterSaleBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderAfterSaleCode).join(','))
         },
         batchPrintDistributionSlip() {
             let ids = this.multipleSelection.map(val => val.id).join(',')

@@ -49,9 +49,9 @@
                 <div class="item righter">
                     <p>待发货</p>
                     <p>客户选择货到付款，您需要自行安排配送和收款。</p>
-                    <div>
-                        <span @click="closeOrder">关闭订单</span>
-                        <span>发货</span>
+                    <div class="button-box">
+                        <el-button @click="closeOrder">关闭订单</el-button>
+                        <el-button type="primary" @click="$router.push('/order/deliverGoods?id=' + $route.query.id)">发货</el-button>
                     </div>
                 </div>
             </template>
@@ -68,9 +68,9 @@
                 </div>
                 <div class="item righter">
                     <p>部分发货</p>
-                    <div>
-                        <span @click="closeOrder">关闭订单</span>
-                        <span>发货</span>
+                    <div class="button-box">
+                        <el-button @click="closeOrder">关闭订单</el-button>
+                        <el-button type="primary" @click="$router.push('/order/deliverGoods?id=' + $route.query.id)">发货</el-button>
                     </div>
                 </div>
             </template>
@@ -138,7 +138,7 @@
                 <div class="item righter">
                     <p>待付款</p>
                     <div class="button-box">
-                        <el-button @click="closeOrder">关闭订单</el-button>
+                        <el-button class="pointer" @click="closeOrder">关闭订单</el-button>
                     </div>
                 </div>
             </template>
@@ -170,9 +170,9 @@
                 </div>
                 <div class="item righter">
                     <p>待发货</p>
-                    <div>
-                        <span @click="closeOrder">关闭订单</span>
-                        <span @click="$router.push('/order/deliverGoods?id=' + $route.query.id)">发货</span>
+                    <div class="button-box">
+                        <el-button @click="closeOrder">关闭订单</el-button>
+                        <el-button type="primary" @click="$router.push('/order/deliverGoods?id=' + $route.query.id)">发货</el-button>
                     </div>
                 </div>
             </template>
@@ -189,9 +189,9 @@
                 </div>
                 <div class="item righter">
                     <p>部分发货</p>
-                    <div>
-                        <span @click="closeOrder">关闭订单</span>
-                        <span>发货</span>
+                    <div class="button-box">
+                        <el-button @click="closeOrder">关闭订单</el-button>
+                        <el-button type="primary" @click="$router.push('/order/deliverGoods?id=' + $route.query.id)">发货</el-button>
                     </div>
                 </div>
             </template>

@@ -110,7 +110,7 @@
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit" :title="title" @reject="rejectHandler" @confirm="confirmHandler" :data="currentData"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit" :title="title" @reject="rejectHandler" @confirm="confirmHandler" :data="currentData"></component>
     </div>
 </template>
 <script>
@@ -348,11 +348,11 @@ export default {
             this._apis.order.orderAfterSaleUpdateStatus({id: row.id, orderAfterSaleStatus: 1}).then((res) => {
                 console.log(res)
                 this.getList()
-                this.$notify({
-                    title: '成功',
-                    message: '审核成功！',
-                    type: 'success'
-                });
+                // this.$notify({
+                //     title: '成功',
+                //     message: '审核成功！',
+                //     type: 'success'
+                // });
                 // this.confirm({title: '换货确认', icon: true, text: `是否确认${_title}？`}).then(() => {
                     
                 // })

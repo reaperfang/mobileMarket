@@ -22,6 +22,9 @@
                             <el-tooltip content="自动发货" placement="bottom" effect="light">
                                 <i v-if="order.sendType == 2" class="auto"></i>
                             </el-tooltip>
+                            <el-tooltip :content="`${order.memberSn}催发货，请尽快发货`" placement="bottom" effect="light">
+                                <i class="el-icon-message-solid"></i>
+                            </el-tooltip>
                             订单编号：{{order.code}}/下单时间：{{order.createTime}}
                         </span>
                     </div>
@@ -58,7 +61,8 @@
                     <div class="item" style="width: 120px;">
                         <!-- <p class="pay-amount">实收：¥{{order.actualMoney}}</p>
                         <p class="payment-mode">{{order.channelName}}支付</p> -->
-                        <p>实收：¥{{order.actualMoney}}/{{order.channelName}}支付</p>
+                        <p>实收：¥{{order.actualMoney}}</p>
+                        <p>{{order.channelName}}支付</p>
                     </div>
                     <div class="item" style="width: 120px;">
                         <p>{{order.receivedName}}</p>
@@ -93,18 +97,18 @@
                             <!-- 部分发货 -->
                             <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                             <p>继续发货</p>
-                            <p>发货信息</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">提前关闭订单</p>
                         </template>
                         <template v-else-if="order.orderStatus == 5">
                             <!-- 待收货 -->
                             <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p>发货信息</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
                         </template>
                         <template v-else-if="order.orderStatus == 6">
                             <!-- 完成 -->
                             <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p>发货信息</p>
+                            <p @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
                         </template>
                     </div>
                 </div>

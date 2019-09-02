@@ -12,7 +12,7 @@
             </el-row>
         </div>
         <section class="flow-path">
-            <afterSalesState :orderAfterSale="orderAfterSale" @auth="auth" @reject="reject" @confirmTakeOver="confirmTakeOver"></afterSalesState>
+            <afterSalesState :orderAfterSale="orderAfterSale" @auth="auth" @reject="reject" @confirmTakeOver="confirmTakeOver" @getDetail="onGetDetail"></afterSalesState>
         </section>
         <section class="container">
             <el-tabs class="tabs" v-model="activeName" @tab-click="handleClick">
@@ -58,6 +58,9 @@ export default {
         }
     },
     methods: {
+        onGetDetail() {
+            this.getDetail()
+        },
         confirmTakeOver() {
             this._apis.order.orderAfterConfirmExchange({
                 id: this.orderAfterSale.id,

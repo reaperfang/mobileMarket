@@ -77,13 +77,13 @@
 <script>
 import dialogUploadVideo from '../../../dialogs/dialogUploadVideo';
 import dialogUploadImage from '../../../dialogs/dialogUploadImage';
-import dialogSync from '../../../dialogs/dialogSync';
+import dialogSyncVideo from '../../../dialogs/dialogSyncVideo';
 import dialogDelete from '../../../dialogs/dialogDelete';
 import dialogGroups from '../../../dialogs/dialogGroups';
 import dialogGroupsMove from '../../../dialogs/dialogGroupsMove';
 export default {
   name: 'videoMaterial',
-  components: {dialogUploadVideo,dialogUploadImage,dialogSync,dialogDelete,dialogGroups,dialogGroupsMove},
+  components: {dialogUploadVideo,dialogUploadImage,dialogSyncVideo,dialogDelete,dialogGroups,dialogGroupsMove},
   data () {
     return {
       dialogVisible: false,
@@ -315,22 +315,11 @@ export default {
     //同步视频
     syncImage(){
       this.dialogVisible = true;
-      this.currentDialog = 'dialogSync'
+      this.currentDialog = 'dialogSyncVideo'
     },
 
     handleSyncImage(){
-      this._apis.file.syncMaterial({sourceMaterialType:2}).then((response)=>{
-        this.$notify.success({
-          title: '成功',
-          message: '同步微信视频成功！'
-        });
-        this.getList()
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
+      this.getList()
     },
     /**********************************        单个视频      **********************/
     

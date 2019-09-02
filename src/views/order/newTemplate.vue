@@ -33,7 +33,7 @@
               </div>
               <div
                 @click="currentDialog = 'RegionDialog'; dialogVisible = true"
-                class="col blue"
+                class="col blue pointer"
               >为指定区域设置运费</div>
             </div>
           </div>

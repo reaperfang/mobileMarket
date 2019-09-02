@@ -70,11 +70,11 @@
 
 <script>
 import utils from "@/utils";
-import dialogSync from '../../../dialogs/dialogSync';
+import dialogSyncArticle from '../../../dialogs/dialogSyncArticle';
 import dialogDelete from '../../../dialogs/dialogDelete';
 export default {
   name: 'articleMaterial',
-  components: {dialogSync,dialogDelete},
+  components: {dialogSyncArticle,dialogDelete},
   data () {
     return {
       pickerNowDateBefore: {
@@ -152,22 +152,11 @@ export default {
     //同步图片
     syncImage(){
       this.dialogVisible = true;
-      this.currentDialog = 'dialogSync'
+      this.currentDialog = 'dialogSyncArticle'
     },
 
     handleSyncImage(){
-      this._apis.file.syncMaterial({sourceMaterialType:1}).then((response)=>{
-        this.$notify.success({
-          title: '成功',
-          message: '同步微信图文成功！'
-        });
-        this.getList()
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
+      this.getList()
     },
 
     handleDeleteArticle(id,type){

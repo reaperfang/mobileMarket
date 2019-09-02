@@ -74,7 +74,7 @@ export function moveGroup(data) {
 //同步素材
 export function syncMaterial(data) {
   return request({
-    target: 'DECORATION-MY-FILE-SYNCHRONIZATION-PROCESSOR',
+    target: 'DECORATION-SYNC-WECHAT-MATERIAL-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data
@@ -87,6 +87,16 @@ export function syncMaterial(data) {
 export function uploadImage(data) {
   return request({
     target: 'DECORATION-MY-FILE-UP-LOAD-PHOTO-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//获取微信图片素材
+export function getWxImage(data) {
+  return request({
+    target: 'DECORATION-IMAGE-MATERIAL-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data
@@ -124,11 +134,31 @@ export function getArticle(data) {
   })
 }
 
+//获取微信图文素材
+export function getWxArticle(data) {
+  return request({
+    target: 'DECORATION-NEWS-MATERIAL-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
 /********************************  视频  ********************************/
 //上传视频
 export function uploadVideo(data) {
   return request({
     target: 'DECORATION-MY-FILE-UP-LOAD-VIDEO-PROCESSOR',
+    method: 'post',
+    apiType: 'decorate',
+    data
+  })
+}
+
+//获取微信视频素材
+export function getWxVideo(data) {
+  return request({
+    target: 'DECORATION-VIDEO-MATERIAL-PROCESSOR',
     method: 'post',
     apiType: 'decorate',
     data

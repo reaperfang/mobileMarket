@@ -9,15 +9,15 @@
                     <div class="header-lefter">
                         <div class="header-lefter-item number">1</div>
                         <div class="header-lefter-item ">快递单号：{{orderAfterSale.returnExpressNo}}</div>
-                        <div @click="currentDialog = 'logisticsDialog'; dialogVisible = true" class="header-lefter-item  blue">查看物流</div>
+                        <div @click="showLogistics(orderAfterSale.returnExpressNo)" class="header-lefter-item  blue pointer">查看物流</div>
                     </div>
                     <div class="header-righter">
                         <div class="header-righter-item">【客户发货】</div>
                         <div class="header-righter-item">发货人：{{orderAfterSale.memberSn}}</div>
                         <div class="header-righter-item">{{orderAfterSale.memberReturnGoodsTime}}</div>
                         <div @click="showCustomerContent = !showCustomerContent">
-                            <i v-if="showCustomerContent" class="el-icon-caret-top"></i>
-                            <i v-if="!showCustomerContent" class="el-icon-caret-top"></i>
+                            <i v-if="showCustomerContent" class="el-icon-caret-top pointer"></i>
+                            <i v-if="!showCustomerContent" class="el-icon-caret-top pointer"></i>
                         </div>
                     </div>
                 </div>
@@ -27,15 +27,15 @@
                         style="width: 100%">
                         <el-table-column
                             label="商品"
-                            width="180">
+                            width="380">
                             <template slot-scope="scope">
-                                <div class="row justity-between">
+                                <div class="row justity-between align-center">
                                     <div class="col">
-                                        <img :src="scope.row.goodsImage" alt="">
+                                        <img width="66" :src="scope.row.goodsImage" alt="">
                                     </div>
                                     <div class="col">
-                                        <p>{{scope.row.goodsName}}</p>
-                                        <p>{{scope.row.goodsSpces}}</p>
+                                        <p class="ellipsis" style="width: 300px">{{scope.row.goodsName}}</p>
+                                        <p>{{scope.row.goodsSpces | goodsSpecsFilter}}</p>
                                     </div>
                                 </div>
                             </template>
@@ -72,15 +72,15 @@
                     <div class="header-lefter">
                         <div class="header-lefter-item number">2</div>
                         <div class="header-lefter-item ">快递单号：{{orderAfterSale.expressNo}}</div>
-                        <div @click="currentDialog = 'logisticsDialog'; dialogVisible = true" class="header-lefter-item  blue">查看物流</div>
+                        <div @click="showLogistics(orderAfterSale.expressNo)" class="header-lefter-item  blue pointer">查看物流</div>
                     </div>
                     <div class="header-righter">
                         <div class="header-righter-item">【商家发货】</div>
                         <div class="header-righter-item">发货人：{{orderAfterSale.sendName}}</div>
                         <div class="header-righter-item">{{orderAfterSale.receiveGoodsTime}}</div>
                         <div @click="showContent = !showContent">
-                            <i v-if="showContent" class="el-icon-caret-top"></i>
-                            <i v-if="!showContent" class="el-icon-caret-top"></i>
+                            <i v-if="showContent" class="el-icon-caret-top pointer"></i>
+                            <i v-if="!showContent" class="el-icon-caret-top pointer"></i>
                         </div>
                     </div>
                 </div>
@@ -90,15 +90,15 @@
                         style="width: 100%">
                         <el-table-column
                             label="商品"
-                            width="180">
+                            width="380">
                             <template slot-scope="scope">
                                 <div class="row justity-between">
                                     <div class="col">
                                         <img :src="scope.row.goodsImage" alt="">
                                     </div>
                                     <div class="col">
-                                        <p>{{scope.row.goodsName}}</p>
-                                        <p>{{scope.row.goodsSpces}}</p>
+                                        <p class="ellipsis" style="width: 300px">{{scope.row.goodsName}}</p>
+                                        <p>{{scope.row.goodsSpces | goodsSpecsFilter}}</p>
                                     </div>
                                 </div>
                             </template>
@@ -156,6 +156,38 @@ export default {
             showCustomerContent: true,
             showContent: true
         }
+    },
+    filters: {
+        goodsSpecsFilter(value) {
+            let _value
+            if(!value) return ''
+            if(typeof value == 'string') {
+                _value = JSON.parse(value)
+            }
+            let str = ''
+            for(let i in _value) {
+                if(_value.hasOwnProperty(i)) {
+                    str += i + ':'
+                    str += _value[i] + ','
+                }
+            }
+
+            return str
+        }
+    },
+    methods: {
+        showLogistics(expressNo) {
+            this._apis.order.orderLogistics({expressNo}).then(res => {
+                this.currentDialog = 'LogisticsDialog'
+                this.currentData = res.traces
+                this.dialogVisible = true
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            }) 
+        },
     },
     props: {
         sendItemList: {

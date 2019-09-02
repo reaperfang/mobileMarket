@@ -20,7 +20,7 @@
           </div>
           <div class="col">
             <el-form-item>
-              <span class="orange resetting">重置</span>
+              <span @click="resetForm('formInline')" class="orange resetting pointer">重置</span>
               <el-button type="primary" @click="onSubmit">搜 索</el-button>
             </el-form-item>
           </div>
@@ -76,7 +76,7 @@ export default {
         time: ""
       },
       total: 0,
-      tableData: [{}],
+      tableData: [],
       listQuery: {
         startIndex: 1,
         pageSize: 20,
@@ -91,6 +91,14 @@ export default {
     this.getList();
   },
   methods: {
+    resetForm(formName) {
+          this.listQuery = Object.assign({}, this.listQuery, {
+            time: '',
+            name: '',
+            startTime: '',
+            endTime: ''
+          })
+      },
     deleteElectronicFaceSheet(row) {
       this.confirm({title: '提示', text: '删除后无法撤销，确定删除吗？'}).then(() => {
           this._apis.order.deleteElectronicFaceSheet({id: row.id, expressCompanyCode: row.expressCompanyCode}).then((res) => {

@@ -77,7 +77,7 @@
                             <img src="../../assets/images/client/icon_manual.png" alt="" v-if="item.memberLabelInfoType == 0">
                             <img src="../../assets/images/client/icon_auto.png" alt="" v-if="item.memberLabelInfoType == 1">
                         </span>
-                        <img src="../../assets/images/client/icon_remove.png" alt="" v-if="item.memberLabelInfoType == 0" @click="deleteTag(item.memberLabelInfoId)">
+                        <img src="../../assets/images/client/icon_remove.png" alt="" v-if="item.memberLabelInfoType == 0" @click="deleteTag(item.id)">
                     </p>
                     <img src="../../assets/images/client/icon_add.png" alt="" @click="addTag" class="add_tag">
                 </div>
@@ -139,7 +139,7 @@
                 </div>
             </div>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @sendDiscount="sendDiscount"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @sendDiscount="sendDiscount" v-if="hackReset"></component>
     </div>
 </template>
 <script type="es6">
@@ -178,7 +178,6 @@ export default {
             currentDialog:"",
             dialogVisible: false,
             currentData:{},
-            userTag: [],
             userId: this.$route.query.id,
             clientInfoById: {
                 selected:[]
@@ -186,7 +185,8 @@ export default {
             allCoupons: [],
             allCodes: [],
             couponList: [],
-            codeList: []
+            codeList: [],
+            hackReset: false
         }
     },
     methods: {
@@ -214,16 +214,28 @@ export default {
             })
         },
         addTag() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "addTagDialog";
         },
         showBalanceList() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "balanceListDialog";
             this.currentData.balance = this.clientInfoById.balance;
             this.currentData.id = "1";
         },
         showAdjustBalance() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "adjustBalanceDialog";
             this.currentData.balance = this.clientInfoById.balance;
@@ -231,6 +243,10 @@ export default {
             this.currentData.memberSn = this.clientInfoById.memberSn;
         },
         showAdjustScore() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "adjustCreditDialog";
             this.currentData.score = this.clientInfoById.score;
@@ -238,6 +254,10 @@ export default {
             this.currentData.memberSn = this.clientInfoById.memberSn;
         },
         showDiscountCoupon(type) {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "discountCouponDialog";
             this.currentData.couponType = type;
@@ -245,6 +265,10 @@ export default {
             this.currentData.codeList = [].concat(this.codeList);
         },
         sendDiscount() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             if(this.currentData.couponType == '0') {
                 this.dialogVisible = true;
                 this.currentDialog = "issueCouponDialog";
@@ -258,23 +282,39 @@ export default {
             }
         },
         showAddBlack() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "addBlackDialog";
             this.currentData.memberSn = this.clientInfoById.memberSn;
             this.currentData.id = this.clientInfoById.id;
         },
         showSendCard() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "sendCardDialog";
             this.currentData.id = this.userId;
         },
         showChangeCard() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "changeCardDialog";
             this.currentData.id = this.userId;
             this.currentData.level = this.clientInfoById.levelName;
         },
         showScoreList() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "scoreListDialog";
             this.currentData.score = this.clientInfoById.score;
@@ -421,7 +461,6 @@ export default {
                 this.getMemberInfo();
             }
         })
-        this.userTag = this.memberLabels;
         this.getAllCoupons();
         this.getAllCodes();
         this.getUsedCoupon();

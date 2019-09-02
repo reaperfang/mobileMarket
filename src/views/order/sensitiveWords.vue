@@ -16,7 +16,7 @@
                 </div>
                 <div class="content-sensitive">
                     <span v-for="(item, index) in sensitiveList" :key="index">
-                        {{item.name}}, <span @click="deleteSensitive(item)" class="delete">删除</span>
+                        {{item.name}}, <span @click="deleteSensitive(item)" class="delete pointer">删除</span>
                     </span>
                 </div>  
             </section>
@@ -41,12 +41,10 @@ export default {
     data() {
         return {
             sensitiveList: [
-                'zzz',
-                'zzzzzz'
+
             ],
             systomSensitiveList: [
-                'zzz',
-                'zzzzzz'
+
             ],
             currentDialog: '',
             dialogVisible: false

@@ -19,7 +19,7 @@
                         <div class="col list-righter">
                             {{orderAfterSale.description}}
                             <div class="images">
-                                <img v-for="(item, index) in orderAfterSale.descriptionimages" :src="item" alt="" :key="index">
+                                <img height="51" v-for="(item, index) in orderAfterSale.descriptionimages" :src="item" alt="" :key="index">
                             </div>
                         </div>
                     </div>
@@ -69,15 +69,15 @@
                         style="width: 100%">
                         <el-table-column
                             label="商品"
-                            width="180">
+                            width="380">
                             <template slot-scope="scope">
-                                <div class="row justity-between">
+                                <div class="row justity-between align-center">
                                     <div class="col">
-                                        <img :src="scope.row.goodsImage" alt="">
+                                        <img width="66" :src="scope.row.goodsImage" alt="">
                                     </div>
                                     <div class="col">
-                                        <p>{{scope.row.goodsName}}</p>
-                                        <p>{{scope.row.goodsSpces}}</p>
+                                        <p class="ellipsis" style="width: 300px">{{scope.row.goodsName}}</p>
+                                        <p>{{scope.row.goodsSpces | goodsSpecsFilter}}</p>
                                     </div>
                                 </div>
                             </template>
@@ -173,7 +173,7 @@
         </section>
         <section class="drawback">
             <p class="section-header">卖家退款合计</p>
-            <div class="row justity-between">
+            <div class="row justity-between align-center">
                 <div class="col" style="margin-right: 50px;">
                     <div class="row">
                         <div class="col">
@@ -258,7 +258,7 @@
                             <el-input v-model="orderAfterSale.realReturnScore"></el-input>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row align-center">
                         <div class="col">
                             实退金额：
                         </div>
@@ -266,7 +266,7 @@
                             <el-input type="number" @change="realReturnMoneyHandler" v-model="orderAfterSale.realReturnMoney"></el-input>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row align-center">
                         <div class="col">
                             退还余额：
                         </div>
@@ -274,7 +274,7 @@
                             {{orderAfterSale.realReturnBalance}}
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row align-center">
                         <div class="col">
                             剩余退还余额：
                         </div>
@@ -413,6 +413,22 @@ export default {
                 case 4:
                     return '赠品订单'
             }
+        },
+        goodsSpecsFilter(value) {
+            let _value
+            if(!value) return ''
+            if(typeof value == 'string') {
+                _value = JSON.parse(value)
+            }
+            let str = ''
+            for(let i in _value) {
+                if(_value.hasOwnProperty(i)) {
+                    str += i + ':'
+                    str += _value[i] + ','
+                }
+            }
+
+            return str
         }
     },
     methods: {

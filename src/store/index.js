@@ -8,6 +8,7 @@ import menu from './modules/menu'
 import decorate from './modules/decorate'
 import data from './modules/data'
 import shop from './modules/shop'
+import client from './modules/client'
 import getters from './getters'
 import api from '@/api';
 
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
     menu,
     decorate,
     data,
-    shop
+    shop,
+    client
   },
   getters
 });

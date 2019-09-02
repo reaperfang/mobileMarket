@@ -11,7 +11,10 @@
         <template v-else-if="item.tabTitle">
           <h2>{{item.tabTitle}}</h2>
           <div v-if="!child.hidden" v-for="child in item.data" class="item-child">
-            <router-link class="ellipsis" active-class="active" :to="resolvePath(child.path)">{{child.meta.title}}</router-link>
+            <div v-if="child.meta.title == '修改密码' && userType"></div>
+            <div v-else>
+              <router-link class="ellipsis" active-class="active" :to="resolvePath(child.path)">{{child.meta.title}}</router-link>
+            </div>
           </div>
         </template>
         <template v-else>
@@ -34,7 +37,7 @@ export default {
   data() {
     return {
       sidebarItems: [],
-      basePath: ''
+      basePath: '',
     }
   },
   components: { },
@@ -46,6 +49,10 @@ export default {
       'permission_routers',
       'permission_routers_tree',
     ]),
+    userType(){
+      let userInfo = JSON.parse(this.$store.getters.userInfo)
+      return userInfo.type == "admin" ? true : false
+    }
   },
   created() {
     this.setSidebarItems()

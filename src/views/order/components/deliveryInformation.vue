@@ -7,20 +7,20 @@
             </ul>
         </div> -->
         <div class="container">
-            <div class="item" v-for="(item, index) in orderSendItems" :key="index">
+            <div v-show="orderSendItems && orderSendItems.length" class="item" v-for="(item, index) in orderSendItems" :key="index">
                 <div class="header">
                     <div class="header-lefter">
                         <div class="header-lefter-item number">{{index + 1}}</div>
                         <div class="header-lefter-item ">快递单号：{{item.expressNo}}</div>
-                        <div @click="showLogistics(item.expressNo)" class="header-lefter-item  blue">查看物流</div>
+                        <div @click="showLogistics(item.expressNo)" class="header-lefter-item  blue pointer">查看物流</div>
                     </div>
                     <div class="header-righter">
                         <div class="header-righter-item">【客户发货】</div>
                         <div class="header-righter-item">发货人：{{orderDetail.orderSendInfo.sendName}}</div>
                         <div class="header-righter-item">{{item.time}}</div>
                         <div @click="showContent(index)">
-                            <i v-if="item.showContent" class="el-icon-caret-top"></i>
-                            <i v-if="!item.showContent" class="el-icon-caret-bottom"></i>
+                            <i v-if="item.showContent" class="el-icon-caret-top pointer"></i>
+                            <i v-if="!item.showContent" class="el-icon-caret-bottom pointer"></i>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                             <template slot-scope="scope">
                                 <div class="goods-detail">
                                     <div class="goods-detail-item">
-                                        <img :src="item.goodsImage" alt="">
+                                        <img width="66" :src="item.goodsImage" alt="">
                                     </div>
                                     <div class="goods-detail-item">
                                         <p>{{item.goodsName}}</p>
@@ -64,6 +64,7 @@
                     <div class="remark">备注: {{orderDetail.orderInfo.sellerRemark}}</div>
                 </div>
             </div>
+            <Empty v-show="!orderSendItems || (orderSendItems && !orderSendItems.length)"></Empty>
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" v-if="dialogVisible" :data="currentData"></component>
     </div>
@@ -71,6 +72,7 @@
 <script>
 import StatisticsDialog from '@/views/order/dialogs/statisticsDialog'
 import LogisticsDialog from '@/views/order/dialogs/logisticsDialog'
+import Empty from '@/components/Empty'
 
 export default {
     data() {
@@ -80,15 +82,7 @@ export default {
             deliveryNumber: 2,
             unconfirmedNumber: 1,
             items: [
-                {
-                    expressNumber: 1,
-                    deliverier: '小王',
-                    time: '',
-                    showContent: true,
-                    list: [
-                        {}
-                    ]
-                }
+                
             ],
             currentDialog: '',
             dialogVisible: false,
@@ -97,20 +91,19 @@ export default {
         }
     },
     created() {
-        this.orderSendItems = this.orderDetail.orderSendItems.map(val => ({...val, showContent: true}))
+        this.orderSendItems = this.orderDetail.orderSendItems && this.orderDetail.orderSendItems.map(val => ({...val, showContent: true})) || []
     },
     watch: {
         orderDetail: {
             deep: true,
             handler() {
-                this.orderSendItems = this.orderDetail.orderSendItems
+                this.orderSendItems = this.orderDetail.orderSendItems && this.orderDetail.orderSendItems.map(val => ({...val, showContent: true})) || []
             }
         }
     },
     methods: {
         showLogistics(expressNo) {
             this._apis.order.orderLogistics({expressNo}).then(res => {
-                console.log(res)
                 this.currentDialog = 'LogisticsDialog'
                 this.currentData = res.traces
                 this.dialogVisible = true
@@ -145,7 +138,8 @@ export default {
     },
     components: {
         StatisticsDialog,
-        LogisticsDialog
+        LogisticsDialog,
+        Empty
     }
 }
 </script>
