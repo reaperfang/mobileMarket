@@ -181,7 +181,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliveryManagement')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=afterSaleBulkDelivery')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -257,7 +257,7 @@ export default {
     getDetail() {
       this._apis.order
         .orderAfterSaleDetail({
-          orderAfterSaleIds: this.$route.query.ids.split(",").map(val => +val)
+          orderAfterSaleIds: this.$route.query.ids.split(",").map(val => val)
         })
         .then(res => {
           res.forEach(val => {

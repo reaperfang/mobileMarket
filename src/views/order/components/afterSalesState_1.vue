@@ -17,9 +17,9 @@
                 <div class="col righter">
                     <p>待审核</p>
                     <p class="des">客户申请售后，待审核</p>
-                    <div>
-                        <span @click="auth">同意</span>
-                        <span @click="reject">拒绝</span>
+                    <div class="button-box">
+                        <el-button @click="reject">拒绝</el-button>
+                        <el-button type="primary" @click="auth">同意</el-button>
                     </div>
                 </div>
             </div>
@@ -60,10 +60,33 @@
                 <div class="col righter">
                     <p>待处理</p>
                     <p class="des">客户发货，商户未确认收货，未退款</p>
-                    <div>
+                    <div class="button-box">
+                        <el-button @click="confirmTakeOver">确认收货</el-button>
+                        <el-button type="primary" @click="drawback(orderAfterSale.id)">退款</el-button>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template v-else-if="this.orderAfterSale.orderAfterSaleStatus == 4">
+            <!-- 待处理 -->
+            <div class="row align-center justity-between">
+                <div class="col flex1 lefter">
+                    <el-steps :active="3">
+                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
+                        <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
+                        <el-step title="客户退货" :description="orderAfterSale.memberReturnGoodsTime"></el-step>
+                        <el-step title="商户退款" description=""></el-step>
+                        <el-step title="系统处理中" description=""></el-step>
+                        <el-step title="完成" description=""></el-step>
+                    </el-steps>
+                </div>
+                <div class="col righter">
+                    <p>待收货</p>
+                    <p class="des">商户发货</p>
+                    <!-- <div>
                         <span @click="confirmTakeOver">确认收货</span>
                         <span>退款</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </template>
@@ -129,6 +152,21 @@ export default {
         },
         reject() {
             this.$emit('reject')
+        },
+        drawback(id) {
+            this._apis.order.orderAfterSaleDrawback({id}).then((res) => {
+                this.$notify({
+                    title: '成功',
+                    message: '已发起退款，系统处理中。',
+                    type: 'success'
+                });
+                this.$emit('getDetail')
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         }
     },
     computed: {
@@ -174,5 +212,8 @@ export default {
                 }
             }
         }
+    }
+    .button-box {
+        margin-top: 20px;
     }
 </style>

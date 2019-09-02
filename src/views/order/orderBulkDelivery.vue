@@ -41,11 +41,11 @@
                   <div class="col" style="width: 310px;">
                     <div class="row align-center">
                       <div class="col">
-                        <img :src="goods.goodsImage" alt />
+                        <img width="66" :src="goods.goodsImage" alt />
                       </div>
                       <div class="col">
-                        <p>{{goods.goodsName}}</p>
-                        <p class="goods-specs">{{goods.goodsSpecs}}</p>
+                        <p class="ellipsis" style="width: 200px;">{{goods.goodsName}}</p>
+                        <p class="goods-specs">{{goods.goodsSpecs | goodsSpecsFilter}}</p>
                       </div>
                     </div>
                   </div>
@@ -136,6 +136,24 @@ export default {
     this.getDetail();
     this.getExpressCompanyList()
   },
+  filters: {
+    goodsSpecsFilter(value) {
+            let _value
+            if(!value) return ''
+            if(typeof value == 'string') {
+                _value = JSON.parse(value)
+            }
+            let str = ''
+            for(let i in _value) {
+                if(_value.hasOwnProperty(i)) {
+                    str += i + ':'
+                    str += _value[i] + ','
+                }
+            }
+
+            return str
+        }
+  },
   methods: {
     changeAll(item) {
       item.checked = !item.checked
@@ -200,7 +218,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliveryManagement')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=orderBulkDelivery')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -350,6 +368,7 @@ export default {
 }
 .table-container {
   padding-left: 15px;
+  padding-top: 20px;
   .col:first-child {
     margin-right: 40px;
   }

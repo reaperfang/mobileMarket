@@ -97,9 +97,9 @@
         <el-tab-pane label="商城订单" name="shop">
           <shop ref="shop" :params="listQuery"></shop>
         </el-tab-pane>
-        <el-tab-pane label="积分商城订单" name="integralShop">
+        <!-- <el-tab-pane label="积分商城订单" name="integralShop">
           <integralShop></integralShop>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
     </section>
   </div>

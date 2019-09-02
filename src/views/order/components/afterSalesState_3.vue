@@ -16,9 +16,9 @@
                 <div class="col righter">
                     <p>待审核</p>
                     <p class="des">客户申请售后，待审核</p>
-                    <div>
-                        <span @click="auth">同意</span>
-                        <span @click="reject">拒绝</span>
+                    <div class="button-box">
+                        <el-button @click="reject">拒绝</el-button>
+                        <el-button type="primary" @click="auth">同意</el-button>
                     </div>
                 </div>
             </div>
@@ -38,8 +38,8 @@
                 <div class="col righter">
                     <p>待处理</p>
                     <p class="des">商户通过审核，未退款</p>
-                    <div>
-                        <span>退款</span>
+                    <div class="button-box">
+                        <el-button type="primary" @click="drawback(orderAfterSale.id)">退款</el-button>
                     </div>
                 </div>
             </div>
@@ -114,6 +114,23 @@ export default {
             }
         }
     },
+    methods: {
+        drawback(id) {
+            this._apis.order.orderAfterSaleDrawback({id}).then((res) => {
+                this.$notify({
+                    title: '成功',
+                    message: '已发起退款，系统处理中。',
+                    type: 'success'
+                });
+                this.$emit('getDetail')
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        }
+    },
     props: {
         orderAfterSale: {
             type: Object,
@@ -141,5 +158,8 @@ export default {
                 }
             }
         }
+    }
+    .button-box {
+        margin-top: 20px;
     }
 </style>

@@ -8,7 +8,7 @@
                 </div>
                 <div class="item righter">
                     <p>{{item.couponName}}</p>
-                    <p class="limit">使用时限:{{item.createTime.split(' ')[0]}}</p>
+                    <p class="limit">使用时限:{{item.startTime | timeFilter}}-{{item.endTime | timeFilter}}</p>
                 </div>
             </div>
             
@@ -21,7 +21,7 @@
                     </div>
                     <div class="item righter">
                         <p>{{item.promotionCodeName}}</p>
-                        <p class="limit">使用时限:{{item.createTime.split(' ')[0]}}</p>
+                        <p class="limit">使用时限:{{item.startTime | timeFilter}}-{{item.endTime | timeFilter}}</p>
                     </div>
                 </div>
             </div>
@@ -38,6 +38,15 @@ export default {
         return {
             showFooter: false,
 
+        }
+    },
+    filters: {
+        timeFilter(value) {
+            if(value && value.split(/\s+/).length) {
+                return value.split(/\s+/)[0]
+            }
+
+            return value
         }
     },
     methods: {
@@ -97,6 +106,9 @@ export default {
        p {
            margin-bottom: 5px;
        }
+   }
+   .limit {
+       font-size: 12px;
    }
 </style>
 

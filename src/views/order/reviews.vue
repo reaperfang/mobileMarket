@@ -43,7 +43,7 @@
                         <el-button @click="$router.push('/order/sensitiveWords')" class="border-button">敏感词设置</el-button>
                     </div>
                     <div class="righter">
-                        <span @click="resetForm('form')" class="resetting">重置</span>
+                        <span @click="resetForm('form')" class="resetting pointer">重置</span>
                         <el-button @click="getList" type="primary">搜 索</el-button>
                     </div>
                 </div>
@@ -121,9 +121,11 @@
                     </el-table-column>
                     <el-table-column label="操作" width="150px">
                         <template slot-scope="scope">
-                            <span v-if="scope.row.auditStatus == 0" class="blue" @click="currentDialog = 'AuditDialog'; title='审核'; batch = false; currentData = scope.row; dialogVisible = true">审核</span>
+                            <div class="operate-box">
+                                <span v-if="scope.row.auditStatus == 0" class="blue" @click="currentDialog = 'AuditDialog'; title='审核'; batch = false; currentData = scope.row; dialogVisible = true">审核</span>
                             <span class="blue" @click="setChoiceness(scope.row)">{{scope.row.isChoiceness == 1 ? '取消精选' : '设为精选'}}</span>
                             <span @click="$router.push({ path: '/order/reviewsDetail?id=' +  scope.row.id})" class="blue">查看</span>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -188,17 +190,7 @@ export default {
                 starNum: '', // 星级数量
             },
             tableData: [
-                {
-                    id: 1,
-                    tag: '精选',
-                    star: '5',
-                    goodsName: '商品名称',
-                    orderNumber: 1,
-                    customerId: 1,
-                    orderState: '审核通过',
-                    reply: '是',
-                    time: '2019'
-                }
+                
             ],
             currentDialog: '',
             currentData: {},
@@ -326,7 +318,15 @@ export default {
             this.dialogVisible = true
         },
         resetForm(formName) {
-            this.$refs[formName].resetFields();
+            this.listQuery = Object.assign({}, this.listQuery, {
+                orderCode: '',
+                goodsName: '',
+                orderDate: '',
+                createTimeStart: '',
+                creaTetimeEnd: '',
+                auditStatus: '',
+                starNum: '',
+            })
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
