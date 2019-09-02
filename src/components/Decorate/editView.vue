@@ -4,7 +4,7 @@
       <img src="@/assets/images/shop/editor/phone_head.png" alt="">
       <span>{{baseInfo.name || '页面标题'}}</span>
     </div>
-    <div class="phone-body" @click="clickTitle($event)">
+    <div class="phone-body" @click="clickTitle($event)" :style="bodyHeight">
 
       <!-- 可拖拽调整顺序 -->
        <vuedraggable 
@@ -58,6 +58,9 @@ export default {
     dragable: {
       type: Boolean,
       default: true
+    },
+    height: {
+      type: Number
     }
   },
   components: {vuedraggable},
@@ -73,7 +76,8 @@ export default {
       disable: false,
       selectItem: {},
       allTemplateLoaded: false,  //所有模板加载结束
-      templateList: {}  //模板对象列表
+      templateList: {},  //模板对象列表
+      bodyHeight: {}
     }
   },
   computed:{
@@ -95,6 +99,11 @@ export default {
   },
   created() {
     this.loadTemplateLists();
+  },
+  mounted() {
+    this.bodyHeight = {
+      height: this.height + 'px'
+    }
   },
   methods: {
 
@@ -164,9 +173,7 @@ export default {
 
 <style lang="scss" scoped>
  .view {
-    width: 374px;
     .phone-body {
-      height: 775px;
       .component_wrapper{
         min-height: 39px;
         &.actived{

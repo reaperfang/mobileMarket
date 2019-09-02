@@ -412,7 +412,10 @@ ul.cube {
                         }
 
                         .state {
-                              color: $globalMainColor;
+                              color:$errorColor;
+                              &.normal{
+                                    color: $globalMainColor;
+                              }
                         }
                   }
 
@@ -421,7 +424,23 @@ ul.cube {
                   }
 
                   &.button {
-                        width: 100%;
+                        width:346px;
+                        position:absolute;
+                        bottom:12px;
+                        z-index: 2000;
+                        .help_blank{
+                              height: 10px;
+                              background: rgb(242,242,249);
+                              width: 100%;
+                        }
+                        .buttons{
+                              display: flex;
+                              flex-direction: row;
+                              justify-content: center;
+                              background:#fff;
+                              padding-bottom: 30px;
+                              margin-top: 30px;
+                        }
                   }
             }
       }

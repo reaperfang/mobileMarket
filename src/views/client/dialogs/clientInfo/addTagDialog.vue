@@ -82,6 +82,9 @@ export default {
     },
     mounted() {
         this.getLabels();
+        this.$nextTick(() => {
+            this.checkedItems = [];
+        })
     },
     props: {
         data: {

@@ -4,7 +4,7 @@
             <p class="user_id">满足以上搜索条件共{{data.checkedItem.length}}个客户</p>
             <div class="clearfix">
                 <p class="c_label fl">禁用选择：</p>
-                <el-checkbox v-model="checks[0].checked" :label="checks[0].name" class="fl marT10"></el-checkbox>
+                <el-checkbox v-model="checkCoupon" label="优惠券" class="fl marT10"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in couponIds" :key="index">
                         <el-select v-model="i.id" style="margin-bottom: 10px">
@@ -16,7 +16,7 @@
                 <span class="add" @click="addCouponSel">添加</span>
             </div>
             <div class="clearfix">
-                <el-checkbox v-model="checks[1].checked" :label="checks[1].name" class="fl marT10"></el-checkbox>
+                <el-checkbox v-model="checkCode" label="优惠码" class="fl marT10" style="margin-left: 85px"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in codeIds" :key="index">
                         <el-select v-model="i.id" style="margin-bottom: 10px">
@@ -46,7 +46,11 @@ export default {
             blackCheck1: false,
             checks: [],
             couponIds: [{id:""}],
-            codeIds: [{id:""}]
+            codeIds: [{id:""}],
+            checkCoupon:"",
+            checkCode:"",
+            couponId:"",
+            codeId:""
         }
     },
     methods: {
@@ -54,35 +58,35 @@ export default {
             let params = {};
             let blackListMapDtos = [];
             let memberInfoIds = [];
+            if(this.checkCoupon && this.couponIds.length !== 0) {
+                let arr = [];
+                this.couponIds.map((item) => {
+                    arr.push(item.id);
+                })
+                let obj = {
+                    blackInfold: this.couponId,
+                    disableItemValue: arr.join(',')
+                }
+                blackListMapDtos.push(obj);
+            }
+            if(this.checkCode && this.codeIds.length !== 0) {
+                let arr = [];
+                this.codeIds.map((item) => {
+                    arr.push(item.id);
+                })
+                let obj = {
+                    blackInfold: this.codeId,
+                    disableItemValue: arr.join(',')
+                }
+                blackListMapDtos.push(obj);
+            }
             this.checks.map((v) => {
                 if(v.checked) {
-                    if(v.name == "优惠券" && this.couponIds.length !== 0) {
-                        let arr = [];
-                        this.couponIds.map((item) => {
-                            arr.push(item.id);
-                        })
-                        let obj = {
-                            blackInfold: v.id,
-                            disableItemValue: arr.join(',')
-                        }
-                        blackListMapDtos.push(obj);
-                    }else if(v.name == "优惠码" && this.codeIds.length !== 0) {
-                        let arr = [];
-                        this.codeIds.map((item) => {
-                            arr.push(item.id);
-                        })
-                        let obj = {
-                            blackInfold: v.id,
-                            disableItemValue: arr.join(',')
-                        }
-                        blackListMapDtos.push(obj);
-                    }else{
-                        let obj = {
-                            blackInfold: v.id,
-                            disableItemValue: "1"
-                        }
-                        blackListMapDtos.push(obj);
+                    let obj = {
+                        blackInfold: v.id,
+                        disableItemValue: "1"
                     }
+                    blackListMapDtos.push(obj);
                 }
             });
             this.data.checkedItem.map((v) => {
@@ -96,6 +100,7 @@ export default {
                     message: "批量加入黑名单成功",
                     type: 'success'
                 });
+                this.$emit('freshTable');
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -109,6 +114,8 @@ export default {
                     this.$set(v, 'checked', false);
                 });
                 this.checks = [].concat(response);
+                this.couponId = this.checks[0].id;
+                this.codeId = this.checks[1].id;
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -165,13 +172,13 @@ export default {
 <style lang="scss" scoped>
 .user_id{
     text-align: left;
-    padding: 0 0 10px 15px;
+    padding: 0 0 19px 15px;
 }
 .c_label{
     margin: 5px 0 0 15px;
 }
 .marT10{
-    margin-top: 10px;
+    margin: 3px 10px 0 0;
 }
 .marL20{
     margin-left: 20px;
@@ -190,10 +197,10 @@ export default {
 }
 .check_container{
     text-align: left;
-    padding-left: 100px;
+    padding-left: 86px;
     .check_item{
         display: block;
-        margin: 10px 0;
+        margin: 19px 0;
     }
 }
 .red{

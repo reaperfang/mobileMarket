@@ -32,7 +32,7 @@
                         trigger="hover"
                     >
                         <p class="p_title">客户身份说明</p>
-                        <p class="p_over1">客户身份包括：非会员、会员。其中会员包括新会员和老会员。成为会员的条件和新、老会员的条件可进行配置。</p>
+                        <p class="p_over1">客户身份包括：非会员、会员，其中会员包括新会员和老会员。成为老会员条件可进行配置。</p>
                         <p class="p_over2">【查看/配置会员身份规则】</p>
                     </el-popover>
                     <img src="../../assets/images/client/icon_ask.png" alt="" v-popover:popover class="pop_img">

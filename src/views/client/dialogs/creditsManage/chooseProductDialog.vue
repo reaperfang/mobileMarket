@@ -141,7 +141,7 @@ export default {
     this.getProductClass();
     this.getSkuList(1,10);
     let productInfoIds = this.data.productInfoIds.split(',');
-    this.$nextTick(function() {
+    this.$nextTick(() => {
         if(productInfoIds.length > 0) {
             productInfoIds.map((v) => {
                 this.skuList.forEach(row => {

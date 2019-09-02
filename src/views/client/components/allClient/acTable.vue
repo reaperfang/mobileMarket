@@ -51,7 +51,7 @@
       :is="currentDialog"
       :dialogVisible.sync="dialogVisible"
       :data="currentData"
-      @deleteFeedback="deleteFeedback"
+      @freshTable="freshTable"
     ></component>
   </div>
 </template>
@@ -194,10 +194,8 @@ export default {
           });
         });
     },
-    deleteFeedback(msg) {
-      if (msg == "success") {
-        this.getMembers(1, this.pageSize);
-      }
+    freshTable() {
+      this.getMembers(1, this.pageSize);
     }
   },
   watch: {
