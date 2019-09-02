@@ -1,5 +1,5 @@
 <template>
-   <div class="module widget">
+   <div class="module widget" :style="bodyHeight">
       <div class="block" v-for="(item, key) of widgetList" :key="key">
         <!-- 隐藏的控件不显示 -->
         <template v-if="key != 'hiddenWidget'">
@@ -25,19 +25,21 @@ export default {
   components: {},
   data () {
     return {
-     widgetList: widget.widgetList
+     widgetList: widget.widgetList,
+     bodyHeight: {}
     }
   },
   created() {
-    // this.$store.commit('setCurrentComponentId', this.basePropertyId);
+  },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 80 + 'px'
+    }
   },
   computed: {
     currentComponentId() {
       return this.$store.getters.currentComponentId;
-    },
-    // basePropertyId() {
-    //   return this.$store.getters.basePropertyId;
-    // },
+    }
   },
   methods: {
 

@@ -4,12 +4,12 @@
             <el-tab-pane label="积分通用规则" name="first">
                 <p class="c_title">积分使用规则：</p>
                 <div>
-                    <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+                    <el-form :model="ruleForm" ref="ruleForm">
                         <el-form-item label="是否开启积分抵现：" prop="scoreToCash">
                             <div class="marL20">
                                 <br>
-                                <el-radio v-model="ruleForm.scoreToCash" label="1">不开启</el-radio><span class="c_warn">说明：开启用用户可以使用积分抵现（但不支持积分商城订单）</span><br>
-                                <el-radio v-model="ruleForm.scoreToCash" label="2">开启</el-radio><br>
+                                <el-radio v-model="ruleForm.scoreToCash" label="0">不开启</el-radio><span class="c_warn">说明：开启用用户可以使用积分抵现（但不支持积分商城订单）</span><br>
+                                <el-radio v-model="ruleForm.scoreToCash" label="1" @change="openScoreToCash">开启</el-radio><br>
                                 <span>抵现比例：</span>
                                 <div style="width: 140px; display: inline-block">
                                     <el-input placeholder="请输入整数" v-model="ruleForm.scorePercentage"></el-input>
@@ -22,7 +22,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item label="积分抵现条件：">
-                            <el-checkbox></el-checkbox>
+                            <el-checkbox v-model="ruleForm.scoreEnableOrderAchieveCash"></el-checkbox>
                             <span class="marR50">订单满</span>
                             <div style="width: 222px; display: inline-block">
                                 <el-input placeholder="请输入整数，不填则不生效" v-model="ruleForm.scoreToCashOrderMoney"></el-input>
@@ -30,25 +30,26 @@
                             <span>元</span>
                         </el-form-item>
                         <el-form-item>
+                            <el-checkbox v-model="ruleForm.scoreEnableOrderHighCash"></el-checkbox>
                             <span class="marL105">最高可抵现订单金额的</span>
                             <div style="width: 222px; display: inline-block; margin-left: 20px">
-                                <el-input placeholder="请输入整数，不填则不生效" v-model="scoreToCashOrderRate"></el-input>
+                                <el-input placeholder="请输入整数，不填则不生效" v-model="ruleForm.scoreToCashOrderRate"></el-input>
                             </div>
                             <span>%</span>
                         </el-form-item>
                         <div class="c_line"></div>
                         <p class="c_title">积分清零规则：</p>
-                        <el-form-item label="是否开启积分抵现：" prop="scoreCleanType">
+                        <el-form-item label="积分清零规则：" prop="scoreCleanType">
                             <div class="marL20">
                                 <br>
-                                <el-radio v-model="ruleForm.scoreCleanType" label="1">不清零</el-radio><br>
-                                <el-radio v-model="ruleForm.scoreCleanType" label="2">自然年清零上一年获得的积分</el-radio><span class="c_warn">每年12月31日清空上一年获得的积分</span>
+                                <el-radio v-model="ruleForm.scoreCleanType" label="0">不清零</el-radio><br>
+                                <el-radio v-model="ruleForm.scoreCleanType" label="1">自然年清零上一年获得的积分</el-radio><span class="c_warn">每年12月31日清空上一年获得的积分</span>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="btn_cont">
-                    <el-button type="primary" class="btn_primary">保 存</el-button>
+                    <el-button type="primary" class="btn_primary" @click="save">保 存</el-button>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="获取积分规则" name="second">
@@ -78,18 +79,22 @@ export default {
     data() {
         return {
             ruleForm: {
-                scoreToCash: "1",
-                jf:"",
-                yuan:"",
-                scoreCleanType: "1"
-            },
-            rules: {
-                scoreToCash: [
-                    { required: true, message: '请选择是否开启积分抵现', trigger: 'blur'}
-                ],
-                scoreCleanType: [
-                    { required: true, message: '请选择是否开启积分抵现', trigger: 'blur'}
-                ]
+                //是否开启积分抵现
+                scoreToCash: "0",
+                //积分清零规则
+                scoreCleanType: "0",
+                //抵现比例 积分
+                scorePercentage:"",
+                //抵现比例 元
+                scorePercentageMoney:"",
+                //积分抵现条件：是否选择积分满
+                scoreEnableOrderAchieveCash:"",
+                //积分抵现条件：是否选择最高可抵现
+                scoreEnableOrderHighCash:"",
+                //积分抵现条件 元
+                scoreToCashOrderMoney:"",
+                //积分抵现条件 百分比
+                scoreToCashOrderRate:""
             },
             options: [
                 {label: 'test1',value: 1},
@@ -98,6 +103,59 @@ export default {
             activeName: 'first',
             isSwitch: true
         }
+    },
+    methods: {
+        openScoreToCash(val) {
+            if(val == '1') {
+                this.ruleForm.scorePercentageMoney = 1
+            }
+        },
+        save() {
+            let formObj = this.ruleForm;
+            if(formObj.scoreToCash == '1' && formObj.scorePercentage == "" && formObj.scorePercentage == "") {
+                this.$notify({
+                    title: '警告',
+                    message: '开启积分抵现则抵现比例为必填',
+                    type: 'warning'
+                });
+            }else{
+                formObj.scoreEnableOrderAchieveCash = formObj.scoreEnableOrderAchieveCash == true?'1':'0';
+                formObj.scoreEnableOrderHighCash = formObj.scoreEnableOrderHighCash == true?'1':'0';
+                formObj.id = '7'
+                this._apis.client.saveCreditRule(formObj).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: '保存积分规则成功',
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }
+        },
+        checkCreditRule() {
+            this._apis.client.checkCreditRule({id: '7'}).then((response) => {
+                this.ruleForm.scoreToCash = response.scoreToCash.toString();
+                this.ruleForm.scorePercentage = response.scorePercentage;
+                this.ruleForm.scorePercentageMoney = response.scorePercentageMoney;
+                this.ruleForm.scoreEnableOrderAchieveCash = response.scoreEnableOrderAchieveCash == 1?true:false;
+                this.ruleForm.scoreEnableOrderHighCash = response.scoreEnableOrderHighCash == 1?true:false;
+                this.ruleForm.scoreToCashOrderMoney = response.scoreToCashOrderMoney;
+                this.ruleForm.scoreToCashOrderRate = response.scoreToCashOrderRate;
+                this.ruleForm.scoreCleanType = response.scoreCleanType.toString();
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        }
+    },
+    mounted() {
+        this.checkCreditRule();
     }
 }
 </script>

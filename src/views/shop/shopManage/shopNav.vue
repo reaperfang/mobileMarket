@@ -25,7 +25,7 @@
         </div>
 
         <!-- 手机中部 -->
-        <div class="phone-body">
+        <div class="phone-body" :style="bodyHeight">
           <img :src="require('../../../assets/images/shop/shopNav.png')" alt="">
         </div>
 
@@ -63,7 +63,7 @@
 
       <!-- 右侧属性区 -->
       <div class="module props">
-        <el-form :model="currentNav" :rules="rules" ref="ruleForm" label-width="90px" class="demo-ruleForm">
+        <el-form :model="currentNav" :rules="rules" ref="ruleForm" label-width="90px" class="demo-ruleForm" :style="propsHeight">
           <div class="block header">
             <p class="title">导航设置</p>
             <p class="state" @click="deleteNav" style="cursor:pointer;">删除导航</p>
@@ -252,8 +252,9 @@ export default {
       currentImg: 'active',  //当前上传图片类型   高亮和普通
       seletedPage: null,   //选中的页面
       tempSelectPage: null,  //临时选中的页面  
-      toolsData: null  //工具数据
-
+      toolsData: null,  //工具数据
+      bodyHeight: {},  //内容区高度
+      propsHeight: {}  //属性区高度
     }
   },
   computed: {
@@ -308,6 +309,14 @@ export default {
     this.$store.dispatch('getShopInfo');
     this.initnavMap();
     this.fetch();
+  },
+  mounted() {
+    this.bodyHeight = {
+      height: document.body.clientHeight - 334 + 'px'
+    },
+    this.propsHeight = {
+      height: document.body.clientHeight - 334 + 'px'
+    }
   },
   methods: {
 
@@ -414,6 +423,7 @@ export default {
         }
         if(pageData && pageData.navStyle) {
           this.ruleForm = pageData;
+          this.ruleForm['status'] = response.status;
           this.selectNav(pageData.navIds[0]);
         }
         this.loading = false;
@@ -583,9 +593,7 @@ export default {
 }
 .module {
   &.view {
-    width: 374px;
     .phone-body {
-      height: 550px;
       .component_wrapper{
         cursor:text;
       }
@@ -699,29 +707,7 @@ export default {
     }
   }
   &.props{
-    width:346px;
-    form{
-      height: 625px;
-    }
     .block{
-      &.button{
-        width:346px;
-        position:absolute;
-        bottom:12px;
-        .help_blank{
-          height: 10px;
-          background: rgb(242,242,249);
-          width: 100%;
-        }
-        .buttons{
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          background:#fff;
-          padding-bottom: 30px;
-          margin-top: 30px;
-        }
-      }
       .upload_img_list{
         display:flex;
         flex-direction: row;

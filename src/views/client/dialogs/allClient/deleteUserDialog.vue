@@ -25,7 +25,7 @@ export default {
                     message: '删除成功',
                     type: 'success'
                 });
-                this.$emit('deleteFeedback', 'success');
+                this.$emit('freshTable');
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

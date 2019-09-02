@@ -2,7 +2,7 @@
 <template>
   <DialogBase :visible.sync="visible" width="816px" :title="(baseInfo.name || '页面名称') + '预览'">
     <div class="preview_wrapper">
-      <editView :dragable="false"></editView>
+      <editView :dragable="false" v-if="height > 0" :height="height"></editView>
       <div class="shop_info">
         <img class="shop_logo" :src="shopInfo.logo" alt />
         <div class="shop_name">{{shopInfo.name || '店铺名称'}}</div>
@@ -40,7 +40,8 @@ export default {
         logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
         name: '源源的店铺'
       },
-      qrCode: ''
+      qrCode: '',
+      height: 0
     };
   },
   computed: {
@@ -58,6 +59,9 @@ export default {
   },
   created() {
     this.getQrcode();
+  },
+  mounted() {
+    this.height = document.body.clientHeight - 290;
   },
   methods: {
 

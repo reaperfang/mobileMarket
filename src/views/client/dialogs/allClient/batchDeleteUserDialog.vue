@@ -30,6 +30,7 @@ export default {
                     message: '批量删除成功',
                     type: 'success'
                 });
+                this.$emit('freshTable');
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

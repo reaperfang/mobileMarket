@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
+  <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :style="bodyHeight">
     <div class="block form">
       <el-form-item label="商品分组" prop="goodsGroups">
         <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
