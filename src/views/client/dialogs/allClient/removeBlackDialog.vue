@@ -33,6 +33,7 @@ export default {
                     message: "解除黑名单成功",
                     type: 'success'
                 });
+                this.$emit('freshTable');
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -52,7 +53,6 @@ export default {
                     });
                 });
                 this.disableItemValue = [].concat(response);
-                console.log(this.disableItemValue);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
