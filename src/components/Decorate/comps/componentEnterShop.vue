@@ -4,12 +4,12 @@
     <div class="group_shop">
       <ul>
         <li>
-          <img src="@/assets/images/shop/dai.png" alt />
+          <img :src="shopInfo.logo" alt />
         </li>
-        <li class="ellipsis">店铺名称店铺名称店铺</li>
+        <li class="ellipsis">{{shopInfo.shopName || '店铺名称'}}</li>
         <li class="ellipsis">{{currentComponentData.data.words}}</li>
         <li>
-          <img :src="imgs.shopImg1" alt />
+          <img src="@/assets/images/shop/triangle.png" alt />
         </li>
       </ul>
     </div>
@@ -24,16 +24,16 @@ export default {
   components: {},
   data () {
     return {
-      imgs: {
-        shopImg1: require("@/assets/images/shop/triangle.png")
-      }
+      
     }
   },
   created() {
-
+    this.$store.dispatch('getShopInfo');
   },
   computed: {
-    
+    shopInfo() {
+      return this.$store.getters.shopInfo || {};
+    }
   },
   methods: {
   }
@@ -59,6 +59,7 @@ export default {
           border-radius: 20px;
           float: left;
           overflow: hidden;
+          border:1px solid #ddd;
         }
       }
       & > li:nth-child(2) {
