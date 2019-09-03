@@ -7,7 +7,7 @@
             </div>
             <span class="marL20">标签类型：</span>
             <div class="input_wrap marR100">
-                <el-select v-model="tagType">
+                <el-select v-model="tagType" clearable>
                     <el-option
                         v-for="item in options"
                         :key="item.value"

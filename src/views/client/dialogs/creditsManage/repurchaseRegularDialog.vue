@@ -84,6 +84,18 @@ export default {
                     message: error
                 });
             })
+        },
+        getInfo() {
+            let row = this.data.row;
+            if(row.sceneRule.length > 0) {
+                let sceneRule = JSON.parse(row.sceneRule);
+                this.enable = row.enable == '启用'?true:false;
+                this.distinguish = sceneRule.distinguish?"1":"0";
+                this.allMember = sceneRule.noDistinguish.allMember;
+                this.oldMember = sceneRule.yesDistinguish.oldMember;
+                this.newMember = sceneRule.yesDistinguish.newMember;
+                this.noMember = sceneRule.yesDistinguish.noMember;
+            }
         }
     },
     computed: {
@@ -97,7 +109,7 @@ export default {
         }
     },
     mounted() {
-        
+        this.getInfo();
     },
     props: {
         data: {

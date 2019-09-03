@@ -88,9 +88,9 @@ export default {
     handleCurrentChange(val) {
       this.getLabelList(val, this.pageSize);
     },
-    handleChange() {
+    handleChange(val) {
       this.tagList.forEach(row => {
-        this.$refs.clientLabelTable.toggleRowSelection(row)
+        this.$refs.clientLabelTable.toggleRowSelection(row,val)
       });
     },
     getLabelList(startIndex, pageSize) {
@@ -130,6 +130,7 @@ export default {
             type: 'success'
           });
           this.getLabelList(1, this.pageSize);
+          this.checkAll = false;
         }).catch((error) => {
           this.$notify.error({
             title: '错误',

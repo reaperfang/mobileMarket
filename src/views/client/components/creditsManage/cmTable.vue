@@ -54,27 +54,26 @@ export default {
   },
   methods: {
     editCredit(row) {
-      console.log(row);
       switch(row.sceneName) {
         case '登陆': 
           this.dialogVisible = true;
           this.currentDialog = "loginRegularDialog";
-          this.currentData.id = row.id;
+          this.currentData.row = row;
           break;
         case '购买': 
           this.dialogVisible = true;
           this.currentDialog = "buyRegularDialog";
-          this.currentData.id = row.id;
+          this.currentData.row = row;
           break;
         case '复购': 
           this.dialogVisible = true;
           this.currentDialog = "repurchaseRegularDialog";
-          this.currentData.id = row.id;
+          this.currentData.row = row;
           break;
         case '评价': 
           this.dialogVisible = true;
           this.currentDialog = "praiseRegularDialog";
-          this.currentData.id = row.id;
+          this.currentData.row = row;
           break;
         default:
           break;

@@ -106,7 +106,7 @@
         </div>
         <div class="btn_cont">
             <el-button type="primary" @click="saveLabel">保 存</el-button>
-            <el-button>取 消</el-button>
+            <el-button @click="_routeTo('clientLabel')">取 消</el-button>
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @getSelected="getSelected"></component>
     </div>
@@ -200,7 +200,7 @@ export default {
                         message: "标签编辑成功",
                         type: 'success'
                     });
-                    this.$router.go(-1);
+                    this.$router.push({ path: "/clientLabel" });
                 }).catch((error) => {
                     this.$notify.error({
                         title: '错误',
@@ -228,7 +228,6 @@ export default {
         if(this.$route.query.id) {
             this._apis.client.getLabelInfo({id:this.$route.query.id}).then((response) => {
                 this.ruleForm = Object.assign({}, response);
-                console.log(this.ruleForm);
                 this.currentData.productInfoIds = this.ruleForm.productInfoIds;
                 this.ruleForm.tagType = this.ruleForm.tagType.toString();
                 this.ruleForm.anyOrAllCondition = this.ruleForm.anyOrAllCondition.toString();

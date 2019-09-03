@@ -115,7 +115,7 @@ export default {
     },
     handleAll(val) {
       this.levelList.forEach(row => {
-        this.$refs.levelTable.toggleRowSelection(row)
+        this.$refs.levelTable.toggleRowSelection(row,val)
       });
     },
     batchDisable() {
@@ -135,6 +135,7 @@ export default {
             message: "批量禁用成功",
             type: 'success'
           });
+          this.getLevelsList();
         }).catch((error) => {
           this.$notify.error({
             title: '错误',
