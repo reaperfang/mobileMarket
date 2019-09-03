@@ -91,5 +91,14 @@ export function getRoleList(data) {
   })
 }
 
+/* 上传图片 */
+export function uploadImage(data) {
+  return request({
+    url: '',
+    method: 'post',
+    apiType: 'uploadImage',
+    data
+  })
+}
 
 

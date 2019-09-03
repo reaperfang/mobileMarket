@@ -97,7 +97,8 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || localStorage.getItem('token'),
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149df68ab265dda3b2ff7b063f22699acda6',
+        // accessToken: store.getters.token || localStorage.getItem('token'),
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -108,7 +109,7 @@ class Ajax {
 
     //获取cid和shopInfoId
     // let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
-    let cid = store.getters.cid || '7'
+    let cid = store.getters.cid || '2'
     let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId
       : '';
 
@@ -173,6 +174,9 @@ class Ajax {
             break;
           case 'pay':  //微信支付设置
             config.baseURL = `${process.env.DATA_API}/api-payment-web/payment/api.do`;
+            break;
+          case 'uploadImage':  //图片上传
+            config.baseURL = `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`;
             break;
         }
       }

@@ -11,25 +11,15 @@
                     <el-checkbox v-model="item.checked" @change="handleChecked"></el-checkbox>
                     {{item.update_time | formatDate('yyyy-MM-dd hh:mm:ss')}}
                     </span>
-                    <span>
-                      <i class="wx_icon" v-if="item.isSyncWechat"></i>
-                      {{item.fileSize || 0}} MB
-                    </span>
                 </p>
                 <div class="img_body">
                   <p class="title">{{item.title}}</p>
-                  <video v-if="item.filePath !=''"  
-                  :src="item.filePath"
+                  <video v-if="item.down_url !=''"  
+                  :src="item.down_url"
                   class="avatar video-avatar"
                   controls="controls">您的浏览器不支持视频播放</video> 
                   <!-- <img :src="item.filePath" class="imgs"> -->
                 </div>
-                <!-- <p class="img_bottom">
-                  <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span>
-                  <span @click="moveGroup(item.id)"><i class="el-icon-folder"></i></span>
-                  <span @click="downVideo(item.filePath,item.fileName)"><i class="el-icon-download"></i></span>
-                  <span @click="deleteImage(item.id,'videoId')"><i class="el-icon-delete"></i></span>
-                </p> -->
               </div>
             </div>
             <p class="pages">
@@ -110,13 +100,14 @@ export default {
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
+            // cid:'2',
             cid:this.$store.getters.user.cid,
-            mediaId:item.mediaId,
+            mediaId:item.media_id,
             sourceMaterialType:'2',
             fileName:'',
-            filePath:'',
+            filePath:item.down_url,
             fileSize:'',
-            name:'',
+            name:item.name,
             fileover:'',
           }
           datas.push(obj)
