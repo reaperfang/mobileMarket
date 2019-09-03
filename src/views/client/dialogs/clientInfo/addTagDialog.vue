@@ -45,6 +45,7 @@ export default {
                     message: '打标签成功',
                     type: 'success'
                 });
+                this.$emit('refreshPage');
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

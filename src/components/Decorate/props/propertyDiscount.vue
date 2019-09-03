@@ -102,13 +102,14 @@
         <el-radio-group v-if="ruleForm.showContents.includes('8')" v-model="ruleForm.buttonStyle">
           <el-radio :label="1">样式1</el-radio>
           <el-radio :label="2">样式2</el-radio>
-          <el-radio :label="3">样式3</el-radio>
-          <el-radio :label="4">样式4</el-radio>
+          <el-radio :label="3" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式3</el-radio>
+          <el-radio :label="4" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式4</el-radio>
           <el-radio :label="5">样式5</el-radio>
           <el-radio :label="6">样式6</el-radio>
-          <el-radio :label="7">样式7</el-radio>
-          <el-radio :label="8">样式8</el-radio>
+          <el-radio :label="7" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式7</el-radio>
+          <el-radio :label="8" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式8</el-radio>
         </el-radio-group>
+        <el-input v-if="ruleForm.showContents.includes('8') && [3,4,7,8].includes(ruleForm.buttonStyle)" v-model="ruleForm.buttonText"></el-input>
       </el-form-item>
     </div>
 
@@ -140,7 +141,8 @@ export default {
         textAlign: 1,
         showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],
         buttonStyle: 1,
-        ids: []
+        ids: [],
+        buttonText: '加入购物车'
       },
       rules: {
 
@@ -157,12 +159,18 @@ export default {
       handler(newValue) {
         this.ruleForm.ids = [];
         for(let item of newValue) {
-          // this.ruleForm.ids.push(item.spuId);
-          this.ruleForm.ids.push('1155672084941246464');
+          this.ruleForm.ids.push(item.spuId);
         }
         this._globalEvent.$emit('fetchDiscount');
       },
       deep: true
+    },
+
+    //如果新值是一行3个或横向滑动且老值不是这个就把按钮样式改为第一个
+    'ruleForm.listStyle'(newValue, oldValue) {
+      if([3,6].includes(newValue) && ![3,6].includes(oldValue)) { 
+        this.ruleForm.buttonStyle = 1;
+      }
     }
   },
   methods: {

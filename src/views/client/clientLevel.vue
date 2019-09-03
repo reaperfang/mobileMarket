@@ -2,7 +2,7 @@
     <div class="c_container">
         <div>
             <span class="marR10">状态</span>
-            <el-select v-model="status" placeholder="全部">
+            <el-select v-model="status" placeholder="全部" clearable>
                 <el-option label="禁用" value="0"></el-option>
                 <el-option label="启用" value="1"></el-option>
             </el-select>

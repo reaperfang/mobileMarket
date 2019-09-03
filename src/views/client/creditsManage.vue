@@ -61,10 +61,10 @@
                     <span class="marR20">积分获取上限</span>
                     <span>每日最高获得：</span>
                     <div class="input_wrap">
-                        <el-input placeholder="请输入整数"></el-input>
+                        <el-input placeholder="请输入整数" v-model="scoreUpperCount" :disabled="!isSwitch"></el-input>
                     </div>
                     <span>积分</span>
-                    <el-button type="primary" class="marL20">保存</el-button>
+                    <el-button type="primary" class="marL20" v-if="isSwitch" @click="save2">保存</el-button>
                 </div>
                 <cmTable></cmTable>
             </el-tab-pane>
@@ -94,7 +94,9 @@ export default {
                 //积分抵现条件 元
                 scoreToCashOrderMoney:"",
                 //积分抵现条件 百分比
-                scoreToCashOrderRate:""
+                scoreToCashOrderRate:"",
+                //每日最高获得积分数
+                scoreUpperCount:""
             },
             options: [
                 {label: 'test1',value: 1},
@@ -136,6 +138,28 @@ export default {
                 })
             }
         },
+        save2() {
+            if(this.scoreUpperCount == '') {
+                this.$notify({
+                    title: '警告',
+                    message: '每日最高获得积分数不能为空',
+                    type: 'warning'
+                });
+            }else{
+                this._apis.client.saveCreditRule({scoreUpper: this.isSwitch?'1':'0', scoreUpperCount: this.scoreUpperCount, id: '7'}).then((response) => {
+                    this.$notify({
+                        title: '成功',
+                        message: '每日最高获得积分数保存成功',
+                        type: 'success'
+                    });
+                }).catch((error) => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }
+        },
         checkCreditRule() {
             this._apis.client.checkCreditRule({id: '7'}).then((response) => {
                 this.ruleForm.scoreToCash = response.scoreToCash.toString();
@@ -146,6 +170,8 @@ export default {
                 this.ruleForm.scoreToCashOrderMoney = response.scoreToCashOrderMoney;
                 this.ruleForm.scoreToCashOrderRate = response.scoreToCashOrderRate;
                 this.ruleForm.scoreCleanType = response.scoreCleanType.toString();
+                this.scoreUpperCount = response.scoreUpperCount;
+                this.isSwitch = response.scoreUpper == 1? true:false;
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

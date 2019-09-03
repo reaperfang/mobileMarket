@@ -12,7 +12,7 @@
             <p>
                 <span>姓名</span>
                 <span>
-                    <el-switch v-model="info.name" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="name" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
             <p>
@@ -62,16 +62,17 @@ export default {
     data() {
         return {
             hasCancel: true,
-            info: {
-                name: true,
-                wechart_sn: true,
-                gender: true,
-                birthday: false,
-                email: false,
-                area: false,
-                hobby: false,
-                phone: true
-            }
+            // info: {
+            //     name: true,
+            //     wechart_sn: true,
+            //     gender: true,
+            //     birthday: false,
+            //     email: false,
+            //     area: false,
+            //     hobby: false,
+            //     phone: true
+            // }
+            name: true
         }
     },
     methods: {

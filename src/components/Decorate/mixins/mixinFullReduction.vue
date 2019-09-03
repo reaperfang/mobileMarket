@@ -5,7 +5,8 @@ export default {
   components: {},
   data() {
     return {
-      list: []
+      list: [],
+      loading: false
     };
   },
   created() {

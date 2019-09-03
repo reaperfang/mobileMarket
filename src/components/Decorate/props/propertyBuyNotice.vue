@@ -29,7 +29,7 @@
         <div class="goods_list">
           <ul>
             <li v-for="(item, key) of list" :key="key">
-              <img :src="item.mainImage" alt="">
+              <img :src="item.member" alt="">
               <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
             <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectGoods'">

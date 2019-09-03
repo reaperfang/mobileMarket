@@ -186,6 +186,31 @@ export default {
                     message: error
                 });
             })
+        },
+        getInfo() {
+            let row = this.data.row;
+            if(row.sceneRule.length > 0) {
+                let sceneRule = JSON.parse(row.sceneRule);
+                this.enable = row.enable == '启用'?true:false;
+                this.distinguish1 = sceneRule.condition1.distinguish ? true:false;
+                this.fullWord1 = sceneRule.condition1.noDistinguish.fullWord || sceneRule.condition1.yesDistinguish.fullWord;
+                this.allMember1 = sceneRule.condition1.noDistinguish.allMember;
+                this.newMember1 = sceneRule.condition1.yesDistinguish.newMember;
+                this.noMember1 = sceneRule.condition1.yesDistinguish.noMember;
+                this.oldMember1 = sceneRule.condition1.yesDistinguish.oldMember;
+                this.distinguish2 = sceneRule.condition2.distinguish ? true:false;
+                this.fullWord2 = sceneRule.condition2.noDistinguish.fullWord || sceneRule.condition2.yesDistinguish.fullWord;
+                this.allMember2 = sceneRule.condition2.noDistinguish.allMember;
+                this.newMember2 = sceneRule.condition2.yesDistinguish.newMember;
+                this.noMember2 = sceneRule.condition2.yesDistinguish.noMember;
+                this.oldMember2 = sceneRule.condition2.yesDistinguish.oldMember;
+                this.distinguish3 = sceneRule.condition3.distinguish ? true:false;
+                this.fullWord3 = sceneRule.condition3.noDistinguish.fullWord || sceneRule.condition3.yesDistinguish.fullWord;
+                this.allMember3 = sceneRule.condition3.noDistinguish.allMember;
+                this.newMember3 = sceneRule.condition3.yesDistinguish.newMember;
+                this.noMember3 = sceneRule.condition3.yesDistinguish.noMember;
+                this.oldMember3 = sceneRule.condition3.yesDistinguish.oldMember;
+            }
         }
     },
     computed: {
@@ -199,7 +224,7 @@ export default {
         }
     },
     mounted() {
-        
+        this.getInfo();
     },
     props: {
         data: {

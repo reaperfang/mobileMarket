@@ -50,7 +50,15 @@
         <el-table-column prop="vv" label="访客数"></el-table-column>
         <el-table-column prop="pv" label="浏览数"></el-table-column>
         <el-table-column prop="updateTime" label="展示时间" :width="'400px'"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status === 0">展示中</span>
+            <span v-else-if="scope.row.status === 1">排期中</span>
+            <span v-else-if="scope.row.status === 2">已过期</span>
+            <span v-else-if="scope.row.status === 3">已停用</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="startTime" label="创建时间"  :width="'200px'"></el-table-column>
         <el-table-column prop="createUserName" label="操作账号"  :width="'150px'"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">

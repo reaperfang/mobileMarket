@@ -177,7 +177,7 @@ export default {
     },
     handleChange(val) {
       this.memberList.forEach(row => {
-        this.$refs.allClientTable.toggleRowSelection(row);
+        this.$refs.allClientTable.toggleRowSelection(row,val);
       });
     },
     getMembers(startIndex, pageSize) {
