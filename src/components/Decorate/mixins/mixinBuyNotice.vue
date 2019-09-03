@@ -4,7 +4,8 @@ export default {
   name: "mixinBuyNotice",
   data() {
     return { 
-      list: []
+      list: [],
+      loading: false
     };
   },
   created() {
@@ -22,11 +23,10 @@ export default {
           const ids = this.currentComponentData.data.ids;
           if(Array.isArray(ids) && ids.length){
             this.loading = true;
-            this._apis.goods.fetchSpuGoodsList({
-                    status: '1',
-                    ids,
+            this._apis.order.getBuyNotice({
+                    productIds: ids,
                 }).then((response)=>{
-                this.createList(response.list);
+                this.createList(response);
                 this.loading = false;
             }).catch((error)=>{
                 this.$notify.error({

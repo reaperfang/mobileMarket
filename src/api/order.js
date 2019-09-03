@@ -511,6 +511,16 @@ export function orderSendInfoImportBatchDelever(data) {
   })
 }
 
+//获取公告信息(装修首页显示)
+  export function getBuyNotice(data) {
+      return request({
+        target: 'ORDER-BUY-BULLETIN-PROCESS',
+        method: 'post',
+        apiType: 'order',
+        data
+      })
+  }
+
 
 
 

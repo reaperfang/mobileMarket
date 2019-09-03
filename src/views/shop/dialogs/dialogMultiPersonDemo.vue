@@ -50,6 +50,7 @@ export default {
 
 <style lang="scss">
 .multi_wrapper{
+  text-align: center;
   p{
     font-size:22px;
     text-align:left;
