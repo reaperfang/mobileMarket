@@ -15,7 +15,7 @@
                     <div class="priceLine" v-if="showContents.indexOf('2')!=-1">
                         <p class="price">￥<font>{{item.goodsInfos[0].salePrice}}</font></p>
                     </div>
-                    <componentButton :decorationStyle="buttonStyle" decorationText="加入购物车" v-if="showContents.indexOf('4')!=-1" class="button"></componentButton>
+                    <componentButton :decorationStyle="buttonStyle" :decorationText="currentComponentData.data.buttonText" v-if="showContents.indexOf('4')!=-1" class="button"></componentButton>
                 </div>
             </li>
         </ul>

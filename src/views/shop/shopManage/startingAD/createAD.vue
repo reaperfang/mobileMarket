@@ -16,7 +16,10 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm" :style="propsHeight">
         <div class="block header">
           <p class="title">启动广告设置</p>
-          <!-- <p class="state">生效中</p> -->
+          <p :class="{'state': ruleForm.status === 2 || ruleForm.status === 3}" v-if="ruleForm.status === 0">展示中</p>
+          <p :class="{'state': ruleForm.status === 2 || ruleForm.status === 3}" v-else-if="ruleForm.status === 1">排期中</p>
+          <p :class="{'state': ruleForm.status === 2 || ruleForm.status === 3}" v-else-if="ruleForm.status === 2">已过期</p>
+          <p :class="{'state': ruleForm.status === 2 || ruleForm.status === 3}" v-else-if="ruleForm.status === 3">已停用</p>
         </div>
         <div class="block form">
           <el-form-item label="出现页面" prop="type">

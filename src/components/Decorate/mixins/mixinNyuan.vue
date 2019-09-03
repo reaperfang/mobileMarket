@@ -4,7 +4,8 @@ export default {
     name:"mixinNyuan",
     data(){
         return{
-            list: []
+            list: [],
+            loading: false
         }
     },
     created(){
