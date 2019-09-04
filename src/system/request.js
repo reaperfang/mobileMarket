@@ -97,7 +97,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149df68ab265dda3b2ff7b063f22699acda6',
+        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d9d267235da95ed07b4102a5e9e3a4beb',
         // accessToken: store.getters.token || localStorage.getItem('token'),
         client: CONST.CLIENT,
         version: CONST.VERSION,

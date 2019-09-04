@@ -109,7 +109,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 /deep/ .el-checkbox{
-    margin-bottom: 10px;
+    margin: 0 10px 10px 0;
 }
 .user_id{
     text-align: left;

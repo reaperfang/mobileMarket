@@ -558,3 +558,12 @@ export function checkCreditRule(data) {
         data
     })
 }
+//导出客户
+export function exportToLocal(data) {
+    return request({
+        target:'MEMBERINFO-EXPORT-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}

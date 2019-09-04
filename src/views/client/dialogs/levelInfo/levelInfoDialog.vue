@@ -12,7 +12,7 @@
             <p>
                 <span>姓名</span>
                 <span>
-                    <el-switch v-model="name" active-color="#66CCAC"></el-switch>
+                    <el-switch v-model="info.name" active-color="#66CCAC"></el-switch>
                 </span>
             </p>
             <p>
@@ -62,17 +62,16 @@ export default {
     data() {
         return {
             hasCancel: true,
-            // info: {
-            //     name: true,
-            //     wechart_sn: true,
-            //     gender: true,
-            //     birthday: false,
-            //     email: false,
-            //     area: false,
-            //     hobby: false,
-            //     phone: true
-            // }
-            name: true
+            info: {
+                name: false,
+                wechart_sn: false,
+                gender: false,
+                birthday: false,
+                email: false,
+                area: false,
+                hobby: false,
+                phone: false
+            },
         }
     },
     methods: {
@@ -103,7 +102,10 @@ export default {
         DialogBase
     },
     mounted() {
-        this.info = this.data.info;
+        if(this.data.info) {
+            this.info = Object.assign({}, this.data.info);
+            console.log(this.info);
+        }
     }
 }
 </script>
