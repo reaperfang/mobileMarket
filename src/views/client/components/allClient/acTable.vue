@@ -1,6 +1,7 @@
 /* 全部客户列表 */
 <template>
-  <div>
+  <div class="acTable_container">
+    <el-button @click="exportToLocal" class="export_btn">导出</el-button>
     <el-table
       :data="memberList"
       ref="allClientTable"
@@ -98,6 +99,30 @@ export default {
     this.getMembers(1, this.pageSize);
   },
   methods: {
+    exportToLocal() {
+      let selection = this.$refs.allClientTable.selection;
+      let idList = []
+      if (selection.length > 0) {
+        selection.map((v) => {
+          v.id = Number(v.id);
+          idList.push(v.id)
+        });
+        this._apis.client.exportToLocal({idList: idList}).then((response) => {
+          window.location.href = response
+        }).catch((error) => {
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
+        })
+      }else{
+        this.$notify({
+          title: '警告',
+          message: '请选择要导出的数据',
+          type: 'warning'
+        });
+      }
+    },
     handleCurrentChange(val) {
       this.getMembers(val, this.pageSize);
     },
@@ -243,6 +268,14 @@ export default {
           17px 0 no-repeat;
       }
     }
+  }
+}
+.acTable_container{
+  position: relative;
+  .export_btn{
+    position: absolute;
+    top: -62px;
+    left: 73px;
   }
 }
 .a_line {

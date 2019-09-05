@@ -217,7 +217,7 @@ export default {
                 this.levelName = response.alias;
                 this.ruleForm = Object.assign({}, response);
                 //用于回显升级条件
-                if(this.ruleForm.levelConditionListgetSelectedRed) {
+                if(this.ruleForm.levelConditionList) {
                     this.ruleForm.levelConditionList.map((v) => {
                         if(v.levelConditionId == this.getId(this.conditionList, '完善信息')) {
                             this.condition1 = true;
