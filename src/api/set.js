@@ -74,22 +74,82 @@ export function setShopMessage(data) {
 /* 获取子账号列表 */
 export function getSubAccount(data) {
   return request({
-    target: 'MANAGER-API-102',
+    target: 'MANAGER-API-143',
     method: 'post',
     apiType: 'manager',
     data
   })
 }
+
+/* 新建子账号 */
+export function newSubAccount(data) {
+  return request({
+    target: 'MANAGER-API-144',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
+/* 编辑子账号 */
+export function editSubAccount(data) {
+  return request({
+    target: 'MANAGER-API-145',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
+/* 删除子账号 */
+export function deleteAccount(data) {
+  return request({
+    target: 'MANAGER-API-146',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
 
 /* 获取角色列表 */
 export function getRoleList(data) {
   return request({
-    target: 'MANAGER-API-110',
+    target: 'MANAGER-API-147',
     method: 'post',
     apiType: 'manager',
     data
   })
 }
 
+/* 新建角色 */
+export function newRole(data) {
+  return request({
+    target: 'MANAGER-API-148',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
+/* 删除角色 */
+export function deleteRole(data) {
+  return request({
+    target: 'MANAGER-API-149',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
+/* 上传图片 */
+export function uploadImage(data) {
+  return request({
+    url: '',
+    method: 'post',
+    apiType: 'uploadImage',
+    data
+  })
+}
 
 

@@ -25,7 +25,7 @@
                       <el-checkbox v-model="item.checked" @change="handleChecked"></el-checkbox>
                       <i class="wx_icon" v-if="item.isSyncWechat"></i>
                     </span>
-                    <span>
+                    <span v-if="!item.isSyncWechat">
                       {{item.imgPixelWidth || '0'}}*{{item.imgPixelHeight || '0'}}px
                     </span>
                     <span>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="operate" ref="operate">
                   <el-button type="primary" plain class="block mt10 ml10" @click="moveGroup(item.id)">分组</el-button>
-                  <!-- <el-button type="primary" plain class="block mt10">剪裁</el-button> -->
+                  <el-button type="primary" plain class="block mt10" v-if="!item.isSyncWechat" @click="imageTailor(item.filePath)">剪裁</el-button>
                   <el-button type="primary" plain class="block mt10" @click="deleteImage(item.id,'imageId')">删除</el-button>
                 </div>
               </div>
@@ -81,10 +81,11 @@ import dialogDelete from '../../../dialogs/dialogDelete';
 import dialogGroups from '../../../dialogs/dialogGroups';
 import dialogGroupsMove from '../../../dialogs/dialogGroupsMove';
 import dialogCopyLink from '../../../dialogs/dialogCopyLink';
+import dialogImageTailor from '../../../dialogs/dialogImageTailor';
 
 export default {
   name: 'imageMaterial',
-  components: {dialogCutImage, dialogUploadImage,dialogSyncImage,dialogDelete,dialogGroups,dialogGroupsMove,dialogCopyLink},
+  components: {dialogCutImage, dialogUploadImage,dialogSyncImage,dialogDelete,dialogGroups,dialogGroupsMove,dialogCopyLink,dialogImageTailor},
   data () {
     return {
       data:'',
@@ -314,6 +315,13 @@ export default {
       this.list.map(item =>{
         item.checked == true && this.arrayData.push(item.id)        
       })
+    },
+
+    //图片裁剪
+    imageTailor(url){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogImageTailor'
+      this.data = url
     },
     /**********************************        单张图片      **********************/
     onMouseOver(index){

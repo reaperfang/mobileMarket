@@ -16,13 +16,6 @@
                     {{item.content}}
                   </p>
                 </div>
-                <!--<p class="img_bottom">
-                   <span><i class="el-icon-edit" @click="_routeTo('generalArticle',{id:item.id})"></i></span>
-                  <span><i class="el-icon-delete" @click="handleDeleteArticle(item.id,'articleId')"></i></span>
-                </p>-->
-                <!-- <div ref="operate" class="operate">
-                  <i class="el-icon-view" @click="_routeTo('generalArticle',{id:item.id})"> 预览文章</i>
-                </div> -->
               </div>
           </div>
         </div>
@@ -31,7 +24,6 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total*1"
@@ -54,7 +46,7 @@ export default {
       checked:false,
       list:[],
       currentPage:1,
-      pageSize:10,
+      pageSize:20,
       total:0,
     }
   },
@@ -102,13 +94,14 @@ export default {
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
-            cid:this.$store.getters.user.cid,
-            mediaId:item.mediaId,
+            cid:'2',
+            // cid:this.$store.getters.user.cid,
+            mediaId:item.media_id,
             sourceMaterialType:'1',
-            title:'',
-            sourceMaterial:'',
-            isCover:'',
-            fileCover:''
+            title:item.title,
+            sourceMaterial:item.content_source_url,
+            isCover:item.url ? '1' : '0',
+            fileCover:item.url
           }
           datas.push(obj)
         }        

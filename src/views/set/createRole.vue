@@ -6,22 +6,24 @@
             <!-- <el-form-item label="店铺名称:" prop="shopName">
                 <el-input v-model="form.shopName" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item> -->
-            <el-form-item label="角色名称:" prop="name">
-                <el-input v-model="form.name" style="width:182px;" placeholder="10个汉字"></el-input>
+            <el-form-item label="角色名称:" prop="roleName">
+                <el-input v-model="form.roleName" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item>
-            <el-form-item label="角色描述:" prop="remack">
-                <el-input v-model="form.remack" style="width:182px;" placeholder="请输入"></el-input>
+            <el-form-item label="角色描述:" prop="roleDesc">
+                <el-input v-model="form.roleDesc" style="width:182px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="同步店铺:" prop="role">
-                <el-checkbox-group v-model="form.role" class="inline">
-                    <el-checkbox
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+            <el-form-item label="同步店铺:" prop="shop">
+                <el-radio-group v-model="form.shop" class="inline">
+                    <el-radio
+                    v-for="item in shops"
+                    :key="item.id"
+                    :label="item.id"
+                    :value="item.id"
+                    @change="handleShop"
                     class="mr20">
-                    </el-checkbox>
-                </el-checkbox-group>
+                    {{item.shopName}}
+                    </el-radio>
+                </el-radio-group>
             </el-form-item>
             <el-form-item>
                 <el-tab-pane v-for="(menu, index) in theModel" :key="index"  :label="menu.menuName" style="display:block">
@@ -43,7 +45,6 @@
 </template>
 
 <script>
-// import { listArea } from '@/api/area'
 import treeMenu from '@/components/TreeMenu'
 import * as menus from '@/components/menus'
 export default {
@@ -54,46 +55,60 @@ export default {
   data() {
     return {
       form: {
-          shopName:'',
-          name: '',
-          remack: '',
-          role: [1,2]
+          roleName:'',
+          roleDesc: '',
+          shop: []
       },
-      options:[
-          {
-              label:'店铺1',
-              value:1
-          },
-          {
-              label:'店铺2',
-              value:2
-          },
-          {
-              label:'店铺3',
-              value:3
-          }
-      ],
+      shops:[],
       rules:{
-        shopName: [
-          { required: true, message: '请输入商铺名称', trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '请输入人员名称', trigger: 'blur' },
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
         ],
-        remack:[
-          { required: true, message: '请输入登录手机号', trigger: 'blur' },
-        ],
-        role:[
-          { required: true, message: '请选择角色', trigger: 'blur' },
+        shop:[
+          { required: true, message: '请选择店铺', trigger: 'blur' },
         ]
       },
       selectKeys:[],
-      theModel:menus
+      theModel:menus,
+      msfList:[]
     }
   },
+  computed: {
+      roleInfo(){
+          return this.$route.params.data
+      },
+      userInfo(){
+        return JSON.parse(this.$store.getters.userInfo)
+     }
+  },
+  created(){
+      this.init()
+      this.getShops()
+  },
   methods:{
-      onSubmit(){},      
+    init(){
+        this.roleInfo && (this.form = {
+            roleName:this.roleInfo.roleName,
+            roleDesc:this.roleInfo.roleDesc,
+            shop:this.roleInfo.shopIds.split(',')              
+        })
+    },
+      //获取所有店铺
+    getShops(){
+      let data = this.userInfo.shopInfoMap
+      for(let key in data){
+        let shopObj = data[key]
+        this.shops.push(shopObj)
+      }
+    },
+    handleShop(val){
+        this.shops.map(item =>{
+            item.id == val && (this.msfList = item.data.msfList)
+        })
+        console.log('66666',this.msfList )
+    },
+    onSubmit(){},      
   }
 }
 </script>

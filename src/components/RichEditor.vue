@@ -74,6 +74,7 @@ export default {
     },
 
      ready (editorInstance) {
+      this.$emit('ready');
       this.editor = editorInstance;
       const iframe = editorInstance.iframe;
       const document = iframe.contentDocument;

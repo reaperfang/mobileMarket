@@ -63,15 +63,15 @@ export default {
         return {
             hasCancel: true,
             info: {
-                name: true,
-                wechart_sn: true,
-                gender: true,
+                name: false,
+                wechart_sn: false,
+                gender: false,
                 birthday: false,
                 email: false,
                 area: false,
                 hobby: false,
-                phone: true
-            }
+                phone: false
+            },
         }
     },
     methods: {
@@ -102,7 +102,10 @@ export default {
         DialogBase
     },
     mounted() {
-        this.info = this.data.info;
+        if(this.data.info) {
+            this.info = Object.assign({}, this.data.info);
+            console.log(this.info);
+        }
     }
 }
 </script>

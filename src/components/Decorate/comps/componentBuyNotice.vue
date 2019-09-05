@@ -10,8 +10,8 @@
         <div class="nwwest-roll" id="nwwest-roll">
           <ul id="roll-ul" :style="{'color':currentComponentData.data.fontColor}">
             <li ref="rollul" v-for="item in list" class="ellipsis" :class="{anim:animate===true}">
-              <img :src="item.mainImage" alt="">
-              <span class="name">{{item.name}}</span>
+              <img :src="item.member" alt="">
+              <span class="name">{{item.content}}</span>
             </li>
           </ul>
         </div>

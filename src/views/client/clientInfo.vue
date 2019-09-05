@@ -139,7 +139,14 @@
                 </div>
             </div>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @sendDiscount="sendDiscount" v-if="hackReset"></component>
+        <component 
+            :is="currentDialog" 
+            :dialogVisible.sync="dialogVisible" 
+            :data="currentData"
+            @sendDiscount="sendDiscount"
+            @refreshPage="refreshPage" 
+            v-if="hackReset">
+        </component>
     </div>
 </template>
 <script type="es6">
@@ -190,6 +197,9 @@ export default {
         }
     },
     methods: {
+        refreshPage() {
+            this.getMemberInfo();
+        },
         changeIdentity() {
             this.dialogVisible = true;
             this.currentDialog = "changeIdentityDialog";
@@ -206,6 +216,7 @@ export default {
                     message: "移除标签成功",
                     type: 'success'
                 });
+                this.getMemberInfo();
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',
@@ -219,6 +230,7 @@ export default {
                 this.hackReset = true;
             })
             this.dialogVisible = true;
+            this.currentData.id = this.userId;
             this.currentDialog = "addTagDialog";
         },
         showBalanceList() {

@@ -32,7 +32,7 @@
                     </div>
                     <p class="c_warn">建议上传图片尺寸1000*630像素，不超过2M，格式支持JPG、PNG、JPEG</p>
                 </div>
-                <cdTable :cardList="cardList"></cdTable>
+                <cdTable :cardList="cardList" @refreshTable="refreshTable"></cdTable>
             </el-tab-pane>
             <el-tab-pane label="领卡记录" name="second">
                 <div class="c_line">
@@ -136,6 +136,10 @@ export default {
                     message: error
                 });
             })
+        },
+        refreshTable() {
+            console.log(1);
+            this.getCardList();
         },
         getCardNames() {
             this._apis.client.getCardNames({}).then((response) => {

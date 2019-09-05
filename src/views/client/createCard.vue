@@ -289,7 +289,6 @@ export default {
       upgrade2: "",
       upgrade3: "",
       upgrade4: "",
-
       currentDialog: "",
       currentData: {},
       dialogVisible: false,

@@ -35,6 +35,7 @@ export default {
                         message: "添加渠道成功",
                         type: 'success'
                     });
+                    this.$emit('refreshPage')
                 }).catch((error) => {
                     this.$notify.error({
                         title: '错误',

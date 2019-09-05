@@ -4,7 +4,8 @@ export default {
     name:"mixinMultiPerson",
     data(){
         return{
-            list: []
+            list: [],
+            loading: false
         }
     },
     created(){
@@ -20,6 +21,9 @@ export default {
             }
         },
         'currentComponentData.data.showNumber'(newValue) {
+            this.fetch();
+        },
+        'currentComponentData.data.sortRule'(newValue) {
             this.fetch();
         }
     },

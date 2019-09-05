@@ -43,7 +43,7 @@
       <el-table-column
         label="状态">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.enable" @change="changeSwitch($event,scope.row)"></el-switch>
+          <el-switch v-model="scope.row.enable" @change="changeSwitch(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -51,7 +51,7 @@
             <div class="btns clearfix">
                 <span v-if="scope.row.name" @click="goToEdit(scope.row)">编辑</span>
                 <span v-if="scope.row.name" @click="sendCard(scope.row)">发卡</span>
-                <span v-if="!scope.row.name" :style="{color: scope.row.isGray ? '#eee':'#655EFF'}" @click="handleConfig(scope.row.isGray)">待配置</span>
+                <span v-if="!scope.row.name" :style="{color: scope.row.isGray ? '#eee':'#655EFF'}" @click="handleConfig(scope.row)">待配置</span>
             </div>
         </template>
       </el-table-column>
@@ -76,14 +76,14 @@ export default {
     };
   },
   methods: {
-    changeSwitch(event,row) {
-      let enable = event ? 0:1;
-      this._apis.client.toggleStatus({id:row.id, enable: enable}).then((response) => {
+    changeSwitch(row) {
+      this._apis.client.toggleStatus({id:row.id, enable: row.enable?1:0}).then((response) => {
         this.$notify({
           title: '成功',
           message: "切换成功",
           type: 'success'
         });
+        this.$emit('refreshTable');
       }).catch((error) => {
         this.$notify.error({
           title: '错误',
@@ -108,8 +108,10 @@ export default {
       });
       this.$set(this.cardList[i], 'isGray', false);
     },
-    handleConfig(isGray) {
-      console.log(isGray);
+    handleConfig(row) {
+      if(!row.isGray) {
+        this._routeTo('createCard',{cardData:row});
+      }
     },
     goToEdit(row) {
       this._routeTo('createCard',{cardData:row});

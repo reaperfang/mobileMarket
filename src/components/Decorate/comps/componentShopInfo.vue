@@ -8,20 +8,20 @@
           <img :src="shopInfo.logo" alt />
         </div>
         <div class="shopinfo_introduce">
-          <p class="shopinfo_title">{{shopInfo.shopName}}</p>
-          <div class="shopinfo_explain">
+          <p class="shopinfo_title">{{shopInfo.shopName || '店铺名称'}}</p>
+          <!-- <div class="shopinfo_explain">
             <p>
               <span>满减</span>
             </p>
             <span>满减优惠活动展示</span>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
     <!-- 样式二 -->
     <div v-if="displayStyle2" class="shopinfo2">
       <div class="shopinfo2_bg" :style="background">
-        <div>{{shopInfo.shopName}}</div>
+        <div>{{shopInfo.shopName || '店铺名称'}}</div>
       </div>
       <div class="shopinfo2_two">
         <div class="shopinfo2_img">
@@ -41,7 +41,7 @@
           <img :src="shopInfo.logo" alt />
         </div>
         <div class="shopinfo3_introduce">
-          <p>{{shopInfo.shopName}}</p>
+          <p>{{shopInfo.shopName || '店铺名称'}}</p>
           <div>
             <span>全部商品999</span>
             <span></span>
@@ -58,7 +58,7 @@
           <img :src="shopInfo.logo" alt />
         </div>
         <div class="shopinfo4_introduce">
-          <div class="shopinfo4_title">{{shopInfo.shopName}}</div>
+          <div class="shopinfo4_title">{{shopInfo.shopName || '店铺名称'}}</div>
           <div class="shopinfo4_conts">
             <span>全部商品999</span>
             <span></span>
@@ -72,7 +72,7 @@
       <div class="shopinfo5_img">
         <img :src="shopInfo.logo" alt />
       </div>
-      <div class="shopinfo5_title">{{shopInfo.shopName}}</div>
+      <div class="shopinfo5_title">{{shopInfo.shopName || '店铺名称'}}</div>
       <div class="shopinfo5_line"></div>
       <div class="shopinfo5_conts">
         <span>全部商品999</span>
@@ -217,6 +217,7 @@ export default {
           width: 100%;
           height: 100%;
           border-radius: 50%;
+          border:1px solid #ddd;
         }
       }
       & > .shopinfo2_introduce {
@@ -324,6 +325,7 @@ export default {
           width: 100%;
           height: 100%;
           border-radius: 50%;
+          border:1px solid #ddd;
         }
       }
       & > .shopinfo4_introduce {
@@ -374,6 +376,7 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 50%;
+        border:1px solid #ddd;
       }
     }
     & > .shopinfo5_title {

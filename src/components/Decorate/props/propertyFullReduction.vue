@@ -1,12 +1,12 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :style="bodyHeight">
     <div class="block form">
-      <el-form-item label="显示标题" prop="title">
+      <!-- <el-form-item label="显示标题" prop="title">
         <el-input
           placeholder="请输入标题"
           v-model="ruleForm.title">
         </el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="选择活动" prop="promotions">
         <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectFullReduction'">选择活动</el-button>
         <div>

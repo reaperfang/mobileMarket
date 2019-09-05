@@ -59,7 +59,13 @@
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+    <component 
+      :is="currentDialog" 
+      :dialogVisible.sync="dialogVisible" 
+      :data="currentData"
+      v-if="hackReset"
+    >
+    </component>
   </div>
 </template>
 <script type='es6'>
@@ -76,7 +82,8 @@ export default {
       importList: [],
       currentDialog: "",
       dialogVisible: false,
-      currentData:{}
+      currentData:{},
+      hackReset: false
     };
   },
   computed: {
@@ -108,12 +115,20 @@ export default {
       })
     },
     addTag(row) {
+      this.hackReset = false;
+      this.$nextTick(() => {
+        this.hackReset = true;
+      })
       this.dialogVisible = true;
       this.currentDialog = "batchAddTagDialog";
       this.currentData.successNum = row.successNum;
       this.currentData.id = row.id;
     },
     modify(row) {
+      this.hackReset = false;
+      this.$nextTick(() => {
+        this.hackReset = true;
+      })
       this.dialogVisible = true;
       this.currentDialog = "changeIdentityDialog";
       this.currentData.successNum = row.successNum;

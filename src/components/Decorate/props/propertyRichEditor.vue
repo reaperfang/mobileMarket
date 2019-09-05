@@ -11,7 +11,7 @@
       <el-checkbox v-model="ruleForm.remainPageMargin">保留边距</el-checkbox>
     </el-form-item>
     <el-form-item label="">
-      <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.richValue"></RichEditor>
+      <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.richValue" ref="richEditor"></RichEditor>
     </el-form-item>
     </div>
   </el-form>
@@ -36,7 +36,7 @@ export default {
           initialFrameWidth: 306
       },
       ruleForm: {
-        backgroundColor: 'red',
+        backgroundColor: '#ffffff',
         remainPageMargin: true,
         richValue: ''
       },
@@ -46,12 +46,33 @@ export default {
     }
   },
 
+  mounted() {
+    setTimeout(() => {
+      this.setEditorBackground();
+    },500);
+  },
+
+  watch: {
+    'ruleForm.backgroundColor'() {
+      this.setEditorBackground();
+    }
+  },
+
   methods: {
 
     /* 富文本内容更新 */
     editorValueUpdate(html) {
       this.ruleForm.richValue = html;
     },
+
+    setEditorBackground() {
+      const richEditor = this.$refs.richEditor;
+      if(!richEditor) {
+        return;
+      }
+      const body = richEditor.editor.body;
+      body.style.backgroundColor = this.ruleForm.backgroundColor;
+    }
 
   }
 }

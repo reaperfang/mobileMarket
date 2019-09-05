@@ -22,7 +22,7 @@
       <li v-for="(item, key) of videoList" :key="key" class="cell-item" @click="selectVideo($event, item)">
         <div class="video_head">
           <span>{{item.createTime}}</span>
-          <span>{{item.fileSize + 'MB'}}</span>
+          <span>{{(item.fileSize || '-- ') + 'MB'}}</span>
         </div>
         <div class="video_body">
           <p>{{item.fileName}}</p>

@@ -17,19 +17,30 @@
           <el-radio :label="3">居右显示</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="副标题" prop="subTitle">
+      <el-form-item label="副标题" prop="subTitle" v-if="ruleForm.titleTemplate === 1">
         <el-input placeholder="请输入标题" v-model="ruleForm.subTitle"></el-input>
       </el-form-item>
-      <el-form-item label="背景颜色" prop="backgroundColor">
+      <el-form-item label="背景颜色" prop="backgroundColor" v-if="ruleForm.titleTemplate === 1">
         <div class="color_block">
           <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
           <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
           <el-button type="text">重置</el-button>
         </div>
       </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" plain>添加一个文本导航</el-button>
+      <el-form-item label="日期" prop="date" v-if="ruleForm.titleTemplate === 2">
+        <el-date-picker
+          v-model="ruleForm.date"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择日期">
+        </el-date-picker>
       </el-form-item>
+      <el-form-item label="作者" prop="author" v-if="ruleForm.titleTemplate === 2">
+        <el-input placeholder="请输入作者" v-model="ruleForm.author"></el-input>
+      </el-form-item>
+      <!-- <el-form-item label="">
+        <el-button type="primary" plain>添加一个文本导航</el-button>
+      </el-form-item> -->
       <el-form-item label="导航名称" prop="navName">
         <el-input placeholder="请输入名称" v-model="ruleForm.navName"></el-input>
       </el-form-item>
@@ -61,6 +72,8 @@ export default {
         backgroundColor: '',
         navName: '',
         linkTo: '',
+        author: '',
+        date: ''
       },
       rules: {
 

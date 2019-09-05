@@ -6,7 +6,7 @@
                 <el-form ref="ruleForm" :rules="rules" :model="ruleForm">
                     <el-form-item label="所属渠道：" prop="channelId">
                         <div class="input_wrap">
-                            <el-select v-model="ruleForm.channelId" placeholder="选择渠道">
+                            <el-select v-model="ruleForm.channelId" placeholder="选择渠道" clearable>
                                 <el-option
                                     v-for="item in channelOptions"
                                     :key="item.id"
@@ -60,7 +60,7 @@
                     end-placeholder="结束日期">
                 </el-date-picker>
                 <span class="marL20">渠道：</span>
-                <el-select v-model="channelId2" placeholder="选择渠道">
+                <el-select v-model="channelId2" placeholder="选择渠道" clearable>
                     <el-option
                         v-for="item in channelOptions"
                         :key="item.id"
@@ -73,7 +73,7 @@
             </div>
             <ciTable style="margin-top: 68px" :params="params"></ciTable>
         </div>
-        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+        <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @refreshPage="refreshPage"></component>
     </div>
 </template>
 <script type="es6">
@@ -114,6 +114,9 @@ export default {
         }
     },
     methods: {
+        refreshPage() {
+            this.getChannels();
+        },
         handleAvatarSuccess(res, file) {
             // this.fileData = res.data
             this.importUrl = res.data.url;
@@ -134,26 +137,12 @@ export default {
             this.importUrl = "";
         },
         handleCheck() {
-            if(this.importTime == "") {
-                this.$notify({
-                    title: '警告',
-                    message: '请选择导入时间',
-                    type: 'warning'
-                });
-            }else if(this.channelId2 == "") {
-                this.$notify({
-                    title: '警告',
-                    message: '请选择渠道',
-                    type: 'warning'
-                });
-            }else{
-                let params = {
-                    importTimeStart: this.importTime[0],
-                    importTimeEnd: this.importTime[1],
-                    channelId: this.channelId2
-                }
-                this.params = Object.assign({}, params);
+            let params = {
+                importTimeStart: this.importTime[0],
+                importTimeEnd: this.importTime[1],
+                channelId: this.channelId2
             }
+            this.params = Object.assign({}, params);
         },
         //获取渠道下拉
         getChannels() {

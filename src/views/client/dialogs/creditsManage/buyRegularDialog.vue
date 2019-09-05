@@ -20,7 +20,7 @@
         <div v-if="distinguish == '0'">
           <span>每消费</span>
           <div class="input_wrap">
-            <el-input v-model="payAmount"></el-input>
+            <el-input v-model="payAmount1"></el-input>
           </div>
           <span>元 获得</span>
           <div class="input_wrap">
@@ -116,6 +116,7 @@ export default {
       productLabelName: "",
       name: "",
       skuList: JSON.parse(localStorage.getItem('skuList')) || [],
+      payAmount1: "",
       payAmount:"",
       allMember:"",
       noMember:"",
@@ -136,7 +137,7 @@ export default {
                 selectProducts: this.selectProducts,
                 distinguish: this.distinguish == '0'? false:true,
                 noDistinguish: {
-                    payAmount: this.payAmount,
+                    payAmount: this.payAmount1,
                     allMember: this.allMember
                 },
                 yesDistinguish: {
@@ -171,6 +172,16 @@ export default {
     showDialog(val) {
       if (val == 1) {
         this.otherVisible = true;
+        this.$nextTick(() => {
+          let sceneRule = JSON.parse(this.data.row.sceneRule);
+          sceneRule.selectProducts.map((v) => {
+            this.skuList.forEach(row => {
+                if(row.goodsInfo.id == v.id) {
+                  this.$refs.skuTable.toggleRowSelection(row);
+                }
+            })
+          });
+        })
       }
     },
     transTreeData(data, pid) {
@@ -252,6 +263,31 @@ export default {
             obj.name = v.goodsInfo.name;
             this.selectProducts.push(obj);
         });
+    },
+    getInfo() {
+      let row = this.data.row;
+      if(row.sceneRule.length > 0) {
+        let sceneRule = JSON.parse(row.sceneRule);
+        this.enable = row.enable == '启用'?true:false;
+        this.isAllProduct = sceneRule.isAllProduct?'0':'1';
+        // this.$nextTick(() => {
+        //   sceneRule.selectProducts.map((v) => {
+        //     this.skuList.forEach(row => {
+        //         if(row.goodsInfo.id == v.id) {
+        //           console.log(this.$refs.skuTable);
+        //           this.$refs.skuTable.toggleRowSelection(row);
+        //         }
+        //     })
+        //   });
+        // })
+        this.distinguish = sceneRule.distinguish?"1":"0";
+        this.payAmount1 = sceneRule.noDistinguish.payAmount;
+        this.allMember = sceneRule.noDistinguish.allMember;
+        this.oldMember = sceneRule.yesDistinguish.oldMember;
+        this.newMember = sceneRule.yesDistinguish.newMember;
+        this.noMember = sceneRule.yesDistinguish.noMember;
+        this.payAmount = sceneRule.yesDistinguish.payAmount;
+      }
     }
   },
   computed: {
@@ -265,8 +301,9 @@ export default {
     }
   },
   mounted() {
-    this.getProductClass();
     this.getSkuList(1,10);
+    this.getInfo();
+    this.getProductClass();
   },
   props: {
     data: {},

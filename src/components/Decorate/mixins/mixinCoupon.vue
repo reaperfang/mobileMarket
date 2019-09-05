@@ -4,7 +4,8 @@ export default {
   name: 'mixinCoupon',
   data () {
     return {
-      list: []
+      list: [],
+      loading: false
     }
   },
   created() {

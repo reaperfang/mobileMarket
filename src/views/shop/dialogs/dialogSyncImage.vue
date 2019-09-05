@@ -7,7 +7,7 @@
             <div class="imgs">
               <div class="item_img" v-for="(item) in list" :key="item.id">
                 <div class="img_info">
-                  <img :src="item.filePath">
+                  <img :src="item.url">
                   <div class="img_bottom">
                     <p>
                       <span>
@@ -36,7 +36,6 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="currentPage"
-              :page-sizes="[10, 20, 30, 40]"
               :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total*1"
@@ -61,7 +60,7 @@ export default {
       checked:false,
       list:[],
       currentPage:1,
-      pageSize:10,
+      pageSize:20,
       total:0,
     }
   },
@@ -91,7 +90,6 @@ export default {
         startIndex:this.currentPage,
       }
       this._apis.file.getWxImage(query).then((response)=>{
-        // console.log('1111111',response)
         this.list = []
         response.item.map(item => {
           let data = Object.assign({checked:false}, item)
@@ -111,10 +109,10 @@ export default {
         if(item.checked == true){
           let obj = {
             cid:this.$store.getters.user.cid,
-            mediaId:item.mediaId,
+            mediaId:item.media_id,
             sourceMaterialType:'0',
-            fileName:'',
-            filePath:'',
+            fileName:item.name,
+            filePath:item.url,
             imgPixelWidth:'',
             imgPixelHeight:'',
             fileSize:'',

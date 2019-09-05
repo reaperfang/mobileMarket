@@ -4,7 +4,8 @@ export default {
     name:"mixinGoodsGroup",
     data() {
       return {
-        list: []
+        list: [],
+        loading: false
       }
     },
     created() {
@@ -29,6 +30,7 @@ export default {
                 this.loading = true;
                 this._apis.goods.fetchCategoryList({ids}).then((response)=>{
                     this.list = response;
+                    this._globalEvent.$emit('fetchGoods');
                     this.loading = false;
                 }).catch((error)=>{
                     this.$notify.error({
