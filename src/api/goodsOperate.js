@@ -36,7 +36,7 @@ export function fetchSpecsList(data) {
     return request({
       apiType: 'goodsOperate',
       method: 'post',
-      target: 'PUBLICPRODUCTSPECSDETAILLISTPROCESSOR',
+      target: 'PUBLIC-PRODUCT-SPECS-DETAIL-LIST-PROCESSOR',
       data
     })
   }

@@ -33,28 +33,28 @@
                             </el-table-column>
                             <el-table-column
                                 label="商品"
-                                width="180">
+                                width="380">
                                 <template slot-scope="scope">
                                     <div class="goods-detail">
                                         <div class="goods-detail-item">
-                                            <img src="" alt="">
+                                            <img width="66" :src="scope.row.goodsImage" alt="">
                                         </div>
                                         <div class="goods-detail-item">
-                                            <p>{{scope.row.goodsName}}</p>
-                                            <p>{{scope.row.goodsSpecs}}</p>
+                                            <p class="ellipsis" style="width: 300px;" :title="scope.row.goodsName">{{scope.row.goodsName}}</p>
+                                            <p>{{scope.row.goodsSpces | goodsSpecsFilter}}</p>
                                         </div>
                                     </div>
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                prop="goodsCount"
+                                prop="afterSaleCount"
                                 label="应发数量">
                             </el-table-column>
                             <el-table-column
-                                prop="sendCount"
+                                prop="afterSaleCount"
                                 label="本次发货数量">
                                 <template slot-scope="scope">
-                                    <el-input :disabled="true"  v-model="scope.row.goodsCount"></el-input>
+                                    <el-input :disabled="true"  v-model="scope.row.afterSaleCount"></el-input>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -364,6 +364,14 @@ export default {
     .footer {
         text-align: center;
         margin-top: 40px;
+    }
+    .goods-detail {
+        display: flex;
+        .goods-detail-item:last-child {
+            p {
+                margin-bottom: 6px;
+            }
+        }
     }
 </style>
 

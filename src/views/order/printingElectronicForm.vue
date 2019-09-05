@@ -52,7 +52,7 @@ export default {
             }, 0)
         },
         printInfo() {
-            this._apis.order.printElectronicForm({orderIds: this.$route.query.ids.split(',').map(val => +val)}).then((res) => {
+            this._apis.order.printElectronicForm({orderIds: this.$route.query.ids.split(',').map(val => val)}).then((res) => {
                 this.tableData = res
             }).catch(error => {
                 this.$notify.error({

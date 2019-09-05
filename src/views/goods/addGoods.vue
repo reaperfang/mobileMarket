@@ -6,7 +6,7 @@
         <div :class="{active: index == 2}" @click="scrollTo(2)" class="item">物流/售后</div>
         <div :class="{active: index == 3}" @click="scrollTo(3)" class="item">详情描述</div>
     </header> -->
-    <el-form :model="ruleForm" ref="ruleForm" label-width="138px" class="demo-ruleForm">
+    <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="160px" class="demo-ruleForm">
         <section class="form-section">
             <h2>基本信息</h2>
             <el-form-item label="商品类目" prop="productCategoryInfoId">
@@ -25,10 +25,12 @@
                 <el-input type="textarea" v-model="ruleForm.description" maxlength="100" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品图片" prop="images">
-                <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px">
+                <!-- <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px"> -->
                 <el-upload
                     :action="uploadUrl"
+                    multiple
                     :limit="6"
+                    :file-list="fileList"
                     list-type="picture-card"
                     :data="{json: JSON.stringify({cid: 2})}"
                     :on-preview="handlePictureCardPreview"
@@ -38,6 +40,9 @@
                     <i class="el-icon-plus"></i>
                     <p style="line-height: 21px; margin-top: -39px; color: #92929B;">上传图片</p>
                 </el-upload>
+                <el-dialog :visible.sync="imageDialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
                 <span @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
             </el-form-item>
@@ -64,11 +69,16 @@
                         </el-select>
                     </div>
                     <div @click="currentDialog = 'AddTagDialog'; dialogVisible = true" class="item tag">新增标签</div>
-                    <div @mouseenter="imageVisible = true" @mouseleave="imageVisible = false" class="item example">查看样例</div>
-                    <div v-show="imageVisible" class="item images">
-                        <img src="../../assets/images/goods/example.png" alt="">
+                    <div @mouseenter="imageVisible = true" @mouseleave="imageVisible = false" class="item example">
+                        查看样例
+                        <div v-show="imageVisible" class="item images images-example">
+                            <img src="../../assets/images/goods/example.png" alt="">
+                        </div>
                     </div>
                 </div>
+            </el-form-item>
+            <el-form-item label="商品编码" prop="code">
+                <el-input v-model="ruleForm.code" minlength="6" maxlength="18" placeholder="请输入商品编码"></el-input>
             </el-form-item>
         </section>
         <section class="form-section">
@@ -88,51 +98,72 @@
                     </el-table-column>
                     <el-table-column
                         prop="costPrice"
-                        label="成本价"
-                        width="180">
+                        label="成本价">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.price" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row.costPrice" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="salePrice"
                         label="售卖价">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.salePrice" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row.salePrice" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="stock"
                         label="库存">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.stock" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row.stock" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="wanningStock"
                         label="库存预警">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.warning" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row.wanningStock" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="weight"
                         label="重量">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.weight" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row.weight" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="volume"
                         label="体积">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.tiji" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row.volume" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        label="操作">
+                        prop="image"
+                        label="图片">
                         <template slot-scope="scope">
-                            
+                            <el-upload
+                                class="upload-spec"
+                                :action="uploadUrl"
+                                :data="{json: JSON.stringify({cid: 2})}"
+                                :on-remove="specHandleRemove"
+                                :on-success="function(response, file, fileList) {
+                                    specUploadSuccess(response, file, fileList, scope.$index, scope.row)
+                                }"
+                                :show-file-list="showFileList">
+                                <i class="el-icon-plus"></i>
+                                点击上传
+                            </el-upload>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="操作"
+                        width="90">
+                        <template slot-scope="scope">
+                            <div class="spec-operate">
+                                <span @click="emptySpec(scope.$index)">清空</span>
+                                <span @click="deleteSpec(scope.$index)">删除</span>
+                            </div>
                         </template>
                     </el-table-column>
                     </el-table>
@@ -172,6 +203,13 @@
                         <el-table-column
                             prop="volume"
                             label="体积">
+                        </el-table-column>
+                        <el-table-column
+                            prop="image"
+                            label="图片">
+                            <template slot-scope="scope">
+                                <img width="66" :src="scope.row.image" alt="">
+                            </template>
                         </el-table-column>
                     </el-table>
                 </template>
@@ -262,9 +300,9 @@
                     <el-select v-model="ruleForm.freightTemplateId" placeholder="请选择">
                         <el-option
                             v-for="item in shippingTemplates"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
                             </el-option>
                         </el-select>
                 </div>
@@ -297,12 +335,12 @@
                         width="180">
                     </el-table-column>
                     <el-table-column
-                        prop="unit"
+                        prop="productUnit"
                         label="单位"
                         width="180">
                     </el-table-column>
                     <el-table-column
-                        prop="price"
+                        prop="salePrice"
                         label="价格（元）">
                     </el-table-column>
                     <el-table-column label="操作">
@@ -314,15 +352,21 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <el-form-item label="商品详情" prop="productDetail">
-                <rickEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></rickEditor>
+            <el-form-item label="是否勾选为“推荐商品”" prop="isRecommend">
+                <el-radio-group v-model="ruleForm.isRecommend">
+                    <el-radio :label="1">是</el-radio>
+                    <el-radio :label="0">不是</el-radio>
+                </el-radio-group>
             </el-form-item>
+            <!-- <el-form-item label="商品详情" prop="productDetail">
+                <rickEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></rickEditor>
+            </el-form-item> -->
             <div class="footer">
                 <el-button @click="submitGoods" type="primary">保存</el-button>
             </div>
         </section>
     </el-form>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength"></component>
 </div>
 </template>
 <script>
@@ -376,6 +420,8 @@ export default {
                 productDetail: '', // 商品详情
                 goodsInfos: [], // sku列表
                 freightTemplateId: '', // 运费模版ID
+                code: '', // 商品编码
+                isRecommend: 1, // 是否推荐商品
                 itemCat: '',
                 imageData: {
                     fileName: 'image',
@@ -424,6 +470,12 @@ export default {
                 isAfterSaleService: [
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
+                isJoinDiscount: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
+                isShowRelationProduct: [
+                    { required: true, message: '请选择', trigger: 'blur' },
+                ],
             },
             uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
             optionsTypeList: [],
@@ -453,18 +505,25 @@ export default {
             flatSpecsList: [],
             flatCategoryList: [],
             currentData: [],
-            specsLabel: ''
+            specsLabel: '',
+            showFileList: false,
+            fileList: [],
+            dialogImageUrl: '',
+            imageDialogVisible: false,
+            specsLength: 0
         }
     },
     created() {
         this.getCategoryList()
         this.getProductLabelList()
-        this.getOperateCategoryList()
         this.getUnitList()
         this.getBrandList()
-        if(this.$route.query.id && this.$route.query.goodsInfoId) {
-            this.getGoodsDetail()
-        }
+        this.getTemplateList()
+        this.getOperateCategoryList().then(res => {
+            if(this.$route.query.id && this.$route.query.goodsInfoId) {
+                this.getGoodsDetail()
+            }
+        })
     },
     computed: {
         editor() {
@@ -476,13 +535,64 @@ export default {
         }
     },
     methods: {
+        getTemplateList() {
+            this._apis.order.fetchTemplatePageList().then((res) => {
+                this.shippingTemplates = res.list
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        deleteSpec(index) {
+            this.ruleForm.goodsInfos.splice(index, 1)
+        },
+        emptySpec(index) {
+            this.ruleForm.goodsInfos.splice(index, 1, Object.assign({}, this.ruleForm.goodsInfos[index], {
+                costPrice: '',
+                salePrice: '',
+                stock: '',
+                wanningStock: '',
+                weight: '',
+                volume: '',
+                image: '',
+            }))
+
+            console.log(this.ruleForm.goodsInfos)
+        },
+        specHandleRemove() {
+
+        },
+        specUploadSuccess(response, file, fileList, index, row) {
+            if(file.status == "success"){
+                this.$message.success(response.msg);
+                this.ruleForm.goodsInfos[index].image = response.data.url
+            }else{
+                this.$message.error(response.msg);
+            }
+        },
+        handleEdit(index, row) {
+            this.tableData.splice(index, 1)
+        },
         getCategoryIds(arr, id) {
             let parentId = this.flatCategoryList.find(val => val.id == id).parentId
 
             arr.unshift(id)
 
-            if(parentId) {
+            if(parentId && parentId != 0) {
                 this.getCategoryIds(arr, parentId)
+            }
+        },
+        // 获取类目
+        getCategoryInfoIds(arr, id) {
+            let parentId = this.operateCategoryList.find(val => val.id == id).parentId
+
+            arr.unshift(id)
+
+            if(parentId && parentId != 0) {
+                this.getCategoryInfoIds(arr, parentId)
             }
         },
         getGoodsDetail() {
@@ -491,8 +601,10 @@ export default {
             this._apis.goods.getGoodsDetail({id, goodsInfoId}).then(res => {
                 console.log(res)
                 let arr = []
+                let itemCatAr = []
 
                 this.getCategoryIds(arr, res.productCatalogInfoId)
+                this.getCategoryInfoIds(itemCatAr, res.productCategoryInfoId)
 
                 let specs = JSON.parse(res.goodsInfo.specs)
 
@@ -513,6 +625,16 @@ export default {
                     goodsInfo: [res.goodsInfo]
                 })
                 this.categoryValue = arr
+                this.ruleForm.itemCat = itemCatAr
+                if(this.ruleForm.images) {
+                    console.log(this.ruleForm.images.split(','))
+                    this.fileList = this.ruleForm.images.split(',') && this.ruleForm.images.split(',').length ? this.ruleForm.images.split(',').map(val => ({
+                        name: '', 
+                        url: val
+                    })) : []
+
+                    console.log(this.fileList)
+                }
             }).catch(error => {
 
             }) 
@@ -547,7 +669,7 @@ export default {
             this._apis.goodsOperate.fetchSpecsList({productCategoryId: "1"}).then(res => { // this.ruleForm.productCategoryInfoId
                 console.log(res)
                 this.specsList = res
-
+                this.specsLength = this.specsList.length
                 this.flatSpecsList = this.flatTreeArray(JSON.parse(JSON.stringify(res)), 'list')
             }).catch(error => {
 
@@ -560,6 +682,7 @@ export default {
                     message: '新增成功！',
                     type: 'success'
                 });
+                this.$router.push('/goods/goodsList')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -574,6 +697,7 @@ export default {
                     message: '编辑成功！',
                     type: 'success'
                 });
+                this.$router.push('/goods/goodsList')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -583,18 +707,37 @@ export default {
         },
         submitGoods() {
             let params
-
-            params = Object.assign({}, this.ruleForm, {
-                productCategoryInfoId: "6",
-                productUnit: "4",
-                productBrandInfoId: "1",
-                goodsInfos: [{"costPrice": 100, salePrice: 120, stock: 1000, wanningStock: 900, weight: 1, volume: 1, specs: {"尺寸": "L", "颜色": "黑色"}}],
-                productDetail: '商品详情',
+            let _goodsInfos
+            let obj = {
+                //productCategoryInfoId: "6",
+                //productUnit: "4",
+                //productBrandInfoId: "1",
+                //goodsInfos: [{"costPrice": 100, salePrice: 120, stock: 1000, wanningStock: 900, weight: 1, volume: 1, specs: {"尺寸": "L", "颜色": "黑色"}}],
+                //goodsInfos: _goodsInfos,
+                //productDetail: '商品详情',
 
                 isShowSaleCount: this.ruleForm.isShowSaleCount ? 1 : 0,
                 isShowStock: this.ruleForm.isShowStock ? 1 : 0,
                 productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit
-            })
+            }
+
+            if(!this.editor) {
+                _goodsInfos = this.ruleForm.goodsInfos.map(val => {
+                    let _specs = {}
+
+                    val.label.split(',').forEach((spec, index) => {
+                        _specs[this.specsLabel.split(',')[index]] = spec
+                    })
+
+                    val.specs = _specs
+
+                    return val
+                })
+
+                obj.goodsInfos = _goodsInfos
+            }
+
+            params = Object.assign({}, this.ruleForm, obj)
             
             if(!this.editor) {
                 this.addGoods(params)
@@ -631,12 +774,15 @@ export default {
         },
         // 获取商品类目列表
         getOperateCategoryList() {
-            this._apis.goodsOperate.fetchCategoryList().then(res => {
-                let arr = this.transTreeData(res.list, 0)
-                this.operateCategoryList = res.list
-                this.itemCatList = arr
-            }).catch(error => {
-
+            return new Promise((resolve, reject) => {
+                this._apis.goodsOperate.fetchCategoryList().then(res => {
+                    let arr = this.transTreeData(res.list, 0)
+                    this.operateCategoryList = res.list
+                    this.itemCatList = arr
+                    resolve(res.list)
+                }).catch(error => {
+                    reject(error)
+                })
             })
         },
         getProductLabelList() {
@@ -801,7 +947,8 @@ export default {
             this.editorData = value;
         },
         handlePictureCardPreview(file) {
-            
+            this.dialogImageUrl = file.url;
+            this.imageDialogVisible = true;
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);
@@ -809,7 +956,7 @@ export default {
         centerFileUrl(response, file, fileList){
             if(file.status == "success"){
                 this.$message.success(response.msg);
-                this.ruleForm.images = response.url;
+                this.ruleForm.images = response.data.url;
             }else{
                 this.$message.error(response.msg);
             }
@@ -941,6 +1088,12 @@ $blue: #655EFF;
             &.example {
                 color: $blue;
                 cursor: pointer;
+                position: relative;
+                .images-example {
+                    position: absolute;
+                    left: 65px;
+                    top: 10px;
+                }
             }
             &.images {
                 border: 1px solid #d0d6e4;
@@ -1006,7 +1159,8 @@ $blue: #655EFF;
 /deep/ .spec-information thead th:nth-child(2) .cell,
     /deep/ .spec-information thead th:nth-child(3) .cell,
     /deep/ .spec-information thead th:nth-child(4) .cell,
-    /deep/ .spec-information thead th:nth-child(5) .cell {
+    /deep/ .spec-information thead th:nth-child(5) .cell,
+    /deep/ .spec-information thead th:nth-child(8) .cell {
     position: relative;
     &:before {
         content: '*';
@@ -1019,6 +1173,24 @@ $blue: #655EFF;
 }
 .footer {
     text-align: center;
+}
+/deep/ .upload-spec .el-upload {
+    width: 75px!important;
+    height: 30px!important;
+    line-height: 30px!important;
+    color: #655EFF;
+}
+.spec-operate {
+    span {
+        cursor: pointer;
+        &:first-child {
+            color: #655EFF;
+            margin-right: 5px;
+        }
+        &:last-child {
+            color: #FD4C2B;
+        }
+    }
 }
 </style>
 

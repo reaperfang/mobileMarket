@@ -75,7 +75,7 @@ export default {
         },
         getCurrent() {
             this.ruleForm = Object.assign({}, {
-                name: this.data.goodsName,
+                name: this.data.goodsInfo.name,
                 stock: this.data.goodsInfo.stock
             })
         }

@@ -41,11 +41,11 @@
                   <div class="col" style="width: 380px;">
                     <div class="row align-center">
                       <div class="col">
-                        <img :src="goods.goodsImage" alt />
+                        <img width="66" :src="goods.goodsImage" alt />
                       </div>
                       <div class="col">
-                        <p>{{goods.goodsCount}}</p>
-                        <p>{{goods.goodsSpecs}}</p>
+                        <p class="ellipsis" style="width: 200px;">{{goods.goodsName}}</p>
+                        <p class="goods-specs">{{goods.goodsSpecs | goodsSpecsFilter}}</p>
                       </div>
                     </div>
                   </div>
@@ -181,7 +181,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=afterSaleBulkDelivery')
+                this.$router.push('/order/deliverGoodsSuccess?ids=' + this.$route.query.ids + '&type=afterSaleBulkDelivery')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',

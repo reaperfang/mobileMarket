@@ -35,24 +35,21 @@ module.exports = {
     proxyTable: {
       '/data-server/**': {
         // target: 'http://172.22.146.2:8080', // 订单 尹茂凯
-        // target: 'http://172.22.134.106:8080', // 商品 王浩
+        target: 'http://172.22.146.115:8081', // 商品 王浩
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
         // target: 'http://www.lwt.com',  // nginx代理 李玟霆
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
         //target: 'http://www.lwt.com',  // nginx代理 李玟霆
         // target: 'http://172.22.146.124:8099',// 开关 许涛
-        // target: 'http://172.22.146.109:8080', // 商品 王浩
         // target: 'http://172.22.146.31:8080', // 客户 崔建
         // target: 'http://172.22.146.12:8080', // 客户 刘亚凯
-        target: 'http://172.22.146.123:8080', // 客户 王杰
+        //target: 'http://172.22.146.123:8080', // 客户 王杰
         //target: 'http://172.22.146.124:8099',// 许涛
         // target: 'http://172.22.134.125:8012',// 陈程
         // target: 'http://172.22.146.12:8091', // 订单 李刚
-        // target: 'http://172.22.146.114:8080', // 商品 王浩2
         // target: 'http://172.22.146.124:80',// 许涛
         // target: 'http://dkmamb.natappfree.cc',// 许涛
         // target: 'http://172.22.146.3:8080', // 订单 张红亮、张昌超
-        // target: 'http://172.22.146.116:8080', // 商品 王浩
         // target: 'http://172.22.146.10:8080',
         // target: 'http://120.133.1.130:8012',// 营销测试机、数据
         // target: 'http://172.22.145.116:8080',// 耿士龙
@@ -103,6 +100,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/caoshaui_server': ''
+        }
+      },
+      '/goodsOperate_server/**': {
+        target: 'http://test-omo.aiyouyi.cn/',// 耿士龙 172.22.145.116:8080
+        changeOrigin: true,
+        pathRewrite: {
+          '^/goodsOperate_server': ''
         }
       },
     }

@@ -48,7 +48,10 @@
                 <el-table-column
                 prop="name"
                 label="商品名称"
-                width="180">
+                width="380">
+                    <template slot-scope="scope">
+                        <div class="ellipsis" style="width: 350px;" :title="scope.row.name">{{scope.row.name}}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     label="状态"
@@ -56,7 +59,7 @@
                     <template slot-scope="scope">
                         <span @click="upperAndLowerRacks(scope.row)" class="goods-state">
                             {{scope.row.goodsInfo.status | statusFilter}}
-                            <i :class="{grounding: scope.row.goodsInfo.status == 1, undercarriage: scope.row.goodsInfo.status == 0}" class="i-bg"></i>
+                            <i :class="{grounding: scope.row.goodsInfo.status == 1, undercarriage: scope.row.goodsInfo.status == 0}" class="i-bg pointer"></i>
                         </span>
                     </template>
                 </el-table-column>
@@ -69,20 +72,20 @@
                 <el-table-column
                     label="库存">
                     <template slot-scope="scope">
-                        <span @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="store">{{scope.row.goodsInfo.stock}}<i @click="editorStore(scope.row)" class="i-bg"></i></span>
+                        <span @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="store">{{scope.row.goodsInfo.stock}}<i @click="editorStore(scope.row)" class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="price"
                     label="售卖价（元）">
                     <template slot-scope="scope">
-                        <span @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg"></i></span>
+                        <span @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor"><i class="i-bg"></i>编辑</span>
-                        <span @click="deleleHandler(scope.row)" class="operate-delete"><i class="i-bg"></i>删除</span>
+                        <span @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor"><i class="i-bg pointer"></i>编辑</span>
+                        <span @click="deleleHandler(scope.row)" class="operate-delete"><i class="i-bg pointer"></i>删除</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -412,7 +415,7 @@ export default {
             _param = Object.assign({}, this.listQuery, param)
 
             this._apis.goods.fetchGoodsList(_param).then((res) => {
-                this.total = res.total
+                this.total = +res.total
                 this.getCategoryName(res.list)
             }).catch(error => {
                 //this.listLoading = false

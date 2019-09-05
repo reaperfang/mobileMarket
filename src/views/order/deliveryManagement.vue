@@ -3,12 +3,13 @@
         <section>
             <el-tabs v-model="activeName">
                 <el-tab-pane label="订单发货" name="order">
-                    <orderDelivery></orderDelivery>
+                    <!-- <orderDelivery></orderDelivery> -->
                 </el-tab-pane>
                 <el-tab-pane label="售后发货" name="service">
-                    <afterSales></afterSales>
+                    <!-- <afterSales></afterSales> -->
                 </el-tab-pane>
             </el-tabs>
+            <component :is="current"></component>
         </section>
     </div>
 </template>
@@ -19,7 +20,17 @@ import AfterSales from './components/afterSales'
 export default {
     data() {
         return {
-            activeName: 'order'
+            activeName: 'order',
+            current: 'OrderDelivery'
+        }
+    },
+    watch: {
+        activeName(value) {
+            if(value == 'order') {
+                this.current = 'OrderDelivery'
+            } else if(value == 'service') {
+                this.current = 'AfterSales'
+            }
         }
     },
     components: {

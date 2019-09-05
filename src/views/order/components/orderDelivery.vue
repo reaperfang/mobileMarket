@@ -124,7 +124,7 @@
                         <div class="operate-box">
                             <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
                             <template v-if="scope.row.status == 4">
-                                <span @click="$router.push('/order/deliverGoods?id=' + scope.row.id)">继续发货</span>
+                                <span @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">继续发货</span>
                             </template>
                             <template v-else-if="scope.row.status == 3">
                                 <span v-if="!scope.row.isAutoSend" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>

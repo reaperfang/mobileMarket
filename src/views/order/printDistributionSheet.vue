@@ -7,18 +7,34 @@
             <div v-for="(item, index) in tableData" :key="index" style="page-break-after:always;">
                 <div class="title" style="color: #161617; font-size: 18px; text-align: center; margin-bottom: 18px;">配送单</div>
                 <div class="table-head" style="border: 1px solid #ccc; border-bottom: none; color: #161617; font-size: 14px; padding: 20px 25px; padding-bottom: 10px;">
-                    <div style="display: flex; margin-bottom: 15px;">
-                        <div class="item" style="width: 280px;">订单编号：{{item.orderCode}}</div>
-                        <div class="item">发货日期：{{item.updateTime}}</div>
-                    </div>
-                    <div style="display: flex; margin-bottom: 15px;">
-                        <div class="item" style="width: 280px;">客户ID：{{item.memberSn}}</div>
-                        <div class="item">客户昵称：{{item.nickName}}</div>
-                    </div>
-                    <div style="display: flex; margin-bottom: 15px;">
-                        <div class="item" style="width: 280px;">收货人：{{item.receivedName}}</div>
-                        <div class="item">收货地址：{{item.receivedDetail}}</div>
-                    </div>
+                    <template v-if="$route.query.afterSale">
+                        <div style="display: flex; margin-bottom: 15px;">
+                            <div class="item" style="width: 280px;">订单编号：{{item.orderAfterSaleSendInfo.orderAfterSaleCode}}</div>
+                            <div class="item">发货日期：{{item.orderAfterSaleSendInfo.sendTime}}</div>
+                        </div>
+                        <div style="display: flex; margin-bottom: 15px;">
+                            <div class="item" style="width: 280px;">客户ID：{{item.orderAfterSaleSendInfo.memberSn}}</div>
+                            <div class="item">客户昵称：{{item.orderAfterSaleSendInfo.nickName}}</div>
+                        </div>
+                        <div style="display: flex; margin-bottom: 15px;">
+                            <div class="item" style="width: 280px;">收货人：{{item.orderAfterSaleSendInfo.receivedName}}</div>
+                            <div class="item">收货地址：{{item.orderAfterSaleSendInfo.receivedDetail}}</div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div style="display: flex; margin-bottom: 15px;">
+                            <div class="item" style="width: 280px;">订单编号：{{item.orderCode}}</div>
+                            <div class="item">发货日期：{{item.updateTime}}</div>
+                        </div>
+                        <div style="display: flex; margin-bottom: 15px;">
+                            <div class="item" style="width: 280px;">客户ID：{{item.memberSn}}</div>
+                            <div class="item">客户昵称：{{item.nickName}}</div>
+                        </div>
+                        <div style="display: flex; margin-bottom: 15px;">
+                            <div class="item" style="width: 280px;">收货人：{{item.receivedName}}</div>
+                            <div class="item">收货地址：{{item.receivedDetail}}</div>
+                        </div>
+                    </template>
                 </div>
                 <table border="1" style="border-collapse:collapse; width: 100%; border-color: rgb(205, 208, 206); border: 1px solid rgb(205, 208, 206);">
                     <tr style="background: rgba(243, 244, 243);">

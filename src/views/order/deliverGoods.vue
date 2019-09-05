@@ -38,7 +38,7 @@
                                 <template slot-scope="scope">
                                     <div class="goods-detail">
                                         <div class="goods-detail-item">
-                                            <img width="66" src="" alt="">
+                                            <img width="66" :src="scope.row.goodsImage" alt="">
                                         </div>
                                         <div class="goods-detail-item">
                                             <p class="ellipsis" style="width: 297px;">{{scope.row.goodsName}}</p>
@@ -407,6 +407,14 @@ export default {
     .footer {
         text-align: center;
         margin-top: 40px;
+    }
+    .goods-detail {
+        display: flex;
+        .goods-detail-item:last-child {
+            p {
+                margin-bottom: 6px;
+            }
+        }
     }
 </style>
 
