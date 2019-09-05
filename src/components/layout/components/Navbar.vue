@@ -71,9 +71,7 @@ export default {
       return JSON.parse(this.$store.getters.userInfo)
     }
   },
-  created(){
-    this.init()
-  },
+  created(){ },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')

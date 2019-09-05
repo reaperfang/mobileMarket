@@ -3,35 +3,36 @@
     <div class="main">
         <h1>创建子账号</h1>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="店铺名称:" prop="shopName">
+            <!-- <el-form-item label="店铺名称:" prop="shopName">
                 <el-input v-model="form.shopName" style="width:182px;" placeholder="10个汉字"></el-input>
+            </el-form-item> -->
+            <el-form-item label="人员名称:" prop="userName">
+                <el-input v-model="form.userName" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item>
-            <el-form-item label="人员名称:" prop="name">
-                <el-input v-model="form.name" style="width:182px;" placeholder="10个汉字"></el-input>
+            <el-form-item label="登录手机号:" prop="mobile">
+                <el-input v-model="form.mobile" style="width:182px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="登录手机号:" prop="phone">
-                <el-input v-model="form.phone" style="width:182px;" placeholder="请输入"></el-input>
+            <el-form-item label="角色:" prop="roleName">
+                <el-radio-group v-model="form.roleName">
+                    <el-radio
+                    v-for="item in roles"
+                    :key="item.roleName"
+                    :label="item.roleName"
+                    :value="item.roleName"
+                    @change="handleShop(item.roleName)"
+                    style="display:block; width:100px; height:30px; line-height:30px;">
+                    {{item.roleName}}
+                    </el-radio>
+                </el-radio-group>
             </el-form-item>
-            <el-form-item label="角色:" prop="role">
-                <el-checkbox-group v-model="form.role" class="inline" @change="handleCheckedCitiesChange">
-                    <el-checkbox 
-                    v-for="item in options" 
-                    :label="item.value"
-                    :key="item.label"
-                    style="display:block; width:100px;">
-                    {{item.label}}
-                    </el-checkbox>
-                </el-checkbox-group>
-                <el-button type="primary" @click="_routeTo('createRole')">添加角色</el-button>
-            </el-form-item>
-            <el-form-item label="同步店铺:" prop="shops">
-                <el-checkbox-group v-model="form.shop" class="inline" @change="handleCheckedCitiesChange">
+            <el-form-item label="同步店铺:" prop="shopInfoIds">
+                <el-checkbox-group v-model="form.shopInfoIds" class="inline">
                     <el-checkbox 
                     v-for="item in shops" 
-                    :label="item.value"
-                    :key="item.label"
+                    :label="String(item.id)"
+                    :key="String(item.id)"
                     style="display:block; width:100px;">
-                    {{item.label}}
+                    {{item.shopName}}
                     </el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
@@ -50,60 +51,150 @@ export default {
   data() {
     return {
       form: {
-          shopName:'',
-          name: '',
-          phone: '',
-          role: [1],
-          shop:[1]
+          userName: '',
+          mobile: '',
+          roleName:'',
+          shopInfoIds:[]
       },
-      options:[
-          {
-              label:'运营',
-              value:1
-          },
-          {
-              label:'财务',
-              value:2
-          },
-          {
-              label:'库管',
-              value:3
-          }
-      ],
-      shops:[
-          {
-              label:'店铺1',
-              value:1
-          },
-          {
-              label:'店铺2',
-              value:2
-          },
-          {
-              label:'店铺3',
-              value:3
-          }
-      ],
       rules:{
-        shopName: [
-          { required: true, message: '请输入商铺名称', trigger: 'blur' }
-        ],
-        name: [
+        userName: [
           { required: true, message: '请输入人员名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
         ],
-        phone:[
+        mobile:[
           { required: true, message: '请输入登录手机号', trigger: 'blur' },
         ],
-        role:[
+        roleName:[
           { required: true, message: '请选择角色', trigger: 'blur' },
+        ],
+        shopInfoIds:[
+          { required: true, message: '请选择店铺', trigger: 'blur' },
         ]
-      }
-
+      },
+      roles:[ ],
+      shops:[ ],
     }
   },
+  computed:{
+      accountInfo(){
+          return this.$route.params.data
+      },
+      userInfo(){
+        return JSON.parse(this.$store.getters.userInfo)
+     },
+     cid(){
+         return this.$store.getters.cid
+     }
+  },
+  created(){
+      this.getShops()
+      this.getRoleList()
+      this.init()
+  },
   methods:{
-     
+    init(){
+      if(this.accountInfo){
+          this.form = {
+            userName: this.accountInfo.userName,
+            mobile: this.accountInfo.mobile,
+            roleName:this.accountInfo.roleNames.split(',')[0],
+            shopInfoIds:this.accountInfo.shopIds.split(',')
+          }
+      } 
+    },
+    //获取所有店铺
+    getShops(){
+      let data = this.userInfo.shopInfoMap
+      for(let key in data){
+        let shopObj = data[key]
+        this.shops.push(shopObj)
+      }
+    },
+    //获取角色列表
+    getRoleList(){
+      let query = {
+        cid:this.cid,
+        shopInfoId:'',
+        startIndex:1,
+        pageSize:100,
+      } 
+      this._apis.set.getRoleList(query).then(response =>{
+        this.roles = response.list
+        let roleName = this.accountInfo ? this.accountInfo.roleNames.split(',')[0] : this.roles[0].roleName
+        this.handleShop(roleName)
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    handleShop(roleName){
+      let query = {
+          cid:this.cid,
+          roleName:roleName,
+          startIndex:1,
+          pageSize:10,
+      }
+      this._apis.set.getRoleList(query).then(response =>{
+        let shopIds = response.list[0].shopIds.split(',')
+        let newShops = []
+        this.shops.map(item =>{
+            shopIds.map(id =>{
+                item.id == id && newShops.push(item)
+            })
+        })
+        this.shops = newShops
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //保存
+    onSubmit(){
+        let id = this.accountInfo && this.accountInfo.id
+        if(id){//修改子账号
+           let query = {
+               id:id,
+               cid:this.cid,
+               userName:this.form.userName,
+               userNameOld:this.accountInfo.userName,
+               mobile:this.form.mobile,
+               platform:this.userInfo.platform,
+               mcOrganizationId:0,
+               roleName:this.form.roleName,
+               shopInfoIds:this.form.shopInfoIds
+           } 
+           this._apis.set.editSubAccount(query).then(response =>{
+                this.roles = response.list
+            }).catch(error =>{
+                // this.$notify.error({
+                // title: '错误',
+                // message: error
+                // });
+            }) 
+        }else{//新建子账号
+            let query = {
+               cid:this.cid,
+               userName:this.form.userName,
+               mobile:this.form.mobile,
+               platform:this.userInfo.platform,
+               mcOrganizationId:0,
+               roleName:this.form.roleName,
+               shopInfoIds:this.form.shopInfoIds
+           } 
+            this._apis.set.newSubAccount(query).then(response =>{
+                this.roles = response.list
+            }).catch(error =>{
+                // this.$notify.error({
+                // title: '错误',
+                // message: error
+                // });
+            })
+        }
+    }
   }
 }
 </script>

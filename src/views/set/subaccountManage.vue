@@ -4,8 +4,8 @@
       <div class="top_part">
         <div class="search">
           <el-form ref="form" :inline="true" :model="form" label-width="70px">
-            <el-form-item label="店铺:" prop="name">
-              <el-select v-model="form.name" placeholder="请选择">
+            <el-form-item label="店铺:" prop="shopInfoId">
+              <el-select v-model="form.shopInfoId" placeholder="请选择">
                 <el-option
                   v-for="item in shops"
                   :key="item.id"
@@ -14,15 +14,8 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="角色:" prop="role">
-              <el-select v-model="form.role" placeholder="请选择">
-                <el-option
-                  v-for="item in roles"
-                  :key="item.id"
-                  :label="item.shopName"
-                  :value="item.id">
-                </el-option>
-              </el-select>
+            <el-form-item label="角色:" prop="roleName">
+              <el-input v-model="form.roleName" placeholder="请输入角色"></el-input>
             </el-form-item>
             <el-button type="primary" @click="submit">查询</el-button>
             <el-button type="primary" @click="reset">重置</el-button>
@@ -37,7 +30,6 @@
         :data="dataList"
         style="width: 100%"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'name9', order: 'descending'}"
         @selection-change="handleSelectionChange"
         >
         <el-table-column
@@ -45,15 +37,15 @@
         width="55">
         </el-table-column>
         <el-table-column
-          prop="cashoutSn"
+          prop="userName"
           label="姓名">
         </el-table-column>
         <el-table-column
-          prop="memberInfoId"
+          prop="roleNames"
           label="角色">
         </el-table-column>
         <el-table-column
-          prop="amount"
+          prop="mobile"
           label="手机号">
         </el-table-column>
         <el-table-column
@@ -61,32 +53,32 @@
           label="添加人">
         </el-table-column>
         <el-table-column
-          prop="tradeDetailSn"
+          prop="createTime"
           label="创建时间">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="applyTime"
           label="初始密码"
           sortable>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
         label="操作">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small" style="color:#FD4C2B">删除</el-button>
+            <el-button @click="deleteAccount(scope.row.id)" type="text" size="small" style="color:#FD4C2B">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-        <el-button style="margin-top:10px;">批量删除</el-button>
+        <el-button style="margin-top:10px;" @click="deleteAccount()">批量删除</el-button>
         <div class="page_styles">
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="form.pageSize"
             layout="sizes, prev, pager, next"
-            :total="100">
+            :total="total*1">
           </el-pagination>
         </div>
       </div>
@@ -101,43 +93,51 @@ export default {
   data() {
     return {
       form:{
-        name:'',
-        role:'',
+        shopInfoId:'',
+        roleName:'',
         startIndex:1,
         pageSize:10
       },
       shops:[ ],
       roles:[],
       dataList: [],
+      total:0,
       multipleSelection:[]
     }
   },
   watch: {
     
   },
+  computed:{
+    userInfo(){
+      return JSON.parse(this.$store.getters.userInfo)
+    },
+    cid(){
+      return this.$store.getters.cid
+    }
+  },
   created() {
-    this.getSubAccount()
     this.getShops()
+    this.getSubAccount()
   },
   destroyed() {
     
   },
   methods: {
+    //获取店铺列表
     getShops(){
-      let data = this.$store.state.user.userInfo.shopInfoMap
+      let data = this.userInfo.shopInfoMap
       for(let key in data){
         let shopObj = data[key]
         this.shops.push(shopObj)
       }
     },
-
-    getRoles(){
-
-    },
-    
+    //获取子账号列表
     getSubAccount(){
-      this._apis.set.getSubAccount(this.form).then(response =>{
-        console.log('11111',response)
+      let query = Object.assign({cid:this.cid},this.form)
+      this._apis.set.getSubAccount(query).then(response =>{
+        this.dataList = response.list
+        this.total = response.total
       }).catch(error =>{
         this.$notify.error({
           title: '错误',
@@ -145,12 +145,46 @@ export default {
         });
       })
     },
-
-    submit(){},
-    reset(){},
+    //查询
+    submit(){
+      this.getSubAccount()
+    },
+    //重置
+    reset(){
+      this.form = {
+        shopInfoId:'',
+        roleName:'',
+        startIndex:1,
+        pageSize:10
+      }
+    },
+    //删除
+    deleteAccount(id){
+      let ids = []
+      id ? ids.push(id) : ids = this.multipleSelection
+      this._apis.set.deleteAccount({userIds:ids}).then(response =>{
+        this.$notify.success({
+          title: '成功',
+          message: '删除成功！'
+        });
+        this.getSubAccount()
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //批量操作
     handleSelectionChange(val) {
-      this.multipleSelection = val;
-    }
+      val.map(item =>{
+        this.multipleSelection.push(item.id)
+      })
+    },
+    //编辑
+    handleClick(row){
+      this.$router.push({name:'createAccount',params:{data:row}})
+    },
   }
 }
 </script>

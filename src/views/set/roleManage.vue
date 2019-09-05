@@ -4,13 +4,13 @@
       <div class="top_part">
         <div class="search">
           <el-form ref="form" :inline="true" :model="form" label-width="70px">
-            <el-form-item label="店铺:" prop="shop">
-              <el-select v-model="form.shop" placeholder="请选择">
+            <el-form-item label="店铺:" prop="shopInfoId">
+              <el-select v-model="form.shopInfoId" placeholder="请选择">
                 <el-option
                   v-for="item in shops"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.shopName"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -33,43 +33,43 @@
         width="55">
         </el-table-column>
         <el-table-column
-          prop="cashoutSn"
+          prop="roleName"
           label="角色名称">
         </el-table-column>
         <el-table-column
-          prop="memberInfoId"
+          prop="roleDesc"
           label="角色描述">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="amount"
           label="包含人数">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
-          prop="status"
+          prop="createUserName"
           label="创建人">
         </el-table-column>
         <el-table-column
-          prop="tradeDetailSn"
+          prop="createTime"
           label="创建时间">
         </el-table-column>
         <el-table-column
         label="操作">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small" style="color:#FD4C2B">删除</el-button>
+            <el-button @click="deleteRole(scope.row.roleName)" type="text" size="small" style="color:#FD4C2B">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-button style="margin-top:10px;">批量删除</el-button>
+      <el-button style="margin-top:10px;" @click="deleteRole()">批量删除</el-button>
       <div class="page_styles">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage"
           :page-sizes="[10, 20, 30, 40]"
-          :page-size="10"
+          :page-size="form.pageSize"
           layout="sizes, prev, pager, next"
-          :total="100">
+          :total="total*1">
         </el-pagination>
       </div>
       </div>
@@ -83,46 +83,105 @@ export default {
   extends: TableBase,
   data() {
     return {
+      dataList:[],
       form:{
-        shop:'',
+        shopInfoId:'',
+        startIndex:1,
+        pageSize:10,
       },
-      shops:[
-        {
-          label:'店铺1',
-          value:1
-        }
-      ],
-      tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
-      multipleSelection:[]
+      shops:[ ],
+      multipleSelection:[],
+      total:0
     }
   },
   watch: {
     
   },
+  computed:{
+    userInfo(){
+      return JSON.parse(this.$store.getters.userInfo)
+    },
+    cid(){
+      return this.$store.getters.cid
+    }
+  },
   created() {
-
+    this.getShops()
+    this.getRoleList()
+    console.log('1111111',this.cid)
   },
   destroyed() {
     
   },
   methods: {
-    submit(){},
-    reset(){},
+    //获取所有店铺
+    getShops(){
+      let data = this.userInfo.shopInfoMap
+      for(let key in data){
+        let shopObj = data[key]
+        this.shops.push(shopObj)
+      }
+    },
+    //获取角色列表
+    getRoleList(){
+      let query = Object.assign({cid:this.cid},this.form)
+      this._apis.set.getRoleList(query).then(response =>{
+        this.dataList = response.list
+        this.total = response.total
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //查询
+    submit(){
+      this.getRoleList()
+    },
+    //重置
+    reset(){
+      this.form = {
+        shopInfoId:'',
+        startIndex:1,
+        pageSize:10,
+      }
+    },
+    //删除
+    deleteRole(roleName){
+      let roleNames = []
+      roleName ? roleNames.push(roleName) : roleNames = this.multipleSelection
+      this._apis.set.deleteRole(roleNames).then(response =>{
+        this.$notify.success({
+          title: '成功',
+          message: '删除成功！'
+        });
+        this.getRoleList()
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
+    //批量操作
     handleSelectionChange(val) {
-      this.multipleSelection = val;
-    }
+      val.map(item =>{
+        this.multipleSelection.push(item.roleName)
+      })
+    },
+    handleClick(row){
+      this.$router.push({name:'createRole',params:{data:row}})
+    },
+    /**********************************        分页相关      **********************/
+    handleSizeChange(val){
+      this.form.pageSize = val || this.form.pageSize
+      this.getRoleList()
+    },
+    handleCurrentChange(pIndex){
+      this.form.startIndex = pIndex || this.form.startIndex
+      this.getRoleList()
+    },
   }
 }
 </script>
