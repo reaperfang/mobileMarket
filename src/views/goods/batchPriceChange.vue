@@ -10,7 +10,7 @@
                 </el-col>
                 <el-col :span="12">
                     <div class="grid-content header-righter">
-                        <span class="span-box"><span>刷新</span><i></i></span>
+                        <span @click="renovate" class="span-box pointer"><span>刷新</span><i></i></span>
                     </div>
                 </el-col>
             </el-row>
@@ -56,7 +56,10 @@
                 <el-table-column
                 prop="name"
                 label="商品名称"
-                width="180">
+                width="380">
+                    <template slot-scope="scope">
+                        <div class="ellipsis" style="width: 350px;" :title="scope.row.name">{{scope.row.name}}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     label="状态"
@@ -156,6 +159,9 @@ export default {
         this.getCategoryList()
     },
     methods: {
+        renovate() {
+            this.getList()
+        },
         complete() {
             this.operateType = ''
             this.categoryValue = []
@@ -259,7 +265,7 @@ export default {
             _param = Object.assign({}, this.listQuery, param)
 
             this._apis.goods.fetchGoodsList(_param).then((res) => {
-                this.total = res.total
+                this.total = +res.total
                 this.list = res.list
                 //this.getCategoryName(res.list)
             }).catch(error => {

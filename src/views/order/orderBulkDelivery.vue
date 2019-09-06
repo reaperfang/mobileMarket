@@ -283,6 +283,7 @@ export default {
           console.log(res)
           res.forEach(val => {
               val.checked = false
+              val.expressNos = ''
               val.orderItemList.forEach(goods => {
                   goods.checked = false
               })

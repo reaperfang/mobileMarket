@@ -18,18 +18,23 @@
             <el-table-column
                 prop="name"
                 label="商品名称"
-                width="180">
+                width="380">
+                <template slot-scope="scope">
+                    <div class="ellipsis" style="width: 350px;">{{scope.row.name}}</div>
+                </template>
             </el-table-column>
             <el-table-column
-                prop="unit"
+                prop="productUnit"
                 label="单位"
-                width="180">
+                width="50">
             </el-table-column>
             <el-table-column
-                prop="price"
-                label="价格（元）">
+                prop="salePrice"
+                label="价格（元）"
+                width="90">
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作"
+                width="70">
                 <template slot-scope="scope">
                     <el-button
                     size="mini"
@@ -65,6 +70,9 @@ export default {
             showFooter: false
         }
     },
+    created() {
+        this.getList()
+    },
     methods: {
         submit() {
             
@@ -75,9 +83,19 @@ export default {
         handleAdd(index, row) {
             this.$emit('submit', row)
         },
-        getList() {
+        getList(param) {
+            //this.listLoading = true
+            let _param
+            
+            _param = Object.assign({}, this.listQuery, param)
 
-        }
+            this._apis.goods.getSPUGoodsList(_param).then((res) => {
+                this.total = +res.total
+                this.tableData = res.list
+            }).catch(error => {
+                //this.listLoading = false
+            })
+        },
     },
     computed: {
         visible: {

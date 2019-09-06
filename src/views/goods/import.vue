@@ -11,11 +11,11 @@
                 </el-col>
                 <el-col :span="12">
                     <div class="grid-content header-righter">
-                        <span class="span-box"><span>刷新</span><i></i></span>
+                        <span @click="renovate" class="span-box pointer"><span>刷新</span><i></i></span>
                     </div>
                 </el-col>
             </el-row>
-            <el-steps class="steps" :space="234" :active="1" finish-status="success">
+            <el-steps class="steps" :space="234" :active="active" finish-status="success">
                 <el-step title="上传模板"></el-step>
                 <el-step title="系统批量导入"></el-step>
                 <el-step title="完成"></el-step>
@@ -37,6 +37,7 @@
                     list-type="picture-card"
                     :data="{json: JSON.stringify({cid: 2})}"
                     :on-success="success"
+                    :show-file-list="showFileList"
                     class="p_imgsCon">
                     <i class="el-icon-plus"></i>
                     <p style="line-height: 21px; margin-top: -39px; color: #92929B;">上传文件</p>
@@ -52,29 +53,29 @@
                 :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
                 style="width: 100%">
                 <el-table-column
-                    prop="orderNumber"
+                    prop="number"
                     label="序号"
                     width="180">
                 </el-table-column>
                 <el-table-column
-                    prop="importNumber"
+                    prop="importCount"
                     label="导入数量"
                     width="180">
                 </el-table-column>
                 <el-table-column
-                    prop="successNumber"
+                    prop="importSuccessCount"
                     label="导入成功数">
                 </el-table-column>
                 <el-table-column
-                    prop="failNumber"
+                    prop="importFailCount"
                     label="导入失败数">
                 </el-table-column>
                 <el-table-column
-                    prop="operater"
+                    prop="createUserName"
                     label="操作人">
                 </el-table-column>
                 <el-table-column
-                    prop="time"
+                    prop="createTime"
                     label="导入时间">
                 </el-table-column>
             </el-table>
@@ -88,7 +89,7 @@ import Pagination from '@/components/Pagination'
 export default {
     data() {
         return {
-            active: 0,
+            active: 1,
             tableData: [
 
             ],
@@ -98,17 +99,22 @@ export default {
                 pageSize: 20,
             },
             uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
-            url: ''
+            url: '',
+            showFileList: false
         }
     },
     created() {
         this.getList()
     },
     methods: {
+        renovate() {
+            this.getList()
+        },
         success(response, file, fileList){
             if(file.status == "success"){
                 this.$message.success(response.msg);
                 this.url = response.data.url;
+                this.active = 2
             }else{
                 this.$message.error(response.msg);
             }
@@ -121,6 +127,11 @@ export default {
 
             this._apis.goods.getImportPageList(_param).then((res) => {
                 console.log(res)
+                this.total = +res.total
+                res.list.forEach((val, index) => {
+                    val.number = index
+                })
+                this.tableData = res.list
             }).catch(error => {
                 //this.listLoading = false
             })
@@ -129,11 +140,23 @@ export default {
             this._apis.goods.importGoods({cid: '2', importUrl: this.url}).then((res) => {
                 console.log(res)
                 this.url = res.url
-                this.$notify({
-                    title: '成功',
-                    message: '导入成功！',
-                    type: 'success'
-                });
+                // this.$notify({
+                //     title: '成功',
+                //     message: '导入成功！',
+                //     type: 'success'
+                // });
+                let _text = ''
+
+                if(res.importFailCount == 0) {
+                    _text = `累计导入共${res.importCount}条数据； 成功导入${res.importSuccessCount}条； 失败${res.importFailCount}条。`
+
+                    this.confirm({title: '数据导入成功', text: _text})
+                } else {
+                    _text = ''
+                    _text = `累计导入共${res.importCount}条数据； 成功导入${res.importSuccessCount}条； 失败${res.importFailCount}条。`
+                    _text += '<br>' + res.failureMsg
+                    this.confirm({title: '数据导入失败', text: _text})
+                }
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({
@@ -196,6 +219,7 @@ export default {
                 }
             }
             /deep/ .import-button {
+                margin-top: 10px;
                 span {
                     display: inline-flex;
                     align-items: center;

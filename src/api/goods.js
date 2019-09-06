@@ -252,6 +252,17 @@ export function importGoods(data) {
   })
 }
 
+// spu商品分页列表
+export function getSPUGoodsList(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-SPU-PAGE-LIST-PROCESSOR',
+    data
+  })
+}
+
+
 
 
 

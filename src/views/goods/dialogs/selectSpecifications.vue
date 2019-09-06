@@ -7,7 +7,7 @@
             clearable>
         </el-cascader>
 
-        <div style="margin-top: 10px;">
+        <div class="footer">
             <el-button @click="submit" type="primary">确认</el-button>
         </div>
     </DialogBase>
@@ -25,21 +25,7 @@ export default {
 				label: 'name',
 				children: 'list'
             },
-            options: [{
-                value: '颜色',
-                label: '颜色',
-                children: [
-                { value: '红色', label: '红色' },
-                { value: '黄色', label: '黄色' },
-                ]
-            }, {
-                value: '尺寸',
-                label: '尺寸',
-                children: [
-                { value: 'L', label: 'L' },
-                { value: 'XL', label: 'XL' },
-                ]
-            }],
+            options: [],
             arr: []
         }
     },
@@ -85,6 +71,10 @@ export default {
     }
     /deep/ .el-button.el-button--small {
         color: #fff!important;
+    }
+    .footer {
+        text-align: center;
+        margin-top: 10px;
     }
 </style>
 

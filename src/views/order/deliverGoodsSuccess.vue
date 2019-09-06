@@ -22,8 +22,8 @@
                 </template>
                 <template v-else-if="$route.query.type == 'afterSaleBulkDelivery'">
                      批量发货成功，您可以到订单详情页 
-                    <router-link :to="{ path: '/order/printingElectronicForm', query: {ids: this.$route.query.ids} }">打印电子面单</router-link> 或 
-                    <router-link :to="{ path: '/order/printDistributionSheet', query: {ids: this.$route.query.ids} }">打印配送单</router-link>
+                    <router-link :to="{ path: '/order/printingElectronicForm', query: {ids: this.$route.query.ids, afterSale: true} }">打印电子面单</router-link> 或 
+                    <router-link :to="{ path: '/order/printDistributionSheet', query: {ids: this.$route.query.ids, afterSale: true} }">打印配送单</router-link>
                 </template>
                 <template v-else-if="$route.query.type == 'supplementaryLogistics'">
                     补填物流成功，您可以到订单详情页 

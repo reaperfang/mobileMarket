@@ -9,7 +9,7 @@
         <div class="spec-value">
             <ul>
                 <li v-for="(item, index) in items" :key="index">
-                    <el-input v-model="item.value" placeholder="请输入规格名称"></el-input>
+                    <el-input v-model="item.value" placeholder="请输入规格值"></el-input>
                     <i @click="reduce(index)" class="icon el-icon-error" size="26px"></i>
                     <i @click="plus" class="icon el-icon-circle-plus"></i>
                 </li>
@@ -44,6 +44,13 @@ export default {
     },
     methods: {
         submit() {
+            if(this.specsLength > 2) {
+                this.visible = false
+                return
+            } else {
+                let _length = this.specsLength + 1
+                this.$emit('update:specsLength', _length)
+            }
             let arr = []
 
             this.items.forEach(val => {
@@ -92,6 +99,9 @@ export default {
             type: Boolean,
             required: true
         },
+        specsLength: {
+            type: Number
+        }
     },
     components: {
         zdialog

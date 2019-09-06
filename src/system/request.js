@@ -109,7 +109,7 @@ class Ajax {
 
     //获取cid和shopInfoId
     // let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
-    let cid = store.getters.cid || '2'
+    let cid = store.getters.cid || '7'
     let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId
       : '';
 
@@ -158,7 +158,8 @@ class Ajax {
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
             break;
           case 'goodsOperate':  //商品运营
-            config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
+            //config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
+            config.baseURL = `/goodsOperate_server/api-public-web/public/api.do`;
             break;
           case 'manager':  //广告和导航开关修改  许涛
             config.baseURL = `${process.env.DATA_API}/api-manager-web/manager/api.do`;

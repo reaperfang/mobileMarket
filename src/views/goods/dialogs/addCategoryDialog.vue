@@ -38,7 +38,7 @@
                 </el-form-item>
                 <el-form-item label="分类图片：" prop="image">
                     <ul class="upload-ul">
-                        <li @click="currentDialog = 'LibraryDialog'; libraryVisible = true" class="upload">
+                        <li @click="currentDialog = 'DialogSelectImageMaterial'; libraryVisible = true" class="upload">
                             <i class="el-icon-plus"><br /><span>上传图片</span></i>
                         </li>
                         <li v-if="basicForm.imageUrl" class="image">
@@ -53,12 +53,13 @@
                 <el-button @click="visible = false">取消</el-button>
             </div>
         </DialogBase>
-        <component :is="currentDialog" :dialogVisible.sync="libraryVisible"></component>
+        <component :is="currentDialog" :dialogVisible.sync="libraryVisible" @imageSelected="imageSelected"></component>
     </div>
 </template>
 <script>
 import DialogBase from '@/components/DialogBase'
 import LibraryDialog from '@/views/goods/dialogs/libraryDialog'
+import DialogSelectImageMaterial from '@/views/shop/dialogs/dialogSelectImageMaterial'
 
 export default {
     data() {
@@ -114,6 +115,9 @@ export default {
         }
     },
     methods: {
+        imageSelected(image) {
+            this.basicForm.imageUrl = image.src
+        },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -203,7 +207,8 @@ export default {
     },
     components: {
         DialogBase,
-        LibraryDialog
+        LibraryDialog,
+        DialogSelectImageMaterial
     }
 }
 </script>
