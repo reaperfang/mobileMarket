@@ -567,3 +567,12 @@ export function exportToLocal(data) {
         data
     })
 }
+//获取会员卡色卡地址
+export function getColorUrl(data) {
+    return request({
+        target:'CARD-BG-IMG-PROCESSOR',
+        method: 'post',
+        apiType: 'goodsOperate',
+        data
+    })
+}

@@ -741,12 +741,23 @@ export default {
             });
           });
       }
+    },
+    getColorUrl() {
+      this._apis.client.getColorUrl({}).then((response) => {
+        console.log(response)
+      }).catch((error) => {
+        this.$notify.error({
+          title: "错误",
+          message: error
+        });
+      })
     }
   },
   created() {
     this.getRightsList();
     this.getConditionList();
     this.getRewardList();
+    this.getColorUrl();
   }
 };
 </script>
