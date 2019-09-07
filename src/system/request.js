@@ -87,8 +87,8 @@ class Ajax {
       head.value = md5(CONST.VALUE + head.target + head.requestTime);
 
     //获取cid
-    let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7') : '';
-
+    let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
+    
     //拼接全部参数
     if (config.method == "post") {
       if (config.noCid) {
