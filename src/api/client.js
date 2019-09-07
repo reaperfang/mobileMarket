@@ -450,6 +450,15 @@ export function getCardInfo(data) {
         data
     })
 }
+//会员卡管理-查询一等级会员卡公共字段
+export function getCardPublic(data) {
+    return request({
+        target:'CARD-LEVEL-INFO-FIND-LEVEL-ONE-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
 //会员卡管理-编辑
 export function editCard(data) {
     return request({
@@ -564,6 +573,15 @@ export function exportToLocal(data) {
         target:'MEMBERINFO-EXPORT-PROCESSOR',
         method: 'post',
         apiType: 'member',
+        data
+    })
+}
+//获取会员卡色卡地址
+export function getColorUrl(data) {
+    return request({
+        target:'CARD-BG-IMG-PROCESSOR',
+        method: 'post',
+        apiType: 'goodsOperate',
         data
     })
 }

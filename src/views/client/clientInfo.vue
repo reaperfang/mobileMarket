@@ -127,15 +127,15 @@
                 </div>
                 <div class="assets_item">
                     <p>客单价</p>
-                    <p>¥ 50</p>
+                    <p>¥ {{clientInfoById.perUnitPrice || 0}}</p>
                 </div>
                 <div class="assets_item">
                     <p>累计消费金额</p>
-                    <p>¥ 50</p>
+                    <p>¥ {{clientInfoById.totalDealMoney || 0}}</p>
                 </div>
                 <div class="assets_item rb">
                     <p>累计消费订单数</p>
-                    <p>¥ 50</p>
+                    <p>{{clientInfoById.dealTimes || 0}}</p>
                 </div>
             </div>
         </div>

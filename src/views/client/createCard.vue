@@ -16,10 +16,10 @@
         <el-form-item label="背景设置：" prop="backgroundType">
           <el-radio v-model="ruleForm.backgroundType" label="0">背景色：</el-radio>
           <span
-            class="color_picker"
+            :class="[item.active == '1'?'active':'','color_picker']"
             v-for="item in colors"
-            :key="item.value"
-            :style="{background:item.color,border :item.active?'2px solid red':''}"
+            :key="item.id"
+            :style="{background:item.imgKey}"
             @click="handlePick(item)"
           ></span>
           <br />
@@ -69,13 +69,13 @@
             <span class="gray">(当前积分兑换率：1元1积分)</span>
           </el-form-item>
         </el-form-item>
-        <el-form-item label="特权说明：" prop="explain">
+        <el-form-item label="特权说明：">
           <div class="input_wrap4">
             <el-input
               type="textarea"
               :rows="5"
               placeholder="请输入该等级或会员卡通用的特权说明，最多不超过250个字符"
-              v-model="ruleForm.explain"
+              v-model="explain"
             ></el-input>
           </div>
         </el-form-item>
@@ -125,19 +125,19 @@
           <el-radio v-model="ruleForm.isSyncWechat" label="1">是</el-radio>
           <el-radio v-model="ruleForm.isSyncWechat" label="0">否</el-radio>
         </el-form-item>
-        <el-form-item label="使用须知：" prop="notice">
+        <el-form-item label="使用须知：">
           <div class="input_wrap4">
             <el-input
               type="textarea"
               :rows="5"
               placeholder="请输入会员卡通用使用须知，最多不超过100字符"
-              v-model="ruleForm.notice"
+              v-model="notice"
             ></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="客户电话：" prop="phone">
+        <el-form-item label="客户电话：">
           <div class="input_wrap">
-            <el-input v-model="ruleForm.phone" placeholder="请输入联系电话"></el-input>
+            <el-input v-model="phone" placeholder="请输入联系电话"></el-input>
           </div>
         </el-form-item>
       </el-form>
@@ -174,87 +174,15 @@ export default {
     return {
       uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
       imageUrl: "",
-      colors: [
-        {
-          color: "#63b359",
-          value: "Color010",
-          active: false
-        },
-        {
-          color: "#2c9f67",
-          value: "Color020",
-          active: false
-        },
-        {
-          color: "#509fc9",
-          value: "Color030",
-          active: false
-        },
-        {
-          color: "#5885cf",
-          value: "Color040",
-          active: false
-        },
-        {
-          color: "#9062c0",
-          value: "Color050",
-          active: false
-        },
-        {
-          color: "#d09a45",
-          value: "Color060",
-          active: false
-        },
-        {
-          color: "#e4b138",
-          value: "Color070",
-          active: false
-        },
-        {
-          color: "#ee903c",
-          value: "Color080",
-          active: false
-        },
-        {
-          color: "#f08500",
-          value: "Color081",
-          active: false
-        },
-        {
-          color: "#a9d92d",
-          value: "Color082",
-          active: false
-        },
-        {
-          color: "#dd6549",
-          value: "Color090",
-          active: false
-        },
-        {
-          color: "#cc463d",
-          value: "Color100",
-          active: false
-        },
-        {
-          color: "#cf3e36",
-          value: "Color101",
-          active: false
-        },
-        {
-          color: "#5E6671",
-          value: "Color102",
-          active: false
-        }
-      ],
       ruleForm: {
         name: "",
         backgroundType: "",
         receiveSetting: "",
-        explain: "",
         isSyncWechat: "",
-        notice: "",
-        phone: ""
       },
+      phone:"",
+      notice:"",
+      explain:"",
       rules: {
         name: [
           { required: true, message: "请输入会员卡名称", trigger: "blur" },
@@ -266,9 +194,9 @@ export default {
         receiveSetting: [
           { required: true, message: "请选择领取条件", trigger: "blur" }
         ],
-        explain: [
-          { required: true, message: "请输入特权说明", trigger: "blur" }
-        ],
+        // explain: [
+        //   { required: true, message: "请输入特权说明", trigger: "blur" }
+        // ],
         isSyncWechat: [
           {
             required: true,
@@ -276,10 +204,6 @@ export default {
             trigger: "blur"
           }
         ],
-        notice: [
-          { required: true, message: "请输入使用须知", trigger: "blur" }
-        ],
-        phone: [{ required: true, message: "请输入客户电话", trigger: "blur" }]
       },
       right1: "",
       right2: "",
@@ -299,12 +223,16 @@ export default {
       selectedCoupons: [],
       selectedGifts: [],
       selectedReds: [],
-      levelConditionValueDto: {}
+      levelConditionValueDto: {},
+      colors: JSON.parse(localStorage.getItem('colorUrl'))
     };
   },
   methods: {
     getCardInfo() {
       let id = this.$route.query.cardData.id;
+      if(this.$route.query.cardData.level !== 1) {
+        this.getCardPublic();
+      }
       this._apis.client
         .getCardInfo({ id: id })
         .then(response => {
@@ -313,28 +241,33 @@ export default {
           response.receiveSetting = response.receiveSetting.toString();
           this.ruleForm = Object.assign({}, response);
           //用于回显领取条件
-          this.currentData.conditionData = {
-            name: this.ruleForm.levelConditionInfoView.name,
-            value: this.ruleForm.levelConditionValueView.conditionValue
-          };
+          if(this.ruleForm.levelConditionInfoView) {
+            this.currentData.conditionData = {
+              name: this.ruleForm.levelConditionInfoView.name,
+              value: this.ruleForm.levelConditionValueView.conditionValue,
+            };
+            this.levelConditionValueDto.label = this.ruleForm.levelConditionInfoView.name;
+          }
           this.levelConditionValueDto.conditionValue = this.ruleForm.levelConditionValueView.conditionValue;
-          this.levelConditionValueDto.label = this.ruleForm.levelConditionInfoView.name;
           this.levelConditionValueDto.levelConditionId = this.ruleForm.levelConditionValueView.levelConditionId;
           //用于回显权益礼包
-          this.ruleForm.levelRightsInfoList.map(v => {
-            if (v.rightsInfoId == this.getId(this.rightsList, "积分回馈倍率")) {
-              this.right2 = true;
-              this.jfhkbl = v.rightsValue;
-            }
-            if (v.rightsInfoId == this.getId(this.rightsList, "优先发货")) {
-              this.right1 = true;
-            }
-          });
+          if(this.ruleForm.levelRightsInfoList.length > 0) {
+            this.ruleForm.levelRightsInfoList.map(v => {
+              if (v.rightsInfoId == this.getId(this.rightsList, "积分回馈倍率")) {
+                this.right2 = true;
+                this.jfhkbl = v.rightsValue;
+              }
+              if (v.rightsInfoId == this.getId(this.rightsList, "优先发货")) {
+                this.right1 = true;
+              }
+            });
+          }
           //用于回显领取礼包
           let redArr = [],
             giftArr = [],
             couponArr = [];
-          this.ruleForm.upgradeRewardValueList.map(v => {
+          if(this.ruleForm.upgradeRewardValueList.length > 0) {
+            this.ruleForm.upgradeRewardValueList.map(v => {
             if (
               v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送积分")
             ) {
@@ -371,16 +304,19 @@ export default {
               couponArr.push(v.giftProduct);
             }
           });
+          }
+          
           this.currentData.redArr = [].concat(redArr);
           //用于回显背景
-          if(this.ruleForm.background.length > 8) {
-              this.imageUrl = this.ruleForm.background;
-          }else{
-              this.colors.map((v) => {
-                  if(v.value == this.ruleForm.background) {
-                      v.active = true;
-                  }
-              })
+          let imgType = '0';//设置图片类型初始为背景图
+          this.colors.map((v) => {
+            if(v.imgUrl == this.ruleForm.background) {
+              v.active = '1';
+              imgType = '1'
+            }
+          });
+          if(imgType == '1') {
+            this.imageUrl = "";
           }
         })
         .catch(error => {
@@ -473,7 +409,6 @@ export default {
             _arr.push(_obj);
           });
           this.rewardList = [].concat(_arr);
-          this.getCardInfo();
         })
         .catch(error => {
           this.$notify.error({
@@ -543,14 +478,14 @@ export default {
     },
     handlePick(item) {
       this.colors.map(v => {
-        this.$set(v, "active", false);
+        this.$set(v, "active", '0');
       });
-      this.$set(item, "active", true);
+      this.$set(item, "active", '1');
     },
     chooseImg(val) {
       if (val == 1) {
         this.colors.map(v => {
-          this.$set(v, "active", false);
+          this.$set(v, "active", '0');
         });
       }
     },
@@ -564,9 +499,9 @@ export default {
         formObj.backgroundType = this.ruleForm.backgroundType;
         formObj.receiveSetting = this.ruleForm.receiveSetting;
         formObj.isSyncWechat = this.ruleForm.isSyncWechat;
-        formObj.notice = this.ruleForm.notice;
-        formObj.phone = this.ruleForm.phone;
-        formObj.explain = this.ruleForm.explain;
+        formObj.notice = this.notice;
+        formObj.phone = this.phone;
+        formObj.explain = this.explain;
         formObj.levelConditionValueDto = this.levelConditionValueDto;
         formObj.receiveConditionsRemarks =
           "" +
@@ -574,8 +509,8 @@ export default {
           this.levelConditionValueDto.conditionValue;
         if (this.ruleForm.backgroundType == "0") {
           this.colors.map(v => {
-            if (v.active) {
-              formObj.background = v.value;
+            if (v.active == '1') {
+              formObj.background = v.imgUrl;
             }
           });
         } else if (this.ruleForm.backgroundType == "1") {
@@ -740,13 +675,41 @@ export default {
               message: error
             });
           });
-      }
+      } 
+    },
+    getColorUrl() {
+      this._apis.client.getColorUrl({}).then((response) => {
+        //localStorage.setItem('colorUrl',JSON.stringify(response));
+        this.colorUrl = [].concat(response);
+      }).catch((error) => {
+        this.$notify.error({
+          title: "错误",
+          message: error
+        });
+      })
+    },
+    getCardPublic() {
+      this._apis.client.getCardPublic({}).then((response) => {
+        this.phone = response.phone;
+        this.explain = response.explain;
+        this.notice = response.notice;
+      }).catch((error) => {
+        this.$notify.error({
+          title: "错误",
+          message: error
+        });
+      })
     }
   },
   created() {
     this.getRightsList();
     this.getConditionList();
     this.getRewardList();
+    this.getCardInfo();
+    //this.getColorUrl();
+  },
+  mounted() {
+    
   }
 };
 </script>
@@ -868,6 +831,9 @@ export default {
     .upload_btn {
       margin-left: 90px;
     }
+  }
+  .active{
+    border: 2px solid red;
   }
 }
 </style>

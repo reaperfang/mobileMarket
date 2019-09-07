@@ -73,6 +73,7 @@ export default {
       },
       roles:[ ],
       shops:[ ],
+      shopsData:[]
     }
   },
   computed:{
@@ -100,7 +101,7 @@ export default {
             roleName:this.accountInfo.roleNames.split(',')[0],
             shopInfoIds:this.accountInfo.shopIds.split(',')
           }
-      } 
+      }
     },
     //获取所有店铺
     getShops(){
@@ -108,6 +109,7 @@ export default {
       for(let key in data){
         let shopObj = data[key]
         this.shops.push(shopObj)
+        this.shopsData = this.shops
       }
     },
     //获取角色列表
@@ -120,7 +122,13 @@ export default {
       } 
       this._apis.set.getRoleList(query).then(response =>{
         this.roles = response.list
-        let roleName = this.accountInfo ? this.accountInfo.roleNames.split(',')[0] : this.roles[0].roleName
+        let roleName = ''
+        if(this.accountInfo){
+            roleName = this.accountInfo.roleNames.split(',')[0]
+        }else{
+            roleName = this.roles[0].roleName
+            this.form.roleName = roleName
+        }
         this.handleShop(roleName)
       }).catch(error =>{
         this.$notify.error({
@@ -139,7 +147,7 @@ export default {
       this._apis.set.getRoleList(query).then(response =>{
         let shopIds = response.list[0].shopIds.split(',')
         let newShops = []
-        this.shops.map(item =>{
+        this.shopsData.map(item =>{
             shopIds.map(id =>{
                 item.id == id && newShops.push(item)
             })
@@ -168,12 +176,15 @@ export default {
                shopInfoIds:this.form.shopInfoIds
            } 
            this._apis.set.editSubAccount(query).then(response =>{
-                this.roles = response.list
+                this.$notify.success({
+                    title: '成功',
+                    message: '修改成功！'
+                });
             }).catch(error =>{
-                // this.$notify.error({
-                // title: '错误',
-                // message: error
-                // });
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             }) 
         }else{//新建子账号
             let query = {
@@ -186,12 +197,15 @@ export default {
                shopInfoIds:this.form.shopInfoIds
            } 
             this._apis.set.newSubAccount(query).then(response =>{
-                this.roles = response.list
+                this.$notify.success({
+                    title: '成功',
+                    message: '添加成功！'
+                });
             }).catch(error =>{
-                // this.$notify.error({
-                // title: '错误',
-                // message: error
-                // });
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             })
         }
     }
