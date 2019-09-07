@@ -104,6 +104,7 @@ export default {
         padding: 20px 0 20px 17px;
         display: flex;
         align-items: center;
+        cursor: pointer;
         &.active {
           border-left: 4px solid #655eff;
           background-color: #4b4c6c;

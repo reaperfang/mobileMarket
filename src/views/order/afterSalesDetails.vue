@@ -109,6 +109,7 @@ export default {
         auth() {
             this._apis.order.orderAfterSaleUpdateStatus({
                 id: this.orderAfterSale.id,
+                realReturnScore: this.orderAfterSale.realReturnScore,
                 realReturnMoney: this.orderAfterSale.realReturnMoney,
                 realReturnBalance: this.orderAfterSale.realReturnBalance,
                 realReturnWalletMoney: this.orderAfterSale.realReturnWalletMoney,

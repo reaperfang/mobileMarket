@@ -17,7 +17,7 @@ export default {
                 pageSize: 20,
             },
             list: [],
-            memberLevelImg: ''
+            memberLevelImg: '',
         }
     },
     created() {
@@ -29,6 +29,12 @@ export default {
     methods: {
         getList() {
             let _params
+
+            // const loading = this.$loading({
+            //     lock: true,
+            //     spinner: 'el-icon-loading',
+            //     target: '.order-container'
+            // });
 
             _params = Object.assign({}, this.params, {
                 [this.params.searchType]: this.params.searchValue,
@@ -45,8 +51,9 @@ export default {
                 this.list = res.list
                 this.total = +res.total
                 this._globalEvent.$emit('total', this.total)
+                //loading.close();
             }).catch(error => {
-
+                //loading.close();
             })
         }
     },

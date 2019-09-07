@@ -102,15 +102,15 @@
                     <div class="content">
                         <div class="item">
                             <div class="label">发货人</div>
-                            <div class="value">{{orderSendInfo.sendName}}</div>
+                            <div class="value">{{orderInfo.sendName}}</div>
                         </div>
                         <div class="item">
                             <div class="label">联系电话</div>
-                            <div class="value">{{orderSendInfo.sendPhone}}</div>
+                            <div class="value">{{orderInfo.sendPhone}}</div>
                         </div>
                         <div class="item">
                             <div class="label">发货信息</div>
-                            <div class="value">{{orderSendInfo.sendRemark}}</div>
+                            <div class="value">{{orderInfo.sendDetail}}</div>
                         </div>
                     </div>
                 </div>
@@ -228,12 +228,15 @@ export default {
             params = {
                 sendInfoDtoList: [
                     {
-                        orderId: this.$route.query.orderId || this.$route.query.id,
+                        orderId: this.$route.query.orderId || this.$route.query.id, // 订单id
                         memberInfoId: this.orderInfo.memberInfoId,
                         orderCode: this.orderInfo.orderCode,
-                        orderItems: this.multipleSelection,
-                        id: this.orderSendInfo.id,
-                        memberSn: this.orderInfo.memberSn,
+                        orderItems: this.multipleSelection.map(val => ({
+                            id: val.id,
+                            sendCount: val.sendCount
+                        })), // 发货的商品列表
+                        id: this.orderInfo.id, 
+                        memberSn: this.orderInfo.memberSn, 
                         receivedName: this.orderInfo.receivedName,
                         receivedPhone: this.orderInfo.receivedPhone,
                         receivedProvinceCode: this.orderInfo.receivedProvinceCode,
@@ -243,19 +246,19 @@ export default {
                         receivedAreaCode: this.orderInfo.receivedAreaCode,
                         receivedAreaName: this.orderInfo.receivedAreaName,
                         receivedDetail: this.orderInfo.receivedDetail,
-                        sendName: this.orderSendInfo.sendName,
-                        sendPhone: this.orderSendInfo.sendPhone,
-                        sendProvinceCode: this.orderSendInfo.sendProvinceCode,
-                        sendProvinceName: this.orderSendInfo.sendProvinceName,
-                        sendCityCode: this.orderSendInfo.sendCityCode,
-                        sendCityName: this.orderSendInfo.sendCityName,
-                        sendAreaCode: this.orderSendInfo.sendAreaCode,
-                        sendAreaName: this.orderSendInfo.sendAreaName,
-                        sendDetail: this.orderSendInfo.sendDetail,
-                        expressCompanys: this.ruleForm.expressCompany,
-                        expressNos: this.ruleForm.expressNos,
-                        expressCompanyCodes: this.ruleForm.expressCompanyCode,
-                        remark: this.ruleForm.remark
+                        sendName: this.orderInfo.sendName, // 发货人名称
+                        sendPhone: this.orderInfo.sendPhone, // 发货人手机号
+                        sendProvinceCode: this.orderInfo.sendProvinceCode, // 发货省cdoe
+                        sendProvinceName: this.orderInfo.sendProvinceName, // 发货省名称
+                        sendCityCode: this.orderInfo.sendCityCode, // 发货城市code
+                        sendCityName: this.orderInfo.sendCityName, // 发货城市名称
+                        sendAreaCode: this.orderInfo.sendAreaCode, // 发货区县code
+                        sendAreaName: this.orderInfo.sendAreaName, // 发货区县名称
+                        sendDetail: this.orderInfo.sendDetail, // 发货人详细地址
+                        expressCompanys: this.ruleForm.expressCompany, // 快递公司名称
+                        expressNos: this.ruleForm.expressNos, // 快递单号
+                        expressCompanyCodes: this.ruleForm.expressCompanyCode, // 快递公司编码
+                        remark: this.ruleForm.remark // 发货备注
                     }
                 ],
             }
@@ -265,7 +268,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=deliverGoods')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + this.orderInfo.id + '&type=deliverGoods')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -281,48 +284,25 @@ export default {
         },
         changeSendInfo() {
             this.currentDialog = 'ReceiveInformationDialog'
-            this.currentData = this.orderSendInfo
+            this.currentData = this.orderInfo
             this.sendGoods = 'send'
             this.dialogVisible = true
         },
         onSubmit(value) {
-            //this.getOrderDetail()
-            if(this.sendGoods == 'received') {
-                this.orderInfo = Object.assign({}, this.orderInfo, value)
-            } else {
-                this.orderSendInfo = Object.assign({}, this.orderSendInfo, value)
-            }
+            this.orderInfo = Object.assign({}, this.orderInfo, value)
         },
         _orderDetail() {
             let id = this.$route.query.id
 
             this._apis.order.orderSendDetail({ids: [this.$route.query.id]}).then((res) => {
-                this.orderDetail = res[0]
-                this.tableData = this.orderDetail.orderItemList
+                this.tableData = res[0].orderItemList
                 this.orderInfo = res[0]
-                this.orderSendInfo = res[0]
-            }).catch(error => {
-
-            })
-        },
-        afterSaleOrderDetail() {
-            let id = this.$route.query.id
-
-            this._apis.order.getOrderAfterSaleDetail({id}).then((res) => {
-                this.orderDetail = res
-                this.tableData = this.orderDetail.orderItems
-                this.orderInfo = res.orderInfo
-                this.orderSendInfo = res.orderSendInfo
             }).catch(error => {
 
             })
         },
         getOrderDetail() {
-            if(this.afterSale) {
-                this.afterSaleOrderDetail()
-            } else {
-                this._orderDetail()
-            }
+            this._orderDetail()
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;

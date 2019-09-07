@@ -263,7 +263,7 @@
                             实退金额：
                         </div>
                         <div class="col">
-                            <el-input type="number" @change="realReturnMoneyHandler" v-model="orderAfterSale.realReturnMoney"></el-input>
+                            <el-input min="0" type="number" @change="realReturnMoneyHandler" v-model="orderAfterSale.realReturnMoney"></el-input>
                         </div>
                     </div>
                     <div class="row align-center">
@@ -271,7 +271,7 @@
                             退还余额：
                         </div>
                         <div class="col">
-                            {{orderAfterSale.realReturnBalance}}
+                            {{orderAfterSale.realReturnBalance || 0}}
                         </div>
                     </div>
                     <div class="row align-center">
@@ -282,47 +282,6 @@
                             {{orderAfterSale.realReturnWalletMoney}}
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col">
-                            退还优惠：
-                        </div>
-                        <div class="col">
-                            <div class="coupon-box">
-                                <div class="coupon">
-                                    <div class="item lefter">
-                                        <p>{{data.price}}</p>
-                                        <p>元</p>
-                                    </div>
-                                    <div class="item righter">
-                                        <p>{{data.detail}}</p>
-                                        <p class="limit">{{data.limit}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="row">
-                        <div class="col">
-                            退还优惠码：
-                        </div>
-                        <div class="col">
-                            <div class="coupon-box">
-                                <div class="coupon-code">
-                                    <div class="coupon-code-header">优惠码 {{data.code}}</div>
-                                    <div class="coupon">
-                                        <div class="item lefter">
-                                            <p>{{data.price}}</p>
-                                            <p>元</p>
-                                        </div>
-                                        <div class="item righter">
-                                            <p>{{data.detail}}</p>
-                                            <p class="limit">{{data.limit}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </section>
@@ -433,13 +392,25 @@ export default {
     },
     methods: {
         realReturnMoneyHandler() {
+            // realReturnWalletMoney 剩余退还余额
+            // realReturnMoney 实退金额
+            // realReturnBalance 退还余额
             if(this.orderAfterSale.realReturnWalletMoney == 0) {
                 // 剩余退还余额 0
-                this.orderAfterSale.realReturnBalance = this.orderAfterSale.realReturnMoney
+                this.orderAfterSale.realReturnWalletMoney = this.orderAfterSale.realReturnMoney
             } else if(this.orderAfterSale.realReturnBalance == 0) {
                 this.orderAfterSale.realReturnWalletMoney = this.orderAfterSale.realReturnMoney
             } else {
-                this.orderAfterSale.realReturnWalletMoney = this.orderAfterSale.realReturnMoney - this.orderAfterSale.realReturnBalance
+                let _number = this.orderAfterSale.realReturnMoney - this.orderAfterSale.realReturnBalance
+
+                if(_number < 0) {
+                    let _realReturnBalance = this.orderAfterSale.realReturnBalance + _number
+                    this.orderAfterSale.realReturnBalance = _realReturnBalance
+
+                    this.orderAfterSale.realReturnWalletMoney  = 0
+                } else {
+                    this.orderAfterSale.realReturnWalletMoney = _number
+                }
             }
         }
     },

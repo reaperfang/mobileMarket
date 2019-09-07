@@ -9,7 +9,7 @@
                     <el-input v-model="ruleForm.sendPhone" placeholder="请输入快递单号"></el-input>
                 </el-form-item>
                 <el-form-item label="发货地址" prop="deliveryAddress">
-                    <area-cascader type="all" :level="2" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
                 </el-form-item>
                 <el-form-item label="详细地址" prop="sendDetail">
                     <el-input
@@ -34,7 +34,7 @@
                     <el-input v-model="ruleForm.receivedPhone" placeholder="请输入快递单号"></el-input>
                 </el-form-item>
                 <el-form-item label="收货地址" prop="deliveryAddress">
-                    <area-cascader type="all" :level="2" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
                 </el-form-item>
                 <el-form-item label="详细地址" prop="receivedDetail">
                     <el-input
@@ -120,22 +120,28 @@ export default {
     },
     methods: {
         getDetail() {
-            let obj = {}
+            let arr = []
+            let obj1 = {}
+            let obj2 = {}
+            let obj3 = {}
 
             if(this.sendGoods == 'received') {
                 if(this.data.receivedProvinceCode && this.data.receivedCityCode && this.data.receivedAreaCode) {
-                    obj[this.data.receivedProvinceCode] = this.data.receivedProvinceName
-                    obj[this.data.receivedCityCode] = this.data.receivedCityName
-                    obj[this.data.receivedAreaCode] = this.data.receivedAreaName
+                    obj1[this.data.receivedProvinceCode] = this.data.receivedProvinceName
+                    obj2[this.data.receivedCityCode] = this.data.receivedCityName
+                    obj3[this.data.receivedAreaCode] = this.data.receivedAreaName
                 }
             } else {
                 if(this.data.sendProvinceCode && this.data.sendCityCode && this.data.sendAreaCode) {
-                    obj[this.data.sendProvinceCode] = this.data.sendProvinceName
-                    obj[this.data.sendCityCode] = this.data.sendCityName
-                    obj[this.data.sendAreaCode] = this.data.sendAreaName
+                    obj1[this.data.sendProvinceCode] = this.data.sendProvinceName
+                    obj2[this.data.sendCityCode] = this.data.sendCityName
+                    obj3[this.data.sendAreaCode] = this.data.sendAreaName
                 }
             }
-            this.ruleForm = Object.assign({}, this.ruleForm, this.data, {deliveryAddress: obj})
+            arr.push(obj1)
+            arr.push(obj2)
+            arr.push(obj3)
+            this.ruleForm = Object.assign({}, this.ruleForm, this.data, {deliveryAddress: arr})
         },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
@@ -176,6 +182,47 @@ export default {
                                 sendPhone: this.sendGoods == 'send' ? this.ruleForm.sendPhone : this.ruleForm.receivedPhone,
                                 sendName: this.sendGoods == 'send' ? this.ruleForm.sendName : this.ruleForm.receivedName
                             }
+
+                            this._apis.order.orderUpdateAddress({
+                                id: 11, // 和cid相同
+                                cid: 11,
+                                // receivedProvinceCode: codes0,
+                                // receivedProvinceName: name0,
+                                // receivedCityCode: codes1,
+                                // receivedCityName: name1,
+                                // receivedAreaCode: codes2,
+                                // receivedAreaName: name2,
+                                // receivedDetail: this.ruleForm.receivedDetail,
+                                // receivedPhone: this.ruleForm.receivedPhone,
+                                // receivedName: this.ruleForm.receivedName,
+
+                                province: name0,
+                                provinceCode: codes0,
+                                city: name1,
+                                cityCode: codes1,
+                                area: name2,
+                                areaCode: codes2,
+                                address: this.ruleForm.sendDetail,
+                                senderPhone: this.ruleForm.sendPhone,
+                                senderName: this.ruleForm.sendName
+
+                            }).then(res => {
+                                this.$emit('submit', obj)
+                                this.visible = false
+                                this.$notify({
+                                    title: '成功',
+                                    message: '修改成功！',
+                                    type: 'success'
+                                });
+                            }).catch(error => {
+                                this.visible = false
+                                this.$notify.error({
+                                    title: '错误',
+                                    message: error
+                                });
+                            }) 
+
+                            return
                         }
                         this.$emit('submit', obj)
                         this.visible = false

@@ -54,6 +54,7 @@
         <div class="content">
             <p>已选择 {{multipleSelection.length}} 项，全部{{total}}项</p>
             <el-table
+                v-loading="loading"
                 ref="multipleTable"
                 :data="tableData"
                 tooltip-effect="dark"
@@ -162,7 +163,7 @@ export default {
             ],
             multipleSelection: [],
             multipleTable: [
-                {}
+                
             ],
             total: 0,
             tableData: [],
@@ -177,7 +178,8 @@ export default {
             currentDialog: '',
             dialogVisible: false,
             title: '',
-            currentData: ''
+            currentData: '',
+            loading: false
         }
     },
     created() {
@@ -395,7 +397,7 @@ export default {
             this.multipleSelection = val;
         },
         getList(param) {
-            //this.listLoading = true
+            this.loading = true
             let _param
             
             _param = Object.assign({}, this.listQuery, param, {
@@ -406,10 +408,10 @@ export default {
 
             this._apis.order.getOrderAfterSalePageList(_param).then((res) => {
                 this.total = +res.total
-                console.log(res)
                 this.tableData = res.list
+                this.loading = false
             }).catch(error => {
-                //this.listLoading = false
+                this.loading = false
             })
         },
     },

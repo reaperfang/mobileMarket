@@ -62,6 +62,7 @@
         <div class="content">
             <p>已选择 {{multipleSelection.length}} 项，全部{{total}}项</p>
             <el-table
+                v-loading="loading"
                 ref="multipleTable"
                 :data="tableData"
                 tooltip-effect="dark"
@@ -143,7 +144,8 @@ export default {
                 orderAfterSaleProductNames: '',
                 expressCompanys: '',
             },
-            tableData: []
+            tableData: [],
+            loading: false
         }
     },
     created() {
@@ -208,6 +210,7 @@ export default {
         },
         getList() {
             let params = {}
+            this.loading = true
 
             params = Object.assign({}, this.listQuery, {
                 cid: 2,
@@ -220,6 +223,7 @@ export default {
                 console.log(res)
                 this.total = +res.total
                 this.tableData = res.list
+                this.loading = false
                 this.$notify({
                     title: '成功',
                     message: '查询成功！',
@@ -231,6 +235,7 @@ export default {
                     title: '错误',
                     message: error
                 });
+                this.loading = false
             })
         }
     },

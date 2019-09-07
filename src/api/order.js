@@ -521,6 +521,27 @@ export function orderSendInfoImportBatchDelever(data) {
       })
   }
 
+  //订单删除
+  export function deleteOrder(data) {
+    return request({
+      target: 'ORDER-EDIT-PROCESSOR',
+      method: 'post',
+      apiType: 'order',
+      data
+    })
+}
+
+ //修改发货地址
+ export function orderUpdateAddress(data) {
+  return request({
+    token: '09255c7724fe9b8df952aa2f7e3ec718768b8ae62e74d1ef2214c0aead86a36b',
+    target: 'SHOP-API-102-PROCESSOR',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
 
 
 
