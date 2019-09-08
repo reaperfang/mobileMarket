@@ -21,24 +21,26 @@
 
     <div class="block form">
       <el-button type="primary" @click="dialogVisible=true">添加页面</el-button>
-      <p v-for="(item, key) of ruleForm.pageList" :key="key">{{item.name}}</p>
+      <div class="page_tags">
+        <el-tag v-for="item of ruleForm.pageList" :key="item.name" closable>{{item.name}}</el-tag>
+      </div>
     </div>
 
      <DialogBase :visible.sync="dialogVisible" width="816px" title="选择微页面" @submit="seletePage">
-        <component v-if="dialogVisible" :is="'microPage'" @seletedRow="rowSeleted"></component>
+        <component v-if="dialogVisible" :is="'multiMicroPage'" @dialogDataSelected="dialogDataSelected"></component>
     </DialogBase>
   </el-form>
 </template>
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import microPage from "@/views/shop/dialogs/jumpLists/microPage";
+import multiMicroPage from "@/views/shop/dialogs/jumpLists/multiMicroPage";
 import RichEditor from '@/components/RichEditor';
 import DialogBase from "@/components/DialogBase";
 export default {
   name: 'propertyTitle',
   mixins: [propertyMixin],
-  components: {DialogBase, microPage, RichEditor},
+  components: {DialogBase, multiMicroPage, RichEditor},
   data () {
     return {
       editorData: '',  //富文本数据
@@ -46,7 +48,7 @@ export default {
           // 编辑器不自动被内容撑高
           autoHeightEnabled: false,
           // 初始容器高度
-          initialFrameHeight: 320,
+          initialFrameHeight: 220,
           // 初始容器宽度
           initialFrameWidth: 306
       },
@@ -69,8 +71,8 @@ export default {
   },
   methods: {
 
-    rowSeleted(row) {
-      this.tempSelectPage = row;
+    dialogDataSelected(pages) {
+      this.tempSelectPage = pages;
     },
 
     /* 向父组件提交选中的数据 */
@@ -88,6 +90,16 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+.page_tags{
+  span{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    i{
+      top: 4px!important;
+      right: 5px!important;
+    }
+  }
+}
 </style>

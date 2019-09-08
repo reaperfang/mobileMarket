@@ -24,7 +24,8 @@ class Ajax {
       businessId: 1,
       tenantId: 1,
       merchantId: 2,
-      loginUserId: 1
+      loginUserId: 1,
+      token: '123'
     }
   }
 
