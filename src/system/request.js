@@ -24,7 +24,8 @@ class Ajax {
       businessId: 1,
       tenantId: 1,
       merchantId: 2,
-      loginUserId: 1
+      loginUserId: 1,
+      token: '123'
     }
   }
 
@@ -87,7 +88,8 @@ class Ajax {
       head.value = md5(CONST.VALUE + head.target + head.requestTime);
 
     //获取cid
-    let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
+    // let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
+    let cid = store.getters.cid ||  '2'
     
     //拼接全部参数
     if (config.method == "post") {
