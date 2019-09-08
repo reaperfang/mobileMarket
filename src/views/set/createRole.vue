@@ -12,8 +12,9 @@
             <el-form-item label="角色描述:" prop="roleDesc">
                 <el-input v-model="form.roleDesc" style="width:182px;" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="同步店铺:" prop="shop">
-                <el-checkbox-group v-model="form.shop" class="inline">
+            <el-form-item label="同步店铺:" prop="shopChecked" class="display:flex;">
+                <p style="color:#DC6662;">请先选择店铺之后，再选择权限，如果权限未勾选，已选择店铺无效；</p>
+                <el-checkbox-group v-model="shopChecked" class="inline">
                     <div v-for="item in shops" :key="item.id">
                         <el-checkbox                                          
                         :label="item.id"
@@ -21,107 +22,53 @@
                         class="mr20">
                         {{item.shopName}}
                         </el-checkbox>
-                        <el-link type="primary" @click="handleIsShow(item)">{{item.isShow ? '隐藏' : '展开'}}</el-link>
-                        <el-tree
-                        :data="item.data.msfList"
-                        show-checkbox
-                        node-key="id"
-                        :default-expanded-keys="[2, 3]"
-                        :default-checked-keys="[5]"
-                        :props="defaultProps"
-                        v-if="item.isShow">
-                        </el-tree>
+                        <el-link type="primary" @click="handleIsShow(item)">选择权限</el-link>
                     </div>                    
                 </el-checkbox-group>
-                <!-- @change="handleShop(item.id)" -->
             </el-form-item>
-            <!-- <el-form-item>
-                <el-tab-pane v-for="(menu, index) in theModel" :key="index"  :label="menu.name" style="display:block">
-                    <tree-menu 
-                    :model="menu" 
-                    ref="tree" 
-                    :menuList="menu" 
-                    :label="index" 
-                    :selectKeys="selectKeys">
-                    </tree-menu>
-                </el-tab-pane>
-            </el-form-item> -->
             <el-form-item class="mtb200">
                 <el-button type="primary" @click="onSubmit">保存</el-button>
                 <el-button @click="_routeTo('roleManage')">返回</el-button>
             </el-form-item>
         </el-form>
+        <!-- 动态弹窗 -->
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="data" @submit="handleSubmit"></component>
     </div>
 </template>
 
 <script>
 import treeMenu from '@/components/TreeMenu'
 import * as menus from '@/components/menus'
-import shopInfoVue from './shopInfo.vue';
+import dialogTree from './dialogs/dialogTree';
+import { userInfo } from 'os';
 export default {
   name: 'createRole',
   components:{
-      treeMenu
+      treeMenu,
+      dialogTree
   },
   data() {
     return {
       form: {
           roleName:'',
           roleDesc: '',
-          shop: []
+          oldRoleName:'',
+          shops: []
       },
-      shops:[],
       rules:{
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
         ],
-        shop:[
+        shops:[
           { required: true, message: '请选择店铺', trigger: 'blur' },
         ]
-      },
-      selectKeys:[],
-    //   theModel:menus,
-      theModel:[],
-      msfList:[{
-          id: 1,
-          label: '一级 1',
-          children: [{
-            id: 4,
-            label: '二级 1-1',
-            children: [{
-              id: 9,
-              label: '三级 1-1-1'
-            }, {
-              id: 10,
-              label: '三级 1-1-2'
-            }]
-          }]
-        }, {
-          id: 2,
-          label: '一级 2',
-          children: [{
-            id: 5,
-            label: '二级 2-1'
-          }, {
-            id: 6,
-            label: '二级 2-2'
-          }]
-        }, {
-          id: 3,
-          label: '一级 3',
-          children: [{
-            id: 7,
-            label: '二级 3-1'
-          }, {
-            id: 8,
-            label: '二级 3-2'
-          }]
-        }],
-      defaultProps: {
-        children: 'children',
-        label: 'name'
-      },
+      },  
+      dialogVisible:false,
+      currentDialog: '',
+      data:{},
+      shops:[],
+      shopChecked:[]
     }
   },
   computed: {
@@ -129,7 +76,7 @@ export default {
           return this.$route.params.data
       },
       userInfo(){
-        return JSON.parse(this.$store.getters.userInfo)
+        return JSON.parse(localStorage.getItem('userInfo'))
      }
   },
   created(){
@@ -138,104 +85,90 @@ export default {
   },
   methods:{
     init(){
-        this.roleInfo && (this.form = {
-            roleName:this.roleInfo.roleName,
-            roleDesc:this.roleInfo.roleDesc,
-            shop:this.roleInfo.shopIds.split(',')              
-        })
+        if(this.roleInfo){
+            this.form = {
+                roleName:this.roleInfo.roleName,
+                roleDesc:this.roleInfo.roleDesc,
+                oldRoleName:this.roleInfo.roleName,
+                shops:[]            
+            }
+            this.roleInfo.shopIds.split(',').map(item =>{
+                this.shopChecked.push(item * 1)             
+            }) 
+        }
     },
-      //获取所有店铺
+    //获取所有店铺
     getShops(){
       let data = this.userInfo.shopInfoMap
       for(let key in data){
-        data[key].data.msfList = this.getTree(data[key].data.msfList)
+        // data[key].data.msfList = this.buildTree(data[key].data.msfList)
         let shopObj = Object.assign(data[key],{isShow:false})
         this.shops.push(shopObj)
       }
+      this.shopChecked.map(item =>{
+        this.shops.map(shop =>{           
+            if(shop.id == item*1){
+                let query = {
+                    roleName:this.roleInfo.roleName,
+                    shopInfoId:shop.id
+                }
+                this._apis.set.getRoleInfo(query).then(response =>{
+                    let functions = response.list[0].functions
+                    shop = Object.assign(shop,{functions:functions})
+                    let obj = {shopId:item,functions:functions}
+                    this.form.shops.push(obj)
+                }).catch(error =>{
+                    this.$notify.error({
+                    title: '错误',
+                    message: error
+                    });
+                }) 
+            } 
+        })
+      })
+      console.log('shops',this.shops)
     },
-    //是否展示功能点
+    //展示功能点弹窗
     handleIsShow(data){
-        this.shops.map(item =>{
-            item.id == data.id && (item.isShow = !item.isShow)
+        this.dialogVisible = true
+        this.currentDialog = 'dialogTree'
+        this.data = data
+    },
+
+    //确定权限
+    handleSubmit(data){
+         this.shopChecked.map(id =>{
+            if(id == data.shopId){
+                if(this.form.shops.length){
+                    this.form.shops.map((item,index) =>{
+                        item.id == data.shopId && this.form.shops.splice(index,1)                      
+                    })
+                }
+                this.form.shops.push(data)
+                this.shops.map(shop =>{
+                    shop.id == data.shopId && (shop = Object.assign(shop,{functions:data.functions}))
+                })
+            }
         })
     },
-    // handleShop(val){
-    //     this.shops.map(item =>{
-    //         item.id == val && (this.msfList = item.data.msfList)
-    //     })
-    //     this.tree(this.msfList)
-    //     console.log('66666',this.msfList )     
-    // },
 
-    getTree(list){
-        let msfList = []
-        for(let item0 of list){ //1
-            if(item0.navType == 0){
-                msfList.push(Object.assign(item0,{children:[]}))
-            }
-        }
-        for(let item1 of list){//2
-            if(item1.navType == 1){
-                msfList[0].children.push(Object.assign(item1,{children:[]}))
-            }
-        }
-
-        for(let item2 of list){//5
-            if(item2.navType == 2){
-                msfList[0].children.map((children1,index) => {
-                    if(children1.id == item2.parentId){
-                        msfList[0].children[index].children.push(Object.assign(item2,{children:[]}))
-                    }
-                })
-            }
-        }
-
-        for(let item3 of list){//5
-            if(item3.navType == 3){
-                // console.log('num',1)
-                msfList[0].children.map((children1,index1) => {
-                    msfList[0].children[index1].children.map((children2,index2) =>{
-                        if(children2.id == item3.parentId){
-                            msfList[0].children[index1].children[index2].children.push(Object.assign(item3,{children:[]}))
-                        }
-                    })
-                })
-            }
-        }
-
-        for(let item4 of list){//8
-            if(item4.navType == 4){
-                msfList[0].children.map((children1,index1) => {
-                    msfList[0].children[index1].children.map((children2,index2) =>{
-                        msfList[0].children[index1].children[index2].children.map((children3,index3) =>{
-                            if(children3.id == item4.parentId){
-                                msfList[0].children[index1].children[index2].children[index3].children.push(Object.assign(item4,{children:[]}))
-                            }
-                        })
-                    })
-                })
-            }
-        }
-
-        for(let item5 of list){//4
-            if(item5.navType == 5){
-                msfList[0].children.map((children1,index1) => {
-                    msfList[0].children[index1].children.map((children2,index2) =>{
-                        msfList[0].children[index1].children[index2].children.map((children3,index3) =>{
-                            msfList[0].children[index1].children[index2].children[index3].children.map((children4,index4) =>{
-                                if(children4.id == item5.parentId){
-                                    msfList[0].children[index1].children[index2].children[index3].children[index4].children.push(Object.assign(item5,{children:[]}))
-                                }
-                            })
-                        })
-                    })
-                })
-            }
-        }
-        console.log('tree',msfList)
-        return msfList
-    },
-    onSubmit(){},      
+    //新建角色
+    onSubmit(){
+        let roleName = this.roleInfo && this.roleInfo.roleName
+        let msg = roleName ? '修改成功！' : '添加成功！'
+        this._apis.set.newRole(this.form).then(response =>{
+            this.$notify.success({
+                title: '成功',
+                message: msg
+            });
+            this.$router.push({path:'roleManage'})
+        }).catch(error =>{
+            this.$notify.error({
+                title: '错误',
+                message: error
+            });
+        })
+    },      
   }
 }
 </script>

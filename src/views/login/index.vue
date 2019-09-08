@@ -50,6 +50,7 @@
 
 <script>
 import shopsDialog from '@/views/login/shopsDialog'
+import { removeToken } from '@/system/auth'
 export default {
   name: 'Login',
   data() {
@@ -120,12 +121,17 @@ export default {
           this.loading = true
           this.$store.dispatch('login', this.loginForm).then((response) => {
             this.loading = false
-            let info = this.$store.state.user.userInfo
+            let info = JSON.parse(localStorage.getItem('userInfo'))
             let arr = Object.keys(info.shopInfoMap) 
             if(arr.length == 0){
               this.dialogVisible = true
             }else{
-              this.shopList = info.shopInfoMap
+              let data = info.shopInfoMap
+              for(let key in data){
+                let shopObj = data[key]
+                console.log('shopobj',shopObj)
+                this.shopList.push(shopObj)
+              }
               this.showShopsDialog = true
             }
           }).catch(error => {
@@ -166,6 +172,8 @@ export default {
     },
     handleClose(){
       this.showShopsDialog = false
+      this.loginForm.userName = ''
+      this.loginForm.password = ''
     }
   },
 }

@@ -17,7 +17,7 @@
             <!-- <el-button>创建店铺</el-button> -->
             </div>
             <div class="content_main">
-              <div v-for="item in shopLists" :key="item.id" @click="toShop(item.id)">
+              <div v-for="item in shopList" :key="item.id" @click="toShop(item)">
                   <span>{{item.shopName}}</span>
                   <span>移动商城</span>
               </div>
@@ -43,28 +43,13 @@ export default {
       showShopsDialog(newValue,oldValue){
           this.showDialog = newValue
       },
-      shopList(newValue,oldValue){
-          this.init()
-      },
   },
-  created(){
-    this.init()
-  },
+  created(){},
   methods: {
-    //获取店铺列表
-    init(){
-      for(let key in this.shopList){
-        // let num = key.substring(4,5)
-        let shopObj = this.shopList[key]
-        // Object.assign(shopObj, {'key':num})
-        this.shopLists.push(shopObj)
-      }
-    },
     //进入店铺
-    toShop(id){
-      this.$store.dispatch('getCid',id).then(() => {
+    toShop(shop){
+      this.$store.dispatch('getShopInfos',shop).then(() => {
         this.handleClose()
-        // this.$router.push('/profile/profile')
         this.$router.push({ path: '/profile/profile' })
       }).catch(error => {
         this.$notify.error({
@@ -90,7 +75,7 @@ export default {
   }
   .content_main{
     display:flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     flex: 1;
     margin:20px 0px 30px 0px;
     div{

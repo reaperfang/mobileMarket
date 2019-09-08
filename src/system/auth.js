@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { userInfo } from 'os';
 
 const TokenKey = 'authToken'
 
@@ -13,3 +14,6 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
+
+
+

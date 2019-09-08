@@ -100,12 +100,12 @@ export default {
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
-            // cid:'2',
-            cid:this.$store.getters.user.cid,
+            cid:'2',
+            // cid:this.$store.getters.user.cid,
             mediaId:item.media_id,
             sourceMaterialType:'2',
             fileName:'',
-            filePath:item.down_url,
+            filePath:escape(item.down_url),
             fileSize:'',
             name:item.name,
             fileover:'',
@@ -122,13 +122,13 @@ export default {
           title: '成功',
           message: '同步微信视频成功！'
         });
-        this.$emit('submit',{syncImage:''})
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
       })
+      this.$emit('submit',{syncImage:''})
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){

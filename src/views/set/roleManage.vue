@@ -99,16 +99,16 @@ export default {
   },
   computed:{
     userInfo(){
-      return JSON.parse(this.$store.getters.userInfo)
+      return JSON.parse(localStorage.getItem('userInfo'))
     },
     cid(){
-      return this.$store.getters.cid
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      return shopInfo.id
     }
   },
   created() {
     this.getShops()
     this.getRoleList()
-    console.log('1111111',this.cid)
   },
   destroyed() {
     
@@ -151,7 +151,7 @@ export default {
     deleteRole(roleName){
       let roleNames = []
       roleName ? roleNames.push(roleName) : roleNames = this.multipleSelection
-      this._apis.set.deleteRole(roleNames).then(response =>{
+      this._apis.set.deleteRole({roleNames:roleNames}).then(response =>{
         this.$notify.success({
           title: '成功',
           message: '删除成功！'

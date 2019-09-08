@@ -97,7 +97,7 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: store.getters.token || '7834a06f4bcc3d0fc54d7773d5e0149d3dc06b32ba20985aaecda1af3c4f10d1',
+        accessToken: store.getters.token || '09255c7724fe9b8df952aa2f7e3ec71826ba38062317026ea9fe21d072b6a69d',
         // accessToken: store.getters.token || localStorage.getItem('token'),
         client: CONST.CLIENT,
         version: CONST.VERSION,
@@ -109,7 +109,8 @@ class Ajax {
 
     //获取cid和shopInfoId
     // let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
-    let cid = store.getters.cid || '7'
+    let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+    let cid = shopInfo && shopInfo.id || '2'
     let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId
       : '';
 

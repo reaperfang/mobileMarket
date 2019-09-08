@@ -94,14 +94,14 @@ export default {
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
-            cid:'2',
-            // cid:this.$store.getters.user.cid,
+            // cid:'2',
+            cid:this.$store.getters.user.cid,
             mediaId:item.media_id,
             sourceMaterialType:'1',
             title:item.title,
             sourceMaterial:item.content_source_url,
             isCover:item.url ? '1' : '0',
-            fileCover:item.url
+            fileCover:escape(item.url)
           }
           datas.push(obj)
         }        
@@ -115,13 +115,13 @@ export default {
           title: '成功',
           message: '同步微信图文成功！'
         });
-        this.$emit('submit',{syncImage:''})
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
       })
+      this.$emit('submit',{syncImage:''})
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){

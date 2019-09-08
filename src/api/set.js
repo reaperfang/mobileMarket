@@ -142,6 +142,16 @@ export function deleteRole(data) {
   })
 }
 
+/* 根据角色名称查询角色详情 */
+export function getRoleInfo(data) {
+  return request({
+    target: 'MANAGER-API-151',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
 /* 上传图片 */
 export function uploadImage(data) {
   return request({
