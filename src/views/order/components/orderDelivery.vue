@@ -69,6 +69,7 @@
         <div class="content">
             <p>已选择 {{multipleSelection.length}} 项，全部{{total}}项</p>
             <el-table
+                v-loading="loading"
                 ref="multipleTable"
                 :data="tableData"
                 tooltip-effect="dark"
@@ -168,7 +169,8 @@ export default {
                 expressCompany: '',
                 receivedName: '',
             },
-            tableData: []
+            tableData: [],
+            loading: false
         }
     },
     filters: {
@@ -217,6 +219,7 @@ export default {
         },
         getList() {
             let params = {}
+            this.loading =  true
 
             params = Object.assign({}, this.listQuery, {
                 cid: 2,
@@ -226,11 +229,11 @@ export default {
                 [`${this.listQuery.searchTimeType}EndTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
             })
             this._apis.order.orderSendPageList(params).then((res) => {
-                console.log(res)
                 this.tableData = res.list
                 this.total = +res.total
+                this.loading = false
             }).catch(error => {
-
+                this.loading = false
             })
         }
     },

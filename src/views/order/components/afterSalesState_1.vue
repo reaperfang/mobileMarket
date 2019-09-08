@@ -5,7 +5,7 @@
             <!-- 待审核 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="1">
+                    <el-steps :active="2">
                         <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
                         <el-step title="商户处理" description=""></el-step>
                         <el-step title="客户退货" description=""></el-step>
@@ -28,7 +28,7 @@
             <!-- 待退货 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="2">
+                    <el-steps :active="3">
                         <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
                         <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
                         <el-step title="客户退货" description=""></el-step>
@@ -48,7 +48,7 @@
             <!-- 待处理 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <el-steps :active="3">
+                    <el-steps :active="4">
                         <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
                         <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
                         <el-step title="客户退货" :description="orderAfterSale.memberReturnGoodsTime"></el-step>
@@ -67,45 +67,22 @@
                 </div>
             </div>
         </template>
-        <template v-else-if="this.orderAfterSale.orderAfterSaleStatus == 4">
-            <!-- 待处理 -->
-            <div class="row align-center justity-between">
-                <div class="col flex1 lefter">
-                    <el-steps :active="3">
-                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
-                        <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
-                        <el-step title="客户退货" :description="orderAfterSale.memberReturnGoodsTime"></el-step>
-                        <el-step title="商户退款" description=""></el-step>
-                        <el-step title="系统处理中" description=""></el-step>
-                        <el-step title="完成" description=""></el-step>
-                    </el-steps>
-                </div>
-                <div class="col righter">
-                    <p>待收货</p>
-                    <p class="des">商户发货</p>
-                    <!-- <div>
-                        <span @click="confirmTakeOver">确认收货</span>
-                        <span>退款</span>
-                    </div> -->
-                </div>
-            </div>
-        </template>
         <template v-else-if="this.orderAfterSale.orderAfterSaleStatus == 5">
             <!-- 已关闭 -->
             <div class="row align-center justity-between">
                 <div class="col flex1 lefter">
-                    <template v-if="customerClose">
+                    <template v-if="orderAfterSale.closeReason == 1">
                         <el-steps :active="3">
                             <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
                             <el-step title="撤销申请" :description="orderAfterSale.cancelTime"></el-step>
-                            <el-step title="申请已撤销" :description="orderAfterSale.examineTime"></el-step>
+                            <el-step title="申请已撤销" :description="orderAfterSale.cancelTime"></el-step>
                         </el-steps>
                     </template>
                     <template v-else>
                         <el-steps :active="3">
                             <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
                             <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
-                            <el-step title="拒绝申请，已完结" description=""></el-step>
+                            <el-step title="拒绝申请，已完结" :description="orderAfterSale.examineTime"></el-step>
                         </el-steps>
                     </template>
                 </div>
@@ -124,8 +101,8 @@
                         <el-step title="商户处理" :description="orderAfterSale.examineTime"></el-step>
                         <el-step title="客户退货" :description="orderAfterSale.memberReturnGoodsTime"></el-step>
                         <el-step title="商户退款" :description="orderAfterSale.refundTime"></el-step>
-                        <el-step title="系统处理中" description=""></el-step>
-                        <el-step title="完成" description=""></el-step>
+                        <el-step title="系统处理中" :description="orderAfterSale.refundTime"></el-step>
+                        <el-step title="完成" :description="orderAfterSale.refundTime"></el-step>
                     </el-steps>
                 </div>
                 <div class="col righter">
@@ -137,6 +114,13 @@
     </div>
 </template>
 <script>
+// examineTime 审核时间           商户处理
+// cancelTime  撤销时间
+// memberTeturnGoodsTime  客户退货时间
+// receiveGoodsTime  商家确认收货时间
+// sendTime  商家发货时间
+// memberTeceiveGoodsTime  客户收货时间
+// refundTime  商家退款时间
 export default {
     data() {
         return {

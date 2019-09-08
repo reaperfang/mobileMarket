@@ -37,6 +37,7 @@
       </div>
       <div class="table">
         <el-table
+          v-loading="loading"
           :data="tableData"
           style="width: 100%"
           :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -84,7 +85,8 @@ export default {
         name: '',
         startTime: '',
         endTime: ''
-      }
+      },
+      loading: false
     };
   },
   created() {
@@ -121,6 +123,7 @@ export default {
       this.getList()
     },
     getList() {
+      this.loading = true
       this._apis.order
         .fetchElectronicFaceSheetList(Object.assign({}, this.listQuery, {
           startTime: this.listQuery.time ? this.listQuery.time[0] : '',
@@ -134,6 +137,7 @@ export default {
             message: "查询成功！",
             type: "success"
           });
+          this.loading = false
         })
         .catch(error => {
           this.visible = false;
@@ -141,6 +145,7 @@ export default {
             title: "错误",
             message: error
           });
+          this.loading = false
         });
     }
   },

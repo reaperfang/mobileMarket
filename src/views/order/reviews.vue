@@ -53,6 +53,7 @@
             <p class="statistics">已选择<span>{{multipleSelection.length}}</span>项，全部<span>{{total}}</span>项</p>
             <div class="table-box">
                 <el-table
+                    v-loading="loading"
                     ref="multipleTable"
                     :data="tableData"
                     tooltip-effect="dark"
@@ -196,8 +197,8 @@ export default {
             currentData: {},
             dialogVisible: false,
             title: '',
-            batch: false
-
+            batch: false,
+            loading: false
         }
     },
     created() {
@@ -341,7 +342,7 @@ export default {
             return row.starNum === +value;
         },
         getList(param) {
-            //this.listLoading = true
+            this.loading = true
             let _param
             
             _param = Object.assign({}, this.listQuery, param, {
@@ -352,9 +353,9 @@ export default {
             this._apis.order.getCommentList(_param).then((res) => {
                 this.total = +res.total
                 this.tableData = res.list
-                console.log(res)
+                this.loading = false
             }).catch(error => {
-                //this.listLoading = false
+                this.loading = false
             })
         },
     },

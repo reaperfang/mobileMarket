@@ -23,7 +23,7 @@
                                 <i v-if="order.sendType == 2" class="auto"></i>
                             </el-tooltip>
                             <el-tooltip :content="`${order.memberSn}催发货，请尽快发货`" placement="bottom" effect="light">
-                                <i class="el-icon-message-solid"></i>
+                                <i v-if="order.isUrge == 0" class="el-icon-message-solid"></i>
                             </el-tooltip>
                             订单编号：{{order.code}}/下单时间：{{order.createTime}}
                         </span>
@@ -128,7 +128,7 @@ export default {
             ],
             currentDialog: '',
             currentData: '',
-            dialogVisible: false
+            dialogVisible: false,
         }
     },
     created() {
@@ -179,7 +179,18 @@ export default {
     },
     methods: {
         closeOrder(id) {
-
+            this._apis.order.deleteOrder({id, deleteFlag: 0}).then((res) => {
+                this.$notify({
+                    title: '成功',
+                    message: '删除成功！',
+                    type: 'success'
+                });
+            }).catch(error => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
         },
         submit(value) {
             this._apis.order.orderClose({...value, id: this.currentData}).then((res) => {

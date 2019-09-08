@@ -28,7 +28,7 @@
                         </div>
                         <div style="display: flex; margin-bottom: 15px;">
                             <div class="item" style="width: 280px;">客户ID：{{item.memberSn}}</div>
-                            <div class="item">客户昵称：{{item.nickName}}</div>
+                            <div class="item">客户昵称：{{item.memberName}}</div>
                         </div>
                         <div style="display: flex; margin-bottom: 15px;">
                             <div class="item" style="width: 280px;">收货人：{{item.receivedName}}</div>
@@ -56,9 +56,9 @@
                 </table>
                 <div class="table-footer" style="border: 1px solid rgb(205, 208, 206); border-top: none; color: #161617; font-size: 14px; padding: 20px 25px; padding-bottom: 10px;">
                     <div style="display: flex;">
-                        <div class="item" style="margin-right: 40px;">商户账号：11111111</div>
-                        <div class="item" style="margin-right: 40px;">店铺名称：11111111</div>
-                        <div class="item">商户联系方式：11111111</div>
+                        <!-- <div class="item" style="margin-right: 40px;">商户账号：11111111</div> -->
+                        <div class="item" style="margin-right: 40px;">店铺名称：{{item.tcShopInfo.shopName}}</div>
+                        <div class="item">商户联系方式：{{item.tcShopInfo.phone}}</div>
                     </div>
                 </div>
                 <div class="footer" style="color: #161617; text-align: right; padding-top: 12px;">

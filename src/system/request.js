@@ -20,31 +20,12 @@ class Ajax {
 
   // request拦截器
   requestGlobal(config) {
-    // this.service.interceptors.request.use(
-    //   e => {
-    //     e.params = e.params || {}
-    //     // e.headers = e.headers || {}
-    //     e.headers = {
-    //       businessId: 1,
-    //       tenantId: 1,
-    //       merchantId: 2,
-    //       loginUserId: 1
-    //     }
-    //     return e
-    //   },
-    //   error => ({ status: 0, msg: error.message })
-    // )
-
-    /* 上面的处理方案会导致电商接口参数异常调用失败，
-    当添加了请求区分之后电商接口好了但是会导致营销的接口异常，
-    所以最终改为以下方案(跟电商的处理方式相似，
-    给config对象配置营销独有的参数，
-    即可解决这2个问题) */
     config.headers = {
       businessId: 1,
       tenantId: 1,
       merchantId: 2,
-      loginUserId: 1
+      loginUserId: 1,
+      token: '123'
     }
   }
 
@@ -109,11 +90,13 @@ class Ajax {
 
     //获取cid和shopInfoId
     // let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
-    let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
-    let cid = shopInfo && shopInfo.id || '2'
+    // let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+    // let cid = shopInfo && shopInfo.id || '2'
     let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId
       : '';
 
+    //获取cid
+    let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
     //拼接全部参数
     if (config.method == "post") {
       if (config.noCid) {

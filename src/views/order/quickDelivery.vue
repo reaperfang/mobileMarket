@@ -49,6 +49,7 @@
       </div>
       <div class="table">
         <el-table
+          v-loading="loading"
           :data="tableData"
           style="width: 100%"
           :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -106,7 +107,8 @@ export default {
         endTime: ''
       },
       currentDialog: "",
-      dialogVisible: false
+      dialogVisible: false,
+      loading: false
     };
   },
   created() {
@@ -134,6 +136,7 @@ export default {
         })
     },
     getList() {
+      this.loading = true
       this._apis.order.fetchTemplatePageList(this.listQuery, {
         startTime: this.listQuery.time ? this.listQuery.time[0] : '',
         endTime: this.listQuery.time ? this.listQuery.time[1] : '',
@@ -145,12 +148,14 @@ export default {
               message: '查询成功！',
               type: 'success'
           });
+          this.loading = false
       }).catch(error => {
           this.visible = false
           this.$notify.error({
               title: '错误',
               message: error
           });
+          this.loading = false
       })
     }
   },

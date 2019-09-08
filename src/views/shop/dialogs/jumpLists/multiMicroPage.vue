@@ -16,7 +16,8 @@
             </el-form-item>
           </div>
         </el-form>
-        <el-table :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick" v-loading="loading">
+        <el-table :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" v-loading="loading">
+            <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="name" label="页面名称" :width="200"></el-table-column>
             <el-table-column prop="title" label="页面标题" :width="200"></el-table-column>
             <el-table-column prop="pageCategoryName" label="所属分类" :width="200"></el-table-column>
@@ -41,7 +42,7 @@
 <script>
 import tableBase from '@/components/TableBase';
 export default {
-  name: "microPage",
+  name: "multiMicroPage",
   extends: tableBase,
   components: {},
   props: {
@@ -60,6 +61,14 @@ export default {
     };
   },
   created() {
+  },
+  watch: {
+    multipleSelection: {
+      handler(newValue) {
+        this.seleted();
+      },
+      deep: true
+    }
   },
   methods: {
     fetch() {
@@ -91,15 +100,8 @@ export default {
     },
 
      /* 选中某一行 */
-    rowClick(row, column, event) {
-      this.$emit('seletedRow',  {
-        pageType: 'microPage',
-        data: {
-          id: row.id,
-          name: row.name,
-          title: row.title
-        }
-      });
+    seleted() {
+      this.$emit("dialogDataSelected", this.multipleSelection);
     },
 
   }
