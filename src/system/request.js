@@ -78,8 +78,8 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        //accessToken: config.token ? config.token : (store.getters.token || localStorage.getItem('token')),
-        accessToken: '09255c7724fe9b8df952aa2f7e3ec718e62a1ad4483e6ec326df638327b6140e',
+        accessToken: config.token ? config.token : (store.getters.token || localStorage.getItem('token')),
+        //accessToken: '09255c7724fe9b8df952aa2f7e3ec718e62a1ad4483e6ec326df638327b6140e',
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -89,8 +89,7 @@ class Ajax {
       head.value = md5(CONST.VALUE + head.target + head.requestTime);
 
     //获取cid
-    //let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '2')
-    let cid = '11';
+    let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
     //拼接全部参数
     if (config.method == "post") {
       if (config.noCid) {
