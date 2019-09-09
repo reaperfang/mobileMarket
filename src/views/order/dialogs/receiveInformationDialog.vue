@@ -10,6 +10,7 @@
                 </el-form-item>
                 <el-form-item label="发货地址" prop="deliveryAddress">
                     <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div>
                 </el-form-item>
                 <el-form-item label="详细地址" prop="sendDetail">
                     <el-input
@@ -35,6 +36,7 @@
                 </el-form-item>
                 <el-form-item label="收货地址" prop="deliveryAddress">
                     <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div>
                 </el-form-item>
                 <el-form-item label="详细地址" prop="receivedDetail">
                     <el-input
@@ -334,6 +336,10 @@ export default {
         .footer {
             text-align: center;
         }
+    }
+    .gray {
+        color: #666;
+        font-size: 12px;
     }
 </style>
 

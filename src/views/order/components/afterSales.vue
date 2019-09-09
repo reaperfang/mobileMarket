@@ -1,7 +1,7 @@
 <template>
     <div class="after-sales">
         <div class="search">
-            <div class="top">说明：当前已开启订单自动发货，自动发货后请尽快补充物流信息，您也可以到</div>
+            <!-- <div class="top">说明：当前已开启订单自动发货，自动发货后请尽快补充物流信息，您也可以到</div> -->
             <el-form ref="form" :inline="true" :model="listQuery" class="form-inline">
                 <el-form-item>
                     <el-input placeholder="请输入内容" v-model="listQuery.searchValue" class="input-with-select">
@@ -47,7 +47,7 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button @click="$router.push('/order/batchImportAndDelivery')" class="border-button">批量导入发货</el-button>
+                        <el-button @click="$router.push('/order/batchImportAndDelivery?afterSale=true')" class="border-button">批量导入发货</el-button>
                         <el-button @click="batchSendGoods" class="border-button">批量发货</el-button>
                         <el-button class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
                         <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
@@ -172,12 +172,12 @@ export default {
             this.$router.push('/order/afterSaleBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderAfterSaleId).join(','))
         },
         batchPrintDistributionSlip() {
-            let ids = this.multipleSelection.map(val => val.id).join(',')
+            let ids = this.multipleSelection.map(val => val.orderAfterSaleId).join(',')
 
             this.$router.push('/order/printDistributionSheet?ids=' + ids + '&afterSale=' + true)
         },
         batchPrintElectronicForm() {
-            let ids = this.multipleSelection.map(val => val.id).join(',')
+            let ids = this.multipleSelection.map(val => val.orderAfterSaleId).join(',')
 
             this.$router.push('/order/printingElectronicForm?ids=' + ids + '&afterSale=' + true)
         },

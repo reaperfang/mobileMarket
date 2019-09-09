@@ -45,20 +45,37 @@
                         <td style="height: 45px; text-align: center;">优惠</td>
                         <td style="height: 45px; text-align: center;">金额</td>
                     </tr>
-                    <tr v-for="(sendItem, index) in item.orderSendItemViewList" :key="index">
-                        <td style="height: 45px; text-align: center;">{{index + 1}}</td>
-                        <td style="height: 45px; text-align: center;">{{sendItem.goodsName}}</td>
-                        <td style="height: 45px; text-align: center;">{{sendItem.sendCount}}</td>
-                        <td style="height: 45px; text-align: center;">1</td>
-                        <td style="height: 45px; text-align: center;">¥80.00</td>
-                        <td style="height: 45px; text-align: center;">$100</td>
-                    </tr>
+                    <template v-if="$route.query.afterSale">
+                        <tr v-for="(sendItem, index) in item.sendItemList" :key="index">
+                            <td style="height: 45px; text-align: center;">{{index + 1}}</td>
+                            <td style="height: 45px; text-align: center;">{{sendItem.goodsName}}</td>
+                            <td style="height: 45px; text-align: center;">{{sendItem.sendCount}}</td>
+                            <td style="height: 45px; text-align: center;">-</td>
+                            <td style="height: 45px; text-align: center;">-</td>
+                            <td style="height: 45px; text-align: center;">-</td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr v-for="(sendItem, index) in item.orderSendItemViewList" :key="index">
+                            <td style="height: 45px; text-align: center;">{{index + 1}}</td>
+                            <td style="height: 45px; text-align: center;">{{sendItem.goodsName}}</td>
+                            <td style="height: 45px; text-align: center;">{{sendItem.sendCount}}</td>
+                            <td style="height: 45px; text-align: center;">-</td>
+                            <td style="height: 45px; text-align: center;">-</td>
+                            <td style="height: 45px; text-align: center;">-</td>
+                        </tr>
+                    </template>
                 </table>
                 <div class="table-footer" style="border: 1px solid rgb(205, 208, 206); border-top: none; color: #161617; font-size: 14px; padding: 20px 25px; padding-bottom: 10px;">
                     <div style="display: flex;">
-                        <!-- <div class="item" style="margin-right: 40px;">商户账号：11111111</div> -->
-                        <div class="item" style="margin-right: 40px;">店铺名称：{{item.tcShopInfo.shopName}}</div>
-                        <div class="item">商户联系方式：{{item.tcShopInfo.phone}}</div>
+                        <template v-if="$route.query.afterSale">
+                            <div class="item" style="margin-right: 40px;">店铺名称：{{item.shopInfo.shopName}}</div>
+                            <div class="item">商户联系方式：{{item.shopInfo.phone}}</div>
+                        </template>
+                        <template v-else>
+                            <div class="item" style="margin-right: 40px;">店铺名称：{{item.tcShopInfo.shopName}}</div>
+                            <div class="item">商户联系方式：{{item.tcShopInfo.phone}}</div>
+                        </template>
                     </div>
                 </div>
                 <div class="footer" style="color: #161617; text-align: right; padding-top: 12px;">

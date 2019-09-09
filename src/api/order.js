@@ -511,6 +511,16 @@ export function orderSendInfoImportBatchDelever(data) {
   })
 }
 
+// 批量导入售后发货
+export function orderSendInfoImportAfterSaleBatchDelever(data) {
+  return request({
+    apiType: 'order',
+    method: 'post',
+    target: 'ORDER-AFTER-SALE-IMPORT-BATCH-DELIVER-PROCESSOR',
+    data
+  })
+}
+
 //获取公告信息(装修首页显示)
   export function getBuyNotice(data) {
       return request({

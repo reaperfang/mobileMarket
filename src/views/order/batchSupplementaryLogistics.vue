@@ -109,8 +109,8 @@
         </div>
       </section>
       <div class="footer">
-          <el-button class="border-button" @click="printingElectronicForm">打印电子面单</el-button>
-          <el-button class="border-button" @click="printDistributionSheet">打印配送单</el-button>
+          <!-- <el-button class="border-button" @click="printingElectronicForm">打印电子面单</el-button>
+          <el-button class="border-button" @click="printDistributionSheet">打印配送单</el-button> -->
           <el-button @click="sendGoodsHandler" type="primary">确定</el-button>
       </div>
     </div>
@@ -140,10 +140,10 @@ export default {
   },
   methods: {
     printingElectronicForm() {
-      this.$router.push('/order/printingElectronicForm?ids=' + this.$route.query.ids)
+      this.$router.push('/order/printingElectronicForm?ids=' + this.list.map(val => val.id).join(',') + '&type=batchSupplementaryLogistics')
     },
     printDistributionSheet() {
-      this.$router.push('/order/printDistributionSheet?ids=' + this.$route.query.ids)
+      this.$router.push('/order/printDistributionSheet?ids=' + this.list.map(val => val.id).join(',') + '&type=batchSupplementaryLogistics')
     },
       sendGoodsHandler() {
           try {
@@ -170,24 +170,41 @@ export default {
                         id: item.id,
                         orderCode: item.orderCode,
                         memberSn: item.memberSn,
-                        receivedName: item.receivedName,
-                        receivedPhone: item.receivedPhone,
                         isAutoSend: item.isAutoSend,
                         status: item.status,
-                        express_companys: expressCompanys,
-                        express_company_codes: item.expressCompanyCodes,
-                        express_nos: item.expressNos,
+                        expressCompanys: expressCompanys,
+                        expressCompanyCodes: item.expressCompanyCode,
+                        expressNos: item.expressNos,
                         remark: item.remark,
+                        receivedName: item.receivedName,
+                        receivedPhone: item.receivedPhone,
+                        receivedProvinceCode: item.receivedProvinceCode,
+                        receivedProvinceName: item.receivedProvinceName,
+                        receivedCityCode: item.receivedCityCode,
+                        receivedCityName: item.receivedCityName,
+                        receivedAreaCode: item.receivedAreaCode,
+                        receivedAreaName: item.receivedAreaName,
+                        receivedDetail: item.receivedDetail,
+                        sendName: item.sendName,
+                        sendPhone: item.sendPhone,
+                        sendProvinceCode: item.sendProvinceCode,
+                        sendProvinceName: item.sendProvinceName,
+                        sendCityCode: item.sendCityCode,
+                        sendCityName: item.sendCityName,
+                        sendAreaCode: item.sendAreaCode,
+                        sendAreaName: item.sendAreaName,
+                        sendDetail: item.sendDetail,
+                        sendRemark: item.sendRemark,
                     }
                 })
             }
             this._apis.order.orderSendInfoFillUpExpress(params).then((res) => {
                 this.$notify({
                     title: '成功',
-                    message: '发货成功',
+                    message: '批量补填物流成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=batchSupplementaryLogistics')
+                this.$router.push('/order/query')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
