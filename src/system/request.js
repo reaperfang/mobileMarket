@@ -132,8 +132,8 @@ class Ajax {
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
             break;
           case 'order': //订单系统
-            //config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
-            config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
+            config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
+            //config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
             break;
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/api-decoration-web/decoration/api.do`;
