@@ -1,7 +1,7 @@
 <template>
   <DialogBase :visible.sync="visible" width="600px" :title="'图片裁剪'" @submit="submit">
     <div class="cropper-content">
-       <el-button>裁剪</el-button>
+       <el-button @click="finish">裁剪</el-button>
       <div class="cropper" style="text-align:center;margin:10px 0;">
         <vueCropper
           ref="cropper"
@@ -125,22 +125,25 @@ export default {
     this.init()
   },
   methods: {
+    init(){
+      this.option.img = this.data
+    },
+
     submit() {
       this.$emit('submit','')
-    },
-    init(){
-      // this.option.img = this.data
-      this.option.img = 'https://test-omo.aiyouyi.cn/web-file/222/image/2e9b7/abf8fddc6d344d79924b304f5bbacb7e.jpg'
-    },
+    },    
 
      // 点击裁剪，这一步是可以拿到处理后的地址
     finish() {
       this.$refs.cropper.getCropBlob((data) => {
-        var fileName = 'goods' + this.fileinfo.uid
+        var fileName = 'tailor' +  Math.random()
         this.loading = true
        //上传服务器
-        formData.append("file", data, fileName);
-        formData.append("json",JSON.stringify({cid: 222}));
+        let formData = {}
+        formData = Object.assign({file:data},{json:JSON.stringify({cid: 222})})
+        // console.log('data',data)
+        // formData.append("file", data, fileName);
+        // formData.append("json",JSON.stringify({cid: 222}));
         this._apis.set.uploadImage(formData).then(response =>{
           console.log('999999',response)
           

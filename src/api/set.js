@@ -158,6 +158,9 @@ export function uploadImage(data) {
     url: '',
     method: 'post',
     apiType: 'uploadImage',
+    headers:{
+      "Content-Type":'multipart/form-data'
+    },
     data
   })
 }

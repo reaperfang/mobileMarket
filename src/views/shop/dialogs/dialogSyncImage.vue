@@ -78,6 +78,10 @@ export default {
       set(val) {
           this.$emit('update:dialogVisible', val)
       }
+    },
+    cid(){
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      return shopInfo.id
     }
   },
   created(){
@@ -92,6 +96,7 @@ export default {
       this._apis.file.getWxImage(query).then((response)=>{
         this.list = []
         response.item.map(item => {
+          item.url = 'http://img01.store.sogou.com/net/a/04/link?appid=100520029&url='+ item.url
           let data = Object.assign({checked:false}, item)
           this.list.push(data)
         })
@@ -108,8 +113,7 @@ export default {
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
-            // cid:'2',
-            cid:this.$store.getters.user.cid,
+            cid:this.cid,
             mediaId:item.media_id,
             sourceMaterialType:'0',
             fileName:item.name,

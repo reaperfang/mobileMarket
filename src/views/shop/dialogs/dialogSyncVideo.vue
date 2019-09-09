@@ -70,6 +70,10 @@ export default {
       set(val) {
           this.$emit('update:dialogVisible', val)
       }
+    },
+    cid(){
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      return shopInfo.id
     }
   },
   created(){
@@ -100,8 +104,7 @@ export default {
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
-            cid:'2',
-            // cid:this.$store.getters.user.cid,
+            cid:this.cid,
             mediaId:item.media_id,
             sourceMaterialType:'2',
             fileName:'',
