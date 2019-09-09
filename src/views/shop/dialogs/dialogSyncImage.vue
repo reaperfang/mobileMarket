@@ -108,11 +108,12 @@ export default {
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
+            // cid:'2',
             cid:this.$store.getters.user.cid,
             mediaId:item.media_id,
             sourceMaterialType:'0',
             fileName:item.name,
-            filePath:item.url,
+            filePath:escape(item.url),
             imgPixelWidth:'',
             imgPixelHeight:'',
             fileSize:'',
@@ -129,13 +130,13 @@ export default {
           title: '成功',
           message: '同步微信图片成功！'
         });
-        this.$emit('submit',{syncImage:''})
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
       })
+      this.$emit('submit',{syncImage:{}})
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){

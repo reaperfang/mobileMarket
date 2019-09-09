@@ -13,7 +13,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     //host: '127.0.0.1',
-      host: '0.0.0.0',
+    host: '0.0.0.0',
     port: 9000,
     autoOpenBrowser: true,
     errorOverlay: true,
@@ -38,7 +38,7 @@ module.exports = {
         //target: 'http://172.22.146.115:8081', // 商品 王浩
         // target: 'http://172.22.146.115:8081', // 商品 王浩
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
-        target: 'http://www.lwt.com',  // nginx代理 李玟霆
+        //target: 'http://www.lwt.com',  // nginx代理 李玟霆
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
         //target: 'http://www.lwt.com',  // nginx代理 李玟霆
         //  target: 'http://172.22.146.124:8099',// 开关 许涛
@@ -48,13 +48,13 @@ module.exports = {
         // target: 'http://172.22.146.31:8080', // 客户 崔建
         // target: 'http://172.22.146.109:8080', // 商品 王浩
         // target: 'http://172.22.146.12:8080', // 客户 刘亚凯
-        //target: 'http://172.22.146.123:8080', // 客户 王杰
+        //target: 'http://172.22.146.123:8085', // 客户 王杰
         //target: 'http://172.22.146.124:8099',// 许涛
         // target: 'http://172.22.134.125:8012',// 陈程
         // target: 'http://172.22.146.12:8091', // 订单 李刚
         // target: 'http://172.22.146.124:80',// 许涛
         // target: 'http://172.22.146.114:8080', // 商品 王浩2
-        //target: 'http://172.22.146.124:80',// 许涛
+        target: 'http://172.22.146.124:80',// 许涛
         //target: 'http://172.22.146.124:80',// 许涛
         // target: 'http://172.22.146.114:8080', // 商品 王浩2
         // target: 'http://dkmamb.natappfree.cc',// 许涛
@@ -94,14 +94,14 @@ module.exports = {
           '^/upload_coupon_server': ''
         }
       },
-      '/order_server/**': {
-        target: 'http://172.22.146.112:8080/',// 权宇172.22.145.113 李刚 172.22.146.15 尹茂凯 172.22.146.2:8086 权宇2 172.22.146.112:8080
-        //target: 'http://localhost:3000/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/order_server': ''
-        }
-      },
+      // '/order_server/**': {
+      //   target: 'http://172.22.145.113:8080/',// 权宇172.22.145.113 李刚 172.22.146.15 尹茂凯 172.22.146.2:8086 权宇2 172.22.146.112:8080
+      //   //target: 'http://localhost:3000/',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/order_server': ''
+      //   }
+      // },
 
       /* 曹帅接口单独联调 */
       '/caoshaui_server/**': {

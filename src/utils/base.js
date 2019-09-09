@@ -321,3 +321,23 @@ export function goodsSpecsFilter(value) {
 
   return str
 }
+
+//扁平数据解析成为树形结构
+export function buildTree(data) {
+  let parents = data.filter(value => value.navType == 0)
+  let children = data.filter(value => value.navType !== 0)
+  let translator = (parents, children) => {
+      parents.forEach((parent) => {
+          children.forEach((current, index) => {
+              if (current.parentId*1 === parent.id) {
+                  let temp = JSON.parse(JSON.stringify(children))
+                  temp.splice(index, 1)
+                  translator([current], temp)
+                  typeof parent.children !== 'undefined' ? parent.children.push(current) : parent.children = [current]
+              }
+          })
+      })
+  }
+  translator(parents, children)
+  return parents
+}

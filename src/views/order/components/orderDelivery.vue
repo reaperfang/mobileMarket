@@ -1,7 +1,7 @@
 <template>
     <div class="order-delivery">
         <div class="search">
-            <div class="top">说明：当前已开启订单自动发货，自动发货后请尽快补充物流信息，您也可以到</div>
+            <!-- <div class="top">说明：当前已开启订单自动发货，自动发货后请尽快补充物流信息，您也可以到</div> -->
             <el-form ref="form" :inline="true" :model="listQuery" class="form-inline">
                 <el-form-item>
                     <el-input placeholder="请输入内容" v-model="listQuery.searchValue" class="input-with-select">
@@ -128,7 +128,7 @@
                                 <span @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">继续发货</span>
                             </template>
                             <template v-else-if="scope.row.status == 3">
-                                <span v-if="!scope.row.isAutoSend" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>
+                                <span v-if="!scope.row.isFillUp" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>
                                 <span v-else @click="$router.push('/order/supplementaryLogistics?id=' + scope.row.id)">补填物流</span>
                             </template>
                         </div>
@@ -190,6 +190,11 @@ export default {
     created() {
         this.getList()
     },
+    computed: {
+        cid() {
+            return this.$store.getters.cid || 2
+        }
+    },
     methods: {
         batchSendGoods() {
             if(!this.multipleSelection.length) {
@@ -199,7 +204,7 @@ export default {
             this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderId).join(','))
         },
         batchPrintElectronicForm() {
-            let ids = this.multipleSelection.map(val => val.id).join(',')
+            let ids = this.multipleSelection.map(val => val.orderId).join(',')
 
             this.$router.push('/order/printingElectronicForm?ids=' + ids)
         },
@@ -222,7 +227,7 @@ export default {
             this.loading =  true
 
             params = Object.assign({}, this.listQuery, {
-                cid: 2,
+                cid: this.cid,
                 [this.listQuery.searchType]: this.listQuery.searchValue,
                 [this.listQuery.searchType2]: this.listQuery.searchValue2,
                 [`${this.listQuery.searchTimeType}StartTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',

@@ -12,7 +12,7 @@
                         <div @click="showLogistics(orderAfterSale.returnExpressNo)" class="header-lefter-item  blue pointer">查看物流</div>
                     </div>
                     <div class="header-righter">
-                        <div class="header-righter-item">【客户发货】</div>
+                        <div class="header-righter-item">{{orderAfterSale | customerFilter}}</div>
                         <div class="header-righter-item">发货人：{{orderAfterSale.memberSn}}</div>
                         <div class="header-righter-item">{{orderAfterSale.memberReturnGoodsTime}}</div>
                         <div @click="showCustomerContent = !showCustomerContent">
@@ -75,7 +75,7 @@
                         <div @click="showLogistics(orderAfterSale.expressNo)" class="header-lefter-item  blue pointer">查看物流</div>
                     </div>
                     <div class="header-righter">
-                        <div class="header-righter-item">【商家发货】</div>
+                        <div class="header-righter-item">{{orderAfterSale | businessFilter}}</div>
                         <div class="header-righter-item">发货人：{{orderAfterSale.sendName}}</div>
                         <div class="header-righter-item">{{orderAfterSale.receiveGoodsTime}}</div>
                         <div @click="showContent = !showContent">
@@ -94,7 +94,7 @@
                             <template slot-scope="scope">
                                 <div class="row justity-between">
                                     <div class="col">
-                                        <img :src="scope.row.goodsImage" alt="">
+                                        <img width="66" :src="scope.row.goodsImage" alt="">
                                     </div>
                                     <div class="col">
                                         <p class="ellipsis" style="width: 300px">{{scope.row.goodsName}}</p>
@@ -173,6 +173,24 @@ export default {
             }
 
             return str
+        },
+        customerFilter(value) {
+            if(value.receiveGoodsTime) {
+                return '【商户签收】'
+            } else if(value.memberTeturnGoodsTime) {
+                return '【客户发货】'
+            } else {
+                return ''
+            }
+        },
+        businessFilter(value) {
+            if(value.memberTeceiveGoodsTime) {
+                return '【客户签收】'
+            } else if(value.sendTime) {
+                return '【商户发货】'
+            } else {
+                return ''
+            }
         }
     },
     methods: {

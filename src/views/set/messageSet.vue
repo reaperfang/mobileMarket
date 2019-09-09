@@ -36,11 +36,9 @@
             placement="right"
             width="400"
             trigger="click">
-            <el-table>
-              <el-table-column width="150" property="date" label="日期"></el-table-column>
-              <el-table-column width="100" property="name" label="姓名"></el-table-column>
-              <el-table-column width="300" property="address" label="地址"></el-table-column>
-            </el-table>
+              <p class="preview_title">{{scope.row.msgTitle}}</p>
+              <div class="preview_content" v-html="scope.row.wechatPublicPreview"></div>
+              <p class="preview_id">模板ID:{{scope.row.wechatPublicId}}</p>
             <el-link type="primary" slot="reference">预览</el-link>
           </el-popover>
         </template>
@@ -60,11 +58,9 @@
             placement="right"
             width="400"
             trigger="click">
-            <el-table>
-              <el-table-column width="150" property="date" label="日期"></el-table-column>
-              <el-table-column width="100" property="name" label="姓名"></el-table-column>
-              <el-table-column width="300" property="address" label="地址"></el-table-column>
-            </el-table>
+              <p class="preview_title">{{scope.row.msgTitle}}</p>
+              <div v-html="scope.row.wechatAppPreview" class="preview_content"></div>
+              <p class="preview_id">模板ID:{{scope.row.wechatAppId}}</p>
             <el-link type="primary" slot="reference">预览</el-link>
           </el-popover>
         </template>
@@ -81,14 +77,12 @@
           inactive-color="#ff4949">
           </el-switch>
           <el-popover
+            disabled="!scope.row.smsPreview"
             placement="right"
             width="400"
             trigger="click">
-            <el-table>
-              <el-table-column width="150" property="date" label="日期"></el-table-column>
-              <el-table-column width="100" property="name" label="姓名"></el-table-column>
-              <el-table-column width="300" property="address" label="地址"></el-table-column>
-            </el-table>
+              <p class="preview_title">{{scope.row.msgTitle}}</p>
+              <div v-html="scope.row.preview3" class="preview_content"></div>
             <el-link type="primary" slot="reference">预览</el-link>
           </el-popover>
         </template>
@@ -100,6 +94,7 @@
 <script>
 import buyer from "./components/buyer";
 import seller from "./components/seller";
+import setCont from '@/system/constant/set';
 export default {
   name: 'messageSet',
   data() {
@@ -111,6 +106,17 @@ export default {
   watch: {
     
   },
+  computed: {
+    previewContent() {
+      return setCont.previewContent
+    },
+    previewContent2() {
+      return setCont.previewContent2
+    },
+    previewContent3() {
+      return setCont.previewContent3
+    }
+  }, 
   created() {
     this.getShopMessage()
   },
@@ -122,7 +128,25 @@ export default {
           item.msgWechatPublic = item.msgWechatPublic == 0 ? false : true
           item.msgWechatApp = item.msgWechatApp == 0 ? false : true
           item.msgSms = item.msgSms == 0 ? false : true
-          this.tableData.push(item)
+          //加预览内容
+          this.previewContent.map((v) => {
+            if(v.title == item.msgTitle) {
+              item.preview = v.content;
+              item.previewId = v.id
+            }
+          })
+          this.previewContent2.map((v) => {
+            if(v.title == item.msgTitle) {
+              item.preview2 = v.content;
+              item.previewId2 = v.id
+            }
+          })
+          this.previewContent3.map((v) => {
+            if(v.title == item.msgTitle) {
+              item.preview3 = v.content;
+            }
+          })
+          this.tableData.push(item);
         })
       }).catch(error =>{
         this.$notify.error({
@@ -180,7 +204,10 @@ export default {
         }
       }
     }
-  }
+  },
+  mounted() {
+   // console.log(this.previewContent);
+  },
 }
 </script>
 
@@ -201,5 +228,18 @@ export default {
 .title{
   height: 60px;
   line-height: 60px;
+}
+.preview_title{
+  padding-left: 6px;
+  height: 36px;
+  line-height: 36px;
+  background-color: #eee;
+}
+.preview_content{
+  padding: 6px 0 0 6px;
+  line-height: 25px;
+}
+.preview_id{
+  padding: 6px 0 0 6px;
 }
 </style>

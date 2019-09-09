@@ -62,7 +62,7 @@ export default {
             })
         },
         afterSalePrintInfo() {
-            this._apis.order.afterSalePrintElectronicForm({orderIds: this.$route.query.ids.split(',')}).then((res) => {
+            this._apis.order.afterSalePrintElectronicForm({orderAfterSaleIds: this.$route.query.ids.split(',')}).then((res) => {
                 this.tableData = res
             }).catch(error => {
                 this.$notify.error({

@@ -37,7 +37,7 @@
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item class="mtb100">
-                <el-button type="primary" @click="onSubmit">保存</el-button>
+                <el-button type="primary" @click.native.prevent="onSubmit">保存</el-button>
                 <el-button @click="_routeTo('subaccountManage')">返回</el-button>
             </el-form-item>
         </el-form>
@@ -81,10 +81,11 @@ export default {
           return this.$route.params.data
       },
       userInfo(){
-        return JSON.parse(this.$store.getters.userInfo)
+        return JSON.parse(localStorage.getItem('userInfo'))
      },
      cid(){
-         return this.$store.getters.cid
+        let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+        return shopInfo.id
      }
   },
   created(){
@@ -98,8 +99,8 @@ export default {
           this.form = {
             userName: this.accountInfo.userName,
             mobile: this.accountInfo.mobile,
-            roleName:this.accountInfo.roleNames.split(',')[0],
-            shopInfoIds:this.accountInfo.shopIds.split(',')
+            roleName:this.accountInfo.roleNames && this.accountInfo.roleNames.split(',')[0],
+            shopInfoIds:this.accountInfo.shopIds && this.accountInfo.shopIds.split(',')
           }
       }
     },
@@ -123,7 +124,7 @@ export default {
       this._apis.set.getRoleList(query).then(response =>{
         this.roles = response.list
         let roleName = ''
-        if(this.accountInfo){
+        if(this.accountInfo && this.accountInfo.roleNames){
             roleName = this.accountInfo.roleNames.split(',')[0]
         }else{
             roleName = this.roles[0].roleName
@@ -138,6 +139,9 @@ export default {
       })
     },
     handleShop(roleName){
+      if(this.accountInfo && this.accountInfo.roleNames){
+        this.accountInfo.roleNames.split(',')[0] !=roleName && (this.form.shopInfoIds = [])
+      }      
       let query = {
           cid:this.cid,
           roleName:roleName,
@@ -152,7 +156,7 @@ export default {
                 item.id == id && newShops.push(item)
             })
         })
-        this.shops = newShops
+        this.shops = JSON.parse(JSON.stringify(newShops)) 
       }).catch(error =>{
         this.$notify.error({
           title: '错误',
@@ -180,6 +184,7 @@ export default {
                     title: '成功',
                     message: '修改成功！'
                 });
+                this.$router.push({path:'subaccountManage'})
             }).catch(error =>{
                 this.$notify.error({
                     title: '错误',
@@ -201,6 +206,7 @@ export default {
                     title: '成功',
                     message: '添加成功！'
                 });
+                this.$router.push({path:'subaccountManage'})
             }).catch(error =>{
                 this.$notify.error({
                     title: '错误',

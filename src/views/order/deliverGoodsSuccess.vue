@@ -17,8 +17,8 @@
                 <template v-else-if="$route.query.type == 'orderAfterDeliverGoods'">
                     发货成功，您可以到订单详情页 
                     <router-link :to="{ path: '/order/afterSalesDetails?id=' + this.$route.query.id + '&tab=2' }">查看发货信息</router-link> 或 
-                    <router-link :to="{ path: '/order/printingElectronicForm', query: {ids: this.$route.query.id} }">打印电子面单</router-link> 或 
-                    <router-link :to="{ path: '/order/printDistributionSheet', query: {ids: this.$route.query.id} }">打印配送单</router-link>
+                    <router-link :to="{ path: '/order/printingElectronicForm', query: {ids: this.$route.query.id, afterSale: true} }">打印电子面单</router-link> 或 
+                    <router-link :to="{ path: '/order/printDistributionSheet', query: {ids: this.$route.query.id, afterSale: true} }">打印配送单</router-link>
                 </template>
                 <template v-else-if="$route.query.type == 'afterSaleBulkDelivery'">
                      批量发货成功，您可以到订单详情页 

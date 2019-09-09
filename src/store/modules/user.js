@@ -1,11 +1,12 @@
 import { getToken, setToken, removeToken } from '@/system/auth'
+import utils from "@/utils";
 
 const user = {
   state: {
     token: getToken(),
     roles: [],
     userInfo: null,
-    cid:''
+    shopInfos:''
   },
 
   mutations: {
@@ -19,8 +20,9 @@ const user = {
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
       state.userInfo = userInfo
     },
-    SET_CID:(state, cid) =>{
-      state.cid = cid
+    SET_SHOP_INFO:(state, shop) =>{
+      localStorage.setItem('shopInfos', JSON.stringify(shop));
+      state.shopInfos = shop
     }
   },
 
@@ -37,45 +39,54 @@ const user = {
             const user = JSON.parse(response.info);
             if(user){
               // commit('SET_ROLES', ['shop'])
+              //所有店铺的功能点列表由扁平化数据转为树形结构
+              let data = user.shopInfoMap
+              for(let key in data){
+                let list = JSON.parse(JSON.stringify(data[key].data.msfList))
+                data[key].data.msfList = utils.buildTree(list) 
+                console.log('functions',data[key].data.msfList)
+              }
               commit('SET_USER_INFO', user)
             }
           }
           resolve()
         }).catch(error => {
+          console.log('loginerror')
           reject(error)
         })
       })
     },
      
     //获取店铺id
-    getCid({commit},id){
+    getShopInfos({commit},shop){
       return new Promise((resolve, reject) => {
-        commit('SET_CID',id)
+        commit('SET_SHOP_INFO',shop)
         resolve()
+      }).catch(error => {
         reject(error)
       })
     },
 
 
     // 获取用户信息
-    GetUserInfo({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        this.$api.getUserInfo(state.token).then(response => {
-          const data = response.data.data
+    // GetUserInfo({ commit, state }) {
+    //   return new Promise((resolve, reject) => {
+    //     this.$api.getUserInfo(state.token).then(response => {
+    //       const data = response.data.data
 
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
+    //       if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+    //         commit('SET_ROLES', data.roles)
+    //       } else {
+    //         reject('getInfo: roles must be a non-null array !')
+    //       }
 
-          commit('SET_USER_INFO', data)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
+    //       commit('SET_USER_INFO', data)
+    //       resolve(response)
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
 
     //退出
     LogOut({ commit, state }) {
@@ -84,6 +95,8 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()
+          localStorage.removeItem('userInfo')
+          localStorage.removeItem('shopInfos')
           resolve()
         // }).catch(error => {
         //   reject(error)
@@ -96,6 +109,8 @@ const user = {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()
+        localStorage.removeItem('userInfo')
+        localStorage.removeItem('shopInfos')
         resolve()
       })
     },
@@ -103,17 +118,19 @@ const user = {
     // 动态修改权限
     ChangeRoles({ commit, dispatch }, role) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', role)
-        setToken(role)
-        this.$api.getUserInfo(role).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_USER_INFO', data)
-          dispatch('GenerateRoutes', data) // 动态修改权限后 重绘侧边菜单
-          resolve()
-        })
+        let roles = []
+        commit('SET_ROLES', roles)
+        // commit('SET_TOKEN', role)
+        // setToken(role)
+      //   this.$api.getUserInfo(role).then(response => {
+      //     const data = response.data
+      //     commit('SET_ROLES', data.roles)
+      //     commit('SET_USER_INFO', data)
+      //     dispatch('GenerateRoutes', data) // 动态修改权限后 重绘侧边菜单
+      //     resolve()
+      //   })
       })
-    }
+    },
   }
 }
 

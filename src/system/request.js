@@ -78,7 +78,8 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        accessToken: config.token ? config.token : (store.getters.token || localStorage.getItem('token')),
+        //accessToken: store.getters.token || '09255c7724fe9b8df952aa2f7e3ec71826ba38062317026ea9fe21d072b6a69d',
+        accessToken: store.getters.token || localStorage.getItem('token'),
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -87,9 +88,15 @@ class Ajax {
       };
       head.value = md5(CONST.VALUE + head.target + head.requestTime);
 
+    //获取cid和shopInfoId
+    // let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
+    // let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+    // let cid = shopInfo && shopInfo.id || '2'
+    let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId
+      : '';
+
     //获取cid
     let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
-    
     //拼接全部参数
     if (config.method == "post") {
       if (config.noCid) {
@@ -125,8 +132,8 @@ class Ajax {
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
             break;
           case 'order': //订单系统
-            //config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
-            config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
+            config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
+            //config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
             break;
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/api-decoration-web/decoration/api.do`;

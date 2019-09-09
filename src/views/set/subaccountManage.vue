@@ -110,10 +110,11 @@ export default {
   },
   computed:{
     userInfo(){
-      return JSON.parse(this.$store.getters.userInfo)
+      return JSON.parse(localStorage.getItem('userInfo'))
     },
     cid(){
-      return this.$store.getters.cid
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      return shopInfo.id
     }
   },
   created() {
@@ -126,6 +127,7 @@ export default {
   methods: {
     //获取店铺列表
     getShops(){
+      console.log('userInfo',this.userInfo)
       let data = this.userInfo.shopInfoMap
       for(let key in data){
         let shopObj = data[key]

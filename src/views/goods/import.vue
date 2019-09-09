@@ -35,7 +35,7 @@
                     :action="uploadUrl"
                     :limit="1"
                     list-type="picture-card"
-                    :data="{json: JSON.stringify({cid: 2})}"
+                    :data="{json: JSON.stringify({cid})}"
                     :on-success="success"
                     :show-file-list="showFileList"
                     class="p_imgsCon">
@@ -106,6 +106,11 @@ export default {
     created() {
         this.getList()
     },
+    computed: {
+        cid() {
+            return this.$store.getters.cid || 2
+        }
+    },
     methods: {
         renovate() {
             this.getList()
@@ -137,7 +142,7 @@ export default {
             })
         },
         importGoods() {
-            this._apis.goods.importGoods({cid: '2', importUrl: this.url}).then((res) => {
+            this._apis.goods.importGoods({cid: this.cid, importUrl: this.url}).then((res) => {
                 console.log(res)
                 this.url = res.url
                 // this.$notify({

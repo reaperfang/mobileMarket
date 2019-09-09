@@ -33,15 +33,15 @@
                             </el-table-column>
                             <el-table-column
                                 label="商品"
-                                width="180">
+                                width="380">
                                 <template slot-scope="scope">
                                     <div class="goods-detail">
                                         <div class="goods-detail-item">
-                                            <img src="" alt="">
+                                            <img width="66" :src="scope.row.goodsImage" alt="">
                                         </div>
                                         <div class="goods-detail-item">
-                                            <p>{{scope.row.goodsName}}</p>
-                                            <p>{{scope.row.goodsSpecs}}</p>
+                                            <p class="ellipsis" style="width: 350px;">{{scope.row.goodsName}}</p>
+                                            <p>{{scope.row.goodsSpecs | goodsSpecsFilter}}</p>
                                         </div>
                                     </div>
                                 </template>
@@ -139,8 +139,8 @@
                 </div>
             </div>
             <div class="footer">
-                <el-button class="border-button" @click="printingElectronicForm">打印电子面单</el-button>
-                <el-button class="border-button" @click="printDistributionSheet">打印配送单</el-button>
+                <!-- <el-button class="border-button" @click="printingElectronicForm">打印电子面单</el-button>
+                <el-button class="border-button" @click="printDistributionSheet">打印配送单</el-button> -->
                 <el-button type="primary" @click="sendGoodsHandler">确定</el-button>
             </div>
         </div>
@@ -154,7 +154,7 @@ export default {
     data() {
         return {
             tableData: [
-                {}
+                
             ],
             multipleSelection: [],
             ruleForm: {
@@ -176,7 +176,8 @@ export default {
             dialogVisible: false,
             currentData: {},
             expressCompanyList: [],
-            sendGoods: ''
+            sendGoods: '',
+            title: ''
         }
     },
     created() {
@@ -194,10 +195,10 @@ export default {
     },
     methods: {
         printDistributionSheet() {
-            this.$router.push('/order/printDistributionSheet?ids=' + this.$route.query.id)
+            this.$router.push('/order/printDistributionSheet?ids=' + this.orderInfo.id + '&type=supplementaryLogistics')
         },
         printingElectronicForm() {
-            this.$router.push('/order/printingElectronicForm?ids=' + this.$route.query.id)
+            this.$router.push('/order/printingElectronicForm?ids=' + this.orderInfo.id + '&type=supplementaryLogistics')
         },
         getExpressCompanyList() {
             this._apis.order.fetchExpressCompanyList().then((res) => {
@@ -230,24 +231,41 @@ export default {
                         id: this.orderInfo.id,
                         orderCode: this.orderInfo.orderCode,
                         memberSn: this.orderInfo.memberSn,
-                        receivedName: this.orderInfo.receivedName,
-                        receivedPhone: this.orderInfo.receivedPhone,
                         isAutoSend: this.orderInfo.isAutoSend,
                         status: this.orderInfo.status,
-                        express_companys: this.ruleForm.expressCompany,
-                        express_company_codes: this.ruleForm.expressCompanyCode,
-                        express_nos: this.ruleForm.expressNos,
+                        expressCompanys: this.ruleForm.expressCompany,
+                        expressCompanyCodes: this.ruleForm.expressCompanyCode,
+                        expressNos: this.ruleForm.expressNos,
                         remark: this.orderInfo.remark,
+                        receivedName: this.orderInfo.receivedName,
+                        receivedPhone: this.orderInfo.receivedPhone,
+                        receivedProvinceCode: this.orderInfo.receivedProvinceCode,
+                        receivedProvinceName: this.orderInfo.receivedProvinceName,
+                        receivedCityCode: this.orderInfo.receivedCityCode,
+                        receivedCityName: this.orderInfo.receivedCityName,
+                        receivedAreaCode: this.orderInfo.receivedAreaCode,
+                        receivedAreaName: this.orderInfo.receivedAreaName,
+                        receivedDetail: this.orderInfo.receivedDetail,
+                        sendName: this.orderInfo.sendName,
+                        sendPhone: this.orderInfo.sendPhone,
+                        sendProvinceCode: this.orderInfo.sendProvinceCode,
+                        sendProvinceName: this.orderInfo.sendProvinceName,
+                        sendCityCode: this.orderInfo.sendCityCode,
+                        sendCityName: this.orderInfo.sendCityName,
+                        sendAreaCode: this.orderInfo.sendAreaCode,
+                        sendAreaName: this.orderInfo.sendAreaName,
+                        sendDetail: this.orderInfo.sendDetail,
+                        sendRemark: this.orderInfo.sendRemark,
                     }
                 ],
             }
             this._apis.order.orderSendInfoFillUpExpress(params).then((res) => {
                 this.$notify({
                     title: '成功',
-                    message: '发货成功',
+                    message: '补填物流成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliverGoodsSuccess?id=' + this.$route.query.id + '&type=supplementaryLogistics')
+                this.$router.push('/order/query')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -265,6 +283,7 @@ export default {
             this.currentDialog = 'ReceiveInformationDialog'
             this.currentData = this.orderInfo
             this.sendGoods = 'send'
+            this.title = '修改发货信息'
             this.dialogVisible = true
         },
         onSubmit(value) {
@@ -385,6 +404,14 @@ export default {
     .footer {
         text-align: center;
         margin-top: 40px;
+    }
+    .goods-detail {
+        display: flex;
+        .goods-detail-item {
+            p {
+                margin-bottom: 6px!important;
+            }
+        }
     }
 </style>
 
