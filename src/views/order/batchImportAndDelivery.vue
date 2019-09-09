@@ -28,7 +28,7 @@
               :action="uploadUrl"
               :limit="1"
               :show-file-list="false"
-              :data="{json: JSON.stringify({cid: 2})}"
+              :data="{json: JSON.stringify({cid})}"
               :on-success="uploadSuccess"
               class="p_imgsCon"
               :before-upload="beforeUpload"
@@ -109,6 +109,11 @@ export default {
       errorNumber: 0,
       ids: ""
     };
+  },
+  computed: {
+    cid() {
+      return this.$store.getters.cid || 2
+    }
   },
   methods: {
     downloadTemplate() {

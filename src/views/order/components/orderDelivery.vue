@@ -190,6 +190,11 @@ export default {
     created() {
         this.getList()
     },
+    computed: {
+        cid() {
+            return this.$store.getters.cid || 2
+        }
+    },
     methods: {
         batchSendGoods() {
             if(!this.multipleSelection.length) {
@@ -222,7 +227,7 @@ export default {
             this.loading =  true
 
             params = Object.assign({}, this.listQuery, {
-                cid: 2,
+                cid: this.cid,
                 [this.listQuery.searchType]: this.listQuery.searchValue,
                 [this.listQuery.searchType2]: this.listQuery.searchValue2,
                 [`${this.listQuery.searchTimeType}StartTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
