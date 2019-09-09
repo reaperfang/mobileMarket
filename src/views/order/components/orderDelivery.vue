@@ -128,7 +128,7 @@
                                 <span @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">继续发货</span>
                             </template>
                             <template v-else-if="scope.row.status == 3">
-                                <span v-if="!scope.row.isAutoSend" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>
+                                <span v-if="!scope.row.isFillUp" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>
                                 <span v-else @click="$router.push('/order/supplementaryLogistics?id=' + scope.row.id)">补填物流</span>
                             </template>
                         </div>

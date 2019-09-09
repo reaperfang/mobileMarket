@@ -159,7 +159,7 @@ export default {
           this.confirm({title: '提示', icon: true, text: '请选择需要补填物流的订单'})
           return
       }
-      this.$router.push('/order/batchSupplementaryLogistics?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.orderInfo.id).join(','))
+      this.$router.push('/order/batchSupplementaryLogistics?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.id).join(','))
     },
     exportOrders() {
       this._apis.order

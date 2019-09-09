@@ -301,6 +301,10 @@ export default {
                     this.orderDetail = res
                     resolve(res)
                 }).catch(error => {
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
                     reject(error)
                 })
             })

@@ -33,15 +33,15 @@
                             </el-table-column>
                             <el-table-column
                                 label="商品"
-                                width="180">
+                                width="380">
                                 <template slot-scope="scope">
                                     <div class="goods-detail">
                                         <div class="goods-detail-item">
-                                            <img src="" alt="">
+                                            <img width="66" :src="scope.row.goodsImage" alt="">
                                         </div>
                                         <div class="goods-detail-item">
-                                            <p>{{scope.row.goodsName}}</p>
-                                            <p>{{scope.row.goodsSpecs}}</p>
+                                            <p class="ellipsis" style="width: 350px;">{{scope.row.goodsName}}</p>
+                                            <p>{{scope.row.goodsSpecs | goodsSpecsFilter}}</p>
                                         </div>
                                     </div>
                                 </template>
@@ -404,6 +404,14 @@ export default {
     .footer {
         text-align: center;
         margin-top: 40px;
+    }
+    .goods-detail {
+        display: flex;
+        .goods-detail-item {
+            p {
+                margin-bottom: 6px!important;
+            }
+        }
     }
 </style>
 

@@ -94,7 +94,7 @@
                             <template slot-scope="scope">
                                 <div class="row justity-between">
                                     <div class="col">
-                                        <img :src="scope.row.goodsImage" alt="">
+                                        <img width="66" :src="scope.row.goodsImage" alt="">
                                     </div>
                                     <div class="col">
                                         <p class="ellipsis" style="width: 300px">{{scope.row.goodsName}}</p>

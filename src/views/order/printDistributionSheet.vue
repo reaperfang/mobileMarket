@@ -60,9 +60,9 @@
                             <td style="height: 45px; text-align: center;">{{index + 1}}</td>
                             <td style="height: 45px; text-align: center;">{{sendItem.goodsName}}</td>
                             <td style="height: 45px; text-align: center;">{{sendItem.sendCount}}</td>
-                            <td style="height: 45px; text-align: center;">-</td>
-                            <td style="height: 45px; text-align: center;">-</td>
-                            <td style="height: 45px; text-align: center;">-</td>
+                            <td style="height: 45px; text-align: center;">{{sendItem.salePrice}}</td>
+                            <td style="height: 45px; text-align: center;">{{(sendItem.salePrice - sendItem.goodsPrice) * sendItem.sendCount}}</td>
+                            <td style="height: 45px; text-align: center;">{{sendItem.goodsPrice * sendItem.sendCount}}</td>
                         </tr>
                     </template>
                 </table>
