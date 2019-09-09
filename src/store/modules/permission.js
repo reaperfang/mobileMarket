@@ -2,18 +2,14 @@ import { asyncRouterMap, syncRouterMap } from '@/router'
 
 /**
  * 通过meta.title判断是否与当前用户权限匹配
- * @param functions
+ * @param msfList
  * @param route
  */
-function hasPermission(functions, route) {
+function hasPermission(msfList, route) {
   console.log('route',route)
+  console.log('msfList',msfList)
   if (route && route.meta.title) {
-    if(route.meta.title == '概况首页' || route.meta.title == '概况'){
-      return true
-    }else{
-      return functions.some(item => route.meta.title == item.name)
-    }
-    // return functions.some(item => route.meta.title == item.name)
+    return msfList.some(item => route.meta.title == item.name) || route.meta.title == '概况首页' || route.meta.title == '概况'
   } else {
     return true
   }
@@ -22,22 +18,30 @@ function hasPermission(functions, route) {
 /**
  * 递归过滤异步路由表，返回符合用户角色权限的路由表
  * @param routes asyncRouterMap
- * @param functions
+ * @param msfList
  */
-function filterAsyncRouter(routes, functions) {
-  const res = []
-
-  routes.forEach(route => {
-    const tmp = { ...route }
-    if (hasPermission(functions, tmp)) {
+function filterAsyncRouter(routes, msfList) {
+  // routes.forEach((route,index) => {
+  //   const tmp = { ...route }
+  //   if (!hasPermission(msfList, tmp)) {
+  //     routes.splice(index,1)
+  //     if (tmp.children) {
+  //       tmp.children = filterAsyncRouter(tmp.children, msfList)
+  //     }
+  //   }
+  // })
+  for(let i=0; i<routes.length; i++) {
+    const tmp = { ...routes[i] }
+    if (!hasPermission(msfList, tmp)) {
+      routes.splice(i,1)
       if (tmp.children) {
-        tmp.children = filterAsyncRouter(tmp.children, functions)
+        tmp.children = filterAsyncRouter(tmp.children, msfList)
       }
-      res.push(tmp)
     }
-  })
-  return res
+  }
+  return routes
 }
+
 
 const permission = {
   state: {
@@ -53,14 +57,14 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const functions = data
+        const msfList = data
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         const type = userInfo.type
         let accessedRouters
         if (type == 'admin') {
           accessedRouters = asyncRouterMap
         } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, functions)
+          accessedRouters = filterAsyncRouter(asyncRouterMap, msfList)
         }
         commit('SET_ROUTERS', accessedRouters)
         resolve()

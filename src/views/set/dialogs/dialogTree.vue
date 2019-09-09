@@ -2,7 +2,7 @@
   <DialogBase :visible.sync="visible" width="500px" :title="'选择功能点'" @submit="submit">
       <div class="content">
         <el-tree
-        :data="data.data.msfList"
+        :data="data.data.functions"
         show-checkbox
         node-key="id"
         ref="tree"
@@ -10,6 +10,7 @@
         :default-checked-keys="data.functions"
         :props="defaultProps">
         </el-tree>
+        <!-- :default-checked-keys="toNum(data.functions)" -->
       </div>
   </DialogBase>
 </template>

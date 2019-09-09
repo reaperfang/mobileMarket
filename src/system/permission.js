@@ -22,8 +22,8 @@ const whiteList = ['/login', '/auth-redirect']// no redirect whitelist
 let flag = 0
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
-  if (true) { // determine if there has token
-  // if(store.getters.token){
+  // if (true) { // determine if there has token
+  if(store.getters.token){
     /* has token*/
     if (to.path === '/login') {
       next({ path: '/' })
@@ -31,10 +31,9 @@ router.beforeEach((to, from, next) => {
     } else {
         if(flag == 0){
           // let roles = store.getters.shopInfos.data.msfList
-          // let roles = JSON.parse(localStorage.getItem('shopInfos')).data.msfList
-          let roles
-          console.log('functions',JSON.parse(localStorage.getItem('shopInfos')))
-          store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+          let msfList = JSON.parse(localStorage.getItem('shopInfos')).data.msfList
+          // console.log('functions',JSON.parse(localStorage.getItem('shopInfos')))
+          store.dispatch('GenerateRoutes', msfList).then(() => { // 根据roles权限生成可访问的路由表
             // console.log('addrouter',store.getters.addRouters)
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             // next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
