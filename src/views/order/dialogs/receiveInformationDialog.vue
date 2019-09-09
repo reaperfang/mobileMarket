@@ -10,6 +10,7 @@
                 </el-form-item>
                 <el-form-item label="发货地址" prop="deliveryAddress">
                     <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div>
                 </el-form-item>
                 <el-form-item label="详细地址" prop="sendDetail">
                     <el-input
@@ -35,6 +36,7 @@
                 </el-form-item>
                 <el-form-item label="收货地址" prop="deliveryAddress">
                     <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div>
                 </el-form-item>
                 <el-form-item label="详细地址" prop="receivedDetail">
                     <el-input
@@ -184,8 +186,8 @@ export default {
                             }
 
                             this._apis.order.orderUpdateAddress({
-                                id: 11, // 和cid相同
-                                cid: 11,
+                                id: this.cid, // 和cid相同
+                                cid: this.cid,
                                 // receivedProvinceCode: codes0,
                                 // receivedProvinceName: name0,
                                 // receivedCityCode: codes1,
@@ -274,6 +276,9 @@ export default {
         },
         contentText() {
             return '是否确认删除？'
+        },
+        cid() {
+            return this.$store.getters.cid || 11
         }
     },
     props: {
@@ -334,6 +339,10 @@ export default {
         .footer {
             text-align: center;
         }
+    }
+    .gray {
+        color: #666;
+        font-size: 12px;
     }
 </style>
 

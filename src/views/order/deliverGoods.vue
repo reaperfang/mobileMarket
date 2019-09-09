@@ -143,7 +143,7 @@
                 <el-button type="primary" @click="sendGoodsHandler">发 货</el-button>
             </div>
         </div>
-        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods" :title="title"></component>
     </div>
 </template>
 <script>
@@ -174,7 +174,8 @@ export default {
             dialogVisible: false,
             currentData: {},
             expressCompanyList: [],
-            sendGoods: ''
+            sendGoods: '',
+            title: ''
         }
     },
     created() {
@@ -286,6 +287,7 @@ export default {
             this.currentDialog = 'ReceiveInformationDialog'
             this.currentData = this.orderInfo
             this.sendGoods = 'send'
+            this.title="修改发货信息"
             this.dialogVisible = true
         },
         onSubmit(value) {

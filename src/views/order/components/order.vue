@@ -89,8 +89,7 @@
                         <template v-else-if="order.orderStatus == 3">
                             <!-- 待发货 -->
                             <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p v-if="order.sendType == 2" @click="$router.push('/order/supplementaryLogistics?id=' + order.id)">补填物流</p>
-                            <p @click="$router.push('/order/deliverGoods?id=' + order.id)" v-else>发货</p>
+                            <p @click="$router.push('/order/deliverGoods?id=' + order.id)">发货</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
                         </template>
                         <template v-else-if="order.orderStatus == 4">
@@ -104,6 +103,7 @@
                             <!-- 待收货 -->
                             <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                             <p @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
+                            <p v-if="order.isFillUp == 1" @click="$router.push('/order/supplementaryLogistics?id=' + order.id)">补填物流</p>
                         </template>
                         <template v-else-if="order.orderStatus == 6">
                             <!-- 完成 -->

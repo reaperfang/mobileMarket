@@ -118,21 +118,7 @@ export default {
                 region: ''
             },
             stateiIems: [],
-            list: [{
-                    goodsName: '小红花',
-                    goodsState: '上架',
-                    goodsClassify: '服饰',
-                    store: '100',
-                    price: '15',
-                    activity: true
-                }, {
-                    goodsName: '小红花小红花',
-                    goodsState: '下架',
-                    goodsClassify: '服饰',
-                    store: '100',
-                    price: '16',
-                    activity: false
-                }],
+            list: [],
             total: 50,
             listLoading: true,
             listQuery: {
