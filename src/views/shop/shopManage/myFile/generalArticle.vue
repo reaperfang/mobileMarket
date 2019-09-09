@@ -15,7 +15,7 @@
             <el-upload
               class="upload-demo"
               :action="uploadUrl"
-              :data="{json: JSON.stringify({cid: 222})}"
+              :data="{json: JSON.stringify({cid: cid})}"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :before-remove="beforeRemove"
@@ -80,6 +80,12 @@ export default {
   },
   created() {
     this.$route.query.id && this.getArticle()
+  },
+  computed:{
+      cid(){
+          let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+          return shopInfo.id
+      }
   },
   methods: {
     getArticle(){

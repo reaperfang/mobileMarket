@@ -108,6 +108,10 @@ export default {
       set(val) {
           this.$emit('update:dialogVisible', val)
       }
+    },
+    cid(){
+        let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+        return shopInfo.id
     }
   },
   // watch:{

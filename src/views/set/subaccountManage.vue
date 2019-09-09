@@ -127,7 +127,6 @@ export default {
   methods: {
     //获取店铺列表
     getShops(){
-      console.log('userInfo',this.userInfo)
       let data = this.userInfo.shopInfoMap
       for(let key in data){
         let shopObj = data[key]

@@ -7,7 +7,7 @@
             :action="uploadUrl"
             :show-file-list="false"
             :limit="1"
-            :data="{json: JSON.stringify({cid: 222})}"
+            :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
@@ -18,7 +18,7 @@
         <el-form-item label="本地上传" v-if="title == '上传视频'">
           <el-upload class="avatar-uploader el-upload--text"
             :action="uploadUrl" 
-            :data="{json: JSON.stringify({cid: 222})}"
+            :data="{json: JSON.stringify({cid: cid})}"
             :show-file-list="false"
             accept=".mp4"
             :on-success="handleVideoSuccess" 
@@ -62,7 +62,7 @@
             :action="uploadUrl"
             :show-file-list="false"
             :limit="1"
-            :data="{json: JSON.stringify({cid: 222})}"
+            :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleCoverSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="form.imageUrls" :src="form.imageUrls" class="avatar">
@@ -117,6 +117,10 @@ export default {
           this.$emit('update:dialogVisible', val)
       }
     },
+    cid(){
+        let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+        return shopInfo.id
+    }
   },
   created() {
     this.getGroups()

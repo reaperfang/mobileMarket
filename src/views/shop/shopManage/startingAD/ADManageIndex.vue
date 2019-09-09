@@ -119,6 +119,10 @@ export default {
     shopInfo() {
       this.openAD = this.$store.getters.shopInfo.adOpenType === 1;
       return this.$store.getters.shopInfo || {};
+    },
+    cid(){
+        let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+        return shopInfo.id
     }
   },
   created() {
@@ -208,7 +212,7 @@ export default {
 
     /* 开关状态切换 */
     switchStatusChange(value) {
-      this._apis.shop.changeSwitchStatus({id: this.$store.getters.cid || '7', adOpenType: value === true ? 1 : 0}).then((response)=>{
+      this._apis.shop.changeSwitchStatus({id:this.cid, adOpenType: value === true ? 1 : 0}).then((response)=>{
         this.$notify({
           title: '成功',
           message: '修改成功！',

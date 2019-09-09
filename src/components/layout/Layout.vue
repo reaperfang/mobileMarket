@@ -36,6 +36,7 @@ export default {
     }
   },
   created() {
+    console.log('111111',this.permission_routers_tree)
     let path = '/' + this.$route.path.split('/')[1]
     let index = this.permission_routers_tree.findIndex(val => val.path == path)
 

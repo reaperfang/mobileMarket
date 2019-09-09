@@ -33,7 +33,7 @@
                                 :on-remove="handleRemove"
                                 :before-upload="beforeAvatarUpload"
                                 :limit="1"
-                                :data="{json: JSON.stringify({cid: 222})}"
+                                :data="{json: JSON.stringify({cid: cid})}"
                                 :file-list="fileList">
                                 <el-button size="small" type="primary">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">支持文件格式：.csv .xsl ，单个文件不能超过10M</div>
@@ -111,6 +111,12 @@ export default {
             currentDialog: "",
             dialogVisible: false,
             currentData: {}
+        }
+    },
+    computed:{
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
         }
     },
     methods: {

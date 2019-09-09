@@ -16,7 +16,7 @@
                 <el-upload
                 class="avatar-uploader"
                 :action="uploadUrl"
-                :data="{json: JSON.stringify({cid: 222})}"
+                :data="{json: JSON.stringify({cid: cid})}"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
@@ -85,6 +85,10 @@ export default {
   computed: {
     canvas() {
       return this.$refs.canvas1
+    },
+    cid(){
+        let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+        return shopInfo.id
     }
   },
   created() {
@@ -95,7 +99,7 @@ export default {
   },
   methods: {
     getShopInfo(){
-      let id = this.$store.getters.cid || '2'
+      let id = this.cid
       this._apis.set.getShopInfo({id:id}).then(response =>{
         this.form = response
         if(response.provinceCode){
@@ -116,7 +120,7 @@ export default {
     onSubmit(formName){
       this.$refs[formName].validate((valid) => {
           if (valid) {
-            let id = this.$store.getters.cid || '2'
+            let id = this.cid
             let data = {
               id:id,
               shopName:this.form.shopName,

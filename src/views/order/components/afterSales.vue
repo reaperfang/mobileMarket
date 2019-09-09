@@ -151,6 +151,12 @@ export default {
     created() {
         this.getList()
     },
+    computed:{
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
+        }
+    },
     filters: {
         statusFilter(code) {
             switch(+code) {
@@ -213,7 +219,7 @@ export default {
             this.loading = true
 
             params = Object.assign({}, this.listQuery, {
-                cid: 2,
+                cid:this.cid,
                 [this.listQuery.searchType]: this.listQuery.searchValue,
                 [this.listQuery.searchType2]: this.listQuery.searchValue2,
                 [`${this.listQuery.searchTimeType}TimeStart`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',

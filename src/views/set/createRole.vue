@@ -126,7 +126,6 @@ export default {
             } 
         })
       })
-      console.log('shops',this.shops)
     },
     //展示功能点弹窗
     handleIsShow(data){

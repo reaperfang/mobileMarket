@@ -32,7 +32,7 @@
                 <span class="tip">{{form.certFileName}}</span>
                 <el-upload
                 :action="uploadUrl"
-                :data="{json: JSON.stringify({cid: 222})}"
+                :data="{json: JSON.stringify({cid: cid})}"
                 :before-upload="handleCertFileUrlOk"
                 :on-success="uploadCertFileUrl"
                 :show-file-list="false"
@@ -129,6 +129,12 @@ export default {
   watch: {
     
   },
+  computed:{
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
+        }
+    },
   created() {
     this.getShopPayInfo()
   },

@@ -32,7 +32,7 @@
                     :limit="6"
                     :file-list="fileList"
                     list-type="picture-card"
-                    :data="{json: JSON.stringify({cid: 2})}"
+                    :data="{json: JSON.stringify({cid: cid})}"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove"
                     :on-success="centerFileUrl"
@@ -145,7 +145,7 @@
                             <el-upload
                                 class="upload-spec"
                                 :action="uploadUrl"
-                                :data="{json: JSON.stringify({cid: 2})}"
+                                :data="{json: JSON.stringify({cid: cid})}"
                                 :on-remove="specHandleRemove"
                                 :on-success="function(response, file, fileList) {
                                     specUploadSuccess(response, file, fileList, scope.$index, scope.row)
@@ -425,7 +425,7 @@ export default {
                 itemCat: '',
                 imageData: {
                     fileName: 'image',
-                    cid: 222
+                    cid: this.cid
                 }
                 
             },
@@ -532,6 +532,10 @@ export default {
             } else {
                 return false
             }
+        },
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
         }
     },
     methods: {

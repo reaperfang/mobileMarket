@@ -6,8 +6,6 @@ import { asyncRouterMap, syncRouterMap } from '@/router'
  * @param route
  */
 function hasPermission(msfList, route) {
-  console.log('route',route)
-  console.log('msfList',msfList)
   if (route && route.meta.title) {
     return msfList.some(item => route.meta.title == item.name) || route.meta.title == '概况首页' || route.meta.title == '概况'
   } else {
@@ -21,15 +19,6 @@ function hasPermission(msfList, route) {
  * @param msfList
  */
 function filterAsyncRouter(routes, msfList) {
-  // routes.forEach((route,index) => {
-  //   const tmp = { ...route }
-  //   if (!hasPermission(msfList, tmp)) {
-  //     routes.splice(index,1)
-  //     if (tmp.children) {
-  //       tmp.children = filterAsyncRouter(tmp.children, msfList)
-  //     }
-  //   }
-  // })
   for(let i=0; i<routes.length; i++) {
     const tmp = { ...routes[i] }
     if (!hasPermission(msfList, tmp)) {

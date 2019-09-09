@@ -261,6 +261,10 @@ export default {
     shopInfo() {
       this.openNav = this.$store.getters.shopInfo.shopNavigation === 1;
       return this.$store.getters.shopInfo || {};
+    },
+    cid(){
+        let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+        return shopInfo.id
     }
   },
   watch: {
@@ -438,7 +442,7 @@ export default {
 
      /* 开关状态切换 */
     switchStatusChange(value) {
-      this._apis.shop.changeSwitchStatus({id: this.$store.getters.cid || '7', shopNavigation: value === true ? 1 : 0}).then((response)=>{
+      this._apis.shop.changeSwitchStatus({id:this.cid, shopNavigation: value === true ? 1 : 0}).then((response)=>{
         this.$notify({
           title: '成功',
           message: '修改成功！',

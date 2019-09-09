@@ -120,6 +120,12 @@ export default {
             }
         }
     },
+    computed:{
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
+        }
+    },
     methods: {
         getDetail() {
             let arr = []
@@ -186,8 +192,8 @@ export default {
                             }
 
                             this._apis.order.orderUpdateAddress({
-                                id: 11, // 和cid相同
-                                cid: 11,
+                                id: this.cid, // 和cid相同
+                                cid: this.cid,
                                 // receivedProvinceCode: codes0,
                                 // receivedProvinceName: name0,
                                 // receivedCityCode: codes1,

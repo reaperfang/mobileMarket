@@ -121,6 +121,10 @@ export default {
         set: function (newValue) {
             this.form.deliverGoodsType = newValue == true ? 1 : ''
         }
+      },
+      cid(){
+          let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+          return shopInfo.id
       }
    },
   created() {
@@ -131,7 +135,7 @@ export default {
   },
   methods: {
     getShopInfo(){
-      let id = this.$store.getters.cid || '2'
+      let id = this.cid
       this._apis.set.getShopInfo({id:id}).then(response =>{
         this.form = response
       }).catch(error =>{
@@ -145,7 +149,7 @@ export default {
     onSubmit(formName){
       this.$refs[formName].validate((valid) => {
           if (valid) {
-            let id = this.$store.getters.cid || '2'
+            let id = this.cid
             let data = {
               id:id,
               autoCancelUnpayOrder:this.form.autoCancelUnpayOrder,

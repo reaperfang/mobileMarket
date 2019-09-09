@@ -129,7 +129,6 @@ export default {
               let data = info.shopInfoMap
               for(let key in data){
                 let shopObj = data[key]
-                console.log('shopobj',shopObj)
                 this.shopList.push(shopObj)
               }
               this.showShopsDialog = true

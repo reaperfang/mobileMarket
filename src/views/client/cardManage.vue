@@ -11,7 +11,7 @@
                             :action="uploadUrl"
                             :show-file-list="false"
                             :limit="1"
-                            :data="{json: JSON.stringify({cid: 222})}"
+                            :data="{json: JSON.stringify({cid: cid})}"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload"
                         >
@@ -81,6 +81,12 @@ export default {
             cardList: [],
             cardNames: [],
             lkParams: {}
+        }
+    },
+    computed:{
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
         }
     },
     methods: {

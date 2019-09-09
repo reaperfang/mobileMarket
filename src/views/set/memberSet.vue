@@ -34,9 +34,15 @@ export default {
   created(){
       this.getShopInfo()
   },
+  computed:{
+      cid(){
+          let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+          return shopInfo.id
+      }
+  },
   methods:{
     getShopInfo(){
-      let id = this.$store.getters.cid || '2'
+      let id = this.cid
       this._apis.set.getShopInfo({id:id}).then(response =>{
         this.form = response
       }).catch(error =>{
@@ -49,7 +55,7 @@ export default {
     onSubmit(formName){
       this.$refs[formName].validate((valid) => {
           if (valid) {
-            let id = this.$store.getters.cid || '2'
+            let id = this.cid
             let data = {
               id:id,
               oldMemberSet:this.form.oldMemberSet

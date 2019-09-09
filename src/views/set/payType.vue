@@ -84,10 +84,16 @@ export default {
   created() {
     this.getShopInfo()
   },
+  computed:{
+      cid(){
+          let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+          return shopInfo.id
+      }
+  },
 
   methods: {    
     getShopInfo(){
-      let id = this.$store.getters.cid || '2'
+      let id = this.cid
       this._apis.set.getShopInfo({id:id}).then(response =>{
         this.wechatPay = response.wechatPay == 1 ? true : false
         this.balanceOfAccountPay = response.balanceOfAccountPay == 1 ? true : false
@@ -128,7 +134,7 @@ export default {
     },
 
     onSubmit(data){
-      let id = this.$store.getters.cid || '2'
+      let id = this.cid
       let query = Object.assign({id:id},data)
       this._apis.set.updateShopInfo(query).then(response =>{
         this.$notify.error({

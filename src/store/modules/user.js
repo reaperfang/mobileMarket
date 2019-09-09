@@ -45,14 +45,12 @@ const user = {
                 let list = JSON.parse(JSON.stringify(data[key].data.msfList))
                 let functions = utils.buildTree(list)
                 data[key].data = Object.assign(data[key].data,{functions:functions})
-                console.log('functions',data[key].data.functions)
               }
               commit('SET_USER_INFO', user)
             }
           }
           resolve()
         }).catch(error => {
-          console.log('loginerror')
           reject(error)
         })
       })
