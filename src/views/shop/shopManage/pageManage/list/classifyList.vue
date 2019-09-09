@@ -16,10 +16,6 @@
     <div class="table">
       <p>微页面分类（共{{total || 0}}个）</p>
       <el-table :data="tableList" stripe v-loading="loading">
-        <el-table-column
-          type="selection"  
-          width="55">
-        </el-table-column>
         <el-table-column prop="name" label="分类名称"></el-table-column>
         <el-table-column prop="pageNum" label="页面数量"></el-table-column>
         <el-table-column prop="updateTime" label="创建/编辑时间"></el-table-column>

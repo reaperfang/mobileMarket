@@ -66,7 +66,7 @@ export default {
           sortType: data.sortType,
           explain: utils.uncompileStr(data.explain),
           showType: data.showType,
-          pageIdList: data.pageIdList
+          pageInfos: data.pageInfos
         }
       });
     },

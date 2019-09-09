@@ -17,9 +17,10 @@
           </div>
         </el-form>
         <el-table :data="tableData[currentTab]" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick" v-loading="loading">
-          <el-table-column
-            type="selection"  
-            width="55">
+          <el-table-column prop="" label="选择" :width="50">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.active" @change="seletedChange(scope.row, scope.row.active)"></el-checkbox>
+            </template>
           </el-table-column>
           <el-table-column prop="activityName" label="活动名称"></el-table-column>
           <el-table-column prop="activityType" label="活动类型"></el-table-column>
@@ -64,6 +65,10 @@ export default {
   methods: {
     fetch() {
       this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
+        const tempList = [...response.list];
+        for(let item of tempList) {
+          item.active = false;
+        }
         this.tableData = response.list;
         this.total = response.total;
       }).catch((error)=>{
@@ -74,17 +79,29 @@ export default {
       });
     },
 
-   /* 选中某一行 */
-    rowClick(row, column, event) {
+
+    /* 选中改变 */
+    seletedChange(data, state) {
+
+      /* 更改列表选中状态 */
+      const tempList = [...this.tableData];
+      for(let item of tempList) {
+        if(item.id !== data.id) {
+          item.active = !state;
+        }
+      }
+      this.tableData = tempList;
+
+      /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'marketCampaign',
         data: {
-          id: row.id,
-          name: row.name,
-          title: row.title
+          id: data.id,
+          name: data.name,
+          title: data.title
         }
       });
-    },
+    }
 
   }
 };
