@@ -70,7 +70,7 @@ export default {
         subTitle: '',
         backgroundColor: '',
         navName: '',
-        linkTo: '',
+        linkTo: null,
         author: '',
         date: ''
       },

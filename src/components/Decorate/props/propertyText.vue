@@ -65,7 +65,7 @@ export default {
         fontColor: '#000000',
         backgroundColor: '#ffffff',
         displayStyle: 2,
-        linkTo: {},
+        linkTo: null,
         showDivider: true
       },
       rules: {

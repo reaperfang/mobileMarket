@@ -64,7 +64,7 @@ export default {
         for(let item of tempList) {
           item.active = false;
         }
-        this.tableData = response.list;
+        this.tableData = tempList;
         this.total = response.total;
         this.loading = false;
       }).catch((error)=>{

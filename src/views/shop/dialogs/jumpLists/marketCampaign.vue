@@ -3,9 +3,9 @@
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
           <div class="inline-head">
             <el-form-item label="" prop="name">
-              <el-select v-if="classifyList.length" v-model="ruleForm.pageCategoryInfoId" placeholder="请选择活动类型">
-                <el-option label="全部分类" value=""></el-option>
-                <el-option v-for="(item, key) of classifyList" :key="key" :label="item.name" :value="item.id"></el-option>
+              <el-select v-if="activities.length" v-model="ruleForm.activitieId" placeholder="请选择活动类型">
+                <el-option label="全部类型" value=""></el-option>
+                <el-option v-for="(item, key) of activities" :key="key" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="" prop="name">
@@ -54,29 +54,54 @@ export default {
   data() {
     return {
       ruleForm: {
-        name: ''
+        name: '',
+        activitieId: ''
       },
       rules: {},
+      activities: [],
       tableData: [],
     };
   },
   created() {
+    this.getActivitiesList();
+    this.fetch();
   },
   methods: {
-    fetch() {
-      this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
-        const tempList = [...response.list];
-        for(let item of tempList) {
-          item.active = false;
+    getActivitiesList() {
+      this.activities = [
+        {
+          id: '1111',
+          name: '优惠券'
+        },
+        {
+          id: '2222',
+          name: '限时折扣'
+        },
+        {
+          id: '3333',
+          name: '优惠套装'
+        },
+        {
+          id: '4444',
+          name: '多人拼团'
+        },
+        {
+          id: '5555',
+          name: '秒杀'
         }
-        this.tableData = response.list;
-        this.total = response.total;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      });
+      ];
+      // this._apis.shop.getActivitiesList(this.ruleForm).then((response)=>{
+        // this.activities = response.list;
+      // }).catch((error)=>{
+      //   this.$notify.error({
+      //     title: '错误',
+      //     message: error
+      //   });
+      // });
+    },
+
+    fetch() {
+
     },
 
 
