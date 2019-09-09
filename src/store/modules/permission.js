@@ -34,6 +34,7 @@ function filterAsyncRouter(routes, msfList) {
     const tmp = { ...routes[i] }
     if (!hasPermission(msfList, tmp)) {
       routes.splice(i,1)
+      i--;
       if (tmp.children) {
         tmp.children = filterAsyncRouter(tmp.children, msfList)
       }

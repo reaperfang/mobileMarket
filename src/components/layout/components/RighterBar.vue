@@ -38,6 +38,7 @@ export default {
     return {
       sidebarItems: [],
       basePath: '',
+      userType: false,
     }
   },
   components: { },
@@ -49,15 +50,24 @@ export default {
       'permission_routers',
       'permission_routers_tree',
     ]),
-    userType(){
-      let userInfo = JSON.parse(this.$store.getters.userInfo)
-      return userInfo.type == "admin" ? true : false
-    }
+    // userType(){
+    //   let userInfo = JSON.parse(this.$store.getters.userInfo)
+    //   return userInfo.type == "admin" ? true : false
+    // }
   },
   created() {
     this.setSidebarItems()
   },
   methods: {
+    setUserType() {
+      let userInfo = JSON.parse(this.$store.getters.userInfo)
+
+      if(userInfo && userInfo.type == 'admin') {
+        this.userType = true
+      } else {
+        this.userType = false
+      }
+    },
     handleTabTitle(arr) {
       var map = {},
           dest = [];
@@ -111,6 +121,9 @@ export default {
   watch: {
     current() {
       this.setSidebarItems()
+    },
+    "$store.getters.userInfo": function() {
+      this.setUserType()
     }
   }
 }
