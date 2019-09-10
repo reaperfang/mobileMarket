@@ -560,6 +560,7 @@ export function changeSwitchStatus(data) {
   export function getActivitiesList(data) {
       return request({
         url: 'api/v1/b/module-code',
+        // url: 'api/v1/b/app-general-info/pull',
         method: 'get',
         baseURL: process.env.SALE_API,
         params: data
