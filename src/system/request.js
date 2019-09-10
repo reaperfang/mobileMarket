@@ -94,7 +94,7 @@ class Ajax {
     //获取cid和shopInfoId
     // let cid = store.getters.userInfo && store.getters.userInfo.cid ? store.getters.userInfo.cid : '';
     let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
-    let cid = shopInfo && shopInfo.id || '2'
+    let cid = shopInfo && shopInfo.id || ''
     let shopInfoId = store.getters.userInfo && store.getters.userInfo.shopInfoId ? store.getters.userInfo.shopInfoId
       : '';
 
