@@ -26,7 +26,7 @@ class Ajax {
         tenantId: 1,
         merchantId: 2,
         loginUserId: 1,
-        token: '123'
+        token: store.getters.token || localStorage.getItem('authToken')
       },
       config.headers
     ) 

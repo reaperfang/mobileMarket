@@ -556,3 +556,23 @@ export function changeSwitchStatus(data) {
       })
   }
 
+  //获取营销活动类型列表
+  export function getActivitiesList(data) {
+      return request({
+        url: 'api/v1/b/module-code',
+        method: 'get',
+        baseURL: process.env.SALE_API,
+        params: data
+      })
+  }
+
+  //根据营销类型code获取营销活动数据
+  export function getActivitiesData(data) {
+      return request({
+        url: 'api/v1/b/app-general-info/list',
+        method: 'get',
+        baseURL: process.env.SALE_API,
+        params: data
+      })
+  }
+

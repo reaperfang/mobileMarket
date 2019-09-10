@@ -97,12 +97,12 @@
               </div>
               建议尺寸：750*370，尺寸不匹配时，图片将被压缩或拉伸以铺满四周
             </el-form-item>
-            <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '0'">
+            <!-- <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '0'">
               <el-radio-group v-model="currentNav.navLinkType">
                 <el-radio :label="1">系统链接</el-radio>
                 <el-radio :label="2">自定义链接</el-radio>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="链接地址" prop="navLinkUrl" v-if="navigation_type === '0' && currentNav.navLinkType == 1">
               <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
                   <el-option label="首页" value="1"></el-option>
@@ -110,7 +110,7 @@
                   <el-option label="个人中心" value="3"></el-option>
                   <el-option label="全部商品" value="4"></el-option>
                   <el-option label="全部分类" value="5"></el-option>
-                  <el-option label="微信客服" value="6"></el-option>
+                  <!-- <el-option label="微信客服" value="6"></el-option> -->
                   <el-option label="微页面" value="7"></el-option>
                   <el-option label="微页面分类" value="8"></el-option>
                   <el-option label="指定商品" value="9"></el-option>
@@ -118,10 +118,10 @@
                   <el-option label="营销活动" value="11"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="链接地址" prop="navLinkUrl" v-if="navigation_type === '0' && currentNav.navLinkType == 2">
+            <!-- <el-form-item label="链接地址" prop="navLinkUrl" v-if="navigation_type === '0' && currentNav.navLinkType == 2">
               <el-input style="width:150px" v-model="currentNav.customNavLinkUrl" placeholder="请输入链接地址"></el-input>
-            </el-form-item>
-            <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '1'">
+            </el-form-item> -->
+            <!-- <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '1'">
               <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
                 <el-option label="首页" value="1"></el-option>
                 <el-option label="购物车" value="2"></el-option>
@@ -135,10 +135,10 @@
                 <el-option label="指定商品分类" value="10"></el-option>
                 <el-option label="营销活动" value="11"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="" prop="" v-if="navigation_type === '0'">
-              <el-tag type="success" @close="deleteGoodsGroup()" v-if="navigation_type === '0' && seletedPage">
-                {{seletedPage.data.name}}
+              <el-tag type="success" @close="deleteGoodsGroup()" v-if="navigation_type === '0' && currentNav.linkTo">
+                {{currentNav.linkTo.data.title || currentNav.linkTo.data.name}}
               </el-tag>
             </el-form-item>
           </div>
@@ -205,7 +205,7 @@
       </div>
         <!-- {{ruleForm}} -->
       <!-- 动态弹窗 -->
-      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected" @navTypeSelected="navTypeSelected" :navStyleId="ruleForm.navStyle.id"></component>
+      <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @navTypeSelected="navTypeSelected" :navStyleId="ruleForm.navStyle.id"></component>
 
       <DialogBase :visible.sync="pageDialogVisible" width="816px" :title="currentPageName" @submit="seletePage">
         <component v-if="pageDialogVisible" :is="currentPageDialog" @seletedRow="rowSeleted"></component>
@@ -251,11 +251,10 @@ export default {
       rules: {},
       currentNav: null,  //当前导航对象
       currentImg: 'active',  //当前上传图片类型   高亮和普通
-      seletedPage: null,   //选中的页面
-      tempSelectPage: null,  //临时选中的页面  
       toolsData: null,  //工具数据
       bodyHeight: {},  //内容区高度
-      propsHeight: {}  //属性区高度
+      propsHeight: {},  //属性区高度
+      seletedData: null  //临时选中的页面
     }
   },
   computed: {
@@ -279,6 +278,61 @@ export default {
     },
     'currentNav.systemNavLinkUrl'(newValue) {
       switch(newValue) {
+        case '1':
+          this.currentNav.linkTo = {
+            pageType: 'systemPage',
+            id: 7,
+            data: {
+              id: 'index',
+              name: 'index',
+              title: '首页'
+            }
+          };
+          break;
+        case '2':
+          this.currentNav.linkTo = {
+            pageType: 'systemPage',
+            id: 7,
+            data: {
+              id: 'shoppingCart',
+              name: 'shoppingCart',
+              title: '购物车',
+            }
+          };
+          break;
+        case '3':
+          this.currentNav.linkTo = {
+            pageType: 'systemPage',
+            id: 7,
+            data: {
+              id: 'userCenter',
+              name: 'userCenter',
+              title: '个人中心',
+            }
+          };
+          break;
+        case '4':
+          this.currentNav.linkTo = {
+            pageType: 'systemPage',
+            id: 7,
+            data: {
+              id: 'allGoods',
+              name: 'allGoods',
+              title: '全部商品',
+            }
+          };
+          break;
+        case '5':
+          this.currentNav.linkTo = {
+            pageType: 'systemPage',
+            id: 7,
+            data: {
+              id: 'allClassify',
+              name: 'allClassify',
+              title: '全部分类',
+            }
+          };
+          break;
         case '7':
           this.currentPageDialog = 'microPage';
           this.currentPageName = '选择微页面';
@@ -295,7 +349,7 @@ export default {
           this.pageDialogVisible = true;
           break;
         case '10':
-          this.currentPageDialog = 'goodsgroup';
+          this.currentPageDialog = 'goodsGroup';
           this.currentPageName = '选择商品分类';
           this.pageDialogVisible = true;
           break;
@@ -535,19 +589,12 @@ export default {
     },
 
     rowSeleted(row) {
-      this.tempSelectPage = row;
+      this.seletedData = row;
     },
 
-    /* 向父组件提交选中的数据 */
-    seletePage() {
-      if(this.tempSelectPage) {
-        this.seletedPage = this.tempSelectPage;
-      }
-    },
-
-       /* 弹窗选中了商品和商品分组 */
-    dialogDataSelected(dialogData) {
-      this.seletedPage = dialogData;
+     /* 弹窗选中了跳转链接 */
+    seletePage(linkTo) {
+      this.currentNav.linkTo = this.seletedData;
     },
   }
 }
