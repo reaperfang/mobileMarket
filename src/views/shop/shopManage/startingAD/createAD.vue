@@ -43,7 +43,7 @@
             <span class="upload_tips">建议尺寸:640 * 350 , 请将所有广告图片尺寸保持一致，图片只能选择一张</span>
           </el-form-item>
           <el-form-item label="广告链接" prop="advertiseUrl">
-            <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
+            <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">{{jumpLinkName || '选择跳转到的页面'}}</el-button>
           </el-form-item>
           <el-form-item label="展示时间" prop="">
             <div>
@@ -77,7 +77,7 @@
       </el-form>
     </div>
     <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @dialogDataSelected="dialogDataSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @seletedPage="seletedPage"></component>
   </div>
 </template>
 
@@ -93,6 +93,7 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       loading: false,
+      jumpLinkName: '',  //跳转链接名称
       ruleForm: {
         type: 0,
         name: '',
@@ -125,7 +126,8 @@ export default {
     },
 
     /* 弹窗选中了跳转链接 */
-    dialogDataSelected(linkTo) {
+    seletedPage(linkTo) {
+      this.jumpLinkName = linkTo.typeName + '-' + (linkTo.data.title || linkTo.data.name);
       let jumpType = 1;
       let advertiseJump = '';
       switch(linkTo.pageType) {
@@ -147,7 +149,7 @@ export default {
           break;
         case 'marketCampaign':
           jumpType = 6;
-          advertiseJump = `aaa,${linkTo.data.id}`
+          advertiseJump = `${linkTo.data.activityType},${linkTo.data.id}`
           break;
       }
       this.ruleForm.jumpType = jumpType;

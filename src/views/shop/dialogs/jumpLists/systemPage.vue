@@ -53,12 +53,12 @@ export default {
           id: 'shoppingCart',
           name: 'shoppingCart',
           title: '购物车'
-        },
-        {
-          id: 'customLink',
-          name: 'customLink',
-          title: '自定义链接'
-        },
+        }
+        // {
+        //   id: 'customLink',
+        //   name: 'customLink',
+        //   title: '自定义链接'
+        // },
       ],
     };
   },
@@ -81,6 +81,7 @@ export default {
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'systemPage',
+        typeName: '系统页面',
         id: 7,
         data: {
           id: data.id,

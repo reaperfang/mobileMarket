@@ -2,30 +2,30 @@
   <div>
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
           <div class="inline-head">
-            <el-form-item label="" prop="name">
-              <el-select v-if="activities.length" v-model="ruleForm.activitieId" placeholder="请选择活动类型">
+            <el-form-item label="" prop="">
+              <el-select v-if="activities.length" v-model="ruleForm.appType" placeholder="请选择活动类型">
                 <el-option label="全部类型" value=""></el-option>
-                <el-option v-for="(item, key) of activities" :key="key" :label="item.name" :value="item.id"></el-option>
+                <el-option v-for="(item, key) of activities" :key="key" :label="item.name" :value="item.code"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="" prop="name">
-              <el-input v-model="ruleForm.name" placeholder="请输入活动名称"></el-input>
+            <el-form-item label="" prop="idOrName">
+              <el-input v-model="ruleForm.idOrName" placeholder="请输入活动名称"></el-input>
             </el-form-item>
             <el-form-item label="" prop="">
               <el-button type="primary" @click="fetch">搜  索</el-button>
             </el-form-item>
           </div>
         </el-form>
-        <el-table :data="tableData[currentTab]" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick" v-loading="loading">
+        <el-table :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" v-loading="loading">
           <el-table-column prop="" label="选择" :width="50">
             <template slot-scope="scope">
               <el-checkbox v-model="scope.row.active" @change="seletedChange(scope.row, scope.row.active)"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column prop="activityName" label="活动名称"></el-table-column>
-          <el-table-column prop="activityType" label="活动类型"></el-table-column>
-          <el-table-column prop="visitor" label="访客数"></el-table-column>
-          <el-table-column prop="browse" label="浏览数"></el-table-column>
+          <el-table-column prop="appActivityName" label="活动名称"></el-table-column>
+          <el-table-column prop="appTypeName" label="活动类型"></el-table-column>
+          <!-- <el-table-column prop="visitor" label="访客数"></el-table-column>
+          <el-table-column prop="browse" label="浏览数"></el-table-column> -->
         </el-table>
       <div class="pagination">
         <el-pagination
@@ -54,9 +54,11 @@ export default {
   data() {
     return {
       ruleForm: {
-        name: '',
-        activitieId: ''
+        idOrName: '',
+        appType: '',
+        pageNum: 1,
       },
+      pageNum: 1,
       rules: {},
       activities: [],
       tableData: [],
@@ -68,40 +70,41 @@ export default {
   },
   methods: {
     getActivitiesList() {
-      this.activities = [
-        {
-          id: '1111',
-          name: '优惠券'
-        },
-        {
-          id: '2222',
-          name: '限时折扣'
-        },
-        {
-          id: '3333',
-          name: '优惠套装'
-        },
-        {
-          id: '4444',
-          name: '多人拼团'
-        },
-        {
-          id: '5555',
-          name: '秒杀'
-        }
-      ];
-      // this._apis.shop.getActivitiesList(this.ruleForm).then((response)=>{
-        // this.activities = response.list;
-      // }).catch((error)=>{
-      //   this.$notify.error({
-      //     title: '错误',
-      //     message: error
-      //   });
-      // });
+      this._apis.shop.getActivitiesList({}).then((response)=>{
+        this.activities = response;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      });
     },
 
     fetch() {
+      this.loading = true;
+      this._apis.shop.getActivitiesData(this.ruleForm).then((response)=>{
+        const tempList = [...response.list];
+        for(let item of tempList) {
+          item.active = false;
+        }
+        this.tableData = tempList;
+        this.total = response.total;
+        this.loading = false;
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+        this.loading = false;
+      });
+    },
 
+      //当前页码改变
+    handleCurrentChange(pIndex=1) {
+      this.loading = true
+      this.pageNum = pIndex
+      this.ruleForm.pageNum = pIndex
+      this.fetch()
     },
 
 
@@ -120,10 +123,12 @@ export default {
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'marketCampaign',
+        typeName: '营销活动',
+        id: 6,
         data: {
           id: data.id,
-          name: data.name,
-          title: data.title
+          name: data.appActivityName,
+          activityType: data.appType
         }
       });
     }
