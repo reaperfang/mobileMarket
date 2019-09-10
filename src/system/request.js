@@ -78,8 +78,8 @@ class Ajax {
     //拼接参数head
     let head = {
         target: config.target,
-        //accessToken: store.getters.token || '09255c7724fe9b8df952aa2f7e3ec71826ba38062317026ea9fe21d072b6a69d',
-        accessToken: store.getters.token || localStorage.getItem('token'),
+        accessToken: store.getters.token || '09255c7724fe9b8df952aa2f7e3ec71826ba38062317026ea9fe21d072b6a69d',
+        //accessToken: store.getters.token || localStorage.getItem('token'),
         client: CONST.CLIENT,
         version: CONST.VERSION,
         requestTime: utils.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"),
@@ -143,8 +143,8 @@ class Ajax {
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
             break;
           case 'goodsOperate':  //商品运营
-            //config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
-            config.baseURL = `/goodsOperate_server/api-public-web/public/api.do`;
+            config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
+            //config.baseURL = `/goodsOperate_server/api-public-web/public/api.do`;
             break;
           case 'manager':  //广告和导航开关修改  许涛
             config.baseURL = `${process.env.DATA_API}/api-manager-web/manager/api.do`;

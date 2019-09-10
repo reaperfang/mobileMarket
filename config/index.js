@@ -12,8 +12,8 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    //host: '127.0.0.1',
-    host: '0.0.0.0',
+    host: '127.0.0.1',
+    //host: '0.0.0.0',
     port: 9000,
     autoOpenBrowser: true,
     errorOverlay: true,
@@ -111,13 +111,13 @@ module.exports = {
           '^/caoshaui_server': ''
         }
       },
-      '/goodsOperate_server/**': {
-        target: 'http://test-omo.aiyouyi.cn/',// 耿士龙 172.22.145.116:8080
-        changeOrigin: true,
-        pathRewrite: {
-          '^/goodsOperate_server': ''
-        }
-      },
+      // '/goodsOperate_server/**': {
+      //   target: 'http://test-omo.aiyouyi.cn/',// 耿士龙 172.22.145.116:8080
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/goodsOperate_server': ''
+      //   }
+      // },
     }
   },
 
