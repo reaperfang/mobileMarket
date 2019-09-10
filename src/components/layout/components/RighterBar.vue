@@ -39,13 +39,14 @@ export default {
       sidebarItems: [],
       basePath: '',
       userType: false,
+      current: '0'
     }
   },
   components: { },
   computed: {
-    ...mapState({
-      current: state => state.menu.current,
-    }),
+    // ...mapState({
+    //   current: state => state.menu.current,
+    // }),
     ...mapGetters([
       'permission_routers',
       'permission_routers_tree',
@@ -60,6 +61,7 @@ export default {
     }
   },
   created() {
+    this.current = localStorage.getItem('siderBarCurrent') || '0'
     this.setSidebarItems()
   },
   methods: {
@@ -127,7 +129,11 @@ export default {
     },
   },
   watch: {
-    current() {
+    // current() {
+    //   this.setSidebarItems()
+    // }
+    '$store.state.menu.current': function(index) {
+      this.current = index
       this.setSidebarItems()
     },
     "$store.getters.userInfo": function() {

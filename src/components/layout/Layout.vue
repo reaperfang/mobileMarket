@@ -7,7 +7,7 @@
         <img :src="require('@/assets/images/logo.png')" class="logo">
       </div>
       <ul>
-        <li :class="{active: index == current}" @click="menuHandler(item, index)" v-if="!item.hidden && item.children" 
+        <li :class="{active: index == current}" @click="menuHandler(index)" v-if="!item.hidden && item.children" 
           v-for="(item, index) in permission_routers_tree">
           <i class="icons" :class="{[item.meta.icon]: true}"></i>
           <template v-if="!item.iframe">
@@ -32,12 +32,17 @@
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState, mapGetters, mapMutations } from 'vuex'
+import path from 'path'
+
+var isExternal = function(path) {
+  return /^(https?:|mailto:|tel:)/.test(path)
+}
 
 export default {
   name: 'Layout',
   data() {
     return {
-      
+      current: '0'
     }
   },
   created() {
@@ -54,10 +59,13 @@ export default {
     TagsView
   },
   mixins: [ResizeMixin],
+  created() {
+    this.current = localStorage.getItem('siderBarCurrent') || '0'
+  },
   computed: {
-    ...mapState({
-      current: state => state.menu.current,
-    }),
+    // ...mapState({
+    //   current: state => state.menu.current,
+    // }),
     ...mapGetters([
       'permission_routers_tree',
     ]),
@@ -81,8 +89,38 @@ export default {
     handleClickOutside() {
       this.$store.dispatch('closeSideBar', { withoutAnimation: false })
     },
-    menuHandler(item, index) {
+    menuHandler(index) {
       this.SETCURRENT(index)
+      localStorage.setItem('siderBarCurrent', index)
+
+      this.jumpTo(index)
+    },
+    jumpTo(index) {
+      let current = localStorage.getItem('siderBarCurrent') || '0'
+      let currentBar = this.permission_routers_tree[current]
+
+      let basePath = currentBar.path
+      let children = currentBar.children
+
+      if(children && children.length) {
+        let _path = children[0].path
+
+        this.$router.push({path: this.resolvePath(basePath, _path)})
+      }
+    },
+    resolvePath(basePath, routePath) {
+      if (this.isExternalLink(routePath)) {
+        return routePath
+      }
+      return path.resolve(basePath, routePath)
+    },
+    isExternalLink(routePath) {
+      return isExternal(routePath)
+    },
+  },
+  watch: {
+    '$store.state.menu.current': function(index) {
+      this.current = index
     }
   }
 }

@@ -48,7 +48,7 @@ export default {
       set(val) {
           this.$emit('update:dialogVisible', val)
       }
-    }
+    },
   },
   created(){ },
   methods: {
