@@ -9,11 +9,20 @@
 export default {
     data(){
         return{
-            src:'http://test-omo.aiyouyi.cn/vue/marketing/application/appIndex?access=1&token=123&businessId=1&loginUserId=1&tenantId=1&cid=2'
+            src:`${process.env.UPLOAD_SERVER}/vue/marketing/application/appIndex?access=1&token=${token}&businessId=1&loginUserId=1&tenantId=1&cid=${cid}`,
+            token:'',
+            cid:''
         }
     },
+    created(){
+        this.init()
+    },
     methods:{
-
+        init(){
+            this.token = localStorage.getItem('authToken')
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            this.cid = shopInfo && shopInfo.id || ''
+        }
     }
 }
 </script>
