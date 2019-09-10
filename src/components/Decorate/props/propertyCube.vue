@@ -215,8 +215,9 @@ export default {
     },
 
     /* 弹窗选中了跳转链接 */
-    seletedPage(jumpLink) {
-      console.log(jumpLink);
+    seletedPage(linkTo) {
+      // this.ruleForm.linkTo = linkTo;
+      //TODU
     },
   }
 }

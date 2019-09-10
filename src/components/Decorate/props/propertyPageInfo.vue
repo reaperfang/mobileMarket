@@ -38,7 +38,7 @@ export default {
         name: '微页面名称',
         title: '微页面标题',
         explain: '',
-        pageCategoryInfoId: '',
+        pageCategoryInfoId: '-1',
         colorStyle: '#fff',
         pageKey: '',
         status: 0,
