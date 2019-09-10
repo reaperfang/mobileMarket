@@ -112,6 +112,7 @@ export default {
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'goodsGroup',
+        id: 4,
         data: {
           id: data.id,
           name: data.label

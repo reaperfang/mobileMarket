@@ -96,7 +96,8 @@ class Ajax {
       : '';
 
     //获取cid
-    let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
+    // let cid = store.getters.cid || (/\/bms\/order\//.test(location.pathname) ? '2' : '7')
+    let cid = '2'
     //拼接全部参数
     if (config.method == "post") {
       if (config.noCid) {

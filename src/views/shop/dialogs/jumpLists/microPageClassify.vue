@@ -91,6 +91,7 @@ export default {
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'microPageClassify',
+        id: 3,
         data: {
           id: data.id,
           name: data.name
