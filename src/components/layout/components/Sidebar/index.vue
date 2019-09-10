@@ -36,9 +36,12 @@ export default {
   },
   components: { SidebarItem },
   computed: {
-    ...mapState({
-      current: state => state.menu.current,
-    }),
+    // ...mapState({
+    //   current: state => state.menu.current,
+    // }),
+    current() {
+      return localStorage.getItem('siderBarCurrent') || '0'
+    },
     ...mapGetters([
       'permission_routers',
       'permission_routers_tree',
