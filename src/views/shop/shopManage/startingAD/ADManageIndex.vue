@@ -49,7 +49,11 @@
         <el-table-column prop="name" label="广告名称" :width="'200px'"></el-table-column>
         <el-table-column prop="vv" label="访客数"></el-table-column>
         <el-table-column prop="pv" label="浏览数"></el-table-column>
-        <el-table-column prop="updateTime" label="展示时间" :width="'400px'"></el-table-column>
+        <el-table-column prop="updateTime" label="展示时间" :width="'400px'">
+          <template slot-scope="scope">
+            {{scope.row.startTime}} - {{scope.row.endTime}}
+          </template>
+        </el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
             <span v-if="scope.row.status === 0">展示中</span>

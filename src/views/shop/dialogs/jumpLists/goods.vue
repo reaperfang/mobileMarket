@@ -146,6 +146,7 @@ export default {
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'goods',
+        typeName: '商品详情',
         id: 5,
         data: {
           id: data.id,

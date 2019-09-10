@@ -56,7 +56,7 @@
             </p>
             <p>
               <span>跳转链接</span>
-              <el-button type="text" @click="dialogVisible=true; currentAD = item; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
+              <el-button type="text" @click="dialogVisible=true; currentAD = item; currentDialog='dialogSelectJumpPage'">{{item.linkTo ? item.linkTo.typeName + '-' + (item.linkTo.data.title || item.linkTo.data.name) : '选择跳转到的页面'}}</el-button>
             </p>
           </div>
         </li>

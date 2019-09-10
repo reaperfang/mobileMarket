@@ -114,6 +114,7 @@ export default {
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'microPage',
+        typeName: '微页面',
         id: 2,
         data: {
           id: data.id,
