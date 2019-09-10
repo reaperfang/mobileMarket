@@ -3,9 +3,9 @@
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
           <div class="inline-head">
             <el-form-item label="" prop="name">
-              <el-select v-if="classifyList.length" v-model="ruleForm.pageCategoryInfoId" placeholder="请选择活动类型">
-                <el-option label="全部分类" value=""></el-option>
-                <el-option v-for="(item, key) of classifyList" :key="key" :label="item.name" :value="item.id"></el-option>
+              <el-select v-if="activities.length" v-model="ruleForm.activitieId" placeholder="请选择活动类型">
+                <el-option label="全部类型" value=""></el-option>
+                <el-option v-for="(item, key) of activities" :key="key" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="" prop="name">
@@ -17,9 +17,10 @@
           </div>
         </el-form>
         <el-table :data="tableData[currentTab]" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick" v-loading="loading">
-          <el-table-column
-            type="selection"  
-            width="55">
+          <el-table-column prop="" label="选择" :width="50">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.active" @change="seletedChange(scope.row, scope.row.active)"></el-checkbox>
+            </template>
           </el-table-column>
           <el-table-column prop="activityName" label="活动名称"></el-table-column>
           <el-table-column prop="activityType" label="活动类型"></el-table-column>
@@ -53,38 +54,79 @@ export default {
   data() {
     return {
       ruleForm: {
-        name: ''
+        name: '',
+        activitieId: ''
       },
       rules: {},
+      activities: [],
       tableData: [],
     };
   },
   created() {
+    this.getActivitiesList();
+    this.fetch();
   },
   methods: {
-    fetch() {
-      this._apis.shop.getClassifyList(this.ruleForm).then((response)=>{
-        this.tableData = response.list;
-        this.total = response.total;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      });
+    getActivitiesList() {
+      this.activities = [
+        {
+          id: '1111',
+          name: '优惠券'
+        },
+        {
+          id: '2222',
+          name: '限时折扣'
+        },
+        {
+          id: '3333',
+          name: '优惠套装'
+        },
+        {
+          id: '4444',
+          name: '多人拼团'
+        },
+        {
+          id: '5555',
+          name: '秒杀'
+        }
+      ];
+      // this._apis.shop.getActivitiesList(this.ruleForm).then((response)=>{
+        // this.activities = response.list;
+      // }).catch((error)=>{
+      //   this.$notify.error({
+      //     title: '错误',
+      //     message: error
+      //   });
+      // });
     },
 
-   /* 选中某一行 */
-    rowClick(row, column, event) {
+    fetch() {
+
+    },
+
+
+    /* 选中改变 */
+    seletedChange(data, state) {
+
+      /* 更改列表选中状态 */
+      const tempList = [...this.tableData];
+      for(let item of tempList) {
+        if(item.id !== data.id) {
+          item.active = !state;
+        }
+      }
+      this.tableData = tempList;
+
+      /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'marketCampaign',
         data: {
-          id: row.id,
-          name: row.name,
-          title: row.title
+          id: data.id,
+          name: data.name,
+          title: data.title
         }
       });
-    },
+    }
 
   }
 };

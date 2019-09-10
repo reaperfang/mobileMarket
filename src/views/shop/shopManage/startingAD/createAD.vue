@@ -125,8 +125,33 @@ export default {
     },
 
     /* 弹窗选中了跳转链接 */
-    dialogDataSelected(jumpLink) {
-      console.log(jumpLink);
+    dialogDataSelected(linkTo) {
+      let jumpType = 1;
+      let advertiseJump = '';
+      switch(linkTo.pageType) {
+        case 'microPage':
+          jumpType = 2;
+          advertiseJump = linkTo.data.id;
+          break;
+        case 'microPageClassify':
+          jumpType = 3;
+          advertiseJump = linkTo.data.id;
+          break;
+        case 'goodsGroup':
+          jumpType = 4;
+          advertiseJump = linkTo.data.id;
+          break;
+        case 'goods':
+          jumpType = 5;
+          advertiseJump = linkTo.data.id;
+          break;
+        case 'marketCampaign':
+          jumpType = 6;
+          advertiseJump = `aaa,${linkTo.data.id}`
+          break;
+      }
+      this.ruleForm.jumpType = jumpType;
+      this.ruleForm.advertiseJump = advertiseJump;
     },
 
     /* 获取广告详情 */

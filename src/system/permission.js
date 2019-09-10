@@ -19,7 +19,6 @@ function hasPermission(roles, permissionRoles) {
 
 const whiteList = ['/login', '/auth-redirect']// no redirect whitelist
 
-let flag = 0
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   // if (true) { // determine if there has token
@@ -43,13 +42,12 @@ router.beforeEach((to, from, next) => {
         //   })
         // })
       } else {
-        next()
         // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
-        // if (hasPermission(store.getters.roles, to.meta.roles)) {
-        //   next()
-        // } else {
-        //   next({ path: '/401', replace: true, query: { noGoBack: true }})
-        // }
+        if (hasPermission(store.getters.roles, to.meta.roles)) {
+          next()
+        } else {
+          next({ path: '/401', replace: true, query: { noGoBack: true }})
+        }
         // 可删 ↑
       }
     }

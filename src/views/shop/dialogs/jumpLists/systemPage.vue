@@ -1,6 +1,11 @@
 <template>
   <div>
       <el-table  :data="tableData" stripe ref="multipleTable" @selection-change="handleSelectionChange" @row-click="rowClick">
+        <el-table-column prop="" label="选择" :width="50">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.active" @change="seletedChange(scope.row, scope.row.active)"></el-checkbox>
+            </template>
+          </el-table-column>
         <el-table-column prop="title" label="页面名称"></el-table-column>
       </el-table>
       <div class="pagination">
@@ -61,17 +66,29 @@ export default {
   },
   methods: {
 
-   /* 选中某一行 */
-    rowClick(row, column, event) {
+      /* 选中改变 */
+    seletedChange(data, state) {
+
+      /* 更改列表选中状态 */
+      const tempList = [...this.tableData];
+      for(let item of tempList) {
+        if(item.id !== data.id) {
+          item.active = !state;
+        }
+      }
+      this.tableData = tempList;
+
+      /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'systemPage',
+        id: 7,
         data: {
-          id: row.id,
-          name: row.name,
-          title: row.title
+          id: data.id,
+          name: data.name,
+          title: data.title
         }
       });
-    },
+    }
 
   }
 };

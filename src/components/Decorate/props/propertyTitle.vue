@@ -44,9 +44,8 @@
       <el-form-item label="导航名称" prop="navName">
         <el-input placeholder="请输入名称" v-model="ruleForm.navName"></el-input>
       </el-form-item>
-      <el-form-item label="链接到" prop="linkTo">
-        <el-input placeholder="" v-model="ruleForm.linkTo"></el-input>
-        <el-button type="primary" plain @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">修改</el-button>
+       <el-form-item label="跳转链接" prop="linkTo">
+        <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
       </el-form-item>
     </div>
 
@@ -71,7 +70,7 @@ export default {
         subTitle: '',
         backgroundColor: '',
         navName: '',
-        linkTo: '',
+        linkTo: null,
         author: '',
         date: ''
       },
@@ -85,8 +84,8 @@ export default {
   methods: {
 
     /* 弹窗选中了跳转链接 */
-    seletedPage(jumpLink) {
-      console.log(jumpLink);
+    seletedPage(linkTo) {
+      this.ruleForm.linkTo = linkTo;
     },
   }
 }

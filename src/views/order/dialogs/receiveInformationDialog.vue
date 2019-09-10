@@ -282,6 +282,9 @@ export default {
         },
         contentText() {
             return '是否确认删除？'
+        },
+        cid() {
+            return this.$store.getters.cid || 11
         }
     },
     props: {

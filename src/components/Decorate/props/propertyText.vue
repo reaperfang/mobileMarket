@@ -65,7 +65,7 @@ export default {
         fontColor: '#000000',
         backgroundColor: '#ffffff',
         displayStyle: 2,
-        linkTo: 'http://www.baidu.com',
+        linkTo: null,
         showDivider: true
       },
       rules: {
@@ -79,8 +79,8 @@ export default {
   methods: {
 
     /* 弹窗选中了跳转链接 */
-    seletedPage(jumpLink) {
-      console.log(jumpLink);
+    seletedPage(linkTo) {
+      this.ruleForm.linkTo = linkTo;
     },
   }
 }

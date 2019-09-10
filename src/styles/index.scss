@@ -597,6 +597,7 @@ table.yuan-table{
 }
 
 .goods-specs {
+  margin-top: 10px!important;
   color: #9FA29F;
   font-size: 12px;
 }
@@ -639,4 +640,8 @@ table.yuan-table{
 
 .edui-editor{
     z-index: initial!important;
+}
+
+.content-menu:empty {
+  display: none;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="righter-bar">
+  <div class="righter-bar" v-if="sidebarItems.length">
     <div class="righter-bar-content">
       <div v-if="!item.hidden" v-for="item in sidebarItems" class="item">
         <template v-if="item.children">
@@ -50,10 +50,14 @@ export default {
       'permission_routers',
       'permission_routers_tree',
     ]),
-    // userType(){
-    //   let userInfo = JSON.parse(this.$store.getters.userInfo)
-    //   return userInfo.type == "admin" ? true : false
-    // }
+    userType(){
+      let userInfo = JSON.parse(this.$store.getters.userInfo)
+
+      if(userInfo && userInfo.type == "admin") {
+        return true
+      }
+      return false
+    }
   },
   created() {
     this.setSidebarItems()
@@ -99,14 +103,18 @@ export default {
       let _path = _permission_routers_tree[this.current].path
       let children = _permission_routers_tree[this.current].children
 
-      children.forEach(val => {
-        val.path = _path + '/' + val.path
-      })
+      if(_permission_routers_tree[this.current].iframe) {
+        this.sidebarItems = []
+      } else {
+        children.forEach(val => {
+          val.path = _path + '/' + val.path
+        })
 
-      if(children.some(val => val.meta.tabTitle)) {
-        children = this.handleTabTitle(children)
+        if(children.some(val => val.meta.tabTitle)) {
+          children = this.handleTabTitle(children)
+        }
+        this.sidebarItems = children
       }
-      this.sidebarItems = children
     },
     resolvePath(...routePath) {
       if (this.isExternalLink(routePath)) {

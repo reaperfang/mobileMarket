@@ -7,10 +7,15 @@
         <img :src="require('@/assets/images/logo.png')" class="logo">
       </div>
       <ul>
-        <li :class="{active: index == current}" @click="menuHandler(index)" v-if="!item.hidden && item.children" 
+        <li :class="{active: index == current}" @click="menuHandler(item, index)" v-if="!item.hidden && item.children" 
           v-for="(item, index) in permission_routers_tree">
           <i class="icons" :class="{[item.meta.icon]: true}"></i>
-          <span class="ellipsis">{{item.meta.title}}</span>
+          <template v-if="!item.iframe">
+            <span class="ellipsis">{{item.meta.title}}</span>
+          </template>
+          <template v-else>
+            <router-link :to="{path: item.path}">{{item.meta.title}}</router-link>
+          </template>
         </li>
       </ul>
     </div>
@@ -76,7 +81,7 @@ export default {
     handleClickOutside() {
       this.$store.dispatch('closeSideBar', { withoutAnimation: false })
     },
-    menuHandler(index) {
+    menuHandler(item, index) {
       this.SETCURRENT(index)
     }
   }

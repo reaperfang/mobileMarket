@@ -135,8 +135,8 @@ class Ajax {
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`; // 王浩
             break;
           case 'order': //订单系统
-            //config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
-            config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
+            config.baseURL = `${process.env.DATA_API}/api-order-web/order/api.do`; // 李刚 尹茂凯
+            //config.baseURL = `/order_server/api-order-web/order/api.do`; // 李刚 尹茂凯
             break;
           case 'decorate':  //装修接口
             config.baseURL = `${process.env.DATA_API}/api-decoration-web/decoration/api.do`;
@@ -145,8 +145,8 @@ class Ajax {
             config.baseURL = `${process.env.DATA_API}/api-financial-web/financial/api.do`;
             break;
           case 'goodsOperate':  //商品运营
-            //config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
-            config.baseURL = `/goodsOperate_server/api-public-web/public/api.do`;
+            config.baseURL = `${process.env.DATA_API}/api-public-web/public/api.do`;
+            //config.baseURL = `/goodsOperate_server/api-public-web/public/api.do`;
             break;
           case 'manager':  //广告和导航开关修改  许涛
             config.baseURL = `${process.env.DATA_API}/api-manager-web/manager/api.do`;

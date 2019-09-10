@@ -41,11 +41,11 @@
                   <div class="col" style="width: 380px;">
                     <div class="row align-center">
                       <div class="col">
-                        <img :src="goods.goodsImage" alt />
+                        <img width="66" :src="goods.goodsImage" alt />
                       </div>
                       <div class="col">
-                        <p>{{goods.goodsName}}</p>
-                        <p>{{goods.goodsSpecs}}</p>
+                        <p class="ellipsis" style="width: 200px;">{{goods.goodsName}}</p>
+                        <p class="goods-specs">{{goods.goodsSpecs | goodsSpecsFilter}}</p>
                       </div>
                     </div>
                   </div>
@@ -307,6 +307,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .bulk-delivery {
+  color: #333333;
   background-color: #fff;
   padding: 20px;
   > .title {
@@ -394,5 +395,8 @@ export default {
       }
     }
   }
+}
+.footer {
+  text-align: center;
 }
 </style>

@@ -223,13 +223,14 @@ import DialogBase from "@/components/DialogBase";
 import microPage from "../dialogs/jumpLists/microPage";
 import microPageClassify from "../dialogs/jumpLists/microPageClassify";
 import marketCampaign from "../dialogs/jumpLists/marketCampaign";
-import dialogSelectGoods from "../dialogs/dialogSelectGoods";
+import goods from "../dialogs/jumpLists/goods";
+import goodsGroup from "../dialogs/jumpLists/goodsGroup";
 
 import utils from "@/utils";
 import uuid from 'uuid/v4';
 export default {
   name: 'shopNav',
-  components: {dialogSelectImageMaterial, dialogSelectNavTemplate, DialogBase, microPage, microPageClassify, marketCampaign, dialogSelectGoods},
+  components: {dialogSelectImageMaterial, dialogSelectNavTemplate, DialogBase, microPage, microPageClassify, marketCampaign, goods, goodsGroup},
   data () {
     return {
       dialogVisible: false,
@@ -289,8 +290,14 @@ export default {
           this.pageDialogVisible = true;
           break;
         case '9':
-          this.currentDialog = 'dialogSelectGoods';
-          this.dialogVisible = true;
+          this.currentPageDialog = 'goods';
+          this.currentPageName = '选择指定商品';
+          this.pageDialogVisible = true;
+          break;
+        case '10':
+          this.currentPageDialog = 'goodsgroup';
+          this.currentPageName = '选择商品分类';
+          this.pageDialogVisible = true;
           break;
         case '11':
           this.currentPageDialog = 'marketCampaign';
@@ -321,6 +328,8 @@ export default {
     this.propsHeight = {
       height: document.body.clientHeight - 334 + 'px'
     }
+
+
   },
   methods: {
 

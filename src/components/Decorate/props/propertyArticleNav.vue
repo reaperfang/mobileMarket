@@ -60,7 +60,7 @@
             </p>
             <p>
               <span>跳转链接</span>
-              <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
+              <el-button type="text" @click="dialogVisible=true; currentNav = item; currentDialog='dialogSelectJumpPage'">选择跳转到的页面</el-button>
             </p>
           </div>
         </li>
@@ -92,7 +92,7 @@ export default {
         itemList: [{
           title: '',
           url: '',
-          linkTo: ''
+          linkTo: null
         }],
       },
       rules: {},
@@ -111,7 +111,7 @@ export default {
       this.ruleForm.itemList.push({
         title: '导航',
         url: '',
-        linkTo: ''
+        linkTo: null
       });
       this.currentNav = this.ruleForm.itemList[this.ruleForm.itemList.length - 1];
       this.dialogVisible=true; 
@@ -125,8 +125,8 @@ export default {
     },
 
     /* 弹窗选中了跳转链接 */
-    seletedPage(jumpLink) {
-      console.log(jumpLink);
+    seletedPage(linkTo) {
+      this.currentNav.linkTo = linkTo;
     },
   }
 }
