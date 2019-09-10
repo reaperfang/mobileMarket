@@ -9,7 +9,7 @@
 export default {
     data(){
         return{
-            src:`${process.env.UPLOAD_SERVER}/vue/marketing/application/appIndex?access=1&token=${token}&businessId=1&loginUserId=1&tenantId=1&cid=${cid}`,
+            src:'',
             token:'',
             cid:''
         }
@@ -22,6 +22,7 @@ export default {
             this.token = localStorage.getItem('authToken')
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             this.cid = shopInfo && shopInfo.id || ''
+            this.src = `${process.env.UPLOAD_SERVER}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=1&cid=${this.cid}`
         }
     }
 }

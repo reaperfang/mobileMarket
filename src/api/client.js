@@ -275,7 +275,7 @@ export function getAllCoupons(data) {
     return request({
         url: '/api/v1/b/app-coupon/activity/page-list',
         method: 'get',
-        baseURL: process.env.DATA_API,
+        baseURL: process.env.SALE_API,
         params:data
     })
 }
@@ -284,7 +284,7 @@ export function distributeCoupon(data) {
     return request({
         url: '/api/v1/b/app-coupon-member-get/activity/distribute',
         method: 'post',
-        baseURL: process.env.DATA_API,
+        baseURL: process.env.SALE_API,
         data
     })
 }
@@ -347,7 +347,7 @@ export function getUsedCoupon(data) {
     return request({
         url: '/api/v1/b/app-coupon-member-get/activity/customer-list',
         method: 'get',
-        baseURL: process.env.DATA_API,
+        baseURL: process.env.SALE_API,
         params: data
     })
 }
@@ -356,7 +356,7 @@ export function getGiftList(data) {
     return request({
         url: '/api/v1/b/app-gift/activity/page-list',
         method: 'get',
-        baseURL: process.env.DATA_API,
+        baseURL: process.env.SALE_API,
         params: data
     })
 }
@@ -365,7 +365,7 @@ export function getRedPacket(data) {
     return request({
         url: '/api/v1/b/hongbao',
         method: 'get',
-        baseURL: process.env.DATA_API,
+        baseURL: process.env.SALE_API,
         params: data
     })
 }

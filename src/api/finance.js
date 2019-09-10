@@ -6,7 +6,7 @@ export function getListTa(data) {
     return request({
       url: '/api/v1/b/recordMarketingPresent/detail-list',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -15,7 +15,7 @@ export function exportTa(data) {
     return request({
       url: '/api/v1/b/recordMarketingPresent/export',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -24,7 +24,7 @@ export function statisticsTa(data) {
     return request({
       url: '/api/v1/b/recordMarketingPresent/statistics',
       method: 'get',
-      baseURL: process.env.DATA_API,
+      baseURL: process.env.SALE_API,
       params:data
     })
 }
@@ -201,7 +201,7 @@ export function smsStatistics(data) {
   return request({
     url: 'api/v1/b/sms/statistics',
     method: 'get',
-    baseURL: process.env.DATA_API,
+    baseURL: process.env.SALE_API,
     params:data
   })
 }
@@ -210,7 +210,7 @@ export function smsPagelist(data) {
   return request({
     url: 'api/v1/b/sms/send-record/accept/pagelist',
     method: 'get',
-    baseURL: process.env.DATA_API,
+    baseURL: process.env.SALE_API,
     params:data
   })
 }
@@ -219,7 +219,7 @@ export function smsExport(data) {
   return request({
     url: 'api/v1/b/sms/send-record/accept/list/export',
     method: 'get',
-    baseURL: process.env.DATA_API,
+    baseURL: process.env.SALE_API,
     params:data
   })
 }

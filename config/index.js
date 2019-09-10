@@ -34,38 +34,9 @@ module.exports = {
 
     proxyTable: {
       '/data-server/**': {
-        // target: 'http://172.22.146.2:8080', // 订单 尹茂凯
-        //target: 'http://172.22.146.115:8081', // 商品 王浩
-        // target: 'http://172.22.146.115:8081', // 商品 王浩
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
-        //target: 'http://www.lwt.com',  // nginx代理 李玟霆
-        // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
-        //target: 'http://www.lwt.com',  // nginx代理 李玟霆
-        //  target: 'http://172.22.146.124:8099',// 开关 许涛
-        // target: 'http://172.22.146.31:8080', // 客户 崔建
-        // target: 'http://172.22.146.31:8080', // 客户 崔建
-        // target: 'http://172.22.146.124:8099',// 开关 许涛
-        // target: 'http://172.22.146.31:8080', // 客户 崔建
-        // target: 'http://172.22.146.109:8080', // 商品 王浩
-        // target: 'http://172.22.146.12:8080', // 客户 刘亚凯
-        //target: 'http://172.22.146.123:8085', // 客户 王杰
-        //target: 'http://172.22.146.124:8099',// 许涛
-        // target: 'http://172.22.134.125:8012',// 陈程
-        // target: 'http://172.22.146.12:8091', // 订单 李刚
         target: 'http://172.22.146.117:80',// 许涛
-        // target: 'http://172.22.146.114:8080', // 商品 王浩2
-        // target: 'http://172.22.146.124:80',// 许涛
-        //target: 'http://172.22.146.124:80',// 许涛
-        // target: 'http://172.22.146.114:8080', // 商品 王浩2
-        // target: 'http://dkmamb.natappfree.cc',// 许涛
-        // target: 'http://172.22.146.3:8080', // 订单 张红亮、张昌超
-        // target: 'http://172.22.146.10:8080',
-        // target: 'http://120.133.1.130:8012',// 营销测试机、数据
-        // target: 'http://172.22.145.116:8080',// 耿士龙
-        // target: 'http://172.22.145.113:8083',// 李权宇
-        // target: 'http://172.22.146.119:8080', // 郑艳华 商品
-        //target: 'http://172.22.146.7:8081', // 张昌超
-        // target: 'http://u2spmw.natappfree.cc',// 智能运营
+
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
@@ -85,15 +56,6 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/upload_server': ''
-        }
-      },
-
-      /* 曹帅接口单独联调 */
-      '/caoshaui_server/**': {
-        target: 'http://172.22.134.138:8012',  //曹帅
-        changeOrigin: true,
-        pathRewrite: {
-          '^/caoshaui_server': ''
         }
       },
     }
@@ -137,8 +99,8 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsSubDirectory: './static',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
