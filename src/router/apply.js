@@ -9,12 +9,13 @@ export default [
       title: '应用',
       icon: 'icon_apply'
     },
+    iframe: true,
     children: [
       {
         path: '',
         component: () => import('@/views/apply/index'),
         name: 'index',
-        meta: { title: '应用', noCache: true }
+        meta: { title: '应用', noCache: true },
       },
     ]
   }

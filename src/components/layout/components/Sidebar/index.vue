@@ -57,10 +57,14 @@ export default {
       let _path = _permission_routers_tree[this.current].path
       let children = _permission_routers_tree[this.current].children
 
-      children.forEach(val => {
-        val.path = _path + '/' + val.path
-      })
-      this.sidebarItems = children
+      if(_permission_routers_tree[this.current].iframe) {
+        this.sidebarItems = []
+      } else {
+        children.forEach(val => {
+          val.path = _path + '/' + val.path
+        })
+        this.sidebarItems = children
+      }
     }
   },
   watch: {
