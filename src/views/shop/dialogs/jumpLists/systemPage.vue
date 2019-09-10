@@ -81,6 +81,7 @@ export default {
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'systemPage',
+        id: 7,
         data: {
           id: data.id,
           name: data.name,

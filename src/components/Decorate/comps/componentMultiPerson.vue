@@ -13,8 +13,8 @@
                         <img src="@/assets/images/shop/activityCountdownBj.png" alt="" class="bj">
                         <div class="content">
                             <p class="caption">距开始仅剩</p>
-                            <!-- <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p> -->
-                            <p class="time">{{item.endTime}}</p>
+                            <p class="time"><font>23</font>:<font>56</font>:<font>48</font></p>
+                            <!-- <p class="time">{{item.endTime}}</p> -->
                         </div>
                     </div>
                 </div>
