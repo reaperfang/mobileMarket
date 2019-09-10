@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     getShopInfo(){
-      let id = this.$store.getters.cid || '2'
+      let id = this.$store.getters.cid || '11'
       this._apis.set.getShopInfo({id:id}).then(response =>{
         this.form = response
         if(response.provinceCode){
