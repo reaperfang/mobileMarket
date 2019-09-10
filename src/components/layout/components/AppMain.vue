@@ -56,8 +56,9 @@ export default {
     }
     .content-main {
       flex: 1;
-      margin: 20px;
+      padding: 20px;
       overflow-y: scroll;
+      overflow-x: hidden;
     }
   }
 }
