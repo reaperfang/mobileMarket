@@ -77,9 +77,13 @@ export default {
       },
       userInfo(){
         return JSON.parse(localStorage.getItem('userInfo'))
+     },
+     shopInfo(){
+        return JSON.parse(localStorage.getItem('shopInfos'))
      }
   },
   created(){
+      console.log('111111',this.shopInfo)
       this.init()
       this.getShops()
   },
