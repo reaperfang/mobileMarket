@@ -43,7 +43,7 @@
             <span class="upload_tips">建议尺寸:640 * 350 , 请将所有广告图片尺寸保持一致，图片只能选择一张</span>
           </el-form-item>
           <el-form-item label="广告链接" prop="advertiseUrl">
-            <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">{{jumpLinkName || '选择跳转到的页面'}}</el-button>
+            <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">{{ruleForm.advertiseJump ? ruleForm.advertiseJump.typeName + '-' + (ruleForm.advertiseJump.data.title || ruleForm.advertiseJump.data.name) : '选择跳转页面'}}</el-button>
           </el-form-item>
           <el-form-item label="展示时间" prop="">
             <div>
@@ -93,7 +93,6 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       loading: false,
-      jumpLinkName: '',  //跳转链接名称
       ruleForm: {
         type: 0,
         name: '',
@@ -119,6 +118,16 @@ export default {
       height: document.body.clientHeight - 190 - 20 + 'px'
     }
   },
+  watch: {
+    'ruleForm.advertiseJump': {
+      handler(newValue) {
+        if(newValue && typeof newValue === 'string') {
+          this.ruleForm.advertiseJump = JSON.parse(newValue);
+        } 
+      },
+      deep: true
+    }
+  },
   methods: {
     /* 弹框选中图片 */
     imageSelected(dialogData) {
@@ -127,33 +136,7 @@ export default {
 
     /* 弹窗选中了跳转链接 */
     seletedPage(linkTo) {
-      this.jumpLinkName = linkTo.typeName + '-' + (linkTo.data.title || linkTo.data.name);
-      let jumpType = 1;
-      let advertiseJump = '';
-      switch(linkTo.pageType) {
-        case 'microPage':
-          jumpType = 2;
-          advertiseJump = linkTo.data.id;
-          break;
-        case 'microPageClassify':
-          jumpType = 3;
-          advertiseJump = linkTo.data.id;
-          break;
-        case 'goodsGroup':
-          jumpType = 4;
-          advertiseJump = linkTo.data.id;
-          break;
-        case 'goods':
-          jumpType = 5;
-          advertiseJump = linkTo.data.id;
-          break;
-        case 'marketCampaign':
-          jumpType = 6;
-          advertiseJump = `${linkTo.data.activityType},${linkTo.data.id}`
-          break;
-      }
-      this.ruleForm.jumpType = jumpType;
-      this.ruleForm.advertiseJump = advertiseJump;
+      this.ruleForm.advertiseJump = linkTo;
     },
 
     /* 获取广告详情 */
