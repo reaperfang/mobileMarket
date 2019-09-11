@@ -134,7 +134,7 @@ export default {
         typeName: '营销活动',
         id: 6,
         data: {
-          id: data.id,
+          id: data.appId,
           name: data.appActivityName,
           activityType: data.appType
         }
