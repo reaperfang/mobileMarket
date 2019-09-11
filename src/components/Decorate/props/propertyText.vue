@@ -66,7 +66,7 @@ export default {
         backgroundColor: '#ffffff',
         displayStyle: 2,
         linkTo: null,
-        showDivider: true
+        showDivider: false
       },
       rules: {
 

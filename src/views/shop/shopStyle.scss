@@ -368,15 +368,15 @@ ul.cube {
             .phone-body {
                   height: 775px;
                   overflow-y: auto;
-
+                  border-left: 1px solid #f0eeee;
+                  border-right: 1px solid #f0eeee;
                   .component_wrapper {
-                        // background: #fff;
-                        min-height: 50px;
-                        // line-height: 50px;
                         position: relative;
-                        // border: 1px solid #eee;
-                        border-bottom: none;
                         cursor: pointer;
+                        border-top: 1px solid #f0eeee;
+                        &:last-child{
+                              border-bottom: 1px solid #f0eeee;
+                        }
                   }
             }
       }
