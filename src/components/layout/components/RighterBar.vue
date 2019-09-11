@@ -38,7 +38,7 @@ export default {
     return {
       sidebarItems: [],
       basePath: '',
-      userType: false,
+      //userType: false,
       current: '0'
     }
   },
@@ -65,15 +65,15 @@ export default {
     this.setSidebarItems()
   },
   methods: {
-    setUserType() {
-      let userInfo = JSON.parse(this.$store.getters.userInfo)
+    // setUserType() {
+    //   let userInfo = JSON.parse(this.$store.getters.userInfo)
 
-      if(userInfo && userInfo.type == 'admin') {
-        this.userType = true
-      } else {
-        this.userType = false
-      }
-    },
+    //   if(userInfo && userInfo.type == 'admin') {
+    //     this.userType = true
+    //   } else {
+    //     this.userType = false
+    //   }
+    // },
     handleTabTitle(arr) {
       var map = {},
           dest = [];
@@ -136,9 +136,9 @@ export default {
       this.current = index
       this.setSidebarItems()
     },
-    "$store.getters.userInfo": function() {
-      this.setUserType()
-    }
+    // "$store.getters.userInfo": function() {
+    //   this.setUserType()
+    // }
   }
 }
 </script>
