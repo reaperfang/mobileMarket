@@ -23,8 +23,8 @@
       <el-form-item label="背景颜色" prop="backgroundColor" v-if="ruleForm.titleTemplate === 1">
         <div class="color_block">
           <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
-          <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
-          <el-button type="text">重置</el-button>
+          <colorPicker  v-model="ruleForm.backgroundColor" defaultColor="#ffffff"></colorPicker >
+          <!-- <el-button type="text">重置</el-button> -->
         </div>
       </el-form-item>
       <el-form-item label="日期" prop="date" v-if="ruleForm.titleTemplate === 2">
@@ -68,7 +68,7 @@ export default {
         titleTemplate: 1,
         displayPosition: 1,
         subTitle: '',
-        backgroundColor: '',
+        backgroundColor: '#ffffff',
         navName: '',
         linkTo: null,
         author: '',

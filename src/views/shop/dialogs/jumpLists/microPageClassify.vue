@@ -84,7 +84,7 @@ export default {
       const tempList = [...this.tableData];
       for(let item of tempList) {
         if(item.id !== data.id) {
-          item.active = !state;
+          item.active = false;
         }
       }
       this.tableData = tempList;

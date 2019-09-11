@@ -72,11 +72,6 @@ export default {
   methods: {
     getActivitiesList() {
       this._apis.shop.getActivitiesList({}).then((response)=>{
-        // const activities = [];
-        // for(let item of response.list) {
-        //   activities.push(JSON.parse(item));
-        // }
-        // this.activities = activities;
         this.activities = response;
       }).catch((error)=>{
         this.$notify.error({
@@ -121,7 +116,7 @@ export default {
       const tempList = [...this.tableData];
       for(let item of tempList) {
         if(item.id !== data.id) {
-          item.active = !state;
+          item.active = false;
         }
       }
       this.tableData = tempList;

@@ -4,8 +4,8 @@
       <el-form-item label="颜色" prop="lineColor">
         <div class="color_block">
           <el-input v-model="ruleForm.lineColor" :disabled="true"></el-input>
-          <colorPicker  v-model="ruleForm.lineColor"></colorPicker >
-          <el-button type="text">重置</el-button>
+          <colorPicker  v-model="ruleForm.lineColor" defaultColor="rgb(229,229,229)"></colorPicker >
+          <!-- <el-button type="text">重置</el-button> -->
         </div>
       </el-form-item>
       <el-form-item label="边距" prop="lineMargin">

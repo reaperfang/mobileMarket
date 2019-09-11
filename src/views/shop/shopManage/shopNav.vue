@@ -172,22 +172,22 @@
             <el-form-item label="背景颜色" prop="backgroundColor">
               <div class="color_block">
                 <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
-                <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
-                <el-button type="text">重置</el-button>
+                <colorPicker  v-model="ruleForm.backgroundColor" defaultColor="#fff"></colorPicker >
+                <!-- <el-button type="text">重置</el-button> -->
               </div>
             </el-form-item>
             <el-form-item label="选中文字颜色" prop="activeColor">
               <div class="color_block">
                 <el-input v-model="ruleForm.activeColor" :disabled="true"></el-input>
-                <colorPicker  v-model="ruleForm.activeColor"></colorPicker >
-                <el-button type="text">重置</el-button>
+                <colorPicker  v-model="ruleForm.activeColor" defaultColor="#000"></colorPicker >
+                <!-- <el-button type="text">重置</el-button> -->
               </div>
             </el-form-item>
             <el-form-item label="未选中文字颜色" prop="unactiveColor">
               <div class="color_block">
                 <el-input v-model="ruleForm.unactiveColor" :disabled="true"></el-input>
-                <colorPicker  v-model="ruleForm.unactiveColor"></colorPicker >
-                <el-button type="text">重置</el-button>
+                <colorPicker  v-model="ruleForm.unactiveColor" defaultColor="#ddd"></colorPicker >
+                <!-- <el-button type="text">重置</el-button> -->
               </div>
             </el-form-item>
           </div>
@@ -246,7 +246,10 @@ export default {
         navStyle: {id: 1},  //系统-全局导航样式
         applyPage: ['1','2','3'],  //系统-应用页面
         navIds: [],
-        navMap: {}
+        navMap: {},
+        backgroundColor: '#fff',
+        activeColor: '#000',
+        unactiveColor: '#ddd'
       },
       rules: {},
       currentNav: null,  //当前导航对象
