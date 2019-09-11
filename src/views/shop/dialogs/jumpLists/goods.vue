@@ -59,6 +59,7 @@ export default {
   },
   data() {
     return {
+      pageSize: 5,
       ruleForm: {
         name: '',
         // id: '',

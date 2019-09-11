@@ -67,6 +67,7 @@ export default {
   },
   data() {
     return {
+      pageSize: 5,
       tableList: [],
       multipleSelection: [],
       ruleForm: {
