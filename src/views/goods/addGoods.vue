@@ -221,9 +221,9 @@
             </el-form-item>
             <el-form-item label="起售数量" prop="number">
                 <div class="input-number">
-                    <span @click="reduce">-</span>
+                    <span style="user-select: none;" class="pointer" @click="reduce">-</span>
                     <el-input v-model="ruleForm.startSaleNum"></el-input>
-                    <span @click="increase">+</span>
+                    <span style="user-select: none;" class="pointer" @click="increase">+</span>
                 </div>
             </el-form-item>
             <el-form-item label="已售出数量" prop="selfSaleCount">
@@ -404,15 +404,15 @@ export default {
                 productBrandInfoId: '', // 商品品牌id
                 status: 0, // 上架状态
                 autoSaleTime: '', // 自动上架时间
-                isJoinDiscount: 1, // 是否参与打折 1参与 ,0不参与
+                isJoinDiscount: 0, // 是否参与打折 1参与 ,0不参与
                 zhengsong: 1,
-                isSupportInvoice: 1, // 是否开发票
-                isShowStock: 0, // 是否显示库存 1显示 0不显示
-                isShowSaleCount: 0, // 是否显示销量 1显示 0不显示
+                isSupportInvoice: 0, // 是否开发票
+                isShowStock: 1, // 是否显示库存 1显示 0不显示
+                isShowSaleCount: 1, // 是否显示销量 1显示 0不显示
                 productUnit: '', // 商品计量单位
                 other: false,
                 otherUnit: '',
-                isCashOnDelivery: 1, // 是否支持货到付款
+                isCashOnDelivery: 0, // 是否支持货到付款
                 isFreeFreight: 0, // 是否包邮
                 isAfterSaleService: 1, // 是否支持售后服务
                 isShowRelationProduct: 0, // 是否显示关联商品
@@ -835,7 +835,7 @@ export default {
         },
         reduce() {
             if(this.ruleForm.startSaleNum > 0) {
-                this.ruleForm.number--
+                this.ruleForm.startSaleNum--
             }
         },
         selectSpecificationsHandler(value) {
@@ -1195,6 +1195,7 @@ $blue: #655EFF;
         }
     }
 }
+
 </style>
 
 

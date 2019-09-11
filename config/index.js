@@ -38,7 +38,7 @@ module.exports = {
         //target: 'http://172.22.146.115:8081', // 商品 王浩
         // target: 'http://172.22.146.115:8081', // 商品 王浩
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
-        target: 'http://www.lwt.com',  // nginx代理 李玟霆
+        //target: 'http://www.lwt.com',  // nginx代理 李玟霆
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
         //target: 'http://www.lwt.com',  // nginx代理 李玟霆
         //  target: 'http://172.22.146.124:8099',// 开关 许涛
@@ -66,6 +66,7 @@ module.exports = {
         // target: 'http://172.22.146.119:8080', // 郑艳华 商品
         //target: 'http://172.22.146.7:8081', // 张昌超
         // target: 'http://u2spmw.natappfree.cc',// 智能运营
+        target: 'http://test-omo.aiyouyi.cn',
         changeOrigin: true,
         pathRewrite: {
           '^/data-server': ''
