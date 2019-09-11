@@ -72,7 +72,14 @@ export default {
   methods: {
     getActivitiesList() {
       this._apis.shop.getActivitiesList({}).then((response)=>{
-        this.activities = response;
+        const list = [];
+        for(let item of response) {
+          list.push({
+            code: item[0].split(',')[0],
+            name: item[0].split(',')[1]
+          })
+        }
+        this.activities = list;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
