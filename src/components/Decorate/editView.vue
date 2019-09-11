@@ -175,7 +175,7 @@ export default {
  .view {
     .phone-body {
       .component_wrapper{
-        min-height: 50px;
+        // min-height: 50px;
         &.actived{
           border:2px dashed $globalMainColor;
         }
