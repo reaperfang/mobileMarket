@@ -140,7 +140,13 @@ export default {
 
     //删除组件
     deleteComponent(id) {
-      this.$store.commit('deleteComponent', id)
+      this.$confirm(`确定删除此组件吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.commit('deleteComponent', id)
+      })
     },
 
     onMoveHandler(evt, originalEvent) {
@@ -175,7 +181,7 @@ export default {
  .view {
     .phone-body {
       .component_wrapper{
-        min-height: 50px;
+        // min-height: 50px;
         &.actived{
           border:2px dashed $globalMainColor;
         }

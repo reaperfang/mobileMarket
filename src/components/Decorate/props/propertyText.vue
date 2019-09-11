@@ -19,15 +19,15 @@
       <el-form-item label="文字颜色" prop="fontColor">
         <div class="color_block">
           <el-input v-model="ruleForm.fontColor" :disabled="true"></el-input>
-          <colorPicker  v-model="ruleForm.fontColor"></colorPicker >
-          <el-button type="text">重置</el-button>
+          <colorPicker  v-model="ruleForm.fontColor" defaultColor="#000000"></colorPicker >
+          <!-- <el-button type="text">重置</el-button> -->
         </div>
       </el-form-item>
       <el-form-item label="背景颜色" prop="backgroundColor">
         <div class="color_block">
           <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
-          <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker >
-          <el-button type="text">重置</el-button>
+          <colorPicker  v-model="ruleForm.backgroundColor" defaultColor="#ffffff"></colorPicker >
+          <!-- <el-button type="text">重置</el-button> -->
         </div>
       </el-form-item>
       <el-form-item label="显示设置" prop="displayStyle">
@@ -66,7 +66,7 @@ export default {
         backgroundColor: '#ffffff',
         displayStyle: 2,
         linkTo: null,
-        showDivider: true
+        showDivider: false
       },
       rules: {
 

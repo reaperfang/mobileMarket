@@ -74,7 +74,7 @@ export default {
         password: '',
         validateCodeKey: '700233df-30c6-4412-92cd-6eebd24af07a',
         validateCode: 'K5UW',
-        platform: '13416032592F'
+        platform: '134160222D87'
       },
       loginRules: {
         userName: [{ required: true, trigger: 'blur', validator: validateUsername }],

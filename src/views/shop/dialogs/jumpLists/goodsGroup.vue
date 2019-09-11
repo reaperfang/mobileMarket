@@ -10,7 +10,7 @@
         </el-form-item>
       </div>
     </el-form>
-    <el-tree :data="categoryData" :props="defaultProps" @node-click="handleNodeClick" :default-expand-all="true"></el-tree>
+    <el-tree :data="categoryData" :props="defaultProps" @node-click="handleNodeClick" :default-expand-all="true" :highlight-current="true" :expand-on-click-node="false"></el-tree>
   </div>
 </template>
 

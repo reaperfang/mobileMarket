@@ -18,7 +18,7 @@
       <el-form-item label="背景颜色" prop="colorStyle">
         <div class="color_block">
           <el-input v-model="ruleForm.colorStyle" :disabled="true"></el-input>
-          <colorPicker  v-model="ruleForm.colorStyle"></colorPicker >
+          <colorPicker  v-model="ruleForm.colorStyle" defaultColor="#fff"></colorPicker >
         </div>
       </el-form-item>
     </div>
