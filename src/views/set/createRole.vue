@@ -68,7 +68,7 @@ export default {
       currentDialog: '',
       data:{},
       shops:[],
-      shopChecked:[]
+      shopChecked:[],
     }
   },
   computed: {
@@ -78,12 +78,8 @@ export default {
       userInfo(){
         return JSON.parse(localStorage.getItem('userInfo'))
      },
-     shopInfo(){
-        return JSON.parse(localStorage.getItem('shopInfos'))
-     }
   },
   created(){
-      console.log('111111',this.shopInfo)
       this.init()
       this.getShops()
   },
@@ -100,7 +96,9 @@ export default {
                 this.shopChecked.push(item * 1)             
             }) 
         }
+        
     },
+
     //获取所有店铺
     getShops(){
       let data = this.userInfo.shopInfoMap
