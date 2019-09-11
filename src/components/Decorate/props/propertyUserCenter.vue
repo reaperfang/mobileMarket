@@ -34,8 +34,8 @@
           <el-form-item label="个人昵称颜色" prop="nickColor">
             <div class="color_block">
               <el-input v-model="ruleForm.nickColor" :disabled="true"></el-input>
-              <colorPicker  v-model="ruleForm.nickColor"></colorPicker >
-              <el-button type="text">重置</el-button>
+              <colorPicker  v-model="ruleForm.nickColor" defaultColor="#000000"></colorPicker >
+              <!-- <el-button type="text">重置</el-button> -->
             </div>
           </el-form-item>
           <el-form-item label="会员栏样式" prop="memberColumeStyle">
@@ -55,8 +55,8 @@
                   <img :src="item.icon" alt="">
                   <span @click="currentModule=item;dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换</span>
                 </div>
-                <colorPicker  v-model="item.color"></colorPicker >
-                <el-button type="text">重置</el-button>
+                <colorPicker  v-model="item.color" defaultColor="#000"></colorPicker >
+                <!-- <el-button type="text">重置</el-button> -->
             </div>
           </el-form-item>
         </div>  

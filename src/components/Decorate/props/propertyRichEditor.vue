@@ -4,7 +4,7 @@
     <el-form-item label="背景颜色">
       <div class="color_block">
         <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
-        <colorPicker  v-model="ruleForm.backgroundColor"></colorPicker>
+        <colorPicker  v-model="ruleForm.backgroundColor" defaultColor="#ffffff"></colorPicker>
       </div>
     </el-form-item>
     <el-form-item label="页面边距">

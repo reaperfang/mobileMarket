@@ -7,7 +7,7 @@
                 :options="options"
                 @change="handleChange">
             </el-cascader>
-            <div>
+            <div class="search-box">
                 <el-input v-model="input" placeholder="请输入商品关键字"></el-input>
                 <el-button><i class="el-icon-search"></i></el-button>
             </div>
@@ -55,12 +55,7 @@ export default {
             value: [],
             options: [],
             tableData: [
-                {
-                    id: '1',
-                    name: '商品名称1',
-                    unit: 'kg',
-                    price: 100,
-                }
+                
             ],
             total: 1,
             listQuery: {
@@ -140,6 +135,13 @@ export default {
         align-items: center;
         .classify {
             margin-right: 37px;
+        }
+    }
+    .search-box {
+        display: flex;
+        /deep/ .el-button {
+            border-left: none;
+            margin-left: -3px;
         }
     }
 </style>
