@@ -397,7 +397,7 @@ export function changeSwitchStatus(data) {
   //优惠券B端选择
   export function getCouponList(data) {
       return request({
-        url: 'api/v1/b/app-coupon/activity/home-page-list',
+        url: '/v1/b/app-coupon/activity/home-page-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -407,7 +407,7 @@ export function changeSwitchStatus(data) {
   //拼团B端选择商品
   export function getMultiPersonList(data) {
       return request({
-        url: 'api/v1/b/app-group-buy/pageGoods',
+        url: '/v1/b/app-group-buy/pageGoods',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -417,7 +417,7 @@ export function changeSwitchStatus(data) {
   //秒杀B端选择商品
   export function getSecondkillList(data) {
       return request({
-        url: 'api/v1/b/seckill/app-goods-page-list',
+        url: '/v1/b/seckill/app-goods-page-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -427,7 +427,7 @@ export function changeSwitchStatus(data) {
   //限时折扣B端选择商品
   export function getDiscountList(data) {
       return request({
-        url: 'api/v1/b/limit-discount/app-goods-page-list',
+        url: '/v1/b/limit-discount/app-goods-page-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -437,7 +437,7 @@ export function changeSwitchStatus(data) {
   //优惠套装B端选择商品
   export function getDiscountPackageList(data) {
       return request({
-        url: 'api/v1/b/package-buy/app-page-list',
+        url: '/v1/b/package-buy/app-page-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -447,7 +447,7 @@ export function changeSwitchStatus(data) {
   //满减选择活动B端选择
   export function getFullReductionList(data) {
       return request({
-        url: 'api/v1/b/app-reward/page',
+        url: '/v1/b/app-reward/page',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -457,7 +457,7 @@ export function changeSwitchStatus(data) {
     //N元N件B端选择商品
   export function getNyuanList(data) {
       return request({
-        url: 'api/v1/b/goodsbale/page-list',
+        url: '/v1/b/goodsbale/page-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -468,7 +468,7 @@ export function changeSwitchStatus(data) {
   //优惠券C端展示
   export function getCouponListByIds(data) {
       return request({
-        url: 'api/v1/b/app-coupon/home-page/page-list',
+        url: '/v1/b/app-coupon/home-page/page-list',
         method: 'post',
         baseURL: process.env.SALE_API, 
         data
@@ -478,7 +478,7 @@ export function changeSwitchStatus(data) {
   //拼团C端展示
   export function getMultiPersonListByIds(data) {
       return request({
-        url: 'api/v1/c/app-group-buy/listGoods',
+        url: '/v1/c/app-group-buy/listGoods',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -488,7 +488,7 @@ export function changeSwitchStatus(data) {
   //秒杀C端展示
   export function getSecondkillListByIds(data) {
       return request({
-        url: 'api/v1/c/seckill/get-activity-goods',
+        url: '/v1/c/seckill/get-activity-goods',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -498,7 +498,7 @@ export function changeSwitchStatus(data) {
   //限时折扣C端展示
   export function getDiscountListByIds(data) {
       return request({
-        url: 'api/v1/c/limit-discount/get-activity-goods',
+        url: '/v1/c/limit-discount/get-activity-goods',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -508,7 +508,7 @@ export function changeSwitchStatus(data) {
   //优惠套装C端展示
   export function getDiscountPackageListByIds(data) {
       return request({
-        url: 'api/v1/c/package-buy/get-package-buy-list',
+        url: '/v1/c/package-buy/get-package-buy-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -518,7 +518,7 @@ export function changeSwitchStatus(data) {
   //满减C端展示
   export function getFullReductionListByIds(data) {
       return request({
-        url: 'api/v1/c/app-reward',
+        url: '/v1/c/app-reward',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -528,7 +528,7 @@ export function changeSwitchStatus(data) {
   //N元N件C端展示
   export function getNyuanListByIds(data) {
       return request({
-        url: `api/v1/c/goodsbale/list/${data.baleIds}`,
+        url: `/v1/c/goodsbale/list/${data.baleIds}`,
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -560,7 +560,7 @@ export function changeSwitchStatus(data) {
   export function getActivitiesList(data) {
       return request({
         // url: 'api/v1/b/module-code',
-        url: 'api/v1/b/app-general-info/pull',
+        url: '/v1/b/app-general-info/pull',
         method: 'get',
         baseURL: process.env.SALE_API,
         params: data
@@ -570,7 +570,7 @@ export function changeSwitchStatus(data) {
   //根据营销类型code获取营销活动数据
   export function getActivitiesData(data) {
       return request({
-        url: 'api/v1/b/app-general-info/list',
+        url: '/v1/b/app-general-info/list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params: data
