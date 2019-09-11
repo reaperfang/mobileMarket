@@ -273,7 +273,7 @@ export function manualChangeCredit(data) {
 //获取优惠券下拉
 export function getAllCoupons(data) {
     return request({
-        url: '/api/v1/b/app-coupon/activity/page-list',
+        url: '/v1/b/app-coupon/activity/page-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params:data
@@ -282,7 +282,7 @@ export function getAllCoupons(data) {
 //优惠券/码发放
 export function distributeCoupon(data) {
     return request({
-        url: '/api/v1/b/app-coupon-member-get/activity/distribute',
+        url: '/v1/b/app-coupon-member-get/activity/distribute',
         method: 'post',
         baseURL: process.env.SALE_API,
         data
@@ -345,7 +345,7 @@ export function blackChecks(data) {
 //用户已经有的优惠券
 export function getUsedCoupon(data) {
     return request({
-        url: '/api/v1/b/app-coupon-member-get/activity/customer-list',
+        url: '/v1/b/app-coupon-member-get/activity/customer-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params: data
@@ -354,7 +354,7 @@ export function getUsedCoupon(data) {
 //赠品列表
 export function getGiftList(data) {
     return request({
-        url: '/api/v1/b/app-gift/activity/page-list',
+        url: '/v1/b/app-gift/activity/page-list',
         method: 'get',
         baseURL: process.env.SALE_API,
         params: data
@@ -363,7 +363,7 @@ export function getGiftList(data) {
 //红包列表
 export function getRedPacket(data) {
     return request({
-        url: '/api/v1/b/hongbao',
+        url: '/v1/b/hongbao',
         method: 'get',
         baseURL: process.env.SALE_API,
         params: data
