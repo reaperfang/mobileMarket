@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-if="pageList.length" v-loading="loading">
-      <el-tabs v-model="id">
-        <el-tab-pane v-for="(item, key) of pageList" :key="key" :label="item.name || '页面'" :name="item.id"></el-tab-pane>
+      <el-tabs v-model="pageId" @tab-click="tabClick">
+        <el-tab-pane v-for="(item, key) of pageList" :key="key" :label="item.name || '页面'" :name="item.id" ></el-tab-pane>
       </el-tabs>
       <Decorate panelName="页面编辑" :componentConfig="componentConfig" :saveData="saveData" :homePageData="homePageData"></Decorate>
     </div>
@@ -15,6 +15,7 @@
 <script>
 import Decorate from '@/components/Decorate';
 import decorateMixin from '@/components/Decorate/decorateMixin';
+import utils from "@/utils";
 export default {
   name: "templateEdit",
   mixins: [decorateMixin],
@@ -23,6 +24,7 @@ export default {
     return {
       loading: true,
       id: this.$route.query.id || '',
+      pageId: '',
       dataLoaded: false,
       homePageData: null,
       componentConfig: {
@@ -32,15 +34,28 @@ export default {
         title: '页面信息'
       },
       pageList: [],  //页面列表
-      pageMaps: {}  //页面数据集合
+      pageMaps: {},  //页面数据集合
+      cacheData: null   //页签切换前缓存的上一个页面数据
     };
   },
   created() {
     this.getPageList();
   },
   watch: {
-    id(newValue) {
-      this.fetch(newValue);
+    pageId(newValue) {
+
+      //异步延迟可以解决一些选中组件的问题
+      this.$nextTick(() => {
+        this.$nextTick(() => {
+          this.cacheData = {...{
+            baseInfo: this.baseInfo,
+            id: this.id,
+            componentDataIds: this.componentDataIds,
+            componentDataMap: this.componentDataMap
+          }};
+          this.fetch(newValue);
+        })
+      })
     }
   },
   methods: {
@@ -73,11 +88,15 @@ export default {
       this.loading = true;
       this._apis.shop.getPagesByTemplateId({pageTemplateId: this.id}).then((response)=>{
         this.pageList = response;
+        this.loading = false;
+        if(!response || !response.length) {
+          return;
+        }
         for(let item of response) {
           this.pageMaps[item.id] = item;
         }
+        this.pageId = response[0].id;
         this.fetch(response[0].id);
-        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
@@ -88,8 +107,8 @@ export default {
     },
 
      /* 保存数据 */
-    saveData() {
-      let resultData = this.collectData();
+    saveData(triggerType) {
+      let resultData = this.collectData(triggerType);
       resultData['status'] = '1';
       this.submit(resultData);
     },
@@ -112,7 +131,7 @@ export default {
           message: '创建成功！',
           type: 'success'
         });
-        this._routeTo('pageManageIndex');
+        // this._routeTo('pageManageIndex');
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
@@ -121,6 +140,32 @@ export default {
         });
         this.loading = false;
       });
+    },
+
+    tabClick() {
+      this.$confirm(`当前编辑内容尚未保存，切换其他页面将会清除本页面编辑数据！是否需要保存？（点击保存后，本页编辑内容将会另存为至微页面）`, '提示', {
+        confirmButtonText: '保存',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.saveData('tabChange');
+      }).catch(() => {
+        
+      })
+    },
+
+     /* 保存前收集装修数据 */
+    collectData(triggerType) {
+      let result = triggerType === 'tabChange' ? this.cacheData.baseInfo : this.baseInfo;
+      let pageData = [];
+      for(let item of triggerType === 'tabChange' ? this.cacheData.componentDataIds: this.componentDataIds) {
+        const componentData = triggerType === 'tabChange' ? this.cacheData.componentDataMap[item] : this.componentDataMap[item];
+        if(componentData) {
+          pageData.push(componentData);
+        }
+      }
+      result['pageData'] = utils.compileStr(JSON.stringify(pageData));;
+      return result;
     }
   }
 };
