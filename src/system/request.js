@@ -20,11 +20,13 @@ class Ajax {
 
   // request拦截器
   requestGlobal(config) {
+    let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+    let cid = shopInfo && shopInfo.id || ''
     config.headers = Object.assign(
       {
         businessId: 1,
-        tenantId: 1,
-        merchantId: 2,
+        tenantId: localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo')).tenantInfoId,
+        merchantId: cid,
         loginUserId: 1,
         token: store.getters.token || localStorage.getItem('authToken')
       },
