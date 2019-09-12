@@ -33,9 +33,10 @@
             <div class="table-header">
                 <div :class="{active: state === 1}" @click="stateHandler(1)" class="item">出售中</div>
                 <div :class="{active: state === 0}" @click="stateHandler(0)" class="item">仓库中</div>
-                <div :class="{active: state === 2}" @click="stateHandler(2)" class="item">已售罄</div>
+                <div :class="{active: state === -1}" @click="stateHandler(-1)" class="item">已售罄</div>
             </div>
             <el-table
+                v-loading="loading"
                 :data="list"
                 ref="table"
                 style="width: 100%"
@@ -50,7 +51,7 @@
                 label="商品名称"
                 width="380">
                     <template slot-scope="scope">
-                        <div class="ellipsis" style="width: 350px;" :title="scope.row.name">{{scope.row.name}}</div>
+                        <div class="ellipsis" style="width: 350px;" :title="scope.row.goodsInfo.name">{{scope.row.name}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -66,7 +67,7 @@
                 <el-table-column
                     label="商品分类">
                     <template slot-scope="scope">
-                        <span>{{scope.row.categoryName}}</span>
+                        <span>{{scope.row.productCatalogInfoName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -264,8 +265,8 @@ export default {
                 return '上架'
             } else if(val == 0) {
                 return '下架'
-            } else if(val == 2) {
-                return '自动上架'
+            } else if(val == -1) {
+                return '已售馨'
             }
         },
         async productCatalogFilter(id) {
@@ -417,6 +418,7 @@ export default {
             this._apis.goods.fetchGoodsList(_param).then((res) => {
                 this.total = +res.total
                 //this.getCategoryName(res.list)
+                this.list = res.list
                 this.loading = false
             }).catch(error => {
                 this.loading = false
