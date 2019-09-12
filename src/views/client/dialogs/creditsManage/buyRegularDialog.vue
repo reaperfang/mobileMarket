@@ -130,7 +130,7 @@ export default {
   methods: {
     submit() {
         let params = {
-            id: this.data.id,
+            id: this.data.row.id,
             enable: this.enable,
             sceneRule: {
                 isAllProduct: this.isAllProduct == '0'? true:false,

@@ -183,10 +183,16 @@
                             prop="costPrice"
                             label="成本价"
                             width="180">
+                            <template slot-scope="scope">
+                                <span>¥{{scope.row.costPrice}}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="salePrice"
                             label="售卖价">
+                            <template slot-scope="scope">
+                                <span>¥{{scope.row.salePrice}}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="stock"
@@ -199,10 +205,16 @@
                         <el-table-column
                             prop="weight"
                             label="重量">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.weight}}(kg)</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="volume"
                             label="体积">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.volume}}(m³)</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="image"
@@ -792,7 +804,7 @@ export default {
         getProductLabelList() {
             this._apis.goods.fetchAllTagsList().then(res => {
                 console.log(res)
-                this.productLabelList = res.list
+                this.productLabelList = res
             }).catch(error => {
 
             })
