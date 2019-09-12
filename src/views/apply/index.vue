@@ -11,7 +11,8 @@ export default {
         return{
             src:'',
             token:'',
-            cid:''
+            cid:'',
+            tenantId:localStorage.getItem('userInfo') && JSON.parse(localStorage.getItem('userInfo')).tenantInfoId
         }
     },
     created(){
@@ -22,7 +23,7 @@ export default {
             this.token = localStorage.getItem('authToken')
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             this.cid = shopInfo && shopInfo.id || ''
-            this.src = `${process.env.UPLOAD_SERVER}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=1&cid=${this.cid}`
+            this.src = `${process.env.UPLOAD_SERVER}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
         }
     }
 }

@@ -35,9 +35,8 @@ module.exports = {
     proxyTable: {
       '/data-server/**': {
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
-        //target: 'http://172.22.146.117:80',// 许涛
-        //target:'http://test-omo.aiyouyi.cn',
-        target:'http://172.22.146.115:8081',// 王浩
+        // target: 'http://172.22.146.117:80',// 许涛
+        target:'http://test-omo.aiyouyi.cn',
 
         changeOrigin: true,
         pathRewrite: {
@@ -47,7 +46,7 @@ module.exports = {
 
       /* 营销服务 */
       '/sale_server/**': {
-        target: 'http://120.133.1.130:8012/',
+        target: 'http://120.133.1.130:8012/api/',
         changeOrigin: true,
         pathRewrite: {
           '^/sale_server': ''

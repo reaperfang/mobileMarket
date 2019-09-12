@@ -58,7 +58,7 @@ export default {
         submit() {
             this.distinguish = this.distinguish == '0'? false : true;
             let params = {
-                id: this.data.id,
+                id: this.data.row.id,
                 enable: this.enable,
                 sceneRule: {
                     distinguish: this.distinguish,
