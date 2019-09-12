@@ -40,7 +40,7 @@
             <div class="table-header">
                 <div :class="{active: state === 1}" @click="stateHandler(1)" class="item">出售中</div>
                 <div :class="{active: state === 0}" @click="stateHandler(0)" class="item">仓库中</div>
-                <div :class="{active: state === 2}" @click="stateHandler(2)" class="item">已售罄</div>
+                <div :class="{active: state === -1}" @click="stateHandler(-1)" class="item">已售罄</div>
             </div>
             <el-table
                 :data="list"
@@ -58,14 +58,14 @@
                 label="商品名称"
                 width="380">
                     <template slot-scope="scope">
-                        <div class="ellipsis" style="width: 350px;" :title="scope.row.name">{{scope.row.name}}</div>
+                        <div class="ellipsis" style="width: 350px;" :title="scope.row.goodsInfo.name">{{scope.row.goodsInfo.name}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
                     label="状态"
                     width="180">
                     <template slot-scope="scope">
-                        <span>{{scope.row.goodsInfo && scope.row.goodsInfo.status}}</span>
+                        <span>{{scope.row.goodsInfo.status | statusFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -119,8 +119,8 @@ export default {
             },
             stateiIems: [],
             list: [],
+            loading: false,
             total: 50,
-            listLoading: true,
             listQuery: {
                 startIndex: 1,
                 pageSize: 20,
@@ -143,6 +143,17 @@ export default {
     created() {
         this.getList()
         this.getCategoryList()
+    },
+    filters: {
+        statusFilter(val) {
+            if(val == 1) {
+                return '上架'
+            } else if(val == 0) {
+                return '下架'
+            } else if(val == -1) {
+                return '已售馨'
+            }
+        },
     },
     methods: {
         renovate() {
@@ -245,7 +256,7 @@ export default {
             this.operateType = 1
         },
         getList(param) {
-            //this.listLoading = true
+            this.loading = true
             let _param
             
             _param = Object.assign({}, this.listQuery, param)
@@ -253,9 +264,9 @@ export default {
             this._apis.goods.fetchGoodsList(_param).then((res) => {
                 this.total = +res.total
                 this.list = res.list
-                //this.getCategoryName(res.list)
+                this.loading = true
             }).catch(error => {
-                //this.listLoading = false
+                this.loading = true
             })
         },
     },

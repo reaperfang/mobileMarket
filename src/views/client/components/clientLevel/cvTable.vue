@@ -25,7 +25,7 @@
         label="说明">
       </el-table-column>
       <el-table-column
-        prop="levelConditionId"
+        prop="receiveConditionsRemarks"
         label="等级条件">
       </el-table-column>
       <el-table-column

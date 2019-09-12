@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { getToken } from '@/system/auth'
 export default {
     data(){
         return{
@@ -20,7 +21,7 @@ export default {
     },
     methods:{
         init(){
-            this.token = localStorage.getItem('authToken')
+            this.token = getToken('authToken')
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             this.cid = shopInfo && shopInfo.id || ''
             this.src = `${process.env.UPLOAD_SERVER}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
