@@ -193,7 +193,7 @@ export default {
 
     /* 向父组件提交选中的数据 */
     submit() {
-      this.$emit("dialogDataSelected", this.resultData);
+      this.$emit("goodsGroupDataSelected", this.resultData);
     },
 
     /* 弹窗选中了数据项 */

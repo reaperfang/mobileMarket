@@ -24,11 +24,11 @@
         <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">从商品分组中选择</el-button>
         <div class="goods_groups">
           <el-tag
-            v-for="tag in ruleForm.goodsGroups"
-            :key="tag.title"
+            v-for="(tag, key) in goodsGroups"
+            :key="key"
             closable
             type="success" @close="deleteGoodsGroup(tag)">
-            {{tag.title}}
+            {{tag.catagoryData.categoryName}}
           </el-tag>
         </div>
       </el-form-item>
@@ -131,7 +131,7 @@
     </div>
     
     <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected" @goodsGroupDataSelected="goodsGroupDataSelected"></component>
   </el-form>
 </template>
 
@@ -146,9 +146,9 @@ export default {
   components: {dialogSelectGoods, dialogSelectGoodsGroup},
   data () {
     return {
+      goodsGroups: [],
       ruleForm: {
         source: 1,
-        goodsGroups: [],
         showNumber: 0,
         listStyle: 1,
         pageMargin: 15,
@@ -196,19 +196,19 @@ export default {
   methods: {
 
     /* 弹窗选中了商品分组 */
-    dialogGoodsGroupSelected(goodsGroup) {
-      this.ruleForm.goodsGroups = goodsGroup;
+    goodsGroupDataSelected(goodsGroup) {
+      this.goodsGroups = goodsGroup;
     },
 
      /* 删除项 */
     deleteGoodsGroup(item) {
-      const tempGoodsGroups = [...this.ruleForm.goodsGroups];
+      const tempGoodsGroups = [...this.goodsGroups];
       for(let i=0;i<tempGoodsGroups.length;i++) {
         if(item === tempGoodsGroups[i]) {
           tempGoodsGroups.splice(i, 1);
         }
       }
-      this.ruleForm.goodsGroups = tempGoodsGroups;
+      this.goodsGroups = tempGoodsGroups;
     }
   }
 }
