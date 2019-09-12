@@ -62,7 +62,7 @@
             <span class="table-btn" @click="copyPage(scope.row)">复制</span>
             <span class="table-btn" @click="_routeTo('shopEditor', {pageId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deletePage(scope.row)">删除</span>
-            <span class="table-btn" @click="setIndex(scope.row)">设为首页</span>
+            <!-- <span class="table-btn" @click="setIndex(scope.row)">设为首页</span> -->
           </template>
         </el-table-column>
       </el-table>

@@ -84,8 +84,8 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <span @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor"><i class="i-bg pointer"></i>编辑</span>
-                        <span @click="deleleHandler(scope.row)" class="operate-delete"><i class="i-bg pointer"></i>删除</span>
+                        <span @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor pointer"><i class="i-bg"></i>编辑</span>
+                        <span @click="deleleHandler(scope.row)" class="operate-delete pointer"><i class="i-bg"></i>删除</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -239,7 +239,7 @@ export default {
             ],
             list: [],
             total: 0,
-            listLoading: true,
+            loading: false,
             listQuery: {
                 startIndex: 1,
                 pageSize: 20,
@@ -409,16 +409,17 @@ export default {
             this.getList(param)
         },
         getList(param) {
-            //this.listLoading = true
+            this.loading = true
             let _param
             
             _param = Object.assign({}, this.listQuery, param)
 
             this._apis.goods.fetchGoodsList(_param).then((res) => {
                 this.total = +res.total
-                this.getCategoryName(res.list)
+                //this.getCategoryName(res.list)
+                this.loading = false
             }).catch(error => {
-                //this.listLoading = false
+                this.loading = false
             })
         },
         getCategoryName(goodsList) {
