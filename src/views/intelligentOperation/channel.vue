@@ -154,7 +154,6 @@ export default {
         //导出
         exportExl(){
             let data = {};
-            data.cid = ""
             data.startTime = this.form.startTime
             data.endTime = this.form.endTime
             if(this.form.channel!='null'){
