@@ -415,6 +415,7 @@ export default {
             _arr.push(_obj);
           });
           this.rewardList = [].concat(_arr);
+          this.getCardInfo();
         })
         .catch(error => {
           this.$notify.error({
@@ -711,7 +712,7 @@ export default {
     this.getRightsList();
     this.getConditionList();
     this.getRewardList();
-    this.getCardInfo();
+    //this.getCardInfo();
     //this.getColorUrl();
   },
   mounted() {

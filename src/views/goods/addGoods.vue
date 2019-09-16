@@ -94,7 +94,7 @@
                     <el-table-column
                         prop="label"
                         :label="specsLabel"
-                        width="180">
+                        width="120">
                     </el-table-column>
                     <el-table-column
                         prop="costPrice"
@@ -142,6 +142,7 @@
                         prop="image"
                         label="图片">
                         <template slot-scope="scope">
+                            <div class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
                             <el-upload
                                 class="upload-spec"
                                 :action="uploadUrl"
@@ -183,10 +184,16 @@
                             prop="costPrice"
                             label="成本价"
                             width="180">
+                            <template slot-scope="scope">
+                                <span>¥{{scope.row.costPrice}}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="salePrice"
                             label="售卖价">
+                            <template slot-scope="scope">
+                                <span>¥{{scope.row.salePrice}}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="stock"
@@ -199,10 +206,16 @@
                         <el-table-column
                             prop="weight"
                             label="重量">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.weight}}(kg)</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="volume"
                             label="体积">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.volume}}(m³)</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="image"
@@ -358,9 +371,9 @@
                     <el-radio :label="0">不是</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <!-- <el-form-item label="商品详情" prop="productDetail">
-                <rickEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig"></rickEditor>
-            </el-form-item> -->
+            <el-form-item label="商品详情" prop="productDetail">
+                <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="this.ruleForm.productDetail"></RichEditor>
+            </el-form-item>
             <div class="footer">
                 <el-button @click="submitGoods" type="primary">保存</el-button>
             </div>
@@ -490,7 +503,7 @@ export default {
                 // 初始容器高度
                 initialFrameHeight: 400,
                 // 初始容器宽度
-                initialFrameWidth: 500,
+                initialFrameWidth: 700,
                 // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
                 serverUrl: 'http://35.201.165.105:8000/controller.php',
                 // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
@@ -792,7 +805,7 @@ export default {
         getProductLabelList() {
             this._apis.goods.fetchAllTagsList().then(res => {
                 console.log(res)
-                this.productLabelList = res.list
+                this.productLabelList = res
             }).catch(error => {
 
             })
@@ -948,7 +961,7 @@ export default {
             }
         },
         editorValueUpdate(value) {
-            this.editorData = value;
+            this.ruleForm.productDetail = value;
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
@@ -1005,7 +1018,10 @@ export default {
         },
 
         imageSelected(image) {
-            this.imageList.push(image);
+            this.fileList.push(Object.assign({}, image, {
+                name: image.fileName,
+                url: image.filePath
+            }))
         }
     },
     mounted() {
@@ -1020,7 +1036,8 @@ export default {
         LibraryDialog,
         AddCategoryDialog,
         AddTagDialog,
-        dialogSelectImageMaterial
+        dialogSelectImageMaterial,
+        RichEditor
     }
 }
 </script>
@@ -1119,6 +1136,13 @@ $blue: #655EFF;
         }
         .selection-specification {
             margin-bottom: 35px;
+        }
+        .image {
+            width: 60px;
+            height: 60px;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
         }
     }
 }

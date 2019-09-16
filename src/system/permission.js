@@ -22,7 +22,7 @@ const whiteList = ['/login', '/auth-redirect']// no redirect whitelist
 let flag = 0
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
-   //if (true) { // determine if there has token  
+  //  if (true) { // determine if there has token  
   if(store.getters.token){
     /* has token*/
     if (to.path === '/login') {

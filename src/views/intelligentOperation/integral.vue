@@ -70,7 +70,6 @@ export default {
         return {
             daterange:'',
             form: {
-                cid:'',
                 startTime:null,
                 endTime:null,
                 scorePaymentCountRange:null,
@@ -171,7 +170,6 @@ export default {
         // 重置
         reSet(){
             this.form = {
-                cid:'',
                 startTime:null,
                 endTime:null,
                 scorePaymentCountRange:null,
@@ -190,7 +188,6 @@ export default {
         //导出
         exportExl(){
             let data = {};
-            data.cid = ""
             data.startTime = this.form.startTime
             data.endTime = this.form.endTime
             data.scorePaymentCountRange = this.form.scorePaymentCountRange

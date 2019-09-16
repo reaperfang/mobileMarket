@@ -165,11 +165,9 @@ export default {
       this._apis.order
         .exportOrders()
         .then(res => {
-          let href = appConfig.realmName + res.replace(/^[^\:]*?\:(\/.*)/, '$1')
-
           let a = document.createElement('a')
 
-          a.setAttribute('href', href)
+          a.setAttribute('href', res)
           a.setAttribute('target', '_blank')
           a.click()
           console.log(href)

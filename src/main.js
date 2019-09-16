@@ -30,6 +30,7 @@ Vue.use(Element, {
 import vueJsonp from 'vue-jsonp';  //使用jsonp
 Vue.use(vueJsonp);
 import '@/components/static/index.js';
+import '@/directives/index.js'
 
 Vue.prototype.confirm = function({title, icon, text, cancel, width, confirmText}) {
   return new Promise((resolve, reject) => {

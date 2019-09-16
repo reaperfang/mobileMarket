@@ -85,7 +85,7 @@ export default {
       this.showShopsDialog = false
     },
     init(){
-      let info = this.$store.state.user.userInfo
+      let info = JSON.parse(localStorage.getItem('userInfo'))
       let arr = Object.keys(info.shopInfoMap) 
       if(arr.length == 0){
         this.shopList = []

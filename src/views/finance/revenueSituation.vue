@@ -131,7 +131,7 @@ export default {
     }
   },
   created() {
-    this.init();
+    // this.init();
     this.getSurveyDay();
   },
   methods: {
