@@ -460,6 +460,7 @@ export default {
           img{
             width: 240px;
             height:150px;
+            object-fit: cover;
           }
           .img_bottom{
             width:100%;

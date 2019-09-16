@@ -1,6 +1,6 @@
 <template>
     <div class="order">
-        <order :list="list" @getList="getList" v-bind="$attrs"></order>
+        <order ref="order" :list="list" @getList="getList" v-bind="$attrs"></order>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.startIndex" :limit.sync="listQuery.pageSize" @pagination="getList" />
     </div>
 </template>
@@ -21,6 +21,9 @@ export default {
         }
     },
     created() {
+        //this.getList()
+    },
+    mounted() {
         this.getList()
     },
     watch: {
@@ -35,7 +38,7 @@ export default {
             //     spinner: 'el-icon-loading',
             //     target: '.order-container'
             // });
-
+            this.$refs['order'].loading = true
             _params = Object.assign({}, this.params, {
                 [this.params.searchType]: this.params.searchValue,
                 [`${this.params.searchTimeType}Start`]: this.params.orderTimeValue ? this.params.orderTimeValue[0] : '',
@@ -51,6 +54,7 @@ export default {
                 this.list = res.list
                 this.total = +res.total
                 this._globalEvent.$emit('total', this.total)
+                this.$refs['order'].loading = false
                 //loading.close();
             }).catch(error => {
                 //loading.close();
@@ -58,6 +62,7 @@ export default {
                     title: '错误',
                     message: error
                 });
+                this.$refs['order'].loading = false
             })
         }
     },

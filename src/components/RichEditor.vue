@@ -92,4 +92,7 @@ export default {
 #editor{
   text-align:left;
 }
+iframe{
+  width:99%;
+}
 </style>

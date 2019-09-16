@@ -83,10 +83,10 @@
                         <span @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="140">
                     <template slot-scope="scope">
-                        <span @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor pointer"><i class="i-bg"></i>编辑</span>
-                        <span @click="deleleHandler(scope.row)" class="operate-delete pointer"><i class="i-bg"></i>删除</span>
+                        <span v-permission="['商品', '商品列表', '默认页面', '编辑']" @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor pointer"><i class="i-bg"></i>编辑</span>
+                        <span v-permission="['商品', '商品列表', '默认页面', '删除']" @click="deleleHandler(scope.row)" class="operate-delete pointer"><i class="i-bg"></i>删除</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -131,6 +131,7 @@
         margin-right: 18px;
         .item {
             margin-right: 22px;
+            cursor: pointer;
             .i-bg {
                 position: relative;
                 display: inline-block;
@@ -403,9 +404,13 @@ export default {
             this.multipleSelection = val;
         },
         stateHandler(val) {
-            this.state = val
+            if(this.state === val) {
+                this.state = ''
+            } else {
+                this.state = val
+            }
 
-            let param = {status: val}
+            let param = {status: this.state}
 
             this.getList(param)
         },

@@ -249,9 +249,10 @@ export default {
   text-align: center;
 }
 .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 </style>
 

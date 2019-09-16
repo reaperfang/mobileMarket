@@ -94,7 +94,7 @@
                     <el-table-column
                         prop="label"
                         :label="specsLabel"
-                        width="180">
+                        width="120">
                     </el-table-column>
                     <el-table-column
                         prop="costPrice"
@@ -142,6 +142,7 @@
                         prop="image"
                         label="图片">
                         <template slot-scope="scope">
+                            <div class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
                             <el-upload
                                 class="upload-spec"
                                 :action="uploadUrl"
@@ -1017,7 +1018,10 @@ export default {
         },
 
         imageSelected(image) {
-            this.imageList.push(image);
+            this.fileList.push(Object.assign({}, image, {
+                name: image.fileName,
+                url: image.filePath
+            }))
         }
     },
     mounted() {
@@ -1132,6 +1136,13 @@ $blue: #655EFF;
         }
         .selection-specification {
             margin-bottom: 35px;
+        }
+        .image {
+            width: 60px;
+            height: 60px;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
         }
     }
 }

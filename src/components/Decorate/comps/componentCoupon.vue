@@ -12,8 +12,8 @@
             :key="key"
             >
             <div class="first_money">
-              <span :class="style1">{{item.name}}</span>
-              <!-- <span :class="style1">元</span> -->
+              <span :class="style1">{{item.useType === 0 ? item.useTypeFullcut : item.useTypeDiscount  * 10}}
+                {{item.useType === 0 ? '元' : '折'}}</span>
               <span :class="style1"></span>
             </div>
             <div :class="style2" class="first_present">
@@ -31,8 +31,8 @@
             :key="key"
             >
             <div class="first_money">
-              <span :class="style1">{{item.name}}</span>
-              <!-- <span :class="style1">元</span> -->
+              <span :class="style1">{{item.useType === 0 ? item.useTypeFullcut : item.useTypeDiscount  * 10}}
+                {{item.useType === 0 ? '元' : '折'}}</span>
               <span :class="style1"></span>
             </div>
             <div :class="style2" class="first_present">
@@ -63,6 +63,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script>
 import componentMixin from '../mixins/mixinComps';

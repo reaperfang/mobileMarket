@@ -13,7 +13,7 @@
             <div class="item">状态</div>
             <div class="item">操作</div>
         </div>
-        <div class="order-container">
+        <div class="order-container" v-loading="loading">
             <div class="container-item" v-for="(order, index) in list" :key="index">
                 <div class="container-item-header">
                     <div class="item">
@@ -73,7 +73,7 @@
                     <div class="item operate">
                         <template v-if="order.orderStatus == 0">
                             <!-- 待付款 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                             <p @click="$router.push('/order/orderDetail?id=' + order.id)">订单改价</p>
                             <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
                             <p @click="makeCollections(order)">确认收款</p>
@@ -129,6 +129,7 @@ export default {
             currentDialog: '',
             currentData: '',
             dialogVisible: false,
+            loading: false
         }
     },
     created() {

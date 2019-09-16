@@ -18,6 +18,7 @@
                         自动标签：按照筛选条件自动为客户打标签，条件不符合自动删除和添加
                     </p>
                 </el-form-item>
+                <div v-if="ruleForm.tagType == '1'">
                 <el-form-item label="满足条件：" prop="anyOrAllCondition">
                     <el-radio v-model="ruleForm.anyOrAllCondition" label="0">满足任意一个被选中的条件即可</el-radio>
                     <el-radio v-model="ruleForm.anyOrAllCondition" label="1">必须满足所有条件</el-radio>
@@ -102,6 +103,7 @@
                     <span>购买以下任意商品</span>
                     <span class="addMainColor marL20 pointer" @click="chooseProduct">选择商品</span>
                 </el-form-item>
+                </div>
             </el-form>
         </div>
         <div class="btn_cont">
@@ -186,42 +188,70 @@ export default {
             formObj.consumeTimeStart = formObj.consumeTime ? formObj.consumeTime[0]:"";
             formObj.consumeTimeEnd = formObj.consumeTime ? formObj.consumeTime[1]:"";
             delete formObj.consumeTime;
-            formObj.isLastConsumeTime = this.convertUnit(formObj.isLastConsumeTime);
-            formObj.isTotalConsumeTimes = this.convertUnit(formObj.isTotalConsumeTimes);
-            formObj.isTotalConsumeMoney = this.convertUnit(formObj.isTotalConsumeMoney);
-            formObj.isPreUnitPrice = this.convertUnit(formObj.isPreUnitPrice);
-            formObj.isTotalScore = this.convertUnit(formObj.isTotalScore);
-            formObj.isProduct = this.convertUnit(formObj.isProduct);
+            formObj.isLastConsumeTime = this.convertUnit(formObj.isLastConsumeTime) || '';
+            formObj.isTotalConsumeTimes = this.convertUnit(formObj.isTotalConsumeTimes) || '';
+            formObj.isTotalConsumeMoney = this.convertUnit(formObj.isTotalConsumeMoney) || '';
+            formObj.isPreUnitPrice = this.convertUnit(formObj.isPreUnitPrice) || '';
+            formObj.isTotalScore = this.convertUnit(formObj.isTotalScore) || '';
+            formObj.isProduct = this.convertUnit(formObj.isProduct) || '';
             formObj.productInfoIds = this.selectedIds || "";
             if(this.$route.query.id) {
-                this._apis.client.updateTag(formObj).then((response) => {
-                    this.$notify({
-                        title: '成功',
-                        message: "标签编辑成功",
-                        type: 'success'
-                    });
-                    this.$router.push({ path: "/clientLabel" });
-                }).catch((error) => {
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
-                })
+                if(formObj.tagType == '0') {
+                    this._apis.client.updateTag({tagType: formObj.tagType, tagName: formObj.tagName, id: this.$route.query.id}).then((response) => {
+                        this.$notify({
+                            title: '成功',
+                            message: "标签编辑成功",
+                            type: 'success'
+                        });
+                    }).catch((error) => {
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                    })
+                }else{
+                    this._apis.client.updateTag(formObj).then((response) => {
+                        this.$notify({
+                            title: '成功',
+                            message: "标签编辑成功",
+                            type: 'success'
+                        });
+                    }).catch((error) => {
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                    })
+                }
             }else{
-                this._apis.client.addTag(formObj).then((response) => {
-                    this.$notify({
-                        title: '成功',
-                        message: "添加标签成功",
-                        type: 'success'
-                    });
-                }).catch((error) => {
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
-                })
+                if(formObj.tagType == '0') {
+                    this._apis.client.addTag({tagType: formObj.tagType, tagName: formObj.tagName}).then((response) => {
+                        this.$notify({
+                            title: '成功',
+                            message: "添加标签成功",
+                            type: 'success'
+                        });
+                    }).catch((error) => {
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                    })
+                }else{
+                    this._apis.client.addTag(formObj).then((response) => {
+                        this.$notify({
+                            title: '成功',
+                            message: "添加标签成功",
+                            type: 'success'
+                        });
+                    }).catch((error) => {
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                    })
+                }
             }
-            
         }
     },
     mounted() {

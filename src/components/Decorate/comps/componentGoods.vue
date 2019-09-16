@@ -59,6 +59,11 @@ export default {
     components:{
         componentButton
     },
+    created() {
+        this._globalEvent.$on('goodsListOfGroupChange', (list)=>{
+            this.list = list;
+        })
+    },
     mounted() {
         this.decoration();
     },
