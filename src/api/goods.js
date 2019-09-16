@@ -16,7 +16,7 @@ export function fetchAllTagsList(data) {
   return request({
     apiType: 'goods',
     method: 'post',
-    target: 'PRODUCT-LABEL-PAGE-LIST-PROCESSOR',
+    target: 'PRODUCT-LABEL-LIST-PROCESSOR',
     data
   })
 }

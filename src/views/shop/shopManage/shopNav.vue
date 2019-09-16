@@ -690,6 +690,7 @@ export default {
             img{
               width:24px;
               height:24px;
+              object-fit: cover;
             }
             span{
               margin-top:5px;
@@ -705,6 +706,7 @@ export default {
             img{
               width:30px;
               height:30px;
+              object-fit: cover;
             }
           }
         }

@@ -86,8 +86,8 @@ export default {
   transition: all 0.5s;
 }
 .componentBuyNotice {
-  height: 29px;
-  line-height: 29px;
+  // height: 29px;
+  // line-height: 29px;
   & > ul {
     padding: 0px 10px;
     display: flex;

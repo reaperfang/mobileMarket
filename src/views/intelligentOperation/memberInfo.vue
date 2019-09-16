@@ -88,7 +88,6 @@ export default {
     data() {
         return {
             form: {
-                cid:"",
                 startTime:null, //2019-08-07 12:12:12
                 endTime:null,
                 daterange:null,
@@ -229,7 +228,6 @@ export default {
         //导出
         mIexport(){
             let data = {};
-            data.cid = ""
             data.startTime = this.form.startTime || null
             data.endTime = this.form.endTime || null
             data.memberType = this.form.memberType

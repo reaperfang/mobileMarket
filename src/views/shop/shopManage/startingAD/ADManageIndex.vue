@@ -301,6 +301,7 @@ export default {
       width:40px;
       height:50px;
       margin-right:10px;
+      object-fit: cover;
     }
 }
 </style>
