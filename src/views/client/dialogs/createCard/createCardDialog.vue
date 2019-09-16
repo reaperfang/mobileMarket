@@ -99,20 +99,22 @@ export default {
         }
     },
     mounted() {
-        this.condition1 = this.data.conditionData.name;
-        let value = this.data.conditionData.value;
-        switch(this.condition1) {
-            case '消费金额满':
-                this.xfjem = value;
-                break;
-            case '消费次数满':
-                this.xfcsm = value;
-                break;
-            case '积分获得满':
-                this.jfhdm = value;
-                break;
-            default: 
-                break;
+        if(this.data.conditionData) {
+            this.condition1 = this.data.conditionData.name;
+            let value = this.data.conditionData.value;
+            switch(this.condition1) {
+                case '消费金额满':
+                    this.xfjem = value;
+                    break;
+                case '消费次数满':
+                    this.xfcsm = value;
+                    break;
+                case '积分获得满':
+                    this.jfhdm = value;
+                    break;
+                default: 
+                    break;
+            }
         }
     },
     props: {
