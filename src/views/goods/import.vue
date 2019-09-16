@@ -44,11 +44,12 @@
                 </el-upload>
                 <el-button @click="importGoods" class="import-button" type="primary"><i></i>批量导入商品</el-button>
             </p>
-            <p class="download-box">导入规则：请先<a class="download" href="javascript:;">下载商品导入模板</a>，在模板中按要求填写商品信息，然后上传该文件</p>
+            <p class="download-box">导入规则：请先<a class="download" href="javascript:;" @click="downloadTemplate">下载商品导入模板</a>，在模板中按要求填写商品信息，然后上传该文件</p>
         </section>
         <section>
             <p class="records">导入记录</p>
             <el-table
+                v-loading="loading"
                 :data="tableData"
                 :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
                 style="width: 100%">
@@ -100,7 +101,8 @@ export default {
             },
             uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
             url: '',
-            showFileList: false
+            showFileList: false,
+            loading: false,
         }
     },
     computed:{
@@ -113,6 +115,13 @@ export default {
         this.getList()
     },
     methods: {
+        downloadTemplate() {
+            let a = document.createElement("a");
+
+            a.setAttribute("href", location.protocol + '//' + location.host + '/static/template/商品导入模版.xlsx');
+            a.setAttribute("target", "_blank");
+            a.click();
+        },
         renovate() {
             this.getList()
         },
@@ -126,31 +135,29 @@ export default {
             }
         },
         getList(param) {
-            //this.listLoading = true
+            this.loading = true
             let _param
             
             _param = Object.assign({}, this.listQuery, param)
 
             this._apis.goods.getImportPageList(_param).then((res) => {
-                console.log(res)
                 this.total = +res.total
                 res.list.forEach((val, index) => {
                     val.number = index
                 })
                 this.tableData = res.list
+                this.loading = false
             }).catch(error => {
-                //this.listLoading = false
+                this.loading = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             })
         },
         importGoods() {
             this._apis.goods.importGoods({cid: this.cid, importUrl: this.url}).then((res) => {
-                console.log(res)
                 this.url = res.url
-                // this.$notify({
-                //     title: '成功',
-                //     message: '导入成功！',
-                //     type: 'success'
-                // });
                 let _text = ''
 
                 if(res.importFailCount == 0) {

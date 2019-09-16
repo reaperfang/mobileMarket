@@ -42,8 +42,8 @@
                             <i class="el-icon-plus"><br /><span>上传图片</span></i>
                         </li>
                         <li v-if="basicForm.imageUrl" class="image">
-                            <img src="" alt="">
-                            <i class="el-icon-error"></i>
+                            <div :style="{backgroundImage: `url(${basicForm.imageUrl})`}" class="image-div"></div>
+                            <i @click="deleteImage" class="el-icon-error"></i>
                         </li>
                     </ul>
                 </el-form-item>
@@ -72,7 +72,7 @@ export default {
                 enable: 1, // 状态
                 sort: 0, // 分类顺序
                 parentId: 0, // 分类父ID
-                image:'image', // 分类图片
+                imageUrl:'', // 分类图片
             },
             basicRules:{
                 name: [
@@ -115,8 +115,11 @@ export default {
         }
     },
     methods: {
+        deleteImage() {
+            this.basicForm.imageUrl =  ''
+        },
         imageSelected(image) {
-            this.basicForm.imageUrl = image.src
+            this.basicForm.imageUrl = decodeURIComponent(image.filePath)
         },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
@@ -246,11 +249,22 @@ export default {
             }
             &.image {
                 position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .image-div {
+                    width: 60px;
+                    height: 60px;
+                    background-size: 100%;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
                 .el-icon-error {
                     position: absolute;
                     right: -5px;
                     top: -5px;
-                    color: rgb(254, 211, 203);
+                    color: rgb(253, 76, 43);
+                    cursor: pointer;
                 }
             }
         }

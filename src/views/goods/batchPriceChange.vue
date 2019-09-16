@@ -43,6 +43,7 @@
                 <div :class="{active: state === -1}" @click="stateHandler(-1)" class="item">已售罄</div>
             </div>
             <el-table
+                v-loading="loading"
                 :data="list"
                 ref="table"
                 :header-cell-style="{color:'#655EFF'}"
@@ -119,8 +120,7 @@ export default {
             },
             stateiIems: [],
             list: [],
-            loading: false,
-            total: 50,
+            total: 0,
             listQuery: {
                 startIndex: 1,
                 pageSize: 20,
@@ -137,7 +137,8 @@ export default {
             categoryValue: [],
             isCategory: false,
             operateType: '',
-            productCatalogInfoId: ''
+            productCatalogInfoId: '',
+            loading: false,
         }
     },
     created() {
@@ -235,9 +236,13 @@ export default {
 
         },
         stateHandler(val) {
-            this.state = val
+            if(this.state === val) {
+                this.state = ''
+            } else {
+                this.state = val
+            }
 
-            let param = {status: val}
+            let param = {status: this.state}
 
             this.getList(param)
         },
@@ -259,14 +264,20 @@ export default {
             this.loading = true
             let _param
             
-            _param = Object.assign({}, this.listQuery, param)
+            _param = Object.assign({}, this.listQuery, param, {
+                productCatalogInfoId: this.productCatalogInfoId
+            })
 
             this._apis.goods.fetchGoodsList(_param).then((res) => {
                 this.total = +res.total
                 this.list = res.list
-                this.loading = true
+                this.loading = false
             }).catch(error => {
-                this.loading = true
+                this.loading = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             })
         },
     },
