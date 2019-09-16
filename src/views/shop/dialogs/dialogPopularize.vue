@@ -47,7 +47,7 @@
         <div class="setting" v-loading="loading">
           <div style="display:flex;" v-if="currentType === 'h5'">
             <el-input v-model="pageLink" placeholder="右击右侧按钮复制链接" style="margin-right:20px;"></el-input>
-            <el-button type="primary">复制</el-button>
+            <el-button type="primary"  v-clipboard:copy="pageLink" v-clipboard:success="onCopy" v-clipboard:error="onError">复制</el-button>
           </div>
           <div>
             <el-button type="text" @click="openSetting = true">更多设置</el-button>
@@ -296,6 +296,17 @@ export default {
      /* 弹框选中图片 */
     imageSelected(dialogData) {
       this.ruleForm.picture = dialogData.filePath;
+    },
+
+     onCopy () {
+      this.$message({
+        message: `复制成功！`,
+        type: 'success'
+      });
+    //   this.snackBar.info(this.$t('prompt.copySuccess'))
+    },
+    onError () {
+      this.$message.error(this.$t('prompt.copyFail'))
     }
   }
 };

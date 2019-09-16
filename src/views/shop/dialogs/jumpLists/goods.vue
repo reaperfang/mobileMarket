@@ -27,7 +27,14 @@
               <el-checkbox v-model="scope.row.active" @change="seletedChange(scope.row, scope.row.active)"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="商品名称" :width="500"></el-table-column>
+          <el-table-column prop="name" label="商品名称" :width="500">
+            <template slot-scope="scope">
+              <div class="name_wrapper">
+                <img :src="scope.row.mainImage" alt="加载错误" />
+                <p>{{scope.row.name}}</p>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column prop="productCatalogInfoName" label="所属分类"></el-table-column>
           <el-table-column prop="saleCount" label="总销量"></el-table-column>
         </el-table>
@@ -214,5 +221,17 @@ export default {
 <style lang="scss" scoped>
 .inline-head{
   justify-content: flex-end;
+}
+.name_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  img {
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+  }
 }
 </style>

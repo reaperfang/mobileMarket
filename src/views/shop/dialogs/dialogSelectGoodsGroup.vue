@@ -171,7 +171,10 @@ export default {
     renderContent(h, { node, data, store }) {
       return (
         <div class="treeRow">
-          <span class="td first">{data.categoryName}</span>
+          <span class="td first">
+           <img class="td img" src={data.image}/>
+           {data.categoryName}
+           </span>
           <span class="td state">{data.goods ? data.goods.length : 0}</span>
           <span class="td operate">
             {
@@ -198,6 +201,9 @@ export default {
 
     /* 弹窗选中了数据项 */
     dialogDataSelected(items) {
+      if(!items.length) {  //没有数据的分类不添加
+        return;
+      }
       /* 重置树形数据，把选中的商品回显到列表中 */
       for (let item of this.responseData) {
         if (this.currentCategory.id === item.id) {
@@ -262,14 +268,17 @@ export default {
     width: 100%;
   }
   .treeRow .td {
-    line-height: 36px;
-    height: 36px;
+    line-height: 40px;
+    height: 40px;
     display: inline-block;
     width: 33%;
     float: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .treeRow .td.img {
+    width:50px;
   }
   .treeRow .td .thumbImg {
     width: 30px;
@@ -288,6 +297,7 @@ export default {
   .treeRow .td:nth-child(2) {
     position: absolute;
     left: 35%;
+    text-align: center;
   }
   .treeRow .td:nth-child(3) {
     position: absolute;
