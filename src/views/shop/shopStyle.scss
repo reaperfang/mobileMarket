@@ -149,6 +149,12 @@ ul.cube {
                   &:last-child {
                         margin-right: 0;
                   }
+                  img{
+                        width:100%;
+                        height:100%;
+                        vertical-align: baseline;
+                        object-fit: cover;
+                  }
             }
 
             .type1 {
@@ -245,7 +251,7 @@ ul.cube {
                   .fill_block1,
                   .fill_block2 {
                         width: 100%;
-                        height: 100%;
+                        height: 50%;
                         margin-right: 0;
                         margin-bottom: 2px;
                   }
