@@ -280,6 +280,7 @@ export default {
   }
   .treeRow .td.img {
     width:50px;
+    object-fit: contain;
   }
   .treeRow .td .thumbImg {
     width: 30px;
@@ -291,6 +292,7 @@ export default {
   }
   .treeRow .td .thumbImg img {
     width: 100%;
+    object-fit: contain;
   }
   .treeRow .td.short {
     width: 10%;

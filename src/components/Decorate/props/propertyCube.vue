@@ -286,7 +286,7 @@ ul.cube.template_type{
        height:45px;
     }
     &.active{
-      border:1px solid $globalMainColor;
+      border:2px dashed $globalMainColor;
     }
     p{
       margin-top:6px;
@@ -303,7 +303,7 @@ ul.cube.template_type{
       .fill_block{
         cursor:pointer;
         &.active{
-          border:1px solid $globalMainColor;
+          border:2px dashed $globalMainColor;
         }
       }
       p{

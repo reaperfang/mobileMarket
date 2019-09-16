@@ -193,7 +193,10 @@ export default {
     }
   },
   created() {
-
+    const _self = this;
+    setTimeout(()=>{
+      console.log(_self.currentComponentData.data.list)
+    },500)
   },
   computed: {
     
@@ -207,7 +210,7 @@ export default {
 .cube_preview{
   li{
     .type{
-        height:250px;
+        height:300px;
     }
   }
 }
