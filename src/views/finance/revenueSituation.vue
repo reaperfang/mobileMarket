@@ -124,14 +124,14 @@ export default {
   components: {financeChart},
   watch: {
     timeValue(){
-      // this.getDataDateRs()
+      this.getDataDateRs()
     },
     days(){
-      // this.getDataNumRs()
+      this.getDataNumRs()
     }
   },
   created() {
-    this.init();
+    // this.init();
     this.getSurveyDay();
   },
   methods: {

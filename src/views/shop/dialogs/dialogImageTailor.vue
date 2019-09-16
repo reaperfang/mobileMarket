@@ -135,11 +135,12 @@ export default {
 
     submit() {
       this.$emit('submit','')
-    },    
+    },   
 
      // 点击裁剪，这一步是可以拿到处理后的地址
     finish() {
       this.$refs.cropper.getCropBlob((data) => {
+        console.log('data',data)
         var fileName = 'tailor' +  Math.random()
         this.loading = true
        //上传服务器
