@@ -84,8 +84,8 @@ export default {
         outputType: 'jpeg', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        // autoCropWidth: 300, // 默认生成截图框宽度
-        // autoCropHeight: 200, // 默认生成截图框高度
+        autoCropWidth: 300, // 默认生成截图框宽度
+        autoCropHeight: 200, // 默认生成截图框高度
         fixedBox: true, // 固定截图框大小 不允许改变
         fixed: true, // 是否开启截图框宽高固定比例
         fixedNumber: [7, 5], // 截图框的宽高比例
@@ -97,7 +97,8 @@ export default {
       },
       picsList: [],  //页面显示的数组
       // 防止重复提交
-      loading: false
+      loading: false,
+      uploadData: null
     }
   },
   computed: {
@@ -114,17 +115,17 @@ export default {
         return shopInfo.id
     }
   },
-  // watch:{
-  //   sizeNum(){
-  //     this.groupList.map(item =>{
-  //       if(item.value == this.sizeNum){
-  //         let arr = item.label.split('*')
-  //         this.option.autoCropWidth = arr[0]
-  //         this.option.autoCropHeight = arr[1]
-  //       }
-  //     })
-  //   }
-  // },
+  watch:{
+    sizeNum(){
+      this.groupList.map(item =>{
+        if(item.value == this.sizeNum){
+          let arr = item.label.split('*')
+          this.option.autoCropWidth = arr[0]
+          this.option.autoCropHeight = arr[1]
+        }
+      })
+    }
+  },
   created() {
     this.init()
   },
@@ -134,26 +135,42 @@ export default {
     },
 
     submit() {
-      this.$emit('submit','')
+      //this.$emit('submit','')
+      console.log(this.uploadData);
+      //上传服务器
+        // let formData = new FormData();
+        // var fileName = 'tailor' +  Math.random();
+        // // formData = Object.assign({file:this.option.img},{json:JSON.stringify({cid: 222})})
+        // formData.append("fileName", this.uploadData);
+        // formData.append("json",JSON.stringify({cid: 2}));
+        // this._apis.set.uploadImage(formData).then(response =>{
+        //   console.log('999999',response)
+          
+        // }).catch(error =>{
+
+        // })
     },    
 
      // 点击裁剪，这一步是可以拿到处理后的地址
     finish() {
       this.$refs.cropper.getCropBlob((data) => {
-        var fileName = 'tailor' +  Math.random()
+        console.log(data);
+        let file = new FileReader();
+        let obj = {
+          lastModified: new Date().getTime(),
+          lastModifiedDate: new Date(),
+          name: 'tailor' +  Math.random(),
+          webkitRelativePath:"",
+          size: data.size,
+          type: data.type
+        };
+        file = Object.assign({}, obj);
+        
+        this.uploadData = file;
+        var img = window.URL.createObjectURL(data);
+        //console.log(img)
+        this.option.img = img;
         this.loading = true
-       //上传服务器
-        let formData = {}
-        formData = Object.assign({file:data},{json:JSON.stringify({cid: 222})})
-        // console.log('data',data)
-        // formData.append("file", data, fileName);
-        // formData.append("json",JSON.stringify({cid: 222}));
-        this._apis.set.uploadImage(formData).then(response =>{
-          console.log('999999',response)
-          
-        }).catch(error =>{
-
-        })
       })
     }
 
