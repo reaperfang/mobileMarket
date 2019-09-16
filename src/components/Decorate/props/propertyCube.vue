@@ -268,6 +268,7 @@ export default {
       this.ruleForm.list[this.blockType]['linkTo'] = linkTo;
       const tempRuleForm = {...this.ruleForm};
       this.ruleForm = tempRuleForm;
+      console.log(this.ruleForm.list)
     },
   }
 }

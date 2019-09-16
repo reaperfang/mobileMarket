@@ -913,6 +913,7 @@ export default {
               width: 35px;
               height: 35px;
               margin-top: 12px;
+              object-fit: cover;
             }
           }
           & > .userCenter_three1Cont {

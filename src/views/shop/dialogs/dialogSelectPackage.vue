@@ -140,6 +140,7 @@ export default {
       display: block;
       margin-right: 10px;
       border: 1px solid #ddd;
+      object-fit: cover;
     }
 }
 </style>
