@@ -215,7 +215,8 @@ var shopInfos = function() {
         
                                 let obj = document.getElementById(_id)
                                 let parent = obj.parentNode
-        
+                                
+                                el.parentNode.removeChild(el)
                                 parent.removeChild(obj)
                                 let firstNode = parent.getElementsByClassName('el-tabs__item')[0]
                                 firstNode && firstNode.click()

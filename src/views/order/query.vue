@@ -78,13 +78,14 @@
         </el-form-item>
       </el-form>
       <div>
-        <el-button @click="exportOrders" class="border-button">导出订单</el-button>
+        <el-button v-permission="['订单', '订单查询', '商城订单', '导出订单']" @click="exportOrders" class="border-button">导出订单</el-button>
         <el-button
+           v-permission="['订单', '订单查询', '商城订单', '批量导入发货']"
           class="border-button"
           @click="$router.push('/order/batchImportAndDelivery')"
         >批量导入发货</el-button>
-        <el-button class="border-button" @click="batchSendGoods">批量发货</el-button>
-        <el-button class="border-button" @click="batchSupplementaryLogistics">批量补填物流</el-button>
+        <el-button v-permission="['订单', '订单查询', '商城订单', '批量发货']" class="border-button" @click="batchSendGoods">批量发货</el-button>
+        <el-button v-permission="['订单', '订单查询', '商城订单', '批量补填物流']" class="border-button" @click="batchSupplementaryLogistics">批量补填物流</el-button>
       </div>
     </section>
     <section>
@@ -94,7 +95,7 @@
         <span>{{total}}</span>项
       </p>
       <el-tabs class="tabs" v-model="activeName">
-        <el-tab-pane label="商城订单" name="shop">
+        <el-tab-pane v-permission="['订单', '订单查询', '商城订单']" label="商城订单" name="shop">
           <shop ref="shop" :params="listQuery"></shop>
         </el-tab-pane>
         <!-- <el-tab-pane label="积分商城订单" name="integralShop">

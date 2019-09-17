@@ -1,7 +1,7 @@
 <template>
     <div class="classify">
         <div class="search">
-            <el-button @click="addLevel1Category" type="primary">新增商品分类</el-button>
+            <el-button v-permission="['商品', '商品分类', '默认页面', '新建分类']" @click="addLevel1Category" type="primary">新增商品分类</el-button>
             <el-form :inline="true" :model="formInline" class="form-inline">
                 <el-form-item label="搜索分类：">
                     <el-input v-model="formInline.classify" placeholder="请输入分类名称..."></el-input>
@@ -122,15 +122,15 @@ export default {
                                 <span class="blue" on-click={() => this.change(node, data)}>修改</span>
                             }
                             {
-                                <span class="blue" on-click={() => this.addCategory(node, data)}>新增子分类</span>
+                                <span v-permission="['商品', '商品分类', '默认页面', '新建分类']" class="blue" on-click={() => this.addCategory(node, data)}>新增子分类</span>
                             }
                             {
-                                <span class="blue" on-click={() => this.forbidden(node, data)}>{
+                                <span v-permission="['商品', '商品分类', '默认页面', '隐藏']" class="blue" on-click={() => this.forbidden(node, data)}>{
                                     node.data.enable === 1 ? '禁用' : '启用'
                                 }</span>
                             }
                             {
-                                <span class="deleteColor" on-click={() => this.delete(node, data)}>删除</span>
+                                <span v-permission="['商品', '商品分类', '默认页面', '删除']" class="deleteColor" on-click={() => this.delete(node, data)}>删除</span>
                             }
                         </span>
                     </div>
