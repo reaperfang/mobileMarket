@@ -229,7 +229,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -248,10 +248,10 @@ export default {
   line-height: 178px;
   text-align: center;
 }
-.avatar {
+/deep/.avatar {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
 }
 </style>
