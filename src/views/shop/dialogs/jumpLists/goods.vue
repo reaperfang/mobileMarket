@@ -151,6 +151,9 @@ export default {
       }
       this.tableData = tempList;
 
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      let cid = shopInfo && shopInfo.id || ''
+
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'goods',
@@ -159,7 +162,8 @@ export default {
         data: {
           id: data.id,
           name: data.name
-        }
+        },
+        cid
       });
     },
 

@@ -85,11 +85,11 @@ export default {
   data () {
     return {
       ruleForm: {
-        templateType: 1,
-        slideType: 1,
-        backgroundColor: '#fff',
-        fontColor: '#000',
-        itemList: [{
+        templateType: 1,//模板类型
+        slideType: 1,//滑动类型
+        backgroundColor: '#fff',//背景颜色
+        fontColor: '#000',//文字颜色
+        itemList: [{//图文列表
           title: '',
           url: '',
           linkTo: null

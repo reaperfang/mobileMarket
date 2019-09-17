@@ -256,7 +256,7 @@ export default {
     openQrcode(codeType) {
       const _self = this;
       this.getQrcode(codeType, (url) =>{
-        _self.download(`data:image/png;base64,${url}`, '分享');
+        // _self.download(`data:image/png;base64,${url}`, '分享');
         const img = new Image();
         img.style.cssText = 'margin:200px auto 0;display: block;';
         img.src = `data:image/png;base64,${url}`;
@@ -270,7 +270,7 @@ export default {
     /* 获取二维码 */
     getQrcode(codeType, callback) {
       this._apis.shop.getQrcode({
-        url: this.pageLink,
+        url: this.pageLink.replace("&","[^]"),
         width: '225',
         height: '225',
         logoUrl: this.shopInfo.logo

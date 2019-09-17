@@ -60,13 +60,13 @@ export default {
   data () {
     return {
       ruleForm: {
-        textContent: "",
-        fontSize: 2,
-        fontColor: '#000000',
-        backgroundColor: '#ffffff',
-        displayStyle: 2,
-        linkTo: null,
-        showDivider: false
+        textContent: "",//文本
+        fontSize: 2,//字体大小
+        fontColor: '#000000',//文本颜色
+        backgroundColor: '#ffffff',//背景颜色
+        displayStyle: 2,//显示位置
+        linkTo: null,//链接
+        showDivider: false// 显示底部分割线
       },
       rules: {
 
