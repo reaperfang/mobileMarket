@@ -58,9 +58,9 @@
                     label="状态"
                     width="180">
                     <template slot-scope="scope">
-                        <span v-permission="['商品', '商品列表', '默认页面', '修改上下架']" @click="upperAndLowerRacks(scope.row)" class="goods-state">
+                        <span @click="upperAndLowerRacks(scope.row)" class="goods-state">
                             {{scope.row.goodsInfo.status | statusFilter}}
-                            <i :class="{grounding: scope.row.goodsInfo.status == 1, undercarriage: scope.row.goodsInfo.status == 0}" class="i-bg pointer"></i>
+                            <i v-permission="['商品', '商品列表', '默认页面', '修改上下架']" :class="{grounding: scope.row.goodsInfo.status == 1, undercarriage: scope.row.goodsInfo.status == 0}" class="i-bg pointer"></i>
                         </span>
                     </template>
                 </el-table-column>
@@ -73,14 +73,14 @@
                 <el-table-column
                     label="库存">
                     <template slot-scope="scope">
-                        <span v-permission="['商品', '商品列表', '默认页面', '修改库存']" @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="store">{{scope.row.goodsInfo.stock}}<i @click="editorStore(scope.row)" class="i-bg pointer"></i></span>
+                        <span @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="store">{{scope.row.goodsInfo.stock}}<i v-permission="['商品', '商品列表', '默认页面', '修改库存']" @click="editorStore(scope.row)" class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="price"
                     label="售卖价（元）">
                     <template slot-scope="scope">
-                        <span v-permission="['商品', '商品列表', '默认页面', '修改售卖价']" @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg pointer"></i></span>
+                        <span @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="price">{{scope.row.goodsInfo.salePrice}}<i v-permission="['商品', '商品列表', '默认页面', '修改售卖价']" class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="140">
