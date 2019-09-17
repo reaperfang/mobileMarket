@@ -157,8 +157,12 @@ export default {
     },
     batchSupplementaryLogistics() {
       if(!this.$refs['shop'].list.filter(val => val.checked).length) {
-          this.confirm({title: '提示', icon: true, text: '请选择需要补填物流的订单'})
+          this.confirm({title: '提示', icon: true, text: '请先勾选当前页已自动发货，需要批量补填物流信息订单。'})
           return
+      }
+      if(this.$refs['shop'].list.filter(val => val.isFillUp != 1).length) {
+        this.confirm({title: '提示', icon: true, text: '您勾选的订单包括非自动发货的订单，请重新选择。'})
+        return
       }
       this.$router.push('/order/batchSupplementaryLogistics?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.id).join(','))
     },
@@ -166,12 +170,7 @@ export default {
       this._apis.order
         .exportOrders()
         .then(res => {
-          let a = document.createElement('a')
-
-          a.setAttribute('href', res)
-          a.setAttribute('target', '_blank')
-          a.click()
-          console.log(href)
+          window.location.href = res
         })
         .catch(error => {});
     },
