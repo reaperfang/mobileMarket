@@ -107,7 +107,7 @@
             </el-form>
         </div>
         <div class="btn_cont">
-            <el-button type="primary" @click="saveLabel">保 存</el-button>
+            <el-button type="primary" @click="saveLabel" v-permission="['客户', '客户标签', '默认页面', '保存']">保 存</el-button>
             <el-button @click="_routeTo('clientLabel')">取 消</el-button>
         </div>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @getSelected="getSelected"></component>
