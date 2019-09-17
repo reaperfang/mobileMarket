@@ -375,11 +375,11 @@
                 <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="this.ruleForm.productDetail"></RichEditor>
             </el-form-item>
             <div class="footer">
-                <el-button @click="submitGoods" type="primary">保存</el-button>
+                <el-button @click="submitGoods('ruleForm')" type="primary">保存</el-button>
             </div>
         </section>
     </el-form>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength"></component>
 </div>
 </template>
 <script>
@@ -689,7 +689,10 @@ export default {
                 this.specsLength = this.specsList.length
                 this.flatSpecsList = this.flatTreeArray(JSON.parse(JSON.stringify(res)), 'list')
             }).catch(error => {
-
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             }) 
         },
         addGoods(params) {
@@ -722,45 +725,45 @@ export default {
                 });
             }) 
         },
-        submitGoods() {
-            let params
-            let _goodsInfos
-            let obj = {
-                //productCategoryInfoId: "6",
-                //productUnit: "4",
-                //productBrandInfoId: "1",
-                //goodsInfos: [{"costPrice": 100, salePrice: 120, stock: 1000, wanningStock: 900, weight: 1, volume: 1, specs: {"尺寸": "L", "颜色": "黑色"}}],
-                //goodsInfos: _goodsInfos,
-                //productDetail: '商品详情',
+        submitGoods(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let params
+                    let _goodsInfos
+                    let obj = {
+                        isShowSaleCount: this.ruleForm.isShowSaleCount ? 1 : 0,
+                        isShowStock: this.ruleForm.isShowStock ? 1 : 0,
+                        productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit
+                    }
 
-                isShowSaleCount: this.ruleForm.isShowSaleCount ? 1 : 0,
-                isShowStock: this.ruleForm.isShowStock ? 1 : 0,
-                productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit
-            }
+                    if(!this.editor) {
+                        _goodsInfos = this.ruleForm.goodsInfos.map(val => {
+                            let _specs = {}
 
-            if(!this.editor) {
-                _goodsInfos = this.ruleForm.goodsInfos.map(val => {
-                    let _specs = {}
+                            val.label.split(',').forEach((spec, index) => {
+                                _specs[this.specsLabel.split(',')[index]] = spec
+                            })
 
-                    val.label.split(',').forEach((spec, index) => {
-                        _specs[this.specsLabel.split(',')[index]] = spec
-                    })
+                            val.specs = _specs
 
-                    val.specs = _specs
+                            return val
+                        })
 
-                    return val
-                })
+                        obj.goodsInfos = _goodsInfos
+                    }
 
-                obj.goodsInfos = _goodsInfos
-            }
-
-            params = Object.assign({}, this.ruleForm, obj)
-            
-            if(!this.editor) {
-                this.addGoods(params)
-            } else {
-                this.editorGoods(params)
-            }
+                    params = Object.assign({}, this.ruleForm, obj)
+                    
+                    if(!this.editor) {
+                        this.addGoods(params)
+                    } else {
+                        this.editorGoods(params)
+                    }
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
         },
         // 获取单品牌管理列表
         getBrandList() {
