@@ -34,9 +34,9 @@ export default {
   data () {
     return {
       ruleForm: {
-        lineColor: 'rgb(229,229,229)',
-        lineMargin: 1,
-        lineStyle: 1
+        lineColor: 'rgb(229,229,229)',//颜色
+        lineMargin: 1,//	边距
+        lineStyle: 1//	样式
       },
       rules: {
 

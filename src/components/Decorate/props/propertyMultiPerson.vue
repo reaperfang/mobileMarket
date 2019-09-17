@@ -165,25 +165,25 @@ export default {
   data () {
     return {
       ruleForm: {
-        addType: 2,
-        showNumber: 5,
-        showAllBtns: true,
-        sortRule: 1,
-        listStyle: 1,
-        pageMargin: 15,
-        goodsMargin: 10,
-        goodsStyle: 1,
-        goodsChamfer: 1,
-        goodsRatio: 1,
-        goodsFill: 2,
-        textStyle: 1,
-        textAlign: 1,
-        showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],
-        hideSaledGoods: true,
-        buttonStyle: 1,
-        ids: [],
-        buttonText: '拼团',
-        buttonTextPrimary: '开团',
+        addType: 2,//	添加方式 
+        showNumber: 5,//显示个数
+        showAllBtns: true,//查看全部按钮
+        sortRule: 1,//排序规则
+        listStyle: 1,//列表样式
+        pageMargin: 15,//	页面边距
+        goodsMargin: 10,//	商品边距
+        goodsStyle: 1,//	商品样式
+        goodsChamfer: 1,// 商品倒角
+        goodsRatio: 1,//图片比例
+        goodsFill: 2,//图片填充
+        textStyle: 1,//文本样式
+        textAlign: 1,//文本对齐
+        showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],//显示内容
+        hideSaledGoods: true,//隐藏已售罄拼团商品
+        buttonStyle: 1,// 购买按钮样式
+        ids: [],//商品id列表 
+        buttonText: '拼团',// 次要按钮文字
+        buttonTextPrimary: '开团',//主要按钮文字
       },
       rules: {
 

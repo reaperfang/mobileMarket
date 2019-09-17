@@ -97,7 +97,7 @@ export default {
     height: 100%;
     & > img {
       width: 100%;
-      height: 180px;
+      // height: 180px;
       display: inline-block;
       //   object-fit: contain;
     }

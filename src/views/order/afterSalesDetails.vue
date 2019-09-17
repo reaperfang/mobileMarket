@@ -16,8 +16,8 @@
         </section>
         <section class="container">
             <el-tabs class="tabs" v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="售后信息" name="afterSalesInformation"></el-tab-pane>
-                <el-tab-pane label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
+                <el-tab-pane v-permission="['订单', '售后详情', '售后信息']" label="售后信息" name="afterSalesInformation"></el-tab-pane>
+                <el-tab-pane v-permission="['订单', '售后详情', '发货信息']" label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
             </el-tabs>
         </section>
         <component :is="currentView" :recordList="recordList" :orderAfterSale="orderAfterSale" :itemList="itemList" :sendItemList="sendItemList"></component>

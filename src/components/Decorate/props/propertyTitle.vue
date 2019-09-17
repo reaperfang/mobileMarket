@@ -64,15 +64,15 @@ export default {
   data () {
     return {
       ruleForm: {
-        mainTitle: '',
-        titleTemplate: 1,
-        displayPosition: 1,
-        subTitle: '',
-        backgroundColor: '#ffffff',
-        navName: '',
-        linkTo: null,
-        author: '',
-        date: ''
+        mainTitle: '',//标题名
+        titleTemplate: 1,//标题模板
+        displayPosition: 1,//显示位置
+        subTitle: '',//副标题
+        backgroundColor: '#ffffff',//背景颜色
+        navName: '',//导航名称
+        linkTo: null,//链接到
+        author: '',//作者
+        date: ''//时间
       },
       rules: {
 

@@ -3,9 +3,9 @@
         <div class="clearfix">
           <div class="fr">
             <el-radio-group class="fr" v-model="visitSourceType" @change="all">
-              <el-radio-button class="btn_bor" label="0">全部</el-radio-button>
-              <el-radio-button class="btn_bor" label="1">小程序</el-radio-button>
-              <el-radio-button class="btn_bor" label="2">公众号</el-radio-button>
+              <el-radio-button class="btn_bor" label="0" v-permission="['数据', '商品交易', '全部']">全部</el-radio-button>
+              <el-radio-button class="btn_bor" label="1" v-permission="['数据', '商品交易', '小程序']">小程序</el-radio-button>
+              <el-radio-button class="btn_bor" label="2" v-permission="['数据', '商品交易', '公众号']">公众号</el-radio-button>
             </el-radio-group>
           </div>
       </div>

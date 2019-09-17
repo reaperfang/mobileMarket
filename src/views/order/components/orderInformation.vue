@@ -38,9 +38,9 @@
                     <div class="label">本单获得</div>
                     <div class="value">
                         <p>积分 {{orderInfo.gainScore}}</p>
-                        <p>赠品 {{orderInfo.gift}}</p>
-                        <p>优惠券 {{gainCoupon}}</p>
-                        <p>优惠码 {{gainPromotionCode}}</p>
+                        <p>赠品 {{orderInfo.gift || 0}}</p>
+                        <p>优惠券 {{gainCoupon || 0}}</p>
+                        <p>优惠码 {{gainPromotionCode || 0}}</p>
                     </div>
                 </div>
             </div></el-col>

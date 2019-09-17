@@ -38,7 +38,7 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <el-button size="small" type="primary" class="upload_btn">点击上传</el-button>
+            <el-button size="small" type="primary" class="upload_btn" v-permission="['客户', '会员卡', '会员卡管理', '上传']">点击上传</el-button>
           </el-upload>
           <img v-if="imageUrl" :src="imageUrl" class="avatar cardImg" />
           <img v-else src="../../assets/images/client/card.png" alt class="cardImg" />

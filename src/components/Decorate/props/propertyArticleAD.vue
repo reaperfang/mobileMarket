@@ -114,12 +114,12 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       ruleForm: {
-        templateType: 1,
-        pageMargin: 10,
-        imgMargin: 10,
-        imgStyle: 1,
-        imgChamfer: 1,
-        itemList: [{
+        templateType: 1,  //模板类型
+        pageMargin: 10,  //页面边距
+        imgMargin: 10,  //图片间距
+        imgStyle: 1,  //图片样式
+        imgChamfer: 1,  //图片倒角
+        itemList: [{  //图片列表
           title: '',
           url: '',
           linkTo: null

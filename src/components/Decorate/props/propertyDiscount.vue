@@ -130,19 +130,19 @@ export default {
   data () {
     return {
       ruleForm: {
-        listStyle: 1,
-        pageMargin: 15,
-        goodsMargin: 10,
-        goodsStyle: 1,
-        goodsChamfer: 1,
-        goodsRatio: 1,
-        goodsFill: 2,
-        textStyle: 1,
-        textAlign: 1,
-        showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],
-        buttonStyle: 1,
-        ids: [],
-        buttonText: '加入购物车'
+        listStyle: 1,//列表样式
+        pageMargin: 15,//页面边距
+        goodsMargin: 10,//商品边距
+        goodsStyle: 1,//商品样式
+        goodsChamfer: 1,//商品倒角
+        goodsRatio: 1,//图片比例
+        goodsFill: 2,//图片填充
+        textStyle: 1,//文本样式
+        textAlign: 1,//文本对齐
+        showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],//显示内容
+        buttonStyle: 1,//购买按钮样式
+        ids: [],//折扣商品id列表
+        buttonText: '加入购物车'//按钮文字
       },
       rules: {
 

@@ -89,14 +89,14 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       ruleForm: {
-        hotWords: [],
-        borderStyle: 2,
-        borderHeight: 40,
-        backgroundColor: '#f2f2f2',
-        borderColor: '#ffffff',
-        fontColor: 'rgb(153,153,153)',
-        textPosition: 1,
-        shoppingCartBtn: 1
+        hotWords: [],//热词列表
+        borderStyle: 2,//框体样式
+        borderHeight: 40,//框体高度
+        backgroundColor: '#f2f2f2',//背景颜色
+        borderColor: '#ffffff',//框体颜色
+        fontColor: 'rgb(153,153,153)',//文字颜色
+        textPosition: 1,//文本位置
+        shoppingCartBtn: 1//购物车按钮显示	
       },
       rules: {},
       inputVisible: false,

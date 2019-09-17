@@ -120,7 +120,7 @@ export default {
     downloadTemplate() {
         let a = document.createElement("a");
 
-        a.setAttribute("href", location.protocol + '//' + location.host + '/static/template/批量导入发货模板.xls');
+        a.setAttribute("href", location.protocol + '//' + location.host + `/static/template/${encodeURIComponent('批量导入发货模板')}.xls`);
         a.setAttribute("target", "_blank");
         a.click();
     },
