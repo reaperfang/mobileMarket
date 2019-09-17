@@ -29,7 +29,7 @@
       <el-form-item label="背景颜色" prop="backgroundColor">
         <div class="color_block">
           <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
-          <colorPicker  v-model="ruleForm.backgroundColor" defaultColor="#ccc"></colorPicker >
+          <colorPicker  v-model="ruleForm.backgroundColor" defaultColor="#fff"></colorPicker >
           <!-- <el-button type="text">重置</el-button> -->
         </div>
       </el-form-item>
@@ -87,7 +87,7 @@ export default {
       ruleForm: {
         templateType: 1,
         slideType: 1,
-        backgroundColor: '#ccc',
+        backgroundColor: '#fff',
         fontColor: '#000',
         itemList: [{
           title: '',
