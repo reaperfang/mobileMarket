@@ -56,12 +56,12 @@ export default {
   data () {
     return {
       ruleForm: {
-        buyType: 1,
-        intervalStart: 10,
-        intervalEnd: 60,
-        backgroundColor: 'rgb(255,248,233)',
-        fontColor: 'rgb(102,102,102)',
-        ids: []
+        buyType: 1,// 购买公告类型
+        intervalStart: 10,//间隔时间开始
+        intervalEnd: 60,// 间隔时间结束 
+        backgroundColor: 'rgb(255,248,233)',//背景颜色
+        fontColor: 'rgb(102,102,102)',//字体颜色
+        ids: []//商品id列表
       },
       rules: {
 

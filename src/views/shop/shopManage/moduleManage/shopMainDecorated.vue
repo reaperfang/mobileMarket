@@ -78,7 +78,7 @@ export default {
       /* 获取二维码 */
     getQrcode(codeType, callback) {
       this._apis.shop.getQrcode({
-        url: this.homePageData.shareUrl,
+        url: this.homePageData.shareUrl.replace("&","[^]"),
         width: '250',
         height: '250',
         logoUrl: this.shopInfo.logo
