@@ -174,6 +174,8 @@ var shopInfos = function() {
         Vue.directive('permission', {
             inserted: function (el, binding, vnode) {
                 let { value } = binding
+
+                if(typeof value == 'string') value = eval(value)
         
                 let hasPermeission = function () {
                     let object1 = null
@@ -226,7 +228,7 @@ var shopInfos = function() {
                         }
                     }
                 } else {
-                    throw error('v-permission格式为长度大于2的字符串数组')
+                    throw new Error('v-permission格式为长度大于2的字符串数组')
                 }
             }
         })
