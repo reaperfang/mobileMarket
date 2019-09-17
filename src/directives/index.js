@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 // let msfList = [
 //     {
 //         "seqnum": 1,
