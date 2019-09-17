@@ -165,7 +165,11 @@ import Vue from 'vue'
 //         }]
 //     }
 // ]
-let msfList = JSON.parse(localStorage.getItem('shopInfos')).data.functions[0].children
+let msfList = []
+
+if(localStorage.getItem('shopInfos')) {
+    msfList = JSON.parse(localStorage.getItem('shopInfos')).data.functions[0].children
+}
 Vue.directive('permission', {
     inserted: function (el, binding, vnode) {
         let { value } = binding
