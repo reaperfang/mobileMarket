@@ -14,7 +14,7 @@
                 <span class="note">（交易次数：已付款订单数量）</span>
             </el-form-item>
             <el-form-item class="mtb200">
-                <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+                <el-button type="primary" @click="onSubmit('form')" v-permission="['设置', '会员设置', '默认页面', '修改']">保存</el-button>
             </el-form-item>
         </el-form>
     </div>

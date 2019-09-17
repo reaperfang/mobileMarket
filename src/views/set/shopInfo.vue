@@ -38,7 +38,7 @@
                 <el-input v-model="form.address" style="width: 70%;" placeholder="详细地址"/>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+                <el-button type="primary" @click="onSubmit('form')" v-permission="['设置', '店铺信息', '默认页面', '保存']">保存</el-button>
             </el-form-item>
         </el-form>
     </div>    
@@ -166,6 +166,7 @@ export default {
           ctx.restore();
           ctx.closePath();
           const base64 = _self.canvas.toDataURL("image/png"); 
+          console.log('base',base64)
       }
       img.src = res.data.url;
     },
@@ -209,6 +210,7 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
+    object-fit:fill;
   }
 </style>
 
