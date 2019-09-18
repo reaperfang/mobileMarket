@@ -90,6 +90,17 @@
             <el-table-column prop="goodsInfo.salePrice" label="商品价格"></el-table-column>
             <el-table-column prop="goodsInfo.stock" label="商品库存"></el-table-column>
           </el-table>
+          <div class="page_styles">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="Number(startIndex) || 1"
+              :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
+              :page-size="pageSize*1"
+              :total="total*1"
+              layout="total, sizes, prev, pager, next, jumper"
+            ></el-pagination>
+          </div>
         </div>
       </div>
       <span class="dialog-footer fcc">
@@ -124,10 +135,20 @@ export default {
       oldMember:"",
       selectProducts:[],
       isAllProduct: null,
-      distinguish: null
+      distinguish: null,
+      total: 0,
+      pageSize: 10,
+      startIndex: 1
     };
   },
   methods: {
+    handleSizeChange(val) {
+      this.getSkuList(1, val);
+      this.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      this.getSkuList(val, this.pageSize);
+    },
     submit() {
         let params = {
             id: this.data.row.id,
@@ -238,6 +259,7 @@ export default {
               v.goodsInfo.specs = v.goodsInfo.specs.replace(/{|}|"|"/g,"");
           })
           this.skuList = [].concat(response.list);
+          this.total = response.total;
         })
         .catch(error => {
           this.$notify.error({
@@ -346,6 +368,9 @@ export default {
   }
   .marR20 {
     margin-right: 20px;
+  }
+  .page_styles{
+    text-align: center;
   }
 }
 </style>
