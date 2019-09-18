@@ -193,7 +193,7 @@ export default {
             allCodes: [],
             couponList: [],
             codeList: [],
-            hackReset: false
+            hackReset: true
         }
     },
     methods: {
@@ -201,6 +201,10 @@ export default {
             this.getMemberInfo();
         },
         changeIdentity() {
+            this.hackReset = false;
+            this.$nextTick(() => {
+                this.hackReset = true;
+            })
             this.dialogVisible = true;
             this.currentDialog = "changeIdentityDialog";
             this.currentData.id = this.userId;

@@ -79,4 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/.edui-editor{
+    z-index: initial!important;
+}
 </style>

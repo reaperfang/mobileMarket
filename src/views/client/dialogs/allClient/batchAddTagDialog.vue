@@ -105,7 +105,7 @@ export default {
     text-align: left;
 }
 /deep/ .el-checkbox{
-    margin-bottom: 9px;
+    margin: 0 10px 9px 0;
 }
 .c_container{
     padding: 0 30px;

@@ -333,6 +333,7 @@ export default {
           display: block;
           height: 200px;
           border: 1px solid #ddd;
+          object-fit: contain;
         }
         h3{
           margin-top:20px;

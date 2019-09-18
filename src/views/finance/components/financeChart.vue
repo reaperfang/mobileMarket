@@ -18,9 +18,7 @@ export default {
       this.dataList = newData
     }
   },
-  created() {
-    
-  },
+  created() { },
   methods: {
     //设置图表数据项
     makeOption(data) {
