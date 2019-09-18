@@ -10,7 +10,7 @@
               {{form.business}}
             </el-form-item>
             <el-form-item label="创建日期:">
-              {{form.createTime}}
+              {{new Date(form.createTime*1) | formatDate('yyyy-MM-dd hh:mm:ss')}}
             </el-form-item>
             <el-form-item label="商户LOGO:">
                 <el-upload
@@ -61,7 +61,7 @@ export default {
       rules: {
         shopName: [
           { required: true, message: '请输入商户名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
         ],
         phone:[
           { required: true, message: '请输入电话号码', trigger: 'blur' },
