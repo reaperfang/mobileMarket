@@ -74,7 +74,7 @@ export default {
             }
         },
 
-        /* 设置分组商品参数 */
+        /* 设置分类商品参数 */
         setGroupGoodsParams(ids) {
             let params = {};
             if(this.currentCatagoryId === 'all') {

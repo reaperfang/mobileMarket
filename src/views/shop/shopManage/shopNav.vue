@@ -158,7 +158,7 @@
                 <el-checkbox label="1">主页</el-checkbox>
                 <el-checkbox label="2">个人中心</el-checkbox>
                 <el-checkbox label="3">商品搜索</el-checkbox>
-                <el-checkbox label="4">商品分组</el-checkbox>
+                <el-checkbox label="4">商品分类</el-checkbox>
                 <el-checkbox label="5">微页面及分类</el-checkbox>
               </el-checkbox-group>
             </el-form-item>

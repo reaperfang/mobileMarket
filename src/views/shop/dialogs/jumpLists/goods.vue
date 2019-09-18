@@ -95,7 +95,7 @@ export default {
   },
   methods: {
 
-    /* 获取分组列表 */
+    /* 获取分类列表 */
     getGoodsClassifyList() {
       this._apis.goods.fetchCategoryList({
         enable: '1'
