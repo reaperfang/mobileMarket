@@ -78,21 +78,21 @@
                 <div class="row">
                     <div class="col">优惠券金额:</div>
                     <div class="col">
-                        ¥{{orderDetail.orderInfo.consumeCouponMoney}}
+                        ¥{{orderDetail.orderInfo.consumeCouponMoney || 0}}
                         <i @click="currentDialog = 'CouponDialog'; currentData = {usedCouponList, usedPromotionList}; dialogVisible = true" class="coupon-img"></i>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">满减/满折:</div>
-                    <div class="col">- ¥{{orderDetail.orderInfo.discountMoney}}</div>
+                    <div class="col">- ¥{{orderDetail.orderInfo.discountMoney || 0}}</div>
                 </div>
                 <div class="row">
                     <div class="col">会员折扣:</div>
-                    <div class="col">- ¥{{orderDetail.orderInfo.memberDiscountMoney}}</div>
+                    <div class="col">- ¥{{orderDetail.orderInfo.memberDiscountMoney || 0}}</div>
                 </div>
                 <div class="row">
                     <div class="col">优惠套装:</div>
-                    <div class="col">- ¥{{orderDetail.orderInfo.discountPackageMoney}}</div>
+                    <div class="col">- ¥{{orderDetail.orderInfo.discountPackageMoney || 0}}</div>
                 </div>
                 <div class="row" v-if="orderDetail.orderInfo && orderDetail.orderInfo.discountFreight">
                     <div class="col">满包邮:</div>
