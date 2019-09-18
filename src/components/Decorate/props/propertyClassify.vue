@@ -54,7 +54,6 @@ export default {
         showType: 1,
         colorStyle: '#fff',
         explain: '',
-        isBaseComponent: true,
         pageInfos: []
       },
       rules: {
