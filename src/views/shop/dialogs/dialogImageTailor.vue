@@ -143,11 +143,11 @@ export default {
       this.$refs.cropper.getCropData((data) => {
         let urlData = data.substring(23, data.length);
         axios.post(this.uploadUrl,"json={\"cid\":\""+ this.cid +"\", \"content\":\""+ encodeURI(urlData).replace(/\+/g,'%2B')+"\"}",{headers: {'Origin':'http'}}).then((response) => {
-          let params = {
+         let params = {
             id: this.arrayData[0],
-            filePath: response.url,
-            imgPixelWidth: response.width,
-            imgPixelHeight: response.height
+            filePath: response.data.data.url,
+            imgPixelWidth: response.data.data.width,
+            imgPixelHeight: response.data.data.height
           }
           this._apis.file.editArticle(params).then((response) => {
             this.$notify({
