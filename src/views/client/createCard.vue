@@ -502,6 +502,7 @@ export default {
         formObj.id = this.ruleForm.id;
         formObj.alias = this.ruleForm.alias;
         formObj.level = this.ruleForm.level;
+        formObj.name = this.ruleForm.name;
         formObj.enable = this.ruleForm.enable;
         formObj.backgroundType = this.ruleForm.backgroundType;
         formObj.receiveSetting = this.ruleForm.receiveSetting;
