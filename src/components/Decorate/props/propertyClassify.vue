@@ -54,7 +54,6 @@ export default {
         showType: 1,
         colorStyle: '#fff',
         explain: '',
-        isBaseComponent: true,
         pageInfos: []
       },
       rules: {
@@ -116,5 +115,8 @@ export default {
       right: 5px!important;
     }
   }
+}
+/deep/.edui-editor{
+    z-index: initial!important;
 }
 </style>
