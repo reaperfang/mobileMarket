@@ -229,7 +229,7 @@
                 </div>
             </template>
             <template v-else-if="orderState == 2">
-                <template v-if="orderInfo.closeReaosn == 0">
+                <template v-if="orderInfo.closeReason == 0">
                     <!-- 超时取消 -->
                     <div class="item lefter">
                         <el-steps active="3">
@@ -243,7 +243,7 @@
                         <p>{{orderInfo.closeReaosn | closeReaosnFilter}}</p>
                     </div>
                 </template>
-                <template v-else-if="orderInfo.closeReaosn == 1">
+                <template v-else-if="orderInfo.closeReason == 1">
                     <!-- 客户取消 -->
                     <template v-if="orderInfo.payComplateTime">
                         <!-- 客户付款 -->
@@ -275,7 +275,7 @@
                         </div>
                     </template>
                 </template>
-                <template v-else-if="orderInfo.closeReaosn == 2">
+                <template v-else-if="orderInfo.closeReason == 2">
                     <!-- 商户关闭 -->
                     <template v-if="orderInfo.payComplateTime">
                         <!-- 客户付款 -->
@@ -307,7 +307,7 @@
                         </div>
                     </template>
                 </template>
-                <template v-else-if="orderInfo.closeReaosn == 3">
+                <template v-else-if="orderInfo.closeReason == 3">
                     <!-- 拼团失败 -->
                     <div class="item lefter">
                         <el-steps active="3">
@@ -321,7 +321,7 @@
                         <p>{{orderInfo.closeReaosn | closeReaosnFilter}}</p>
                     </div>
                 </template>
-                <template v-else-if="orderInfo.closeReaosn == 4">
+                <template v-else-if="orderInfo.closeReason == 4">
                     <!-- 商户关闭拼团 -->
                     <div class="item lefter">
                         <el-steps active="3">
@@ -335,7 +335,7 @@
                         <p>{{orderInfo.closeReaosn | closeReaosnFilter}}</p>
                     </div>
                 </template>
-                <template v-else-if="orderInfo.closeReaosn == 5">
+                <template v-else-if="orderInfo.closeReason == 5">
                     <!-- 客户拒收 -->
                     <div class="item lefter">
                         <el-steps active="5">

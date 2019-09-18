@@ -60,6 +60,7 @@
                 width="380">
                     <template slot-scope="scope">
                         <div class="ellipsis" style="width: 350px;" :title="scope.row.goodsInfo.name">{{scope.row.goodsInfo.name}}</div>
+                        <div class="gray">{{scope.row.goodsInfo.specs | specsFilter}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -155,6 +156,20 @@ export default {
                 return '已售馨'
             }
         },
+        specsFilter(value) {
+            let str = ''
+
+            if(typeof value == 'string') {
+                value = JSON.parse(value)
+            }
+            for(let i in value) {
+                str += i + ':' + value[i] + ','
+            }
+
+            str = str.replace(/(^.*?)\,$/, '$1')
+
+            return str
+        }
     },
     methods: {
         renovate() {
@@ -327,6 +342,9 @@ export default {
         .table-footer {
             margin-top: 43px;
         }
+    }
+    .gray {
+        color: #92929B;
     }
 </style>
 

@@ -178,11 +178,19 @@ export default {
             this.$router.push('/order/afterSaleBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderAfterSaleId).join(','))
         },
         batchPrintDistributionSlip() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请选择需要发货的售后单'})
+                return
+            }
             let ids = this.multipleSelection.map(val => val.orderAfterSaleId).join(',')
 
             this.$router.push('/order/printDistributionSheet?ids=' + ids + '&afterSale=' + true)
         },
         batchPrintElectronicForm() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请选择需要发货的售后单'})
+                return
+            }
             let ids = this.multipleSelection.map(val => val.orderAfterSaleId).join(',')
 
             this.$router.push('/order/printingElectronicForm?ids=' + ids + '&afterSale=' + true)

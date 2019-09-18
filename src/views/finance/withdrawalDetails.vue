@@ -42,7 +42,7 @@
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <el-button type="primary" @click="onSubmit" v-permission="['财务', '提现明细', '默认页面', '搜索']">搜索</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -50,8 +50,8 @@
       <div class="total">
         <span>全部 <em>{{total}}</em> 项</span>
         <span>
-          <el-button type="primary" @click="batchCheck">批量审批</el-button>
-          <el-button icon="document" @click='exportToExcel()'>导出</el-button>
+          <el-button type="primary" @click="batchCheck" v-permission="['财务', '提现明细', '默认页面', '批量审批']">批量审批</el-button>
+          <el-button icon="document" @click='exportToExcel()' v-permission="['财务', '提现明细', '默认页面', '导出']">导出</el-button>
         </span>
       </div>
       <el-table
@@ -96,8 +96,8 @@
         <el-table-column
         label="操作">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small" v-if="scope.row.status == 0" @click="examine(scope.row)">审核</el-button>
+            <el-button @click="handleClick(scope.row)" type="text" size="small" v-permission="['财务', '提现明细', '默认页面', '查看']">查看</el-button>
+            <el-button type="text" size="small" v-if="scope.row.status == 0" @click="examine(scope.row)" v-permission="['财务', '提现明细', '默认页面', '审核']">审核</el-button>
           </template>
         </el-table-column>
       </el-table>

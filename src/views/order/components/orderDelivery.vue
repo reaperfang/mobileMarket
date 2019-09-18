@@ -205,11 +205,19 @@ export default {
             this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderId).join(','))
         },
         batchPrintElectronicForm() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量打印电子面单的单据。'})
+                return
+            }
             let ids = this.multipleSelection.map(val => val.orderId).join(',')
 
             this.$router.push('/order/printingElectronicForm?ids=' + ids)
         },
         batchPrintDistributionSlip() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量打印配送单的单据。'})
+                return
+            }
             let ids = this.multipleSelection.map(val => val.id).join(',')
 
             this.$router.push('/order/printDistributionSheet?ids=' + ids)
