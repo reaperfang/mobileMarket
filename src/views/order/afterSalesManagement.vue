@@ -263,6 +263,7 @@ export default {
         exportOrder() {
            this._apis.order.orderAfterSaleExport({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
                 console.log(res)
+                window.location.href = res
                 this.$notify({
                     title: '成功',
                     message: '导出成功！',
