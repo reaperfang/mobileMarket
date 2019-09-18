@@ -1,12 +1,13 @@
 <template>
   <DialogBase :visible.sync="visible" width="600px" :title="'图片裁剪'" @submit="submit">
     <div class="cropper-content">
+      {{option.size}}
        <el-button @click="finish">裁剪</el-button>
       <div class="cropper" style="text-align:center;margin:10px 0;">
         <vueCropper
           ref="cropper"
           :img="option.img"
-          :outputSize="option.size"
+          :outputSize="option.outputSize"
           :outputType="option.outputType"
           :info="true"
           :full="option.full"
@@ -22,6 +23,7 @@
         ></vueCropper>
       </div>
     </div>
+    <img :src="imgUrl" alt="">
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="裁剪尺寸：">
           <el-select v-model="sizeNum" placeholder="请选择">
@@ -41,6 +43,7 @@
 import { VueCropper }  from 'vue-cropper'
 import DialogBase from "@/components/DialogBase";
 import utils from "@/utils";
+import axios from "axios";
 export default {
   name: "dialogImageTailor",
   components: {DialogBase,VueCropper},
@@ -54,6 +57,7 @@ export default {
   },
   data() {
     return {
+      imgUrl:"",
       form:{},
       sizeNum:'1',
       groupList:[
@@ -86,19 +90,20 @@ export default {
         autoCrop: true, // 是否默认生成截图框
         autoCropWidth: 300, // 默认生成截图框宽度
         autoCropHeight: 200, // 默认生成截图框高度
-        fixedBox: true, // 固定截图框大小 不允许改变
+        fixedBox: false, // 固定截图框大小 不允许改变
         fixed: true, // 是否开启截图框宽高固定比例
         fixedNumber: [7, 5], // 截图框的宽高比例
         full: true, // 是否输出原图比例的截图
         canMoveBox: false, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: false, // 截图框是否被限制在图片里面
-        infoTrue: true // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+        infoTrue: true, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
       },
       picsList: [],  //页面显示的数组
       // 防止重复提交
       loading: false,
-      uploadData: null
+      uploadData: null,
+      uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server-base64/api_file_remote_upload.do`,
     }
   },
   computed: {
@@ -136,7 +141,14 @@ export default {
 
     submit() {
       //this.$emit('submit','')
-      console.log(this.uploadData);
+      this.$refs.cropper.getCropData((data) => {
+        let urlData = data.substring(23, data.length);
+        axios.post(this.uploadUrl,"json="+JSON.stringify({"cid":'2', "content": data}),{headers: {'Origin':'http'}}).then((response) => {
+          console.log(response)
+        }).catch((error) => {
+          console.log(error);
+        })
+      })
       //上传服务器
         // let formData = new FormData();
         // var fileName = 'tailor' +  Math.random();
@@ -153,23 +165,12 @@ export default {
 
      // 点击裁剪，这一步是可以拿到处理后的地址
     finish() {
-      this.$refs.cropper.getCropBlob((data) => {
-        console.log(data);
-        let file = new FileReader();
-        let obj = {
-          lastModified: new Date().getTime(),
-          lastModifiedDate: new Date(),
-          name: 'tailor' +  Math.random(),
-          webkitRelativePath:"",
-          size: data.size,
-          type: data.type
-        };
-        file = Object.assign({}, obj);
-        
-        this.uploadData = file;
-        var img = window.URL.createObjectURL(data);
-        //console.log(img)
-        this.option.img = img;
+      this.$refs.cropper.getCropData((data) => {
+        console.log(data.substring(23,data.length));
+        this.uploadData = data;
+        //var img = window.URL.createObjectURL(data);
+        this.option.img = data;
+        this.imgUrl = data
         this.loading = true
       })
     }
