@@ -1,8 +1,7 @@
 <template>
   <DialogBase :visible.sync="visible" width="600px" :title="'图片裁剪'" @submit="submit">
     <div class="cropper-content">
-      {{option.size}}
-       <el-button @click="finish">裁剪</el-button>
+       <!-- <el-button @click="finish">裁剪</el-button> -->
       <div class="cropper" style="text-align:center;margin:10px 0;">
         <vueCropper
           ref="cropper"
@@ -136,44 +135,52 @@ export default {
   },
   methods: {
     init(){
-      this.option.img = this.data
+      this.option.img = this.data;
     },
 
     submit() {
       //this.$emit('submit','')
       this.$refs.cropper.getCropData((data) => {
         let urlData = data.substring(23, data.length);
-        axios.post(this.uploadUrl,"json="+JSON.stringify({"cid":'2', "content": data}),{headers: {'Origin':'http'}}).then((response) => {
-          console.log(response)
+        axios.post(this.uploadUrl,"json={\"cid\":\""+ this.cid +"\", \"content\":\""+ encodeURI(urlData).replace(/\+/g,'%2B')+"\"}",{headers: {'Origin':'http'}}).then((response) => {
+          let params = {
+            id: this.arrayData[0],
+            filePath: response.url,
+            imgPixelWidth: response.width,
+            imgPixelHeight: response.height
+          }
+          this._apis.file.editArticle(params).then((response) => {
+            this.$notify({
+              title: '成功',
+              message: '图片裁剪成功',
+              type: 'success'
+            });
+          }).catch((error) => {
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          })
         }).catch((error) => {
-          console.log(error);
+          this.$notify.error({
+            title: '错误',
+            message: error
+          });
         })
       })
-      //上传服务器
-        // let formData = new FormData();
-        // var fileName = 'tailor' +  Math.random();
-        // // formData = Object.assign({file:this.option.img},{json:JSON.stringify({cid: 222})})
-        // formData.append("fileName", this.uploadData);
-        // formData.append("json",JSON.stringify({cid: 2}));
-        // this._apis.set.uploadImage(formData).then(response =>{
-        //   console.log('999999',response)
-          
-        // }).catch(error =>{
-
-        // })
     },    
 
      // 点击裁剪，这一步是可以拿到处理后的地址
-    finish() {
-      this.$refs.cropper.getCropData((data) => {
-        console.log(data.substring(23,data.length));
-        this.uploadData = data;
-        //var img = window.URL.createObjectURL(data);
-        this.option.img = data;
-        this.imgUrl = data
-        this.loading = true
-      })
-    }
+    // finish() {
+    //   this.$refs.cropper.getCropData((data) => {
+    //     console.log(data.substring(23,data.length));
+    //     this.uploadData = data;
+    //     //var img = window.URL.createObjectURL(data);
+    //     this.option.img = data;
+    //     this.imgUrl = data
+    //     this.loading = true
+    //   })
+    // }
 
     //上传图片（点击上传按钮）
     // finish(type) { 
