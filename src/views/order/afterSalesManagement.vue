@@ -41,8 +41,8 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button class="border-button" @click="exportOrder">导出</el-button>
-                        <el-button class="border-button" @click="batchUpdateStatus">批量审核</el-button>
+                        <el-button v-permission="['订单', '售后管理', '默认页', '导出']" class="border-button" @click="exportOrder">导出</el-button>
+                        <el-button v-permission="['订单', '售后管理', '默认页', '批量审核']" class="border-button" @click="batchUpdateStatus">批量审核</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting pointer">重置</span>
@@ -100,12 +100,12 @@
                 </el-table-column>
                 <el-table-column label="操作" width="220">
                     <template slot-scope="scope">
-                        <span class="blue pointer" @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                        <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateStatus(scope.row)">同意</span>
-                        <span class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateRejectStatus(scope.row)">拒绝</span>
-                        <span class="blue pointer" @click="showLogistics(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">查看物流</span>
-                        <span class="blue pointer" @click="confirmReceived(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">确认收货</span>
-                        <span class="blue pointer" @click="drawback(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">退款</span>
+                        <span v-permission="['订单', '售后管理', '默认页', '查看']" class="blue pointer" @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
+                        <span v-permission="['订单', '售后管理', '默认页', '同意']" class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateStatus(scope.row)">同意</span>
+                        <span v-permission="['订单', '售后管理', '默认页', '拒绝']" class="blue pointer" v-if="scope.row.orderAfterSaleStatus == 0" @click="updateRejectStatus(scope.row)">拒绝</span>
+                        <span v-permission="['订单', '售后管理', '默认页', '查看物流']" class="blue pointer" @click="showLogistics(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">查看物流</span>
+                        <span v-permission="['订单', '售后管理', '默认页', '确认收货']" class="blue pointer" @click="confirmReceived(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">确认收货</span>
+                        <span v-permission="['订单', '售后管理', '默认页', '退款']" class="blue pointer" @click="drawback(scope.row)" v-if="scope.row.orderAfterSaleStatus == 2">退款</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -263,6 +263,7 @@ export default {
         exportOrder() {
            this._apis.order.orderAfterSaleExport({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
                 console.log(res)
+                window.location.href = res
                 this.$notify({
                     title: '成功',
                     message: '导出成功！',

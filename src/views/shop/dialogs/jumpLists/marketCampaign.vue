@@ -128,6 +128,9 @@ export default {
       }
       this.tableData = tempList;
 
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      let cid = shopInfo && shopInfo.id || ''
+
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'marketCampaign',
@@ -137,7 +140,8 @@ export default {
           id: data.appId,
           name: data.appActivityName,
           activityType: data.appType
-        }
+        },
+        cid
       });
     }
 

@@ -38,13 +38,13 @@
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
-            <el-switch v-model="scope.row.status" @change="handleSwitch(scope.row)"></el-switch>
+            <el-switch v-model="scope.row.status" @change="handleSwitch(scope.row)" v-permission="['客户', '会员等级', '默认页面', '启用/禁用']"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-            <span class="edit_span" @click="edit(scope.row)" v-if="scope.row.name">编辑</span>
-            <span class="edit_span" @click="edit(scope.row)" v-if="!scope.row.name" :style="{color:scope.row.isGray?'#eee':'#655EFF'}">待配置</span>
+            <span class="edit_span" @click="edit(scope.row)" v-if="scope.row.name" v-permission="['客户', '会员等级', '默认页面', '查看']">编辑</span>
+            <span class="edit_span" @click="handleConfig(scope.row)" v-if="!scope.row.name" :style="{color:scope.row.isGray?'#eee':'#655EFF'}" v-permission="['客户', '会员等级', '默认页面', '待配置']">待配置</span>
         </template>
       </el-table-column>
     </el-table>
@@ -76,16 +76,17 @@ export default {
   methods: {
     getLevelsList() {
       this._apis.client.getLevelsList(this.params).then((response) => {
-        response.list.map((v) => {v.status = Boolean(v.status)});
+        response.list.map((v) => {
+          v.status = Boolean(v.status);
+          v.isGray = true;
+        });
         this.levelList = [].concat(response.list);
         let i = this.levelList.findIndex((value,index,arr) => {
-            return value.name == "";
+            return value.name == null;
         });
-        this.levelList.map((v,index) => {
-          if(index > 2) {
-            v.isGray = true
-          }
-        });
+        if(i !== -1) {
+          this.$set(response.list[i], 'isGray', false);
+        }
       }).catch((error) => {
         this.$notify.error({
           title: '错误',
@@ -94,6 +95,9 @@ export default {
       })
     },
     edit(row) {
+      this._routeTo('levelInfo',{id: row.id});
+    },
+    handleConfig(row) {
       if(!row.isGray) {
         this._routeTo('levelInfo',{id: row.id});
       }

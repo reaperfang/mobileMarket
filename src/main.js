@@ -62,6 +62,7 @@ Vue.use(VueClipboard)
 /* 自定义全局变量或方法挂载 */
 Vue.prototype._routeTo = utils.routeTo; //全局路由跳转快捷方式  routeTo('login', {a:1, b:2})
 Vue.prototype._globalEvent = utils.eventHub.default;  //挂载全局事件对象，跨组件发通知,单例对象
+import '@/directives/index.js'
 import api from '@/api';
 Vue.prototype._apis = api;
 

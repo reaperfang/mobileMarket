@@ -21,16 +21,7 @@
         </div>
       </el-form-item>
       <el-form-item label="商品分组" v-if="ruleForm.source === 2" prop="goodsGroup">
-        <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">从商品分组中选择</el-button>
-        <div class="goods_groups">
-          <el-tag
-            v-for="tag in ruleForm.goodsGroups"
-            :key="tag.title"
-            closable
-            type="success" @close="deleteGoodsGroup(tag)">
-            {{tag.title}}
-          </el-tag>
-        </div>
+        <el-button type="text"  @click="pageDialogVisible=true; currentPageDialog='goodsGroup'">{{seletedGroup && seletedGroup.data.name || '从商品分组中选择'}}</el-button>
       </el-form-item>
       <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
@@ -131,37 +122,43 @@
     </div>
     
     <!-- 动态弹窗 -->
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected" @dialogGoodsGroupSelected="dialogGoodsGroupSelected"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @dialogDataSelected="dialogDataSelected"></component>
+
+    <!-- 商品分类选择弹框 -->
+    <DialogBase :visible.sync="pageDialogVisible" width="816px" title="选择商品分类" @submit="seletePage">
+      <component v-if="pageDialogVisible" :is="currentPageDialog" @seletedRow="rowSeleted"></component>
+    </DialogBase>
   </el-form>
 </template>
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
 import mixinGoods from '../mixins/mixinGoods';
+import DialogBase from "@/components/DialogBase";
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
-import dialogSelectGoodsGroup from '@/views/shop/dialogs/dialogSelectGoodsGroup';
+import goodsGroup from '@/views/shop/dialogs/jumpLists/goodsGroup';
 export default {
   name: 'propertyGoods',
   mixins: [propertyMixin, mixinGoods],
-  components: {dialogSelectGoods, dialogSelectGoodsGroup},
+  components: {DialogBase, dialogSelectGoods, goodsGroup},
   data () {
     return {
       ruleForm: {
-        source: 1,
-        goodsGroups: [],
-        showNumber: 0,
-        listStyle: 1,
-        pageMargin: 15,
-        goodsMargin: 10,
-        goodsStyle: 1,
-        goodsChamfer: 1,
-        goodsRatio: 1,
-        goodsFill: 2,
-        textStyle: 1,
-        textAlign: 1,
-        showContents: ['1', '2', '3', '4'],
-        buttonStyle: 1,
-        ids: [],
+        source: 1,//商品来源
+        showNumber: 30,//商品分组显示个数 
+        listStyle: 1,//列表样式
+        pageMargin: 15,//页面边距
+        goodsMargin: 10,//商品边距
+        goodsStyle: 1,//商品样式
+        goodsChamfer: 1,//商品倒角
+        goodsRatio: 1,//图片比例
+        goodsFill: 2,//图片填充
+        textStyle: 1,//文本样式
+        textAlign: 1,// 文本对齐
+        showContents: ['1', '2', '3', '4'],//显示内容
+        buttonStyle: 1,// 购买按钮样式
+        ids: [],//商品id列表
+        currentCatagoryId: '',  //选中的商品分类id
         buttonText: '加入购物车'
       },
       rules: {
@@ -169,7 +166,9 @@ export default {
       },
       list: [],
       dialogVisible: false,
-      currentDialog: ''
+      currentDialog: '',
+      seletedGroup: null,   //临时选中的商品分类
+      pageDialogVisible: false
     }
   },
   created() {
@@ -195,20 +194,13 @@ export default {
   },
   methods: {
 
-    /* 弹窗选中了商品分组 */
-    dialogGoodsGroupSelected(goodsGroup) {
-      this.ruleForm.goodsGroups = goodsGroup;
+    rowSeleted(row) {
+      this.seletedGroup = row;
     },
 
-     /* 删除项 */
-    deleteGoodsGroup(item) {
-      const tempGoodsGroups = [...this.ruleForm.goodsGroups];
-      for(let i=0;i<tempGoodsGroups.length;i++) {
-        if(item === tempGoodsGroups[i]) {
-          tempGoodsGroups.splice(i, 1);
-        }
-      }
-      this.ruleForm.goodsGroups = tempGoodsGroups;
+     /* 弹窗选中了跳转链接 */
+    seletePage() {
+      this.ruleForm.currentCatagoryId = this.seletedGroup.data.id;
     }
   }
 }

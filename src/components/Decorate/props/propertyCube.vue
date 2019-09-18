@@ -74,63 +74,107 @@
       <el-form-item label="布局" prop="layout">
         <div class="layout">
           <ul class="cube layout_wrapper">
-            <!-- <div class="layout_block" style="margin-right:2px;">宽度375像素</div>
-            <div class="layout_block">宽度375像素</div> -->
             <li v-if="ruleForm.templateType === 1">
               <div class="type type1">
-                <div class="fill_block"  @click="selectLayout(1,1)" :class="{'active': ruleForm.templateType === 1 && blockType === 1}"></div>
-                <div class="fill_block"  @click="selectLayout(1,2)" :class="{'active': ruleForm.templateType === 1 && blockType === 2}"></div>
+                <div class="fill_block"  @click="selectLayout(1,1)" :class="{'active': ruleForm.templateType === 1 && blockType === 1}">
+                  <img v-if="ruleForm.list['1']" :src="ruleForm.list['1'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(1,2)" :class="{'active': ruleForm.templateType === 1 && blockType === 2}">
+                   <img v-if="ruleForm.list['2']" :src="ruleForm.list['2'].url" alt="">
+                </div>
               </div>
             </li>
             <li v-if="ruleForm.templateType === 2">
               <div class="type type2">
-                <div class="fill_block"  @click="selectLayout(2,1)" :class="{'active': ruleForm.templateType === 2 && blockType === 1}"></div>
-                <div class="fill_block"  @click="selectLayout(2,2)" :class="{'active': ruleForm.templateType === 2 && blockType === 2}"></div>
-                <div class="fill_block"  @click="selectLayout(2,3)" :class="{'active': ruleForm.templateType === 2 && blockType === 3}"></div>
+                <div class="fill_block"  @click="selectLayout(2,1)" :class="{'active': ruleForm.templateType === 2 && blockType === 1}">
+                   <img v-if="ruleForm.list['1']" :src="ruleForm.list['1'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(2,2)" :class="{'active': ruleForm.templateType === 2 && blockType === 2}">
+                   <img v-if="ruleForm.list['2']" :src="ruleForm.list['2'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(2,3)" :class="{'active': ruleForm.templateType === 2 && blockType === 3}">
+                   <img v-if="ruleForm.list['3']" :src="ruleForm.list['3'].url" alt="">
+                </div>
               </div>
             </li>
             <li v-if="ruleForm.templateType === 3">
               <div class="type type3">
-                <div class="fill_block"  @click="selectLayout(3,1)" :class="{'active': ruleForm.templateType === 3 && blockType === 1}"></div>
-                <div class="fill_block"  @click="selectLayout(3,2)" :class="{'active': ruleForm.templateType === 3 && blockType === 2}"></div>
-                <div class="fill_block"  @click="selectLayout(3,3)" :class="{'active': ruleForm.templateType === 3 && blockType === 3}"></div>
-                <div class="fill_block"  @click="selectLayout(3,4)" :class="{'active': ruleForm.templateType === 3 && blockType === 4}"></div>
+                <div class="fill_block"  @click="selectLayout(3,1)" :class="{'active': ruleForm.templateType === 3 && blockType === 1}">
+                   <img v-if="ruleForm.list['1']" :src="ruleForm.list['1'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(3,2)" :class="{'active': ruleForm.templateType === 3 && blockType === 2}">
+                   <img v-if="ruleForm.list['2']" :src="ruleForm.list['2'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(3,3)" :class="{'active': ruleForm.templateType === 3 && blockType === 3}">
+                   <img v-if="ruleForm.list['3']" :src="ruleForm.list['3'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(3,4)" :class="{'active': ruleForm.templateType === 3 && blockType === 4}">
+                   <img v-if="ruleForm.list['4']" :src="ruleForm.list['4'].url" alt="">
+                </div>
               </div>
             </li>
             <li v-if="ruleForm.templateType === 4">
               <div class="type type4">
-                <div class="fill_block"  @click="selectLayout(4,1)" :class="{'active': ruleForm.templateType === 4 && blockType === 1}"></div>
-                <div class="fill_block"  @click="selectLayout(4,2)" :class="{'active': ruleForm.templateType === 4 && blockType === 2}"></div>
-                <div class="fill_block"  @click="selectLayout(4,3)" :class="{'active': ruleForm.templateType === 4 && blockType === 3}"></div>
-                <div class="fill_block"  @click="selectLayout(4,4)" :class="{'active': ruleForm.templateType === 4 && blockType === 4}"></div>
+                <div class="fill_block"  @click="selectLayout(4,1)" :class="{'active': ruleForm.templateType === 4 && blockType === 1}">
+                   <img v-if="ruleForm.list['1']" :src="ruleForm.list['1'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(4,2)" :class="{'active': ruleForm.templateType === 4 && blockType === 2}">
+                   <img v-if="ruleForm.list['2']" :src="ruleForm.list['2'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(4,3)" :class="{'active': ruleForm.templateType === 4 && blockType === 3}">
+                   <img v-if="ruleForm.list['3']" :src="ruleForm.list['3'].url" alt="">
+                </div>
+                <div class="fill_block"  @click="selectLayout(4,4)" :class="{'active': ruleForm.templateType === 4 && blockType === 4}">
+                   <img v-if="ruleForm.list['4']" :src="ruleForm.list['4'].url" alt="">
+                </div>
               </div>
             </li>
             <li v-if="ruleForm.templateType === 5">
               <div class="type type5">
-                <div class="fill_block fill_block1"  @click="selectLayout(5,1)" :class="{'active': ruleForm.templateType === 5 && blockType === 1}"></div>
+                <div class="fill_block fill_block1"  @click="selectLayout(5,1)" :class="{'active': ruleForm.templateType === 5 && blockType === 1}">
+                  <img v-if="ruleForm.list['1']" :src="ruleForm.list['1'].url" alt="">
+                </div>
                 <div class="fill_block fill_block2">
-                  <div class="fill_block fill_block3"  @click="selectLayout(5,2)" :class="{'active': ruleForm.templateType === 5 && blockType === 2}"></div>
-                  <div class="fill_block fill_block4"  @click="selectLayout(5,3)" :class="{'active': ruleForm.templateType === 5 && blockType === 3}"></div>
+                  <div class="fill_block fill_block3"  @click="selectLayout(5,2)" :class="{'active': ruleForm.templateType === 5 && blockType === 2}">
+                    <img v-if="ruleForm.list['2']" :src="ruleForm.list['2'].url" alt="">
+                  </div>
+                  <div class="fill_block fill_block4"  @click="selectLayout(5,3)" :class="{'active': ruleForm.templateType === 5 && blockType === 3}">
+                    <img v-if="ruleForm.list['3']" :src="ruleForm.list['3'].url" alt="">
+                  </div>
                 </div>
               </div>
             </li>
             <li v-if="ruleForm.templateType === 6">
               <div class="type type6">
-                <div class="fill_block fill_block1"  @click="selectLayout(6,1)" :class="{'active': ruleForm.templateType === 6 && blockType === 1}"></div>
+                <div class="fill_block fill_block1"  @click="selectLayout(6,1)" :class="{'active': ruleForm.templateType === 6 && blockType === 1}">
+                  <img v-if="ruleForm.list['1']" :src="ruleForm.list['1'].url" alt="">
+                </div>
                 <div class="fill_block fill_block2">
-                  <div class="fill_block fill_block3"  @click="selectLayout(6,2)" :class="{'active': ruleForm.templateType === 6 && blockType === 2}"></div>
-                  <div class="fill_block fill_block4"  @click="selectLayout(6,3)" :class="{'active': ruleForm.templateType === 6 && blockType === 3}"></div>
+                  <div class="fill_block fill_block3"  @click="selectLayout(6,2)" :class="{'active': ruleForm.templateType === 6 && blockType === 2}">
+                    <img v-if="ruleForm.list['2']" :src="ruleForm.list['2'].url" alt="">
+                  </div>
+                  <div class="fill_block fill_block4"  @click="selectLayout(6,3)" :class="{'active': ruleForm.templateType === 6 && blockType === 3}">
+                    <img v-if="ruleForm.list['3']" :src="ruleForm.list['3'].url" alt="">
+                  </div>
                 </div>
               </div>
             </li>
             <li v-if="ruleForm.templateType === 7">
               <div class="type type7">
-                <div class="fill_block fill_block1"  @click="selectLayout(7,1)" :class="{'active': ruleForm.templateType === 7 && blockType === 1}"></div>
+                <div class="fill_block fill_block1"  @click="selectLayout(7,1)" :class="{'active': ruleForm.templateType === 7 && blockType === 1}">
+                  <img v-if="ruleForm.list['1']" :src="ruleForm.list['1'].url" alt="">
+                </div>
                 <div class="fill_block fill_block2">
-                  <div class="fill_block fill_block3"  @click="selectLayout(7,2)" :class="{'active': ruleForm.templateType === 7 && blockType === 2}"></div>
+                  <div class="fill_block fill_block3"  @click="selectLayout(7,2)" :class="{'active': ruleForm.templateType === 7 && blockType === 2}">
+                    <img v-if="ruleForm.list['2']" :src="ruleForm.list['2'].url" alt="">
+                  </div>
                   <div class="fill_block fill_block4">
-                    <div class="fill_block fill_block5"  @click="selectLayout(7,3)" :class="{'active': ruleForm.templateType === 7 && blockType === 3}"></div>
-                    <div class="fill_block fill_block6"  @click="selectLayout(7,4)" :class="{'active': ruleForm.templateType === 7 && blockType === 4}"></div>
+                    <div class="fill_block fill_block5"  @click="selectLayout(7,3)" :class="{'active': ruleForm.templateType === 7 && blockType === 3}">
+                      <img v-if="ruleForm.list['3']" :src="ruleForm.list['3'].url" alt="">
+                    </div>
+                    <div class="fill_block fill_block6"  @click="selectLayout(7,4)" :class="{'active': ruleForm.templateType === 7 && blockType === 4}">
+                      <img v-if="ruleForm.list['4']" :src="ruleForm.list['4'].url" alt="">
+                    </div>
                   </div>
                 </div>
               </div>
@@ -152,20 +196,16 @@
         </div>
       </el-form-item>
       <el-form-item label="添加图片" prop="">
-        <!-- <div v-if="item.url" class="img_preview">
-          <img :src="item.url" alt="">
+        <div v-if="ruleForm.list[this.blockType] && ruleForm.list[this.blockType].url" class="img_preview">
+          <img :src="ruleForm.list[this.blockType].url" alt="">
           <span @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
         </div>
         <div v-else class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
           <i class="inner"></i>
-        </div> -->
+        </div>
       </el-form-item>
       <el-form-item label="跳转链接" prop="pageLink">
-         <el-input
-          placeholder="请选择跳转链接"
-          v-model="ruleForm.pageLink">
-        </el-input>
-        <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">修改</el-button>
+        <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">{{ruleForm.list[this.blockType] && ruleForm.list[this.blockType].linkTo ? ruleForm.list[this.blockType].linkTo.typeName + '-' + (ruleForm.list[this.blockType].linkTo.data.title || ruleForm.list[this.blockType].linkTo.data.name) : '选择跳转到的页面'}}</el-button>
       </el-form-item>
     </div>
 
@@ -185,14 +225,15 @@ export default {
   data () {
     return {
       ruleForm: {
-        templateType: 1,
-        imgMargin: 2,
-        pagePadding:0
+        templateType: 1,//模板类型
+        imgMargin: 2,//图片间隙
+        pagePadding:0,//页面间距
+        list: {}//魔方列表
       },
       rules: {},
       dialogVisible: false,
       currentDialog: '',
-      blockType: 1
+      blockType: 1 //块类型
     }
   },
   methods: {
@@ -211,13 +252,23 @@ export default {
 
     /* 弹框选中图片 */
     imageSelected(dialogData) {
-      console.log(dialogData);
+      if(!this.ruleForm.list[this.blockType]) {
+        this.ruleForm.list[this.blockType] = {};
+      }
+      this.ruleForm.list[this.blockType]['url'] = dialogData.filePath;
+      const tempRuleForm = {...this.ruleForm};
+      this.ruleForm = tempRuleForm;
     },
 
     /* 弹窗选中了跳转链接 */
     seletedPage(linkTo) {
-      // this.ruleForm.linkTo = linkTo;
-      //TODU
+      if(!this.ruleForm.list[this.blockType]) {
+        this.ruleForm.list[this.blockType] = {};
+      }
+      this.ruleForm.list[this.blockType]['linkTo'] = linkTo;
+      const tempRuleForm = {...this.ruleForm};
+      this.ruleForm = tempRuleForm;
+      console.log(this.ruleForm.list)
     },
   }
 }
@@ -235,7 +286,7 @@ ul.cube.template_type{
        height:45px;
     }
     &.active{
-      border:1px solid $globalMainColor;
+      border:2px dashed $globalMainColor;
     }
     p{
       margin-top:6px;
@@ -252,7 +303,7 @@ ul.cube.template_type{
       .fill_block{
         cursor:pointer;
         &.active{
-          border:1px solid $globalMainColor;
+          border:2px dashed $globalMainColor;
         }
       }
       p{

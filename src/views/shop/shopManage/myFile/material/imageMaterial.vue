@@ -36,7 +36,7 @@
                 </div>
                 <div class="operate" ref="operate">
                   <el-button type="primary" plain class="block mt10 ml10" @click="moveGroup(item.id)">分组</el-button>
-                  <el-button type="primary" plain class="block mt10" v-if="!item.isSyncWechat" @click="imageTailor(item.filePath)">剪裁</el-button>
+                  <el-button type="primary" plain class="block mt10" v-if="!item.isSyncWechat" @click="imageTailor(item)">剪裁</el-button>
                   <el-button type="primary" plain class="block mt10" @click="deleteImage(item.id,'imageId')">删除</el-button>
                 </div>
               </div>
@@ -319,10 +319,12 @@ export default {
     },
 
     //图片裁剪
-    imageTailor(url){
+    imageTailor(item){
       this.dialogVisible = true;
       this.currentDialog = 'dialogImageTailor'
-      this.data = url
+      this.data = item.filePath;
+      this.arrayData = [];
+      this.arrayData.push(item.id);
     },
     /**********************************        单张图片      **********************/
     onMouseOver(index){
@@ -460,6 +462,7 @@ export default {
           img{
             width: 240px;
             height:150px;
+            object-fit: cover;
           }
           .img_bottom{
             width:100%;

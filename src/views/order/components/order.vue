@@ -13,7 +13,7 @@
             <div class="item">状态</div>
             <div class="item">操作</div>
         </div>
-        <div class="order-container">
+        <div class="order-container" v-loading="loading">
             <div class="container-item" v-for="(order, index) in list" :key="index">
                 <div class="container-item-header">
                     <div class="item">
@@ -32,7 +32,7 @@
                         <span>订单类型：{{order.orderType | orderTypeFilter}}</span>
                         <span><i class="memberLevelImg" :style="{background: `url(${order.memberLevelImg})`}"></i>客户ID：{{order.memberSn}}</span>
                         <span>订单来源：{{order.channelName}}</span>
-                        <i @click="closeOrder(order.id)" v-if="order.orderStatus == 2" class="el-icon-delete"></i>
+                        <i v-permission="['订单', '订单查询', '商城订单', '删除订单']" @click="closeOrder(order.id)" v-if="order.orderStatus == 2" class="el-icon-delete"></i>
                     </div>
                 </div>
                 <div class="container-item-content">
@@ -73,42 +73,42 @@
                     <div class="item operate">
                         <template v-if="order.orderStatus == 0">
                             <!-- 待付款 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">订单改价</p>
-                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
-                            <p @click="makeCollections(order)">确认收款</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '订单改价']" @click="$router.push('/order/orderDetail?id=' + order.id)">订单改价</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '关闭订单']" @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '确认收款']" @click="makeCollections(order)">确认收款</p>
                         </template>
                         <template v-else-if="order.orderStatus == 1">
                             <!-- 待成团 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                         </template>
                         <template v-else-if="order.orderStatus == 2">
                             <!-- 关闭 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
                         </template>
                         <template v-else-if="order.orderStatus == 3">
                             <!-- 待发货 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p @click="$router.push('/order/deliverGoods?id=' + order.id)">发货</p>
-                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '发货']" @click="$router.push('/order/deliverGoods?id=' + order.id)">发货</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '关闭订单']" @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">关闭订单</p>
                         </template>
                         <template v-else-if="order.orderStatus == 4">
                             <!-- 部分发货 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p>继续发货</p>
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
-                            <p @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">提前关闭订单</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '继续发货']" @click="$router.push('/order/deliverGoods?id=' + order.id)">继续发货</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '发货信息']" @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '提前关闭订单']" @click="currentDialog = 'CloseOrderDialog'; currentData = order.id; dialogVisible = true">提前关闭订单</p>
                         </template>
                         <template v-else-if="order.orderStatus == 5">
                             <!-- 待收货 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
-                            <p v-if="order.isFillUp == 1" @click="$router.push('/order/supplementaryLogistics?id=' + order.id)">补填物流</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '发货信息']" @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '补填物流']" v-if="order.isFillUp == 1" @click="$router.push('/order/supplementaryLogistics?id=' + order.id)">补填物流</p>
                         </template>
                         <template v-else-if="order.orderStatus == 6">
                             <!-- 完成 -->
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
-                            <p @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '查看详情']" @click="$router.push('/order/orderDetail?id=' + order.id)">查看详情</p>
+                            <p v-permission="['订单', '订单查询', '商城订单', '发货信息']" @click="$router.push('/order/orderDetail?id=' + order.id + '&tab=2')">发货信息</p>
                         </template>
                     </div>
                 </div>
@@ -129,6 +129,7 @@ export default {
             currentDialog: '',
             currentData: '',
             dialogVisible: false,
+            loading: false
         }
     },
     created() {
@@ -211,7 +212,7 @@ export default {
         },
         makeCollections(order) {
            this.confirm({title: '确认收款提示', icon: true, text: `确定收款后无法撤销，您要确认收款吗？`}).then(() => {
-                this._apis.order.makeCollections({id: order.orderInfo.id, payWay: 4}).then((res) => {
+                this._apis.order.makeCollections({id: order.id, payWay: 4}).then((res) => {
                     this.$emit('getList')
                     this.visible = false
                     this.$notify({

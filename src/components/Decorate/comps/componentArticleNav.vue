@@ -32,7 +32,7 @@
       <div v-if="currentComponentData.data.slideType===1">
         <ul :class="currentComponentData.data.itemList.length>5?'img_nav4':'img_nav3'">
           <li ref="img_w" v-for="(item,index) in currentComponentData.data.itemList">
-            <span :style="{color:data.fontColor}">{{item.title}}</span>
+            <span :style="{color:data.fontColor}" class="ellipsis">{{item.title}}</span>
           </li>
         </ul>
       </div>
@@ -89,6 +89,7 @@ export default {
         & > img {
           width: 100%;
           height: 100%;
+          object-fit:cover;
         }
       }
       & > p {

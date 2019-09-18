@@ -38,13 +38,14 @@
                 <el-input v-model="form.address" style="width: 70%;" placeholder="详细地址"/>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+                <el-button type="primary" @click="onSubmit('form')" v-permission="['设置', '店铺信息', '默认页面', '保存']">保存</el-button>
             </el-form-item>
         </el-form>
     </div>    
 </template>
 <script>
 
+import axios from "axios";
 export default {
   name: 'shopInfo',
   data() {
@@ -52,6 +53,7 @@ export default {
       form: {
           shopName: '',
           logo:'',
+          logoCircle:'',
           phone:'',
           addressCode:[],
           address:'',
@@ -75,6 +77,7 @@ export default {
       area: [],
       shopInfo:{},
       uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
+      uploadUrlBase64: `${process.env.UPLOAD_SERVER}/web-file/file-server-base64/api_file_remote_upload.do`,
       //canvas:{}
     }
   },
@@ -125,6 +128,7 @@ export default {
               id:id,
               shopName:this.form.shopName,
               logo:this.form.logo,
+              logoCircle:this.form.logoCircle,
               phone:this.form.phone,
               provinceCode:this.form.addressCode[0],
               cityCode:this.form.addressCode[1],
@@ -160,14 +164,24 @@ export default {
           ctx.save();
           // 剪切形状
           ctx.clip();
-
           // 绘制头像，参数（图片资源，x坐标，y坐标，宽度，高度）
           ctx.drawImage(img, 0, 0, 80, 80);
           ctx.restore();
           ctx.closePath();
-          const base64 = _self.canvas.toDataURL("image/png"); 
+          let base64 = _self.canvas.toDataURL("image/png"); 
+          let urlData = base64.substring(22, base64.length);          
+          _self.uploadCircle(urlData)
       }
       img.src = res.data.url;
+    },
+
+    uploadCircle(urlData){
+      axios.post(this.uploadUrlBase64,"json={\"cid\":\""+this.cid+"\", \"content\":\""+ encodeURI(urlData).replace(/\+/g,'%2B')+"\"}",{headers: {'Origin':'http'}}).then((response) => {
+        this.form.logoCircle = response.data.url
+        // console.log('6666666',response)
+      }).catch((error) => {
+        console.log(error);
+      })
     },
 
     beforeAvatarUpload(file) {
@@ -209,6 +223,7 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
+    object-fit:fill;
   }
 </style>
 

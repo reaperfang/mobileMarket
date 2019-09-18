@@ -17,9 +17,11 @@ export default {
     },
     watch: {
         currentCatagoryId(newValue) {
-            this.currentCatagoryId = newValue;
             this.fetch();
         },
+        'ruleForm.currentCatagoryId'() {
+            this.fetch();
+        }
     },
     methods:{
 
@@ -27,19 +29,26 @@ export default {
         fetch() {
             if(this.currentComponentData && this.currentComponentData.data) {
                 let params = {};
-                const ids = this.currentComponentData.data.ids;
-                if(ids) {
-                    if(Object.prototype.toString.call(ids) === '[object Object]') {
-                        params = this.setGroupGoodsParams(ids);
-                    }else if(Array.isArray(ids) && ids.length){
-                        params = this.setNormalGoodsParams(ids);
+                if(!this.currentComponentData.data.source || (this.currentComponentData.data.source === 1)) {
+                    const ids = this.currentComponentData.data.ids;
+                    if(ids) {
+                        if(Object.prototype.toString.call(ids) === '[object Object]') {
+                            params = this.setGroupGoodsParams(ids);
+                        }else if(Array.isArray(ids) && ids.length){
+                            params = this.setNormalGoodsParams(ids);
+                        }else{
+                            this.list = [];
+                            return;
+                        }
                     }else{
                         this.list = [];
                         return;
                     }
-                }else{
-                    this.list = [];
-                    return;
+                }else if(this.currentComponentData.data.source === 2){
+                    params = {
+                        status: '1',
+                        productCatalogInfoId: this.ruleForm.currentCatagoryId
+                    };
                 }
 
                 this.loading = true;
@@ -60,6 +69,9 @@ export default {
           /* 创建数据 */
         createList(datas) {
             this.list = datas;
+            if(this.currentComponentData.data.source === 2) {
+                this._globalEvent.$emit('goodsListOfGroupChange', datas);  //告知中央组件list数据更改
+            }
         },
 
         /* 设置分组商品参数 */

@@ -1,9 +1,9 @@
 <template>
     <div class="goods-list">
         <header class="header">
-            <div class="item pointer" @click="$router.push('/goods/addGoods')">新建商品</div>
-            <div class="item pointer" @click="$router.push('/goods/batchPriceChange')">批量改价</div>
-            <div class="item pointer" @click="$router.push('/goods/import')">商品导入</div>
+            <div v-permission="['商品', '商品列表', '默认页面', '新建商品']" class="item pointer" @click="$router.push('/goods/addGoods')">新建商品</div>
+            <div v-permission="['商品', '商品列表', '默认页面', '批量改价']" class="item pointer" @click="$router.push('/goods/batchPriceChange')">批量改价</div>
+            <div v-permission="['商品', '商品列表', '默认页面', '商品导入']" class="item pointer" @click="$router.push('/goods/import')">商品导入</div>
         </header>
         <div class="search">
             <el-form :inline="true" :model="listQuery" class="demo-form-inline">
@@ -52,15 +52,16 @@
                 width="380">
                     <template slot-scope="scope">
                         <div class="ellipsis" style="width: 350px;" :title="scope.row.goodsInfo.name">{{scope.row.name}}</div>
+                        <div class="gray">{{scope.row.goodsInfo.specs | specsFilter}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
                     label="状态"
                     width="180">
                     <template slot-scope="scope">
-                        <span @click="upperAndLowerRacks(scope.row)" class="goods-state">
+                        <span class="goods-state">
                             {{scope.row.goodsInfo.status | statusFilter}}
-                            <i :class="{grounding: scope.row.goodsInfo.status == 1, undercarriage: scope.row.goodsInfo.status == 0}" class="i-bg pointer"></i>
+                            <i v-permission="['商品', '商品列表', '默认页面', '修改上下架']" @click="upperAndLowerRacks(scope.row)" :class="{grounding: scope.row.goodsInfo.status == 1, undercarriage: scope.row.goodsInfo.status == 0}" class="i-bg pointer"></i>
                         </span>
                     </template>
                 </el-table-column>
@@ -73,20 +74,20 @@
                 <el-table-column
                     label="库存">
                     <template slot-scope="scope">
-                        <span @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="store">{{scope.row.goodsInfo.stock}}<i @click="editorStore(scope.row)" class="i-bg pointer"></i></span>
+                        <span class="store">{{scope.row.goodsInfo.stock}}<i v-permission="['商品', '商品列表', '默认页面', '修改库存']" @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="price"
                     label="售卖价（元）">
                     <template slot-scope="scope">
-                        <span @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="price">{{scope.row.goodsInfo.salePrice}}<i class="i-bg pointer"></i></span>
+                        <span class="price">{{scope.row.goodsInfo.salePrice}}<i v-permission="['商品', '商品列表', '默认页面', '修改售卖价']" @click="currentData = scope.row; currentDialog = 'EditorPrice'; dialogVisible = true" class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="140">
                     <template slot-scope="scope">
-                        <span @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor pointer"><i class="i-bg"></i>编辑</span>
-                        <span @click="deleleHandler(scope.row)" class="operate-delete pointer"><i class="i-bg"></i>删除</span>
+                        <span v-permission="['商品', '商品列表', '默认页面', '修改商品信息']" @click="$router.push('/goods/addGoods?id=' + scope.row.id + '&goodsInfoId=' + scope.row.goodsInfo.id)" class="operate-editor pointer"><i class="i-bg"></i>编辑</span>
+                        <span v-permission="['商品', '商品列表', '默认页面', '删除商品']" @click="deleleHandler(scope.row)" class="operate-delete pointer"><i class="i-bg"></i>删除</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -94,15 +95,15 @@
                 <el-button @click="moreManageHandler" type="primary">批量管理</el-button>
                 <el-button v-if="showTableCheck" @click="checkAllHandler">全选</el-button>
                 <div v-if="showTableCheck" class="image-box">
-                    <div @click="allUpper" class="item">
+                    <div v-permission="['商品', '商品列表', '默认页面', '批量上/下架']" @click="allUpper" class="item">
                         <i class="i-bg up"></i>
                         <p>上架</p>
                     </div>
-                    <div @click="allLower" class="item">
+                    <div v-permission="['商品', '商品列表', '默认页面', '批量上/下架']" @click="allLower" class="item">
                         <i class="i-bg down"></i>
                         <p>下架</p>
                     </div>
-                    <div @click="allDelete" class="item">
+                    <div v-permission="['商品', '商品列表', '默认页面', '批量删除']" @click="allDelete" class="item">
                         <i class="i-bg delete"></i>
                         <p>删除</p>
                     </div>
@@ -131,6 +132,7 @@
         margin-right: 18px;
         .item {
             margin-right: 22px;
+            cursor: pointer;
             .i-bg {
                 position: relative;
                 display: inline-block;
@@ -218,6 +220,9 @@
 .footer {
     margin-top: 10px;
 }
+.gray {
+    color: #92929B;
+}
 </style>
 
 <script>
@@ -281,6 +286,20 @@ export default {
             //     return ''
             // }
 
+        },
+        specsFilter(value) {
+            let str = ''
+
+            if(typeof value == 'string') {
+                value = JSON.parse(value)
+            }
+            for(let i in value) {
+                str += i + ':' + value[i] + ','
+            }
+
+            str = str.replace(/(^.*?)\,$/, '$1')
+
+            return str
         }
     },
     methods: {
@@ -403,9 +422,13 @@ export default {
             this.multipleSelection = val;
         },
         stateHandler(val) {
-            this.state = val
+            if(this.state === val) {
+                this.state = ''
+            } else {
+                this.state = val
+            }
 
-            let param = {status: val}
+            let param = {status: this.state}
 
             this.getList(param)
         },

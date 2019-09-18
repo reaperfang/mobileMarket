@@ -47,7 +47,7 @@
         <div class="setting" v-loading="loading">
           <div style="display:flex;" v-if="currentType === 'h5'">
             <el-input v-model="pageLink" placeholder="右击右侧按钮复制链接" style="margin-right:20px;"></el-input>
-            <el-button type="primary">复制</el-button>
+            <el-button type="primary"  v-clipboard:copy="pageLink" v-clipboard:success="onCopy" v-clipboard:error="onError">复制</el-button>
           </div>
           <div>
             <el-button type="text" @click="openSetting = true">更多设置</el-button>
@@ -256,7 +256,7 @@ export default {
     openQrcode(codeType) {
       const _self = this;
       this.getQrcode(codeType, (url) =>{
-        _self.download(`data:image/png;base64,${url}`, '分享');
+        // _self.download(`data:image/png;base64,${url}`, '分享');
         const img = new Image();
         img.style.cssText = 'margin:200px auto 0;display: block;';
         img.src = `data:image/png;base64,${url}`;
@@ -270,7 +270,7 @@ export default {
     /* 获取二维码 */
     getQrcode(codeType, callback) {
       this._apis.shop.getQrcode({
-        url: this.pageLink,
+        url: this.pageLink.replace("&","[^]"),
         width: '225',
         height: '225',
         logoUrl: this.shopInfo.logo
@@ -296,6 +296,17 @@ export default {
      /* 弹框选中图片 */
     imageSelected(dialogData) {
       this.ruleForm.picture = dialogData.filePath;
+    },
+
+     onCopy () {
+      this.$message({
+        message: `复制成功！`,
+        type: 'success'
+      });
+    //   this.snackBar.info(this.$t('prompt.copySuccess'))
+    },
+    onError () {
+      this.$message.error(this.$t('prompt.copyFail'))
     }
   }
 };
