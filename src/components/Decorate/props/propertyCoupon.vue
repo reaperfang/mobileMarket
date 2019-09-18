@@ -71,13 +71,13 @@ export default {
   data () {
     return {
       ruleForm: {
-        addType: 2,
-        showNumber: 5,   //券活动数
+        addType: 2,//添加方式
+        showNumber: 5,   //显示个数限制
         couponNumberType: 1,  //券活动数类型
-        couponStyle: 1,
-        couponColor: 1,
-        hideScrambled: false,
-        ids: []
+        couponStyle: 1,//优惠券样式
+        couponColor: 1,//优惠券颜色类型
+        hideScrambled: false,//隐藏已抢完券
+        ids: []//优惠券id列表
       },
       rules: {
 

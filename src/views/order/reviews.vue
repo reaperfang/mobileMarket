@@ -38,9 +38,9 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button @click="batchAudit" class="border-button">批量审核</el-button>
-                        <el-button @click="batchReply" class="border-button">批量回复</el-button>
-                        <el-button @click="$router.push('/order/sensitiveWords')" class="border-button">敏感词设置</el-button>
+                        <el-button v-permission="['订单', '评价管理', '默认页面', '批量审核']" @click="batchAudit" class="border-button">批量审核</el-button>
+                        <el-button v-permission="['订单', '评价管理', '默认页面', '批量回复']" @click="batchReply" class="border-button">批量回复</el-button>
+                        <el-button v-permission="['订单', '评价管理', '默认页面', '敏感词设置']" @click="$router.push('/order/sensitiveWords')" class="border-button">敏感词设置</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting pointer">重置</span>
@@ -123,9 +123,15 @@
                     <el-table-column label="操作" width="150px">
                         <template slot-scope="scope">
                             <div class="operate-box">
-                                <span v-if="scope.row.auditStatus == 0" class="blue" @click="currentDialog = 'AuditDialog'; title='审核'; batch = false; currentData = scope.row; dialogVisible = true">审核</span>
-                            <span class="blue" @click="setChoiceness(scope.row)">{{scope.row.isChoiceness == 1 ? '取消精选' : '设为精选'}}</span>
-                            <span @click="$router.push({ path: '/order/reviewsDetail?id=' +  scope.row.id})" class="blue">查看</span>
+                                <span v-permission="['订单', '评价管理', '默认页面', '审核']" v-if="scope.row.auditStatus == 0" class="blue" @click="currentDialog = 'AuditDialog'; title='审核'; batch = false; currentData = scope.row; dialogVisible = true">审核</span>
+                            <!-- <span class="blue" @click="setChoiceness(scope.row)">{{scope.row.isChoiceness == 1 ? '取消精选' : '设为精选'}}</span> -->
+                            <template v-if="scope.row.isChoiceness == 1">
+                                <span v-permission="['订单', '评价管理', '默认页面', '取消精选']" class="blue" @click="setChoiceness(scope.row)">取消精选</span>
+                            </template>
+                            <template v-else>
+                                <span v-permission="['订单', '评价管理', '默认页面', '设为精选']" class="blue" @click="setChoiceness(scope.row)">设为精选</span>
+                            </template>
+                            <span v-permission="['订单', '评价管理', '默认页面', '查看']" @click="$router.push({ path: '/order/reviewsDetail?id=' +  scope.row.id})" class="blue">查看</span>
                             </div>
                         </template>
                     </el-table-column>

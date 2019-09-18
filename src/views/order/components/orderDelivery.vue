@@ -54,10 +54,10 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button class="border-button" @click="$router.push('/order/batchImportAndDelivery')">批量导入发货</el-button>
-                        <el-button class="border-button" @click="batchSendGoods">批量发货</el-button>
-                        <el-button class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
-                        <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
+                        <el-button v-permission="['订单', '发货管理', '订单发货', '批量导入发货']" class="border-button" @click="$router.push('/order/batchImportAndDelivery')">批量导入发货</el-button>
+                        <el-button v-permission="['订单', '发货管理', '订单发货', '批量发货']" class="border-button" @click="batchSendGoods">批量发货</el-button>
+                        <el-button v-permission="['订单', '发货管理', '订单发货', '批量打印配送订单']" class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
+                        <el-button v-permission="['订单', '发货管理', '订单发货', '批量打印电子面单']" class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting pointer">重置</span>
@@ -123,12 +123,12 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <div class="operate-box">
-                            <span @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
+                            <span v-permission="['订单', '发货管理', '订单发货', '查看']" @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
                             <template v-if="scope.row.status == 4">
-                                <span @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">继续发货</span>
+                                <span v-permission="['订单', '发货管理', '订单发货', '继续发货']" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">继续发货</span>
                             </template>
                             <template v-else-if="scope.row.status == 3">
-                                <span v-if="!scope.row.isFillUp" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>
+                                <span v-permission="['订单', '发货管理', '订单发货', '发货']" v-if="!scope.row.isFillUp" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">发货</span>
                                 <span v-else @click="$router.push('/order/supplementaryLogistics?id=' + scope.row.id)">补填物流</span>
                             </template>
                         </div>
@@ -205,11 +205,19 @@ export default {
             this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderId).join(','))
         },
         batchPrintElectronicForm() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量打印电子面单的单据。'})
+                return
+            }
             let ids = this.multipleSelection.map(val => val.orderId).join(',')
 
             this.$router.push('/order/printingElectronicForm?ids=' + ids)
         },
         batchPrintDistributionSlip() {
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量打印配送单的单据。'})
+                return
+            }
             let ids = this.multipleSelection.map(val => val.id).join(',')
 
             this.$router.push('/order/printDistributionSheet?ids=' + ids)

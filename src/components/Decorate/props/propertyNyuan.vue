@@ -137,22 +137,22 @@ export default {
   data () {
     return {
       ruleForm: {
-        listStyle: 1,
-        pageMargin: 15,
-        goodsMargin: 10,
-        goodsStyle: 1,
-        goodsChamfer: 1,
-        goodsRatio: 1,
-        goodsFill: 2,
-        textStyle: 1,
-        textAlign: 1,
-        showContents: ['1', '2', '3', '4', '5', '6', '7'],
-        buttonStyle: 1,
-        hideSaledGoods: true,
-        hideEndGoods: false,
-        hideType: 1,
-        ids: [],
-        buttonText: '查看活动'
+        listStyle: 1,//列表样式
+        pageMargin: 15,//页面边距
+        goodsMargin: 10,//商品边距
+        goodsStyle: 1,//商品样式
+        goodsChamfer: 1,//商品倒角
+        goodsRatio: 1,//图片比例
+        goodsFill: 2,//图片填充
+        textStyle: 1,//文本样式
+        textAlign: 1,//文本对齐
+        showContents: ['1', '2', '3', '4', '5', '6', '7'],//显示内容
+        buttonStyle: 1,//购买按钮样式
+        hideSaledGoods: true,//隐藏已售罄活动
+        hideEndGoods: false,//隐藏活动结束活动 
+        hideType: 1,//隐藏类型
+        ids: [],//活动id列表
+        buttonText: '查看活动'//按钮文字
       },
       rules: {
 

@@ -215,7 +215,7 @@ export default {
         return;
       }
       this._apis.shop.getQrcode({
-        url: this.ruleForm.shareUrl,
+        url: this.ruleForm.shareUrl.replace("&","[^]"),
         width: '150',
         height: '150'
       }).then((response)=>{

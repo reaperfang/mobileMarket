@@ -47,10 +47,10 @@
                 </el-form-item>
                 <div class="buttons">
                     <div class="lefter">
-                        <el-button @click="$router.push('/order/batchImportAndDelivery?afterSale=true')" class="border-button">批量导入发货</el-button>
-                        <el-button @click="batchSendGoods" class="border-button">批量发货</el-button>
-                        <el-button class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
-                        <el-button class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
+                        <el-button v-permission="['订单', '发货管理', '售后发货', '批量导入发货']" @click="$router.push('/order/batchImportAndDelivery?afterSale=true')" class="border-button">批量导入发货</el-button>
+                        <el-button v-permission="['订单', '发货管理', '售后发货', '批量发货']" @click="batchSendGoods" class="border-button">批量发货</el-button>
+                        <el-button v-permission="['订单', '发货管理', '售后发货', '批量打印配送订单']" class="border-button" @click="batchPrintDistributionSlip">批量打印配送单</el-button>
+                        <el-button v-permission="['订单', '发货管理', '售后发货', '批量打印电子面单']" class="border-button" @click="batchPrintElectronicForm">批量打印电子面单</el-button>
                     </div>
                     <div class="righter">
                         <span @click="resetForm('form')" class="resetting pointer">重置</span>
@@ -104,8 +104,8 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <div class="operate-box">
-                            <span @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
-                            <span v-if="scope.row.status == 3" @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.orderAfterSaleId + '&afterSale=' + true)">发货</span>
+                            <span v-permission="['订单', '发货管理', '售后发货', '查看']" @click="$router.push('/order/afterSalesDetails?id=' + scope.row.id)">查看</span>
+                            <span v-permission="['订单', '发货管理', '售后发货', '发货']" v-if="scope.row.status == 3" @click="$router.push('/order/orderAfterDeliverGoods?id=' + scope.row.orderAfterSaleId + '&afterSale=' + true)">发货</span>
                         </div>
                     </template>
                 </el-table-column>

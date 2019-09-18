@@ -36,9 +36,9 @@ export default {
           initialFrameWidth: 306
       },
       ruleForm: {
-        backgroundColor: '#ffffff',
-        remainPageMargin: true,
-        richValue: ''
+        backgroundColor: '#ffffff',//背景颜色
+        remainPageMargin: true,//是否保留边距
+        richValue: ''//富文本内容
       },
       rules: {
 

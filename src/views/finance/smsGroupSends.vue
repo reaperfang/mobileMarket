@@ -64,8 +64,8 @@
           </span>
         </div>
         <div>
-          <span class="details">充值记录</span>
-          <span class="details">申请开票</span>
+          <span class="details" v-permission="['财务', '短信成本', '默认页面', '充值记录']">充值记录</span>
+          <span class="details" v-permission="['财务', '短信成本', '默认页面', '申请开票']">申请开票</span>
         </div>
       </div>
     </div>

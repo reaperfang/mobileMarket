@@ -29,7 +29,7 @@
           </el-form-item>
         </div>
         <el-form-item class="save">
-          <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+          <el-button type="primary" @click="onSubmit('form')" v-permission="['设置', '提现设置', '默认页面', '保存']">保存</el-button>
         </el-form-item>
       </el-form>
     </div>    

@@ -62,8 +62,8 @@ export default {
       source: 1,
       coverType: 2,
       ruleForm: {
-        videoUrl: '',
-        coverUrl: ''
+        videoUrl: '',//视频地址
+        coverUrl: ''//封面图地址
       },
       rules: {
 

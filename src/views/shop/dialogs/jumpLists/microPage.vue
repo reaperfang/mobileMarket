@@ -112,6 +112,9 @@ export default {
       }
       this.tableData = tempList;
 
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      let cid = shopInfo && shopInfo.id || ''
+
       /* 向父组件发送选中的数据 */
       this.$emit('seletedRow',  {
         pageType: 'microPage',
@@ -121,7 +124,8 @@ export default {
           id: data.id,
           name: data.name,
           title: data.title
-        }
+        },
+        cid
       });
     }
 
