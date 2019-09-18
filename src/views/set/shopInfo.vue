@@ -45,6 +45,7 @@
 </template>
 <script>
 
+import axios from "axios";
 export default {
   name: 'shopInfo',
   data() {
@@ -52,6 +53,7 @@ export default {
       form: {
           shopName: '',
           logo:'',
+          logoCircle:'',
           phone:'',
           addressCode:[],
           address:'',
@@ -75,6 +77,7 @@ export default {
       area: [],
       shopInfo:{},
       uploadUrl: `${process.env.UPLOAD_SERVER}/web-file/file-server/api_file_remote_upload.do`,
+      uploadUrlBase64: `${process.env.UPLOAD_SERVER}/web-file/file-server-base64/api_file_remote_upload.do`,
       //canvas:{}
     }
   },
@@ -125,6 +128,7 @@ export default {
               id:id,
               shopName:this.form.shopName,
               logo:this.form.logo,
+              logoCircle:this.form.logoCircle,
               phone:this.form.phone,
               provinceCode:this.form.addressCode[0],
               cityCode:this.form.addressCode[1],
@@ -160,15 +164,24 @@ export default {
           ctx.save();
           // 剪切形状
           ctx.clip();
-
           // 绘制头像，参数（图片资源，x坐标，y坐标，宽度，高度）
           ctx.drawImage(img, 0, 0, 80, 80);
           ctx.restore();
           ctx.closePath();
-          const base64 = _self.canvas.toDataURL("image/png"); 
-          console.log('base',base64)
+          let base64 = _self.canvas.toDataURL("image/png"); 
+          let urlData = base64.substring(22, base64.length);          
+          _self.uploadCircle(urlData)
       }
       img.src = res.data.url;
+    },
+
+    uploadCircle(urlData){
+      axios.post(this.uploadUrlBase64,"json={\"cid\":\""+this.cid+"\", \"content\":\""+ encodeURI(urlData).replace(/\+/g,'%2B')+"\"}",{headers: {'Origin':'http'}}).then((response) => {
+        this.form.logoCircle = response.data.url
+        // console.log('6666666',response)
+      }).catch((error) => {
+        console.log(error);
+      })
     },
 
     beforeAvatarUpload(file) {
