@@ -5,7 +5,7 @@
       <el-tabs v-model="currentTab">
         <el-tab-pane label="微页面" name="microPage"></el-tab-pane>
         <el-tab-pane label="微页面分类" name="microPageClassify"></el-tab-pane>
-        <el-tab-pane label="商品分组" name="goodsGroup"></el-tab-pane>
+        <el-tab-pane label="商品分类" name="goodsGroup"></el-tab-pane>
         <el-tab-pane label="商品详情" name="goods"></el-tab-pane>
         <el-tab-pane label="营销活动" name="marketCampaign"></el-tab-pane>
         <el-tab-pane label="系统页面" name="systemPage"></el-tab-pane>

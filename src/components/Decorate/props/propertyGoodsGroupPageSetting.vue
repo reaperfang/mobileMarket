@@ -1,23 +1,23 @@
 <template>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" :style="bodyHeight">
         <div class="block header">
-          <p class="title">商品分组页设置</p>
+          <p class="title">商品分类页设置</p>
           <p class="state" :class="{'normal': ruleForm.status === 0}">{{ruleForm.status === 0 ? '生效中' : '未生效'}}</p>
         </div>
         <div class="block form">
-          <el-form-item label="分组样式" prop="groupStyle">
+          <el-form-item label="分类样式" prop="groupStyle">
             <el-radio-group v-model="ruleForm.groupStyle">
               <el-radio :label="1">左侧样式</el-radio>
               <el-radio :label="2">顶部样式</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="分组字体" prop="groupFont">
+          <el-form-item label="分类字体" prop="groupFont">
              <el-radio-group v-model="ruleForm.groupFont">
               <el-radio :label="1">常规体</el-radio>
               <el-radio :label="2">加粗体</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="分组图片" prop="groupImg">
+          <el-form-item label="分类图片" prop="groupImg">
              <el-radio-group v-model="ruleForm.groupImg">
               <el-radio :label="1">直角</el-radio>
               <el-radio :label="2">圆角</el-radio>
@@ -32,7 +32,7 @@
              <span>{{ruleForm.pageMargin}}像素</span>
             </div>
           </el-form-item>
-          <el-form-item label="分组间距" prop="groupFont">
+          <el-form-item label="分类间距" prop="groupFont">
              <div class="slider-wrapper">
               <el-slider v-model="ruleForm.groupMargin" :min="0" :max="30"></el-slider>
               <span>{{ruleForm.groupMargin}}像素</span>
@@ -69,11 +69,11 @@ export default {
   data () {
     return {
       ruleForm: {
-        groupStyle: 1,  //分组样式
-        groupFont: 1,  //分组字体
+        groupStyle: 1,  //分类样式
+        groupFont: 1,  //分类字体
         groupImg: 1,  //图片圆角
         pageMargin: 15,  //页面边距
-        groupMargin: 20  //分组间距
+        groupMargin: 20  //分类间距
       },
       rules: {},
       bodyHeight: {},  //装修区高度
