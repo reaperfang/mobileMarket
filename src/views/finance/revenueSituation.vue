@@ -139,6 +139,7 @@ export default {
   },
   created() {
     this.init();
+    this.getDataDateRs()
     this.getSurveyDay();
   },
   methods: {
