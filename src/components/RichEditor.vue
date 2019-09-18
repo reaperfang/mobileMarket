@@ -129,6 +129,15 @@ export default {
       }).catch(()=>{
         console.log('秀米编辑器样式加载失败！')
       });
+
+      this.editor.addListener('fullscreenchanged',(event,isFullScreen)=>{
+        const container = this.editor.container;
+        if(isFullScreen) {
+          container.style.cssText = 'border: 0px; position: absolute; left: 0px; top: 0px; width: 1920px; height: 938px; z-index: 2099!important; zoom: 1;'
+        }else{
+          container.style.zIndex = 'initial'
+        }
+      })
     },
 
     /* 弹框选中图片 */

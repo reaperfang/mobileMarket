@@ -116,4 +116,7 @@ export default {
     }
   }
 }
+/deep/.edui-editor{
+    z-index: initial!important;
+}
 </style>
