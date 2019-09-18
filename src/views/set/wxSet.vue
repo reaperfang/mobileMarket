@@ -27,7 +27,7 @@
                 <el-input v-model="form.certPassword" style="width:250px;" placeholder="请输入"></el-input>
             </el-form-item>
 
-            <el-form-item label="CERT证书文件" prop="certLocalPath">
+            <!-- <el-form-item label="CERT证书文件" prop="certLocalPath">
             <div class="upload_file">
                 <span class="tip">{{form.certFileName}}</span>
                 <el-upload
@@ -44,6 +44,11 @@
             <div class="tip" v-if="certFileUrlOk">
                 <span class="status">未上传</span>下载证书cert.zip中的apiclient_cert.p12文件
             </div>
+            </el-form-item> -->
+
+            <el-form-item label="CERT证书文件" prop="certBase64Content">
+              <input type="file"  @change="fileChange" style="width:75px;">
+              <span>{{form.certFileName}}</span>
             </el-form-item>
 
             <!-- <el-form-item label="KEY秘钥文件" prop="keyLocalPath">
@@ -87,8 +92,9 @@ export default {
           channelMchId: '',
           certPassword: '',
           certFileName:'',
-          certLocalPath: '',
+          // certLocalPath: '',
           keyFileName:'',
+          certBase64Content:''
           // keyLocalPath: ''
       },
       rules: {
@@ -108,7 +114,10 @@ export default {
         key:[
           { required: true, message: '请输入密钥', trigger: 'blur' },
         ],
-        certLocalPath:[
+        // certLocalPath:[
+        //   { required: true, message: '请输入CERT证书文件', trigger: 'blur' },
+        // ],
+        certBase64Content:[
           { required: true, message: '请输入CERT证书文件', trigger: 'blur' },
         ],
         // keyLocalPath:[
@@ -139,6 +148,22 @@ export default {
     this.getShopPayInfo()
   },
   methods: {
+    //上传文件转化为base64格式
+    fileChange(e) {
+        let file = e.target.files[0]
+        console.log('file',file)
+        this.form.certFileName = file.name
+        let _self = this
+        var reader = new FileReader();
+        reader.onload = (function (file) {
+            return function (e) {
+              _self.form.certBase64Content = this.result
+              // console.info('result',this.result); //这个就是base64的数据了
+            };
+        })(e.target.files[0]);
+        reader.readAsDataURL(e.target.files[0]);
+    },
+
     getShopPayInfo(){
       let query = {
         mchId:'2',
@@ -150,13 +175,14 @@ export default {
         this.form.channelMchId = response.channelMchId
         this.form.appId = param.appId
         this.form.key = param.key
-        this.form.certLocalPath = param.certLocalPath
+        // this.form.certLocalPath = param.certLocalPath
         this.form.certPassword = param.certPassword
         this.form.mpAppId = param.mpAppId
         // this.form.keyLocalPath = param.keyLocalPath
         this.form.certFileName = param.certFileName
         this.form.keyFileName = param.keyFileName
-        this.form.certLocalPath && (this.certFileUrlOk = false)
+        this.form.certBase64Content = param.certBase64Content
+        // this.form.certLocalPath && (this.certFileUrlOk = false)
         // this.form.keyLocalPath && (this.keyFileUrlOk = false)
       }).catch(error =>{
         this.$notify.info({
@@ -180,12 +206,13 @@ export default {
         mchId:'2',
         appId:this.form.appId,
         key:this.form.key,
-        certLocalPath:this.form.certLocalPath,
+        // certLocalPath:this.form.certLocalPath,
         certPassword:this.form.certPassword,
         mpAppId:this.form.mpAppId,
         // keyLocalPath:this.form.keyLocalPath,
         certFileName:this.form.certFileName,
-        keyFileName:this.form.keyFileName
+        keyFileName:this.form.keyFileName,
+        certBase64Content:this.form.certBase64Content
       }
       let query = {
         id:this.id,
@@ -218,12 +245,13 @@ export default {
         mchId:'2',
         appId:this.form.appId,
         key:this.form.key,
-        certLocalPath:this.form.certLocalPath,
+        // certLocalPath:this.form.certLocalPath,
         certPassword:this.form.certPassword,
         mpAppId:this.form.mpAppId,
         // keyLocalPath:this.form.keyLocalPath,
         certFileName:this.form.certFileName,
-        keyFileName:this.form.keyFileName
+        keyFileName:this.form.keyFileName,
+        certBase64Content:this.form.certBase64Content
       }
       let query = {
         // mchId:this.$store.user.cid || '2',
@@ -248,26 +276,26 @@ export default {
       })
     },
 
-    handleCertFileUrlOk(){
-        this.certFileUrlOk = false
-        this.loading3  = true
-    },
+    // handleCertFileUrlOk(){
+    //     this.certFileUrlOk = false
+    //     this.loading3  = true
+    // },
 
     // handlKeyFileUrlOk(){
     //     this.keyFileUrlOk = false
     //     this.loading2 = true
     // },
-    uploadCertFileUrl(response, file, fileList){
-        this.certFileUrlOk = false
-        if(file.status == "success"){
-          this.form.certFileName = file.name
-          this.$message.success(response.msg);
-          this.form.certLocalPath = response.data.url;
-          this.loading3  = false
-        }else{
-          this.$message.error(response.msg);
-        }
-      },
+    // uploadCertFileUrl(response, file, fileList){
+    //     this.certFileUrlOk = false
+    //     if(file.status == "success"){
+    //       this.form.certFileName = file.name
+    //       this.$message.success(response.msg);
+    //       this.form.certLocalPath = response.data.url;
+    //       this.loading3  = false
+    //     }else{
+    //       this.$message.error(response.msg);
+    //     }
+    //   },
     // uploadKeyFileUrl(response, file, fileList){
     //   this.keyFileUrlOk = false
     //   if(file.status == "success"){

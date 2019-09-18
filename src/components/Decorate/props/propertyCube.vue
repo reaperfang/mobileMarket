@@ -225,15 +225,15 @@ export default {
   data () {
     return {
       ruleForm: {
-        templateType: 1,
-        imgMargin: 2,
-        pagePadding:0,
-        list: {}
+        templateType: 1,//模板类型
+        imgMargin: 2,//图片间隙
+        pagePadding:0,//页面间距
+        list: {}//魔方列表
       },
       rules: {},
       dialogVisible: false,
       currentDialog: '',
-      blockType: 1
+      blockType: 1 //块类型
     }
   },
   methods: {

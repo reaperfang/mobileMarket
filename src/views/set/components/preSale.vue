@@ -70,7 +70,7 @@
             </el-form-item>
         </div>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+            <el-button type="primary" @click="onSubmit('form')" v-permission="['设置', '交易设置', '售前相关', '保存']">保存</el-button>
         </el-form-item>
     </el-form>
   </div>     

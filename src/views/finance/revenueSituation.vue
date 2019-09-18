@@ -45,7 +45,13 @@
             <i class="el-icon-top red"></i>
           </span>
         </div>
-        <span class="details" @click="_routeTo('revenueExpenditureDetails')">收支明细</span>
+        <span 
+        class="details" 
+        @click="_routeTo('revenueExpenditureDetails')"
+        v-permission="['财务', '营收状况', '默认页面', '收支明细']"
+        >
+        收支明细
+        </span>
       </div>
     </div>
     <div class="under_part">
@@ -66,6 +72,7 @@
             end-placeholder="结束日期"
             :picker-options="pickerNowDateBefore">
           </el-date-picker>
+          <el-button type="primary" @click="getDataDateRs">确定</el-button>
         </div>
       </div>
       <div class="data_statistics">
@@ -123,15 +130,15 @@ export default {
   },
   components: {financeChart},
   watch: {
-    timeValue(){
-      this.getDataDateRs()
-    },
+    // timeValue(){
+    //   this.getDataDateRs()
+    // },
     days(){
       this.getDataNumRs()
     }
   },
   created() {
-    // this.init();
+    this.init();
     this.getSurveyDay();
   },
   methods: {

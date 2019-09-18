@@ -30,7 +30,8 @@
           v-model="scope.row.msgWechatPublic"
           @change="switchMessage(scope.row.id,scope.row.msgWechatPublic,scope.row.msgWechatApp,scope.row.msgSms)"
           active-color="#13ce66"
-          inactive-color="#ff4949">
+          inactive-color="#ff4949"
+          v-permission="['设置', '消息设置', '默认页面', '开启/关闭']">
           </el-switch>
           <el-popover
             placement="right"
@@ -39,7 +40,7 @@
               <p class="preview_title">{{scope.row.msgTitle}}</p>
               <div class="preview_content" v-html="scope.row.wechatPublicPreview"></div>
               <p class="preview_id">模板ID:{{scope.row.wechatPublicId}}</p>
-            <el-link type="primary" slot="reference">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">预览</el-link>
           </el-popover>
         </template>
       </el-table-column>
@@ -52,7 +53,8 @@
           v-model="scope.row.msgWechatApp"
           @change="switchMessage(scope.row.id,scope.row.msgWechatPublic,scope.row.msgWechatApp,scope.row.msgSms)"
           active-color="#13ce66"
-          inactive-color="#ff4949">
+          inactive-color="#ff4949"
+          v-permission="['设置', '消息设置', '默认页面', '开启/关闭']">
           </el-switch>
           <el-popover
             placement="right"
@@ -61,7 +63,7 @@
               <p class="preview_title">{{scope.row.msgTitle}}</p>
               <div v-html="scope.row.wechatAppPreview" class="preview_content"></div>
               <p class="preview_id">模板ID:{{scope.row.wechatAppId}}</p>
-            <el-link type="primary" slot="reference">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">预览</el-link>
           </el-popover>
         </template>
       </el-table-column>
@@ -74,7 +76,8 @@
           v-model="scope.row.msgSms"
           @change="switchMessage(scope.row.id,scope.row.msgWechatPublic,scope.row.msgWechatApp,scope.row.msgSms)"
           active-color="#13ce66"
-          inactive-color="#ff4949">
+          inactive-color="#ff4949"
+          v-permission="['设置', '消息设置', '默认页面', '开启/关闭']">
           </el-switch>
           <el-popover
             disabled="!scope.row.smsPreview"
@@ -83,7 +86,7 @@
             trigger="click">
               <p class="preview_title">{{scope.row.msgTitle}}</p>
               <div v-html="scope.row.preview3" class="preview_content"></div>
-            <el-link type="primary" slot="reference">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">预览</el-link>
           </el-popover>
         </template>
       </el-table-column>

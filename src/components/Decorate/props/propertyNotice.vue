@@ -34,9 +34,9 @@ export default {
   data () {
     return {
       ruleForm: {
-        notice: '',
-        backgroundColor: 'rgb(255,248,233)',
-        fontColor: 'rgb(102,102,102)'
+        notice: '',//公告文本
+        backgroundColor: 'rgb(255,248,233)',//背景颜色 
+        fontColor: 'rgb(102,102,102)'//文字颜色 
       },
       rules: {
 
