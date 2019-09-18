@@ -177,8 +177,7 @@ export default {
 
     uploadCircle(urlData){
       axios.post(this.uploadUrlBase64,"json={\"cid\":\""+this.cid+"\", \"content\":\""+ encodeURI(urlData).replace(/\+/g,'%2B')+"\"}",{headers: {'Origin':'http'}}).then((response) => {
-        this.form.logoCircle = response.data.url
-        // console.log('6666666',response)
+        this.form.logoCircle = response.data.data.url
       }).catch((error) => {
         console.log(error);
       })
