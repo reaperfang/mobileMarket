@@ -14,6 +14,8 @@
           :canMoveBox="option.canMoveBox"
           :original="option.original"
           :autoCrop="option.autoCrop"
+          :autoCropWidth="option.autoCropWidth"
+          :autoCropHeight="option.autoCropHeight"
           :fixed="option.fixed"
           :fixedNumber="option.fixedNumber"
           :centerBox="option.centerBox"
@@ -87,10 +89,10 @@ export default {
         outputType: 'jpeg', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 300, // 默认生成截图框宽度
+        autoCropWidth: 200, // 默认生成截图框宽度
         autoCropHeight: 200, // 默认生成截图框高度
         fixedBox: false, // 固定截图框大小 不允许改变
-        fixed: true, // 是否开启截图框宽高固定比例
+        fixed: false, // 是否开启截图框宽高固定比例
         fixedNumber: [7, 5], // 截图框的宽高比例
         full: true, // 是否输出原图比例的截图
         canMoveBox: false, // 截图框能否拖动
@@ -124,8 +126,8 @@ export default {
       this.groupList.map(item =>{
         if(item.value == this.sizeNum){
           let arr = item.label.split('*')
-          this.option.autoCropWidth = arr[0]
-          this.option.autoCropHeight = arr[1]
+          this.option.autoCropWidth = parseInt(arr[0])
+          this.option.autoCropHeight = parseInt(arr[1])
         }
       })
     }

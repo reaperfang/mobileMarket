@@ -50,7 +50,9 @@ export default {
             checkCoupon: "",
             checkCode:"",
             couponId: "",
-            codeId: ""
+            codeId: "",
+            allCoupons: [],
+            allCodes: []
         }
     },
     methods: {
@@ -153,7 +155,27 @@ export default {
         },
         deleteCode(index) {
             this.codeIds.splice(index, 1);
-        }
+        },
+        getAllCoupons() {
+            this._apis.client.getAllCoupons({couponType: 0}).then((response) => {
+                this.allCoupons = [].concat(response.list);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
+        getAllCodes() {
+            this._apis.client.getAllCoupons({couponType: 1}).then((response) => {
+                this.allCodes = [].concat(response.list);
+            }).catch((error) => {
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
     },
     computed: {
         visible: {
@@ -164,15 +186,17 @@ export default {
                 this.$emit('update:dialogVisible', val)
             }
         },
-        allCoupons() {
-            return JSON.parse(localStorage.getItem('allCoupons'));
-        },
-        allCodes() {
-            return JSON.parse(localStorage.getItem('allCodes'));
-        }
+        // allCoupons() {
+        //     return JSON.parse(localStorage.getItem('allCoupons'));
+        // },
+        // allCodes() {
+        //     return JSON.parse(localStorage.getItem('allCodes'));
+        // }
     },
     created() {
         this.getBlackChecks();
+        this.getAllCoupons();
+        this.getAllCodes();
     },
     props: {
         data: {
@@ -203,7 +227,7 @@ export default {
     margin: 5px 0 0 15px;
 }
 .form_container{
-    width: 266px;
+    width: 290px;
     .a_d{
         text-align: left;
     }

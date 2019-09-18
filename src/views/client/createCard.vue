@@ -224,7 +224,7 @@ export default {
       selectedGifts: [],
       selectedReds: [],
       levelConditionValueDto: {},
-      colors: JSON.parse(localStorage.getItem('colorUrl'))
+      colors: JSON.parse(localStorage.getItem('colorUrl')) || []
     };
   },
   computed:{
@@ -687,7 +687,7 @@ export default {
     getColorUrl() {
       this._apis.client.getColorUrl({}).then((response) => {
         //localStorage.setItem('colorUrl',JSON.stringify(response));
-        this.colorUrl = [].concat(response);
+        this.colors = [].concat(response);
       }).catch((error) => {
         this.$notify.error({
           title: "错误",
@@ -713,7 +713,7 @@ export default {
     this.getConditionList();
     this.getRewardList();
     //this.getCardInfo();
-    //this.getColorUrl();
+    this.getColorUrl();
   },
   mounted() {
     
