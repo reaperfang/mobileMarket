@@ -95,20 +95,20 @@ export default {
             this.addCardBg();
         },
         beforeAvatarUpload(file) {
-        //const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+            //const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
 
-        // if (!isJPG) {
-        //     this.$message.error('上传图片只能是 JPG 格式!');
-        // }
-        if (!isLt2M) {
-            this.$message.error("上传图片大小不能超过 2MB!");
-        }
-        return isLt2M;
+            // if (!isJPG) {
+            //     this.$message.error('上传图片只能是 JPG 格式!');
+            // }
+            if (!isLt2M) {
+                this.$message.error("上传图片大小不能超过 2MB!");
+            }
+            return isLt2M;
         },
         handleFind() {
             let obj = {
-                name: this.selected,
+                name: this.selected == "" ? null : this.selected,
                 startTime: this.getTime[0],
                 endTime: this.getTime[1] 
             }
@@ -144,7 +144,6 @@ export default {
             })
         },
         refreshTable() {
-            console.log(1);
             this.getCardList();
         },
         getCardNames() {
