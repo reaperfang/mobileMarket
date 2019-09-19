@@ -241,7 +241,7 @@ export default {
             if(this.batch) {
                 params.ids = ids
             } else {
-                params.id = this.currentData.id
+                params.ids = [+this.currentData.id]
             }
             this._apis.order.orderCommentAuth(params).then((res) => {
                 this.getList()

@@ -1,5 +1,5 @@
 <template>
-  <div :style="{backgroundImage:'url('+require('@/assets/images/bg_login.png')+')', backgroundSize:'100% 100%'}" class="login-container">
+  <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <img src="@/assets/images/chahua.png" alt="">
       <div class="main">
@@ -185,6 +185,8 @@ $light_block:#000;
 
 /* reset element-ui css */
 .login-container {
+  background-image: url(../../assets/images/bg_login.png);
+  background-size: 100%;
   .login_input {
     display: inline-block;
     height: 47px;
