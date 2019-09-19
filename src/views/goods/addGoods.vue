@@ -58,7 +58,7 @@
                         clearable>
                     </el-cascader>
                 </div>
-                <div @click="currentDialog = 'AddCategoryDialog'; dialogVisible = true" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
+                <div @click="addCategory" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
             </el-form-item>
             <el-form-item label="商品标签" prop="productLabelId">
                 <div class="add-tag">
@@ -383,7 +383,7 @@
             </div>
         </section>
     </el-form>
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add"></component>
 </div>
 </template>
 <script>
@@ -407,6 +407,7 @@ export default {
             categoryOptions: [],
             productLabelList: [], // 商品标签列表
             specIds: [],
+            add: true,
             ruleForm: {
                 productCategoryInfoId: '', // 商品类目id
                 productCatalogInfoId: '', // 商品商家分类ID
@@ -552,6 +553,11 @@ export default {
         }
     },
     methods: {
+        addCategory() {
+            this.currentDialog = 'AddCategoryDialog'
+            this.currentData = {level: 0, add: true}
+            this.dialogVisible = true
+        },
         getTemplateList() {
             this._apis.order.fetchTemplatePageList().then((res) => {
                 this.shippingTemplates = res.list
@@ -976,7 +982,11 @@ export default {
         centerFileUrl(response, file, fileList){
             if(file.status == "success"){
                 this.$message.success(response.msg);
-                this.ruleForm.images = response.data.url;
+                if(this.ruleForm.images != '') {
+                    this.ruleForm.images += ',' + response.data.url;
+                } else {
+                    this.ruleForm.images = response.data.url;
+                }
             }else{
                 this.$message.error(response.msg);
             }
@@ -1025,6 +1035,12 @@ export default {
                 name: image.fileName,
                 url: image.filePath
             }))
+
+            if(this.ruleForm.images != '') {
+                this.ruleForm.images += ',' + image.filePath
+            } else {
+                this.ruleForm.images = image.filePath
+            }
         }
     },
     mounted() {

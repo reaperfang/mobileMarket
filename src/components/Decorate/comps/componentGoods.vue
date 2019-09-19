@@ -60,8 +60,10 @@ export default {
         componentButton
     },
     created() {
-        this._globalEvent.$on('goodsListOfGroupChange', (list)=>{
-            this.list = list;
+        this._globalEvent.$on('goodsListOfGroupChange', (list, componentId)=>{
+            if(this.currentComponentId === componentId) {
+                this.list = list;
+            }
         })
         this.fetch();
         this._globalEvent.$on('fetchGoods', (componentData, componentId) => {
@@ -184,7 +186,7 @@ export default {
                 }else if(componentData.source === 2){
                     params = {
                         status: '1',
-                        productCatalogInfoId: this.ruleForm.currentCatagoryId
+                        productCatalogInfoId: componentData.currentCatagoryId
                     };
                 }
 
@@ -206,9 +208,6 @@ export default {
         /* 创建数据 */
         createList(datas, componentData) {
             this.list = datas;
-            if(componentData.source === 2) {
-                this._globalEvent.$emit('goodsListOfGroupChange', datas);  //告知中央组件list数据更改
-            }
         },
 
          /* 设置分类商品参数 */

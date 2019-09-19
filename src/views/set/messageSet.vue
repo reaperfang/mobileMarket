@@ -80,7 +80,7 @@
           v-permission="['设置', '消息设置', '默认页面', '开启/关闭']">
           </el-switch>
           <el-popover
-            disabled="!scope.row.smsPreview"
+            :disabled="!scope.row.smsPreview"
             placement="right"
             width="400"
             trigger="click">

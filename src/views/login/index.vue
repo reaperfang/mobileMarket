@@ -1,5 +1,5 @@
 <template>
-  <div :style="{backgroundImage:'url('+require('@/assets/images/bg_login.png')+')', backgroundSize:'100% 100%'}" class="login-container">
+  <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <img src="@/assets/images/chahua.png" alt="">
       <div class="main">
@@ -8,13 +8,14 @@
         </div>
         <el-form-item prop="userName">
           <span class="svg-container svg-container_login">
-            <img :src="require('@/assets/images/icon_username.png')">
+            <img src="@/assets/images/icon_username.png">
           </span>
           <el-input v-model="loginForm.userName" name="userName" type="text" placeholder="用户名" style="border:none;"  class="login_input"/>
         </el-form-item>
 
         <el-form-item prop="password">
           <span class="svg-container">
+            <img src="../../assets/images/icon_password.png">
             <img :src="require('@/assets/images/icon_password.png')">
           </span>
           <el-input :type="passwordType" v-model="loginForm.password" name="password" placeholder="密码" @keyup.enter.native="handleLogin" class="login_input"/>
@@ -185,6 +186,8 @@ $light_block:#000;
 
 /* reset element-ui css */
 .login-container {
+  background-image: url(../../assets/images/bg_login.png);
+  background-size: 100%;
   .login_input {
     display: inline-block;
     height: 47px;
