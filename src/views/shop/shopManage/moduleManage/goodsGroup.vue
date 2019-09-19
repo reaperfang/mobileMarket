@@ -3,7 +3,7 @@
     <div class="module view">
       <div class="phone-head">
         <img :src="require('@/assets/images/shop/editor/phone_head.png')" alt="">
-        <span>商品分组</span>
+        <span>商品分类</span>
       </div>
       <div class="phone-body" :style="bodyHeight">
         <componentGoodsGroupPageSetting 

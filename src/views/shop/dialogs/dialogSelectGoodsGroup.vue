@@ -1,6 +1,6 @@
 /* 选择商品组弹框 */
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'选择商品分组'" @submit="submit">
+  <DialogBase :visible.sync="visible" width="816px" :title="'选择商品分类'" @submit="submit">
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0" :inline="true">
       <div class="inline-head">
         <el-form-item label prop="name">
