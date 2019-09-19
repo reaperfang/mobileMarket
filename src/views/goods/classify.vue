@@ -163,6 +163,7 @@ export default {
             this.currentDialog = 'AddCategoryDialog'
             this.currentData = {
                 id: data.id,
+                parentId: data.parentId,
                 editor: true
             }
             this.dialogVisible = true

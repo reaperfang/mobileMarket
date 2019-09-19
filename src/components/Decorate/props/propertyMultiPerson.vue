@@ -154,13 +154,12 @@
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import mixinMultiPerson from '../mixins/mixinMultiPerson';
 import dialogSelectMultiPerson from '@/views/shop/dialogs/dialogSelectMultiPerson';
 import dialogMultiPersonDemo from '@/views/shop/dialogs/dialogMultiPersonDemo';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyMultiPerson',
-  mixins: [propertyMixin, mixinMultiPerson],
+  mixins: [propertyMixin],
   components: {dialogSelectMultiPerson, dialogMultiPersonDemo},
   data () {
     return {
@@ -194,6 +193,7 @@ export default {
     }
   },
   created() {
+    this.fetch();
   },
   watch: {
     'items': {
@@ -202,7 +202,8 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.spuId);
         }
-        this._globalEvent.$emit('fetchMultiPerson');
+        this.fetch();
+        this._globalEvent.$emit('fetchMultiPerson', this.ruleForm, this.$parent.currentComponentId);
       },
       deep: true
     },
@@ -212,14 +213,81 @@ export default {
       if([3,6].includes(newValue) && ![3,6].includes(oldValue)) { 
         this.ruleForm.buttonStyle = 1;
       }
-    }
+    },
+    'ruleForm.addType'(newValue) {
+        if(newValue == 2) {
+            this.fetch();
+        }
+    },
+    'ruleForm.showNumber'(newValue) {
+        this.fetch();
+    },
+    'ruleForm.sortRule'(newValue) {
+        this.fetch();
+    },
   },
   methods: {
 
     /* 关闭案例弹窗 */
     dialogClosed() {
       this.currentDialog = '';
-    }
+    },
+
+    //根据ids拉取数据
+    fetch(componentData = this.ruleForm) {
+        if(componentData) {
+            let params = {};
+            if(componentData.addType == 2) {
+                params = {
+                    num: componentData.showNumber,
+                    order: componentData.sortRule
+                };
+            }else{
+                const ids = componentData.ids;
+                if(Array.isArray(ids) && ids.length){
+                    params = {
+                        spuIds: ids.join(','),
+                        order: componentData.sortRule
+                    };
+                }else{
+                    this.list = [];
+                    return;
+                }
+            }
+
+            this.loading = true;
+            this._apis.shop.getMultiPersonListByIds(params).then((response)=>{
+                this.createList(response);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.list = [];
+                this.loading = false;
+            });
+        }
+    },
+
+      /* 创建数据 */
+    createList(datas) {
+        if(datas.length > this.showNumber){
+            datas = datas.slice(0,this.showNumber);
+        }
+        this.list = [];
+        if(this.hideSaledGoods==true){
+            var goods = datas;
+            for(var i in datas){
+                if(goods[i].soldOut!=1){
+                    this.list.push(datas[i]);
+                }
+            }
+        }
+        else{
+            this.list = datas;
+        }
+    },
   }
 }
 </script>

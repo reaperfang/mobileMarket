@@ -5,7 +5,7 @@
 <script>
 import utils from "@/utils";
 import Decorate from '@/components/Decorate';
-import decorateMixin from '@/components/Decorate/decorateMixin';
+import decorateMixin from '@/components/Decorate/mixins/decorateMixin';
 export default {
   name: "classifyEditor",
   mixins: [decorateMixin],
