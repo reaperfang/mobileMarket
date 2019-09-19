@@ -297,6 +297,7 @@ export default {
             this.currentDialog = 'ReceiveInformationDialog'
             this.currentData = this.orderInfo
             this.sendGoods = 'received'
+            this.title="修改收货信息"
             this.dialogVisible = true
         },
         changeSendInfo() {
