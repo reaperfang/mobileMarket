@@ -4,7 +4,7 @@
       <el-form-item label="商品来源" prop="source">
         <el-radio-group v-model="ruleForm.source">
           <el-radio :label="1">商品</el-radio>
-          <el-radio :label="2">商品分组</el-radio>
+          <el-radio :label="2">商品分类</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="商品" v-if="ruleForm.source === 1" prop="goods">
@@ -20,8 +20,8 @@
           </ul>
         </div>
       </el-form-item>
-      <el-form-item label="商品分组" v-if="ruleForm.source === 2" prop="goodsGroup">
-        <el-button type="text"  @click="pageDialogVisible=true; currentPageDialog='goodsGroup'">{{seletedGroup && seletedGroup.data.name || '从商品分组中选择'}}</el-button>
+      <el-form-item label="商品分类" v-if="ruleForm.source === 2" prop="goodsGroup">
+        <el-button type="text"  @click="pageDialogVisible=true; currentPageDialog='goodsGroup'">{{seletedGroup && seletedGroup.data.name || '从商品分类中选择'}}</el-button>
       </el-form-item>
       <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
@@ -145,7 +145,7 @@ export default {
     return {
       ruleForm: {
         source: 1,//商品来源
-        showNumber: 30,//商品分组显示个数 
+        showNumber: 30,//商品分类显示个数 
         listStyle: 1,//列表样式
         pageMargin: 15,//页面边距
         goodsMargin: 10,//商品边距

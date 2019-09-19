@@ -1,5 +1,5 @@
 <template>
-<!-- 组件-商品分组 -->
+<!-- 组件-商品分类 -->
     <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
         <div class="componentGoodsGroup_tab" id="componentGoodsGroup_tab" :class="'menuStyle'+menuStyle" :style="{width:componentGoodsGroup_tabWidth}">
             <p class="active" v-if="showAllGroup==1" @click="currentCatagory=null">全部</p>
@@ -22,7 +22,7 @@ export default {
       return {
         // 商品列表
         componentGoodsItemData: {},
-        // 商品分组列表
+        // 商品分类列表
         list: [],
         // 样式属性
         listStyle: "",

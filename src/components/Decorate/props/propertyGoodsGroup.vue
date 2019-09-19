@@ -1,8 +1,8 @@
 <template>
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :style="bodyHeight">
     <div class="block form">
-      <el-form-item label="商品分组" prop="goodsGroups">
-        <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分组</el-button>
+      <el-form-item label="商品分类" prop="goodsGroups">
+        <el-button type="text"  @click="dialogVisible=true; currentDialog='dialogSelectGoodsGroup'">添加商品分类</el-button>
         <div class="goods_groups">
           <el-tag
             v-for="(tag, key) in list"
@@ -13,8 +13,8 @@
           </el-tag>
         </div>
       </el-form-item>
-      <el-form-item label="全部分组" prop="showAllGroup">
-        全部分组为商品的集合分组，增加消费者逛的体验
+      <el-form-item label="全部分类" prop="showAllGroup">
+        全部分类为商品的集合分类，增加消费者逛的体验
         <el-radio-group v-model="ruleForm.showAllGroup">
           <el-radio :label="1">展示</el-radio>
           <el-radio :label="2">不展示</el-radio>
@@ -149,7 +149,7 @@ export default {
   data () {
     return {
       ruleForm: {
-        showAllGroup: 1, //显示全部分组
+        showAllGroup: 1, //显示全部分类
         showTemplate: 1,//展示模板方式
         menuStyle: 1,//菜单样式
         menuPosition: 1,//菜单位置
@@ -164,7 +164,7 @@ export default {
         textAlign: 1,//文本对齐
         showContents: ['1', '2', '3', '4'],//显示内容
         buttonStyle: 1,//购买按钮样式
-        ids: [],//商品分组列表 
+        ids: [],//商品分类列表 
         buttonText: '加入购物车'//按钮文字
       },
       rules: {

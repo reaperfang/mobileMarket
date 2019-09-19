@@ -212,7 +212,7 @@ export function setShopStyle(data) {
   })
 }
 
-// 获取商品分组页面数据
+// 获取商品分类页面数据
 export function getGoodsGroup(data) {
   return request({
     target: 'DECORATION-PAGEINFO-COMMODITY-PROCESSOR',
@@ -222,7 +222,7 @@ export function getGoodsGroup(data) {
   })
 }
 
-// 编辑商品分组页面数据
+// 编辑商品分类页面数据
 export function editGoodsGroup(data) {
   return request({
     target: 'DECORATION-PAGE-INFO-COMMODITY-INSERT-PROCESSOR',
@@ -312,7 +312,7 @@ export function getQrcode(data) {
   })
 }
 
-//重置商品分组
+//重置商品分类
 export function resetGoodsGroup(data) {
   return request({
     target: 'DECORATION-PAGE-INFO-COMMODITY-RESET-PROCESSOR',

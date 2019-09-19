@@ -281,4 +281,7 @@ export default {
 .a_line {
   padding-left: 17px;
 }
+.page_styles{
+  text-align: center;
+}
 </style>

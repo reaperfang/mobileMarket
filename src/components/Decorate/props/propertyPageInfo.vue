@@ -41,8 +41,7 @@ export default {
         pageCategoryInfoId: '-1',
         colorStyle: '#fff',
         pageKey: '',
-        status: 0,
-        isBaseComponent: true
+        status: 0
       },
       rules: {
         name: [
