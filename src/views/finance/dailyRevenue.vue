@@ -106,7 +106,10 @@ export default {
     fetch(){
       let query = this.init();
       this._apis.finance.getListDr(query).then((response)=>{
-        this.dataList = response.list
+        response.list.map(item =>{
+          item.accountDate = item.accountDate.substring(0,item.accountDate.length-8)
+          this.dataList.push(item)
+        })
         this.total = response.total || 0
       }).catch((error)=>{
         this.$notify.error({
