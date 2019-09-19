@@ -30,12 +30,21 @@
             <el-form-item label="客服电话:" prop="phone">
                 <!-- <el-input v-model="form.phone" placeholder="区号" style="width:70px;"></el-input>
                 —— -->
-                <el-input v-model="form.phone" placeholder="如输入手机号，不填区号" style="width:190px;"></el-input>
+                <el-input v-model="form.phone" placeholder="如输入手机号，不填区号" style="width:200px;"></el-input>
             </el-form-item>
             <el-form-item label="联系地址:" prop="address">
-                <area-cascader :level="1" :data='$pcaa' v-model='form.addressCode' style="display:inline-block"></area-cascader>
+                <area-cascader :level="1" :data='$pcaa' v-model='form.addressCode' style="width:200px;"></area-cascader>
                 <!-- <el-cascader :options="area" v-model="form.address" expand-trigger="hover"/> -->
-                <el-input v-model="form.address" style="width: 70%;" placeholder="详细地址"/>
+                <el-input v-model="form.address" style="width:300px; margin-top:10px;" placeholder="详细地址"/>
+            </el-form-item>
+            <el-form-item label="店铺简介:" prop="shopIntroduce">
+              <el-input
+                type="textarea"
+                :rows="5"
+                placeholder="请输入内容"
+                v-model="form.shopIntroduce"
+                style="width:300px;">
+              </el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit('form')" v-permission="['设置', '店铺信息', '默认页面', '保存']">保存</el-button>
@@ -57,6 +66,7 @@ export default {
           phone:'',
           addressCode:[],
           address:'',
+          shopIntroduce:''
       },
       rules: {
         shopName: [
@@ -72,6 +82,9 @@ export default {
         address:[
           { required: true, message: '请输入详细地址', trigger: 'blur' },
         ],
+        shopIntroduce:[
+          {min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur'}
+        ]
       },
       imageUrl: '',
       area: [],
@@ -133,7 +146,8 @@ export default {
               provinceCode:this.form.addressCode[0],
               cityCode:this.form.addressCode[1],
               areaCode:this.form.addressCode[2],
-              address:this.form.address
+              address:this.form.address,
+              shopIntroduce:this.form.shopIntroduce
             }
             this._apis.set.updateShopInfo(data).then(response =>{
               this.$notify.error({
