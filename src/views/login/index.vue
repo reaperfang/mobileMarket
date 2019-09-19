@@ -1,9 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <img src="@/assets/images/chahua.png" alt="">
-      <img src="../../assets/images/chahua.png" alt="">
-      <img :src="require('@/assets/images/chahua.png')" alt="">
+      <img src="/static/images/chahua.png" alt="">
       <div class="main">
         <div class="title-container">
           <h3 class="title">新零售客户营销系统</h3>
