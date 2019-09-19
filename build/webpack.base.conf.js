@@ -71,7 +71,6 @@ module.exports = {
         exclude: [resolve('src/assets/icons')],
         options: {
           limit: 10000,
-          publicPath: '../../',
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
@@ -80,7 +79,6 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          publicPath: '../../',
           name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
       },
@@ -89,7 +87,6 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          publicPath: '../../',
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
