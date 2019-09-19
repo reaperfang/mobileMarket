@@ -23,10 +23,10 @@
       <el-form-item label="商品分类" v-if="ruleForm.source === 2" prop="goodsGroup">
         <el-button type="text"  @click="pageDialogVisible=true; currentPageDialog='goodsGroup'">{{seletedGroup && seletedGroup.data.name || '从商品分类中选择'}}</el-button>
       </el-form-item>
-      <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
+      <!-- <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
         最多显示50个
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="列表样式" prop="listStyle">
         <el-radio-group v-model="ruleForm.listStyle">
           <el-radio :label="1">大图模式</el-radio>
@@ -195,9 +195,11 @@ export default {
 
     currentCatagoryId(newValue) {
         this.fetch();
+        this._globalEvent.$emit('fetchGoods', this.ruleForm, this.$parent.currentComponentId);
     },
     'ruleForm.currentCatagoryId'() {
         this.fetch();
+        this._globalEvent.$emit('fetchGoods', this.ruleForm, this.$parent.currentComponentId);
     },
   },
   methods: {
@@ -256,7 +258,7 @@ export default {
     createList(datas) {
       this.list = datas;
       if(this.currentComponentData.data.source === 2) {
-          this._globalEvent.$emit('goodsListOfGroupChange', datas);  //告知中央组件list数据更改
+          this._globalEvent.$emit('goodsListOfGroupChange', datas, this.$parent.currentComponentId);  //告知中央组件list数据更改
       }
     },
 

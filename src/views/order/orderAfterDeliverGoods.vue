@@ -203,6 +203,16 @@ export default {
         sendGoodsHandler() {
             let params
 
+            if(!this.ruleForm.expressCompanyCode) {
+                this.confirm({title: '提示', icon: true, text: '请选择快递公司'})
+                return
+            }
+
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请选择需要发货的商品'})
+                return
+            }
+
             this.ruleForm.expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == this.ruleForm.expressCompanyCode).expressCompany
 
             params = {
