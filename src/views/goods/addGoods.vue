@@ -14,6 +14,8 @@
                     :options="itemCatList"
                     v-model="ruleForm.itemCat"
                     @change="itemCatHandleChange"
+                    :props="{ multiple: false, checkStrictly: true }"
+                    clearable
                     filterable>
                 </el-cascader>
                 <span class="category-display">您当前的选择是：{{itemCatText}}</span>
@@ -51,7 +53,9 @@
                     <el-cascader
                         :options="categoryOptions"
                         v-model="categoryValue"
-                        @change="handleChange">
+                        @change="handleChange"
+                        :props="{ multiple: false, checkStrictly: true }"
+                        clearable>
                     </el-cascader>
                 </div>
                 <div @click="currentDialog = 'AddCategoryDialog'; dialogVisible = true" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
