@@ -62,11 +62,10 @@
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import mixinCoupon from '../mixins/mixinCoupon';
 import dialogSelectCoupon from '@/views/shop/dialogs/dialogSelectCoupon';
 export default {
   name: 'propertyCoupon',
-  mixins: [propertyMixin, mixinCoupon],
+  mixins: [propertyMixin],
   components: {dialogSelectCoupon},
   data () {
     return {
@@ -98,12 +97,79 @@ export default {
           this.ruleForm.ids.push(item.id);
         }
         this.fetch();
+        this._globalEvent.$emit('fetchCoupon', this.ruleForm, this.$parent.currentComponentId);
       },
       deep: true
+    },
+    /* 监听添加类型，自动获取状态则拉取一下数据 */
+    'ruleForm.addType'(newValue) {
+      if(newValue == 2) {
+        this.fetch();
+      }else{
+        this.items = [];
+        this.list = [];
+        this.fetch();
+      }
+    },
+
+    /* 监听显示个数类型 */
+    'ruleForm.couponNumberType'(newValue) {
+      this.fetch();
+    },
+
+    /* 监听显示个数 */
+    'ruleForm.showNumber'(newValue) {
+      this.fetch();
     }
   },
   methods: {
-    
+    //根据ids拉取数据
+    fetch(componentData = this.ruleForm) {
+        if(componentData) {
+          let params = {};
+            if(componentData.addType == 2) {
+              if(componentData.couponNumberType === 1) {
+                params = {
+                  couponType: 0
+                };
+              }else {
+                params = {
+                  couponType: 0,
+                  limitedQuantity: componentData.showNumber
+                };
+              }
+            }else{
+              if(componentData.ids.length) {
+                params = {
+                  couponType: 0,
+                  ids: componentData.ids
+                };
+              }else{
+                this.list = [];
+                return;
+              }
+            }
+
+            this.loading = true;
+            this.list = [];
+            this._apis.shop.getCouponListByIds(params).then((response)=>{
+                this.createList(response);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.list = [];
+                this.loading = false;
+            });
+        }
+    },
+
+      /* 创建数据 */
+    createList(datas) {
+       this.list = datas;
+    },
   }
 }
 </script>
