@@ -30,6 +30,7 @@
 			:props="defaultProps"
 			node-key="id"
 			ref="category"
+            default-expand-all
 			:expand-on-click-node="false"
 			:render-content="renderContent">
 		</el-tree>
