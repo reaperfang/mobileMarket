@@ -16,7 +16,6 @@
         <el-form-item prop="password">
           <span class="svg-container">
             <img src="../../assets/images/icon_password.png">
-            <img :src="require('@/assets/images/icon_password.png')">
           </span>
           <el-input :type="passwordType" v-model="loginForm.password" name="password" placeholder="密码" @keyup.enter.native="handleLogin" class="login_input"/>
           <span class="show-pwd" @click="showPwd">
