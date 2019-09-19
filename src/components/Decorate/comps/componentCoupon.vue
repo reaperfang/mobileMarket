@@ -3,6 +3,7 @@
   <div class="componentCoupon" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
     <!-- 样式一 -->
     <div class="coupon_first">
+       <ul>
         <!-- status:true时候是已领取,hideScrambled:false, -->
         <template  v-for="(item, key) in list">
           <li
