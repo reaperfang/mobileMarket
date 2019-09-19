@@ -140,11 +140,10 @@
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import mixinGoodsGroup from '../mixins/mixinGoodsGroup';
 import dialogSelectGoodsGroup from '@/views/shop/dialogs/dialogSelectGoodsGroup';
 export default {
   name: 'propertyGoodsGroup',
-  mixins: [propertyMixin, mixinGoodsGroup],
+  mixins: [propertyMixin],
   components: {dialogSelectGoodsGroup},
   data () {
     return {
@@ -176,6 +175,9 @@ export default {
 
     }
   },
+  created() {
+    this.fetch();
+  },
   watch: {
     'items': {
       handler(newValue) {
@@ -187,7 +189,8 @@ export default {
           }
         }
         this.ruleForm.ids = catagoryIds;
-        this._globalEvent.$emit('fetchGoodsGroup');
+        this.fetch();
+        this._globalEvent.$emit('fetchGoodsGroup', this.ruleForm, this.$parent.currentComponentId);
       },
       deep: true
     },
@@ -200,6 +203,34 @@ export default {
     }
   },
   methods: {
+     //根据ids拉取数据
+    fetch(componentData = this.ruleForm) {
+      if(componentData) {
+          if(componentData.ids) {
+            let ids = [];
+            for(let item in componentData.ids) {
+              ids.push(item);
+            }
+            if(!ids.length) {
+              this.list = [];
+              return;
+            }
+            this.loading = true;
+            this._apis.goods.fetchCategoryList({ids}).then((response)=>{
+                this.list = response;
+                this._globalEvent.$emit('fetchGoods', this.ruleForm, this.$parent.currentComponentId);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                  title: '错误',
+                  message: error
+                });
+                this.list = [];
+                this.loading = false;
+            });
+      }
+      }
+    },
 
   }
 }

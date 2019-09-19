@@ -119,7 +119,7 @@ export default {
             this.basicForm.imageUrl =  ''
         },
         imageSelected(image) {
-            this.basicForm.imageUrl = decodeURIComponent(image.filePath)
+            this.basicForm.image = decodeURIComponent(image.filePath)
         },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
@@ -145,7 +145,7 @@ export default {
 
                         })
                     } else {
-                        let param = Object.assign({}, this.basicForm, {id: this.data.id})
+                        let param = Object.assign({}, this.basicForm, {id: this.data.id, parentId: this.data.parentId})
 
                         this._apis.goods.editorCategory(param).then(res => {
                             this.$emit('submit')

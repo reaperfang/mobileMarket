@@ -41,10 +41,9 @@
 <script>
 import componentButton from './componentButton';
 import componentMixin from '../mixins/mixinComps';
-import mixinMultiPerson from '../mixins/mixinMultiPerson';
 export default {
     name:"componentMultiPerson",
-    mixins:[componentMixin, mixinMultiPerson],
+    mixins:[componentMixin],
     data(){
         return{
             // 样式属性
@@ -66,8 +65,17 @@ export default {
             // 自己定义的
             goodWidth:'',
             goodMargin:'',
-            list: []
+            list: [],
+            loading: false
         }
+    },
+    created() {
+        this.fetch();
+        this._globalEvent.$on('fetchMultiPerson', (componentData, componentId) => {
+            if(this.currentComponentId === componentId) {
+                this.fetch(componentData);
+            }
+        });
     },
     mounted() {
         this.decoration();
@@ -75,7 +83,18 @@ export default {
     watch: {
         currentComponentData(){
             this.decoration();
-        }
+        },
+        'currentComponentData.data.addType'(newValue) {
+            if(newValue == 2) {
+                this.fetch();
+            }
+        },
+        'currentComponentData.data.showNumber'(newValue) {
+            this.fetch();
+        },
+        'currentComponentData.data.sortRule'(newValue) {
+            this.fetch();
+        },
     },
     components:{
         componentButton
@@ -126,7 +145,67 @@ export default {
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
         },
 
-    }
+        //根据ids拉取数据
+        fetch(componentData = this.currentComponentData.data) {
+            if(componentData) {
+                let params = {};
+                if(componentData.addType == 2) {
+                    params = {
+                        num: componentData.showNumber,
+                        order: componentData.sortRule
+                    };
+                }else{
+                    const ids = componentData.ids;
+                    if(Array.isArray(ids) && ids.length){
+                        params = {
+                            spuIds: ids.join(','),
+                            order: componentData.sortRule
+                        };
+                    }else{
+                        this.list = [];
+                        return;
+                    }
+                }
+
+                this.loading = true;
+                this._apis.shop.getMultiPersonListByIds(params).then((response)=>{
+                    this.createList(response);
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                    this.list = [];
+                    this.loading = false;
+                });
+            }
+        },
+
+        /* 创建数据 */
+        createList(datas) {
+            if(datas.length > this.showNumber){
+                datas = datas.slice(0,this.showNumber);
+            }
+            this.list = [];
+            if(this.hideSaledGoods==true){
+                var goods = datas;
+                for(var i in datas){
+                    if(goods[i].soldOut!=1){
+                        this.list.push(datas[i]);
+                    }
+                }
+            }
+            else{
+                this.list = datas;
+            }
+        },
+
+    },
+    beforeDestroy() {
+        //组件销毁前需要解绑事件。否则会出现重复触发事件的问题
+        this._globalEvent.$off('fetchMultiPerson');
+    },
 }
 </script>
 <style lang="scss" scoped>

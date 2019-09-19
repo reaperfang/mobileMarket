@@ -56,7 +56,7 @@
     </div>
     <div class="under_part">
       <div class="title">
-        <span class="name">趋势分析</span>
+        <span class="name">趋势分析<em>（截止到昨日）</em></span>
         <div class="time">
           <el-radio-group v-model="days" class="mr20">
             <el-radio-button label="7">最近7天</el-radio-button>
@@ -298,6 +298,11 @@ export default {
     .name{
       color: #161617;
       font-size: 16px;
+      em{
+        font-size: 12px;
+        color: #666;
+        text-decoration: none;
+      }
     }
     ul{
       width: 123px;

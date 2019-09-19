@@ -4,7 +4,7 @@
 
 <script>
 import Decorate from '@/components/Decorate';
-import decorateMixin from '@/components/Decorate/decorateMixin';
+import decorateMixin from '@/components/Decorate/mixins/decorateMixin';
 import utils from '@/utils';
 export default {
   name: "shopEditor",
