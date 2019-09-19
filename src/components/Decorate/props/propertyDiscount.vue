@@ -120,12 +120,11 @@
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import mixinDiscount from '../mixins/mixinDiscount';
 import dialogSelectDiscount from '@/views/shop/dialogs/dialogSelectDiscount';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyDiscount',
-  mixins: [propertyMixin, mixinDiscount],
+  mixins: [propertyMixin],
   components: {dialogSelectDiscount},
   data () {
     return {
@@ -153,6 +152,7 @@ export default {
     }
   },
   created() {
+    this.fetch();
   },
   watch: {
     'items': {
@@ -161,7 +161,8 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.spuId);
         }
-        this._globalEvent.$emit('fetchDiscount');
+        this.fetch();
+        this._globalEvent.$emit('fetchDiscount', this.ruleForm, this.$parent.currentComponentId);
       },
       deep: true
     },
@@ -174,7 +175,35 @@ export default {
     }
   },
   methods: {
+      //根据ids拉取数据
+      fetch(componentData = this.ruleForm) {
+          if(componentData) {
+              if(Array.isArray(componentData.ids) && componentData.ids.length){
+                  this.loading = true;
+                  this._apis.shop.getDiscountListByIds({
+                      rightsDiscount: 1, 
+                      spuIds: componentData.ids.join(',')
+                  }).then((response)=>{
+                      this.createList(response);
+                      this.loading = false;
+                  }).catch((error)=>{
+                      this.$notify.error({
+                          title: '错误',
+                          message: error
+                      });
+                      this.list = [];
+                      this.loading = false;
+                  });
+              }else{
+                  this.list = [];
+              }
+          }
+      },
 
+      /* 创建数据 */
+    createList(datas) {
+      this.list = datas;
+    },
   }
 }
 </script>

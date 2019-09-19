@@ -78,10 +78,16 @@
         <el-table-column
           prop="tradeType"
           label="收支类型">
+          <template slot-scope="scope">
+            {{scope.row.tradeType ? '支出' : '收入' }}
+          </template>
         </el-table-column>
         <el-table-column
           prop="businessType"
           label="业务类型">
+          <template slot-scope="scope">
+            {{rebusinessTypes[scope.row.businessType-1].label}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="relationSn"
@@ -90,6 +96,9 @@
         <el-table-column
           prop="payWay"
           label="支付方式">
+          <template slot-scope="scope">
+            {{payTypes[scope.row.payWay].label}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="wechatTradeSn"
@@ -102,6 +111,9 @@
         <el-table-column
           prop="isInvoice"
           label="开票">
+          <template slot-scope="scope">
+            {{scope.row.isInvoice ? '开票' : '未开票' }}
+          </template>
         </el-table-column>
         <el-table-column
           prop="tradeTime"
@@ -143,7 +155,7 @@ export default {
         searchType:'tradeDetailSn',
         searchValue:'',
         businessType:1,
-        payWay:1,
+        payWay:0,
         amountMin:'',
         amountMax:'',
         timeValue:'',

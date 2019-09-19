@@ -26,10 +26,9 @@
 <script>
 import componentButton from './componentButton';
 import componentMixin from '../mixins/mixinComps';
-import mixinGoods from '../mixins/mixinGoods';
 export default {
     name:"componentGoods",
-    mixins:[componentMixin, mixinGoods],
+    mixins:[componentMixin],
     props: ['currentCatagoryId', 'origin'],
     data(){
         return{
@@ -53,16 +52,25 @@ export default {
             // 上拉加载
             goodListLoading: false,
             goodListFinished: false,
-            list: []
+            list: [],
+            loading: false
         }
     },
     components:{
         componentButton
     },
     created() {
-        this._globalEvent.$on('goodsListOfGroupChange', (list)=>{
-            this.list = list;
+        this._globalEvent.$on('goodsListOfGroupChange', (list, componentId)=>{
+            if(this.currentComponentId === componentId) {
+                this.list = list;
+            }
         })
+        this.fetch();
+        this._globalEvent.$on('fetchGoods', (componentData, componentId) => {
+            if(this.currentComponentId === componentId) {
+                this.fetch(componentData);
+            }
+        });
     },
     mounted() {
         this.decoration();
@@ -70,6 +78,12 @@ export default {
     watch: {
         currentComponentData(){
             this.decoration();
+        },
+        currentCatagoryId(newValue) {
+            this.fetch();
+        },
+        'ruleForm.currentCatagoryId'() {
+            this.fetch();
         },
     },
     methods:{
@@ -150,7 +164,90 @@ export default {
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
         },
 
-    }
+        //根据ids拉取数据
+        fetch(componentData = this.currentComponentData.data) {
+            if(componentData) {
+                let params = {};
+                if(!componentData.source || (componentData.source === 1)) {
+                    const ids = componentData.ids;
+                    if(ids) {
+                        if(Object.prototype.toString.call(ids) === '[object Object]') {
+                            params = this.setGroupGoodsParams(ids);
+                        }else if(Array.isArray(ids) && ids.length){
+                            params = this.setNormalGoodsParams(ids);
+                        }else{
+                            this.list = [];
+                            return;
+                        }
+                    }else{
+                        this.list = [];
+                        return;
+                    }
+                }else if(componentData.source === 2){
+                    params = {
+                        status: '1',
+                        productCatalogInfoId: componentData.currentCatagoryId
+                    };
+                }
+
+                this.loading = true;
+                this._apis.goods.fetchAllSpuGoodsList(params).then((response)=>{
+                    this.createList(response, componentData);
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                    this.list = [];
+                    this.loading = false;
+                });
+            }
+        },
+
+        /* 创建数据 */
+        createList(datas, componentData) {
+            this.list = datas;
+        },
+
+         /* 设置分类商品参数 */
+        setGroupGoodsParams(ids) {
+            let params = {};
+            if(this.currentCatagoryId === 'all') {
+                const allIds = [];
+                for(let k in ids) {
+                    for(let item of ids[k]) {
+                        allIds.push(item);
+                    }
+                }
+                params = {
+                    status: '1',
+                    ids: allIds
+                }
+            }else{
+                params = {
+                    status: '1',
+                    ids: ids[this.currentCatagoryId],
+                    productCatalogInfoId: this.currentCatagoryId
+                }
+            }
+            return params;
+        },
+
+        /* 设置普通商品参数 */
+        setNormalGoodsParams(ids) {
+            return {
+                status: '1',
+                ids: ids,
+            }
+        }
+
+    },
+    beforeDestroy() {
+        //组件销毁前需要解绑事件。否则会出现重复触发事件的问题
+        this._globalEvent.$off('fetchGoods');
+        this._globalEvent.$off('goodsListOfGroupChange');
+    },
 }
 </script>
 

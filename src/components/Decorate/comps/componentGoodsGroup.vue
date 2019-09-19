@@ -14,10 +14,9 @@
 import componentButton from './componentButton';
 import componentGoods from './componentGoods';
 import componentMixin from '../mixins/mixinComps';
-import mixinGoodsGroup from '../mixins/mixinGoodsGroup';
 export default {
     name:"componentGoodsGroup",
-    mixins:[componentMixin, mixinGoodsGroup],
+    mixins:[componentMixin],
     data() {
       return {
         // 商品列表
@@ -31,11 +30,20 @@ export default {
         menuStyle: "",
         menuPosition: "",
         componentGoodsGroup_tabWidth: "",
-        currentCatagory: null
+        currentCatagory: null,
+        loading: false
       }
     },
     components: {
       componentGoods
+    },
+    created() {
+      this.fetch();
+      this._globalEvent.$on('fetchGoodsGroup', (componentData, componentId) => {
+        if(this.currentComponentId === componentId) {
+          this.fetch(componentData);
+        }
+      });
     },
     mounted() {
         this.decoration();
@@ -70,6 +78,36 @@ export default {
             this.menuStyle = this.currentComponentData.data.menuStyle;
             this.menuPosition = this.currentComponentData.data.menuPosition;
         },
+
+        //根据ids拉取数据
+        fetch(componentData = this.currentComponentData.data) {
+          if(componentData) {
+              if(componentData.ids) {
+                let ids = [];
+                for(let item in componentData.ids) {
+                  ids.push(item);
+                }
+                if(!ids.length) {
+                  this.list = [];
+                  return;
+                }
+                this.loading = true;
+                this._apis.goods.fetchCategoryList({ids}).then((response)=>{
+                    this.list = response;
+                    this._globalEvent.$emit('fetchGoods', componentData);
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                      title: '错误',
+                      message: error
+                    });
+                    this.list = [];
+                    this.loading = false;
+                });
+          }
+          }
+        },
+
         // handleScroll(){
         //     let componentGoodsGroupHeight = document.getElementById("componentGoodsGroup").clientHeight;  
         //     console.log(componentGoodsGroupHeight);
@@ -81,7 +119,11 @@ export default {
         //     // }  
         // }
 
-    }
+    },
+    beforeDestroy() {
+        //组件销毁前需要解绑事件。否则会出现重复触发事件的问题
+        this._globalEvent.$off('fetchGoodsGroup');
+    },
 }
 </script>
 <style lang="scss" scoped>

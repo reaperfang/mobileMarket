@@ -45,10 +45,9 @@
 <script>
 import componentButton from './componentButton';
 import componentMixin from '../mixins/mixinComps';
-import mixinDiscount from '../mixins/mixinDiscount';
 export default {
     name:"componentDiscount",
-    mixins:[componentMixin, mixinDiscount],
+    mixins:[componentMixin],
     data(){
         return{
             // 样式属性
@@ -66,11 +65,20 @@ export default {
             // 自己定义的
             goodWidth:'',
             goodMargin:'',
-            list: []
+            list: [],
+            loading: false
         }
     },
     components:{
         componentButton
+    },
+    created() {
+        this.fetch();
+        this._globalEvent.$on('fetchDiscount', (componentData, componentId) => {
+            if(this.currentComponentId === componentId) {
+                this.fetch(componentData);
+            }
+        });
     },
     mounted() {
         this.decoration();
@@ -122,7 +130,41 @@ export default {
             this.buttonStyle = this.currentComponentData.data.buttonStyle;
         },
 
-    }
+         //根据ids拉取数据
+        fetch(componentData = this.currentComponentData.data) {
+            if(componentData) {
+                if(Array.isArray(componentData.ids) && componentData.ids.length){
+                    this.loading = true;
+                    this._apis.shop.getDiscountListByIds({
+                        rightsDiscount: 1, 
+                        spuIds: componentData.ids.join(',')
+                    }).then((response)=>{
+                        this.createList(response);
+                        this.loading = false;
+                    }).catch((error)=>{
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                        this.list = [];
+                        this.loading = false;
+                    });
+                }else{
+                    this.list = [];
+                }
+            }
+        },
+
+        /* 创建数据 */
+        createList(datas) {
+            this.list = datas;
+        },
+
+    },
+    beforeDestroy() {
+      //组件销毁前需要解绑事件。否则会出现重复触发事件的问题
+      this._globalEvent.$off('fetchDiscount');
+    },
 }
 </script>
 <style lang="scss" scoped>

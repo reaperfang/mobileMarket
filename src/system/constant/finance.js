@@ -51,7 +51,7 @@ export default {
     ],
     //积分明细---业务类型
     idbusinessTypes:[
-        { value: 1, label: '登陆' },
+        { value: 1, label: '登录' },
         { value: 2, label: '购买' },
         { value: 3, label: '复购' },
         { value: 4, label: '红包' },
