@@ -39,10 +39,9 @@
 <script>
 import componentButton from './componentButton';
 import componentMixin from '../mixins/mixinComps';
-import mixinDiscountPackage from '../mixins/mixinDiscountPackage';
 export default {
     name:"componentDiscountPackage",
-    mixins:[componentMixin, mixinDiscountPackage],
+    mixins:[componentMixin],
     data(){
         return{
             // 样式属性
@@ -63,11 +62,20 @@ export default {
             // 自己定义的
             goodWidth:'',
             goodMargin:'',
-            list: []
+            list: [],
+            loading: false
         }
     },
     components:{
         componentButton
+    },
+    created() {
+        this.fetch();
+        this._globalEvent.$on('fetchDiscountPackage', (componentData, componentId) => {
+            if(this.currentComponentId === componentId) {
+                this.fetch(componentData);
+            }
+        });
     },
     mounted() {
         this.decoration();
@@ -123,7 +131,62 @@ export default {
             this.hideType = this.currentComponentData.data.hideType;
         },
 
-    }
+         //根据ids拉取数据
+        fetch(componentData = this.currentComponentData.data) {
+            if(componentData) {
+                if(Array.isArray(componentData.ids) && componentData.ids.length){
+                    this.loading = true;
+                    this._apis.shop.getDiscountPackageListByIds({
+                        ids: componentData.ids.join(',')
+                    }).then((response)=>{
+                        this.createList(response);
+                        this.loading = false;
+                    }).catch((error)=>{
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                        this.list = [];
+                        this.loading = false;
+                    });
+                }else{
+                    this.list = [];
+                }
+            }
+        },
+
+        /* 创建数据 */
+        createList(datas) {
+            this.list = [];
+            if(this.hideSaledGoods==true){
+                for(var i in datas){
+                    if(datas[i].soldOut!=1){
+                        this.list.push(datas[i]);
+                    }
+                }
+            }
+            else{
+                this.list = datas;
+            }
+            var list = this.list;
+            this.list = [];
+            if(this.hideEndGoods==true){
+                for(var i in list){
+                    if(list[i].activityEnd!=1){
+                        this.list.push(list[i]);
+                    }
+                }
+            }
+            else{
+                this.list = list;
+            }
+        },
+
+    },
+    beforeDestroy() {
+      //组件销毁前需要解绑事件。否则会出现重复触发事件的问题
+      this._globalEvent.$off('fetchDiscountPackage');
+    },
 }
 </script>
 <style lang="scss" scoped>

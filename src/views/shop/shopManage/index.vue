@@ -15,7 +15,7 @@ import shopMainDecorated from './moduleManage/shopMainDecorated';
 import personCenter from './moduleManage/personCenter';
 import goodsGroup from './moduleManage/goodsGroup';
 import utils from "@/utils";
-import decorateMixin from '@/components/Decorate/decorateMixin';
+import decorateMixin from '@/components/Decorate/mixins/decorateMixin';
 export default {
   name: 'index',
   mixins: [decorateMixin],

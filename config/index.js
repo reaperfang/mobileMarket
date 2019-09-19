@@ -13,7 +13,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     host: '127.0.0.1',
-    //host: '0.0.0.0',
+    host: '0.0.0.0',
     port: 9000,
     autoOpenBrowser: true,
     errorOverlay: true,

@@ -47,11 +47,10 @@
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import mixinBuyNotice from "../mixins/mixinBuyNotice";
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 export default {
   name: 'propertyBuyNotice',
-  mixins: [propertyMixin, mixinBuyNotice],
+  mixins: [propertyMixin],
   components: {dialogSelectGoods},
   data () {
     return {
@@ -72,6 +71,7 @@ export default {
     }
   },
   created() {
+    this.fetch();
   },
   watch: {
     'items': {
@@ -80,13 +80,40 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.id);
         }
-        this._globalEvent.$emit('fetchBuyNotice');
+        this.fetch();
+        this._globalEvent.$emit('fetchBuyNotice', this.ruleForm, this.$parent.currentComponentId);
       },
       deep: true
     }
   },
   methods: {
-
+    //根据ids拉取数据
+    fetch(componentData = this.ruleForm) {
+        if(componentData) {
+          if(Array.isArray(componentData.ids) && componentData.ids.length){
+            this.loading = true;
+            this._apis.order.getBuyNotice({
+                    productIds: componentData.ids,
+                }).then((response)=>{
+                this.createList(response);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.list = [];
+                this.loading = false;
+            });
+          }else{
+            this.list = [];
+          }
+        }
+    },
+      /* 创建数据 */
+    createList(datas) {
+      this.list = datas;
+    },
   }
 }
 </script>
