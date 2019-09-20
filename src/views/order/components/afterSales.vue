@@ -238,11 +238,6 @@ export default {
                 this.total = +res.total
                 this.tableData = res.list
                 this.loading = false
-                this.$notify({
-                    title: '成功',
-                    message: '查询成功！',
-                    type: 'success'
-                });
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({
