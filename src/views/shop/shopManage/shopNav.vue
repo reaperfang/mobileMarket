@@ -55,7 +55,7 @@
             <li >隐藏展开样式 TODU</li>
           </ul>
 
-          <div class="add_btn" @click="addNav">
+          <div class="add_btn" @click="addNav" v-if="navigation_type === '0'">
             <i class="el-icon-plus"></i>
           </div>
         </div>
@@ -66,7 +66,7 @@
         <el-form :model="currentNav" :rules="rules" ref="ruleForm" label-width="90px" class="demo-ruleForm" :style="propsHeight">
           <div class="block header">
             <p class="title">导航设置</p>
-            <p class="state" @click="deleteNav" style="cursor:pointer;">删除导航</p>
+            <p class="state" @click="deleteNav" style="cursor:pointer;" v-if="navigation_type === '0'">删除导航</p>
           </div>
           <div class="block form">
             <el-form-item label="导航名称" prop="navName">
