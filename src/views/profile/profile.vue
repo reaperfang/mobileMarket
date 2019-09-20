@@ -96,7 +96,7 @@ export default {
         getOverviewDetails(){ 
          this._apis.overview.overviewDetails({}).then(response => {
             let nums = response.shopOverviewView
-             console.log(profileCont.realTimeData)
+             console.log('11111',profileCont.realTimeData)
            profileCont.realTimeData.forEach(e => {
                     switch (e.id){
                         case '001': e.price = nums.payAmount
