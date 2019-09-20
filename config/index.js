@@ -46,7 +46,7 @@ module.exports = {
 
       /* 营销服务 */
       '/sale_server/**': {
-        target: 'http://120.133.1.130:8012/api/',
+        target: 'http://test-omo.aiyouyi.cn/mkt-api/',
         changeOrigin: true,
         pathRewrite: {
           '^/sale_server': ''
