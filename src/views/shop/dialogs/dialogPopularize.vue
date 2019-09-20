@@ -273,7 +273,7 @@ export default {
         url: this.pageLink.replace("&","[^]"),
         width: '225',
         height: '225',
-        logoUrl: this.shopInfo.logo
+        logoUrl: this.shopInfo.logoCircle
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);
@@ -333,7 +333,7 @@ export default {
           display: block;
           height: 200px;
           border: 1px solid #ddd;
-          object-fit: contain;
+          // object-fit: contain;
         }
         h3{
           margin-top:20px;
