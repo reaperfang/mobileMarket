@@ -68,7 +68,7 @@ export default [
 			},
 			{
 				path: "shopNav",
-				component: () => import("@/views/shop/shopManage/shopNav"),
+				component: () => import("@/views/shop/shopManage/shopNav/shopNavIndex"),
 				name: "shopNav",
 				meta: { title: "店铺导航", noCache: true }
 			},
