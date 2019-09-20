@@ -141,6 +141,7 @@ export default {
 
                         this._apis.goods.addCategory(param).then(res => {
                             this.$emit('submit')
+                            this.onSubmit()
                         }).catch(error => {
 
                         })
@@ -151,6 +152,7 @@ export default {
 
                         this._apis.goods.editorCategory(param).then(res => {
                             this.$emit('submit')
+                            this.onSubmit()
                         }).catch(error => {
 
                         })
@@ -208,6 +210,9 @@ export default {
         add: {
             type: Boolean,
             required: true
+        },
+        onSubmit: {
+            type: Function
         }
     },
     components: {
