@@ -9,8 +9,8 @@
                     <el-input v-model="ruleForm.sendPhone" placeholder="请输入快递单号"></el-input>
                 </el-form-item>
                 <el-form-item label="发货地址" prop="deliveryAddress">
-                    <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
-                    <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div>
+                    <area-cascader type="code" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <!-- <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div> -->
                 </el-form-item>
                 <el-form-item label="详细地址" prop="sendDetail">
                     <el-input
@@ -35,8 +35,8 @@
                     <el-input v-model="ruleForm.receivedPhone" placeholder="请输入快递单号"></el-input>
                 </el-form-item>
                 <el-form-item label="收货地址" prop="deliveryAddress">
-                    <area-cascader type="all" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
-                    <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div>
+                    <area-cascader type="code" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
+                    <!-- <div class="gray">{{ruleForm.deliveryAddress.map(val => Object.values(val)[0]).join(',')}}</div> -->
                 </el-form-item>
                 <el-form-item label="详细地址" prop="receivedDetail">
                     <el-input
@@ -135,36 +135,53 @@ export default {
 
             if(this.sendGoods == 'received') {
                 if(this.data.receivedProvinceCode && this.data.receivedCityCode && this.data.receivedAreaCode) {
-                    obj1[this.data.receivedProvinceCode] = this.data.receivedProvinceName
-                    obj2[this.data.receivedCityCode] = this.data.receivedCityName
-                    obj3[this.data.receivedAreaCode] = this.data.receivedAreaName
+                    // obj1[this.data.receivedProvinceCode] = this.data.receivedProvinceName
+                    // obj2[this.data.receivedCityCode] = this.data.receivedCityName
+                    // obj3[this.data.receivedAreaCode] = this.data.receivedAreaName
+                    arr.push(this.data.receivedProvinceCode)
+                    arr.push(this.data.receivedCityCode)
+                    arr.push(this.data.receivedAreaCode)
                 }
             } else {
                 if(this.data.sendProvinceCode && this.data.sendCityCode && this.data.sendAreaCode) {
-                    obj1[this.data.sendProvinceCode] = this.data.sendProvinceName
-                    obj2[this.data.sendCityCode] = this.data.sendCityName
-                    obj3[this.data.sendAreaCode] = this.data.sendAreaName
+                    // obj1[this.data.sendProvinceCode] = this.data.sendProvinceName
+                    // obj2[this.data.sendCityCode] = this.data.sendCityName
+                    // obj3[this.data.sendAreaCode] = this.data.sendAreaName
+                    arr.push(this.data.sendProvinceCode)
+                    arr.push(this.data.sendCityCode)
+                    arr.push(this.data.sendAreaCode)
                 }
             }
-            arr.push(obj1)
-            arr.push(obj2)
-            arr.push(obj3)
+            // arr.push(obj1)
+            // arr.push(obj2)
+            // arr.push(obj3)
             this.ruleForm = Object.assign({}, this.ruleForm, this.data, {deliveryAddress: arr})
         },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     console.log(this.ruleForm.deliveryAddress)
-                    let codes = Object.values(this.ruleForm.deliveryAddress)
-                    let codes0 = Object.keys(codes[0])[0]
-                    let codes1 = Object.keys(codes[1])[0]
-                    let codes2 = Object.keys(codes[2])[0]
-                    let name0 = codes[0][codes0]
-                    let name1 = codes[1][codes1]
-                    let name2 = codes[2][codes2]
+                    // let codes = Object.values(this.ruleForm.deliveryAddress)
+                    // let codes0 = Object.keys(codes[0])[0]
+                    // let codes1 = Object.keys(codes[1])[0]
+                    // let codes2 = Object.keys(codes[2])[0]
+                    // let name0 = codes[0][codes0]
+                    // let name1 = codes[1][codes1]
+                    // let name2 = codes[2][codes2]
+                    
+                    let codes0 = this.ruleForm.deliveryAddress[0]
+                    let codes1 = this.ruleForm.deliveryAddress[1]
+                    let codes2 = this.ruleForm.deliveryAddress[2]
+                    let name0 = this.$pcaa[86][this.ruleForm.deliveryAddress[0]]
+                    let name1 = this.$pcaa[this.ruleForm.deliveryAddress[0]][this.ruleForm.deliveryAddress[1]]
+                    let name2 = this.$pcaa[this.ruleForm.deliveryAddress[1]][this.ruleForm.deliveryAddress[2]]
 
                     if(this.sendGoods && !this.ajax) {
                         let obj = {}
+                        // console.log(this.ruleForm.deliveryAddress)
+                        // console.log(this.$pcaa[86][this.ruleForm.deliveryAddress[0]])
+                        // console.log(this.$pcaa[this.ruleForm.deliveryAddress[0]][this.ruleForm.deliveryAddress[1]])
+                        // console.log(this.$pcaa[this.ruleForm.deliveryAddress[1]][this.ruleForm.deliveryAddress[2]])
 
                         if(this.sendGoods == 'received') {
                             obj = {
