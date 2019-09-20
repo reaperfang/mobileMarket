@@ -124,7 +124,6 @@ export default {
     getShopMessage(){
       this._apis.set.getShopMessage().then(response =>{
         response.splice(response.length - 1, 1);
-        console.log(response);
         this.tableData = []
         response.map(item => {
           item.msgWechatPublic = item.msgWechatPublic == 0 ? false : true
