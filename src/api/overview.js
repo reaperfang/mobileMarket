@@ -16,7 +16,7 @@ export function overviewRemind(data) {
     return request({
       target: 'ORDER-REMIND-PROCESSOR',
       method: 'post',
-      apiType: 'over',
+      apiType: 'order',
       data
     })
   }

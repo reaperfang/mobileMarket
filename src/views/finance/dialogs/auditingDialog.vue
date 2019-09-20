@@ -92,6 +92,11 @@ export default {
       }
     }
   },
+  watch:{
+      data(){
+          this.getInfo()
+      }
+  },
   created() {
     this.getInfo()
   },

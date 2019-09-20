@@ -14,6 +14,7 @@
           <p class="uploadImage">
             <el-upload
               class="upload-demo"
+              v-loading="loading"
               :action="uploadUrl"
               :data="{json: JSON.stringify({cid: cid})}"
               :on-preview="handlePreview"
@@ -22,6 +23,7 @@
               multiple
               :limit="1"
               :on-exceed="handleExceed"
+              :before-upload="beforeAvatarUpload"
               :on-success="handleAvatarSuccess"
               :show-file-list="false">
               <el-button size="small" type="primary">点击上传</el-button>
@@ -59,6 +61,7 @@ export default {
         isCover: false,
         sourceMaterial:''
       },
+      loading:false,
       rules: {},
       fileList:[],
       fileData:'',
@@ -145,8 +148,12 @@ export default {
         })
       }
     },
+    beforeAvatarUpload(){
+      this.loading = true
+    },
     //图片上传成功
     handleAvatarSuccess(res, file) {
+      this.loading = false
       this.fileData = res.data
       this.ruleForm.fileCover = res.data.url
     },
