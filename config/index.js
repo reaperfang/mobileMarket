@@ -36,6 +36,7 @@ module.exports = {
       '/data-server/**': {
         // target: 'http://172.22.146.133:8081',  // 店铺 李玟霆
         // target: 'http://172.22.146.117:80',// 许涛
+        //target: 'http://172.22.145.113:8080',// 李权宇
         target:'http://test-omo.aiyouyi.cn',
 
         changeOrigin: true,
@@ -46,7 +47,7 @@ module.exports = {
 
       /* 营销服务 */
       '/sale_server/**': {
-        target: 'http://120.133.1.130:8012/api/',
+        target: 'http://test-omo.aiyouyi.cn/mkt-api/',
         changeOrigin: true,
         pathRewrite: {
           '^/sale_server': ''

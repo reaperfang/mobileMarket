@@ -132,11 +132,6 @@ export default {
         .then(res => {
           this.total = +res.total
           this.tableData = res.list
-          this.$notify({
-            title: "成功",
-            message: "查询成功！",
-            type: "success"
-          });
           this.loading = false
         })
         .catch(error => {

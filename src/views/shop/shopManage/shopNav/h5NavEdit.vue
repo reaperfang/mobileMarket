@@ -1,19 +1,6 @@
+/* H5导航编辑 */
 <template>
-  <div>
-    <el-tabs v-model="navigation_type">
-      <el-tab-pane label="店铺导航" name="0"></el-tab-pane>
-      <el-tab-pane label="小程序导航" name="1"></el-tab-pane>
-    </el-tabs>
-    <div class="on_off">
-      <p>店铺的各个页面可以通过导航串联起来。通过精心设置的导航，方便买家在栏目间快速切换，引导买家前往你期望的页面。  </p>
-      <el-switch
-        v-model="openNav"
-        active-color="#13ce66"
-        @change="switchStatusChange"
-        inactive-color="#ff4949">
-      </el-switch>
-    </div>
-    <div class="group-wrapper">
+   <div class="group-wrapper">
 
       <!-- 预览区 -->
       <div class="module view" ref="groupWrapper">
@@ -26,10 +13,10 @@
 
         <!-- 手机中部 -->
         <div class="phone-body" :style="bodyHeight">
-          <img :src="require('../../../assets/images/shop/shopNav.png')" alt="">
+          <img :src="require('@/assets/images/shop/shopNav.png')" alt="">
         </div>
 
-        <!-- 手机底部 -->
+        <!-- 手机底部 H5-->
         <div class="phone-footer">
           <ul class="navs type1" v-if="ruleForm.navStyle.id == 1">
             <li v-for="(item, key) of ruleForm.navIds" :class="{'active': ruleForm.navMap[item].active}" :key="key" @click="selectNav(item)">
@@ -103,7 +90,7 @@
                 <el-radio :label="2">自定义链接</el-radio>
               </el-radio-group>
             </el-form-item> -->
-            <el-form-item label="链接地址" prop="navLinkUrl" v-if="navigation_type === '0' && currentNav.navLinkType == 1">
+            <el-form-item label="链接地址" prop="navLinkUrl" v-if="currentNav.navLinkType == 1">
               <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
                   <el-option label="首页" value="1"></el-option>
                   <el-option label="购物车" value="2"></el-option>
@@ -118,37 +105,19 @@
                   <el-option label="营销活动" value="11"></el-option>
                 </el-select>
             </el-form-item>
-            <!-- <el-form-item label="链接地址" prop="navLinkUrl" v-if="navigation_type === '0' && currentNav.navLinkType == 2">
-              <el-input style="width:150px" v-model="currentNav.customNavLinkUrl" placeholder="请输入链接地址"></el-input>
-            </el-form-item> -->
-            <!-- <el-form-item label="导航链接" prop="navLinkType" v-if="navigation_type === '1'">
-              <el-select style="width:150px" v-model="currentNav.systemNavLinkUrl" placeholder="选择系统链接">
-                <el-option label="首页" value="1"></el-option>
-                <el-option label="购物车" value="2"></el-option>
-                <el-option label="个人中心" value="3"></el-option>
-                <el-option label="全部商品" value="4"></el-option>
-                <el-option label="全部分类" value="5"></el-option>
-                <el-option label="微信客服" value="6"></el-option>
-                <el-option label="微页面" value="7"></el-option>
-                <el-option label="微页面分类" value="8"></el-option>
-                <el-option label="指定商品" value="9"></el-option>
-                <el-option label="指定商品分类" value="10"></el-option>
-                <el-option label="营销活动" value="11"></el-option>
-              </el-select>
-            </el-form-item> -->
-            <el-form-item label="" prop="" v-if="navigation_type === '0'">
-              <el-tag type="success" @close="deleteGoodsGroup()" v-if="navigation_type === '0' && currentNav.linkTo">
+            <el-form-item label="" prop="">
+              <el-tag type="success" @close="deleteGoodsGroup()" v-if="currentNav.linkTo">
                 {{currentNav.linkTo.data.title || currentNav.linkTo.data.name}}
               </el-tag>
             </el-form-item>
           </div>
 
 
-          <div class="block header" v-if="navigation_type === '0'">
+          <div class="block header">
             <p class="title">全局设置</p>
             <p class="state"></p>
           </div>
-          <div class="block form" v-if="navigation_type === '0'">
+          <div class="block form">
             <el-form-item label="导航风格" prop="navStyle">
               {{ruleForm.navStyle.name || 'APP导航样式'}}
               <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectNavTemplate'">修改</el-button>
@@ -160,35 +129,8 @@
                 <el-checkbox label="3">商品搜索</el-checkbox>
                 <el-checkbox label="4">商品分类</el-checkbox>
                 <el-checkbox label="5">微页面及分类</el-checkbox>
+                <el-checkbox label="6">购物车</el-checkbox>
               </el-checkbox-group>
-            </el-form-item>
-          </div>
-
-          <div class="block header" v-if="navigation_type === '1'">
-            <p class="title">导航样式设置</p>
-            <p class="state"></p>
-          </div>
-          <div class="block form" v-if="navigation_type === '1'">
-            <el-form-item label="背景颜色" prop="backgroundColor">
-              <div class="color_block">
-                <el-input v-model="ruleForm.backgroundColor" :disabled="true"></el-input>
-                <colorPicker  v-model="ruleForm.backgroundColor" defaultColor="#fff"></colorPicker >
-                <!-- <el-button type="text">重置</el-button> -->
-              </div>
-            </el-form-item>
-            <el-form-item label="选中文字颜色" prop="activeColor">
-              <div class="color_block">
-                <el-input v-model="ruleForm.activeColor" :disabled="true"></el-input>
-                <colorPicker  v-model="ruleForm.activeColor" defaultColor="#000"></colorPicker >
-                <!-- <el-button type="text">重置</el-button> -->
-              </div>
-            </el-form-item>
-            <el-form-item label="未选中文字颜色" prop="unactiveColor">
-              <div class="color_block">
-                <el-input v-model="ruleForm.unactiveColor" :disabled="true"></el-input>
-                <colorPicker  v-model="ruleForm.unactiveColor" defaultColor="#ddd"></colorPicker >
-                <!-- <el-button type="text">重置</el-button> -->
-              </div>
             </el-form-item>
           </div>
 
@@ -203,7 +145,6 @@
 
         </el-form>
       </div>
-        <!-- {{ruleForm}} -->
       <!-- 动态弹窗 -->
       <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected" @navTypeSelected="navTypeSelected" :navStyleId="ruleForm.navStyle.id"></component>
 
@@ -212,19 +153,18 @@
       </DialogBase>
 
     </div>
-  </div>
 </template>
 
 <script>
-import dialogSelectImageMaterial from '../dialogs/dialogSelectImageMaterial';
-import dialogSelectNavTemplate from '../dialogs/dialogSelectNavTemplate';
+import dialogSelectImageMaterial from '../../dialogs/dialogSelectImageMaterial';
+import dialogSelectNavTemplate from '../../dialogs/dialogSelectNavTemplate';
 
 import DialogBase from "@/components/DialogBase";
-import microPage from "../dialogs/jumpLists/microPage";
-import microPageClassify from "../dialogs/jumpLists/microPageClassify";
-import marketCampaign from "../dialogs/jumpLists/marketCampaign";
-import goods from "../dialogs/jumpLists/goods";
-import goodsGroup from "../dialogs/jumpLists/goodsGroup";
+import microPage from "../../dialogs/jumpLists/microPage";
+import microPageClassify from "../../dialogs/jumpLists/microPageClassify";
+import marketCampaign from "../../dialogs/jumpLists/marketCampaign";
+import goods from "../../dialogs/jumpLists/goods";
+import goodsGroup from "../../dialogs/jumpLists/goodsGroup";
 
 import utils from "@/utils";
 import uuid from 'uuid/v4';
@@ -235,44 +175,28 @@ export default {
     return {
       dialogVisible: false,
       currentDialog: '',
-
       pageDialogVisible: false,
       currentPageDialog: '',
       currentPageName: '',
-      navigation_type: '0',  //导航类型
       utils,
-      openNav: true,   //系统-是否打开导航
       ruleForm: {
         navStyle: {id: 1},  //系统-全局导航样式
-        applyPage: ['1','2','3'],  //系统-应用页面
+        applyPage: ['1','2','3', '4', '5', '6'],  //系统-应用页面
         navIds: [],
-        navMap: {},
-        backgroundColor: '#fff',
-        activeColor: '#000',
-        unactiveColor: '#ddd'
+        navMap: {}
       },
       rules: {},
       currentNav: null,  //当前导航对象
       currentImg: 'active',  //当前上传图片类型   高亮和普通
-      toolsData: null,  //工具数据
       bodyHeight: {},  //内容区高度
       propsHeight: {},  //属性区高度
       seletedData: null  //临时选中的页面
     }
   },
-  computed: {
-    shopInfo() {
-      this.openNav = this.$store.getters.shopInfo.shopNavigation === 1;
-      return this.$store.getters.shopInfo || {};
-    },
-    cid(){
-        let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
-        return shopInfo.id
-    }
-  },
   watch: {
     currentNav: {
       handler(newValue) {
+        console.log('ruleForm',this.ruleForm);
         if(this.ruleForm.navMap[newValue.id]) {
           this.ruleForm.navMap[newValue.id] = newValue;
         }
@@ -362,31 +286,24 @@ export default {
           this.pageDialogVisible = true;
           break;
       }
-    },
-    navigation_type() {
-      this.fetch();
-    },
-    shopInfo: {
-      handler(newValue) {
-        this.openNav = newValue.shopNavigation === 1;
-      },
-      depp: true
     }
   },
   created() {
-    this.$store.dispatch('getShopInfo');
+    this._globalEvent.$on('apiNavDataChange', (data, navType)=> {
+      if(navType === '0') {
+        this.ruleForm = data;
+        this.selectNav(data.navIds[0]);
+      }
+    })
     this.initnavMap();
-    this.fetch();
   },
   mounted() {
     this.bodyHeight = {
-      height: document.body.clientHeight - 334 + 'px'
+      height: document.body.clientHeight - 364 + 'px'
     },
     this.propsHeight = {
-      height: document.body.clientHeight - 334 + 'px'
+      height: document.body.clientHeight - 364 + 'px'
     }
-
-
   },
   methods: {
 
@@ -406,7 +323,7 @@ export default {
 
     /* 初始化导航列表 */
     initnavMap() {
-      for(let i=0;i<3;i++) {
+      for(let i=0;i<4;i++) {
         let navObj = this.createNav();
         this.ruleForm.navIds.push(navObj.id);
         this.ruleForm.navMap[navObj.id] = navObj;
@@ -426,7 +343,16 @@ export default {
         navLinkType: 1,
         systemNavLinkUrl: '1',
         customNavLinkUrl: '',
-        active: false
+        active: false,
+        linkTo: {
+          pageType: 'systemPage',
+          id: 7,
+          data: {
+            id: 'index',
+            name: 'index',
+            title: '首页'
+          }
+        }
       };
     },
 
@@ -480,115 +406,32 @@ export default {
       }
     },
 
-    fetch() {
-      this.loading = true;
-      this._apis.shop.getShopNav({}).then((response)=>{
-        const string = utils.uncompileStr(response.navigationJson);
-        if(string.indexOf('navIds') < 0) {
-          return;
-        }
-        let pageData = JSON.parse(string);
-        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
-          return;
-        }
-        if(pageData && pageData.navStyle) {
-          this.ruleForm = pageData;
-          this.ruleForm['status'] = response.status;
-          this.selectNav(pageData.navIds[0]);
-        }
-        this.loading = false;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-        this.loading = false;
-      });
-    },
-
-     /* 开关状态切换 */
-    switchStatusChange(value) {
-      this._apis.shop.changeSwitchStatus({id:this.cid, shopNavigation: value === true ? 1 : 0}).then((response)=>{
-        this.$notify({
-          title: '成功',
-          message: '修改成功！',
-          type: 'success'
-        });
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      });
-    },
 
     /* 保存并启用 */
     saveAndApply() {
-      this.submit({
+      this.$emit('submitNavData',{
         navigationKey: '',
         status: '0',
-        navigation_type: this.navigation_type,
+        navigation_type: '0',
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      });
+      })
     },
 
     /* 保存 */
     save() {
-       this.submit({
+      this.$emit('submitNavData', {
         navigationKey: '',
         status: '1',
-        navigation_type: this.navigation_type,
+        navigation_type: '0',
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      });
-    },
-
-    submit(params) {
-      this.loading = true;
-      this._apis.shop.editShopNav(params).then((response)=>{
-        this.$notify({
-          title: '成功',
-          message: '编辑成功！',
-          type: 'success'
-        });
-        this.loading = false;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-        this.loading = false;
-      });
+      })
     },
 
     /* 重置 */
     resetData() {
-      this.loading = true;
-      this._apis.shop.resetShopNav({}).then((response)=>{
-        this.$notify({
-          title: '成功',
-          message: '重置成功！',
-          type: 'success'
-        });
-        const string = utils.uncompileStr(response.navigationJson);
-        if(string.indexOf('navIds') < 0) {
-          return;
-        }
-        let pageData = JSON.parse(string);
-        if(Object.prototype.toString.call(pageData) !== '[object Object]') {
-          return;
-        }
-        if(pageData && pageData.navStyle) {
-          this.ruleForm = pageData;
-          this.selectNav(pageData.navIds[0]);
-        }
-        this.loading = false;
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-        this.loading = false;
-      });
+      this.$emit('resetNavData', {
+        navigation_type: '0'
+      })
     },
 
     rowSeleted(row) {
@@ -596,26 +439,21 @@ export default {
     },
 
      /* 弹窗选中了跳转链接 */
-    seletePage(linkTo) {
-      this.currentNav.linkTo = this.seletedData;
+    seletePage() {
+      const tempCurrentNav = {...this.currentNav};
+      tempCurrentNav['linkTo'] = this.seletedData;
+      this.currentNav = tempCurrentNav;
     },
-  }
+  },
+
+  beforeDestroy() {
+      //组件销毁前需要解绑事件。否则会出现重复触发事件的问题
+      // this._globalEvent.$off('apiNavDataChange');
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.on_off{
-  height:36px;
-  background: rgb(255,233,210);
-  margin-bottom:20px;
-  display:flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 9px;
-  p{
-    color:rgba(146,146,155,1);
-  }
-}
 .group-wrapper{
   display:flex;
   flex-direction: row;

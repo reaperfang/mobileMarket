@@ -160,6 +160,8 @@ export default {
                 this.url = res.url
                 let _text = ''
 
+                this.getList()
+
                 if(res.importFailCount == 0) {
                     _text = `累计导入共${res.importCount}条数据； 成功导入${res.importSuccessCount}条； 失败${res.importFailCount}条。`
 

@@ -1,23 +1,25 @@
 <template>
-    <div class="classify">
+    <div class="app-content classify">
         <div class="search">
             <el-button v-permission="['商品', '商品分类', '默认页面', '新建分类']" @click="addLevel1Category" type="primary">新增商品分类</el-button>
             <el-form :inline="true" :model="formInline" class="form-inline">
                 <el-form-item label="搜索分类：">
-                    <el-input v-model="formInline.classify" placeholder="请输入分类名称..."></el-input>
+                    <el-input v-model="formInline.name" placeholder="请输入分类名称..."></el-input>
                 </el-form-item>
                 <el-form-item label="分类状态：">
-                    <el-select v-model="formInline.state" placeholder="所有状态">
-                        <el-option :label="item.state" :value="item.value" v-for="(item, index) in items" :key="index"></el-option>
+                    <el-select v-model="formInline.enable">
+                        <el-option label="所有状态" value=""></el-option>
+                        <el-option label="启用" :value="1"></el-option>
+                        <el-option label="禁用" :value="0"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                    <el-button type="primary" @click="getList">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div class="categoryTh" style="background:'#ebeafa'; color:'#655EFF';">
-			<div class="treeRow th">
+			<div class="treeRow th" :style="{background:'#ebeafa', color:'#655EFF'}">
 			<span class="td">分类名称</span>
 			<span class="td">状态</span>
 			<span class="td">操作</span>
@@ -34,7 +36,7 @@
 			:expand-on-click-node="false"
 			:render-content="renderContent">
 		</el-tree>
-        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add" :data="currentData"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add" :data="currentData" :onSubmit="getList"></component>
     </div>
 </template>
 <script>
@@ -44,8 +46,8 @@ export default {
     data() {
         return {
             formInline: {
-                classify: '',
-                state: ''
+                name: '',
+                enable: ''
             },
             items: [],
             loading:false,
@@ -201,13 +203,18 @@ export default {
             this.getList()
         },
         getList() {
-            this._apis.goods.fetchCategoryList().then((res) => {
+            this.loading = true
+            this._apis.goods.fetchCategoryList({
+                name: this.formInline.name,
+                enable: this.formInline.enable
+            }).then((res) => {
                 let arr = this.transTreeData(res, 0)
                 
                 this.categoryData = arr
                 this.flatArr = this.flatTreeArray(JSON.parse(JSON.stringify(arr)))
+                this.loading = false
             }).catch(error => {
-
+                this.loading = false
             })
         }
     },
