@@ -7,7 +7,7 @@
             <div class="imgs">
               <div class="item_img" v-for="(item) in list" :key="item.id">
                 <div class="img_info">
-                  <img :src="item.url">
+                  <img :src="item.urls">
                   <div class="img_bottom">
                     <p>
                       <span>
@@ -96,8 +96,8 @@ export default {
       this._apis.file.getWxImage(query).then((response)=>{
         this.list = []
         response.item.map(item => {
-          item.url = 'http://img01.store.sogou.com/net/a/04/link?appid=100520029&url='+ item.url
-          let data = Object.assign({checked:false}, item)
+          let urls = 'http://img01.store.sogou.com/net/a/04/link?appid=100520029&url='+ item.url
+          let data = Object.assign({checked:false,urls:urls}, item)
           this.list.push(data)
         })
         this.total = response.total
