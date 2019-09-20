@@ -11,8 +11,8 @@
         <template v-else-if="item.tabTitle">
           <h2>{{item.tabTitle}}</h2>
           <div v-if="!child.hidden" v-for="child in item.data" class="item-child">
-            <div v-if="child.meta.title == '修改密码' && userType"></div>
-            <div v-else>
+            <!-- <div v-if="child.meta.title == '修改密码' && userType"></div> -->
+            <div>
               <router-link class="ellipsis" active-class="active" :to="resolvePath(child.path)">{{child.meta.title}}</router-link>
             </div>
           </div>

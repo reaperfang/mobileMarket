@@ -30,6 +30,12 @@
                 账号信息
               </router-link>
             </el-dropdown-item>
+            <el-dropdown-item divided v-if="!userType">
+              <router-link to="/profile/passwordChange">
+                <i class="el-icon-lock"></i>
+                修改密码
+              </router-link>
+            </el-dropdown-item>
             <el-dropdown-item divided>
               <span style="display:block;" @click="logout"> 
                 <i class="el-icon-setting"></i>
@@ -69,6 +75,14 @@ export default {
     ]),
     userInfo(){
       return JSON.parse(this.$store.getters.userInfo)
+    },
+    userType(){
+      let userInfo = JSON.parse(this.$store.getters.userInfo)
+
+      if(userInfo && userInfo.type == "admin") {
+        return true
+      }
+      return false
     }
   },
   created(){ },

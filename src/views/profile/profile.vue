@@ -18,11 +18,11 @@
             <div class="p_top_r">
                 <p class="p_title">待办提醒：</p>
                 <div class="p_r_list">
-                    <p>待办售罄<span>({{toBeSoldOut}})</span></p>
-                    <p>待发货订单<span>({{staySendCount}})</span></p>
-                    <p>售后待处理<span>({{stayProcessedCount}})</span></p>
-                    <p>售后单待审核<span>({{stayAuthCount}})</span></p>
-                    <p>积分商城订单待发货<span>(23)</span></p>
+                    <p>待办售罄<span>({{toBeSoldOut || 0}})</span></p>
+                    <p>待发货订单<span>({{staySendCount || 0}})</span></p>
+                    <p>售后待处理<span>({{stayProcessedCount || 0}})</span></p>
+                    <p>售后单待审核<span>({{stayAuthCount || 0}})</span></p>
+                    <!-- <p>积分商城订单待发货<span>(23)</span></p> -->
                 </div>
             </div>
         </div>
