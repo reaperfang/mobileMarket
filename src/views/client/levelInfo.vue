@@ -77,8 +77,8 @@
                 <el-form-item v-if="getIndex(this.rightsList,'会员折扣') !== -1">
                     <el-checkbox v-model="right2">会员折扣</el-checkbox>
                     <span>享受后买商品售价</span>
-                    <div class="input_wrap3">
-                        <el-input placeholder="请输入数字" v-model="hyzk"></el-input>
+                    <div class="input_wrap">
+                        <el-input placeholder="填定数字（如：八折转入8,八五折输入8.5）" v-model="hyzk"></el-input>
                     </div>
                     <span>折</span>
                     <span class="l_warn">（仅对支仅持参加会员折扣的商品生效）</span>

@@ -34,7 +34,7 @@
 			:expand-on-click-node="false"
 			:render-content="renderContent">
 		</el-tree>
-        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add" :data="currentData"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add" :data="currentData" :onSubmit="getList"></component>
     </div>
 </template>
 <script>
