@@ -4,6 +4,7 @@
         <el-form-item label="本地上传" v-if="title == '上传图片'">
           <el-upload
             class="avatar-uploader"
+            v-loading="loading"
             :action="uploadUrl"
             :show-file-list="false"
             :limit="1"
@@ -24,7 +25,7 @@
             :on-success="handleVideoSuccess" 
             :before-upload="beforeUploadVideo" 
             :on-progress="uploadVideoProcess"> 
-          <video v-if="this.fileData.url !='' && !videoFlag"  
+          <video v-if="this.fileData.url !=undefined && !videoFlag"  
             :src="this.fileData.url"
             class="avatar video-avatar"
             controls="controls">您的浏览器不支持视频播放</video> 
@@ -59,12 +60,13 @@
        <el-form-item label="封面" v-if="title == '上传视频'">
           <el-upload
             class="avatar-uploader"
+            v-loading="loading1"
             :action="uploadUrl"
             :show-file-list="false"
             :limit="1"
             :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleCoverSuccess"
-            :before-upload="beforeAvatarUpload">
+            :before-upload="beforeAvatarUpload1">
             <img v-if="form.imageUrls" :src="form.imageUrls" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -105,7 +107,9 @@ export default {
       groupList:[],
       videoFlag:false , //是否显示进度条
 		  videoUploadPercent:"", //进度条的进度，
-		  isShowUploadVideo:false
+      isShowUploadVideo:false,
+      loading:false,
+      loading1:false,
     };
   },
   computed: {
@@ -174,14 +178,17 @@ export default {
     // },
 
     handleAvatarSuccess(res, file) {
+      this.loading = false
       this.fileData = res.data
       this.form.imageUrl = res.data.url
     },
     handleCoverSuccess(res, file){
+      this.loading1 = false
       this.fileData = res.data
       this.form.imageUrls = res.data.url
     },
     beforeAvatarUpload(file) {
+      this.loading = true
       const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 3;
 
@@ -192,6 +199,9 @@ export default {
         this.$message.error('上传头像图片大小不能超过 3MB!');
       }
       return isJPG && isLt2M;
+    },
+    beforeAvatarUpload1(){
+      this.loading1 = true
     },
 
     //上传成功回调

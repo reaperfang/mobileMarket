@@ -149,7 +149,7 @@ export default {
         if(Object.prototype.toString.call(pageData) !== '[object Object]') {
           return;
         }
-        if(pageData && pageData.navStyle) {
+        if(pageData && pageData.navIds) {
           this.apiNavData = pageData;
           this.apiNavData['status'] = response.status;
           this._globalEvent.$emit('apiNavDataChange', this.apiNavData, this.navigation_type);

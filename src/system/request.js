@@ -159,9 +159,6 @@ class Ajax {
           case 'overview':  //概况待办售罄
             config.baseURL = `${process.env.DATA_API}/api-commodity-web/commodity/api.do`;
             break;
-          case 'over':  //待办2-4 
-            config.baseURL = `${process.env.DATA_API}/order-api/order/api.do`;
-            break;
           case 'pay':  //微信支付设置
             config.baseURL = `${process.env.DATA_API}/api-payment-web/payment/api.do`;
             break;
