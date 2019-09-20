@@ -4,7 +4,7 @@
           <div class="wrapper">
             <template v-for="(item, key) of region">
               <div class="province" :key="key">
-                <div class="title" @mouseenter="titleMouseover(item)">
+                <div class="title" @mouseenter="titleMouseover(item)" @mouseleave="closeCity(key)">
                   <el-checkbox v-model="item.checked"></el-checkbox>{{item.name}}
                   <div class="citys" v-if="item.checked"  @mouseover="titleMouseover(item)" @mouseout="titleMouseout(item)">
                     <div class="tr">
@@ -12,14 +12,7 @@
                     </div>
                     <el-checkbox-group v-model="checkList">
                       <el-checkbox v-for="(city, key2) of item.citys" :key="key2" 
-                      :label="{
-                        code: item.code,
-                        name: item.name, 
-                        city: {
-                          code: city.code, 
-                          name: city.name
-                        }
-                      }">{{city.name}}</el-checkbox>
+                      :label="`${item.code},${item.name},${city.code},${city.name}`">{{city.name}}</el-checkbox>
                     </el-checkbox-group>
                   </div>
                 </div>
@@ -27,7 +20,7 @@
             </template>
           </div>
           <div>
-            已选中：<el-tag v-for="(item, key) of checkList" :key="key" style="margin-right:5px;margin-bottom:5px;">{{item.city.name}}</el-tag>
+            已选中：<el-tag v-for="(item, key) of checkList" :key="key" style="margin-right:5px;margin-bottom:5px;">{{item.split(',')[3]}}</el-tag>
           </div>
           <div slot="footer" class="dialog-footer">
             <el-button @click="visible = false">取 消</el-button>
@@ -79,6 +72,15 @@ export default {
       DialogBase
   },
   methods: {
+    closeCity(index) {
+      let _region = [...this.region]
+
+      _region.forEach(val => {
+        val.checked = false
+      })
+
+      this.region = _region
+    },
     closeCitys() {
       let _region = [...this.region]
 
@@ -102,7 +104,18 @@ export default {
     },
 
     submit() {
-      this.$emit("submit", this.checkList);
+      this.$emit("submit", this.checkList.map(val => {
+        let arr = val.split(',')
+
+        return {
+          code: arr[0],
+          name: arr[1], 
+          city: {
+            code: arr[2], 
+            name: arr[3]
+          }
+        }
+      }));
       this.visible = false;
     },
 
