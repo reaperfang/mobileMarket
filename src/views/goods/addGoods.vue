@@ -146,7 +146,7 @@
                         prop="image"
                         label="图片">
                         <template slot-scope="scope">
-                            <div class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
+                            <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
                             <el-upload
                                 class="upload-spec"
                                 :action="uploadUrl"
@@ -337,8 +337,8 @@
         <section class="form-section">
             <h2>详情描述</h2>
             <el-form-item label="是否显示关联商品" prop="isShowRelationProduct">
-                <el-radio v-model="ruleForm.isShowRelationProduct" :label="1">否</el-radio>
-                <el-radio v-model="ruleForm.isShowRelationProduct" :label="0">是</el-radio>
+                <el-radio v-model="ruleForm.isShowRelationProduct" :label="0">否</el-radio>
+                <el-radio v-model="ruleForm.isShowRelationProduct" :label="1">是</el-radio>
                 <el-button class="border-button" @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
             </el-form-item>
             <div class="associated-goods">
@@ -657,6 +657,16 @@ export default {
                     })) : []
 
                     console.log(this.fileList)
+                }
+                if(this.ruleForm.relationProductInfoIds && this.ruleForm.relationProductInfoIds.length) {
+                    this._apis.goods.getSPUGoodsList({ids: this.ruleForm.relationProductInfoIds}).then((res) => {
+                        this.tableData = res.list
+                    }).catch(error => {
+                        this.$notify.error({
+                            title: '错误',
+                            message: error
+                        });
+                    })
                 }
             }).catch(error => {
 
