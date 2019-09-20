@@ -1,5 +1,5 @@
 <template>
-    <div class="classify">
+    <div class="app-content classify">
         <div class="search">
             <el-button v-permission="['商品', '商品分类', '默认页面', '新建分类']" @click="addLevel1Category" type="primary">新增商品分类</el-button>
             <el-form :inline="true" :model="formInline" class="form-inline">
@@ -19,7 +19,7 @@
             </el-form>
         </div>
         <div class="categoryTh" style="background:'#ebeafa'; color:'#655EFF';">
-			<div class="treeRow th">
+			<div class="treeRow th" :style="{background:'#ebeafa', color:'#655EFF'}">
 			<span class="td">分类名称</span>
 			<span class="td">状态</span>
 			<span class="td">操作</span>

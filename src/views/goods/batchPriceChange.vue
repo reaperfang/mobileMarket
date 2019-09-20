@@ -1,5 +1,5 @@
 <template>
-    <div class="batch-price-change">
+    <div class="app-content batch-price-change">
         <section class="header">
             <el-row type="flex" align="center">
                 <el-col :span="12">
