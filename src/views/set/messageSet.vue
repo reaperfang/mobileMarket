@@ -27,20 +27,23 @@
         align="center">
         <template slot-scope="scope">
           <el-switch
+          :disabled="!scope.row.wechatPublicId"
           v-model="scope.row.msgWechatPublic"
-          @change="switchMessage(scope.row.id,scope.row.msgWechatPublic,scope.row.msgWechatApp,scope.row.msgSms)"
+          @change="switchMessage1(scope.row.id,scope.row.msgWechatPublic)"
           active-color="#13ce66"
           inactive-color="#ff4949"
           v-permission="['设置', '消息设置', '默认页面', '开启/关闭']">
           </el-switch>
           <el-popover
+            :disabled="!scope.row.wechatPublicId"
             placement="right"
             width="400"
             trigger="click">
               <p class="preview_title">{{scope.row.msgTitle}}</p>
               <div class="preview_content" v-html="scope.row.wechatPublicPreview"></div>
+              <p class="checkInfo" v-if="scope.row.isGotoWechatPublicDetail == 1">详情</p>
               <p class="preview_id">模板ID:{{scope.row.wechatPublicId}}</p>
-            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']" :style="{color:!scope.row.wechatPublicId?'#ccc':''}">预览</el-link>
           </el-popover>
         </template>
       </el-table-column>
@@ -50,20 +53,23 @@
         align="center">
         <template slot-scope="scope">
           <el-switch
+          :disabled="!scope.row.wechatAppId"
           v-model="scope.row.msgWechatApp"
-          @change="switchMessage(scope.row.id,scope.row.msgWechatPublic,scope.row.msgWechatApp,scope.row.msgSms)"
+          @change="switchMessage2(scope.row.id,scope.row.msgWechatApp)"
           active-color="#13ce66"
           inactive-color="#ff4949"
           v-permission="['设置', '消息设置', '默认页面', '开启/关闭']">
           </el-switch>
           <el-popover
+            :disabled="!scope.row.wechatAppId"
             placement="right"
             width="400"
             trigger="click">
               <p class="preview_title">{{scope.row.msgTitle}}</p>
               <div v-html="scope.row.wechatAppPreview" class="preview_content"></div>
+              <p class="checkInfo" v-if="scope.row.isGotoWechatAppDetail == 1">查看详情</p>
               <p class="preview_id">模板ID:{{scope.row.wechatAppId}}</p>
-            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']" :style="{color:!scope.row.wechatAppId?'#ccc':''}">预览</el-link>
           </el-popover>
         </template>
       </el-table-column>
@@ -73,20 +79,21 @@
         align="center">
         <template slot-scope="scope">
           <el-switch
+          :disabled="!scope.row.smsTemplateKey"
           v-model="scope.row.msgSms"
-          @change="switchMessage(scope.row.id,scope.row.msgWechatPublic,scope.row.msgWechatApp,scope.row.msgSms)"
+          @change="switchMessage3(scope.row.id,scope.row.msgSms)"
           active-color="#13ce66"
           inactive-color="#ff4949"
           v-permission="['设置', '消息设置', '默认页面', '开启/关闭']">
           </el-switch>
           <el-popover
-            disabled="!scope.row.smsPreview"
+            :disabled="scope.row.smsPreview == undefined || !scope.row.smsTemplateKey"
             placement="right"
             width="400"
             trigger="click">
               <p class="preview_title">{{scope.row.msgTitle}}</p>
-              <div v-html="scope.row.preview3" class="preview_content"></div>
-            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">预览</el-link>
+              <div v-html="scope.row.smsPreview" class="preview_content"></div>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']" :style="{color:!scope.row.smsTemplateKey?'#ccc':''}">预览</el-link>
           </el-popover>
         </template>
       </el-table-column>
@@ -97,7 +104,6 @@
 <script>
 import buyer from "./components/buyer";
 import seller from "./components/seller";
-import setCont from '@/system/constant/set';
 export default {
   name: 'messageSet',
   data() {
@@ -110,15 +116,6 @@ export default {
     
   },
   computed: {
-    previewContent() {
-      return setCont.previewContent
-    },
-    previewContent2() {
-      return setCont.previewContent2
-    },
-    previewContent3() {
-      return setCont.previewContent3
-    }
   }, 
   created() {
     this.getShopMessage()
@@ -126,29 +123,13 @@ export default {
   methods: {
     getShopMessage(){
       this._apis.set.getShopMessage().then(response =>{
+        response.splice(response.length - 1, 1);
+        console.log(response);
         this.tableData = []
         response.map(item => {
           item.msgWechatPublic = item.msgWechatPublic == 0 ? false : true
           item.msgWechatApp = item.msgWechatApp == 0 ? false : true
           item.msgSms = item.msgSms == 0 ? false : true
-          //加预览内容
-          this.previewContent.map((v) => {
-            if(v.title == item.msgTitle) {
-              item.preview = v.content;
-              item.previewId = v.id
-            }
-          })
-          this.previewContent2.map((v) => {
-            if(v.title == item.msgTitle) {
-              item.preview2 = v.content;
-              item.previewId2 = v.id
-            }
-          })
-          this.previewContent3.map((v) => {
-            if(v.title == item.msgTitle) {
-              item.preview3 = v.content;
-            }
-          })
           this.tableData.push(item);
         })
       }).catch(error =>{
@@ -159,13 +140,28 @@ export default {
       })
     },
 
-    switchMessage(id,publics,app,sms){
+    switchMessage1(id,publics){
       let query = {
         id:id,
         msgWechatPublic: publics == false ? 0 : 1,
+      }
+      this.handleSwitch(query);
+    },
+    switchMessage2(id,app){
+      let query = {
+        id:id,
         msgWechatApp: app == false ? 0 : 1,
+      }
+      this.handleSwitch(query);
+    },
+    switchMessage3(id,sms){
+      let query = {
+        id:id,
         msgSms: sms == false ? 0 : 1
       }
+      this.handleSwitch(query);
+    },
+    handleSwitch(query) {
       this.$msgbox({
         title: '确认提示',
         message: '确认要进行此项操作吗？',
@@ -187,7 +183,6 @@ export default {
         })        
       })
     },
-
     handleClick(comp) {
       this.currentTab = comp.name;
     },
@@ -244,5 +239,9 @@ export default {
 }
 .preview_id{
   padding: 6px 0 0 6px;
+}
+.checkInfo{
+  color: red;
+  padding: 4px 0 0 6px;
 }
 </style>
