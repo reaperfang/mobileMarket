@@ -25,6 +25,7 @@
       </el-form>
     </div>
     <el-table
+      v-loading="loading"
       :data="list"
       ref="table"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -100,7 +101,8 @@ export default {
       currentDialog: "",
       currentData: {},
       dialogVisible: "",
-      total: 0
+      total: 0,
+      loading: false
     };
   },
   created() {
@@ -246,14 +248,16 @@ export default {
     },
     async getList() {
       try {
+        this.loading = true
         let res = await fetchTagsList(this.listQuery)
 
         if(res) {
           this.list = res.list
           this.total = +res.total
+          this.loading = false
         }
       } catch(error) {
-
+        this.loading = false
       }
     }
   },
