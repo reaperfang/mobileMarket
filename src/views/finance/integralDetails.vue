@@ -56,6 +56,9 @@
         <el-table-column
           prop="businessTypeId"
           label="业务类型">
+          <template slot-scope="scope">
+            {{idbusinessTypes[scope.row.businessTypeId-1].label}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="changeScore"

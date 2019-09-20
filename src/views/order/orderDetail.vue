@@ -110,7 +110,7 @@
                         </el-select>
                     </div>
                     <div class="col">
-                        <el-input v-if="changePriceVisible" type="number" class="reduce-price-input" v-model="goodsListMessage.consultMoney"></el-input>
+                        <el-input v-if="changePriceVisible" min="0" type="number" class="reduce-price-input" v-model="goodsListMessage.consultMoney"></el-input>
                         <span v-if="!changePriceVisible">{{goodsListMessage.consultMoney}}</span>
                         <span class="blue pointer" v-if="!changePriceVisible" @click="changePriceVisible = true">改价</span>
                         <span class="blue pointer" v-if="changePriceVisible" @click="reducePriceHandler">完成</span>
@@ -285,6 +285,7 @@ export default {
                     message: '添加成功！',
                     type: 'success'
                 });
+                this.getDetail()
             }).catch(error => {
                 this.changePriceVisible = false
                 this.$notify.error({

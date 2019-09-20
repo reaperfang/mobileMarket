@@ -127,12 +127,11 @@
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import mixinNyuan from '../mixins/mixinNyuan';
 import dialogSelectNyuan from '@/views/shop/dialogs/dialogSelectNyuan';
 import uuid from 'uuid/v4';
 export default {
   name: 'propertyNyuan',
-  mixins: [propertyMixin, mixinNyuan],
+  mixins: [propertyMixin],
   components: {dialogSelectNyuan},
   data () {
     return {
@@ -163,6 +162,7 @@ export default {
     }
   },
   created() {
+    this.fetch();
   },
   watch: {
     'items': {
@@ -171,7 +171,8 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.id);
         }
-        this._globalEvent.$emit('fetchNyuan');
+        this.fetch();
+        this._globalEvent.$emit('fetchNyuan', this.ruleForm, this.$parent.currentComponentId);
       },
       deep: true
     },
@@ -184,7 +185,57 @@ export default {
     }
   },
   methods: {
+    //根据ids拉取数据
+    fetch(componentData = this.ruleForm) {
+        if(componentData) {
+            const ids = componentData.ids;
+            if(Array.isArray(ids) && ids.length){
+                this.loading = true;
+                this._apis.shop.getNyuanListByIds({
+                    baleIds : ids.join(',')
+                }).then((response)=>{
+                    this.createList(response);
+                    this.loading = false;
+                }).catch((error)=>{
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                    this.list = [];
+                    this.loading = false;
+                });
+            }else{
+                this.list = [];
+            }
+        }
+    },
 
+      /* 创建数据 */
+    createList(datas) {
+        this.list = [];
+        if(this.hideSaledGoods==true){
+            for(var i in datas){
+                if(datas[i].soldOut!=1){
+                    this.list.push(datas[i]);
+                }
+            }
+        }
+        else{
+            this.list = datas;
+        }
+        var list = this.list;
+        this.list = [];
+        if(this.hideEndGoods==true){
+            for(var i in list){
+                if(list[i].activityEnd!=1){
+                    this.list.push(list[i]);
+                }
+            }
+        }
+        else{
+            this.list = list;
+        }
+    },
   }
 }
 </script>

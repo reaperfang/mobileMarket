@@ -224,6 +224,21 @@ export default {
         sendGoodsHandler() {
             let params
 
+            if(!this.ruleForm.expressCompanyCode) {
+                this.confirm({title: '提示', icon: true, text: '请选择快递公司'})
+                return
+            }
+
+            if(!this.multipleSelection.length) {
+                this.confirm({title: '提示', icon: true, text: '请选择需要发货的商品'})
+                return
+            }
+
+            if(this.multipleSelection.some(val => !val.sendCount)) {
+                this.confirm({title: '提示', icon: true, text: '请填写发货商品数量'})
+                return
+            }
+
             this.ruleForm.expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == this.ruleForm.expressCompanyCode).expressCompany
 
             params = {
@@ -263,6 +278,7 @@ export default {
                     }
                 ],
             }
+
             this._apis.order.orderSendGoods(params).then((res) => {
                 this.$notify({
                     title: '成功',
@@ -281,6 +297,7 @@ export default {
             this.currentDialog = 'ReceiveInformationDialog'
             this.currentData = this.orderInfo
             this.sendGoods = 'received'
+            this.title="修改收货信息"
             this.dialogVisible = true
         },
         changeSendInfo() {

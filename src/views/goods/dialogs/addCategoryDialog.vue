@@ -41,8 +41,8 @@
                         <li @click="currentDialog = 'DialogSelectImageMaterial'; libraryVisible = true" class="upload">
                             <i class="el-icon-plus"><br /><span>上传图片</span></i>
                         </li>
-                        <li v-if="basicForm.imageUrl" class="image">
-                            <div :style="{backgroundImage: `url(${basicForm.imageUrl})`}" class="image-div"></div>
+                        <li v-if="basicForm.image" class="image">
+                            <div :style="{backgroundImage: `url(${basicForm.image})`}" class="image-div"></div>
                             <i @click="deleteImage" class="el-icon-error"></i>
                         </li>
                     </ul>
@@ -116,10 +116,10 @@ export default {
     },
     methods: {
         deleteImage() {
-            this.basicForm.imageUrl =  ''
+            this.basicForm.image =  ''
         },
         imageSelected(image) {
-            this.basicForm.imageUrl = decodeURIComponent(image.filePath)
+            this.basicForm.image = decodeURIComponent(image.filePath)
         },
         submit(formName) {
             this.$refs[formName].validate((valid) => {
@@ -145,7 +145,9 @@ export default {
 
                         })
                     } else {
-                        let param = Object.assign({}, this.basicForm, {id: this.data.id})
+                        let param = Object.assign({}, this.basicForm, {id: this.data.id, parentId: this.data.parentId})
+
+                        delete param.parentId
 
                         this._apis.goods.editorCategory(param).then(res => {
                             this.$emit('submit')

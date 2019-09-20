@@ -14,6 +14,8 @@
                     :options="itemCatList"
                     v-model="ruleForm.itemCat"
                     @change="itemCatHandleChange"
+                    :props="{ multiple: false, checkStrictly: true }"
+                    clearable
                     filterable>
                 </el-cascader>
                 <span class="category-display">您当前的选择是：{{itemCatText}}</span>
@@ -51,10 +53,12 @@
                     <el-cascader
                         :options="categoryOptions"
                         v-model="categoryValue"
-                        @change="handleChange">
+                        @change="handleChange"
+                        :props="{ multiple: false, checkStrictly: true }"
+                        clearable>
                     </el-cascader>
                 </div>
-                <div @click="currentDialog = 'AddCategoryDialog'; dialogVisible = true" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
+                <div @click="addCategory" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
             </el-form-item>
             <el-form-item label="商品标签" prop="productLabelId">
                 <div class="add-tag">
@@ -379,7 +383,7 @@
             </div>
         </section>
     </el-form>
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add"></component>
 </div>
 </template>
 <script>
@@ -403,6 +407,7 @@ export default {
             categoryOptions: [],
             productLabelList: [], // 商品标签列表
             specIds: [],
+            add: true,
             ruleForm: {
                 productCategoryInfoId: '', // 商品类目id
                 productCatalogInfoId: '', // 商品商家分类ID
@@ -504,10 +509,6 @@ export default {
                 initialFrameHeight: 400,
                 // 初始容器宽度
                 initialFrameWidth: 700,
-                // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-                serverUrl: 'http://35.201.165.105:8000/controller.php',
-                // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
-                UEDITOR_HOME_URL: '/static/UEditor/'
             },
             index: 0,
             shippingTemplates: [],
@@ -552,6 +553,11 @@ export default {
         }
     },
     methods: {
+        addCategory() {
+            this.currentDialog = 'AddCategoryDialog'
+            this.currentData = {level: 0, add: true}
+            this.dialogVisible = true
+        },
         getTemplateList() {
             this._apis.order.fetchTemplatePageList().then((res) => {
                 this.shippingTemplates = res.list
@@ -976,7 +982,11 @@ export default {
         centerFileUrl(response, file, fileList){
             if(file.status == "success"){
                 this.$message.success(response.msg);
-                this.ruleForm.images = response.data.url;
+                if(this.ruleForm.images != '') {
+                    this.ruleForm.images += ',' + response.data.url;
+                } else {
+                    this.ruleForm.images = response.data.url;
+                }
             }else{
                 this.$message.error(response.msg);
             }
@@ -1025,6 +1035,12 @@ export default {
                 name: image.fileName,
                 url: image.filePath
             }))
+
+            if(this.ruleForm.images != '') {
+                this.ruleForm.images += ',' + image.filePath
+            } else {
+                this.ruleForm.images = image.filePath
+            }
         }
     },
     mounted() {

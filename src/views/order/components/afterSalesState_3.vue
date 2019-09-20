@@ -23,6 +23,26 @@
                 </div>
             </div>
         </template>
+        <template v-else-if="this.orderAfterSale.orderAfterSaleStatus == 2">
+            <!-- 待处理 -->
+            <div class="row align-center justity-between">
+                <div class="col flex1 lefter">
+                    <el-steps :active="3">
+                        <el-step title="提交申请" :description="orderAfterSale.createTime"></el-step>
+                        <el-step title="商户处理" description=""></el-step>
+                        <el-step title="退款" description=""></el-step>
+                        <el-step title="系统处理中" description=""></el-step>
+                        <el-step title="完成" description=""></el-step>
+                    </el-steps>
+                </div>
+                <div class="col righter">
+                    <p>待处理</p>
+                    <div class="button-box">
+                        <el-button @click="drawback(orderAfterSale.id)">退款</el-button>
+                    </div>
+                </div>
+            </div>
+        </template>
         <template v-else-if="this.orderAfterSale.orderAfterSaleStatus == 5">
             <!-- 已关闭 -->
             <div class="row align-center justity-between">

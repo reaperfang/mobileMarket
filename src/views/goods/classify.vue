@@ -30,6 +30,7 @@
 			:props="defaultProps"
 			node-key="id"
 			ref="category"
+            default-expand-all
 			:expand-on-click-node="false"
 			:render-content="renderContent">
 		</el-tree>
@@ -162,6 +163,7 @@ export default {
             this.currentDialog = 'AddCategoryDialog'
             this.currentData = {
                 id: data.id,
+                parentId: data.parentId,
                 editor: true
             }
             this.dialogVisible = true

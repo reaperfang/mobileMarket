@@ -23,10 +23,10 @@
       <el-form-item label="商品分类" v-if="ruleForm.source === 2" prop="goodsGroup">
         <el-button type="text"  @click="pageDialogVisible=true; currentPageDialog='goodsGroup'">{{seletedGroup && seletedGroup.data.name || '从商品分类中选择'}}</el-button>
       </el-form-item>
-      <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
+      <!-- <el-form-item label="显示个数" v-if="ruleForm.source === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
         最多显示50个
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="列表样式" prop="listStyle">
         <el-radio-group v-model="ruleForm.listStyle">
           <el-radio :label="1">大图模式</el-radio>
@@ -133,13 +133,12 @@
 
 <script>
 import propertyMixin from '../mixins/mixinProps';
-import mixinGoods from '../mixins/mixinGoods';
 import DialogBase from "@/components/DialogBase";
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 import goodsGroup from '@/views/shop/dialogs/jumpLists/goodsGroup';
 export default {
   name: 'propertyGoods',
-  mixins: [propertyMixin, mixinGoods],
+  mixins: [propertyMixin],
   components: {DialogBase, dialogSelectGoods, goodsGroup},
   data () {
     return {
@@ -172,6 +171,7 @@ export default {
     }
   },
   created() {
+    this.fetch();
   },
   watch: {
     'items': {
@@ -180,7 +180,8 @@ export default {
         for(let item of newValue) {
           this.ruleForm.ids.push(item.id);
         }
-        this._globalEvent.$emit('fetchGoods');
+        this.fetch();
+        this._globalEvent.$emit('fetchGoods', this.ruleForm, this.$parent.currentComponentId);
       },
       deep: true
     },
@@ -190,7 +191,16 @@ export default {
       if([3,6].includes(newValue) && ![3,6].includes(oldValue)) { 
         this.ruleForm.buttonStyle = 1;
       }
-    }
+    },
+
+    currentCatagoryId(newValue) {
+        this.fetch();
+        this._globalEvent.$emit('fetchGoods', this.ruleForm, this.$parent.currentComponentId);
+    },
+    'ruleForm.currentCatagoryId'() {
+        this.fetch();
+        this._globalEvent.$emit('fetchGoods', this.ruleForm, this.$parent.currentComponentId);
+    },
   },
   methods: {
 
@@ -201,6 +211,87 @@ export default {
      /* 弹窗选中了跳转链接 */
     seletePage() {
       this.ruleForm.currentCatagoryId = this.seletedGroup.data.id;
+    },
+
+    //根据ids拉取数据
+    fetch(componentData = this.ruleForm) {
+        if(componentData) {
+            let params = {};
+            if(!componentData.source || (componentData.source === 1)) {
+                const ids = componentData.ids;
+                if(ids) {
+                    if(Object.prototype.toString.call(ids) === '[object Object]') {
+                        params = this.setGroupGoodsParams(ids);
+                    }else if(Array.isArray(ids) && ids.length){
+                        params = this.setNormalGoodsParams(ids);
+                    }else{
+                        this.list = [];
+                        return;
+                    }
+                }else{
+                    this.list = [];
+                    return;
+                }
+            }else if(componentData.source === 2){
+                params = {
+                    status: '1',
+                    productCatalogInfoId: this.ruleForm.currentCatagoryId
+                };
+            }
+
+            this.loading = true;
+            this._apis.goods.fetchAllSpuGoodsList(params).then((response)=>{
+                this.createList(response);
+                this.loading = false;
+            }).catch((error)=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+                this.list = [];
+                this.loading = false;
+            });
+        }
+    },
+
+      /* 创建数据 */
+    createList(datas) {
+      this.list = datas;
+      if(this.currentComponentData.data.source === 2) {
+          this._globalEvent.$emit('goodsListOfGroupChange', datas, this.$parent.currentComponentId);  //告知中央组件list数据更改
+      }
+    },
+
+     /* 设置分类商品参数 */
+    setGroupGoodsParams(ids) {
+        let params = {};
+        if(this.currentCatagoryId === 'all') {
+            const allIds = [];
+            for(let k in ids) {
+                for(let item of ids[k]) {
+                    allIds.push(item);
+                }
+            }
+            params = {
+                status: '1',
+                ids: allIds
+            }
+        }else{
+            params = {
+                status: '1',
+                ids: ids[this.currentCatagoryId],
+                productCatalogInfoId: this.currentCatagoryId
+            }
+        }
+        return params;
+    },
+
+    /* 设置普通商品参数 */
+    setNormalGoodsParams(ids) {
+        return {
+            status: '1',
+            ids: ids,
+        }
     }
   }
 }

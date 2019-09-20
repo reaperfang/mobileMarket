@@ -68,6 +68,9 @@
         <el-table-column
           prop="businessType"
           label="业务类型">
+          <template slot-scope="scope">
+            {{scope.row.businessType ? '售后发货' : '订单发货'}}
+          </template>  
         </el-table-column>
         <el-table-column
           prop="relationSn"
