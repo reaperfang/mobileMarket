@@ -299,6 +299,18 @@ export default {
         }
     }
 }
+.p_top {
+    display: flex;
+    .p_top_r {
+        flex: 1;
+    }
+}
+.p_bottom {
+    display: flex;
+    .p_b_m {
+        flex: 1;
+    }
+}
 </style>
 
 
