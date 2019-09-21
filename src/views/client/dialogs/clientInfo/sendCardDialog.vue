@@ -57,8 +57,8 @@ export default {
             
         },
         getLevelList() {
-            this._apis.client.getLevelList({}).then((response) => {
-                this.levelList = [].concat(response);
+            this._apis.client.getCardList({}).then((response) => {
+                this.levelList = [].concat(response.list);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

@@ -29,7 +29,7 @@
             </div>
           </li>
           <li>
-            <el-button type="primary" plain @click="_routeTo('shopEditor', {pageId: homePageId})">首页装修</el-button>
+            <el-button type="primary" plain @click="_routeTo('shopEditor', {pageId: homePageData.id})">首页装修</el-button>
           </li>
           <li>
             <el-button type="primary" plain  @click="_routeTo('templateManageIndex')">店铺模板</el-button>

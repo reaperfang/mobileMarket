@@ -101,16 +101,7 @@ export default {
   components: {dialogPopularize},
   data () {
     return {
-      tableList:[
-        {
-          id: '1',
-          name: '临时数据',
-          title: '阿三酱豆腐吧',
-          vv: 0,
-          pv: 0,
-          updateTime: '25987345'
-        }
-      ],
+      tableList:[],
       classifyList: [],
       dialogVisible: false,
       currentDialog: '',

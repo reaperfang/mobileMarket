@@ -50,7 +50,7 @@
       <div class="total">
         <span>全部 <em>{{total}}</em> 项</span>
         <span>
-          <el-button type="primary" @click="batchCheck" v-permission="['财务', '提现明细', '默认页面', '批量审批']">批量审批</el-button>
+          <el-button type="primary" @click="batchCheck" v-permission="['财务', '提现明细', '默认页面', '批量审核']">批量审核</el-button>
           <el-button icon="document" @click='exportToExcel()' v-permission="['财务', '提现明细', '默认页面', '导出']">导出</el-button>
         </span>
       </div>

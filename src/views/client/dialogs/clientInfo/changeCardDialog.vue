@@ -1,5 +1,5 @@
 <template>
-    <DialogBase :visible.sync="visible" @submit="submit" title="发放会员卡" :hasCancel="hasCancel">
+    <DialogBase :visible.sync="visible" @submit="submit" title="变更会员卡" :hasCancel="hasCancel">
         <div class="c_container">
             <p class="user_id">用户ID：{{data.id}}</p>
             <p class="user_id">当前会员卡等级：{{data.level}}</p>
@@ -58,8 +58,8 @@ export default {
             
         },
         getLevelList() {
-            this._apis.client.getLevelList({}).then((response) => {
-                this.levelList = [].concat(response);
+            this._apis.client.getCardList({}).then((response) => {
+                this.levelList = [].concat(response.list);
             }).catch((error) => {
                 this.$notify.error({
                     title: '错误',

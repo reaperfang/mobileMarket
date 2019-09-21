@@ -56,6 +56,7 @@ export default {
         & > img {
           width: 40px;
           height: 40px;
+          object-fit: cover;
           border-radius: 20px;
           float: left;
           overflow: hidden;
