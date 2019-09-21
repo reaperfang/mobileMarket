@@ -43,10 +43,10 @@
       <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange" v-loading="loading">
         <el-table-column
           type="selection"  
-          width="55">
+          width="30">
         </el-table-column>
-        <el-table-column prop="name" label="页面名称" :width="300"></el-table-column>
-        <el-table-column prop="title" label="页面标题" :width="300"></el-table-column>
+        <el-table-column prop="name" label="页面名称"></el-table-column>
+        <el-table-column prop="title" label="页面标题"></el-table-column>
         <el-table-column prop="pageCategoryName" label="所属分类">
           <template slot-scope="scope">
             <span v-if="scope.row.pageCategoryInfoId == '-1'">未分类</span>
@@ -55,7 +55,7 @@
         </el-table-column>
         <el-table-column prop="vv" label="访客数"></el-table-column>
         <el-table-column prop="pv" label="浏览数"></el-table-column>
-        <el-table-column prop="updateTime" label="创建时间" :width="200"></el-table-column>
+        <el-table-column prop="updateTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateUserName" label="操作账号"></el-table-column>
         <el-table-column prop="" label="操作" :width="'300px'">
           <template slot-scope="scope">

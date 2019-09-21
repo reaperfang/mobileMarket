@@ -37,7 +37,7 @@
       <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange" v-loading="loading">
         <el-table-column
           type="selection"  
-          width="55">
+          width="30">
         </el-table-column>
         <el-table-column prop="imagePath" label="广告图">
           <template slot-scope="scope">
@@ -46,10 +46,10 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="广告名称" :width="'200px'"></el-table-column>
-        <el-table-column prop="vv" label="访客数"></el-table-column>
-        <el-table-column prop="pv" label="浏览数"></el-table-column>
-        <el-table-column prop="updateTime" label="展示时间" :width="'400px'">
+        <el-table-column prop="name" label="广告名称"></el-table-column>
+        <el-table-column prop="vv" label="访客数" width="100"></el-table-column>
+        <el-table-column prop="pv" label="浏览数" width="100"></el-table-column>
+        <el-table-column prop="updateTime" label="展示时间">
           <template slot-scope="scope">
             {{scope.row.startTime}} - {{scope.row.endTime}}
           </template>
@@ -63,9 +63,9 @@
             <span v-else>--</span>
           </template>
         </el-table-column>
-        <el-table-column prop="startTime" label="创建时间"  :width="'200px'"></el-table-column>
-        <el-table-column prop="createUserName" label="操作账号"  :width="'150px'"></el-table-column>
-        <el-table-column prop="" label="操作" :width="'300px'">
+        <el-table-column prop="startTime" label="创建时间" ></el-table-column>
+        <el-table-column prop="createUserName" label="操作账号"></el-table-column>
+        <el-table-column prop="" label="操作" :width="'150px'">
           <template slot-scope="scope">
             <span class="table-btn" v-if="scope.row.status === 3" @click="startAD(scope.row)">启用</span>
             <span class="table-btn" v-else-if="scope.row.status === 0 || scope.row.status === 1" @click="stopAD(scope.row)">停用</span>
