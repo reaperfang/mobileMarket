@@ -18,7 +18,7 @@
       <el-table-column prop="totalDealMoney" label="累计消费金额" sortable></el-table-column>
       <el-table-column prop="dealTimes" label="购买次数" sortable></el-table-column>
       <el-table-column prop="perUnitPrice" label="客单价（元）" sortable></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <div class="btns clearfix">
             <span class="s1" @click="_routeTo('clientInfo',{id: scope.row.id})" v-permission="['客户', '全部客户', '默认页面', '查看详情']">详情</span>
