@@ -621,7 +621,10 @@ export default {
             } else {
                 this.specsLength = value.split(',').length
             }
-        }
+        },
+        // 'ruleForm.itemCat': function() {
+        //     this.getOperateCategoryList()
+        // }
     },
     methods: {
         addCategory() {
@@ -791,7 +794,7 @@ export default {
         },
         // 获取商品规格列表
         getSpecsList() {
-            this._apis.goodsOperate.fetchSpecsList({productCategoryId: "1"}).then(res => { // this.ruleForm.productCategoryInfoId
+            this._apis.goodsOperate.fetchSpecsList({productCategoryId: this.ruleForm.productCategoryInfoId}).then(res => {
                 console.log(res)
                 this.specsList = res
                 //this.specsLength = this.specsList.length
