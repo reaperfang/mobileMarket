@@ -240,10 +240,10 @@ export default {
                 this.loading = false
             }).catch(error => {
                 this.visible = false
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
                 this.loading = false
             })
         }
