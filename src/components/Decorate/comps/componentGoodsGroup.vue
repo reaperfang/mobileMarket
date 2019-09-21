@@ -101,6 +101,7 @@ export default {
                     //   title: '错误',
                     //   message: error
                     // });
+                    console.error(error);
                     this.list = [];
                     this.loading = false;
                 });
@@ -110,7 +111,6 @@ export default {
 
         // handleScroll(){
         //     let componentGoodsGroupHeight = document.getElementById("componentGoodsGroup").clientHeight;  
-        //     console.log(componentGoodsGroupHeight);
         //     // let scrollObj = document.getElementById("componentGoodsGroup_tab");
         //     // let scrollTop = scrollObj.scrollTop; 
         //     // let scrollHeight = scrollObj.scrollHeight;

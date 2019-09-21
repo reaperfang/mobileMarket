@@ -201,6 +201,7 @@ export default {
                     //     title: '错误',
                     //     message: error
                     // });
+                    console.error(error);
                     this.list = [];
                     this.loading = false;
                 });

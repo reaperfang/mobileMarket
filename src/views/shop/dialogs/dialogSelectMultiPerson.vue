@@ -104,6 +104,7 @@ export default {
         //   title: '错误',
         //   message: error
         // });
+        console.error(error);
         this.loading = false;
       });
     },

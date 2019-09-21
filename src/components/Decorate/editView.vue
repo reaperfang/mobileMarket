@@ -124,7 +124,6 @@ export default {
             this.allTemplateLoaded = true;
           }
         }).catch(e => {
-          console.log(e);
           loadedLength ++;
           if(loadedLength >= widgetList.length) {
             this.allTemplateLoaded = true;
