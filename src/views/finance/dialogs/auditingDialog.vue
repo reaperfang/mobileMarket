@@ -37,7 +37,8 @@
                 :rows="3"
                 class="marT20"
                 placeholder="请输入拒绝原因，不超过20个字"
-                v-model="remarks">
+                v-model="remarks"
+                v-if="radio == 1">
             </el-input>
         </div>
       </div>

@@ -96,22 +96,21 @@ export default {
         getOverviewDetails(){ 
          this._apis.overview.overviewDetails({}).then(response => {
             let nums = response.shopOverviewView
-             console.log('11111',profileCont.realTimeData)
            profileCont.realTimeData.forEach(e => {
                     switch (e.id){
-                        case '001': e.price = nums.payAmount
+                        case '001': e.price = nums.payMoneyAmount
                          break;
-                        case '002': e.price = nums.payOrderNum
+                        case '002': e.price = nums.payNum
                          break;
-                        case '003': e.price = nums.refundAmount
+                        case '003': e.price = nums.refundMoneyAmount
                          break;
-                        case '004': e.price = nums.refundAOrderNum
+                        case '004': e.price = nums.refundNum
                          break;
-                        case '005': e.price = nums.perCustomerPrice
+                        case '005': e.price = nums.customPayerNum
                          break;
-                        case '006': e.price = nums.payCustomerNum
+                        case '006': e.price = nums.averageMoney
                          break;
-                        case '007': e.price = nums.vipPayOrder
+                        case '007': e.price = nums.memberPayerNum
                          break;
                          }
              this.realTimeData = profileCont.realTimeData
