@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item class="remember">
           <span>
-            <el-checkbox v-model="checked">记住用户名</el-checkbox>            
+            <!-- <el-checkbox v-model="checked">记住用户名</el-checkbox>             -->
           </span>
           <!-- <span @click="_routeTo('profile/passwordChange')">修改密码</span> -->
         </el-form-item>

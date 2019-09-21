@@ -80,7 +80,8 @@ export default {
             getTime: "",
             cardList: [],
             cardNames: [],
-            lkParams: {}
+            lkParams: {},
+            isLoading: true
         }
     },
     computed:{

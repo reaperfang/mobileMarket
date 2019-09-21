@@ -104,10 +104,11 @@
                   <el-option label="指定商品分类" value="10"></el-option>
                   <el-option label="营销活动" value="11"></el-option>
                 </el-select>
+                <el-button type="primary" @click="seleteOneLink" v-if="['7','8','9','10','11'].includes(currentNav.systemNavLinkUrl)">选择</el-button>
             </el-form-item>
             <el-form-item label="" prop="">
               <el-tag type="success" @close="deleteGoodsGroup()" v-if="currentNav.linkTo">
-                {{currentNav.linkTo.data.title || currentNav.linkTo.data.name}}
+                {{currentNav.linkTo.typeName + ' - ' + (currentNav.linkTo.data.title || currentNav.linkTo.data.name)}}
               </el-tag>
             </el-form-item>
           </div>
@@ -259,31 +260,6 @@ export default {
               title: '全部分类',
             }
           };
-          break;
-        case '7':
-          this.currentPageDialog = 'microPage';
-          this.currentPageName = '选择微页面';
-          this.pageDialogVisible = true;
-          break;
-        case '8':
-          this.currentPageDialog = 'microPageClassify';
-          this.currentPageName = '选择微页面分类';
-          this.pageDialogVisible = true;
-          break;
-        case '9':
-          this.currentPageDialog = 'goods';
-          this.currentPageName = '选择指定商品';
-          this.pageDialogVisible = true;
-          break;
-        case '10':
-          this.currentPageDialog = 'goodsGroup';
-          this.currentPageName = '选择商品分类';
-          this.pageDialogVisible = true;
-          break;
-        case '11':
-          this.currentPageDialog = 'marketCampaign';
-          this.currentPageName = '选择营销活动';
-          this.pageDialogVisible = true;
           break;
       }
     }
@@ -444,6 +420,36 @@ export default {
       tempCurrentNav['linkTo'] = this.seletedData;
       this.currentNav = tempCurrentNav;
     },
+
+    seleteOneLink() {
+       switch(this.currentNav.systemNavLinkUrl) {
+        case '7':
+          this.currentPageDialog = 'microPage';
+          this.currentPageName = '选择微页面';
+          this.pageDialogVisible = true;
+          break;
+        case '8':
+          this.currentPageDialog = 'microPageClassify';
+          this.currentPageName = '选择微页面分类';
+          this.pageDialogVisible = true;
+          break;
+        case '9':
+          this.currentPageDialog = 'goods';
+          this.currentPageName = '选择指定商品';
+          this.pageDialogVisible = true;
+          break;
+        case '10':
+          this.currentPageDialog = 'goodsGroup';
+          this.currentPageName = '选择商品分类';
+          this.pageDialogVisible = true;
+          break;
+        case '11':
+          this.currentPageDialog = 'marketCampaign';
+          this.currentPageName = '选择营销活动';
+          this.pageDialogVisible = true;
+          break;
+      }
+    }
   },
 
   beforeDestroy() {
