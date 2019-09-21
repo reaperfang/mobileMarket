@@ -128,7 +128,7 @@ export default {
       return {
         'backgroundImage': `url(${url})`,
         'backgroundRepeat': 'no-repeat',
-        'backgroundSize': '100% 100%'
+        'backgroundSize': 'cover'
       }
     }
   },
@@ -155,6 +155,7 @@ export default {
         & > img {
           width: 100%;
           height: 100%;
+          object-fit: cover;
         }
       }
       & > .shopinfo_introduce {
@@ -216,6 +217,7 @@ export default {
         & > img {
           width: 100%;
           height: 100%;
+          object-fit: cover;
           border-radius: 50%;
           border:1px solid #ddd;
         }
@@ -267,6 +269,7 @@ export default {
         & > img {
           width: 100%;
           height: 100%;
+          object-fit: cover;
         }
       }
       & > .shopinfo3_introduce {
@@ -324,6 +327,7 @@ export default {
         & > img {
           width: 100%;
           height: 100%;
+          object-fit: cover;
           border-radius: 50%;
           border:1px solid #ddd;
         }
@@ -377,6 +381,7 @@ export default {
         height: 100%;
         border-radius: 50%;
         border:1px solid #ddd;
+        object-fit: cover;
       }
     }
     & > .shopinfo5_title {

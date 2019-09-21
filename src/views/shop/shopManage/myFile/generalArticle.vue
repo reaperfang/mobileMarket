@@ -14,6 +14,7 @@
           <p class="uploadImage">
             <el-upload
               class="upload-demo"
+              v-loading="loading"
               :action="uploadUrl"
               :data="{json: JSON.stringify({cid: cid})}"
               :on-preview="handlePreview"
@@ -22,6 +23,7 @@
               multiple
               :limit="1"
               :on-exceed="handleExceed"
+              :before-upload="beforeAvatarUpload"
               :on-success="handleAvatarSuccess"
               :show-file-list="false">
               <el-button size="small" type="primary">点击上传</el-button>
@@ -59,6 +61,7 @@ export default {
         isCover: false,
         sourceMaterial:''
       },
+      loading:false,
       rules: {},
       fileList:[],
       fileData:'',
@@ -70,11 +73,7 @@ export default {
         // 初始容器高度
         initialFrameHeight: 400,
         // 初始容器宽度
-        initialFrameWidth: 700,
-        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl: 'http://35.201.165.105:8000/controller.php',
-        // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
-        UEDITOR_HOME_URL: '/static/UEditor/'
+        initialFrameWidth: 700
       },
     }
   },
@@ -149,8 +148,12 @@ export default {
         })
       }
     },
+    beforeAvatarUpload(){
+      this.loading = true
+    },
     //图片上传成功
     handleAvatarSuccess(res, file) {
+      this.loading = false
       this.fileData = res.data
       this.ruleForm.fileCover = res.data.url
     },

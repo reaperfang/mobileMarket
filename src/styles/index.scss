@@ -662,3 +662,20 @@ table.yuan-table{
 // #app .main-container {
 //   overflow-x: hidden;
 // }
+
+.app-main .content-main .app-content {
+  min-height: calc(100vh - 100px);
+}
+
+.app-main .content-main::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.app-main .content-main::-webkit-scrollbar-thumb {
+  border-radius: 10px!important;
+  background: rgba(101,94,255,.4)!important;
+}
+.app-main .content-main::-webkit-scrollbar-track {
+  border-radius: 0!important;
+  background: rgba(101,94,255,.1)!important;
+}

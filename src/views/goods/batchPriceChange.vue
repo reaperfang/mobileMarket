@@ -1,5 +1,5 @@
 <template>
-    <div class="batch-price-change">
+    <div class="app-content batch-price-change">
         <section class="header">
             <el-row type="flex" align="center">
                 <el-col :span="12">
@@ -96,7 +96,9 @@
                     v-if="isCategory"
                     v-model="categoryValue"
                     :options="categoryOptions"
-                    @change="handleChange">
+                    @change="handleChange"
+                    :props="{ multiple: false, checkStrictly: true }"
+                    clearable>
                 </el-cascader>
                 <div class="tc">
                     <el-button @click="currentDialog = 'PriceChangeDialog'; dialogVisible = true" v-if="operateType" type="primary">一键改价</el-button>
@@ -274,6 +276,9 @@ export default {
             this.showTableCheck = true
             this.isCategory = false
             this.operateType = 1
+            this.productCatalogInfoId = ''
+            this.categoryValue = []
+            this.getList()
         },
         getList(param) {
             this.loading = true

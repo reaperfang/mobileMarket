@@ -273,7 +273,7 @@ export default {
         url: this.pageLink.replace("&","[^]"),
         width: '225',
         height: '225',
-        logoUrl: this.shopInfo.logo
+        logoUrl: this.shopInfo.logoCircle
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);
@@ -333,7 +333,7 @@ export default {
           display: block;
           height: 200px;
           border: 1px solid #ddd;
-          object-fit: contain;
+          // object-fit: contain;
         }
         h3{
           margin-top:20px;
@@ -378,6 +378,7 @@ export default {
           img{
             width: 60px;
             height: 60px;
+            // object-fit: cover;
             display: block;
             border: 1px solid #ddd;
           }
@@ -427,6 +428,7 @@ export default {
           img{
             width: 40px;
             height: 40px;
+            object-fit: cover;
             display: block;
             border: 1px solid #ddd;
           }
@@ -463,6 +465,7 @@ export default {
           img{
             width:28px;
             height:28px;
+            object-fit: cover;
             border-radius:5px;
             display: block;
             border: 1px solid #ddd;

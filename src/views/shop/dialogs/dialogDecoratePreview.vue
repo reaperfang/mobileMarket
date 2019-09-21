@@ -36,10 +36,6 @@ export default {
   data() {
     return {
       utils,
-      shopInfo: {
-        logo: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
-        name: '源源的店铺'
-      },
       qrCode: '',
       height: 0
     };
@@ -55,6 +51,9 @@ export default {
     },
     baseInfo() {
       return this.$store.getters.baseInfo;
+    },
+    shopInfo() {
+      return this.$store.getters.shopInfo || {};
     }
   },
   created() {
@@ -71,7 +70,7 @@ export default {
         url: this.homePageData.shareUrl.replace("&","[^]"),
         width: '250',
         height: '250',
-        logoUrl: this.shopInfo.logo
+        logoUrl: this.shopInfo.logoCircle
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);
@@ -106,6 +105,8 @@ export default {
       .shop_logo{
         height:100px;
         width:100%;
+        object-fit: contain;
+        border: 1px solid #ddd;
       }
       .shop_name{
         margin-top:18px;
