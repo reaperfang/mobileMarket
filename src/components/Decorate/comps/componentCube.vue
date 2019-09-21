@@ -194,9 +194,6 @@ export default {
   },
   created() {
     const _self = this;
-    setTimeout(()=>{
-      console.log(_self.currentComponentData.data.list)
-    },500)
   },
   computed: {
     

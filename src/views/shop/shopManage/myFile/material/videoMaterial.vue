@@ -241,7 +241,7 @@ export default {
             this.deleteVideo(data.deleteImage.imageId)
           break;
           case 'syncImage':
-            this.handleSyncImage()
+            this.handleSyncImage(data.syncImage.query)
           break;
           case 'uploadVideo':
             this.uploadVideo(data.uploadVideo.query)
@@ -318,8 +318,19 @@ export default {
       this.currentDialog = 'dialogSyncVideo'
     },
 
-    handleSyncImage(){
-      this.getList()
+    handleSyncImage(query){
+      this._apis.file.syncMaterial(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '同步微信视频成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
     /**********************************        单个视频      **********************/
     

@@ -98,10 +98,11 @@ export default {
         this.pageId = response[0].id;
         this.fetch(response[0].id);
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
+        console.error(error);
         this.loading = false;
       });
     },

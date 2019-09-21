@@ -63,7 +63,6 @@ export default {
     'currentComponentData.data': {
       handler (newValue){
         if(this.$refs.img_w) {
-          console.log(this.$refs.img_w[0].clientWidth);
           this.clientHight = this.$refs.img_w[0].clientWidth - 5;
         }
       }

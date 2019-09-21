@@ -36,9 +36,9 @@
       </div>
     </div>
     <p class="btns">
-      <el-button type="primary">预览</el-button>
+      <!-- <el-button type="primary">预览</el-button> -->
       <el-button type="primary" plain @click="_routeTo('fileManageIndex')">取消</el-button>
-      <el-button type="primary" @click="save">保存</el-button>
+      <el-button type="primary" @click.once="save">保存</el-button>
     </p>
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @imageSelected="imageSelected"></component>
   </div>

@@ -21,10 +21,10 @@
                 <span class="category-display">您当前的选择是：{{itemCatText}}</span>
             </el-form-item>
             <el-form-item label="商品名称" prop="name">
-                <el-input v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
+                <el-input style="width: 840px;" v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品描述" prop="description">
-                <el-input type="textarea" v-model="ruleForm.description" maxlength="100" show-word-limit></el-input>
+                <el-input style="width: 840px;" type="textarea" :rows="4" v-model="ruleForm.description" maxlength="100" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品图片" prop="images">
                 <!-- <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px"> -->
@@ -383,7 +383,7 @@
             </div>
         </section>
     </el-form>
-    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add"></component>
+    <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add" :onSubmit="getCategoryList"></component>
 </div>
 </template>
 <script>
@@ -401,6 +401,38 @@ import dialogSelectImageMaterial from '@/views/shop/dialogs/dialogSelectImageMat
 
 export default {
     data() {
+        var productUnitValidator = (rule, value, callback) => {
+            // if(value === '') {
+            //     callback(new Error('请选择优惠方式'));
+            // } else {
+            //     if(value == 0) {
+            //     if(this.ruleForm.useTypeFullcut === '') {
+            //         callback(new Error('请输入金额'));
+            //     } else {
+            //         callback();
+            //     }
+            //     } else if(value == 1) {
+            //     if(this.ruleForm.useTypeDiscount === '') {
+            //         callback(new Error('请输入折扣'));
+            //     } else {
+            //         callback();
+            //     }
+            //     }
+            // }
+            if(this.ruleForm.other) {
+                if(!this.ruleForm.otherUnit) {
+                    callback(new Error('请输入计量单位'));
+                } else {
+                    callback();
+                }
+            } else {
+                if(!this.ruleForm.productUnit) {
+                    callback(new Error('请选择计量单位'));
+                } else {
+                    callback();
+                }
+            }
+        };
         return {
             itemCatText: '',
             categoryValue: [],
@@ -468,7 +500,7 @@ export default {
                     { required: true, message: '请输入已售出数量', trigger: 'blur' },
                 ],
                 productUnit: [
-                    { required: true, message: '请选择单位计量', trigger: 'blur' },
+                    { validator: productUnitValidator, trigger: 'blur' },
                 ],
                 productBrandInfoId: [
                     { required: true, message: '请选择商品品牌', trigger: 'blur' },
@@ -550,6 +582,25 @@ export default {
         cid(){
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             return shopInfo.id
+        }
+    },
+    watch: {
+        'ruleForm.other': function(value) {
+            if(value) {
+                this.ruleForm.productUnit = ''
+            }
+        },
+        'ruleForm.goodsInfos': function(value) {
+            if(!value.length) {
+                this.specsLabel = ''
+            }
+        },
+        specsLabel(value) {
+            if(!value) {
+                this.specsLength = 0
+            } else {
+                this.specsLength = value.split(',').length
+            }
         }
     },
     methods: {
@@ -668,6 +719,18 @@ export default {
                         });
                     })
                 }
+                if(this.ruleForm.productUnit) {
+                    if(!this.unitList.find(val => val.name == this.ruleForm.productUnit)) {
+                        this.ruleForm.other = true
+                        this.ruleForm.otherUnit = this.ruleForm.productUnit
+                    }
+                }
+                // if(this.ruleForm.productDetail) {
+                //     let _productDetail = ''
+
+                //     _productDetail = decodeURIComponent(escape(window.atob(this.ruleForm.productDetail)))
+                //     this.ruleForm.productDetail = _productDetail
+                // }
             }).catch(error => {
 
             }) 
@@ -702,7 +765,7 @@ export default {
             this._apis.goodsOperate.fetchSpecsList({productCategoryId: "1"}).then(res => { // this.ruleForm.productCategoryInfoId
                 console.log(res)
                 this.specsList = res
-                this.specsLength = this.specsList.length
+                //this.specsLength = this.specsList.length
                 this.flatSpecsList = this.flatTreeArray(JSON.parse(JSON.stringify(res)), 'list')
             }).catch(error => {
                 this.$notify.error({
@@ -749,8 +812,15 @@ export default {
                     let obj = {
                         isShowSaleCount: this.ruleForm.isShowSaleCount ? 1 : 0,
                         isShowStock: this.ruleForm.isShowStock ? 1 : 0,
-                        productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit
+                        productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit,
                     }
+
+                    // if(this.ruleForm.productDetail) {
+                    //     let _productDetail = ''
+
+                    //     _productDetail = btoa(unescape(encodeURIComponent(this.ruleForm.productDetail)));
+                    //     obj.productDetail = _productDetail
+                    // }
 
                     if(!this.editor) {
                         _goodsInfos = this.ruleForm.goodsInfos.map(val => {
@@ -977,6 +1047,8 @@ export default {
                 this.specIds = [...this.specIds, ...value]
 
                 this.selectSpecificationsHandler(this.specIds)
+            } else if(this.currentDialog == 'AddTagDialog') {
+                this.getProductLabelList()
             }
         },
         editorValueUpdate(value) {
@@ -1249,7 +1321,11 @@ $blue: #655EFF;
         }
     }
 }
-
+/deep/ label[for="productUnit"]::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
+}
 </style>
 
 

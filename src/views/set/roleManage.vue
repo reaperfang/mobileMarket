@@ -22,6 +22,7 @@
       </div>
       <div class="bottom_part">
         <el-table
+        v-loading="loading"
         :data="dataList"
         style="width: 100%"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -91,7 +92,8 @@ export default {
       },
       shops:[ ],
       multipleSelection:[],
-      total:0
+      total:0,
+      loading:true
     }
   },
   watch: {
@@ -128,11 +130,12 @@ export default {
       this._apis.set.getRoleList(query).then(response =>{
         this.dataList = response.list
         this.total = response.total
+        this.loading = false
       }).catch(error =>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
       })
     },
     //查询
