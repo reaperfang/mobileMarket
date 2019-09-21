@@ -116,10 +116,11 @@ export default {
               this.couponList.push(v.appCoupon);
           })
       }).catch((error) => {
-          this.$notify.error({
-              title: '错误',
-              message: error
-          });
+        console.log(error);
+          // this.$notify.error({
+          //     title: '错误',
+          //     message: error
+          // });
       })
     },
     getUsedCode(status) {
@@ -135,10 +136,11 @@ export default {
             this.codeList.push(v.appCoupon);
           })
       }).catch((error) => {
-          this.$notify.error({
-              title: '错误',
-              message: error
-          });
+        console.log(error);
+          // this.$notify.error({
+          //     title: '错误',
+          //     message: error
+          // });
       })
     },
     getStatus(val) {

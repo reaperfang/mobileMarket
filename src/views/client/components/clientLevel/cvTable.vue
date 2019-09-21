@@ -7,6 +7,7 @@
       ref="levelTable"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
+      v-loading="loading"
       >
       <el-table-column
         type="selection"
@@ -64,7 +65,8 @@ export default {
   data() {
     return {
       checked: false,
-      levelList: []
+      levelList: [],
+      loading: false
     };
   },
   computed: {
@@ -75,7 +77,9 @@ export default {
   },
   methods: {
     getLevelsList() {
+      this.loading = true;
       this._apis.client.getLevelsList(this.params).then((response) => {
+        this.loading = false;
         response.list.map((v) => {
           v.status = Boolean(v.status);
           v.isGray = true;
@@ -88,10 +92,12 @@ export default {
           this.$set(response.list[i], 'isGray', false);
         }
       }).catch((error) => {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false;
+        console.log(error);
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
       })
     },
     edit(row) {
@@ -111,10 +117,11 @@ export default {
           type: 'success'
         });
       }).catch((error) => {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        console.log(error);
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
       })
     },
     handleAll(val) {
@@ -141,10 +148,11 @@ export default {
           });
           this.getLevelsList();
         }).catch((error) => {
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
+          console.log(error);
+          // this.$notify.error({
+          //   title: '错误',
+          //   message: error
+          // });
         })
       }
     }

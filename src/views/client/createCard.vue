@@ -326,10 +326,11 @@ export default {
           }
         })
         .catch(error => {
-          this.$notify.error({
-            title: "错误",
-            message: error
-          });
+          console.log(error);
+          // this.$notify.error({
+          //   title: "错误",
+          //   message: error
+          // });
         });
     },
     getIndex(arr, val) {
@@ -377,10 +378,11 @@ export default {
           this.rightsList = [].concat(_arr);
         })
         .catch(error => {
-          this.$notify.error({
-            title: "错误",
-            message: error
-          });
+          console.log(error);
+          // this.$notify.error({
+          //   title: "错误",
+          //   message: error
+          // });
         });
     },
     getConditionList() {
@@ -397,10 +399,11 @@ export default {
           this.conditionList = [].concat(_arr);
         })
         .catch(error => {
-          this.$notify.error({
-            title: "错误",
-            message: error
-          });
+          console.log(error);
+          // this.$notify.error({
+          //   title: "错误",
+          //   message: error
+          // });
         });
     },
     getRewardList() {
@@ -418,10 +421,11 @@ export default {
           this.getCardInfo();
         })
         .catch(error => {
-          this.$notify.error({
-            title: "错误",
-            message: error
-          });
+          console.log(error);
+          // this.$notify.error({
+          //   title: "错误",
+          //   message: error
+          // });
         });
     },
     showSpacialDialog(val) {
@@ -678,10 +682,11 @@ export default {
             });
           })
           .catch(error => {
-            this.$notify.error({
-              title: "错误",
-              message: error
-            });
+            console.log(error);
+            // this.$notify.error({
+            //   title: "错误",
+            //   message: error
+            // });
           });
       } 
     },
@@ -690,10 +695,11 @@ export default {
         //localStorage.setItem('colorUrl',JSON.stringify(response));
         this.colors = [].concat(response);
       }).catch((error) => {
-        this.$notify.error({
-          title: "错误",
-          message: error
-        });
+        console.log(error);
+        // this.$notify.error({
+        //   title: "错误",
+        //   message: error
+        // });
       })
     },
     getCardPublic() {
@@ -702,10 +708,11 @@ export default {
         this.explain = response.explain;
         this.notice = response.notice;
       }).catch((error) => {
-        this.$notify.error({
-          title: "错误",
-          message: error
-        });
+        console.log(error);
+        // this.$notify.error({
+        //   title: "错误",
+        //   message: error
+        // });
       })
     }
   },

@@ -37,10 +37,11 @@ export default {
                     });
                     this.$emit('refreshPage')
                 }).catch((error) => {
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
+                    console.log(error);
+                    // this.$notify.error({
+                    //     title: '错误',
+                    //     message: error
+                    // });
                 })   
             }
         }

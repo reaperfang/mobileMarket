@@ -7,6 +7,7 @@
       ref="clientLabelTable"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
+      v-loading="loading"
       >
       <el-table-column
         type="selection"
@@ -71,7 +72,8 @@ export default {
   data() {
     return {
       checkAll: false,
-      tagList: []
+      tagList: [],
+      loading: false
     };
   },
   computed: {
@@ -94,17 +96,21 @@ export default {
       });
     },
     getLabelList(startIndex, pageSize) {
+      this.loading = true;
       this._apis.client.getLabelList(Object.assign(this.params, {startIndex, pageSize})).then((response) => {
+        this.loading = false;
         response.list.map((v) => {
           v.tagType = v.tagType == 0 ? '手工':'自动';
         })
         this.tagList = [].concat(response.list);
         this.total = response.total;
       }).catch((error) => {
-        this.$notify.error({
-            title: '错误',
-            message: error
-        });
+        this.loading = false;
+        console.log(error);
+        // this.$notify.error({
+        //     title: '错误',
+        //     message: error
+        // });
       })
     },
     edit(row) {
@@ -132,10 +138,11 @@ export default {
           this.getLabelList(1, this.pageSize);
           this.checkAll = false;
         }).catch((error) => {
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
+          console.log(error);
+          // this.$notify.error({
+          //   title: '错误',
+          //   message: error
+          // });
         })
       }
     }

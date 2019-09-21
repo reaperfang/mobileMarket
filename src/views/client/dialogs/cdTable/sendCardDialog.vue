@@ -52,10 +52,11 @@ export default {
                         type: 'success'
                     });
                 }).catch((error) => {
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
+                    console.log(error);
+                    // this.$notify.error({
+                    //     title: '错误',
+                    //     message: error
+                    // });
                 })
             }else{
                 this.$notify.info({
@@ -69,10 +70,11 @@ export default {
             this._apis.client.getLabels(params).then((response) => {
                 this.tags = [].concat(response);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         }
     },
