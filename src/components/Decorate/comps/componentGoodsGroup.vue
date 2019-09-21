@@ -97,10 +97,10 @@ export default {
                     this._globalEvent.$emit('fetchGoods', componentData);
                     this.loading = false;
                 }).catch((error)=>{
-                    this.$notify.error({
-                      title: '错误',
-                      message: error
-                    });
+                    // this.$notify.error({
+                    //   title: '错误',
+                    //   message: error
+                    // });
                     this.list = [];
                     this.loading = false;
                 });
