@@ -90,11 +90,11 @@
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_vip.png" alt="">
                     <p>会员卡：
-                        <span v-if="clientInfoById.cardLevelInfoId !== ''">{{clientInfoById.cardLevelName}}</span>
-                        <span v-if="clientInfoById.cardLevelInfoId == ''">无</span>
+                        <span v-if="!!clientInfoById.cardLevelInfoId">{{clientInfoById.cardLevelName}}</span>
+                        <span v-if="!clientInfoById.cardLevelInfoId">无</span>
                     </p>
-                    <span v-if="clientInfoById.cardLevelInfoId !== ''" @click="showChangeCard">变更</span>
-                    <span v-if="clientInfoById.cardLevelInfoId == ''" @click="showSendCard">发放</span>
+                    <span v-if="!!clientInfoById.cardLevelInfoId" @click="showChangeCard">变更</span>
+                    <span v-if="!clientInfoById.cardLevelInfoId" @click="showSendCard">发放</span>
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_money.png" alt="">
@@ -539,7 +539,7 @@ export default {
             width: 240px;
             margin-left: 26px;
             p{
-                margin-top: 10px;
+                margin-top: 22px;
             }
         }
         .c_top_r{
