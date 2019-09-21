@@ -913,8 +913,12 @@ export default {
         getOperateCategoryList() {
             return new Promise((resolve, reject) => {
                 this._apis.goodsOperate.fetchCategoryList().then(res => {
-                    let arr = this.transTreeData(res.list, 0)
-                    this.operateCategoryList = res.list
+                    // let arr = this.transTreeData(res.list, 0)
+                    // this.operateCategoryList = res.list
+                    // this.itemCatList = arr
+
+                    let arr = this.transTreeData(res, 0)
+                    this.operateCategoryList = res
                     this.itemCatList = arr
                     resolve(res.list)
                 }).catch(error => {
