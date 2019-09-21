@@ -189,7 +189,8 @@
                             label="成本价"
                             width="180">
                             <template slot-scope="scope">
-                                <span>¥{{scope.row.costPrice}}</span>
+                                <!-- <span>¥{{scope.row.costPrice}}</span> -->
+                                <el-input v-model="scope.row.costPrice" placeholder="请输入成本价"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -206,26 +207,45 @@
                         <el-table-column
                             prop="wanningStock"
                             label="库存预警">
+                            <template slot-scope="scope">
+                                <!-- <span>¥{{scope.row.costPrice}}</span> -->
+                                <el-input v-model="scope.row.wanningStock" placeholder="请输入库存预警"></el-input>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="weight"
-                            label="重量">
+                            label="重量(kg)">
                             <template slot-scope="scope">
-                                <span>{{scope.row.weight}}(kg)</span>
+                                <!-- <span>{{scope.row.weight}}(kg)</span> -->
+                                <el-input v-model="scope.row.weight" placeholder="请输入重量"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
                             prop="volume"
-                            label="体积">
+                            label="体积(m³)">
                             <template slot-scope="scope">
-                                <span>{{scope.row.volume}}(m³)</span>
+                                <!-- <span>{{scope.row.volume}}(m³)</span> -->
+                                <el-input v-model="scope.row.volume" placeholder="请输入体积"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
                             prop="image"
                             label="图片">
                             <template slot-scope="scope">
-                                <img width="66" :src="scope.row.image" alt="">
+                                <!-- <img width="66" :src="scope.row.image" alt=""> -->
+                                <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
+                                <el-upload
+                                    class="upload-spec"
+                                    :action="uploadUrl"
+                                    :data="{json: JSON.stringify({cid: cid})}"
+                                    :on-remove="specHandleRemove"
+                                    :on-success="function(response, file, fileList) {
+                                        specUploadSuccess(response, file, fileList, scope.$index, scope.row)
+                                    }"
+                                    :show-file-list="showFileList">
+                                    <i class="el-icon-plus"></i>
+                                    点击上传
+                                </el-upload>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -642,7 +662,16 @@ export default {
         specUploadSuccess(response, file, fileList, index, row) {
             if(file.status == "success"){
                 this.$message.success(response.msg);
-                this.ruleForm.goodsInfos[index].image = response.data.url
+                //this.ruleForm.goodsInfos[index].image = response.data.url
+                if(!this.editor) {
+                    this.ruleForm.goodsInfos.splice(index, 1, Object.assign({}, this.ruleForm.goodsInfos[index], {
+                        image: response.data.url
+                    }))
+                } else {
+                    this.ruleForm.goodsInfo.splice(index, 1, Object.assign({}, this.ruleForm.goodsInfos[index], {
+                        image: response.data.url
+                    }))
+                }
             }else{
                 this.$message.error(response.msg);
             }
@@ -836,6 +865,8 @@ export default {
                         })
 
                         obj.goodsInfos = _goodsInfos
+                    } else {
+                        obj.goodsInfos = this.ruleForm.goodsInfo
                     }
 
                     params = Object.assign({}, this.ruleForm, obj)
@@ -882,8 +913,12 @@ export default {
         getOperateCategoryList() {
             return new Promise((resolve, reject) => {
                 this._apis.goodsOperate.fetchCategoryList().then(res => {
-                    let arr = this.transTreeData(res.list, 0)
-                    this.operateCategoryList = res.list
+                    // let arr = this.transTreeData(res.list, 0)
+                    // this.operateCategoryList = res.list
+                    // this.itemCatList = arr
+
+                    let arr = this.transTreeData(res, 0)
+                    this.operateCategoryList = res
                     this.itemCatList = arr
                     resolve(res.list)
                 }).catch(error => {
