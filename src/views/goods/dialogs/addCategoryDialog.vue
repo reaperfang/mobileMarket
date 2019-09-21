@@ -49,7 +49,7 @@
                 </el-form-item>
             </el-form>
             <div class="footer">
-                <el-button @click="submit('basicForm')" type="primary">确认</el-button>
+                <el-button @click="submitCategory('basicForm')" type="primary">确认</el-button>
                 <el-button @click="visible = false">取消</el-button>
             </div>
         </DialogBase>
@@ -121,7 +121,7 @@ export default {
         imageSelected(image) {
             this.basicForm.image = decodeURIComponent(image.filePath)
         },
-        submit(formName) {
+        submitCategory(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     let param = Object.assign({}, this.basicForm)

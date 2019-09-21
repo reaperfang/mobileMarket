@@ -48,10 +48,11 @@ export default {
          this.homePageData = response;
          this.convertDecorateData(response);
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
+        console.error(error);
         this.loading = false;
       });
     },
@@ -148,7 +149,7 @@ export default {
             message: '编辑成功！',
             type: 'success'
           });
-          // this._routeTo('pageManageIndex');
+          this._routeTo('pageManageIndex');
           this.loading = false;
         }).catch((error)=>{
           this.$notify.error({
@@ -164,7 +165,7 @@ export default {
             message: '创建成功！',
             type: 'success'
           });
-          // this._routeTo('pageManageIndex');
+          this._routeTo('pageManageIndex');
           this.loading = false;
         }).catch((error)=>{
           this.$notify.error({

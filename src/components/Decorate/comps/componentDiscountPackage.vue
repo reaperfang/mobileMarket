@@ -101,7 +101,6 @@ export default {
             else if(this.listStyle==2){
                 this.goodMargin = {marginTop:this.goodsMargin+'px'};
                 this.goodWidth = {width:(bodyWidth - this.pageMargin*2 - this.goodsMargin)/2+'px'}
-                console.log(this.goodWidth);
             }
             else if(this.listStyle==3){
                 this.goodMargin = {marginTop:this.goodsMargin+'px',marginLeft:this.goodsMargin+'px'};
@@ -142,10 +141,11 @@ export default {
                         this.createList(response);
                         this.loading = false;
                     }).catch((error)=>{
-                        this.$notify.error({
-                            title: '错误',
-                            message: error
-                        });
+                        // this.$notify.error({
+                        //     title: '错误',
+                        //     message: error
+                        // });
+                        console.error(error);
                         this.list = [];
                         this.loading = false;
                     });
