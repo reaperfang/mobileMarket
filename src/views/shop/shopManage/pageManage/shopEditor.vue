@@ -148,7 +148,7 @@ export default {
             message: '编辑成功！',
             type: 'success'
           });
-          // this._routeTo('pageManageIndex');
+          this._routeTo('pageManageIndex');
           this.loading = false;
         }).catch((error)=>{
           this.$notify.error({
@@ -164,7 +164,7 @@ export default {
             message: '创建成功！',
             type: 'success'
           });
-          // this._routeTo('pageManageIndex');
+          this._routeTo('pageManageIndex');
           this.loading = false;
         }).catch((error)=>{
           this.$notify.error({
