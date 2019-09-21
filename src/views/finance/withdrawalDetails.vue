@@ -38,11 +38,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="客户ID">
-          <el-input v-model="ruleForm.memberInfoId" placeholder="请输入" style="width:226px;"></el-input>
+          <el-input v-model="ruleForm.memberSn" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="onSubmit" v-permission="['财务', '提现明细', '默认页面', '搜索']">搜索</el-button>
+          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <!-- v-permission="['财务', '提现明细', '默认页面', '搜索']" -->
         </el-form-item>
       </el-form>
     </div>
@@ -97,8 +98,11 @@
         <el-table-column
         label="操作">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small" v-permission="['财务', '提现明细', '默认页面', '查看']">查看</el-button>
-            <el-button type="text" size="small" v-if="scope.row.status == 0" @click="examine(scope.row)" v-permission="['财务', '提现明细', '默认页面', '审核']">审核</el-button>
+            <el-button @click="handleClick(scope.row)" type="text" size="small" >查看</el-button>
+            <el-button type="text" size="small" v-if="scope.row.status == 0" @click="examine(scope.row)">审核</el-button>
+            <!-- v-permission="['财务', '提现明细', '默认页面', '查看']" -->
+            <!-- v-permission="['财务', '提现明细', '默认页面', '审核']" -->
+
           </template>
         </el-table-column>
       </el-table>
@@ -143,11 +147,11 @@ export default {
       },
       inline:true,
       ruleForm:{
-        searchType:1,
+        searchType:'tradeDetailSn',
         searchValue:'',
         timeValue:'',
-        status:0,
-        memberInfoId:''
+        status:'',
+        memberSn:''
       },
       dataList:[ ],
       total:0,
@@ -173,7 +177,7 @@ export default {
   methods: {
     init(){
       let query = {
-        memberInfoId:'',
+        memberSn:'',
         tradeDetailSn:'',
         cashoutSn:'',
         applyTimeStart:'',
@@ -221,7 +225,7 @@ export default {
         searchValue:'',
         timeValue:'',
         status:1,
-        memberInfoId:''
+        memberSn:''
       }
     },
     //导出

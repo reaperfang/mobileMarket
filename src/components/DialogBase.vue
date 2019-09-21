@@ -47,7 +47,7 @@ export default {
         },
         width: {
             type: String,
-            default: '40%'
+            default: '45%'
         },
         title: {
             type: String,
