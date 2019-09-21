@@ -204,10 +204,11 @@ export default {
                             type: 'success'
                         });
                     }).catch((error) => {
-                        this.$notify.error({
-                            title: '错误',
-                            message: error
-                        });
+                        console.log(error);
+                        // this.$notify.error({
+                        //     title: '错误',
+                        //     message: error
+                        // });
                     })
                 }else{
                     this._apis.client.updateTag(formObj).then((response) => {
@@ -217,10 +218,11 @@ export default {
                             type: 'success'
                         });
                     }).catch((error) => {
-                        this.$notify.error({
-                            title: '错误',
-                            message: error
-                        });
+                        console.log(error);
+                        // this.$notify.error({
+                        //     title: '错误',
+                        //     message: error
+                        // });
                     })
                 }
             }else{
@@ -232,10 +234,11 @@ export default {
                             type: 'success'
                         });
                     }).catch((error) => {
-                        this.$notify.error({
-                            title: '错误',
-                            message: error
-                        });
+                        console.log(error);
+                        // this.$notify.error({
+                        //     title: '错误',
+                        //     message: error
+                        // });
                     })
                 }else{
                     this._apis.client.addTag(formObj).then((response) => {
@@ -245,10 +248,11 @@ export default {
                             type: 'success'
                         });
                     }).catch((error) => {
-                        this.$notify.error({
-                            title: '错误',
-                            message: error
-                        });
+                        console.log(error);
+                        // this.$notify.error({
+                        //     title: '错误',
+                        //     message: error
+                        // });
                     })
                 }
             }
@@ -269,10 +273,11 @@ export default {
                 this.ruleForm.isTotalScore = Boolean(this.ruleForm.isTotalScore);
                 this.ruleForm.isProduct = Boolean(this.ruleForm.isProduct);
             }).catch((error) => {
-                this.$notify.error({
-                title: '错误',
-                message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                // title: '错误',
+                // message: error
+                // });
             })
         }
     }

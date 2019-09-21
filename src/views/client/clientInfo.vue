@@ -14,7 +14,7 @@
                 <p>客户渠道: <span>{{clientInfoById.channelName}}</span></p>
                 <p>成为客户时间: <span>{{clientInfoById.becameCustomerTime}}</span></p>
                 <p>成为会员时间: <span>{{clientInfoById.becameMemberTime}}</span></p>
-                <p>客户身份: <span class="addMainColor pointer" @click="changeIdentity">变更</span></p>
+                <p>客户身份: {{clientInfoById.levelName}}<span class="addMainColor pointer marR20" @click="changeIdentity">&nbsp;&nbsp;&nbsp;&nbsp;变更</span></p>
             </div>
             <div class="c_top_r fl">
                 <div class="c_title">
@@ -85,7 +85,7 @@
             </div>
         </div>
         <div class="c_mid">
-            <p>标签信息：</p>
+            <p>资产信息：</p>
             <div class="assets">
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_vip.png" alt="">
@@ -135,7 +135,7 @@
                 </div>
                 <div class="assets_item rb">
                     <p>累计消费订单数</p>
-                    <p>{{clientInfoById.dealTimes || 0}}</p>
+                    <p @click="_routeTo('query',{id: this.userId})">{{clientInfoById.dealTimes || 0}}</p>
                 </div>
             </div>
         </div>
@@ -222,10 +222,11 @@ export default {
                 });
                 this.getMemberInfo();
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         addTag() {
@@ -341,20 +342,22 @@ export default {
             this._apis.client.getAllCoupons({couponType: 0}).then((response) => {
                 this.allCoupons = [].concat(response.list);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getAllCodes() {
             this._apis.client.getAllCoupons({couponType: 1}).then((response) => {
                 this.allCodes = [].concat(response.list);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getMemberInfo() {
@@ -367,10 +370,11 @@ export default {
                 selected[2] = this.clientInfoById.areaCode;
                 this.$set(this.clientInfoById, 'selected',selected);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         saveInfo() {
@@ -420,10 +424,11 @@ export default {
                         type: 'success'
                     });
                 }).catch((error) => {
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
+                    console.log(error);
+                    // this.$notify.error({
+                    //     title: '错误',
+                    //     message: error
+                    // });
                 })
             }
         },
@@ -439,10 +444,11 @@ export default {
                     this.couponList.push(v.appCoupon);
                 })
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getUsedCode() {
@@ -452,10 +458,11 @@ export default {
                     this.codeList.push(v.appCoupon);
                 })
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         sendCoupon() {
@@ -645,5 +652,8 @@ export default {
             }
         }
     }
+}
+.marR20{
+    margin-right: 20px
 }
 </style>

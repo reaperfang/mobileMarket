@@ -40,10 +40,11 @@ export default {
       this._apis.client.distributeCoupon(this.selectList).then((response) => {
         console.log(response);
       }).catch((error) => {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        console.log(error);
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
       })
     },
     handleAdd() {

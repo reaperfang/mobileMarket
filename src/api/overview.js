@@ -5,7 +5,7 @@ import request from '@/system/request'
 // 概况详情首页
 export function overviewDetails(data) {
   return request({
-    target: 'CUSTOMER-SHOPX-OVERVIEWX-DATA-PROCESSOR',
+    target: 'OVER-VIEW-PROCESSOR',
     method: 'post',
     apiType: 'data',
     data

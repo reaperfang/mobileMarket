@@ -6,6 +6,7 @@
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
+      v-loading="loading"
       >
       <el-table-column
         prop="sceneName"
@@ -44,7 +45,8 @@ export default {
       currentDialog:"",
       dialogVisible: false,
       currentData:{},
-      creditList: []
+      creditList: [],
+      loading: false
     };
   },
   computed: {
@@ -80,14 +82,18 @@ export default {
       }
     },
     getCreditList() {
+      this.loading = true;
       this._apis.client.getCreditList({}).then((response) => {
+        this.loading = false;
         response.map((v) => {v.enable = v.enable == 0?'禁用':'启用'});
         this.creditList = [].concat(response);
       }).catch((error) => {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false;
+        console.log(error);
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
       })
     }
   },

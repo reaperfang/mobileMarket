@@ -98,7 +98,6 @@ export default {
         if(Object.prototype.toString.call(pageData) !== '[object Object]') {
           return;
         }
-        console.log(pageData);
         if(pageData && pageData.navIds) {
           this.apiNavData = pageData;
           this.apiNavData['status'] = response.status;
@@ -106,10 +105,11 @@ export default {
         }
         this.loading = false;
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
+        console.error(error);
         this.loading = false;
       });
     },

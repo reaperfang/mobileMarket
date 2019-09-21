@@ -73,10 +73,11 @@ export default {
         this.classifyList = response;
         // this.ruleForm.pageCategoryInfoId = response[0].id;
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
+        console.error(error);
       });
     }
   }

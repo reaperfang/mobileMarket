@@ -131,10 +131,11 @@ export default {
                         type: 'success'
                     });
                 }).catch((error) => {
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
+                    console.log(error);
+                    // this.$notify.error({
+                    //     title: '错误',
+                    //     message: error
+                    // });
                 })
             }
         },
@@ -153,10 +154,11 @@ export default {
                         type: 'success'
                     });
                 }).catch((error) => {
-                    this.$notify.error({
-                        title: '错误',
-                        message: error
-                    });
+                    console.log(error);
+                    // this.$notify.error({
+                    //     title: '错误',
+                    //     message: error
+                    // });
                 })
             }
         },
@@ -173,10 +175,11 @@ export default {
                 this.scoreUpperCount = response.scoreUpperCount;
                 this.isSwitch = response.scoreUpper == 1? true:false;
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         }
     },

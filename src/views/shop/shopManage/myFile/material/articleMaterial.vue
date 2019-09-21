@@ -143,7 +143,7 @@ export default {
             this.deleteActicle(data.deleteActicle.articleId) 
           break;
           case 'syncImage':
-            this.handleSyncImage()
+            this.handleSyncImage(data.syncImage.query)
           break;
         }
       }
@@ -155,8 +155,19 @@ export default {
       this.currentDialog = 'dialogSyncArticle'
     },
 
-    handleSyncImage(){
-      this.getList()
+    handleSyncImage(query){
+      this._apis.file.syncMaterial(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '同步微信图文成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
 
     handleDeleteArticle(id,type){

@@ -140,6 +140,7 @@ export default {
     };
   },
   created() {
+    console.log(this.$route.query.id);
     this._globalEvent.$on("checkedLength", number => {
       this.checkedLength = number;
     });

@@ -6,6 +6,7 @@
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
+      v-loading="loading"
       >
       <el-table-column
         type="selection"
@@ -66,7 +67,7 @@ export default {
   name: "cdTable",
   extends: TableBase,
   components: { sendCardDialog },
-  props: ['cardList'],
+  props: ['cardList','loading'],
   data() {
     return {
       currentDialog: "",
@@ -85,10 +86,11 @@ export default {
         });
         this.$emit('refreshTable');
       }).catch((error) => {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        console.log(error);
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
       })
     },
     sendCard(row) {

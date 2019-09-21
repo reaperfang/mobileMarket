@@ -78,7 +78,7 @@
                     <el-checkbox v-model="right2">会员折扣</el-checkbox>
                     <span>享受后买商品售价</span>
                     <div class="input_wrap">
-                        <el-input placeholder="填定数字（如：八折转入8,八五折输入8.5）" v-model="hyzk"></el-input>
+                        <el-input placeholder="填写数字（如：八折输入8,八五折输入8.5）" v-model="hyzk"></el-input>
                     </div>
                     <span>折</span>
                     <span class="l_warn">（仅对支仅持参加会员折扣的商品生效）</span>
@@ -283,10 +283,11 @@ export default {
                     })
                 }
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getIndex(arr, val) {
@@ -316,10 +317,11 @@ export default {
                 })
                 this.conditionList = [].concat(_arr);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         //获取等级权益
@@ -335,10 +337,11 @@ export default {
                 this.rightsList = [].concat(_arr);
                 this.getLevelsInfo(this.$route.query.id);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         //获取升级奖励
@@ -353,10 +356,11 @@ export default {
                 })
                 this.rewardList = [].concat(_arr);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         showGiftDialog(val) {
@@ -603,10 +607,11 @@ export default {
                 });
                 this._routeTo('clientLevel');
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         }
     },
