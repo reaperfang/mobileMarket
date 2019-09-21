@@ -123,7 +123,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <div class="operate-box">
-                            <span v-permission="['订单', '发货管理', '订单发货', '查看']" @click="$router.push('/order/orderDetail?id=' + scope.row.id)">查看</span>
+                            <span v-permission="['订单', '发货管理', '订单发货', '查看']" @click="$router.push('/order/orderDetail?id=' + scope.row.orderId)">查看</span>
                             <template v-if="scope.row.status == 4">
                                 <span v-permission="['订单', '发货管理', '订单发货', '继续发货']" @click="$router.push('/order/deliverGoods?id=' + scope.row.orderId)">继续发货</span>
                             </template>

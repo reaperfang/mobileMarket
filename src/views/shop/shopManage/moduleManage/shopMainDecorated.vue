@@ -29,7 +29,7 @@
             </div>
           </li>
           <li>
-            <el-button type="primary" plain @click="_routeTo('shopEditor', {pageId: homePageId})">首页装修</el-button>
+            <el-button type="primary" plain @click="_routeTo('shopEditor', {pageId: homePageData.id})">首页装修</el-button>
           </li>
           <li>
             <el-button type="primary" plain  @click="_routeTo('templateManageIndex')">店铺模板</el-button>
@@ -81,7 +81,7 @@ export default {
         url: this.homePageData.shareUrl.replace("&","[^]"),
         width: '250',
         height: '250',
-        logoUrl: this.shopInfo.logo
+        logoUrl: this.shopInfo.logoCircle
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);
