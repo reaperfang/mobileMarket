@@ -36,6 +36,7 @@
         <el-button icon="document" @click='exportToExcel()' v-permission="['财务', '短信成本', '默认页面', '导出']">导出</el-button>
       </div>
       <el-table
+      v-loading="loading"
       :data="dataList"
       style="width: 100%; margin-top:20px;"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -116,7 +117,8 @@ export default {
         pageNum:1,
         orderBy:'send_time desc'
       },
-      timeValue:[]
+      timeValue:[],
+      loading:true
     };
   },
   watch: {
@@ -131,11 +133,9 @@ export default {
       this._apis.finance.smsPagelist(this.ruleForm).then((response)=>{
         this.dataList = response.list
         this.total = response.total || 0
+        this.loading = false
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false
       })
     },
     onSubmit(){

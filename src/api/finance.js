@@ -187,14 +187,14 @@ export function exportFs(data) {
   })
 }
 
-export function getListLi(data) {
-  return request({
-    target: 'FINANCIAL-EXPRESS-QUERY-PROCESSOR',
-    method: 'post',
-    apiType: 'finance',
-    data
-  })
-}
+// export function getListLi(data) {
+//   return request({
+//     target: 'FINANCIAL-EXPRESS-QUERY-PROCESSOR',
+//     method: 'post',
+//     apiType: 'finance',
+//     data
+//   })
+// }
 
 //短信成本 ------
 export function smsStatistics(data) {

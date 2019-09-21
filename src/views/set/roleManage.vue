@@ -132,6 +132,7 @@ export default {
         this.total = response.total
         this.loading = false
       }).catch(error =>{
+        this.loading = false
         // this.$notify.error({
         //   title: '错误',
         //   message: error

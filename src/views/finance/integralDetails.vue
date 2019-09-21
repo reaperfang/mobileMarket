@@ -40,6 +40,7 @@
       </div>
       <!-- <idTable style="margin-top:20px"></idTable> -->
       <el-table
+        v-loading="loading"
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -115,6 +116,7 @@ export default {
       },
       dataList:[ ],
       total:0,
+      loading:true
     }
   },
   watch: { },
@@ -147,11 +149,9 @@ export default {
       this._apis.finance.getListId(query).then((response)=>{
         this.dataList = response.list
         this.total = response.total || 0
+        this.loading = false
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false
       })
     },
 

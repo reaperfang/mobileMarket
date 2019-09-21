@@ -52,6 +52,7 @@
         <el-button icon="document" @click='exportToExcel()' v-permission="['财务', '物流对账', '电子面单', '导出']">导出</el-button>
       </div>
       <el-table
+      v-loading="loading"
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -124,7 +125,8 @@ export default {
         timeValue:''
       },
       dataList:[ ],
-      total:0
+      total:0,
+      loading:true
     }
   },
   watch: {},
@@ -174,11 +176,9 @@ export default {
       this._apis.finance.getListFs(query).then((response)=>{
         this.dataList = response.list
         this.total = response.total || 0
+        this.loading = false
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false
       })
     },
     //搜索

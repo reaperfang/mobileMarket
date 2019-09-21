@@ -42,6 +42,7 @@
         <el-button icon="document" @click='exportToExcel()' class="mb10">导出</el-button>
       </div>
       <el-table
+      v-loading="loading"
         :data="dataList"
         style="width: 100%"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -106,6 +107,7 @@ export default {
         pageSize:10,
         pageNum:1
       },
+      loading:true
     };
   },
   watch: {
@@ -125,11 +127,9 @@ export default {
       this._apis.finance.getListTa(this.ruleForm).then((response)=>{
         this.dataList = response.list
         this.total = response.total || 0
+        this.loading = false
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false
       })
     },
     onSubmit(){

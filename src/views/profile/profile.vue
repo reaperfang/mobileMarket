@@ -5,12 +5,21 @@
                 <p class="p_title">
                     实时概况：<i class="el-icon-time"></i><span>今日数据更新时间：{{new Date() | formatDate('yyyy-MM-dd hh:mm:ss')}}</span>
                 </p>
-                <div class="p_t_list">
+                <div class="p_t_list" v-if="realTimeData.length != 0">
                     <div class="p_t_item clearfix" v-for="item in realTimeData" :key="item.id">
                         <img :src="item.url" alt="" class="fl">
                         <div class="fl p_t_text" :style="{color:item.color}">
                             <p>{{item.text}}</p>
                             <p>{{item.price}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p_t_list" v-else>
+                    <div class="p_t_item clearfix" v-for="item in realTimeDataNull" :key="item.id">
+                        <img :src="item.url" alt="" class="fl">
+                        <div class="fl p_t_text" :style="{color:item.color}">
+                            <p>{{item.text}}</p>
+                            <p>0</p>
                         </div>
                     </div>
                 </div>
@@ -87,6 +96,9 @@ export default {
         commonData() {
             return profileCont.commonData
         },
+        realTimeDataNull(){
+            return profileCont.realTimeData
+        }
     },
     methods:{
         // 概况详情
