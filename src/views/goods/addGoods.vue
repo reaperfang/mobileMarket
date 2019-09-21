@@ -589,6 +589,18 @@ export default {
             if(value) {
                 this.ruleForm.productUnit = ''
             }
+        },
+        'ruleForm.goodsInfos': function(value) {
+            if(!value.length) {
+                this.specsLabel = ''
+            }
+        },
+        specsLabel(value) {
+            if(!value) {
+                this.specsLength = 0
+            } else {
+                this.specsLength = value.split(',').length
+            }
         }
     },
     methods: {
@@ -713,6 +725,12 @@ export default {
                         this.ruleForm.otherUnit = this.ruleForm.productUnit
                     }
                 }
+                // if(this.ruleForm.productDetail) {
+                //     let _productDetail = ''
+
+                //     _productDetail = decodeURIComponent(escape(window.atob(this.ruleForm.productDetail)))
+                //     this.ruleForm.productDetail = _productDetail
+                // }
             }).catch(error => {
 
             }) 
@@ -747,7 +765,7 @@ export default {
             this._apis.goodsOperate.fetchSpecsList({productCategoryId: "1"}).then(res => { // this.ruleForm.productCategoryInfoId
                 console.log(res)
                 this.specsList = res
-                this.specsLength = this.specsList.length
+                //this.specsLength = this.specsList.length
                 this.flatSpecsList = this.flatTreeArray(JSON.parse(JSON.stringify(res)), 'list')
             }).catch(error => {
                 this.$notify.error({
@@ -794,8 +812,15 @@ export default {
                     let obj = {
                         isShowSaleCount: this.ruleForm.isShowSaleCount ? 1 : 0,
                         isShowStock: this.ruleForm.isShowStock ? 1 : 0,
-                        productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit
+                        productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit,
                     }
+
+                    // if(this.ruleForm.productDetail) {
+                    //     let _productDetail = ''
+
+                    //     _productDetail = btoa(unescape(encodeURIComponent(this.ruleForm.productDetail)));
+                    //     obj.productDetail = _productDetail
+                    // }
 
                     if(!this.editor) {
                         _goodsInfos = this.ruleForm.goodsInfos.map(val => {
