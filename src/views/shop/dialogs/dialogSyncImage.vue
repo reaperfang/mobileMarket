@@ -130,6 +130,7 @@ export default {
         data:datas
       }
       this._apis.file.syncMaterial(query).then((response)=>{
+        this.$emit('submit',{syncImage:{}})
         this.$notify.success({
           title: '成功',
           message: '同步微信图片成功！'
@@ -205,6 +206,7 @@ export default {
           img{
             width: 240px;
             height:150px;
+            object-fit: cover;
           }
           .img_bottom{
             width:100%;
