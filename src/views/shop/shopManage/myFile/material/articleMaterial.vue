@@ -260,6 +260,7 @@ export default {
         .imgs{
           width: 100%;
           height:85px;
+          object-fit: cover;
         }
         .content{
           line-height: 20px;
