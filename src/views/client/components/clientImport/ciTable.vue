@@ -6,6 +6,7 @@
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort = "{prop: 'date', order: 'descending'}"
+      v-loading="loading"
       >
       <el-table-column
         type="selection"
@@ -83,7 +84,8 @@ export default {
       currentDialog: "",
       dialogVisible: false,
       currentData:{},
-      hackReset: false
+      hackReset: false,
+      loading: false
     };
   },
   computed: {
@@ -104,14 +106,18 @@ export default {
       this.getImportList(val, this.pageSize);
     },
     getImportList(startIndex, pageSize) {
+      this.loading = true;
       this._apis.client.importMemberList(Object.assign(this.params,{startIndex, pageSize})).then((response) => {
+        this.loading = false;
         this.importList = [].concat(response.list);
         this.total = response.total;
       }).catch((error) => {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false;
+        console.log(error);
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
       })
     },
     addTag(row) {

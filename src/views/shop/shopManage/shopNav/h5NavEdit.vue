@@ -197,7 +197,6 @@ export default {
   watch: {
     currentNav: {
       handler(newValue) {
-        console.log('ruleForm',this.ruleForm);
         if(this.ruleForm.navMap[newValue.id]) {
           this.ruleForm.navMap[newValue.id] = newValue;
         }

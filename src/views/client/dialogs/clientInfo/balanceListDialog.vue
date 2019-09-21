@@ -51,10 +51,11 @@ export default {
             this.balanceList = [].concat(response.list);
             this.total = response.total;
         }).catch((error) => {
-            this.$notify.error({
-                title: "错误",
-                message: error
-            });
+          console.log(error);
+            // this.$notify.error({
+            //     title: "错误",
+            //     message: error
+            // });
         })
     },
     handleSizeChange(val) {

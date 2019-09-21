@@ -104,10 +104,11 @@ export default {
                 });
                 this.$emit('freshTable');
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getBlackChecks() {
@@ -119,10 +120,11 @@ export default {
                 this.couponId = this.checks[0].id;
                 this.codeId = this.checks[1].id;
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         addCouponSel() {
@@ -141,20 +143,22 @@ export default {
             this._apis.client.getAllCoupons({couponType: 0}).then((response) => {
                 this.allCoupons = [].concat(response.list);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getAllCodes() {
             this._apis.client.getAllCoupons({couponType: 1}).then((response) => {
                 this.allCodes = [].concat(response.list);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
     },

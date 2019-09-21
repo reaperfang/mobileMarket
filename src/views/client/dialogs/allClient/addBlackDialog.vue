@@ -7,7 +7,7 @@
                 <el-checkbox v-model="checkCoupon" label="优惠券" class="fl marT10"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in couponIds" :key="index">
-                        <el-select v-model="i.id" style="margin-bottom: 10px">
+                        <el-select v-model="i.id" style="margin-bottom: 10px" clearable>
                             <el-option v-for="item in allCoupons" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                         <span class="marL20 addMainColor pointer" @click="deleteCoupon(index)">删除</span>
@@ -19,7 +19,7 @@
                 <el-checkbox v-model="checkCode" label="优惠码" class="fl marT10" style="margin-left: 86px"></el-checkbox>
                 <div class="form_container fl">
                     <div class="a_d" v-for="(i,index) in codeIds" :key="index">
-                        <el-select v-model="i.id" style="margin-bottom: 10px">
+                        <el-select v-model="i.id" style="margin-bottom: 10px" clearable>
                             <el-option v-for="item in allCodes" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                         <span class="marL20 addMainColor pointer" @click="deleteCode(index)">删除</span>
@@ -59,49 +59,65 @@ export default {
         submit() {
             let params = {};
             let blackListMapDtos = [];
-            if(this.checkCoupon && this.couponIds.length !== 0) {
-                let arr = [];
-                this.couponIds.map((item) => {
-                    this.allCoupons.map((i) => {
-                        let obj = {};
-                        if(item.id == i.id) {
-                            obj[item.id] = i.name;
-                            arr.push(obj);
-                        }
+            if(this.checkCoupon) {
+                if(this.couponIds[0].id.length == 0) {
+                    this.$notify({
+                        title: '警告',
+                        message: '请选择优惠券',
+                        type: 'warning'
+                    });
+                }else{
+                    let arr = [];
+                    this.couponIds.map((item) => {
+                        this.allCoupons.map((i) => {
+                            let obj = {};
+                            if(item.id == i.id) {
+                                obj[item.id] = i.name;
+                                arr.push(obj);
+                            }
+                        })
                     })
-                })
-                let str = "";
-                arr.map((v) => {str += "" + JSON.stringify(v) + ','});
-                str = str.replace(/{|}/g, "");
-                str = str.substring(0, str.length - 1);
-                let obj = {
-                    blackInfoId: this.couponId,
-                    blackInfoName: "优惠券",
-                    disableItemValue: str
+                    let str = "";
+                    arr.map((v) => {str += "" + JSON.stringify(v) + ','});
+                    str = str.replace(/{|}/g, "");
+                    str = str.substring(0, str.length - 1);
+                    let obj = {
+                        blackInfoId: this.couponId,
+                        blackInfoName: "优惠券",
+                        disableItemValue: str
+                    }
+                    blackListMapDtos.push(obj);
                 }
-                blackListMapDtos.push(obj);
             }
-            if(this.checkCode && this.codeIds.length !== 0) {
-                let arr = [];
-                this.codeIds.map((item) => {
-                    this.allCodes.map((i) => {
-                        let obj = {};
-                        if(item.id == i.id) {
-                            obj[item.id] = i.name;
-                            arr.push(obj);
-                        }
+            if(this.checkCode) {
+                if(this.codeIds[0].id.length == 0) {
+                    this.$notify({
+                        title: '警告',
+                        message: '请选择优惠码',
+                        type: 'warning'
+                    });
+                }else{
+                    let arr = [];
+                    this.codeIds.map((item) => {
+                        this.allCodes.map((i) => {
+                            let obj = {};
+                            if(item.id == i.id) {
+                                obj[item.id] = i.name;
+                                arr.push(obj);
+                            }
+                        })
                     })
-                })
-                let str = "";
-                arr.map((v) => {str += "" + JSON.stringify(v) + ','});
-                str = str.replace(/{|}/g, "");
-                str = str.substring(0, str.length - 1);
-                let obj = {
-                    blackInfoId: this.codeId,
-                    blackInfoName: "优惠码",
-                    disableItemValue: str
+                    let str = "";
+                    arr.map((v) => {str += "" + JSON.stringify(v) + ','});
+                    str = str.replace(/{|}/g, "");
+                    str = str.substring(0, str.length - 1);
+                    let obj = {
+                        blackInfoId: this.codeId,
+                        blackInfoName: "优惠码",
+                        disableItemValue: str
+                    }
+                    blackListMapDtos.push(obj);
                 }
-                blackListMapDtos.push(obj);
             }
             this.checks.map((v) => {
                 if(v.checked) {
@@ -123,10 +139,11 @@ export default {
                 });
                 this.$emit('freshTable');
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getBlackChecks() {
@@ -138,10 +155,11 @@ export default {
                 this.couponId = this.checks[0].id;
                 this.codeId = this.checks[1].id;
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         addCouponSel() {
@@ -160,20 +178,22 @@ export default {
             this._apis.client.getAllCoupons({couponType: 0}).then((response) => {
                 this.allCoupons = [].concat(response.list);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         getAllCodes() {
             this._apis.client.getAllCoupons({couponType: 1}).then((response) => {
                 this.allCodes = [].concat(response.list);
             }).catch((error) => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                console.log(error);
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
     },

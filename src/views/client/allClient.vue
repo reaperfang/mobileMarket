@@ -16,7 +16,7 @@
                     </el-col>
                     <el-col :span="6">
                         <el-form-item prop="labelValue">
-                            <el-input v-model="form.labelValue" placeholder="昵称/姓名/手机号码/用户ID" maxlength="20"><el-button slot="append" icon="el-icon-search" @click="getClientList"></el-button></el-input>
+                            <el-input v-model="form.labelValue" placeholder="请输入昵称/姓名/手机号码/用户ID" maxlength="20"><el-button slot="append" icon="el-icon-search" @click="getClientList"></el-button></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -50,7 +50,7 @@
                     <el-checkbox-group v-model="form.channelId">
                         <el-checkbox v-for="item in channels" :label="item" :key="item" border>{{item}}</el-checkbox>
                     </el-checkbox-group>
-                    <div class="more font12" @click="handleMore">更多查询条件<i class="el-icon-arrow-down"></i></div>
+                    <div class="more font12" @click="handleMore" v-if="!showFold">更多查询条件<i class="el-icon-arrow-down"></i></div>
                 </el-form-item>
                 <div class="fold_part" v-if="showFold">
                     <el-form-item label="客户状态：" prop="status">
@@ -154,7 +154,7 @@
                     </el-row>
                 </div>
                 <el-form-item class="padR40 marT20">
-                    <span class="shou" @click="handleMore">收起<i class="el-icon-arrow-up marL10"></i></span>
+                    <span class="shou" @click="handleMore" v-if="showFold">收起<i class="el-icon-arrow-up marL10"></i></span>
                     <el-button class="fr marL20" @click="resetForm('form')">重置</el-button>
                     <el-button type="primary" class="fr" @click="getClientList">查询</el-button>
                 </el-form-item>
@@ -199,7 +199,7 @@ export default {
         lastPayTimeEnd:""
       },
         newForm: {},
-        showFold: true,
+        showFold: false,
         showMoreTag: false,
         popVisible: false,
         labels: [],
@@ -249,10 +249,11 @@ export default {
                 this.labels.push(v.tagName);
             })
         }).catch((error) => {
-            this.$notify.error({
-                title: '错误',
-                message: error
-            });
+            console.log(error);
+            // this.$notify.error({
+            //     title: '错误',
+            //     message: error
+            // });
         })
     },
     getChannels() {
@@ -260,10 +261,11 @@ export default {
             this.channelsList = [].concat(response);
             response.map((v) => {this.channels.push(v.channerlName)});
         }).catch((error) => {
-            this.$notify.error({
-                title: '错误',
-                message: error
-            });
+            console.log(error);
+            // this.$notify.error({
+            //     title: '错误',
+            //     message: error
+            // });
         })
     },
     getClientList() {

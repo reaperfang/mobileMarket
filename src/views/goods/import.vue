@@ -149,10 +149,10 @@ export default {
                 this.loading = false
             }).catch(error => {
                 this.loading = false
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
+                // this.$notify.error({
+                //     title: '错误',
+                //     message: error
+                // });
             })
         },
         importGoods() {

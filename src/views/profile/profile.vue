@@ -80,37 +80,33 @@ export default {
             staySendCount:'',
             stayAuthCount:'',
             activeData:[],
-            selectList:{merchantId:'2',tenantId:1,loginUserId:'1',businessId:'2'}
+            selectList:{merchantId:'2',tenantId:1,loginUserId:'1',businessId:'2'},
         }
     },
     computed: {
         commonData() {
             return profileCont.commonData
         },
-        // activeData() {
-        //     return profileCont.activeData
-        // } 
     },
     methods:{
         // 概况详情
         getOverviewDetails(){ 
          this._apis.overview.overviewDetails({}).then(response => {
-            let nums = response.shopOverviewView
            profileCont.realTimeData.forEach(e => {
                     switch (e.id){
-                        case '001': e.price = nums.payMoneyAmount
+                        case '001': e.price = response.payMoneyAmount
                          break;
-                        case '002': e.price = nums.payNum
+                        case '002': e.price = response.payNum
                          break;
-                        case '003': e.price = nums.refundMoneyAmount
+                        case '003': e.price = response.refundMoneyAmount
                          break;
-                        case '004': e.price = nums.refundNum
+                        case '004': e.price = response.refundNum
                          break;
-                        case '005': e.price = nums.customPayerNum
+                        case '005': e.price = response.customPayerNum
                          break;
-                        case '006': e.price = nums.averageMoney
+                        case '006': e.price = response.averageMoney
                          break;
-                        case '007': e.price = nums.memberPayerNum
+                        case '007': e.price = response.memberPayerNum
                          break;
                          }
              this.realTimeData = profileCont.realTimeData

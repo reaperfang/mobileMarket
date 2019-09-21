@@ -129,18 +129,7 @@ export default {
         fileGroupInfoId:'-1',
         data:datas
       }
-      this._apis.file.syncMaterial(query).then((response)=>{
-        this.$notify.success({
-          title: '成功',
-          message: '同步微信图片成功！'
-        });
-      }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
-      this.$emit('submit',{syncImage:{}})
+      this.$emit('submit',{syncImage:{query:query}})
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){
@@ -205,6 +194,7 @@ export default {
           img{
             width: 240px;
             height:150px;
+            object-fit: cover;
           }
           .img_bottom{
             width:100%;

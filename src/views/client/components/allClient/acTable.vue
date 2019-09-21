@@ -8,6 +8,7 @@
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort="{prop: 'date', order: 'descending'}"
+      v-loading="loading"
     >
       <el-table-column type="selection"></el-table-column>
       <el-table-column prop="memberSn" label="客户ID"></el-table-column>
@@ -18,7 +19,7 @@
       <el-table-column prop="totalDealMoney" label="累计消费金额" sortable></el-table-column>
       <el-table-column prop="dealTimes" label="购买次数" sortable></el-table-column>
       <el-table-column prop="perUnitPrice" label="客单价（元）" sortable></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <div class="btns clearfix">
             <span class="s1" @click="_routeTo('clientInfo',{id: scope.row.id})" v-permission="['客户', '全部客户', '默认页面', '查看详情']">详情</span>
@@ -87,7 +88,8 @@ export default {
       memberList: [],
       currentDialog: "",
       dialogVisible: false,
-      currentData: {}
+      currentData: {},
+      loading: false
     };
   },
   computed: {
@@ -110,10 +112,11 @@ export default {
         this._apis.client.exportToLocal({idList: idList}).then((response) => {
           window.location.href = response
         }).catch((error) => {
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
+          console.log(error);
+          // this.$notify.error({
+          //   title: '错误',
+          //   message: error
+          // });
         })
       }else{
         this.$notify({
@@ -206,17 +209,21 @@ export default {
       });
     },
     getMembers(startIndex, pageSize) {
+      this.loading = true;
       this._apis.client
         .getMemberList(Object.assign(this.newForm,{startIndex, pageSize}))
         .then(response => {
+          this.loading = false;
           this.memberList = [].concat(response.list);
           this.total = response.total;
         })
         .catch(error => {
-          this.$notify.error({
-            title: "错误",
-            message: error
-          });
+          this.loading = false;
+          console.log(error);
+          // this.$notify.error({
+          //   title: "错误",
+          //   message: error
+          // });
         });
     },
     freshTable() {

@@ -4,6 +4,7 @@
    <p class="title">买家通知</p>
       <!-- :span-method="objectSpanMethod" -->
     <el-table
+      v-loading="loading"
       :data="tableData"
       border
       style="width: 100%;">
@@ -109,6 +110,7 @@ export default {
   data() {
     return {
       tableData: [],
+      loading:true
     }
   },
   components: {buyer, seller},
@@ -131,6 +133,7 @@ export default {
           item.msgSms = item.msgSms == 0 ? false : true
           this.tableData.push(item);
         })
+        this.loading = false
       }).catch(error =>{
         this.$notify.error({
           title: '错误',

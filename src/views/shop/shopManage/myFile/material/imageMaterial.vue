@@ -239,7 +239,7 @@ export default {
             this.handleDeleteImage(data.deleteImage.imageId)
           break;
           case 'syncImage':
-            this.handleSyncImage()
+            this.handleSyncImage(data.syncImage.query)
           break;
           case 'uploadImage':
             this.uploadImage(data.uploadImage.query)
@@ -388,8 +388,19 @@ export default {
     },
 
     //同步图片
-    handleSyncImage(){
-      this.getList()
+    handleSyncImage(query){
+      this._apis.file.syncMaterial(query).then((response)=>{
+        this.$notify.success({
+          title: '成功',
+          message: '同步微信图片成功！'
+        });
+        this.getList()
+      }).catch((error)=>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
     },
     /**********************************        分页相关      **********************/
     handleSizeChange(val){

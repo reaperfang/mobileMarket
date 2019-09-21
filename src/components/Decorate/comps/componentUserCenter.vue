@@ -62,7 +62,7 @@
                 <p
                   class="userCenter_firstTitle2_title ellipsis"
                   :style="{color:data.nickColor}"
-                >考虑设计费</p>
+                >用户微信名称</p>
               </div>
               <div class="userCenter_firstTitle2r">
                 <p class="userCenter_firstTitler_img">

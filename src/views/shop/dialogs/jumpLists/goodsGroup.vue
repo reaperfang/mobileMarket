@@ -45,14 +45,14 @@ export default {
         this.responseData = response;
         let arr = this.transTreeData(response, 0)
         this.categoryData = arr
-        console.log(response);
         this.flatArr = this.flatTreeArray(JSON.parse(JSON.stringify(arr)))
         this.loading = false;
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        // this.$notify.error({
+        //   title: '错误',
+        //   message: error
+        // });
+        console.error(error);
         this.loading = false;
       });
     },
