@@ -55,6 +55,7 @@
         </span>
       </div>
       <el-table
+        v-loading="loading"
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -153,7 +154,8 @@ export default {
       currentDialog:"",
       dialogVisible: false,
       currentData:{},
-      multipleSelection:[]
+      multipleSelection:[],
+      loading:true
     }
   },
   watch: { },
@@ -203,11 +205,9 @@ export default {
       this._apis.finance.getListWd(query).then((response)=>{
         this.dataList = response.list
         this.total = response.total || 0
+        this.loading = false
       }).catch((error)=>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false
       })
     },
     //搜索

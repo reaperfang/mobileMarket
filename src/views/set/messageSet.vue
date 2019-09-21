@@ -135,10 +135,7 @@ export default {
         })
         this.loading = false
       }).catch(error =>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
+        this.loading = false
       })
     },
 
@@ -182,7 +179,10 @@ export default {
             title: '错误',
             message: error
           });
+          this.getShopMessage()
         })        
+      }).catch(() =>{
+        this.getShopMessage()
       })
     },
     handleClick(comp) {
