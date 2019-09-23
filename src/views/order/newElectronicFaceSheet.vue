@@ -107,7 +107,7 @@ export default {
     methods: {
       getExpressCompanyList() {
         this._apis.order
-        .fetchExpressCompanyList()
+        .getElectronicFaceSheetExpressCompanyList()
         .then(res => {
           this.expressCompanyList = res
         })

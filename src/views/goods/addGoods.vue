@@ -359,9 +359,9 @@
             <el-form-item label="是否显示关联商品" prop="isShowRelationProduct">
                 <el-radio v-model="ruleForm.isShowRelationProduct" :label="0">否</el-radio>
                 <el-radio v-model="ruleForm.isShowRelationProduct" :label="1">是</el-radio>
-                <el-button class="border-button" @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
+                <el-button v-if="ruleForm.isShowRelationProduct == 1" class="border-button" @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
             </el-form-item>
-            <div class="associated-goods">
+            <div v-if="ruleForm.isShowRelationProduct == 1" class="associated-goods">
                 <el-table
                     :data="tableData"
                     :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
@@ -1326,8 +1326,7 @@ $blue: #655EFF;
 /deep/ .spec-information thead th:nth-child(2) .cell,
     /deep/ .spec-information thead th:nth-child(3) .cell,
     /deep/ .spec-information thead th:nth-child(4) .cell,
-    /deep/ .spec-information thead th:nth-child(5) .cell,
-    /deep/ .spec-information thead th:nth-child(8) .cell {
+    /deep/ .spec-information thead th:nth-child(5) .cell {
     position: relative;
     &:before {
         content: '*';
