@@ -105,7 +105,7 @@ export default {
     },
     handleConfig(row) {
       if(!row.isGray) {
-        this._routeTo('levelInfo',{id: row.id});
+        this._routeTo('levelInfo',{id: row.id, level: row.level});
       }
     },
     handleSwitch(row) {

@@ -16,7 +16,7 @@
                     </el-col>
                     <el-col :span="6">
                         <el-form-item prop="labelValue">
-                            <el-input v-model="form.labelValue" placeholder="请输入昵称/姓名/手机号码/用户ID" maxlength="20"><el-button slot="append" icon="el-icon-search" @click="getClientList"></el-button></el-input>
+                            <el-input v-model="form.labelValue" placeholder="请输入" maxlength="20"><el-button slot="append" icon="el-icon-search" @click="getClientList"></el-button></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -39,12 +39,12 @@
                 </el-form-item>
                 <el-form-item label="客户标签：" class="relaPosition" prop="memberLabels">
                     <div class="group_container">
-                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px', height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
+                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px',height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
                             <el-checkbox v-for="item in labels" :label="item" :key="item" border>{{item}}</el-checkbox>
                         </el-checkbox-group>
                     </div>
                     <el-button type="primary" class="absoPosition" @click="_routeTo('batchImport')">添 加</el-button>
-                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag">
+                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag" v-if="labels.length > 0">
                 </el-form-item>
                 <el-form-item label="客户渠道：" class="relaPosition" prop="channelId">
                     <el-checkbox-group v-model="form.channelId">
@@ -330,6 +330,8 @@ export default {
       this.getChannels();
       if(this.$route.query.memberLabels) {
           this.newForm = Object.assign({}, this.$route.query);
+      }else{
+          this.newForm = Object.assign({}, {});
       }
   }
 }

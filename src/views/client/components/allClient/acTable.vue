@@ -98,7 +98,7 @@ export default {
     }
   },
   mounted() {
-    this.getMembers(1, this.pageSize);
+    //this.getMembers(1, this.pageSize);
   },
   methods: {
     exportToLocal() {
@@ -231,7 +231,7 @@ export default {
     }
   },
   watch: {
-    newForm() {
+    newForm(val) {
       this.getMembers(1, this.pageSize);
     }
   },

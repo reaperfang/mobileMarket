@@ -247,6 +247,7 @@ export default {
                             message: "添加标签成功",
                             type: 'success'
                         });
+                        
                     }).catch((error) => {
                         console.log(error);
                         // this.$notify.error({

@@ -97,23 +97,23 @@
                     <span v-if="!clientInfoById.cardLevelInfoId" @click="showSendCard">发放</span>
                 </div>
                 <div class="assets_item">
-                    <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p @click="showBalanceList" class="pointer">余额：<span>{{clientInfoById.balance}}元</span></p>
+                    <img src="../../assets/images/client/icon_money.png" alt="" @click="showAdjustBalance" class="pointer">
+                    <p @click="showBalanceList">余额：<span class="p_style">{{clientInfoById.balance}}</span>元</p>
                     <span @click="showAdjustBalance">变更</span>
                 </div>
                 <div class="assets_item">
-                    <img src="../../assets/images/client/icon_coupon.png" alt="">
-                    <p >可用优惠券：<span class="pointer" @click="showDiscountCoupon('0')">{{couponList.length}}张</span></p>
+                    <img src="../../assets/images/client/icon_coupon.png" alt="" @click="sendCoupon" class="pointer">
+                    <p>可用优惠券：<span @click="showDiscountCoupon('0')" class="p_style">{{couponList.length}}</span>张</p>
                     <span @click="sendCoupon">发放</span>
                 </div>
                 <div class="assets_item">
-                    <img src="../../assets/images/client/icon_code.png" alt="">
-                    <p>可用优惠码：<span class="pointer" @click="showDiscountCoupon('1')">{{codeList.length}}个</span></p>
+                    <img src="../../assets/images/client/icon_code.png" alt="" @click="sendCode" class="pointer">
+                    <p>可用优惠码：<span @click="showDiscountCoupon('1')" class="p_style">{{codeList.length}}</span>个</p>
                     <span @click="sendCode">发放</span>
                 </div>
                 <div class="assets_item rb">
-                    <img src="../../assets/images/client/icon_money.png" alt="">
-                    <p>积分：<span class="pointer" @click="showScoreList">{{clientInfoById.score}}</span></p>
+                    <img src="../../assets/images/client/icon_money.png" alt="" @click="showScoreList" class="pointer">
+                    <p>积分：<span @click="showScoreList" class="p_style">{{clientInfoById.score}}</span></p>
                     <span @click="showAdjustScore">变更</span>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="assets_item rb">
                     <p>累计消费订单数</p>
-                    <p @click="_routeTo('query',{id: this.userId})">{{clientInfoById.dealTimes || 0}}</p>
+                    <p class="pointer" @click="_routeTo('query',{id: userId})">{{clientInfoById.dealTimes || 0}}</p>
                 </div>
             </div>
         </div>
@@ -649,6 +649,11 @@ export default {
             }
             p{
                 margin-bottom: 5px;
+            }
+            .p_style{
+                font-size: 18px;
+                color: #FD4C2B;
+                cursor: pointer;
             }
         }
     }

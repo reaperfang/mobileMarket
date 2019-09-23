@@ -30,7 +30,7 @@
                             <span>元</span>
                         </el-form-item>
                         <el-form-item>
-                            <el-checkbox v-model="ruleForm.scoreEnableOrderHighCash"></el-checkbox>
+                            <el-checkbox v-model="ruleForm.scoreEnableOrderHighCash" style="margin-left: 110px"></el-checkbox>
                             <span class="marL105">最高可抵现订单金额的</span>
                             <div style="width: 222px; display: inline-block; margin-left: 20px">
                                 <el-input placeholder="请输入整数，不填则不生效" v-model="ruleForm.scoreToCashOrderRate"></el-input>
@@ -98,10 +98,6 @@ export default {
                 //每日最高获得积分数
                 scoreUpperCount:""
             },
-            options: [
-                {label: 'test1',value: 1},
-                {label: 'test2',value: 2}
-            ],
             activeName: 'first',
             isSwitch: true
         }
@@ -123,7 +119,7 @@ export default {
             }else{
                 formObj.scoreEnableOrderAchieveCash = formObj.scoreEnableOrderAchieveCash == true?'1':'0';
                 formObj.scoreEnableOrderHighCash = formObj.scoreEnableOrderHighCash == true?'1':'0';
-                formObj.id = '7'
+                formObj.id = JSON.parse(localStorage.getItem('shopInfos')).id;
                 this._apis.client.saveCreditRule(formObj).then((response) => {
                     this.$notify({
                         title: '成功',
@@ -163,7 +159,7 @@ export default {
             }
         },
         checkCreditRule() {
-            this._apis.client.checkCreditRule({id: '7'}).then((response) => {
+            this._apis.client.checkCreditRule({id: JSON.parse(localStorage.getItem('shopInfos')).id}).then((response) => {
                 this.ruleForm.scoreToCash = response.scoreToCash.toString();
                 this.ruleForm.scorePercentage = response.scorePercentage;
                 this.ruleForm.scorePercentageMoney = response.scorePercentageMoney;
