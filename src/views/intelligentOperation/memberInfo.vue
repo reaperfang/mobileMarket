@@ -1,82 +1,86 @@
 <template>
 <div class="m_container">
         <div class="pane_container">
-                    <el-form ref="form" :model="form" class="clearfix">
-                        <el-form-item label="交易时间">
-                            <div class="p_line">
-                                <el-radio-group v-model="form.timeType" @change="changeDay">
-                                    <el-radio-button class="btn_bor" label="1">7天</el-radio-button>
-                                    <el-radio-button class="btn_bor" label="2">15天</el-radio-button>
-                                    <el-radio-button class="btn_bor" label="3">30天</el-radio-button>
-                                    <el-radio-button class="btn_bor" label="5">本季度</el-radio-button>
-                                    <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
-                                </el-radio-group>
-                                <el-date-picker
-                                v-if="form.timeType == 4"
-                                v-model="form.daterange"
-                                type="daterange"
-                                value-format="yyyy-MM-dd hh:mm:ss"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                                @change="getData"
-                            >
-                            </el-date-picker>
-                            </div>
-                            
-                        </el-form-item>
-                        <el-form-item label="会员类型">
-                            <div class="input_wrap2">
-                                <el-select v-model="form.memberType"  @change="getData">
-                                    <el-option v-for="item in customType" :label="item.name" :value="item.id" :key="item.id"></el-option>
-                                </el-select>
-                            </div>
-                            <span class="span_label">交易次数</span>
-                            <div class="input_wrap2 marR20">
-                                <el-select v-model="form.tradeCountRange"  @change="getData">
-                                    <el-option v-for="item in tradeCount" :label="item.name" :value="item.id" :key="item.id"></el-option>
-                                </el-select>
-                            </div>
-                            <el-checkbox-group v-model="form.queryRepeatPaymentRatio">
-                                <el-checkbox label="是否查询复购率" name="type"></el-checkbox>
-                            </el-checkbox-group>
-                        </el-form-item>
-                        <el-form-item label="订单金额">
-                            <div class="input_wrap3">
-                                 <el-radio-group v-model="form.queryOrderMoneyType">
-                                    <el-radio :label="null">全部</el-radio>
-                                    <el-radio :label="0">单次</el-radio>
-                                    <el-radio :label="1">总额</el-radio>
-                                </el-radio-group>
-                            </div>
-                            <div class="input_wrap2">
-                                <el-input placeholder="最低金额（元）" v-model="lowprice" type="number"></el-input>
-                            </div>
-                            <span>—</span>
-                            <div class="input_wrap2">
-                                <el-input placeholder="最高金额（元）" v-model="highprice" type="number"></el-input>
-                            </div>
-                        </el-form-item>
-                        <el-form-item class="fr marT20">
-                            <el-button class="minor_btn" icon="el-icon-search" @click="goSearch()">查询</el-button>
-                            <el-button class="border_btn" @click="reSet">重 置</el-button>
-                        </el-form-item>
-                    </el-form>
-
-                    <div class="m_line clearfix">
-                        <p class="fl" v-if="textTips">该筛选条件下：<i v-if="form.memberType==1" style="font-style:normal">新</i><i v-if="form.memberType==2" style="font-style:normal">老</i>会员共计<span>{{memberNum}}</span>人；占会员总数的<span>{{memberCount}}%</span>; 复购率为<span>{{repeatPaymentRatio}}</span>。</p>
-                        <p class="fl" v-else>-</p>
-                        <div class="fr marT20">
-                            <el-button class="minor_btn" @click="reScreening">重新筛选</el-button>
-                            <el-button class="yellow_btn" icon="el-icon-share" @click="mIexport">导出</el-button>
-                        </div>
+            <el-form ref="form" :model="form" class="clearfix">
+                <el-form-item label="交易时间">
+                    <div class="p_line">
+                        <el-radio-group v-model="form.timeType" @change="changeDay">
+                            <el-radio-button class="btn_bor" label="1">7天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="2">15天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="3">30天</el-radio-button>
+                            <el-radio-button class="btn_bor" label="5">本季度</el-radio-button>
+                            <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
+                        </el-radio-group>
+                        <el-date-picker
+                        v-if="form.timeType == 4"
+                        v-model="form.daterange"
+                        type="daterange"
+                        value-format="yyyy-MM-dd hh:mm:ss"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        @change="getData"
+                    >
+                    </el-date-picker>
                     </div>
-                    <maTable class="marT20" 
-                        @sizeChange = "sizeChange"
-                        @currentChange = "currentChange"                   
-                        :listObj="listObj" 
-                        :totalCount="totalCount">
-                    </maTable>
+                    
+                </el-form-item>
+                <el-form-item label="会员类型">
+                    <div class="input_wrap2">
+                        <el-select v-model="form.memberType"  @change="getData">
+                            <el-option v-for="item in customType" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                        </el-select>
+                    </div>
+                    <span class="span_label">交易次数</span>
+                    <div class="input_wrap2 marR20">
+                        <el-select v-model="form.tradeCountRange"  @change="getData">
+                            <el-option v-for="item in tradeCount" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                        </el-select>
+                    </div>
+                    <el-checkbox-group v-model="form.queryRepeatPaymentRatio">
+                        <el-checkbox label="是否查询复购率" name="type"></el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+                <el-form-item label="订单金额">
+                    <div class="input_wrap3">
+                            <el-radio-group v-model="form.queryOrderMoneyType">
+                            <el-radio :label="null" class="mr10">全部</el-radio>
+                            <el-radio :label="0" class="mr10">单次</el-radio>
+                            <el-radio :label="1">总额</el-radio>
+                        </el-radio-group>
+                    </div>
+                    <div class="input_wrap2">
+                        <el-input placeholder="最低金额（元）" v-model="lowprice" type="number"></el-input>
+                    </div>
+                    <span>—</span>
+                    <div class="input_wrap2">
+                        <el-input placeholder="最高金额（元）" v-model="highprice" type="number"></el-input>
+                    </div>
+                </el-form-item>
+                <el-form-item class="fr marT20">
+                    <el-button class="minor_btn" icon="el-icon-search" @click="goSearch()">查询</el-button>
+                    <el-button class="border_btn" @click="reSet">重 置</el-button>
+                </el-form-item>
+            </el-form>
+
+            <div class="m_line clearfix">
+                <!-- <p class="fl">该筛选条件下：
+                    <i v-if="form.memberType==1" style="font-style:normal">新会员共计<span>{{newMemberCount}}</span>人；</i>
+                    <i v-if="form.memberType==2" style="font-style:normal">老会员共计<span>{{oldMemberCount}}</span>人；</i>
+                    占会员总数的<span>{{memberCount}}%</span>;
+                    <i v-if="repeatPaymentRatio != undefined">复购率为<span>{{repeatPaymentRatio}}</span></i>。
+                </p> -->
+                <div class="fr marT20">
+                    <el-button class="minor_btn" @click="reScreening">重新筛选</el-button>
+                    <el-button class="yellow_btn" icon="el-icon-share" @click="mIexport">导出</el-button>
+                </div>
+            </div>
+            <maTable class="marT20" 
+                @sizeChange = "sizeChange"
+                @currentChange = "currentChange"                   
+                :listObj="listObj" 
+                :totalCount="totalCount">
+            </maTable>
         </div>
         </div>
 </template>
@@ -103,7 +107,7 @@ export default {
             lowprice:'',
             highprice:'',
             textTips:false,
-            repeatPaymentRatio:0.1, //复购率
+            repeatPaymentRatio:'', //复购率
             memberNum:0, //会员人数
             memberCount:0, //会员占比
             listObj:{},//会员信息列表
@@ -150,8 +154,7 @@ export default {
         this.goSearch()
     },
     methods: {
-        changeDay(){
-        },
+        changeDay(){ },
         //获取筛选数据
         getData(){
             if(this.form.daterange){
@@ -182,7 +185,7 @@ export default {
             } 
             let memberType = this.form.memberType;
             this._apis.data.memberInformation(this.form).then(res => {
-                this.repeatPaymentRatio = res.repeatPaymentRatio;
+                this.repeatPaymentRatio = res.repeatPaymentRatio*100+'%';
                 this.listObj = res; //信息列表数据
                 this.totalCount = res.totalPage * this.form.pageSize;
                 if(memberType == 1){ //新会员
@@ -196,7 +199,6 @@ export default {
                 }else{ //其他
                     this.textTips = false;
                 }
-                console.log(this.repeatPaymentRatio)
             }).catch(error => {
                 this.$message.error(error);
             });
@@ -308,6 +310,9 @@ export default {
             }
         }
     }
+}
+.mr10{
+    margin-right:10px;
 }
 </style>
 

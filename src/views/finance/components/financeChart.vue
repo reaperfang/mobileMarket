@@ -17,26 +17,26 @@ export default {
   watch:{
     dataList(newData,oldData){
       this.dataList = newData
+      // this.makeOption(this.dataList)
       this.init();
-      this.makeOption(this.dataList)
     }
   },
   created() { },
   methods: {
     //设置图表数据项
-    makeOption(data) {
-      if(data){
-        this.dataList.map((item)=>{
-          item.accountDate = item.accountDate.substring(0,10)
-          this.dates.push(item.accountDate)
-          this.dates.reverse();
-          this.incomes.push(item.income)
-          this.expends.push(item.expend)
-          this.realIncomes.push(item.realIncome)
-        })
-      }else{
-        return
-      }
+    makeOption(){
+      this.dates = []
+      this.incomes = []
+      this.expends = []
+      this.realIncomes = []
+      this.dataList.map((item)=>{
+        item.accountDate = item.accountDate.substring(0,10)
+        this.dates.push(item.accountDate)
+        this.dates.reverse();
+        this.incomes.push(item.income)
+        this.expends.push(item.expend)
+        this.realIncomes.push(item.realIncome)
+      })
 
       this.option = {
         title: {

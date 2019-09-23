@@ -436,7 +436,7 @@ export default {
             this.loading = true
             let _param
             
-            _param = Object.assign({}, this.listQuery, param)
+            _param = Object.assign({}, this.listQuery, param, {status: this.state})
 
             this._apis.goods.fetchGoodsList(_param).then((res) => {
                 this.total = +res.total

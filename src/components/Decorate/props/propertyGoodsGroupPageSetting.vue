@@ -41,9 +41,9 @@
         </div>
 
         <div class="block button">
-          <el-button @click="resetData">重    置</el-button>
-          <el-button @click="save">保    存</el-button>
-          <el-button type="primary" @click="saveAndApply">保存并生效</el-button>
+          <el-button @click="resetLoading = true; resetData()" :loading="resetLoading">重    置</el-button>
+          <el-button @click="saveDataLoading = true; save()" :loading="saveDataLoading">保    存</el-button>
+          <el-button type="primary" @click="saveAndApplyDataLoading = true; saveAndApply()" :loading="saveAndApplyDataLoading">保存并生效</el-button>
           <el-popover
             ref="popover2"
             placement="bottom"
@@ -68,6 +68,9 @@ export default {
   props: ['saveAndApply', 'save', 'resetData', 'data'],
   data () {
     return {
+      resetLoading: false,  //重置loading
+      saveDataLoading: false,  //保存loading
+      saveAndApplyDataLoading: false,  //保存并应用loading
       ruleForm: {
         groupStyle: 1,  //分类样式
         groupFont: 1,  //分类字体
@@ -97,6 +100,22 @@ export default {
     }
   },
   created() {
+    const _self = this;
+
+    /* 监听接口操作结束事件，用来响应loading  保存按钮*/
+    this._globalEvent.$on('goodsGroupPageSettingSaveLoading', (status) => {
+      _self.saveDataLoading = false;
+    });
+
+     /* 监听接口操作结束事件，用来响应loading  保存并应用按钮*/
+    this._globalEvent.$on('goodsGroupPageSettingSaveAndApplyLoading', (status) => {
+      _self.saveAndApplyDataLoading = false;
+    });
+
+     /* 监听接口操作结束事件，用来响应loading  重置按钮*/
+    this._globalEvent.$on('goodsGroupPageSettingResetLoading', (status) => {
+      _self.resetLoading = false;
+    });
     this.$emit('goodsGroupPageDataChanged', this.ruleForm);
   },
   mounted() {

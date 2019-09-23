@@ -49,7 +49,7 @@ export default {
           initialFrameWidth: 306
       },
       ruleForm: {
-        name: '微页面分类',
+        name: '',
         sortType: 1,
         showType: 1,
         colorStyle: '#fff',
@@ -57,7 +57,18 @@ export default {
         pageInfos: []
       },
       rules: {
-
+        name: [
+          { required: true, message: "请输入内容", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur"
+          }
+        ],
+        explain: [
+          { required: true, message: "请输入内容", trigger: "blur" }
+        ],
       }
     }
   },

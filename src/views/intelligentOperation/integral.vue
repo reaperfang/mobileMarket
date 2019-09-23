@@ -74,7 +74,7 @@ export default {
                 endTime:null,
                 scorePaymentCountRange:null,
                 memberType:null,
-                timeType:null,
+                timeType:1,
                 startIndex:1,
                 pageSize:10
             },
@@ -174,7 +174,7 @@ export default {
                 endTime:null,
                 scorePaymentCountRange:null,
                 memberType:null,
-                timeType:null,
+                timeType:1,
                 startIndex:1,
                 pageSize:10
             }

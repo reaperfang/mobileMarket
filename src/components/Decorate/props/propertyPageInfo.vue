@@ -35,8 +35,8 @@ export default {
     return {
       classifyList: [],
       ruleForm: {
-        name: '微页面名称',
-        title: '微页面标题',
+        name: '',
+        title: '',
         explain: '',
         pageCategoryInfoId: '-1',
         colorStyle: '#fff',
@@ -45,13 +45,31 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: "请输入内容", trigger: "blur" }
+          { required: true, message: "请输入内容", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur"
+          }
         ],
         title: [
-          { required: true, message: "请输入内容", trigger: "blur" }
+          { required: true, message: "请输入内容", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur"
+          }
         ],
         explain: [
-          { required: false, message: "请输入内容", trigger: "blur" }
+          { required: true, message: "请输入内容", trigger: "blur" },
+          {
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
+            trigger: "blur"
+          }
         ],
         pageCategoryInfoId: [
           { required: true, message: "请输入内容", trigger: "change" }

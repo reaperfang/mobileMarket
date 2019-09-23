@@ -9,7 +9,7 @@
             <div class="clearfix marT20">
                 <img src="../../assets/images/datum/icon_head.png" alt="" class="fl">
                 <div class="fl">
-                    <p class="p1">253.5</p>
+                    <p class="p1">{{perPrice}}</p>
                     <p class="p2">客单价（元）</p>
                 </div>
             </div>
@@ -112,7 +112,8 @@ export default {
             tableData:[],
             tableCopyTableList: [],
             index: 1,
-            size: 5
+            size: 5,
+            perPrice:''
         }
     },
     methods: {
@@ -127,6 +128,7 @@ export default {
                     xyData.xAxisData.push(response[i].time)
                     xyData.yAxisData.push(response[i].value)
                 }
+            this.perPrice = response[response.length-1].value
             this.$refs.pp1.con(xyData)
         }).catch(error => {
           this.$message.error(error);

@@ -40,6 +40,7 @@ export default {
         //   title: '错误',
         //   message: error
         // });
+        this.loading = false;
         console.error(error);
       });
     },
@@ -77,17 +78,17 @@ export default {
       const resultData = this.collectData();
       const copyResultData = {...resultData};
       copyResultData['explain'] = utils.compileStr(copyResultData.explain);
-       if(!resultData.name) {
-         this.$alert('请填写基础信息后重试，点击确认开始编辑分类信息!', '警告', {
+       if(!resultData.name || !resultData.explain) {
+         this.$alert('请填写基础信息后重试，点击确认返回编辑分类信息!', '警告', {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
             this.$store.commit('setCurrentComponentId', this.basePropertyId);
+            this._globalEvent.$emit('decorateSaveLoading', false, this.id);
           }
         });
         return;
       }
-      this.loading = true;
       if(this.id) {
         this._apis.shop.editClassifyInfo(copyResultData).then((response)=>{
           this.$notify({
@@ -96,13 +97,13 @@ export default {
             type: 'success'
           });
           this._routeTo('pageManageIndex');
-          this.loading = false;
+          this._globalEvent.$emit('decorateSaveLoading', true, this.id);
         }).catch((error)=>{
           this.$notify.error({
             title: '错误',
             message: error
           });
-          this.loading = false;
+          this._globalEvent.$emit('decorateSaveLoading', false, this.id);
         });
       }else{
         this._apis.shop.createClassify(copyResultData).then((response)=>{
@@ -112,13 +113,13 @@ export default {
             type: 'success'
           });
           this._routeTo('pageManageIndex');
-          this.loading = false;
+          this._globalEvent.$emit('decorateSaveLoading', true, this.id);
         }).catch((error)=>{
           this.$notify.error({
             title: '错误',
             message: error
           });
-          this.loading = false;
+          this._globalEvent.$emit('decorateSaveLoading', false, this.id);
         });
       }
     }
