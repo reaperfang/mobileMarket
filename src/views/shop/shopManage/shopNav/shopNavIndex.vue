@@ -30,7 +30,8 @@ export default {
       navigation_type: "0",
       openNav: true,   //系统-是否打开导航
       utils,
-      apiNavData: null  //导航数据
+      apiNavData: null,  //导航数据
+      loading: false
     };
   },
   created() {
@@ -114,27 +115,25 @@ export default {
       });
     },
 
-    submit(params) {
-      this.loading = true;
+    submit(params, callback) {
       this._apis.shop.editShopNav(params).then((response)=>{
         this.$notify({
           title: '成功',
           message: '编辑成功！',
           type: 'success'
         });
-        this.loading = false;
+        callback && callback(true);
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
-        this.loading = false;
+        callback && callback(false)
       });
     },
 
     /* 重置 */
-    resetData(params) {
-      this.loading = true;
+    resetData(params, callback) {
       this._apis.shop.resetShopNav(params).then((response)=>{
         this.$notify({
           title: '成功',
@@ -154,13 +153,13 @@ export default {
           this.apiNavData['status'] = response.status;
           this._globalEvent.$emit('apiNavDataChange', this.apiNavData, this.navigation_type);
         }
-        this.loading = false;
+        callback && callback(true);
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
-        this.loading = false;
+        callback && callback(false);
       });
     },
   }

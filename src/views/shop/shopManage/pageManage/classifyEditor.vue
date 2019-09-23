@@ -40,6 +40,7 @@ export default {
         //   title: '错误',
         //   message: error
         // });
+        this.loading = false;
         console.error(error);
       });
     },
