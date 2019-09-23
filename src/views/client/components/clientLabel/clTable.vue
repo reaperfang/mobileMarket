@@ -99,6 +99,7 @@ export default {
       this.loading = true;
       this._apis.client.getLabelList(Object.assign(this.params, {startIndex, pageSize})).then((response) => {
         this.loading = false;
+        this.$emit('stopLoading');
         response.list.map((v) => {
           v.tagType = v.tagType == 0 ? '手工':'自动';
         })

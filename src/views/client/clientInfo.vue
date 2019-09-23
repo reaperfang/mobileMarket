@@ -291,11 +291,13 @@ export default {
                 this.currentDialog = "issueCouponDialog";
                 this.currentData.allCoupons = [].concat(this.allCoupons);
                 this.currentData.memberSn = this.clientInfoById.memberSn;
+                this.currentData.weChartNickname = this.clientInfoById.nickName;
             }else{
                 this.dialogVisible = true;
                 this.currentDialog = "issueCodeDialog";
                 this.currentData.allCodes = [].concat(this.allCodes);
                 this.currentData.memberSn = this.clientInfoById.memberSn;
+                this.currentData.weChartNickname = this.clientInfoById.nickName;
             }
         },
         showAddBlack() {

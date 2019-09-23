@@ -46,10 +46,10 @@
             >
               <el-table-column prop="areaInfoList" label="配送到" width="180">
                 <template slot-scope="scope">
-                  <span>{{scope.row.areaInfoList.map(val => val.cityName).join(',')}}</span>
+                  <span>{{scope.row.areaInfoList.map(val => val.cityName).join(',') || '默认运费（全国）'}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="首件" width="180">
+              <el-table-column :label="one" width="180">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.theFirst"></el-input>件或以内
                 </template>
@@ -59,7 +59,7 @@
                   <el-input v-model="scope.row.freight"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="续件" width="180">
+              <el-table-column :label="two" width="180">
                 <template slot-scope="scope">
                   每增加
                   <el-input v-model="scope.row.superaddition"></el-input>
@@ -127,7 +127,39 @@ export default {
   created() {
     if (this.$route.query.id) {
       this.getDetail();
+    } else {
+      this.tableData.push({
+        "areaInfoList": [{
+				"receivedProvinceCode": "",
+				"receivedCityCode": "",
+				"cityName": ""
+			}],
+			"theFirst": "",
+			"freight": "",
+			"superaddition": "",
+			"renew": ""
+      })
     }
+  },
+  computed: {
+    one() {
+      if(this.ruleForm.calculationWay == 1) {
+        return '首件'
+      } else if(this.ruleForm.calculationWay == 2) {
+        return '首重'
+      } else if(this.ruleForm.calculationWay == 3) {
+        return '首体积'
+      }
+    },
+    two() {
+      if(this.ruleForm.calculationWay == 1) {
+        return '续件'
+      } else if(this.ruleForm.calculationWay == 2) {
+        return '续重'
+      } else if(this.ruleForm.calculationWay == 3) {
+        return '续体积'
+      }
+    },
   },
   methods: {
     deleteRow(index) {
