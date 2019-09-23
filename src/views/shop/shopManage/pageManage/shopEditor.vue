@@ -98,7 +98,7 @@ export default {
     saveAndApplyData() {
       let resultData = this.collectData();
       resultData['status'] = '0';
-      this.submit(resultData);
+      this.submit(resultData, 'saveAndApply');
     },
 
     /* 保存到模板 */
@@ -130,7 +130,7 @@ export default {
         });
     },
 
-    submit(resultData) {
+    submit(resultData, type) {
       if(!resultData.name) {
          this.$alert('请填写基础信息后重试，点击确认开始编辑页面信息!', '警告', {
           confirmButtonText: '确定',
@@ -141,7 +141,6 @@ export default {
         });
         return;
       }
-      this.loading = true;
       if(this.id) {
         this._apis.shop.editPageInfo(resultData).then((response)=>{
           this.$notify({
@@ -149,14 +148,22 @@ export default {
             message: '编辑成功！',
             type: 'success'
           });
+          if(type === 'saveAndApply') {
+            this._globalEvent.$emit('decorateSaveAndApplyLoading', true, this.id);
+          }else{
+            this._globalEvent.$emit('decorateSaveLoading', true, this.id);
+          }
           this._routeTo('pageManageIndex');
-          this.loading = false;
         }).catch((error)=>{
+          if(type === 'saveAndApply') {
+            this._globalEvent.$emit('decorateSaveAndApplyLoading', false, this.id);
+          }else{
+            this._globalEvent.$emit('decorateSaveLoading', false, this.id);
+          }
           this.$notify.error({
             title: '错误',
             message: error
           });
-          this.loading = false;
         });
       }else{
         this._apis.shop.createPage(resultData).then((response)=>{
@@ -165,14 +172,22 @@ export default {
             message: '创建成功！',
             type: 'success'
           });
+          if(type === 'saveAndApply') {
+            this._globalEvent.$emit('decorateSaveAndApplyLoading', true, this.id);
+          }else{
+            this._globalEvent.$emit('decorateSaveLoading', true, this.id);
+          }
           this._routeTo('pageManageIndex');
-          this.loading = false;
         }).catch((error)=>{
           this.$notify.error({
             title: '错误',
             message: error
           });
-          this.loading = false;
+          if(type === 'saveAndApply') {
+            this._globalEvent.$emit('decorateSaveAndApplyLoading', false, this.id);
+          }else{
+            this._globalEvent.$emit('decorateSaveLoading', false, this.id);
+          }
         });
       }
     }

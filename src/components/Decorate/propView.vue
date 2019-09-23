@@ -14,11 +14,11 @@
       <div class="block button" v-loading="loading">
         <div class="help_blank"></div>
         <div class="buttons">
-          <el-button @click="resetData.call(parentScope)" v-if="resetData">重   置</el-button>
-          <el-button @click="saveData.call(parentScope)" type="primary">{{id ? '保   存' : '创   建'}}</el-button>
-          <el-button type="primary" @click="saveAndApplyData.call(parentScope)" v-if="saveAndApplyData && id">保存并生效</el-button>
+          <el-button @click="resetLoading = true; resetData.call(parentScope)" v-if="resetData" :loading="resetLoading">重   置</el-button>
+          <el-button @click="saveDataLoading = true; saveData.call(parentScope)" type="primary" :loading="saveDataLoading">{{id ? '保   存' : '创   建'}}</el-button>
+          <el-button type="primary" @click="saveAndApplyDataLoading = true; saveAndApplyData.call(parentScope)" v-if="saveAndApplyData && id" :loading="saveAndApplyDataLoading">保存并生效</el-button>
           <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
-          <el-button @click="saveToTemplate.call(parentScope)" v-if="saveToTemplate">保存到模板</el-button>
+          <!-- <el-button @click="saveToTemplate.call(parentScope)" v-if="saveToTemplate">保存到模板</el-button> -->
         </div>
       </div>
       <!-- 动态弹窗 -->
@@ -40,7 +40,10 @@ export default {
       currentDialog: '',
       utils,
       id: this.$route.query.pageId,
-      loading: false
+      loading: false,
+      resetLoading: false,  //重置loading
+      saveDataLoading: false,  //保存loading
+      saveAndApplyDataLoading: false  //保存并应用loading
     }
   },
   computed:{
@@ -69,6 +72,28 @@ export default {
     // }
   },
   created() {
+    const _self = this;
+
+    /* 监听接口操作结束事件，用来响应loading  保存按钮*/
+    this._globalEvent.$on('decorateSaveLoading', (status, id) => {
+      if(id === _self.id) {
+        _self.saveDataLoading = false;
+      }
+    });
+
+     /* 监听接口操作结束事件，用来响应loading  保存并应用按钮*/
+    this._globalEvent.$on('decorateSaveAndApplyLoading', (status, id) => {
+      if(id === _self.id) {
+        _self.saveAndApplyDataLoading = false;
+      }
+    });
+
+     /* 监听接口操作结束事件，用来响应loading  重置按钮*/
+    this._globalEvent.$on('decorateResetLoading', (status, id) => {
+      if(id === _self.id) {
+        _self.resetLoading = false;
+      }
+    });
   },
   mounted() {
     this.loadPropTemplate();
