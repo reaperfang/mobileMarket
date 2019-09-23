@@ -34,6 +34,9 @@
                 label="渠道类型"
                 align="center"
             >
+            <template slot-scope="scope">
+                <span>{{ scope.row.channelName ? scope.row.channelName : '直接购买' }}</span>
+            </template>
             </el-table-column>
             <el-table-column
                 prop="activityName"
@@ -104,7 +107,7 @@ export default {
             let data = {};
             data.startTime = this.ruleForm.startTime
             data.endTime = this.ruleForm.endTime
-            if(this.ruleForm.channel!='null'){
+            if(this.ruleForm.channel!= null){
                 data.channel = Number(this.ruleForm.channel);
             }else{
                 data.channel = null

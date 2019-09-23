@@ -65,9 +65,14 @@
 
             <div class="m_line clearfix">
                 <!-- <p class="fl">该筛选条件下：
-                    <i v-if="form.memberType==1" style="font-style:normal">新会员共计<span>{{newMemberCount}}</span>人；</i>
-                    <i v-if="form.memberType==2" style="font-style:normal">老会员共计<span>{{oldMemberCount}}</span>人；</i>
-                    占会员总数的<span>{{memberCount}}%</span>;
+                    <i v-if="form.memberType==1" style="font-style:normal">
+                        新会员共计<span>{{newMemberCount}}</span>人；
+                        占会员总数的<span>{{newMemberRatio}}%</span>;
+                    </i>
+                    <i v-if="form.memberType==2" style="font-style:normal">
+                        老会员共计<span>{{oldMemberCount}}</span>人；
+                        占会员总数的<span>{{oldMemberRatio}}%</span>;    
+                    </i>
                     <i v-if="repeatPaymentRatio != undefined">复购率为<span>{{repeatPaymentRatio}}</span></i>。
                 </p> -->
                 <div class="fr marT20">
@@ -146,8 +151,11 @@ export default {
                     id: "8",
                     name: "8次以上"
                 }
-            ]
-
+            ],
+            newMemberCount:'',
+            newMemberRatio:'',
+            oldMemberCount:'',
+            oldMemberRatio:'',
         }
     },
     created(){
@@ -190,12 +198,12 @@ export default {
                 this.totalCount = res.totalPage * this.form.pageSize;
                 if(memberType == 1){ //新会员
                     this.textTips = true;
-                    this.memberNum = res.newMemberCount;
-                    this.memberCount = res.newMemberRatio;
+                    this.newMemberCount = res.newMemberCount;
+                    this.newMemberRatio = res.newMemberRatio;
                 }else if(memberType == 2){ //老会员
                     this.textTips = true;
-                    this.memberNum = res.oldMemberCount;
-                    this.memberCount = res.oldMemberRatio;
+                    this.oldMemberCount = res.oldMemberCount;
+                    this.oldMemberRatio = res.oldMemberRatio;
                 }else{ //其他
                     this.textTips = false;
                 }
