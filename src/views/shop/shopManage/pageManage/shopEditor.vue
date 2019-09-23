@@ -131,12 +131,18 @@ export default {
     },
 
     submit(resultData, type) {
-      if(!resultData.name) {
-         this.$alert('请填写基础信息后重试，点击确认开始编辑页面信息!', '警告', {
+
+      if(!resultData.name || !resultData.title || !resultData.explain || !resultData.pageCategoryInfoId || !resultData.colorStyle) {
+         this.$alert('请填写基础信息后重试，点击确认返回编辑页面信息!', '警告', {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
             this.$store.commit('setCurrentComponentId', this.basePropertyId);
+            if(type === 'saveAndApply') {
+              this._globalEvent.$emit('decorateSaveAndApplyLoading', false, this.id);
+            }else{
+              this._globalEvent.$emit('decorateSaveLoading', false, this.id);
+            }
           }
         });
         return;

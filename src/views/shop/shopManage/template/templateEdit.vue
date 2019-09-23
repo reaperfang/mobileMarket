@@ -115,12 +115,13 @@ export default {
     },
 
     submit(resultData) {
-      if(!resultData.name) {
-         this.$alert('请填写基础信息后重试，点击确认开始编辑页面信息!', '警告', {
+      if(!resultData.name || !resultData.title || !resultData.explain || !resultData.pageCategoryInfoId || !resultData.colorStyle) {
+         this.$alert('请填写基础信息后重试，点击确认返回编辑页面信息!', '警告', {
           confirmButtonText: '确定',
           callback: action => {
             //打开基础信息面板
             this.$store.commit('setCurrentComponentId', this.basePropertyId);
+            this._globalEvent.$emit('decorateSaveLoading', false, this.id);
           }
         });
         return;
@@ -132,14 +133,14 @@ export default {
           message: '创建成功！',
           type: 'success'
         });
+        this._globalEvent.$emit('decorateSaveLoading', true, this.id);
         // this._routeTo('pageManageIndex');
-        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
-        this.loading = false;
+        this._globalEvent.$emit('decorateSaveLoading', false, this.id);
       });
     },
 
