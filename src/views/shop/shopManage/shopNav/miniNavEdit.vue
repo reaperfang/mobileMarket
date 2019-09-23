@@ -95,9 +95,9 @@
           <div class="block button">
             <div class="help_blank"></div>
             <div class="buttons">
-              <el-button @click="resetData">重    置</el-button>
-              <el-button @click="save">保    存</el-button>
-              <el-button @click="saveAndApply" type="primary">保存并启用</el-button>
+              <el-button @click="resetData" :loading="resetDataLoading">重    置</el-button>
+              <el-button @click="save" :loading="saveLoading">保    存</el-button>
+              <el-button @click="saveAndApply" type="primary" :loading="saveAndApplyLoading">保存并启用</el-button>
             </div>
           </div>
 
@@ -118,6 +118,9 @@ export default {
   components: {dialogSelectImageMaterial},
   data () {
     return {
+      resetDataLoading: false,  //重置loading
+      saveLoading: false,  //保存loading
+      saveAndApplyLoading: false,  //保存并应用loading
       dialogVisible: false,
       currentDialog: '',
       utils,
@@ -226,28 +229,37 @@ export default {
 
     /* 保存并启用 */
     saveAndApply() {
+      this.saveAndApplyLoading = true,
       this.$emit('submitNavData',{
         navigationKey: '',
         status: '0',
         navigation_type: '1',
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+      }, (status) => {
+        this.saveAndApplyLoading = false;
       })
     },
 
     /* 保存 */
     save() {
+      this.saveLoading = true,
       this.$emit('submitNavData', {
         navigationKey: '',
         status: '1',
         navigation_type: '1',
         navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+      }, (status) => {
+        this.saveLoading = false;
       })
     },
 
       /* 重置 */
     resetData() {
+      this.resetDataLoading = true;
       this.$emit('resetNavData', {
         navigation_type: '1'
+      }, (status) => {
+        this.resetDataLoading = false;
       })
     },
   },

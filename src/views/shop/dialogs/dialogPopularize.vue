@@ -51,9 +51,9 @@
           </div>
           <div>
             <el-button type="text" @click="openSetting = true">更多设置</el-button>
-            <el-button type="text" @click="getPoster" :disabled="!downloadPosterAble">下载海报图片</el-button>
-            <el-button type="text" @click="openQrcode('h5')" v-if="currentType === 'h5'">下载二维码</el-button>
-            <el-button type="text" @click="openQrcode('mini')" v-if="currentType === 'mini'">下载小程序码</el-button>
+            <el-button type="text" @click="getPoster" :disabled="!downloadPosterAble" :loading="downloadPosterLoading">下载海报图片</el-button>
+            <el-button type="text" @click="openQrcode('h5')" v-if="currentType === 'h5'" :loading="openQrcodeLoading">下载二维码</el-button>
+            <el-button type="text" @click="openQrcode('mini')" v-if="currentType === 'mini'" :loading="openQrcodeLoading">下载小程序码</el-button>
           </div>
            <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="70px" v-if="openSetting">
               <el-form-item label="分享样式" prop="shareStyle">
@@ -90,7 +90,7 @@
                 建议尺寸：750*370，尺寸不匹配时，图片将被压缩或拉伸以铺满四周
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="onSubmit">确定</el-button>
+                <el-button type="primary" @click="onSubmit" :loading="submitLoading">确定</el-button>
                 <el-button @click="openSetting = false">取消</el-button>
               </el-form-item>
           </el-form>
@@ -130,7 +130,10 @@ export default {
       currentDialog: '',
       dialogVisible2: false,
       shareStyle: 1,
-      loading: true,
+      loading: true,  //加载loading
+      downloadPosterLoading: false,  //下载海报loading
+      submitLoading: false,  //提交loading
+      openQrcodeLoading: false,  //打开二维码loading
       ruleForm: {
         pageInfoId: this.pageId,
         type: '0',
@@ -218,7 +221,7 @@ export default {
     },
 
     onSubmit() {
-      this.loading = true;
+      this.submitLoading = true;
        this._apis.shop.updatePageShare({
         type: this.currentType === 'h5' ? '0' : '1',
         pageInfoId: this.ruleForm.pageInfoId,
@@ -226,20 +229,21 @@ export default {
         describe: this.ruleForm.describe,
         picture: this.ruleForm.picture
       }).then((response)=>{
-         this.loading = false;
+         this.submitLoading = false;
          this.openSetting = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
-        this.loading = false;
+        this.submitLoading = false;
         this.openSetting = false;
       });
     },
 
     /* 获取海报 */
     getPoster() {
+      this.downloadPosterLoading = true;
       this._apis.shop.getPoster({
         type: this.currentType === 'h5' ? '0' : '1',
         pageInfoId: this.ruleForm.pageInfoId
@@ -251,6 +255,7 @@ export default {
         //   message: error
         // });
         console.error(error);
+        this.downloadPosterLoading = false;
       });
     },
 
@@ -271,6 +276,7 @@ export default {
 
     /* 获取二维码 */
     getQrcode(codeType, callback) {
+      this.openQrcodeLoading = true;
       this._apis.shop.getQrcode({
         url: this.pageLink.replace("&","[^]"),
         width: '225',
@@ -278,18 +284,21 @@ export default {
         logoUrl: this.shopInfo.logoCircle
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
+        this.openQrcodeLoading = false;
         callback && callback(response);
       }).catch((error)=>{
         // this.$notify.error({
         //   title: '错误',
         //   message: error
         // });
+        this.openQrcodeLoading = false;
         console.error(error);
       });
     },
 
     /* 下载图片实现 */
     download(url, name) {
+        this.downloadPosterLoading = false;
         const aLink = document.createElement('a')
         aLink.download = name 
         aLink.href = `data:image/png;base64,${url}`; 

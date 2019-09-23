@@ -69,7 +69,7 @@
         <div class="block button">
           <div class="help_blank"></div>
           <div class="buttons">
-            <el-button @click="saveData" type="primary">保    存</el-button>
+            <el-button @click="saveData" type="primary" :loading="saveDataLoading">保    存</el-button>
             <el-button @click="_routeTo('ADManageIndex')">取    消  </el-button>
           </div>
         </div>
@@ -93,6 +93,7 @@ export default {
       dialogVisible: false,
       currentDialog: '',
       loading: false,
+      saveDataLoading: false,
       ruleForm: {
         type: 0,
         name: '',
@@ -157,7 +158,7 @@ export default {
 
     /* 保存图片广告数据 */
     saveData() {
-      this.loading = true;
+      this.saveDataLoading = true;
       if(this.currentADId) {
         this._apis.shop.editADInfo(this.ruleForm).then((response)=>{
           this.$notify({
@@ -166,13 +167,13 @@ export default {
             type: 'success'
           });
           this._routeTo('ADManageIndex');
-          this.loading = false;
+          this.saveDataLoading = false;
         }).catch((error)=>{
           this.$notify.error({
             title: '错误',
             message: error
           });
-          this.loading = false;
+          this.saveDataLoading = false;
         });
       }else{
         this._apis.shop.createAD(this.ruleForm).then((response)=>{
@@ -182,13 +183,13 @@ export default {
             type: 'success'
           });
           this._routeTo('ADManageIndex');
-          this.loading = false;
+          this.saveDataLoading = false;
         }).catch((error)=>{
           this.$notify.error({
             title: '错误',
             message: error
           });
-          this.loading = false;
+          this.saveDataLoading = false;
         });
       }
     }
