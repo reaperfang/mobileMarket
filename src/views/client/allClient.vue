@@ -156,7 +156,7 @@
                 <el-form-item class="padR40 marT20">
                     <span class="shou" @click="handleMore" v-if="showFold">收起<i class="el-icon-arrow-up marL10"></i></span>
                     <el-button class="fr marL20" @click="resetForm('form')">重置</el-button>
-                    <el-button type="primary" class="fr" @click="getClientList">查询</el-button>
+                    <el-button type="primary" class="fr" @click="getClientList" :loading="btnloading">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -165,7 +165,7 @@
                 <el-button type="primary" @click="_routeTo('clientImport')" v-permission="['客户', '全部客户', '默认页面', '客户导入']">导入</el-button>
                 <!-- <el-button @click="exportToLocal">导出</el-button> -->
             </div>
-            <acTable :newForm="newForm"></acTable>
+            <acTable :newForm="newForm" @stopLoading="stopLoading"></acTable>
         </div>
     </div>
   </div>
@@ -206,7 +206,8 @@ export default {
         labelsList: [],
         channels: [],
         channelsList: [],
-        memberList: []
+        memberList: [],
+        btnloading: false
     }
   },
   watch: {
@@ -236,6 +237,9 @@ export default {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    stopLoading() {
+        this.btnloading = false;
+    },
     handleMore() {
         this.showFold = !this.showFold;
     },   
@@ -269,6 +273,7 @@ export default {
         })
     },
     getClientList() {
+        this.btnloading = true;
         let oForm = Object.assign({},this.form);
         let labelNames = oForm.memberLabels;
         let channelNames = oForm.channelId;

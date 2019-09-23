@@ -31,7 +31,7 @@ export default {
       hasCancel: true,
       coupon:"",
       selectList: [
-        {couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1"}
+        {couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1",weChartNickname: this.data.weChartNickname}
       ]
     };
   },

@@ -216,6 +216,7 @@ export default {
           this.loading = false;
           this.memberList = [].concat(response.list);
           this.total = response.total;
+          this.$emit('stopLoading');
         })
         .catch(error => {
           this.loading = false;
