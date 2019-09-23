@@ -30,7 +30,7 @@
             >
             </el-table-column>
             <el-table-column
-                prop="channelType"
+                prop="channelName"
                 label="渠道类型"
                 align="center"
             >
@@ -79,7 +79,6 @@ export default {
         };
     },
     mounted(){
-        this.ruleForm.cid = this.$route.query.cid;
         this.ruleForm.startTime = this.$route.query.startTime;
         this.ruleForm.endTime = this.$route.query.endTime;
         this.ruleForm.channel = this.$route.query.channel;
@@ -103,7 +102,6 @@ export default {
         //导出
         exportExl(){
             let data = {};
-            data.cid = ""
             data.startTime = this.ruleForm.startTime
             data.endTime = this.ruleForm.endTime
             if(this.ruleForm.channel!='null'){

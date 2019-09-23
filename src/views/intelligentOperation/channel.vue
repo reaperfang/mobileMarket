@@ -30,8 +30,8 @@
                         <div class="input_wrap2">
                             <el-select v-model="form.channel">
                                 <el-option label="不限" value="null"></el-option>
-                                <el-option label="限时折扣" value="401"></el-option>
-                                <el-option label="限时秒杀" value="506"></el-option>
+                                <el-option label="直接购买" value="1"></el-option>
+                                <el-option label="活动类型" value="2"></el-option>
                             </el-select>
                         </div>
                         <span class="span_label">（成功）支付转化率</span>
@@ -81,7 +81,6 @@ export default {
     data() {
         return {
             form: {
-                cid:"",
                 startTime:null,
                 endTime:null,
                 channel:null,
@@ -135,7 +134,6 @@ export default {
         // 重置
         reSet(){
             this.form = {
-                cid:"",
                 startTime:null,
                 endTime:null,
                 channel:null,
