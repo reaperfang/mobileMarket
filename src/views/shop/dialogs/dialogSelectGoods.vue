@@ -89,7 +89,15 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.$nextTick(() => {
+      if(this.$parent.$refs.dialog) {
+        let zIndex = this.$el.style.zIndex;
+        zIndex = Number(zIndex) + 2;
+        this.$parent.$el.style.zIndex = zIndex + '';
+      }
+    })
+  },
   methods: {
 
     fetch() {

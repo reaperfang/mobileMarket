@@ -312,4 +312,8 @@ export default {
     margin-right: 26px;
   }
 }
+/deep/.el-tree{
+    height: 300px;
+    overflow-y: auto;
+}
 </style>
