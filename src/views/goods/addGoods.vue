@@ -255,7 +255,7 @@
                     <el-checkbox v-model="ruleForm.isShowStock">商品详情显示剩余库存</el-checkbox>
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
                 </div>
-                <el-button v-if="!editor" class="border-button" @click="currentDialog = 'AddSpecifications'; dialogVisible = true">新增规格</el-button>
+                <!-- <el-button v-if="!editor" class="border-button" @click="currentDialog = 'AddSpecifications'; selectSpecificationsCurrentDialog = ''; dialogVisible = true">新增规格</el-button> -->
             </el-form-item>
             <el-form-item label="起售数量" prop="number">
                 <div class="input-number">
@@ -405,7 +405,7 @@
         </section>
     </el-form>
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add" :onSubmit="getCategoryList"></component>
-    <component :is="selectSpecificationsCurrentDialog" :dialogVisible.sync="selectSpecificationsDialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add" :onSubmit="getCategoryList"></component>
+    <component :is="selectSpecificationsCurrentDialog" :dialogVisible.sync="selectSpecificationsDialogVisible" @submit="submit" :data="currentData" :specsLength.sync="specsLength" :flatSpecsList="flatSpecsList"></component>
 </div>
 </template>
 <script>
@@ -800,6 +800,9 @@ export default {
         getSpecsList() {
             this._apis.goodsOperate.fetchSpecsList({productCategoryId: this.ruleForm.productCategoryInfoId}).then(res => {
                 console.log(res)
+                res.forEach(val => {
+                    val.level = '1'
+                })
                 this.specsList = res
                 //this.specsLength = this.specsList.length
                 this.flatSpecsList = this.flatTreeArray(JSON.parse(JSON.stringify(res)), 'list')
