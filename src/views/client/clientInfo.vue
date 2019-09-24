@@ -135,7 +135,7 @@
                 </div>
                 <div class="assets_item rb">
                     <p>累计消费订单数</p>
-                    <p class="pointer" @click="_routeTo('query',{id: userId})">{{clientInfoById.dealTimes || 0}}</p>
+                    <p class="pointer p_style" @click="_routeTo('query',{id: userId})">{{clientInfoById.dealTimes || 0}}</p>
                 </div>
             </div>
         </div>

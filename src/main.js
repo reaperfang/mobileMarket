@@ -25,7 +25,7 @@ import 'babel-polyfill';
 import Element from 'element-ui'
 import '@/assets/theme/index.css'
 Vue.use(Element, {
-  size: Cookies.get('size') || 'small', // set element-ui default size
+  size: Cookies.get('size') || 'medium', // set element-ui default size
 })
 import vueJsonp from 'vue-jsonp';  //使用jsonp
 Vue.use(vueJsonp);

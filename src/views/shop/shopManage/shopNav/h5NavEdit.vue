@@ -107,7 +107,12 @@
                 <el-button type="primary" @click="seleteOneLink" v-if="['7','8','9','10','11'].includes(currentNav.systemNavLinkUrl)">选择</el-button>
             </el-form-item>
             <el-form-item label="" prop="">
-              <el-tag type="success" @close="deleteGoodsGroup()" v-if="currentNav.linkTo">
+              <el-tag 
+              type="success" 
+              @close="deleteGoodsGroup()" 
+              v-if="currentNav.linkTo" 
+              class="nav_tag" 
+              :title="currentNav.linkTo.typeName + ' - ' + (currentNav.linkTo.data.title || currentNav.linkTo.data.name)">
                 {{currentNav.linkTo.typeName + ' - ' + (currentNav.linkTo.data.title || currentNav.linkTo.data.name)}}
               </el-tag>
             </el-form-item>
@@ -211,6 +216,7 @@ export default {
         case '1':
           this.currentNav.linkTo = {
             pageType: 'systemPage',
+            typeName: '系统页面',
             id: 7,
             data: {
               id: 'index',
@@ -222,6 +228,7 @@ export default {
         case '2':
           this.currentNav.linkTo = {
             pageType: 'systemPage',
+            typeName: '系统页面',
             id: 7,
             data: {
               id: 'shoppingCart',
@@ -233,6 +240,7 @@ export default {
         case '3':
           this.currentNav.linkTo = {
             pageType: 'systemPage',
+            typeName: '系统页面',
             id: 7,
             data: {
               id: 'userCenter',
@@ -244,6 +252,7 @@ export default {
         case '4':
           this.currentNav.linkTo = {
             pageType: 'systemPage',
+            typeName: '系统页面',
             id: 7,
             data: {
               id: 'allGoods',
@@ -255,6 +264,7 @@ export default {
         case '5':
           this.currentNav.linkTo = {
             pageType: 'systemPage',
+            typeName: '系统页面',
             id: 7,
             data: {
               id: 'allClassify',
@@ -645,6 +655,16 @@ export default {
             height:50px;
           }
         }
+      }
+
+      .nav_tag{
+        padding: 0px 5px;
+        width: 220px!important;
+        overflow-x: hidden!important;
+        text-overflow: ellipsis!important;
+        white-space: nowrap!important;
+        display: block!important;
+        text-align: left!important;
       }
     }
   }
