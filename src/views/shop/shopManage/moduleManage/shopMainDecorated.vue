@@ -73,6 +73,14 @@ export default {
   mounted() {
     this.height = document.body.clientHeight - 238 - 20;
   },
+  watch: {
+    shopInfo: {
+      handler(newValue) {
+        this.getQrcode();
+      },
+      deep: true
+    }
+  },
   methods: {
 
       /* 获取二维码 */
@@ -81,7 +89,7 @@ export default {
         url: this.homePageData.shareUrl.replace("&","[^]"),
         width: '250',
         height: '250',
-        logoUrl: this.shopInfo.logoCircle
+        logoUrl: this.shopInfo.logoCircle || this.shopInfo.logo
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);

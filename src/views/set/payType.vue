@@ -6,7 +6,7 @@
             <img src="@/assets/images/set/set-pay1.png"/>
             <div class="note">
               <h3>微信支付</h3>
-              <p>如果是微信支付，授权目录与“支付选项”中的说明不同，应在公众平台->微信支付->公众号支付 追加一条支付授权目录：http://omo.aiyouyi.cn/app/</p>
+              <p>如果是微信支付，授权目录与“支付选项”中的说明不同，应在公众平台->微信支付->公众号支付 追加一条支付授权目录：<a href="http://omo.aiyouyi.cn/app/" target="_blank">http://omo.aiyouyi.cn/app/</a></p>
             </div>
           </div>
           <div class="right_cont">
@@ -17,7 +17,8 @@
               inactive-color="#ff4949"
               v-permission="['设置', '支付方式', '默认页面', '开启/关闭']">
             </el-switch>
-            <a class="wxinfo_set" @click="_routeTo('wxSet')" v-permission="['设置', '支付方式', '默认页面', '设置支付信息']">设置支付信息</a>
+            <a class="wxinfo_set" @click="_routeTo('wxSet')" >设置支付信息</a>
+            <!-- v-permission="['设置', '支付方式', '默认页面', '设置支付信息']" -->
           </div>
         </div>
         <div class="pay_item">

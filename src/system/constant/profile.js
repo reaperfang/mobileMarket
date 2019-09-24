@@ -7,49 +7,49 @@ export default {
             url: require("@/assets/images/profile/t_01.png"),
             color: "#F05654",
             text: "支付金额",
-            price: 550.00
+            price: 0
         },
         {   
             id: "002",
             url: require("@/assets/images/profile/t_02.png"),
             color: "#C18F08",
             text: "支付订单",
-            price: 5
+            price: 0
         },
         {   
             id: "003",
             url: require("@/assets/images/profile/t_03.png"),
             color: "#2F88EE",
             text: "退款金额",
-            price: 123
+            price: 0
         },
         {   
             id: "004",
             url: require("@/assets/images/profile/t_04.png"),
             color: "#21AC58",
             text: "退款订单数",
-            price: 765
+            price: 0
         },
         {   
             id: "005",
             url: require("@/assets/images/profile/t_05.png"),
             color: "#FF9A54",
             text: "支付客户数",
-            price: 765
+            price: 0
         },
         {   
             id: "006",
             url: require("@/assets/images/profile/t_06.png"),
             color: "#a666ec",
             text: "客单价",
-            price: 765
+            price: 0
         },
         {   
             id: "007",
             url: require("@/assets/images/profile/t_07.png"),
             color: "#FA658F",
             text: "支付会员数",
-            price: 765
+            price: 0
         }
     ],
     //概况首页-常用功能

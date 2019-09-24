@@ -173,8 +173,9 @@ export default {
         margin-top: 17px;
       }
       .logo{
-        width: 60px;
-        height: 27px;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
       }
     }
     .main-container {

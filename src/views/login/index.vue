@@ -29,7 +29,7 @@
           </span>
           <!-- <span @click="_routeTo('profile/passwordChange')">修改密码</span> -->
         </el-form-item>
-        <el-button :loading="loading" type="primary" class="btn-login" @click.native.prevent="handleLogin">登 录</el-button>
+        <el-button :loading="loading" type="primary" class="btn-login" @click.once.prevent="handleLogin">登 录</el-button>
       </div>
     </el-form>
     <el-dialog
