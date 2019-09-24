@@ -399,6 +399,18 @@ ul.cube {
                   display: block!important;
             }
 
+            .el-button--text{
+                font-size:14px!important;    
+                span{
+                  width: 220px!important;
+                  overflow-x: hidden!important;
+                  text-overflow: ellipsis!important;
+                  white-space: nowrap!important;
+                  display: block!important;
+                  text-align: left!important;
+                }          
+            }
+
             .block {
                   &.header {
                         padding: 10px;

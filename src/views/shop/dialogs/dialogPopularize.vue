@@ -98,7 +98,7 @@
       </div>
     </el-tabs>
     <!-- 动态弹窗 -->
-    <component  v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible2" @imageSelected="imageSelected"></component>
+    <component  v-if="dialogVisible2" :is="currentDialog" :dialogVisible.sync="dialogVisible2" @imageSelected="imageSelected"></component>
   </DialogBase>
 </template>
 
