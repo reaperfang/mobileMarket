@@ -229,6 +229,7 @@ export default {
         describe: this.ruleForm.describe,
         picture: this.ruleForm.picture
       }).then((response)=>{
+         this.fetch();
          this.submitLoading = false;
          this.openSetting = false;
       }).catch((error)=>{
@@ -281,7 +282,7 @@ export default {
         url: this.pageLink.replace("&","[^]"),
         width: '225',
         height: '225',
-        logoUrl: this.shopInfo.logoCircle
+        logoUrl: this.shopInfo.logoCircle || this.shopInfo.logo
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         this.openQrcodeLoading = false;
