@@ -111,8 +111,9 @@ export default {
       this.loading = true;
       this._apis.client.getCreditList({startIndex:startIndex, pageSize: pageSize}).then((response) => {
         this.loading = false;
+        let list = response.list;
         let arr = []
-        response.list.map((v,index) => {
+        list.map((v,index) => {
           v.enable = v.enable == 0?'禁用':'启用';
           if(index >= 0 && index < 4) {
             arr.push(v);
@@ -122,7 +123,7 @@ export default {
           }
         });
         this.creditList = [].concat(arr);
-        console.log('ddd',this.creditList);
+        console.log('list',this.creditList);
         this.total = response.total;
       }).catch((error) => {
         this.loading = false;
