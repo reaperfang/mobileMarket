@@ -38,8 +38,18 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <el-button size="small" type="primary" class="upload_btn" v-permission="['客户', '会员卡', '会员卡管理', '上传']">点击上传</el-button>
+            <el-button
+              size="small"
+              type="primary"
+              class="upload_btn"
+              v-permission="['客户', '会员卡', '会员卡管理', '上传']"
+              v-if="ruleForm.backgroundType == '1'"
+            >点击上传</el-button>
           </el-upload>
+          <span
+            v-if="ruleForm.backgroundType == '1'"
+            style="margin-left:90px; color: #ccc;font-size: 12px;"
+          >像素大小控制在1000象素*600象素以下</span>
           <img v-if="imageUrl" :src="imageUrl" class="avatar cardImg" />
           <img v-else src="../../assets/images/client/card.png" alt class="cardImg" />
         </el-form-item>
@@ -69,13 +79,14 @@
             <span class="gray">(当前积分兑换率：1元1积分)</span>
           </el-form-item>
         </el-form-item>
-        <el-form-item label="特权说明：">
+        <el-form-item label="特权说明：" prop="explain">
           <div class="input_wrap4">
             <el-input
               type="textarea"
               :rows="5"
-              placeholder="请输入该等级或会员卡通用的特权说明，最多不超过250个字符"
-              v-model="explain"
+              :maxlength="255"
+              placeholder="请输入该等级或会员卡通用的特权说明，最多不超过255个字符"
+              v-model="ruleForm.explain"
             ></el-input>
           </div>
         </el-form-item>
@@ -126,12 +137,13 @@
           <el-radio v-model="ruleForm.isSyncWechat" label="0">否</el-radio>
         </el-form-item>
         <el-form-item label="使用须知：">
-          <div class="input_wrap4">
+          <div class="input_wrap4" prop="notice">
             <el-input
               type="textarea"
               :rows="5"
-              placeholder="请输入会员卡通用使用须知，最多不超过100字符"
-              v-model="notice"
+              :maxlength="1024"
+              placeholder="请输入会员卡通用使用须知，最多不超过1024个汉字"
+              v-model="ruleForm.notice"
             ></el-input>
           </div>
         </el-form-item>
@@ -177,12 +189,12 @@ export default {
       ruleForm: {
         name: "",
         backgroundType: "",
-        receiveSetting: "",
+        receiveSetting: "0",
         isSyncWechat: "",
+        explain: "",
+        notice: ""
       },
-      phone:"",
-      notice:"",
-      explain:"",
+      phone: "",
       rules: {
         name: [
           { required: true, message: "请输入会员卡名称", trigger: "blur" },
@@ -194,16 +206,19 @@ export default {
         receiveSetting: [
           { required: true, message: "请选择领取条件", trigger: "blur" }
         ],
-        // explain: [
-        //   { required: true, message: "请输入特权说明", trigger: "blur" }
-        // ],
+        explain: [
+          { required: true, message: "请输入特权说明", trigger: "blur" }
+        ],
+        notice: [
+          { required: true, message: "请输入使用须知", trigger: "blur" }
+        ],
         isSyncWechat: [
           {
             required: true,
             message: "请选择是否同步到微信卡包",
             trigger: "blur"
           }
-        ],
+        ]
       },
       right1: "",
       right2: "",
@@ -224,19 +239,19 @@ export default {
       selectedGifts: [],
       selectedReds: [],
       levelConditionValueDto: {},
-      colors: JSON.parse(localStorage.getItem('colorUrl')) || []
+      colors: JSON.parse(localStorage.getItem("colorUrl")) || []
     };
   },
-  computed:{
-      cid(){
-          let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
-          return shopInfo.id
-      }
+  computed: {
+    cid() {
+      let shopInfo = JSON.parse(localStorage.getItem("shopInfos"));
+      return shopInfo.id;
+    }
   },
   methods: {
     getCardInfo() {
       let id = this.$route.query.cardData.id;
-      if(this.$route.query.cardData.level !== 1) {
+      if (this.$route.query.cardData.level !== 1) {
         this.getCardPublic();
       }
       this._apis.client
@@ -246,20 +261,25 @@ export default {
           response.isSyncWechat = response.isSyncWechat.toString();
           response.receiveSetting = response.receiveSetting.toString();
           this.ruleForm = Object.assign({}, response);
+          delete this.ruleForm.explain;
+          delete this.ruleForm.notice;
+          delete this.ruleForm.phone;
           //用于回显领取条件
-          if(this.ruleForm.levelConditionInfoView) {
+          if (this.ruleForm.levelConditionInfoView) {
             this.currentData.conditionData = {
               name: this.ruleForm.levelConditionInfoView.name,
-              value: this.ruleForm.levelConditionValueView.conditionValue,
+              value: this.ruleForm.levelConditionValueView.conditionValue
             };
             this.levelConditionValueDto.label = this.ruleForm.levelConditionInfoView.name;
           }
           this.levelConditionValueDto.conditionValue = this.ruleForm.levelConditionValueView.conditionValue;
           this.levelConditionValueDto.levelConditionId = this.ruleForm.levelConditionValueView.levelConditionId;
           //用于回显权益礼包
-          if(this.ruleForm.levelRightsInfoList.length > 0) {
+          if (this.ruleForm.levelRightsInfoList.length > 0) {
             this.ruleForm.levelRightsInfoList.map(v => {
-              if (v.rightsInfoId == this.getId(this.rightsList, "积分回馈倍率")) {
+              if (
+                v.rightsInfoId == this.getId(this.rightsList, "积分回馈倍率")
+              ) {
                 this.right2 = true;
                 this.jfhkbl = v.rightsValue;
               }
@@ -272,56 +292,57 @@ export default {
           let redArr = [],
             giftArr = [],
             couponArr = [];
-          if(this.ruleForm.upgradeRewardValueList.length > 0) {
+          if (this.ruleForm.upgradeRewardValueList.length > 0) {
             this.ruleForm.upgradeRewardValueList.map(v => {
-            if (
-              v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送积分")
-            ) {
-              this.upgrade1 = true;
-              this.zsjf = v.giftNumber;
-            }
-            if (
-              v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送红包")
-            ) {
-              this.upgrade2 = true;
-              this.selectedReds.push({ name: v.giftName, id: v.giftProduct });
-              redArr.push(v.giftProduct);
-            }
-            if (
-              v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送赠品")
-            ) {
-              this.upgrade3 = true;
-              this.selectedGifts.push({
-                id: v.giftProduct,
-                goodsName: v.giftName,
-                number: v.giftNumber
-              });
-              giftArr.push(v.giftProduct);
-            }
-            if (
-              v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送优惠券")
-            ) {
-              this.upgrade4 = true;
-              this.selectedCoupons.push({
-                id: v.giftProduct,
-                name: v.giftName,
-                number: v.giftNumber
-              });
-              couponArr.push(v.giftProduct);
-            }
-          });
+              if (
+                v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送积分")
+              ) {
+                this.upgrade1 = true;
+                this.zsjf = v.giftNumber;
+              }
+              if (
+                v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送红包")
+              ) {
+                this.upgrade2 = true;
+                this.selectedReds.push({ name: v.giftName, id: v.giftProduct });
+                redArr.push(v.giftProduct);
+              }
+              if (
+                v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送赠品")
+              ) {
+                this.upgrade3 = true;
+                this.selectedGifts.push({
+                  id: v.giftProduct,
+                  goodsName: v.giftName,
+                  number: v.giftNumber
+                });
+                giftArr.push(v.giftProduct);
+              }
+              if (
+                v.upgradeRewardInfoId ==
+                this.getId(this.rewardList, "赠送优惠券")
+              ) {
+                this.upgrade4 = true;
+                this.selectedCoupons.push({
+                  id: v.giftProduct,
+                  name: v.giftName,
+                  number: v.giftNumber
+                });
+                couponArr.push(v.giftProduct);
+              }
+            });
           }
-          
+
           this.currentData.redArr = [].concat(redArr);
           //用于回显背景
-          let imgType = '0';//设置图片类型初始为背景图
-          this.colors.map((v) => {
-            if(v.imgUrl == this.ruleForm.background) {
-              v.active = '1';
-              imgType = '1'
+          let imgType = "0"; //设置图片类型初始为背景图
+          this.colors.map(v => {
+            if (v.imgUrl == this.ruleForm.background) {
+              v.active = "1";
+              imgType = "1";
             }
           });
-          if(imgType == '1') {
+          if (imgType == "1") {
             this.imageUrl = "";
           }
         })
@@ -349,8 +370,15 @@ export default {
       return id;
     },
     handleAvatarSuccess(res, file) {
-      // this.fileData = res.data
-      this.imageUrl = res.data.url;
+      if (Number(res.data.width) >= 1000 && Number(res.data.height) >= 600) {
+        this.$notify({
+          title: "警告",
+          message: "尺寸应设置为宽1000象素以下，高600象素以下",
+          type: "warning"
+        });
+      } else {
+        this.imageUrl = res.data.url;
+      }
     },
     beforeAvatarUpload(file) {
       //const isJPG = file.type === 'image/jpeg';
@@ -489,231 +517,251 @@ export default {
     },
     handlePick(item) {
       this.colors.map(v => {
-        this.$set(v, "active", '0');
+        this.$set(v, "active", "0");
       });
-      this.$set(item, "active", '1');
+      this.$set(item, "active", "1");
     },
     chooseImg(val) {
       if (val == 1) {
         this.colors.map(v => {
-          this.$set(v, "active", '0');
+          this.$set(v, "active", "0");
         });
       }
     },
     save() {
-      if (this.ruleForm.id) {
-        let formObj = {};
-        formObj.id = this.ruleForm.id;
-        formObj.alias = this.ruleForm.alias;
-        formObj.level = this.ruleForm.level;
-        formObj.name = this.ruleForm.name;
-        formObj.enable = this.ruleForm.enable;
-        formObj.backgroundType = this.ruleForm.backgroundType;
-        formObj.receiveSetting = this.ruleForm.receiveSetting;
-        formObj.isSyncWechat = this.ruleForm.isSyncWechat;
-        formObj.notice = this.notice;
-        formObj.phone = this.phone;
-        formObj.explain = this.explain;
-        formObj.levelConditionValueDto = this.levelConditionValueDto;
-        formObj.receiveConditionsRemarks =
-          "" +
-          this.levelConditionValueDto.label +
-          this.levelConditionValueDto.conditionValue;
-        if (this.ruleForm.backgroundType == "0") {
-          this.colors.map(v => {
-            if (v.active == '1') {
-              formObj.background = v.imgUrl;
+      if (!this.right1 && !this.right2) {
+        this.$notify({
+          title: "警告",
+          message: "请选择一项等级权益",
+          type: "warning"
+        });
+      } else {
+        if (this.ruleForm.id) {
+          let formObj = {};
+          formObj.id = this.ruleForm.id;
+          formObj.alias = this.ruleForm.alias;
+          formObj.level = this.ruleForm.level;
+          formObj.name = this.ruleForm.name;
+          formObj.enable = this.ruleForm.enable;
+          formObj.backgroundType = this.ruleForm.backgroundType;
+          formObj.receiveSetting = this.ruleForm.receiveSetting;
+          formObj.isSyncWechat = this.ruleForm.isSyncWechat;
+          formObj.notice = this.ruleForm.notice;
+          formObj.phone = this.phone;
+          formObj.explain = this.ruleForm.explain;
+          formObj.levelConditionValueDto = this.levelConditionValueDto;
+          formObj.receiveConditionsRemarks =
+            "" +
+            this.levelConditionValueDto.label +
+            this.levelConditionValueDto.conditionValue;
+          if (this.ruleForm.backgroundType == "0") {
+            this.colors.map(v => {
+              if (v.active == "1") {
+                formObj.background = v.imgUrl;
+              }
+            });
+          } else if (this.ruleForm.backgroundType == "1") {
+            if (this.imageUrl) {
+              formObj.background = this.imageUrl;
+            } else {
+              this.$notify({
+                title: "警告",
+                message: "请上传背景图片",
+                type: "warning"
+              });
+            }
+          }
+          delete formObj.levelConditionValueDto.label;
+          let rightsDtoList = [];
+          if (this.right1) {
+            let rightParam1 = {};
+            rightParam1.rightsInfoId = this.getId(this.rightsList, "优先发货");
+            rightParam1.levelType = 1;
+            rightParam1.label = "优先发货";
+            rightsDtoList.push(rightParam1);
+          }
+          if (this.right2) {
+            if (this.jfhkbl == "") {
+              this.$notify({
+                title: "警告",
+                message: "请输入积分回馈倍率数",
+                type: "warning"
+              });
+            } else {
+              let rightParam2 = {};
+              rightParam2.rightsInfoId = this.getId(
+                this.rightsList,
+                "积分回馈倍率"
+              );
+              rightParam2.levelType = 1;
+              rightParam2.rightsValue = this.jfhkbl;
+              rightParam2.label = "积分回馈倍率";
+              rightsDtoList.push(rightParam2);
+            }
+          }
+          let rights = "";
+          rightsDtoList.map(v => {
+            rights += "" + v.label + v.rightsValue + ",";
+          });
+          rights = rights.replace(/undefined/g, "");
+          rightsDtoList.map(v => {
+            delete v.label;
+          });
+          let upgradeRewardDtoList = [];
+          if (this.upgrade1) {
+            if (this.zsjf == "") {
+              this.$notify({
+                title: "警告",
+                message: "请输入赠送积分数",
+                type: "warning"
+              });
+            } else {
+              let upgradeParams1 = {};
+              upgradeParams1.upgradeRewardInfoId = this.getId(
+                this.rewardList,
+                "赠送积分"
+              );
+              upgradeParams1.levelType = 1;
+              upgradeParams1.giftNumber = this.zsjf;
+              upgradeParams1.label = "赠送积分";
+              upgradeRewardDtoList.push(upgradeParams1);
+            }
+          }
+          if (this.upgrade2) {
+            if (this.selectedReds.length == 0) {
+              this.$notify({
+                title: "警告",
+                message: "请选择红包",
+                type: "warning"
+              });
+            } else {
+              this.selectedReds.map(v => {
+                let obj = {};
+                obj.upgradeRewardInfoId = this.getId(
+                  this.rewardList,
+                  "赠送红包"
+                );
+                obj.levelType = 1;
+                obj.giftName = v.name;
+                obj.giftProduct = v.id;
+                obj.label = "赠送红包";
+                upgradeRewardDtoList.push(obj);
+              });
+            }
+          }
+          if (this.upgrade3) {
+            if (this.selectedGifts.length == 0) {
+              this.$notify({
+                title: "警告",
+                message: "请选择赠品",
+                type: "warning"
+              });
+            } else {
+              this.selectedGifts.map(v => {
+                let obj = {};
+                obj.upgradeRewardInfoId = this.getId(
+                  this.rewardList,
+                  "赠送赠品"
+                );
+                obj.giftProduct = v.id;
+                obj.levelType = 1;
+                obj.giftName = v.goodsName;
+                obj.label = "赠送赠品";
+                obj.giftNumber = v.number;
+                upgradeRewardDtoList.push(obj);
+              });
+            }
+          }
+          if (this.upgrade4) {
+            if (this.selectedCoupons.length == 0) {
+              this.$notify({
+                title: "警告",
+                message: "请选择优惠券",
+                type: "warning"
+              });
+            } else {
+              this.selectedCoupons.map(v => {
+                let obj = {};
+                obj.upgradeRewardInfoId = this.getId(
+                  this.rewardList,
+                  "赠送优惠券"
+                );
+                obj.giftProduct = v.id;
+                obj.levelType = 1;
+                obj.giftNumber = v.number;
+                obj.giftName = v.name;
+                obj.label = "赠送优惠券";
+                upgradeRewardDtoList.push(obj);
+              });
+            }
+          }
+          let upgradePackage = "";
+          let upgradeArr = [];
+          upgradeRewardDtoList.map(v => {
+            if (upgradeArr.indexOf(v.label) == -1) {
+              upgradeArr.push(v.label);
+              upgradePackage += "" + v.label + ",";
             }
           });
-        } else if (this.ruleForm.backgroundType == "1") {
-          if (this.imageUrl) {
-            formObj.background = this.imageUrl;
-          } else {
-            this.$notify({
-              title: "警告",
-              message: "请上传背景图片",
-              type: "warning"
-            });
-          }
-        }
-        delete formObj.levelConditionValueDto.label;
-        let rightsDtoList = [];
-        if (this.right1) {
-          let rightParam1 = {};
-          rightParam1.rightsInfoId = this.getId(this.rightsList, "优先发货");
-          rightParam1.levelType = 1;
-          rightParam1.label = "优先发货";
-          rightsDtoList.push(rightParam1);
-        }
-        if (this.right2) {
-          if (this.jfhkbl == "") {
-            this.$notify({
-              title: "警告",
-              message: "请输入积分回馈倍率数",
-              type: "warning"
-            });
-          } else {
-            let rightParam2 = {};
-            rightParam2.rightsInfoId = this.getId(
-              this.rightsList,
-              "积分回馈倍率"
-            );
-            rightParam2.levelType = 1;
-            rightParam2.rightsValue = this.jfhkbl;
-            rightParam2.label = "积分回馈倍率";
-            rightsDtoList.push(rightParam2);
-          }
-        }
-        let rights = "";
-        rightsDtoList.map(v => {
-          rights += "" + v.label + v.rightsValue + ",";
-        });
-        rights = rights.replace(/undefined/g, "");
-        rightsDtoList.map(v => {
-          delete v.label;
-        });
-        let upgradeRewardDtoList = [];
-        if (this.upgrade1) {
-          if (this.zsjf == "") {
-            this.$notify({
-              title: "警告",
-              message: "请输入赠送积分数",
-              type: "warning"
-            });
-          } else {
-            let upgradeParams1 = {};
-            upgradeParams1.upgradeRewardInfoId = this.getId(
-              this.rewardList,
-              "赠送积分"
-            );
-            upgradeParams1.levelType = 1;
-            upgradeParams1.giftNumber = this.zsjf;
-            upgradeParams1.label = "赠送积分";
-            upgradeRewardDtoList.push(upgradeParams1);
-          }
-        }
-        if (this.upgrade2) {
-          if (this.selectedReds.length == 0) {
-            this.$notify({
-              title: "警告",
-              message: "请选择红包",
-              type: "warning"
-            });
-          } else {
-            this.selectedReds.map(v => {
-              let obj = {};
-              obj.upgradeRewardInfoId = this.getId(this.rewardList, "赠送红包");
-              obj.levelType = 1;
-              obj.giftName = v.name;
-              obj.giftProduct = v.id;
-              obj.label = "赠送红包";
-              upgradeRewardDtoList.push(obj);
-            });
-          }
-        }
-        if (this.upgrade3) {
-          if (this.selectedGifts.length == 0) {
-            this.$notify({
-              title: "警告",
-              message: "请选择赠品",
-              type: "warning"
-            });
-          } else {
-            this.selectedGifts.map(v => {
-              let obj = {};
-              obj.upgradeRewardInfoId = this.getId(this.rewardList, "赠送赠品");
-              obj.giftProduct = v.id;
-              obj.levelType = 1;
-              obj.giftName = v.goodsName;
-              obj.label = "赠送赠品";
-              obj.giftNumber = v.number;
-              upgradeRewardDtoList.push(obj);
-            });
-          }
-        }
-        if (this.upgrade4) {
-          if (this.selectedCoupons.length == 0) {
-            this.$notify({
-              title: "警告",
-              message: "请选择优惠券",
-              type: "warning"
-            });
-          } else {
-            this.selectedCoupons.map(v => {
-              let obj = {};
-              obj.upgradeRewardInfoId = this.getId(
-                this.rewardList,
-                "赠送优惠券"
-              );
-              obj.giftProduct = v.id;
-              obj.levelType = 1;
-              obj.giftNumber = v.number;
-              obj.giftName = v.name;
-              obj.label = "赠送优惠券";
-              upgradeRewardDtoList.push(obj);
-            });
-          }
-        }
-        let upgradePackage = "";
-        let upgradeArr = [];
-        upgradeRewardDtoList.map(v => {
-          if (upgradeArr.indexOf(v.label) == -1) {
-            upgradeArr.push(v.label);
-            upgradePackage += "" + v.label + ",";
-          }
-        });
-        upgradePackage = upgradePackage.replace(/undefined/g, "");
-        upgradeRewardDtoList.map(v => {
-          if (v.label) {
-            delete v.label;
-          }
-        });
-        formObj.upgradePackage = upgradePackage;
-        formObj.rights = rights;
-        formObj.levelRightsInfoDtoList = [].concat(rightsDtoList);
-        formObj.upgradeRewardDtoList = [].concat(upgradeRewardDtoList);
-        this._apis.client
-          .editCard(formObj)
-          .then(response => {
-            this.$notify({
-              title: "成功",
-              message: "编辑成功",
-              type: "success"
-            });
-          })
-          .catch(error => {
-            console.log(error);
-            // this.$notify.error({
-            //   title: "错误",
-            //   message: error
-            // });
+          upgradePackage = upgradePackage.replace(/undefined/g, "");
+          upgradeRewardDtoList.map(v => {
+            if (v.label) {
+              delete v.label;
+            }
           });
-      } 
+          formObj.upgradePackage = upgradePackage;
+          formObj.rights = rights;
+          formObj.levelRightsInfoDtoList = [].concat(rightsDtoList);
+          formObj.upgradeRewardDtoList = [].concat(upgradeRewardDtoList);
+          this._apis.client
+            .editCard(formObj)
+            .then(response => {
+              this.$notify({
+                title: "成功",
+                message: "编辑成功",
+                type: "success"
+              });
+            })
+            .catch(error => {
+              console.log(error);
+              // this.$notify.error({
+              //   title: "错误",
+              //   message: error
+              // });
+            });
+        }
+      }
     },
     getColorUrl() {
-      this._apis.client.getColorUrl({}).then((response) => {
-        //localStorage.setItem('colorUrl',JSON.stringify(response));
-        this.colors = [].concat(response);
-      }).catch((error) => {
-        console.log(error);
-        // this.$notify.error({
-        //   title: "错误",
-        //   message: error
-        // });
-      })
+      this._apis.client
+        .getColorUrl({})
+        .then(response => {
+          //localStorage.setItem('colorUrl',JSON.stringify(response));
+          this.colors = [].concat(response);
+        })
+        .catch(error => {
+          console.log(error);
+          // this.$notify.error({
+          //   title: "错误",
+          //   message: error
+          // });
+        });
     },
     getCardPublic() {
-      this._apis.client.getCardPublic({}).then((response) => {
-        this.phone = response.phone;
-        this.explain = response.explain;
-        this.notice = response.notice;
-      }).catch((error) => {
-        console.log(error);
-        // this.$notify.error({
-        //   title: "错误",
-        //   message: error
-        // });
-      })
+      this._apis.client
+        .getCardPublic({})
+        .then(response => {
+          this.phone = response.phone;
+          this.ruleForm.explain = response.explain;
+          this.ruleForm.notice = response.notice;
+        })
+        .catch(error => {
+          console.log(error);
+          // this.$notify.error({
+          //   title: "错误",
+          //   message: error
+          // });
+        });
     }
   },
   created() {
@@ -723,9 +771,7 @@ export default {
     //this.getCardInfo();
     this.getColorUrl();
   },
-  mounted() {
-    
-  }
+  mounted() {}
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -847,7 +893,7 @@ export default {
       margin-left: 90px;
     }
   }
-  .active{
+  .active {
     border: 2px solid red;
   }
 }

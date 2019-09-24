@@ -16,7 +16,7 @@
                     </el-col>
                     <el-col :span="6">
                         <el-form-item prop="labelValue">
-                            <el-input v-model="form.labelValue" placeholder="请输入昵称/姓名/手机号码/用户ID" maxlength="20"><el-button slot="append" icon="el-icon-search" @click="getClientList"></el-button></el-input>
+                            <el-input v-model="form.labelValue" placeholder="请输入" maxlength="20"><el-button slot="append" icon="el-icon-search" @click="getClientList"></el-button></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -39,12 +39,12 @@
                 </el-form-item>
                 <el-form-item label="客户标签：" class="relaPosition" prop="memberLabels">
                     <div class="group_container">
-                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px', height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
+                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px',height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
                             <el-checkbox v-for="item in labels" :label="item" :key="item" border>{{item}}</el-checkbox>
                         </el-checkbox-group>
                     </div>
                     <el-button type="primary" class="absoPosition" @click="_routeTo('batchImport')">添 加</el-button>
-                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag">
+                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag" v-if="labels.length > 0">
                 </el-form-item>
                 <el-form-item label="客户渠道：" class="relaPosition" prop="channelId">
                     <el-checkbox-group v-model="form.channelId">
@@ -156,7 +156,7 @@
                 <el-form-item class="padR40 marT20">
                     <span class="shou" @click="handleMore" v-if="showFold">收起<i class="el-icon-arrow-up marL10"></i></span>
                     <el-button class="fr marL20" @click="resetForm('form')">重置</el-button>
-                    <el-button type="primary" class="fr" @click="getClientList">查询</el-button>
+                    <el-button type="primary" class="fr" @click="getClientList" :loading="btnloading">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -165,7 +165,7 @@
                 <el-button type="primary" @click="_routeTo('clientImport')" v-permission="['客户', '全部客户', '默认页面', '客户导入']">导入</el-button>
                 <!-- <el-button @click="exportToLocal">导出</el-button> -->
             </div>
-            <acTable :newForm="newForm"></acTable>
+            <acTable :newForm="newForm" @stopLoading="stopLoading"></acTable>
         </div>
     </div>
   </div>
@@ -206,7 +206,8 @@ export default {
         labelsList: [],
         channels: [],
         channelsList: [],
-        memberList: []
+        memberList: [],
+        btnloading: false
     }
   },
   watch: {
@@ -236,6 +237,9 @@ export default {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    stopLoading() {
+        this.btnloading = false;
+    },
     handleMore() {
         this.showFold = !this.showFold;
     },   
@@ -269,6 +273,7 @@ export default {
         })
     },
     getClientList() {
+        this.btnloading = true;
         let oForm = Object.assign({},this.form);
         let labelNames = oForm.memberLabels;
         let channelNames = oForm.channelId;
@@ -330,6 +335,8 @@ export default {
       this.getChannels();
       if(this.$route.query.memberLabels) {
           this.newForm = Object.assign({}, this.$route.query);
+      }else{
+          this.newForm = Object.assign({}, {});
       }
   }
 }

@@ -9,8 +9,8 @@
         </div>
       </div>
       <div class="radio-box">
-        <el-radio v-model="mode" label="1">组合运费（推荐）</el-radio>
-        <el-radio v-model="mode" label="2">按商品累加运费</el-radio>
+        <el-radio v-model="mode" :label="0">组合运费（推荐）</el-radio>
+        <el-radio v-model="mode" :label="1">按商品累加运费</el-radio>
         <span @click="currentDialog = 'FreightRulesDialog'; dialogVisible = true" class="blue pointer">计费规则说明</span>
       </div>
       <el-button v-permission="['订单', '快递发货', '默认页面', '新建模板']" @click="$router.push('/order/newTemplate?mode=new')" class="border-button new-template">新建模板</el-button>
@@ -113,6 +113,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getShopInfo()
   },
   filters: {
     calculationWayFilter(code) {
@@ -127,6 +128,17 @@ export default {
     }
   },
   methods: {
+    getShopInfo() {
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+
+      this._apis.set.getShopInfo({
+        id: shopInfo.id,
+      }).then((res) => {
+          this.mode = res.transportationExpenseType
+      }).catch(error => {
+          
+      })
+    },
     resetForm(formName) {
         this.listQuery = Object.assign({}, this.listQuery, {
           name: '',

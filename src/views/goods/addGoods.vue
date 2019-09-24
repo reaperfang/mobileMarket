@@ -29,6 +29,7 @@
             <el-form-item label="商品图片" prop="images">
                 <!-- <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px"> -->
                 <el-upload
+                    v-if="fileList.length < 6"
                     :action="uploadUrl"
                     multiple
                     :limit="6"
@@ -45,7 +46,7 @@
                 <el-dialog :visible.sync="imageDialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
-                <span @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
+                <span v-if="fileList.length < 6" @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
             </el-form-item>
             <el-form-item label="商品分类" prop="productCatalogInfoId">
@@ -88,7 +89,7 @@
         <section class="form-section">
             <h2>销售信息</h2>
             <el-form-item label="规格信息" prop="goodsInfos">
-                <el-button v-if="!editor" class="border-button selection-specification" @click="currentDialog = 'SelectSpecifications'; currentData = specsList; dialogVisible = true">选择规格</el-button>
+                <el-button v-if="!editor" class="border-button selection-specification" @click="selectSpecificationsCurrentDialog = 'SelectSpecifications'; currentData = specsList; selectSpecificationsDialogVisible = true">选择规格</el-button>
                 <template v-if="!editor">
                     <el-table
                     class="spec-information"
@@ -404,6 +405,7 @@
         </section>
     </el-form>
     <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add" :onSubmit="getCategoryList"></component>
+    <component :is="selectSpecificationsCurrentDialog" :dialogVisible.sync="selectSpecificationsDialogVisible" @submit="submit" :data="currentData" @imageSelected="imageSelected" :specsLength.sync="specsLength" :add="add" :onSubmit="getCategoryList"></component>
 </div>
 </template>
 <script>
@@ -576,7 +578,9 @@ export default {
             fileList: [],
             dialogImageUrl: '',
             imageDialogVisible: false,
-            specsLength: 0
+            specsLength: 0,
+            selectSpecificationsCurrentDialog: '',
+            selectSpecificationsDialogVisible: false
         }
     },
     created() {
@@ -915,7 +919,7 @@ export default {
         // 获取商品类目列表
         getOperateCategoryList() {
             return new Promise((resolve, reject) => {
-                this._apis.goodsOperate.fetchCategoryList().then(res => {
+                this._apis.goodsOperate.fetchCategoryList({enable: 1}).then(res => {
                     // let arr = this.transTreeData(res.list, 0)
                     // this.operateCategoryList = res.list
                     // this.itemCatList = arr
@@ -1063,7 +1067,7 @@ export default {
             } else if(this.currentDialog == 'TimelyShelvingDialog') {
                 // 设置自动上架时间
                 this.ruleForm.autoSaleTime = value
-            } else if(this.currentDialog == 'SelectSpecifications') {
+            } else if(this.selectSpecificationsCurrentDialog == 'SelectSpecifications') {
                 this.specIds = value
                 this.selectSpecificationsHandler(value)
             } else if(this.currentDialog == 'AddSpecifications') {

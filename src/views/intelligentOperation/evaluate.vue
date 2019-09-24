@@ -93,24 +93,24 @@ export default {
             pickerMinDate: '',
             dateRange: [],
             pickerOptions: {
-          onPick: ({ maxDate, minDate }) => {
-            this.pickerMinDate = minDate.getTime()
-            if (maxDate) {
-              this.pickerMinDate = ''
-            }
-          },
-          disabledDate: (time) => {
-            if (this.pickerMinDate !== '') {
-              const day30 = (90 - 1) * 24 * 3600 * 1000
-              let maxTime = this.pickerMinDate + day30
-              if (maxTime > new Date()) {
-                maxTime = new Date()
-              }
-              return time.getTime() > maxTime
-            }
-            return time.getTime() > Date.now()
-          }
-        },
+                onPick: ({ maxDate, minDate }) => {
+                    this.pickerMinDate = minDate.getTime()
+                    if (maxDate) {
+                    this.pickerMinDate = ''
+                    }
+                },
+                disabledDate: (time) => {
+                    if (this.pickerMinDate !== '') {
+                    const day30 = (90 - 1) * 24 * 3600 * 1000
+                    let maxTime = this.pickerMinDate + day30
+                    if (maxTime > new Date()) {
+                        maxTime = new Date()
+                    }
+                    return time.getTime() > maxTime
+                    }
+                    return time.getTime() > Date.now()
+                }
+            },
 
         }
     },

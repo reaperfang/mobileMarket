@@ -19,6 +19,7 @@
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                        :picker-options="pickerOptions"
                         @change="getData"
                     >
                     </el-date-picker>
@@ -44,8 +45,8 @@
                 <el-form-item label="订单金额">
                     <div class="input_wrap3">
                             <el-radio-group v-model="form.queryOrderMoneyType">
-                            <el-radio :label="null">全部</el-radio>
-                            <el-radio :label="0">单次</el-radio>
+                            <el-radio :label="null" class="mr10">全部</el-radio>
+                            <el-radio :label="0" class="mr10">单次</el-radio>
                             <el-radio :label="1">总额</el-radio>
                         </el-radio-group>
                     </div>
@@ -64,8 +65,26 @@
             </el-form>
 
             <div class="m_line clearfix">
-                <p class="fl" v-if="textTips">该筛选条件下：<i v-if="form.memberType==1" style="font-style:normal">新</i><i v-if="form.memberType==2" style="font-style:normal">老</i>会员共计<span>{{memberNum}}</span>人；占会员总数的<span>{{memberCount}}%</span>; 复购率为<span>{{repeatPaymentRatio}}</span>。</p>
-                <p class="fl" v-else>-</p>
+                <p class="fl">该筛选条件下：
+                    <i v-if="form.memberType== null" style="font-style:normal">
+                        全部会员共计<span>{{customerCount + newMemberCount + oldMemberCount || 0}}</span>人；
+                        占会员总数的<span>{{(customerRatio + newMemberRatio + oldMemberRatio)*100 || 0}}%</span>;    
+                    </i>
+                    <i v-if="form.memberType==0" style="font-style:normal">
+                        非会员共计<span>{{customerCount || 0}}</span>人；
+                        占会员总数的<span>{{customerRatio*100 || 0}}%</span>;    
+                    </i>
+                    <i v-if="form.memberType==1" style="font-style:normal">
+                        新会员共计<span>{{newMemberCount || 0}}</span>人；
+                        占会员总数的<span>{{newMemberRatio*100 || 0}}%</span>;
+                    </i>
+                    <i v-if="form.memberType==2" style="font-style:normal">
+                        老会员共计<span>{{oldMemberCount || 0}}</span>人；
+                        占会员总数的<span>{{(oldMemberRatio*100).toFixed(1) || 0}}%</span>;    
+                    </i>
+                    {{repeatPaymentRatio}}
+                    <i v-if="repeatPaymentRatio != undefined">复购率为<span>{{repeatPaymentRatio*100}}%</span></i>。
+                </p>
                 <div class="fr marT20">
                     <el-button class="minor_btn" @click="reScreening">重新筛选</el-button>
                     <el-button class="yellow_btn" icon="el-icon-share" @click="mIexport">导出</el-button>
@@ -87,6 +106,25 @@ export default {
     components: { maTable },
     data() {
         return {
+            pickerOptions: {
+                onPick: ({ maxDate, minDate }) => {
+                    this.pickerMinDate = minDate.getTime()
+                    if (maxDate) {
+                    this.pickerMinDate = ''
+                    }
+                },
+                disabledDate: (time) => {
+                    if (this.pickerMinDate !== '') {
+                    const day90 = (90 - 1) * 24 * 3600 * 1000
+                    let maxTime = this.pickerMinDate + day90
+                    if (maxTime > new Date()) {
+                        maxTime = new Date()
+                    }
+                    return time.getTime() > maxTime
+                    }
+                    return time.getTime() > Date.now()
+                }
+            },
             form: {
                 startTime:null, //2019-08-07 12:12:12
                 endTime:null,
@@ -103,7 +141,7 @@ export default {
             lowprice:'',
             highprice:'',
             textTips:false,
-            repeatPaymentRatio:0.1, //复购率
+            repeatPaymentRatio:'', //复购率
             memberNum:0, //会员人数
             memberCount:0, //会员占比
             listObj:{},//会员信息列表
@@ -142,8 +180,13 @@ export default {
                     id: "8",
                     name: "8次以上"
                 }
-            ]
-
+            ],
+            customerCount:'',
+            customerRatio:'',
+            newMemberCount:'',
+            newMemberRatio:'',
+            oldMemberCount:'',
+            oldMemberRatio:'',
         }
     },
     created(){
@@ -186,16 +229,19 @@ export default {
                 this.totalCount = res.totalPage * this.form.pageSize;
                 if(memberType == 1){ //新会员
                     this.textTips = true;
-                    this.memberNum = res.newMemberCount;
-                    this.memberCount = res.newMemberRatio;
+                    this.newMemberCount = res.newMemberCount;
+                    this.newMemberRatio = res.newMemberRatio;
                 }else if(memberType == 2){ //老会员
                     this.textTips = true;
-                    this.memberNum = res.oldMemberCount;
-                    this.memberCount = res.oldMemberRatio;
+                    this.oldMemberCount = res.oldMemberCount;
+                    this.oldMemberRatio = res.oldMemberRatio;
+                }else if(memberType == 0){ //非会员
+                    this.textTips = true;
+                    this.customerCount = res.customerCount;
+                    this.customerRatio = res.customerRatio;
                 }else{ //其他
                     this.textTips = false;
                 }
-                console.log(this.repeatPaymentRatio)
             }).catch(error => {
                 this.$message.error(error);
             });
@@ -307,6 +353,9 @@ export default {
             }
         }
     }
+}
+.mr10{
+    margin-right:10px;
 }
 </style>
 

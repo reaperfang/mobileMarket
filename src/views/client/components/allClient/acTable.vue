@@ -98,7 +98,7 @@ export default {
     }
   },
   mounted() {
-    this.getMembers(1, this.pageSize);
+    //this.getMembers(1, this.pageSize);
   },
   methods: {
     exportToLocal() {
@@ -216,6 +216,7 @@ export default {
           this.loading = false;
           this.memberList = [].concat(response.list);
           this.total = response.total;
+          this.$emit('stopLoading');
         })
         .catch(error => {
           this.loading = false;
@@ -231,7 +232,7 @@ export default {
     }
   },
   watch: {
-    newForm() {
+    newForm(val) {
       this.getMembers(1, this.pageSize);
     }
   },

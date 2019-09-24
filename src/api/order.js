@@ -557,7 +557,7 @@ export function orderSendInfoImportAfterSaleBatchDelever(data) {
   return request({
     target: 'PUBLIC-EXPRESS-COMPANY-LIST-PROCESSOR',
     method: 'post',
-    apiType: 'order',
+    apiType: 'goodsOperate',
     data
   })
 }

@@ -30,8 +30,8 @@
                         <div class="input_wrap2">
                             <el-select v-model="form.channel">
                                 <el-option label="不限" value="null"></el-option>
-                                <el-option label="限时折扣" value="401"></el-option>
-                                <el-option label="限时秒杀" value="506"></el-option>
+                                <el-option label="直接购买" value="1"></el-option>
+                                <el-option label="活动类型" value="2"></el-option>
                             </el-select>
                         </div>
                         <span class="span_label">（成功）支付转化率</span>
@@ -80,8 +80,26 @@ export default {
     components: { channelTable },
     data() {
         return {
+            pickerOptions: {
+                onPick: ({ maxDate, minDate }) => {
+                    this.pickerMinDate = minDate.getTime()
+                    if (maxDate) {
+                    this.pickerMinDate = ''
+                    }
+                },
+                disabledDate: (time) => {
+                    if (this.pickerMinDate !== '') {
+                    const day90 = (90 - 1) * 24 * 3600 * 1000
+                    let maxTime = this.pickerMinDate + day90
+                    if (maxTime > new Date()) {
+                        maxTime = new Date()
+                    }
+                    return time.getTime() > maxTime
+                    }
+                    return time.getTime() > Date.now()
+                }
+            },
             form: {
-                cid:"",
                 startTime:null,
                 endTime:null,
                 channel:null,
@@ -96,25 +114,6 @@ export default {
             totalCount:0,//总页数
             pickerMinDate: '',
             dateRange: [],
-            pickerOptions: {
-                onPick: ({ maxDate, minDate }) => {
-                    this.pickerMinDate = minDate.getTime()
-                    if (maxDate) {
-                    this.pickerMinDate = ''
-                    }
-                },
-                disabledDate: (time) => {
-                    if (this.pickerMinDate !== '') {
-                        const day30 = (90 - 1) * 24 * 3600 * 1000
-                    let maxTime = this.pickerMinDate + day30
-                    if (maxTime > new Date()) {
-                        maxTime = new Date()
-                    }
-                    return time.getTime() > maxTime
-                }
-                    return time.getTime() > Date.now()
-                }
-            },
         }
     },
     mounted(){
@@ -135,7 +134,6 @@ export default {
         // 重置
         reSet(){
             this.form = {
-                cid:"",
                 startTime:null,
                 endTime:null,
                 channel:null,

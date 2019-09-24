@@ -20,8 +20,8 @@
                 <el-option
                     v-for="item in expressCompanyList"
                     :key="item.id"
-                    :label="item.expressCompany"
-                    :value="item.expressCompanyCode">
+                    :label="item.expressName"
+                    :value="item.expressCode">
                     </el-option>
                 </el-select>
             </el-form-item>
