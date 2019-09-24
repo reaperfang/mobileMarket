@@ -70,7 +70,7 @@ export default {
         url: this.homePageData.shareUrl.replace("&","[^]"),
         width: '250',
         height: '250',
-        logoUrl: this.shopInfo.logoCircle
+        logoUrl: this.shopInfo.logoCircle || this.shopInfo.logo
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         callback && callback(response);

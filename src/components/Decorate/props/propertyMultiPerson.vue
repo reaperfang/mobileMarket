@@ -12,13 +12,13 @@
           <ul>
             <template v-if="ruleForm.addType === 1">
               <li v-for="(item, key) of list" :key="key">
-                <img :src="item.goodImg" alt="">
+                <img :src="item.image" alt="">
                 <i class="delete_btn" @click.stop="deleteItem(item)"></i>
               </li>
             </template>
             <template v-else-if="ruleForm.addType === 2">
               <li v-for="(item, key) of []" :key="key">
-                <img :src="item.goodImg" alt="">
+                <img :src="item.image" alt="">
                 <i class="delete_btn" @click.stop="deleteItem(item)"></i>
               </li>
             </template>

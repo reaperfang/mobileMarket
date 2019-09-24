@@ -21,7 +21,11 @@
                     <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1"><font class="label">减{{item.skuMidGoodsLimitDiscountEtcViewList[0].activitReduction}}元</font>{{item.goodsName}}</p>
                     <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.description}}</p>
                     <div class="limit_line">
-                        <p class="limit" v-if="showContents.indexOf('7')!=-1">限 {{item.activityJoinLimit}}件/人</p>
+                        <p class="limit" v-if="showContents.indexOf('7')!=-1">
+                            <template v-if="item.activityJoinLimit >= 0">
+                                限 {{item.activityJoinLimit}}件/人
+                            </template>
+                            <template v-else>不限制</template>
                         <p class="remainder" v-if="showContents.indexOf('6')!=-1">仅剩{{item.remainStock}}件</p>
                     </div>
                     <div class="price_line">

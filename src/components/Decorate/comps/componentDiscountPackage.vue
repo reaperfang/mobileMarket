@@ -22,7 +22,12 @@
                     <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.name}}</p>
                     <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">套餐包含商品{{item.totalGoodsNum}}件</p>
                     <div class="limit_line" v-if="showContents.indexOf('5')!=-1">
-                        <p class="limit">限 {{item.joinLimit}}件/人</p>
+                        <p class="limit">
+                            <template v-if="item.joinLimit >= 0">
+                                限 {{item.joinLimit}}件/人
+                            </template>
+                            <template v-else>不限制</template>
+                        </p>
                     </div>
                     <div class="price_line">
                         <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.packagePrice}}</font></p>

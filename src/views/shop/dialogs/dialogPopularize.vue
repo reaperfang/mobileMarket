@@ -15,7 +15,7 @@
           </div>
           <div class="two">
             <div class="left">
-              <h3>{{shopInfo.name || '店铺名称'}}</h3>
+              <h3>{{shopInfo.shopName || '店铺名称'}}</h3>
               <p>扫码或长按二维码</p>
             </div>
             <div class="right">
@@ -229,6 +229,7 @@ export default {
         describe: this.ruleForm.describe,
         picture: this.ruleForm.picture
       }).then((response)=>{
+         this.fetch();
          this.submitLoading = false;
          this.openSetting = false;
       }).catch((error)=>{
@@ -281,7 +282,7 @@ export default {
         url: this.pageLink.replace("&","[^]"),
         width: '225',
         height: '225',
-        logoUrl: this.shopInfo.logoCircle
+        logoUrl: this.shopInfo.logoCircle || this.shopInfo.logo
       }).then((response)=>{
         this.qrCode = `data:image/png;base64,${response}`;
         this.openQrcodeLoading = false;
