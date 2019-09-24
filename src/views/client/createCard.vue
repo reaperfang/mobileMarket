@@ -64,7 +64,7 @@
           >满足特定条件</el-radio>
         </el-form-item>
         <div class="line"></div>
-        <p class="l_title" style="margin-left: -19px;">权益礼包：</p>
+        <p class="l_title" style="margin-left: -19px;">权益礼包（最少选1个）：</p>
         <br />
         <el-form-item label="会员卡权益:">
           <el-form-item v-if="getIndex(this.rightsList,'优先发货') !== -1">

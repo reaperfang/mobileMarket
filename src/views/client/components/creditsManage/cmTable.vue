@@ -25,6 +25,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="page_styles">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="Number(startIndex) || 1"
+        :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
+        :page-size="pageSize*1"
+        :total="total*1"
+        layout="total, sizes, prev, pager, next, jumper"
+      ></el-pagination>
+    </div>
     <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
   </div>
 </template>
@@ -46,7 +57,10 @@ export default {
       dialogVisible: false,
       currentData:{},
       creditList: [],
-      loading: false
+      loading: false,
+      pageSize: 10,
+      startIndex: 1,
+      total: 0
     };
   },
   computed: {
@@ -56,37 +70,60 @@ export default {
   },
   methods: {
     editCredit(row) {
-      switch(row.sceneName) {
-        case '登陆': 
-          this.dialogVisible = true;
-          this.currentDialog = "loginRegularDialog";
-          this.currentData.row = row;
-          break;
-        case '购买': 
-          this.dialogVisible = true;
-          this.currentDialog = "buyRegularDialog";
-          this.currentData.row = row;
-          break;
-        case '复购': 
-          this.dialogVisible = true;
-          this.currentDialog = "repurchaseRegularDialog";
-          this.currentData.row = row;
-          break;
-        case '评价': 
-          this.dialogVisible = true;
-          this.currentDialog = "praiseRegularDialog";
-          this.currentData.row = row;
-          break;
-        default:
-          break;
+      if(!!row.redirectUrl) {
+        window.location.href=row.redirectUrl;
+      }else{
+        switch(row.sceneName) {
+          case '登陆': 
+            this.dialogVisible = true;
+            this.currentDialog = "loginRegularDialog";
+            this.currentData.row = row;
+            break;
+          case '购买': 
+            this.dialogVisible = true;
+            this.currentDialog = "buyRegularDialog";
+            this.currentData.row = row;
+            break;
+          case '复购': 
+            this.dialogVisible = true;
+            this.currentDialog = "repurchaseRegularDialog";
+            this.currentData.row = row;
+            break;
+          case '评价': 
+            this.dialogVisible = true;
+            this.currentDialog = "praiseRegularDialog";
+            this.currentData.row = row;
+            break;
+          default:
+            break;
+        }
       }
+      
     },
-    getCreditList() {
+    handleCurrentChange(val) {
+      this.getCreditList(val, this.pageSize);
+    },
+    handleSizeChange(val) {
+      this.getCreditList(1, val);
+      this.pageSize = val;
+    },
+    getCreditList(startIndex, pageSize) {
       this.loading = true;
-      this._apis.client.getCreditList({}).then((response) => {
+      this._apis.client.getCreditList({startIndex:startIndex, pageSize: pageSize}).then((response) => {
         this.loading = false;
-        response.map((v) => {v.enable = v.enable == 0?'禁用':'启用'});
-        this.creditList = [].concat(response);
+        let arr = []
+        response.list.map((v,index) => {
+          v.enable = v.enable == 0?'禁用':'启用';
+          if(index >= 0 && index < 4) {
+            arr.push(v);
+          }
+          if(index > 3 && !!v.redirectUrl) {
+            arr.push(v);
+          }
+        });
+        this.creditList = [].concat(arr);
+        console.log('ddd',this.creditList);
+        this.total = response.total;
       }).catch((error) => {
         this.loading = false;
         console.log(error);
@@ -113,6 +150,9 @@ export default {
         margin-right: 8px;
         background: url("../../../../assets/images/client/icon_edit.png") 0 0 no-repeat;
     }
+}
+.page_styles{
+  text-align: center;
 }
 
 </style>
