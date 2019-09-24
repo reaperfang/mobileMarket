@@ -262,8 +262,8 @@ export default {
       margin-right:10px;
     }
     /deep/.img_preview{
-      width: 80px;
-      height: 40px;
+      width: 64px;
+      height: 31px;
       display: block;
       margin-right: 10px;
       span{
@@ -273,9 +273,10 @@ export default {
       }
     }
     /deep/.colorBtn{
-      width:25px!important;
-      height:25px!important;
+      width:31px!important;
+      height:31px!important;
       margin-right:10px;
+      border:1px solid #ddd;
     }
   }
 
