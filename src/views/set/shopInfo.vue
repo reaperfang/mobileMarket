@@ -13,6 +13,11 @@
               {{new Date(form.createTime*1) | formatDate('yyyy-MM-dd hh:mm:ss')}}
             </el-form-item>
             <el-form-item label="商户LOGO:">
+                <span v-if="form.logo" class="avatar">
+                  <img :src="form.logo">
+                  <canvas ref="canvas1" width="80px" height="80px" v-show="false"></canvas>
+                </span>
+
                 <el-upload
                 class="avatar-uploader"
                 :action="uploadUrl"
@@ -20,11 +25,8 @@
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-                <span v-if="form.logo">
-                  <img :src="form.logo" class="avatar">
-                  <canvas ref="canvas1" width="80px" height="80px"></canvas>
-                </span>
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <i class="el-icon-plus avatar-uploader-icon"></i>
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
                 </el-upload>
             </el-form-item>
             <el-form-item label="客服电话:" prop="phone">
@@ -214,12 +216,19 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
+.avatar-uploader{
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+  vertical-align: middle;
+}
 .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    display: inline-block;
   }
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
@@ -227,16 +236,26 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
     text-align: center;
+    position: absolute;
+    top:10px;
+    left:10px;
+    z-index: 10;
   }
   .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-    object-fit:fill;
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    img{
+      width: 80px;
+      height: 80px;
+      object-fit:fill;
+      display: inline-block;
+    }
   }
 </style>
 
