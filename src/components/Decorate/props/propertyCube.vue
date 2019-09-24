@@ -205,7 +205,12 @@
         </div>
       </el-form-item>
       <el-form-item label="跳转链接" prop="pageLink">
-        <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">{{ruleForm.list[this.blockType] && ruleForm.list[this.blockType].linkTo ? ruleForm.list[this.blockType].linkTo.typeName + '-' + (ruleForm.list[this.blockType].linkTo.data.title || ruleForm.list[this.blockType].linkTo.data.name) : '选择跳转到的页面'}}</el-button>
+        <el-button 
+        type="text" 
+        @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'" 
+        :title="ruleForm.list[this.blockType] && ruleForm.list[this.blockType].linkTo ? ruleForm.list[this.blockType].linkTo.typeName + '-' + (ruleForm.list[this.blockType].linkTo.data.title || ruleForm.list[this.blockType].linkTo.data.name) : '选择跳转到的页面'">
+        {{ruleForm.list[this.blockType] && ruleForm.list[this.blockType].linkTo ? ruleForm.list[this.blockType].linkTo.typeName + '-' + (ruleForm.list[this.blockType].linkTo.data.title || ruleForm.list[this.blockType].linkTo.data.name) : '选择跳转到的页面'}}
+        </el-button>
       </el-form-item>
     </div>
 
