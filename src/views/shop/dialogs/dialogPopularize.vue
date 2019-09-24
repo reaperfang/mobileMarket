@@ -15,7 +15,7 @@
           </div>
           <div class="two">
             <div class="left">
-              <h3>{{shopInfo.name || '店铺名称'}}</h3>
+              <h3>{{shopInfo.shopName || '店铺名称'}}</h3>
               <p>扫码或长按二维码</p>
             </div>
             <div class="right">

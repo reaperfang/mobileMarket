@@ -67,9 +67,9 @@
           <template slot-scope="scope">
             <span class="table-btn" @click="copyPage(scope.row)">复制</span>
             <span class="table-btn" @click="_routeTo('shopEditor', {pageId: scope.row.id})">编辑</span>
-            <span class="table-btn" @click="deletePage(scope.row)">删除</span>
+            <span class="table-btn" @click="deletePage(scope.row)" v-if="scope.row.isHomePage === 0">删除</span>
             <span class="table-btn" @click="spread(scope.row)">推广</span>
-            <span class="table-btn" @click="setIndex(scope.row)">设为首页</span>
+            <span class="table-btn" @click="setIndex(scope.row)" v-if="scope.row.isHomePage === 0">设为首页</span>
           </template>
         </el-table-column>
       </el-table>
