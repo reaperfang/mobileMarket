@@ -5,7 +5,7 @@
             <li v-for="(item,key) of list" :key="key" :style="[goodMargin,goodWidth]" :class="['goodsStyle'+goodsStyle,{goodsChamfer:goodsChamfer!=1},'goodsRatio'+goodsRatio]">
                 <div class="img_box">
                     <p class="label" v-if="showContents.indexOf('6')!=-1">{{item.sold}}人已团</p>
-                    <img :src="item.goodImg" alt="" :class="{goodsFill:goodsFill!=1}">
+                    <img :src="item.image" alt="" :class="{goodsFill:goodsFill!=1}">
                 </div>
                 <div class="countdown_Bar" v-if="showContents.indexOf('5')!=-1">
                     <h1 class="title">{{item.activeName}}</h1>
