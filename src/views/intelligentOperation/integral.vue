@@ -16,6 +16,7 @@
                         v-if="form.timeType == 4"
                         v-model="daterange"
                         type="daterange"
+                        :picker-options="pickerOptions"
                         value-format="yyyy-MM-dd hh:mm:ss"
                         range-separator="至"
                         start-placeholder="开始日期"
@@ -68,6 +69,25 @@ export default {
     components: { ma3Table },
     data() {
         return {
+            pickerOptions: {
+                onPick: ({ maxDate, minDate }) => {
+                    this.pickerMinDate = minDate.getTime()
+                    if (maxDate) {
+                    this.pickerMinDate = ''
+                    }
+                },
+                disabledDate: (time) => {
+                    if (this.pickerMinDate !== '') {
+                    const day90 = (90 - 1) * 24 * 3600 * 1000
+                    let maxTime = this.pickerMinDate + day90
+                    if (maxTime > new Date()) {
+                        maxTime = new Date()
+                    }
+                    return time.getTime() > maxTime
+                    }
+                    return time.getTime() > Date.now()
+                }
+            },
             daterange:'',
             form: {
                 startTime:null,

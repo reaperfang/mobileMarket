@@ -87,6 +87,15 @@ export default {
     this.getGroups();
     this.fetch();
   },
+  mounted() {
+    this.$nextTick(() => {
+      if(this.$parent.$refs.dialog) {
+        let zIndex = this.$el.style.zIndex;
+        zIndex = Number(zIndex) + 2;
+        this.$parent.$el.style.zIndex = zIndex + '';
+      }
+    })
+  },
   methods: {
     fetch() {
       this.loading = true;

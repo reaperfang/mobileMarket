@@ -19,6 +19,7 @@
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                        :picker-options="pickerOptions"
                         @change="getData"
                     >
                     </el-date-picker>
@@ -64,17 +65,26 @@
             </el-form>
 
             <div class="m_line clearfix">
-                <!-- <p class="fl">该筛选条件下：
+                <p class="fl">该筛选条件下：
+                    <i v-if="form.memberType== null" style="font-style:normal">
+                        全部会员共计<span>{{customerCount + newMemberCount + oldMemberCount || 0}}</span>人；
+                        占会员总数的<span>{{(customerRatio + newMemberRatio + oldMemberRatio)*100 || 0}}%</span>;    
+                    </i>
+                    <i v-if="form.memberType==0" style="font-style:normal">
+                        非会员共计<span>{{customerCount || 0}}</span>人；
+                        占会员总数的<span>{{customerRatio*100 || 0}}%</span>;    
+                    </i>
                     <i v-if="form.memberType==1" style="font-style:normal">
-                        新会员共计<span>{{newMemberCount}}</span>人；
-                        占会员总数的<span>{{newMemberRatio}}%</span>;
+                        新会员共计<span>{{newMemberCount || 0}}</span>人；
+                        占会员总数的<span>{{newMemberRatio*100 || 0}}%</span>;
                     </i>
                     <i v-if="form.memberType==2" style="font-style:normal">
-                        老会员共计<span>{{oldMemberCount}}</span>人；
-                        占会员总数的<span>{{oldMemberRatio}}%</span>;    
+                        老会员共计<span>{{oldMemberCount || 0}}</span>人；
+                        占会员总数的<span>{{(oldMemberRatio*100).toFixed(1) || 0}}%</span>;    
                     </i>
-                    <i v-if="repeatPaymentRatio != undefined">复购率为<span>{{repeatPaymentRatio}}</span></i>。
-                </p> -->
+                    {{repeatPaymentRatio}}
+                    <i v-if="repeatPaymentRatio != undefined">复购率为<span>{{repeatPaymentRatio*100}}%</span></i>。
+                </p>
                 <div class="fr marT20">
                     <el-button class="minor_btn" @click="reScreening">重新筛选</el-button>
                     <el-button class="yellow_btn" icon="el-icon-share" @click="mIexport">导出</el-button>
@@ -96,6 +106,25 @@ export default {
     components: { maTable },
     data() {
         return {
+            pickerOptions: {
+                onPick: ({ maxDate, minDate }) => {
+                    this.pickerMinDate = minDate.getTime()
+                    if (maxDate) {
+                    this.pickerMinDate = ''
+                    }
+                },
+                disabledDate: (time) => {
+                    if (this.pickerMinDate !== '') {
+                    const day90 = (90 - 1) * 24 * 3600 * 1000
+                    let maxTime = this.pickerMinDate + day90
+                    if (maxTime > new Date()) {
+                        maxTime = new Date()
+                    }
+                    return time.getTime() > maxTime
+                    }
+                    return time.getTime() > Date.now()
+                }
+            },
             form: {
                 startTime:null, //2019-08-07 12:12:12
                 endTime:null,
@@ -152,6 +181,8 @@ export default {
                     name: "8次以上"
                 }
             ],
+            customerCount:'',
+            customerRatio:'',
             newMemberCount:'',
             newMemberRatio:'',
             oldMemberCount:'',
@@ -193,7 +224,7 @@ export default {
             } 
             let memberType = this.form.memberType;
             this._apis.data.memberInformation(this.form).then(res => {
-                this.repeatPaymentRatio = res.repeatPaymentRatio*100+'%';
+                this.repeatPaymentRatio = res.repeatPaymentRatio;
                 this.listObj = res; //信息列表数据
                 this.totalCount = res.totalPage * this.form.pageSize;
                 if(memberType == 1){ //新会员
@@ -204,6 +235,10 @@ export default {
                     this.textTips = true;
                     this.oldMemberCount = res.oldMemberCount;
                     this.oldMemberRatio = res.oldMemberRatio;
+                }else if(memberType == 0){ //非会员
+                    this.textTips = true;
+                    this.customerCount = res.customerCount;
+                    this.customerRatio = res.customerRatio;
                 }else{ //其他
                     this.textTips = false;
                 }

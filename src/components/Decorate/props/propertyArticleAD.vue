@@ -2,42 +2,43 @@
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :style="bodyHeight">
     <div class="block form">
       <el-form-item label="选择模板" prop="templateType">
-        <ul class="tile-list n3 template_type">
-          <li @click="selectTemplate(1)" :class="{'active': ruleForm.templateType === 1}">
-            <div class="type1">
-              第一种
-            </div>
-            <p>一行一个</p>
-          </li>
-          <li @click="selectTemplate(2)" :class="{'active': ruleForm.templateType === 2}">
-            <div class="type2">
-              第二种
-            </div>
-            <p>轮播海报</p>
-          </li>
-          <li @click="selectTemplate(3)" :class="{'active': ruleForm.templateType === 3}">
-            <div class="type2">
-              第三种
-            </div>
-            <p>大图横向滑动</p>
-          </li>
-          <li @click="selectTemplate(4)" :class="{'active': ruleForm.templateType === 4}">
-            <div class="type2">
-              第四种
-            </div>
-            <p>小图横向滑动</p>
-          </li>
-          <li @click="selectTemplate(5)" :class="{'active': ruleForm.templateType === 5}">
-            <div class="type2">
-              第五种
-            </div>
-            <p>导航横向滑动</p>
-          </li>
-        </ul>
       </el-form-item>
+      <ul class="tile-list n3 template_type">
+        <li @click="selectTemplate(1)" :class="{'active': ruleForm.templateType === 1}">
+          <div class="type1">
+            <img src="../../../assets/images/shop/articleAD/ad1.png" alt="">
+          </div>
+          <p>一行一个</p>
+        </li>
+        <li @click="selectTemplate(2)" :class="{'active': ruleForm.templateType === 2}">
+          <div class="type2">
+            <img src="../../../assets/images/shop/articleAD/ad2.png" alt="">
+          </div>
+          <p>轮播海报</p>
+        </li>
+        <li @click="selectTemplate(3)" :class="{'active': ruleForm.templateType === 3}">
+          <div class="type2">
+            <img src="../../../assets/images/shop/articleAD/ad3.png" alt="">
+          </div>
+          <p>大图横向滑动</p>
+        </li>
+        <li @click="selectTemplate(4)" :class="{'active': ruleForm.templateType === 4}">
+          <div class="type2">
+            <img src="../../../assets/images/shop/articleAD/ad4.png" alt="" style="margin-top: 20px;margin-bottom: 10px;">
+          </div>
+          <p>小图横向滑动</p>
+        </li>
+        <li @click="selectTemplate(5)" :class="{'active': ruleForm.templateType === 5}">
+          <div class="type2">
+            <img src="../../../assets/images/shop/articleAD/ad5.png" alt="" style="margin-top: 20px;margin-bottom: 12px;margin-left: -14px;">
+          </div>
+          <p>导航横向滑动</p>
+        </li>
+      </ul>
     </div>
 
     <div class="block form">
+      添加图片
       <ul class="item_list">
         <li v-for="(item, key) of ruleForm.itemList" :key="key">
           <div class="left">
@@ -56,7 +57,12 @@
             </p>
             <p>
               <span>跳转链接</span>
-              <el-button type="text" @click="dialogVisible=true; currentAD = item; currentDialog='dialogSelectJumpPage'">{{item.linkTo ? item.linkTo.typeName + '-' + (item.linkTo.data.title || item.linkTo.data.name) : '选择跳转到的页面'}}</el-button>
+              <el-button 
+              type="text" 
+              @click="dialogVisible=true; currentAD = item; currentDialog='dialogSelectJumpPage'" 
+              :title="item.linkTo ? item.linkTo.typeName + '-' + (item.linkTo.data.title || item.linkTo.data.name) : '选择跳转到的页面'">
+              {{item.linkTo ? item.linkTo.typeName + '-' + (item.linkTo.data.title || item.linkTo.data.name) : '选择跳转到的页面'}}
+              </el-button>
             </p>
           </div>
         </li>
@@ -161,20 +167,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/.el-form-item__label{
+  text-align: left;
+}
 ul.template_type{
   li{
-    width:65px;
-    border:1px solid rgb(228,227,235);
-    padding:10px;
+    width: 90px;
+    height: 100px;
+    border: 1px solid #e4e3eb;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    margin-right: 10px;
-    cursor:pointer;
+    margin-right: 18px;
+    cursor: pointer;
     &.active{
       border:1px solid $globalMainColor;
     }
     p{
       margin-top:6px;
       text-align:center;
+      line-height: 1;
+      color:rgba(110,110,114,1);
+      white-space: nowrap;
+      text-indent: -8px;
+    }
+    .type1{
+      height: 53px;
+    }
+    .type2{
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
+      // width: 100%;
+      // height: calc(100% - 36px);
     }
   }
 }

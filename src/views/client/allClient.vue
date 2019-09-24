@@ -306,7 +306,7 @@ export default {
             oForm.memberType = oForm.memberType[0] == "会员" ? '1':'0';
         }
         if(oForm.status.length > 0) {
-            oForm.status = oForm.status[0] == "正常" ? '0':'2';
+            oForm.status = oForm.status[0] == "正常" ? '0':'1';
         }
         if(oForm.labelValue && oForm.labelName) {
             newForm[oForm.labelName] = oForm.labelValue;

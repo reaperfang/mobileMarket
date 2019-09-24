@@ -45,7 +45,12 @@
         <el-input placeholder="请输入名称" v-model="ruleForm.navName"></el-input>
       </el-form-item>
        <el-form-item label="跳转链接" prop="linkTo">
-        <el-button type="text" @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'">{{ruleForm.linkTo ? ruleForm.linkTo.typeName + '-' +  (ruleForm.linkTo.data.title || ruleForm.linkTo.data.name) : '选择跳转到的页面'}}</el-button>
+        <el-button 
+        type="text" 
+        @click="dialogVisible=true; currentDialog='dialogSelectJumpPage'" 
+        :title="ruleForm.linkTo ? ruleForm.linkTo.typeName + '-' +  (ruleForm.linkTo.data.title || ruleForm.linkTo.data.name) : '选择跳转到的页面'">
+        {{ruleForm.linkTo ? ruleForm.linkTo.typeName + '-' +  (ruleForm.linkTo.data.title || ruleForm.linkTo.data.name) : '选择跳转到的页面'}}
+        </el-button>
       </el-form-item>
     </div>
 

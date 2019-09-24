@@ -80,6 +80,25 @@ export default {
     components: { channelTable },
     data() {
         return {
+            pickerOptions: {
+                onPick: ({ maxDate, minDate }) => {
+                    this.pickerMinDate = minDate.getTime()
+                    if (maxDate) {
+                    this.pickerMinDate = ''
+                    }
+                },
+                disabledDate: (time) => {
+                    if (this.pickerMinDate !== '') {
+                    const day90 = (90 - 1) * 24 * 3600 * 1000
+                    let maxTime = this.pickerMinDate + day90
+                    if (maxTime > new Date()) {
+                        maxTime = new Date()
+                    }
+                    return time.getTime() > maxTime
+                    }
+                    return time.getTime() > Date.now()
+                }
+            },
             form: {
                 startTime:null,
                 endTime:null,
@@ -95,25 +114,6 @@ export default {
             totalCount:0,//总页数
             pickerMinDate: '',
             dateRange: [],
-            pickerOptions: {
-                onPick: ({ maxDate, minDate }) => {
-                    this.pickerMinDate = minDate.getTime()
-                    if (maxDate) {
-                    this.pickerMinDate = ''
-                    }
-                },
-                disabledDate: (time) => {
-                    if (this.pickerMinDate !== '') {
-                        const day30 = (90 - 1) * 24 * 3600 * 1000
-                    let maxTime = this.pickerMinDate + day30
-                    if (maxTime > new Date()) {
-                        maxTime = new Date()
-                    }
-                    return time.getTime() > maxTime
-                }
-                    return time.getTime() > Date.now()
-                }
-            },
         }
     },
     mounted(){

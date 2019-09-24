@@ -5,7 +5,7 @@
           <p class="state" :class="{'normal': ruleForm.status === 0}">{{ruleForm.status === 0 ? '生效中' : '未生效'}}</p>
         </div>
         <div class="block form">
-          <el-form-item label="背景图片" prop="backgroundImage">
+          <el-form-item label="背景图片" prop="backgroundImage" style="margin-bottom: 0;">
             <div class="img_preview" v-if="ruleForm.backgroundImage">
               <img :src="ruleForm.backgroundImage" alt="">
               <span @click="currentModule=ruleForm; dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换图片</span>
@@ -13,7 +13,7 @@
             <div class="add_button" v-if="!ruleForm.backgroundImage" @click="dialogVisible=true; currentDialog='dialogSelectImageMaterial'">
               <i class="inner"></i>
             </div>
-            建议尺寸：750*370，尺寸不匹配时，图片将被压缩或拉伸以铺满四周
+            <span style="color:rgba(182,181,200,1);">建议尺寸 750*426 像素</span>
           </el-form-item>
           <el-form-item label="背景渐变" prop="backgroundGradients">
             <el-radio-group v-model="ruleForm.backgroundGradients">
@@ -52,7 +52,7 @@
             <div class="module_block">
                 <el-input v-model="item.titleValue"></el-input>
                 <div class="img_preview">
-                  <img :src="item.icon" alt="">
+                  <img :src="item.icon || require('@/assets/images/shop/userCenter/' + item.defaultIcon + '.png')" alt="">
                   <span @click="currentModule=item;dialogVisible=true; currentDialog='dialogSelectImageMaterial'">更换</span>
                 </div>
                 <colorPicker  v-model="item.color" defaultColor="#000"></colorPicker >
@@ -113,56 +113,64 @@ export default {
             name: 'integralMarket',
             title: '积分商城',
             titleValue: '积分商城',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter11',
             color: '#000'
           },
           messageCenter: {
             name: 'messageCenter',
             title: '消息中心',
             titleValue: '消息中心',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter12',
             color: '#000'
           },
           memberRank: {
             name: 'memberRank',
             title: '会员等级',
             titleValue: '会员等级',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter13',
             color: '#000'
           },
           coupon: {
             name: 'coupon',
             title: '优惠券',
             titleValue: '优惠券',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter14',
             color: '#000'
           },
           couponCode: {
             name: 'couponCode',
             title: '优惠码',
             titleValue: '优惠码',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter15',
             color: '#000'
           },
           gift: {
             name: 'gift',
             title: '赠品包',
             titleValue: '赠品包',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter16',
             color: '#000'
           },
           myAssemble: {
             name: 'myAssemble',
             title: '我的拼团',
             titleValue: '我的拼团',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter17',
             color: '#000'
           },
           address: {
             name: 'address',
             title: '地址管理',
             titleValue: '地址管理',
-            icon: 'http://attachments.chyangwa.net/portal/201907/24/100734twkfbss2zsiqkki2.jpg',
+            icon: '',
+            defaultIcon: 'userCenter18',
             color: '#000'
           },
         }
@@ -206,7 +214,7 @@ export default {
       _self.resetLoading = false;
     });
 
-    this.ruleForm.backgroundImage= 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2829014450,3677490423&fm=26&gp=0.jpg';
+    this.ruleForm.backgroundImage= '';
     this.$emit('userCenterDataChanged', this.ruleForm);
   },
   mounted() {
@@ -262,8 +270,8 @@ export default {
       margin-right:10px;
     }
     /deep/.img_preview{
-      width: 80px;
-      height: 40px;
+      width: 64px;
+      height: 31px;
       display: block;
       margin-right: 10px;
       span{
@@ -273,9 +281,10 @@ export default {
       }
     }
     /deep/.colorBtn{
-      width:25px!important;
-      height:25px!important;
+      width:31px!important;
+      height:31px!important;
       margin-right:10px;
+      border:1px solid #ddd;
     }
   }
 
