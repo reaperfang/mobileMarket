@@ -4,8 +4,8 @@
             <el-form-item label="设定上架时间" prop="time">
                 <el-date-picker
                     v-model="ruleForm.time"
-                    type="date"
-                    placeholder="选择日期"
+                    type="datetime"
+                    placeholder="选择日期时间"
                     value-format="yyyy-MM-dd hh:mm:ss">
                 </el-date-picker>
             </el-form-item>
