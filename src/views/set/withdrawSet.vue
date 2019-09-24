@@ -10,7 +10,12 @@
         </el-form-item>
         <div class="pdl100" v-if="form.cashOut == 1">
           <p class="note note1">提示：请确认您在微信支付中开通了【商户支付】功能，否则用户将无法提现！</p>
-          <p class="note note2">开通教程链接：https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_1</p>
+          <p class="note note2">
+            开通教程链接：
+            <a href="https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_1">
+              https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_1
+            </a>            
+          </p>
           <el-form-item label="单笔提现金额上限" prop="cashOutUpper">
             <el-input-number v-model="form.cashOutUpper" :min="0" label="请输入整数">
             </el-input-number> 元
@@ -131,6 +136,11 @@ export default {
   }
   .note2{
     color: #ccc;
+    a{
+      &:hover{
+        color:#97a8be;
+      }
+    }
   }
   .save{
     margin: 200px 0 200px;

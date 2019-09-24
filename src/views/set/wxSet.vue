@@ -50,7 +50,6 @@
               <input type="file"  @change="fileChange" style="width:75px;">
               <span>{{form.certFileName}}</span>
             </el-form-item>
-
             <!-- <el-form-item label="KEY秘钥文件" prop="keyLocalPath">
             <div class="upload_file">
                 <span class="tip">{{form.keyFileName}}</span>
@@ -142,6 +141,10 @@ export default {
         cid(){
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             return shopInfo.id
+        },
+        shopName(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.shopName
         }
     },
   created() {
@@ -156,8 +159,8 @@ export default {
         let _self = this
         var reader = new FileReader();
         reader.onload = (function (file) {
-            return function (e) {
-              _self.form.certBase64Content = this.result
+          return function (e) {
+              _self.form.certBase64Content = this.result.replace(' ','+')
               // console.info('result',this.result); //这个就是base64的数据了
             };
         })(e.target.files[0]);
@@ -166,7 +169,7 @@ export default {
 
     getShopPayInfo(){
       let query = {
-        mchId:'2',
+        mchId:this.cid,
         channelId:'WX_JSAPI',
       }
       this._apis.set.getShopPayInfo(query).then(response =>{
@@ -202,8 +205,7 @@ export default {
     //修改商户支付信息
     updateShopPayInfo(){
       let param = {
-        // mchId:this.$store.user.cid || '2',
-        mchId:'2',
+        mchId:this.form.channelMchId,
         appId:this.form.appId,
         key:this.form.key,
         // certLocalPath:this.form.certLocalPath,
@@ -216,11 +218,10 @@ export default {
       }
       let query = {
         id:this.id,
-        // mchId:this.$store.user.cid || '2',
-        mchId:'2',
+        mchId:this.cid,
         channelId:'WX_JSAPI',
         // mchName:this.$store.user.userInfo.shopName,
-        mchName:'店铺名称',
+        mchName:this.shopName,
         channelName:'WX',
         channelMchId:this.form.channelMchId,
         param:JSON.stringify(param)
@@ -241,8 +242,7 @@ export default {
     //添加商户支付信息
     addShopPayInfo(){
       let param = {
-        // mchId:this.$store.user.cid || '2',
-        mchId:'2',
+        mchId:this.form.channelMchId,
         appId:this.form.appId,
         key:this.form.key,
         // certLocalPath:this.form.certLocalPath,
@@ -254,11 +254,10 @@ export default {
         certBase64Content:this.form.certBase64Content
       }
       let query = {
-        // mchId:this.$store.user.cid || '2',
-        mchId:'2',
+        mchId:this.cid,
         channelId:'WX_JSAPI',
         // mchName:this.$store.user.userInfo.shopName,
-        mchName:'店铺名称',
+        mchName:this.shopName,
         channelName:'WX',
         channelMchId:this.form.channelMchId,
         param:JSON.stringify(param)
