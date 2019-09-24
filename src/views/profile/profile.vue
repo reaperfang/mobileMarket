@@ -175,6 +175,7 @@ export default {
     width: 717px;
     height: 251px;
     padding: 24px 21px;
+    border-radius: 5px;
     .p_t_list{
         width: 660px;
         display: flex;
@@ -183,6 +184,10 @@ export default {
             width: 140px;
             height: 60px;
             margin: 27px 25px 0 0; 
+            img{
+                width: 50px;
+                height: 56px;
+            }
             .p_t_text{
                 width: 65px;
                 height: 44px;
@@ -206,6 +211,7 @@ export default {
     height: 251px;
     margin-left: 20px;
     color: #3D434A;
+    border-radius: 5px;
     .p_r_list{
         margin-top: 25px;
         p{
@@ -224,6 +230,7 @@ export default {
     margin-top: 20px;
     background-color: #fff;
     padding: 13px 0 0px 14px;
+    border-radius: 5px;
     .p_l_item{
         width: 140px;
         height: 60px;
@@ -246,6 +253,7 @@ export default {
     min-height: 337px;
     padding: 13px 0 0px 14px;
     margin: 20px 0 0 20px;
+    border-radius: 5px;
     .p_m_item{
         width: 174px;
         height: 60px;
