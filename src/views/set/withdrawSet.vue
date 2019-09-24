@@ -43,6 +43,9 @@ export default {
       form:{
         cashOut:0,
         cashOutUpper:0,
+        cashOutLower:0,
+        cashOutTimes:0,
+        cashOutMoney:0
       },
     }
   },
@@ -91,12 +94,9 @@ export default {
       this.$refs[formName].validate((valid) => {
           if (valid) {
             let id = this.cid
-            let data = {
-              id:id,
-              cashOut:this.form.cashOut
-            }
+            let data = Object.assign({id:id},this.form)
             this._apis.set.updateShopInfo(data).then(response =>{
-              this.$notify.error({
+              this.$notify.success({
                 title: '成功',
                 message: '保存成功！'
               });
