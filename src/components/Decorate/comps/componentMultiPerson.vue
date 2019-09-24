@@ -23,7 +23,12 @@
                     <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('2')!=-1">{{item.goodDes}}</p>
                     <div class="limit_line">
                         <div class="label">{{item.peopleNum}}人团</div>
-                        <p class="limit" v-if="showContents.indexOf('7')!=-1">限 {{item.buyLimit}}件/人</p>
+                        <p class="limit" v-if="showContents.indexOf('7')!=-1">
+                            <template v-if="item.buyLimit >= 0">
+                                限 {{item.buyLimit}}件/人
+                            </template>
+                            <template v-else>不限制</template>
+                        </p>
                     </div>
                     <div class="price_line">
                         <p class="price" v-if="showContents.indexOf('3')!=-1">￥<font>{{item.reductionUnitPrice}}</font></p>
