@@ -155,7 +155,7 @@
             <ul>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.integralMarket.icon || '../../../assets/images/shop/userCenter/userCenter11.png'" alt />
+                  <img :src="data.moduleList.integralMarket.icon || require('../../../assets/images/shop/userCenter/userCenter11.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.integralMarket.color}">{{data.moduleList.integralMarket.titleValue}}</p>
@@ -170,7 +170,7 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.messageCenter.icon || '../../../assets/images/shop/userCenter/userCenter12.png'" alt />
+                  <img :src="data.moduleList.messageCenter.icon || require('../../../assets/images/shop/userCenter/userCenter12.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.messageCenter.color}">{{data.moduleList.messageCenter.titleValue}}</p>
@@ -182,7 +182,7 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.memberRank.icon || '../../../assets/images/shop/userCenter/userCenter13.png'" alt />
+                  <img :src="data.moduleList.memberRank.icon || require('../../../assets/images/shop/userCenter/userCenter13.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.memberRank.color}">{{data.moduleList.memberRank.titleValue}}</p>
@@ -198,7 +198,7 @@
             <ul>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.coupon.icon || '../../../assets/images/shop/userCenter/userCenter14.png'" alt />
+                  <img :src="data.moduleList.coupon.icon || require('../../../assets/images/shop/userCenter/userCenter14.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.coupon.color}">{{data.moduleList.coupon.titleValue}}</p>
@@ -210,7 +210,7 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.couponCode.icon || '../../../assets/images/shop/userCenter/userCenter15.png'" alt />
+                  <img :src="data.moduleList.couponCode.icon || require('../../../assets/images/shop/userCenter/userCenter15.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.couponCode.color}">{{data.moduleList.couponCode.titleValue}}</p>
@@ -222,7 +222,7 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.gift.icon || '../../../assets/images/shop/userCenter/userCenter16.png'" alt />
+                  <img :src="data.moduleList.gift.icon || require('../../../assets/images/shop/userCenter/userCenter16.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.gift.color}">{{data.moduleList.gift.titleValue}}</p>
@@ -234,7 +234,7 @@
               </li>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.myAssemble.icon || '../../../assets/images/shop/userCenter/userCenter17.png'" alt />
+                  <img :src="data.moduleList.myAssemble.icon || require('../../../assets/images/shop/userCenter/userCenter17.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.myAssemble.color}">{{data.moduleList.myAssemble.titleValue}}</p>
@@ -250,7 +250,7 @@
             <ul>
               <li>
                 <div class="userCenter_three1Img">
-                  <img :src="data.moduleList.address.icon || '../../../assets/images/shop/userCenter/userCenter18.png'" alt />
+                  <img :src="data.moduleList.address.icon || require('../../../assets/images/shop/userCenter/userCenter18.png')" alt />
                 </div>
                 <div class="userCenter_three1Cont">
                   <p class="fl" :style="{color: data.moduleList.address.color}">{{data.moduleList.address.titleValue}}</p>
@@ -277,11 +277,11 @@ export default {
       bg: {
         background:
           "linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255)),url('" +
-          this.data.backgroundImage +
+          (this.data.backgroundImage || require('../../../assets/images/shop/userCenter/userCenter1.png')) +
           "') no-repeat center"
       },
       bg1: {
-        background: "url('" + this.data.backgroundImage + "') no-repeat"
+        background: "url('" + (this.data.backgroundImage || require('../../../assets/images/shop/userCenter/userCenter1.png')) + "') no-repeat"
       }
     };
   },
@@ -293,11 +293,11 @@ export default {
         this.bg= {
           background:
             "linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255)),url('" +
-            this.data.backgroundImage +
+            (this.data.backgroundImage || require('../../../assets/images/shop/userCenter/userCenter1.png')) +
             "') no-repeat center"
         };
         this.bg1= {
-          background: "url('" + this.data.backgroundImage + "') no-repeat"
+          background: "url('" + (this.data.backgroundImage || require('../../../assets/images/shop/userCenter/userCenter1.png')) + "') no-repeat"
         };
       },
       deep: true
