@@ -583,6 +583,13 @@ table.yuan-table{
   }
 }
 
+.goods-custom .el-message-box__btns {
+  .el-button:first-child {
+      display: block;
+      margin-left: 50px;
+  }
+}
+
 .goods-specs {
   margin-top: 10px!important;
   color: #9FA29F;

@@ -470,11 +470,11 @@ export default {
         },
         deleleHandler(row) {
             if(row.activity) {
-                this.confirm({title: '立即删除', icon: true, text: '当前商品正在参与营销活动，活动有效期内商品不得“删除”。'}).then(() => {
+                this.confirm({title: '立即删除', customClass: 'goods-custom', icon: true, text: '当前商品正在参与营销活动，活动有效期内商品不得“删除”。'}).then(() => {
                     
                 })
             } else {
-                this.confirm({title: '立即删除', icon: true, text: '是否确认删除？'}).then(() => {
+                this.confirm({title: '立即删除', customClass: 'goods-custom', icon: true, text: '是否确认删除？'}).then(() => {
                     this._apis.goods.allDelete({ids: [row.goodsInfo.id]}).then((res) => {
                         this.getList()
                         this.visible = false
