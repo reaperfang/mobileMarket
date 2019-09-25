@@ -216,15 +216,15 @@ export default {
     methods: {
         fetchOrderAddress() {
             this._apis.order.fetchOrderAddress({id: this.cid, cid: this.cid}).then((res) => {
-                this.orderInfo.sendName = res.sendName
-                this.orderInfo.sendPhone = res.sendPhone
-                this.orderInfo.sendProvinceCode = res.sendProvinceCode
-                this.orderInfo.sendProvinceName = res.sendProvinceName
-                this.orderInfo.sendCityCode = res.sendCityCode
-                this.orderInfo.sendCityName = res.sendCityName
-                this.orderInfo.sendAreaCode = res.sendAreaCode
-                this.orderInfo.sendAreaName = res.sendAreaName
-                this.orderInfo.sendDetail = res.sendDetail
+                this.orderInfo.sendName = res.senderName
+                this.orderInfo.sendPhone = res.senderPhone
+                this.orderInfo.sendProvinceCode = res.provinceCode
+                this.orderInfo.sendProvinceName = res.province
+                this.orderInfo.sendCityCode = res.cityCode
+                this.orderInfo.sendCityName = res.city
+                this.orderInfo.sendAreaCode = res.areaCode
+                this.orderInfo.sendAreaName = res.area
+                this.orderInfo.sendDetail = res.address
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({
