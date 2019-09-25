@@ -44,7 +44,7 @@
     <div class="block form">
       <ul class="item_list">
         <li v-for="(item, key) of ruleForm.itemList" :key="key">
-          <div class="left">
+          <div class="left" v-if="ruleForm.templateType === 1">
             <div v-if="item.url" class="img_preview">
               <img :src="item.url" alt="">
               <span @click="dialogVisible=true; currentNav=item; currentDialog='dialogSelectImageMaterial'">更换图片</span>
@@ -55,11 +55,11 @@
           </div>
           <div class="right">
             <p>
-              <span>图片标题</span>
+              <span v-if="ruleForm.templateType === 1">图片标题</span>
+              <span v-else-if="ruleForm.templateType === 2">导航文字</span>
               <el-input v-model="item.title"></el-input>
             </p>
             <p>
-              <span>跳转链接</span>
               <el-button 
               type="text" 
               @click="dialogVisible=true; currentNav = item; currentDialog='dialogSelectJumpPage'" 
@@ -95,7 +95,7 @@ export default {
         backgroundColor: '#fff',//背景颜色
         fontColor: '#000',//文字颜色
         itemList: [{//图文列表
-          title: '',
+          title: '导航',
           url: '',
           linkTo: null
         }],
@@ -119,8 +119,8 @@ export default {
         linkTo: null
       });
       this.currentNav = this.ruleForm.itemList[this.ruleForm.itemList.length - 1];
-      this.dialogVisible=true; 
-      this.currentDialog='dialogSelectImageMaterial';
+      // this.dialogVisible=true; 
+      // this.currentDialog='dialogSelectImageMaterial';
     },
 
     /* 弹框选中图片 */
