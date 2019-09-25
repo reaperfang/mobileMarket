@@ -29,7 +29,7 @@
             <el-form-item label="商品图片" prop="images">
                 <!-- <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px"> -->
                 <el-upload
-                    v-if="fileList.length < 6"
+                    :disabled="imagesLength > 5"
                     :action="uploadUrl"
                     multiple
                     :limit="6"
@@ -46,7 +46,7 @@
                 <el-dialog :visible.sync="imageDialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
-                <span v-if="fileList.length < 6" @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
+                <span v-if="imagesLength < 6" @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
             </el-form-item>
             <el-form-item label="商品分类" prop="productCatalogInfoId">
@@ -518,15 +518,15 @@ export default {
                 goodsInfos: [
                     { required: true, message: '请输入规格信息', trigger: 'blur' },
                 ],
-                selfSaleCount: [
-                    { required: true, message: '请输入已售出数量', trigger: 'blur' },
-                ],
+                // selfSaleCount: [
+                //     { required: true, message: '请输入已售出数量', trigger: 'blur' },
+                // ],
                 productUnit: [
                     { validator: productUnitValidator, trigger: 'blur' },
                 ],
-                productBrandInfoId: [
-                    { required: true, message: '请选择商品品牌', trigger: 'blur' },
-                ],
+                // productBrandInfoId: [
+                //     { required: true, message: '请选择商品品牌', trigger: 'blur' },
+                // ],
                 status: [
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
@@ -606,6 +606,15 @@ export default {
         cid(){
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             return shopInfo.id
+        },
+        imagesLength() {
+            let images = this.ruleForm.images
+
+            if(images && images.split(',').length) {
+                return images.split(',').length
+            }
+
+            return 0
         }
     },
     watch: {
@@ -687,22 +696,30 @@ export default {
             this.tableData.splice(index, 1)
         },
         getCategoryIds(arr, id) {
-            let parentId = this.flatCategoryList.find(val => val.id == id).parentId
+            try {
+                let parentId = this.flatCategoryList.find(val => val.id == id).parentId
 
-            arr.unshift(id)
+                arr.unshift(id)
 
-            if(parentId && parentId != 0) {
-                this.getCategoryIds(arr, parentId)
+                if(parentId && parentId != 0) {
+                    this.getCategoryIds(arr, parentId)
+                }
+            } catch(e) {
+                console.error(e)
             }
         },
         // 获取类目
         getCategoryInfoIds(arr, id) {
-            let parentId = this.operateCategoryList.find(val => val.id == id).parentId
+            try {
+                let parentId = this.operateCategoryList.find(val => val.id == id).parentId
 
-            arr.unshift(id)
+                arr.unshift(id)
 
-            if(parentId && parentId != 0) {
-                this.getCategoryInfoIds(arr, parentId)
+                if(parentId && parentId != 0) {
+                    this.getCategoryInfoIds(arr, parentId)
+                }
+            } catch(e) {
+                console.error(e)
             }
         },
         getGoodsDetail() {
@@ -796,9 +813,30 @@ export default {
             flat(array, childrenKey, 1);
             return result;
         },
+        getRootId(id) {
+            let rootId = ''
+            let that = this
+
+            var getId = function(id) {
+                let category = that.operateCategoryList.find(val => val.id == id)
+                let parentId = category.parentId
+
+                if(parentId != 0) {
+                    getId(parentId)
+                } else {
+                    rootId = id
+                }
+            }
+
+            getId(id)
+
+            return rootId
+        },
         // 获取商品规格列表
         getSpecsList() {
-            this._apis.goodsOperate.fetchSpecsList({productCategoryId: this.ruleForm.productCategoryInfoId}).then(res => {
+            let productCategoryInfoId = this.ruleForm.productCategoryInfoId
+            let rootId = this.getRootId(productCategoryInfoId)
+            this._apis.goodsOperate.fetchSpecsList({productCategoryId: rootId, enable: 1}).then(res => {
                 console.log(res)
                 res.forEach(val => {
                     val.level = '1'

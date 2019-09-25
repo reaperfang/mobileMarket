@@ -119,6 +119,17 @@ export default {
         getEvaluation(idx,pageS){
             this.form.pageSize = pageS;
             this.form.startIndex = idx;
+            this.form.niceRatioRange = 'null' && (this.form.niceRatioRange = null)
+            this.form.memberType = 'null' && (this.form.memberType = null)
+            if(this.form.badRatioRange == '1'){
+                this.form.badRatioRange = '0-0.01'
+            }else if(this.form.badRatioRange == '2'){
+                this.form.badRatioRange = '0.02-0.05'
+            }else if(this.form.badRatioRange == '3'){
+                this.form.badRatioRange = '0.05'
+            }else{
+                this.form.badRatioRange = null
+            }
             // let data ={
             //     timeType:this.form.timeType,
             //     startTime:this.form.startTime,
