@@ -41,6 +41,7 @@
 </template>
 <script>
 import AddCategoryDialog from '@/views/goods/dialogs/addCategoryDialog'
+import TransferGoodsDialog from '@/views/goods/dialogs/transferGoodsDialog'
 
 export default {
     data() {
@@ -197,7 +198,9 @@ export default {
 
                     if(res.msg == 'existProduct') {
                         this.confirm({title: '转移商品', icon: false, text: '是否将此分类其下的全部商品转移到其他分类中？'}).then(() => {
-                            
+                            this.currentData = node.data.id
+                            this.currentDialog = 'TransferGoodsDialog'
+                            this.dialogVisible = true
                         })
                     }
                 }).catch(error => {
@@ -225,7 +228,8 @@ export default {
         }
     },
     components: {
-        AddCategoryDialog
+        AddCategoryDialog,
+        TransferGoodsDialog
     }
 }
 </script>

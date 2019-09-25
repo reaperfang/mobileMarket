@@ -1098,6 +1098,8 @@ export default {
                 })
                 this.ruleForm.goodsInfos = _results
                 console.log(_results)
+            } else {
+                this.ruleForm.goodsInfos = []
             }
         },
         submit(value) {

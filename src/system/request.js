@@ -43,6 +43,9 @@ class Ajax {
           if (res.accessToken) {
             return res;
           }
+          if(res.msg == 'existProduct') {
+            return res
+          }
           return res.data;
         } else if (res.errno === 0) {
           return res.data;
