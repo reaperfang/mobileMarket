@@ -480,7 +480,7 @@ export default {
                 isJoinDiscount: 0, // 是否参与打折 1参与 ,0不参与
                 zhengsong: 1,
                 isSupportInvoice: 0, // 是否开发票
-                isShowStock: 1, // 是否显示库存 1显示 0不显示
+                isShowStock: true, // 是否显示库存 1显示 0不显示
                 isShowSaleCount: true, // 是否显示销量 1显示 0不显示
                 productUnit: '', // 商品计量单位
                 other: false,
@@ -780,6 +780,7 @@ export default {
                     }
                 }
                 this.ruleForm.isShowSaleCount = this.ruleForm.isShowSaleCount == 1 ? true : false
+                this.ruleForm.isShowStock = this.ruleForm.isShowStock == 1 ? true : false
                 // if(this.ruleForm.productDetail) {
                 //     let _productDetail = ''
 
