@@ -195,6 +195,8 @@ export default {
         searchTimeType: "createTime",
         orderTimeValue: ""
       }
+
+      this.$refs["shop"].getList();
     },
   },
   components: {
