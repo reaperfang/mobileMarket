@@ -214,7 +214,11 @@ export default {
         .getMemberList(Object.assign(this.newForm,{startIndex, pageSize}))
         .then(response => {
           this.loading = false;
-          this.memberList = [].concat(response.list);
+          let list = response.list;
+          list.map((v) => {
+            v.memberType = v.memberType == 1 ? '会员':'客户'
+          })
+          this.memberList = [].concat(list);
           this.total = response.total;
           this.$emit('stopLoading');
         })

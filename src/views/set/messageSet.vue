@@ -28,7 +28,7 @@
         align="center">
         <template slot-scope="scope">
           <el-switch
-          :disabled="!scope.row.wechatPublicId"
+          v-if="!!scope.row.wechatPublicId"
           v-model="scope.row.msgWechatPublic"
           @change="switchMessage1(scope.row.id,scope.row.msgWechatPublic)"
           active-color="#13ce66"
@@ -44,7 +44,7 @@
               <div class="preview_content" v-html="scope.row.wechatPublicPreview"></div>
               <p class="checkInfo" v-if="scope.row.isGotoWechatPublicDetail == 1">详情</p>
               <p class="preview_id">模板ID:{{scope.row.wechatPublicId}}</p>
-            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']" :style="{color:!scope.row.wechatPublicId?'#ccc':''}">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">{{!!scope.row.wechatPublicId?'预览':'--'}}</el-link>
           </el-popover>
         </template>
       </el-table-column>
@@ -54,7 +54,7 @@
         align="center">
         <template slot-scope="scope">
           <el-switch
-          :disabled="!scope.row.wechatAppId"
+          v-if="!!scope.row.wechatAppId"
           v-model="scope.row.msgWechatApp"
           @change="switchMessage2(scope.row.id,scope.row.msgWechatApp)"
           active-color="#13ce66"
@@ -70,7 +70,7 @@
               <div v-html="scope.row.wechatAppPreview" class="preview_content"></div>
               <p class="checkInfo" v-if="scope.row.isGotoWechatAppDetail == 1">查看详情</p>
               <p class="preview_id">模板ID:{{scope.row.wechatAppId}}</p>
-            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']" :style="{color:!scope.row.wechatAppId?'#ccc':''}">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">{{!!scope.row.wechatAppId?'预览':'--'}}</el-link>
           </el-popover>
         </template>
       </el-table-column>
@@ -80,7 +80,7 @@
         align="center">
         <template slot-scope="scope">
           <el-switch
-          :disabled="!scope.row.smsTemplateKey"
+          v-if="!!scope.row.smsTemplateKey"
           v-model="scope.row.msgSms"
           @change="switchMessage3(scope.row.id,scope.row.msgSms)"
           active-color="#13ce66"
@@ -94,7 +94,7 @@
             trigger="click">
               <p class="preview_title">{{scope.row.msgTitle}}</p>
               <div v-html="scope.row.smsPreview" class="preview_content"></div>
-            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']" :style="{color:!scope.row.smsTemplateKey?'#ccc':''}">预览</el-link>
+            <el-link type="primary" slot="reference" v-permission="['设置', '消息设置', '默认页面', '预览']">{{!!scope.row.smsTemplateKey?'预览':'--'}}</el-link>
           </el-popover>
         </template>
       </el-table-column>

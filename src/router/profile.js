@@ -8,7 +8,8 @@ export default [
     iframe: true,
     meta: {
       title: '概况',
-      icon: 'icon_profile'
+      icon: 'icon_profile',
+      activeIcon:'icon_profiles'
     },
     children: [
       {

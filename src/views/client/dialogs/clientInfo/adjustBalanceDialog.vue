@@ -60,6 +60,7 @@ export default {
             message: "调整余额成功",
             type: 'success'
           });
+          this.$emit('refreshPage');
         }).catch((error) => {
           console.log(error);
           // this.$notify.error({

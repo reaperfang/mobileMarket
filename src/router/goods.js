@@ -7,7 +7,8 @@ export default [
     name: 'goods',
     meta: {
       title: '商品',
-      icon: 'icon_goods'
+      icon: 'icon_goods',
+      activeIcon:'icon_goodss'
     },
     children: [
     	{
