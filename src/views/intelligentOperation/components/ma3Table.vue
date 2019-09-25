@@ -35,6 +35,9 @@
         prop="score"
         label="积分(余额)"
       >
+        <template slot-scope="scope">
+          <span>{{scope.row.score || 0}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         label="入会时间"

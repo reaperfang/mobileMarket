@@ -31,7 +31,7 @@
                             <div class="jd_line">
                                 <div class="current_line"></div>
                             </div>
-                            <p>已抢<font>{{item.stock - item.remainStock}}</font>件</p>
+                            <p>已抢<font>{{(item.stock - item.remainStock) > -1 ? (item.stock - item.remainStock) : 0}}</font>件</p>
                         </div>
                     </div>
                     <div class="price_line">

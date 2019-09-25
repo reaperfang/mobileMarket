@@ -207,9 +207,32 @@ export default {
             } else {
                 return false
             }
+        },
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
         }
     },
     methods: {
+        fetchOrderAddress() {
+            this._apis.order.fetchOrderAddress({id: this.cid, cid: this.cid}).then((res) => {
+                this.orderInfo.sendName = res.senderName
+                this.orderInfo.sendPhone = res.senderPhone
+                this.orderInfo.sendProvinceCode = res.provinceCode
+                this.orderInfo.sendProvinceName = res.province
+                this.orderInfo.sendCityCode = res.cityCode
+                this.orderInfo.sendCityName = res.city
+                this.orderInfo.sendAreaCode = res.areaCode
+                this.orderInfo.sendAreaName = res.area
+                this.orderInfo.sendDetail = res.address
+            }).catch(error => {
+                this.visible = false
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        },
         getExpressCompanyList() {
             this._apis.order.fetchExpressCompanyList().then((res) => {
                 this.expressCompanyList = res
@@ -316,6 +339,8 @@ export default {
             this._apis.order.orderSendDetail({ids: [this.$route.query.id]}).then((res) => {
                 this.tableData = res[0].orderItemList
                 this.orderInfo = res[0]
+
+                this.fetchOrderAddress()
             }).catch(error => {
 
             })
