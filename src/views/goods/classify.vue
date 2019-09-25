@@ -276,6 +276,23 @@ export default {
 .treeRow .td.short{width: 10%}
 .treeRow .td:nth-child(2){position:absolute; left:35%}
 .treeRow .td:nth-child(3){position:absolute; left:75%; min-width:200px}
+/deep/ .el-tree-node__expand-icon:before {
+    content: "\e7a0";
+    color: #655EFF;
+    font-size: 14px;
+}
+/deep/ .expanded.el-tree-node__expand-icon:before {
+    content: "\e7a2";
+    color: #655EFF;
+    font-size: 14px;
+}
+/deep/ .is-leaf.el-tree-node__expand-icon:before {
+    content: "";
+
+}
+/deep/ .el-tree-node__expand-icon.expanded {
+    transform: rotate(0deg);
+}
 }
 .operate {
     span {

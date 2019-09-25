@@ -170,7 +170,7 @@ export default {
       handler(newValue) {
         this.ruleForm.ids = [];
         for(let item of newValue) {
-          this.ruleForm.ids.push(item.spuId);
+          this.ruleForm.ids.push(item.activityId);
         }
         this.fetch();
         this._globalEvent.$emit('fetchSecondkill', this.ruleForm, this.$parent.currentComponentId);
@@ -194,7 +194,7 @@ export default {
                 this.loading = true;
                 this._apis.shop.getSecondkillListByIds({
                     rightsDiscount: 1, 
-                    spuIds: ids.join(',')
+                    activityIds: ids.join(',')
                 }).then((response)=>{
                     this.createList(response);
                     this.loading = false;
