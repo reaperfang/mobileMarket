@@ -38,10 +38,12 @@
             <h2>评价相关：</h2>
             <el-form-item label="评价功能开启" prop="orderComment">
                 <el-radio-group v-model="form.orderComment">
-                    <el-radio :label="1">是</el-radio>
+                    <el-radio :label="1" class="mr10">是</el-radio>
                     <el-radio :label="2">否</el-radio>
                 </el-radio-group>
-                说明：启用后买家可以对购买商品进行评论，您可以根据评论内容进行回复。
+                <span class="note">
+                  说明：启用后买家可以对购买商品进行评论，您可以根据评论内容进行回复。
+                </span>
             </el-form-item>
             <el-form-item label="订单完成" prop="orderCommentGood">
                 <el-input 
@@ -56,10 +58,12 @@
             <h2>资产相关：</h2>
             <el-form-item label="发票功能开启" prop="invoiceOpen">
                 <el-radio-group v-model="form.invoiceOpen">
-                    <el-radio :label="1">是</el-radio>
+                    <el-radio :label="1" class="mr10">是</el-radio>
                     <el-radio :label="2">否</el-radio>
                 </el-radio-group>
-                说明：启用后买家可以申请开发票。
+                <span class="note">
+                  说明：启用后买家可以申请开发票。
+                </span>
             </el-form-item>
             <!-- <el-form-item label="整笔订单退款"></el-form-item>
             <el-form-item label="是否退回优惠券" prop="name7">
@@ -82,14 +86,14 @@
             </h2>
             <el-form-item label="是否开启物流轨迹查询服务：" prop="isTrace">
                 <el-radio-group v-model="form.isTrace">
-                    <el-radio :label="1">是</el-radio>
+                    <el-radio :label="1" class="mr10">是</el-radio>
                     <el-radio :label="0">否</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="请注册快递鸟并输入用户ID:" prop="kdBusinessId">
+            <el-form-item label="请注册快递鸟并输入用户ID:" prop="kdBusinessId" v-if="form.isTrace == 1">
                 <el-input placeholder="请输入用户ID" v-model="form.kdBusinessId" style="width:260px;"></el-input>
             </el-form-item>
-            <el-form-item label="请注册快递鸟并输入API Key:" prop="apiKey">
+            <el-form-item label="请注册快递鸟并输入API Key:" prop="apiKey" v-if="form.isTrace == 1">
                 <el-input placeholder="请输入用户API Key" v-model="form.apiKey" style="width:260px;"></el-input>
             </el-form-item>
         </div>
@@ -113,7 +117,7 @@ export default {
             orderComment:'1',
             orderCommentGood: '',
             invoiceOpen:'1',
-            isTrace:'1',
+            isTrace:'0',
             apiKey:'',
             kdBusinessId:''
         },
@@ -246,5 +250,8 @@ export default {
 .note{
     font-size: 12px;
     color: #92929B;
+}
+.mr10{
+  margin-right:10px;
 }
 </style>
