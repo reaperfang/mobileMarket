@@ -173,7 +173,7 @@
     .i-bg {
         position: relative;
         display: inline-block;
-        width: 13px;
+        width: 14px;
         height: 13px;
         top: 1px;
     }
