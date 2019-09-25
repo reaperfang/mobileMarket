@@ -20,7 +20,7 @@
                             <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.value}}</span></p>
                         </div>
                     </div>
-                    <p class="i_title">会员增长趋势：</p>
+                    <p class="i_title">会员增长趋势:</p>
                     <div class="i_line">
                         <el-radio-group v-model="dateTypeM" @change="changeDayM">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
@@ -76,7 +76,7 @@
                                     <p><span class="color_block" style="background-color:#FD4C2B "></span></p>
                                     </el-col>
                                 <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxisData"> 支付 {{item}} 次 </p></el-col>
-                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxisData">{{item}}人</p></el-col>
+                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxisData"{{item}}人</p></el-col>
                             </el-row>
                         </div>
                     </div>
@@ -117,20 +117,20 @@ export default {
          */ 
         getAttributeRatio(){
              let data = {
-        visitSourceType: this.visitSourceType,
-      };
-      this._apis.data.attributeRatio(data).then(response => {
-            this.oneData = response;
-            this.grandTotal = response[0].value + response[1].value
-            let oneArr = response;
-            oneArr.forEach(e => {
-                delete e.ratioValue
-            });
-            this.$refs.ip1.con(oneArr)
-        }).catch(error => {
-          this.$message.error(error);
-        });
-        },
+                 visitSourceType:this.visitSourceType,
+            };
+            this._apis.data.attributeRatio(data).then(response => {
+                    this.oneData = response;
+                    this.grandTotal = response[0].value + response[1].value
+                    let oneArr = response;
+                    oneArr.forEach(e => {
+                        delete e.ratioValue
+                    });
+                    this.$refs.ip1.con(oneArr)
+                }).catch(error => {
+                this.$message.error(error);             
+                });
+         },
         /*  
         **会员增长趋势
          */ 
@@ -156,8 +156,7 @@ export default {
             }else if(val == 1 || val == 2 || val == 3){
                 this.dateTypeM = val
                 this.getMemberTrend()
-            }
-            
+            }            
         },
         changeTimeM(val){
             this.timeM = val
@@ -172,6 +171,7 @@ export default {
                 queryTime: this.timePay,
                 dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay
             }
+            console.log(this._apis.data.paymentTrend)
             this._apis.data.paymentTrend(data).then(response => {
                 this.threeData = response;
                 this.$refs.ip3.con(response)
