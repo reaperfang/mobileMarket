@@ -12,9 +12,26 @@
     >
       <el-table-column type="selection"></el-table-column>
       <el-table-column prop="memberSn" label="客户ID"></el-table-column>
-      <el-table-column prop="nickName" label="客户信息"></el-table-column>
+      <el-table-column label="客户信息">
+        <template slot-scope="scope">
+          <div class="clearfix icon_cont">
+            <span class="fl">{{scope.row.nickName}}</span>
+            <img :src="scope.row.headIcon?scope.row.headIcon:require('../../../../assets/images/client/head_default.png')" alt="" class="headIcon fr">
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="phone" label="手机号"></el-table-column>
-      <el-table-column prop="memberType" label="身份"></el-table-column>
+      <el-table-column label="身份">
+        <template slot-scope="scope">
+          <div class="clearfix iden_cont">
+            <span class="fl">{{scope.row.memberType}}</span>
+            <div class="fr">
+              <span>{{scope.row.levelName}}</span>
+              <span>{{scope.row.cardLevelName}}</span>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="score" label="积分" sortable></el-table-column>
       <el-table-column prop="totalDealMoney" label="累计消费金额" sortable></el-table-column>
       <el-table-column prop="dealTimes" label="购买次数" sortable></el-table-column>
@@ -296,4 +313,41 @@ export default {
 .page_styles{
   text-align: center;
 }
+.icon_cont{
+  width: 115px;
+  span{
+    display: block;
+    width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 36px;
+  }
+  .headIcon{
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+}
+.iden_cont{
+  width: 87px;
+  > span{
+    line-height: 46px;
+  }
+  div{
+    width: 50px;
+    span{
+      display: block;
+      font-size: 12px;
+      height: 20px;
+      overflow: hidden;
+      &:first-child{
+        color: #F55858;
+      }
+      &:last-child{
+        color: #FD932B
+      }
+    }
+  }
+}
+
 </style>

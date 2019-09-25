@@ -119,8 +119,16 @@ export default {
         getEvaluation(idx,pageS){
             this.form.pageSize = pageS;
             this.form.startIndex = idx;
-            this.form.niceRatioRange = 'null' && (this.form.niceRatioRange = null)
             this.form.memberType = 'null' && (this.form.memberType = null)
+            if(this.form.niceRatioRange == '1'){
+                this.form.niceRatioRange = '0-0.01'
+            }else if(this.form.niceRatioRange == '2'){
+                this.form.niceRatioRange = '0.02-0.05'
+            }else if(this.form.niceRatioRange == '3'){
+                this.form.niceRatioRange = '0.05'
+            }else{
+                this.form.niceRatioRange = null
+            }
             if(this.form.badRatioRange == '1'){
                 this.form.badRatioRange = '0-0.01'
             }else if(this.form.badRatioRange == '2'){
@@ -130,19 +138,11 @@ export default {
             }else{
                 this.form.badRatioRange = null
             }
-            // let data ={
-            //     timeType:this.form.timeType,
-            //     startTime:this.form.startTime,
-            //     endTime:this.form.endTime,
-            //     niceRatioRange:this.form.niceRatioRange,
-            //     badRatioRange:this.form.badRatioRange,
-            //     pageSize:this.form.pageSize,
-            //     startIndex:this.form.startIndex,
-            // }
             this._apis.data.evaluation(this.form).then(response => {
                 this.listObj = response;
             })
         },
+
         changeTime(val){
             this.form.startTime = val[0]
             this.form.endTime = val[1]
