@@ -22,7 +22,7 @@
       <el-table-column prop="goodName" label="商品标题">
         <template slot-scope="scope">
           <div class="name_wrapper">
-            <img :src="scope.row.url" alt="" />
+            <img :src="scope.row.goodImg" alt="" />
             <p>{{scope.row.goodName}}</p>
           </div>
         </template>
