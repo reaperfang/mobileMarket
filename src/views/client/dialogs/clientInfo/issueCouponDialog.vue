@@ -39,12 +39,9 @@ export default {
     submit() {
       this._apis.client.distributeCoupon(this.selectList).then((response) => {
         console.log(response);
+        this.$emit('refreshPage');
       }).catch((error) => {
         console.log(error);
-        // this.$notify.error({
-        //   title: '错误',
-        //   message: error
-        // });
       })
     },
     handleAdd() {

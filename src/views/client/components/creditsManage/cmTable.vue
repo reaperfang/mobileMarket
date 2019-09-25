@@ -9,8 +9,11 @@
       v-loading="loading"
       >
       <el-table-column
-        prop="sceneName"
         label="获取积分场景">
+        <template slot-scope="scope">
+          <span>{{scope.row.sceneName}}</span>
+          <span v-if="!!scope.row.redirectUrl" class="yy">应用</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="enable"
@@ -114,16 +117,16 @@ export default {
         let list = response.list;
         let arr = []
         list.map((v,index) => {
-          v.enable = v.enable == 0?'禁用':'启用';
           if(index >= 0 && index < 4) {
+            v.enable = v.enable == 0?'禁用':'启用';
             arr.push(v);
           }
           if(index > 3 && !!v.redirectUrl) {
+            v.enable = '--';
             arr.push(v);
           }
         });
         this.creditList = [].concat(arr);
-        console.log('list',this.creditList);
         this.total = response.total;
       }).catch((error) => {
         this.loading = false;
@@ -154,6 +157,17 @@ export default {
 }
 .page_styles{
   text-align: center;
+}
+.yy{
+  display: inline-block;
+  text-align: center;
+  width: 52px;
+  height: 25px;
+  line-height: 25px;
+  border-radius:4px;
+  border:1px solid rgba(101,94,255,1);
+  color: #655EFF;
+  margin-left: 10px;
 }
 
 </style>

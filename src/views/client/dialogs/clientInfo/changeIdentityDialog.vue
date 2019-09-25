@@ -41,12 +41,9 @@ export default {
                         message: "变更身份成功",
                         type: 'success'
                     });
+                    this.$emit('refreshPage');
                 }).catch((error) => {
                     console.log(error);
-                    // this.$notify.error({
-                    //     title: '错误',
-                    //     message: error
-                    // });
                 })
             }else{
                 this.$notify({

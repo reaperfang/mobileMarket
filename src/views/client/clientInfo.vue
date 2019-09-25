@@ -318,6 +318,7 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "sendCardDialog";
             this.currentData.id = this.userId;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
         },
         showChangeCard() {
             this.hackReset = false;

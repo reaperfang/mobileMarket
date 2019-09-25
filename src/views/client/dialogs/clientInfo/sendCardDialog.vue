@@ -1,7 +1,7 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="发放会员卡" :hasCancel="hasCancel">
         <div class="c_container">
-            <p class="user_id">用户ID：{{data.id}}</p>
+            <p class="user_id">用户ID：{{data.memberSn}}</p>
             <div class="s_cont">
                 <span>发放会员卡：</span>
                 <el-select v-model="selectLevel" style="margin-bottom: 10px">
@@ -41,6 +41,7 @@ export default {
                         message: "发放会员成功",
                         type: 'success'
                     });
+                    this.$emit('refreshPage');
                 }).catch((error) => {
                     console.log(error);
                     // this.$notify.error({

@@ -113,12 +113,6 @@ export default {
             currentData: {}
         }
     },
-    computed:{
-        cid(){
-            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
-            return shopInfo.id
-        }
-    },
     methods: {
         refreshPage() {
             this.getChannels();
@@ -221,6 +215,10 @@ export default {
             if(this.importTime) {
                 return this.importTime[1]
             }
+        },
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
         }
     },
     mounted() {
