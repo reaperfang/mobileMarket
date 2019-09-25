@@ -13,7 +13,8 @@
     </el-form>
     <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange"  v-loading="loading">
          <el-table-column
-          type="selection"  
+          type="selection"
+          :selectable="itemSelectable"
           width="30">
         </el-table-column>
         <el-table-column prop="goodsName" label="标题" :width="300">
@@ -29,11 +30,11 @@
         <el-table-column prop="reductionPrice" label="优惠价"></el-table-column>
         <el-table-column prop="productSpecs" label="规格"></el-table-column>
         <el-table-column prop="remainStock" label="剩余库存"></el-table-column> -->
-        <el-table-column prop="status" label="活动状态">  <!-- 0是未生效  1是生效中 2是已失效-->
+         <el-table-column prop="status" label="状态">  <!-- 0是未生效  1是生效中 2是已失效-->
            <template slot-scope="scope">
-            <span v-if="scope.row.status === 0">未开始</span>
-            <span v-else-if="scope.row.status === 1">开始中</span>
-            <span v-else-if="scope.row.status === 2">已开始</span>
+            <span v-if="scope.row.status === 0">未生效</span>
+            <span v-else-if="scope.row.status === 1">生效中</span>
+            <span v-else-if="scope.row.status === 2">已失效</span>
           </template>
         </el-table-column>
         <el-table-column prop="" label="活动时间" :width="400">
@@ -127,6 +128,12 @@ export default {
     submit() {
       this.$emit('dialogDataSelected',  this.multipleSelection);
     },
+
+    itemSelectable(row, index) {
+      if(row.status !== 2) {
+        return true;
+      }
+    }
   }
 };
 </script>
