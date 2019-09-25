@@ -120,7 +120,7 @@ export default {
       },
       editor() {
         let expressCompanyCode = this.ruleForm.expressCompanyCode
-        let expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCode).expressCompany
+        let expressCompany = this.expressCompanyList.find(val => val.expressCode == expressCompanyCode).expressCompany
 
         this.ruleForm.expressCompany = expressCompany
         this._apis.order
@@ -143,7 +143,7 @@ export default {
       },
       add() {
         let expressCompanyCode = this.ruleForm.expressCompanyCode
-        let expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCode).expressCompany
+        let expressCompany = this.expressCompanyList.find(val => val.expressCode == expressCompanyCode).expressCompany
 
         this.ruleForm.expressCompany = expressCompany
         this._apis.order
