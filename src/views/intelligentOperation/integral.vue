@@ -45,7 +45,7 @@
                 </el-form-item>
             </el-form>
             <div class="m_line clearfix">
-                <p class="fl">该筛选条件下：会员共计<span>{{memberCount}}</span>人；占会员总数的<span>{{ratio}}%</span>
+                <p class="fl">该筛选条件下：会员共计<span>{{memberCount}}</span>人；占会员总数的<span>{{(ratio*100).toFixed(2)}}%</span>
                 <div class="fr marT20">
                     <el-button class="minor_btn" @click="reScreening()">重新筛选</el-button>
                     <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl">导出</el-button>
@@ -165,6 +165,7 @@ export default {
         //查询
         goSearch(){
             let memberType = this.form.memberType;
+            this.form.scorePaymentCountRange == 'null' && (this.form.scorePaymentCountRange = null)
             this._apis.data.integralconsumption(this.form).then(res => {
                 this.memberCount = res.memberCount;
                 this.ratio = res.ratio;

@@ -68,7 +68,7 @@
                 <p class="fl">该筛选条件下：
                     <i v-if="form.memberType== null" style="font-style:normal">
                         全部会员共计<span>{{customerCount + newMemberCount + oldMemberCount || 0}}</span>人；
-                        占会员总数的<span>{{(customerRatio + newMemberRatio + oldMemberRatio)*100 || 0}}%</span>;    
+                        占会员总数的<span>{{customerRatio*100 + newMemberRatio*100 + oldMemberRatio*100 || 0}}%</span>;    
                     </i>
                     <i v-if="form.memberType==0" style="font-style:normal">
                         非会员共计<span>{{customerCount || 0}}</span>人；
@@ -227,21 +227,28 @@ export default {
                 this.repeatPaymentRatio = res.repeatPaymentRatio;
                 this.listObj = res; //信息列表数据
                 this.totalCount = res.totalPage * this.form.pageSize;
-                if(memberType == 1){ //新会员
-                    this.textTips = true;
-                    this.newMemberCount = res.newMemberCount;
-                    this.newMemberRatio = res.newMemberRatio;
-                }else if(memberType == 2){ //老会员
-                    this.textTips = true;
-                    this.oldMemberCount = res.oldMemberCount;
-                    this.oldMemberRatio = res.oldMemberRatio;
-                }else if(memberType == 0){ //非会员
-                    this.textTips = true;
-                    this.customerCount = res.customerCount;
-                    this.customerRatio = res.customerRatio;
-                }else{ //其他
-                    this.textTips = false;
-                }
+                this.textTips = true;
+                this.newMemberCount = res.newMemberCount;
+                this.newMemberRatio = res.newMemberRatio;
+                this.oldMemberCount = res.oldMemberCount;
+                this.oldMemberRatio = res.oldMemberRatio;
+                this.customerCount = res.customerCount;
+                this.customerRatio = res.customerRatio;
+                // if(memberType == 1){ //新会员
+                //     this.textTips = true;
+                //     this.newMemberCount = res.newMemberCount;
+                //     this.newMemberRatio = res.newMemberRatio;
+                // }else if(memberType == 2){ //老会员
+                //     this.textTips = true;
+                //     this.oldMemberCount = res.oldMemberCount;
+                //     this.oldMemberRatio = res.oldMemberRatio;
+                // }else if(memberType == 0){ //非会员
+                //     this.textTips = true;
+                //     this.customerCount = res.customerCount;
+                //     this.customerRatio = res.customerRatio;
+                // }else{ //其他
+                //     this.textTips = false;
+                // }
             }).catch(error => {
                 this.$message.error(error);
             });
