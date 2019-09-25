@@ -7,7 +7,8 @@ export default [
         name: 'intelligentOperation',
         meta: {
         title: '运营',
-        icon: 'icon_opera'
+        icon: 'icon_opera',
+        activeIcon:'icon_operas'
         },
         children: [
             {
