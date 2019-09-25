@@ -552,6 +552,16 @@ export function orderSendInfoImportAfterSaleBatchDelever(data) {
   })
 }
 
+ //修改发货地址
+ export function fetchOrderAddress(data) {
+  return request({
+    target: 'SHOP-API-100-PROCESSOR',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
  //电子面单 获取快递公司
  export function getElectronicFaceSheetExpressCompanyList(data) {
   return request({
