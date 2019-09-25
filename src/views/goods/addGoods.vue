@@ -1413,6 +1413,10 @@ $blue: #655EFF;
     color: #f56c6c;
     margin-right: 4px;
 }
+.autoSaleTime {
+    font-size: 12px;
+    margin-left: 10px;
+}
 </style>
 
 

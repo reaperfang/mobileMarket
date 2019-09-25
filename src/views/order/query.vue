@@ -65,7 +65,7 @@
           </el-select>
           <el-date-picker
             v-model="listQuery.orderTimeValue"
-            type="daterange"
+            type="datetimerange"
             range-separator="-"
             value-format="yyyy-MM-dd hh:mm:ss"
             start-placeholder="开始日期"
