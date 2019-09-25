@@ -49,9 +49,9 @@
                             <div class="input_wrap2 marR20">
                                 <el-select v-model="form.memberType">
                                     <el-option label="全部" value="null"></el-option>
-                                    <el-option label="非会员" value="1"></el-option>
-                                    <el-option label="新会员" value="2"></el-option>
-                                    <el-option label="老会员" value="3"></el-option>
+                                    <el-option label="非会员" value="0"></el-option>
+                                    <el-option label="新会员" value="1"></el-option>
+                                    <el-option label="老会员" value="2"></el-option>
                                 </el-select>
                             </div>
                             <el-button class="minor_btn" icon="el-icon-search" @click="getRightsProtection()">查询</el-button>
@@ -118,6 +118,9 @@ export default {
         getRightsProtection(idx,pageS){
             this.form.pageSize = pageS;
             this.form.startIndex = idx;
+            this.form.protectionType == 'null' && (this.form.protectionType = null)
+            this.form.ProtectionReason == 'null' && (this.form.ProtectionReason = null)
+            this.form.memberType == 'null' && (this.form.memberType = null)
             // let data ={
             //     timeType:this.form.timeType,
             //     startTime:this.form.startTime,

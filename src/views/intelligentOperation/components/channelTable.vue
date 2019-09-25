@@ -18,7 +18,7 @@
                 align="center"
             >
             <template slot-scope="scope">
-                <span>{{ scope.row.channelName ? scope.row.channelName : '直接购买' }}</span>
+                <span>{{ scope.row.chanelName ? scope.row.chanelName : '直接购买' }}</span>
             </template>
             </el-table-column>
             <el-table-column
@@ -64,7 +64,6 @@ export default {
         };
     },
     created() {
-
     },
     methods: {
         //更改每页条数
