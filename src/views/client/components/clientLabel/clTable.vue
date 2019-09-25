@@ -23,7 +23,8 @@
       </el-table-column>
       <el-table-column label="包含人数">
         <template slot-scope="scope">
-            <span class="edit_span" @click="_routeTo('allClient', {memberLabels: scope.row.id})">{{scope.row.labelContains}}</span>
+            <span class="edit_span" @click="_routeTo('allClient', {memberLabels: scope.row.id})" v-if="scope.row.labelContains !== 0">{{scope.row.labelContains}}</span>
+            <span class="edit_span" v-else style="color:#000">{{scope.row.labelContains}}</span>
         </template>
       </el-table-column>
       <el-table-column

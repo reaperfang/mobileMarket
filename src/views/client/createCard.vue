@@ -644,6 +644,7 @@ export default {
                 obj.levelType = 1;
                 obj.giftName = v.name;
                 obj.giftProduct = v.id;
+                obj.giftNumber = 1;
                 obj.label = "赠送红包";
                 upgradeRewardDtoList.push(obj);
               });
@@ -724,10 +725,6 @@ export default {
             })
             .catch(error => {
               console.log(error);
-              // this.$notify.error({
-              //   title: "错误",
-              //   message: error
-              // });
             });
         }
       }
@@ -736,15 +733,10 @@ export default {
       this._apis.client
         .getColorUrl({})
         .then(response => {
-          //localStorage.setItem('colorUrl',JSON.stringify(response));
           this.colors = [].concat(response);
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     getCardPublic() {
