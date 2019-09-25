@@ -38,7 +38,7 @@
                                 <el-button size="small" type="primary">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">支持文件格式：.csv .xsl ，单个文件不能超过10M</div>
                             </el-upload>
-                            <el-button class="download_btn">下载导入模板</el-button>
+                            <el-button class="download_btn" @click="handleDownload">下载导入模板</el-button>
                         </div>
                     </el-form-item>
                 </el-form>
@@ -114,6 +114,9 @@ export default {
         }
     },
     methods: {
+        handleDownload() {
+            window.location.href = "https://test-omo.aiyouyi.cn/web-file/0/excel/2e9cd/33383f6acc0044fb8a1299ee991bcd6b.xlsx";
+        },
         refreshPage() {
             this.getChannels();
         },
