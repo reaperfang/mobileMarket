@@ -76,23 +76,23 @@ export default {
       if(!!row.redirectUrl) {
         window.location.href=row.redirectUrl;
       }else{
-        switch(row.sceneName) {
-          case '登陆': 
+        switch(row.sceneEn) {
+          case 'Login': 
             this.dialogVisible = true;
             this.currentDialog = "loginRegularDialog";
             this.currentData.row = row;
             break;
-          case '购买': 
+          case 'Buy': 
             this.dialogVisible = true;
             this.currentDialog = "buyRegularDialog";
             this.currentData.row = row;
             break;
-          case '复购': 
+          case 'RepeatBuy': 
             this.dialogVisible = true;
             this.currentDialog = "repurchaseRegularDialog";
             this.currentData.row = row;
             break;
-          case '评价': 
+          case 'Comment': 
             this.dialogVisible = true;
             this.currentDialog = "praiseRegularDialog";
             this.currentData.row = row;
@@ -117,16 +117,13 @@ export default {
         let list = response.list;
         let arr = []
         list.map((v,index) => {
-          if(index >= 0 && index < 4) {
-            v.enable = v.enable == 0?'禁用':'启用';
-            arr.push(v);
-          }
-          if(index > 3 && !!v.redirectUrl) {
+          if(!!v.redirectUrl) {
             v.enable = '--';
-            arr.push(v);
+          }else{
+            v.enable = v.enable == 0?'禁用':'启用';
           }
         });
-        this.creditList = [].concat(arr);
+        this.creditList = [].concat(list);
         this.total = response.total;
       }).catch((error) => {
         this.loading = false;
