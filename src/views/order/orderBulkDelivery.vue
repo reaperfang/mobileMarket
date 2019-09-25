@@ -64,14 +64,19 @@
                   </div>
                   <div class="col">
                     <el-form :model="item" label-width="100px" class="demo-ruleForm">
-                        <el-form-item label="快递公司" prop="expressCompanys">
-                            <el-select v-model="item.expressCompanyCodes" placeholder="请选择">
-                                <el-option :label="item.expressCompany" :value="item.expressCompanyCode" v-for="(item, index) in expressCompanyList" :key="index"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="快递单号" prop="expressNos">
-                            <el-input v-model="item.expressNos"></el-input>
-                        </el-form-item>
+                      <el-form-item label="快递公司" prop="expressCompanys">
+                        <el-select v-model="item.expressCompanyCodes" placeholder="请选择">
+                          <el-option
+                            :label="item.expressCompany"
+                            :value="item.expressCompanyCode"
+                            v-for="(item, index) in expressCompanyList"
+                            :key="index"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="快递单号" prop="expressNos">
+                        <el-input v-model="item.expressNos"></el-input>
+                      </el-form-item>
                     </el-form>
                   </div>
                 </div>
@@ -109,186 +114,231 @@
         </div>
       </section>
       <div class="footer">
-          <el-button @click="sendGoodsHandler" type="primary">批量发货</el-button>
+        <el-button @click="sendGoodsHandler" type="primary">批量发货</el-button>
       </div>
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @submit="onSubmit" :sendGoods="sendGoods" :title="title"></component>
+    <component
+      :is="currentDialog"
+      :dialogVisible.sync="dialogVisible"
+      :data="currentData"
+      @submit="onSubmit"
+      :sendGoods="sendGoods"
+      :title="title"
+    ></component>
   </div>
 </template>
 <script>
-import ReceiveInformationDialog from '@/views/order/dialogs/receiveInformationDialog'
+import ReceiveInformationDialog from "@/views/order/dialogs/receiveInformationDialog";
 
 export default {
   data() {
     return {
-      list: [
-
-      ],
-      currentDialog: '',
+      list: [],
+      currentDialog: "",
       dialogVisible: false,
-      currentData: '',
-      sendGoods: '',
-      title: '',
-      expressCompanyList: [],
+      currentData: "",
+      sendGoods: "",
+      title: "",
+      expressCompanyList: []
     };
   },
   created() {
     this.getDetail();
-    this.getExpressCompanyList()
+    this.getExpressCompanyList();
   },
   filters: {
     goodsSpecsFilter(value) {
-            let _value
-            if(!value) return ''
-            if(typeof value == 'string') {
-                _value = JSON.parse(value)
-            }
-            let str = ''
-            for(let i in _value) {
-                if(_value.hasOwnProperty(i)) {
-                    str += i + ':'
-                    str += _value[i] + ','
-                }
-            }
-
-            return str
+      let _value;
+      if (!value) return "";
+      if (typeof value == "string") {
+        _value = JSON.parse(value);
+      }
+      let str = "";
+      for (let i in _value) {
+        if (_value.hasOwnProperty(i)) {
+          str += i + ":";
+          str += _value[i] + ",";
         }
+      }
+
+      return str;
+    }
   },
   methods: {
     changeAll(item) {
-      item.checked = !item.checked
+      item.checked = !item.checked;
 
-      if(item.checked) {
+      if (item.checked) {
         item.orderItemList.forEach(val => {
-          val.checked = true
-        })
+          val.checked = true;
+        });
       } else {
         item.orderItemList.forEach(val => {
-          val.checked = false
-        })
+          val.checked = false;
+        });
       }
     },
-      sendGoodsHandler() {
-          try {
-              let params
+    sendGoodsHandler() {
+      try {
+        let params;
 
-            params = {
-                sendInfoDtoList: this.list.map(item => {
-                    let expressCompanys = ''
-                    console.log(this.expressCompanyList)
-                    if(this.expressCompanyList.find(val => val.expressCompanyCode == item.expressCompanyCodes)) {
-                        expressCompanys = this.expressCompanyList.find(val => val.expressCompanyCode == item.expressCompanyCodes).expressCompany
-                    }
-
-                    return {
-                        orderId: item.orderId,
-                        memberInfoId: item.memberInfoId,
-                        orderCode: item.orderCode,
-                        orderItems: item.orderItemList.filter(val => val.checked),
-                        id: item.id,
-                        memberSn: item.memberSn,
-                        receivedName: item.receivedName,
-                        receivedPhone: item.receivedPhone,
-                        receivedProvinceCode: item.receivedProvinceCode,
-                        receivedProvinceName: item.receivedProvinceName,
-                        receivedCityCode: item.receivedCityCode,
-                        receivedCityName: item.receivedCityName,
-                        receivedAreaCode: item.receivedAreaCode,
-                        receivedAreaName: item.receivedAreaName,
-                        receivedDetail: item.receivedDetail,
-                        sendName: item.sendName,
-                        sendPhone: item.sendPhone,
-                        sendProvinceCode: item.sendProvinceCode,
-                        sendProvinceName: item.sendProvinceName,
-                        sendCityCode: item.sendCityCode,
-                        sendCityName: item.sendCityName,
-                        sendAreaCode: item.sendAreaCode,
-                        sendAreaName: item.sendAreaName,
-                        sendDetail: item.sendDetail,
-                        expressCompanys: expressCompanys,
-                        expressNos: item.expressNos,
-                        expressCompanyCodes: item.expressCompanyCodes,
-                        remark: item.remark,
-                    }
-                })
+        params = {
+          sendInfoDtoList: this.list.map(item => {
+            let expressCompanys = "";
+            console.log(this.expressCompanyList);
+            if (
+              this.expressCompanyList.find(
+                val => val.expressCompanyCode == item.expressCompanyCodes
+              )
+            ) {
+              expressCompanys = this.expressCompanyList.find(
+                val => val.expressCompanyCode == item.expressCompanyCodes
+              ).expressCompany;
             }
-            this._apis.order.orderSendGoods(params).then((res) => {
-                this.$notify({
-                    title: '成功',
-                    message: '发货成功',
-                    type: 'success'
-                });
-                this.$router.push('/order/deliverGoodsSuccess?ids=' + this.list.map(val => val.id).join(',') + '&type=orderBulkDelivery')
-            }).catch(error => {
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
-            })
-          }catch(e) {
-              console.error(e)
-          }
-        },
-      select(index, i) {
-          try {
-              let _list = JSON.parse(JSON.stringify(this.list))
 
-              _list[index].orderItemList[i].checked = !_list[index].orderItemList[i].checked
-
-              this.list = _list
-
-              if(this.list[index].orderItemList.filter(val => val.checked).length == this.list[index].orderItemList.length) {
-                this.list[index].checked = true
-              } else {
-                this.list[index].checked = false
-              }
-          }catch(e) {
-
-          }
-      },
-      getExpressCompanyList() {
-        this._apis.order.fetchExpressCompanyList().then((res) => {
-            this.expressCompanyList = res
-        }).catch(error => {
-            this.visible = false
-            this.$notify.error({
-                title: '错误',
-                message: error
-            });
-        })
-    },
-      onSubmit(value) {
-          let _list = JSON.parse(JSON.stringify(this.list))
-
-          _list.forEach((val, index) => {
-            _list[index] = Object.assign({}, val, value)
+            return {
+              orderId: item.orderId,
+              memberInfoId: item.memberInfoId,
+              orderCode: item.orderCode,
+              orderItems: item.orderItemList.filter(val => val.checked),
+              id: item.id,
+              memberSn: item.memberSn,
+              receivedName: item.receivedName,
+              receivedPhone: item.receivedPhone,
+              receivedProvinceCode: item.receivedProvinceCode,
+              receivedProvinceName: item.receivedProvinceName,
+              receivedCityCode: item.receivedCityCode,
+              receivedCityName: item.receivedCityName,
+              receivedAreaCode: item.receivedAreaCode,
+              receivedAreaName: item.receivedAreaName,
+              receivedDetail: item.receivedDetail,
+              sendName: item.sendName,
+              sendPhone: item.sendPhone,
+              sendProvinceCode: item.sendProvinceCode,
+              sendProvinceName: item.sendProvinceName,
+              sendCityCode: item.sendCityCode,
+              sendCityName: item.sendCityName,
+              sendAreaCode: item.sendAreaCode,
+              sendAreaName: item.sendAreaName,
+              sendDetail: item.sendDetail,
+              expressCompanys: expressCompanys,
+              expressNos: item.expressNos,
+              expressCompanyCodes: item.expressCompanyCodes,
+              remark: item.remark
+            };
           })
+        };
+        this._apis.order
+          .orderSendGoods(params)
+          .then(res => {
+            this.$notify({
+              title: "成功",
+              message: "发货成功",
+              type: "success"
+            });
+            this.$router.push(
+              "/order/deliverGoodsSuccess?ids=" +
+                this.list.map(val => val.id).join(",") +
+                "&type=orderBulkDelivery"
+            );
+          })
+          .catch(error => {
+            this.$notify.error({
+              title: "错误",
+              message: error
+            });
+          });
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    select(index, i) {
+      try {
+        let _list = JSON.parse(JSON.stringify(this.list));
 
-          this.list = _list
-      },
-      changeSendInfo() {
-            this.currentDialog = 'ReceiveInformationDialog'
-            this.currentData = this.list[0]
-            this.isReceived = false
-            this.title = '修改发货信息'
-            this.sendGoods = 'send'
-            this.dialogVisible = true
-        },
+        _list[index].orderItemList[i].checked = !_list[index].orderItemList[i]
+          .checked;
+
+        this.list = _list;
+
+        if (
+          this.list[index].orderItemList.filter(val => val.checked).length ==
+          this.list[index].orderItemList.length
+        ) {
+          this.list[index].checked = true;
+        } else {
+          this.list[index].checked = false;
+        }
+      } catch (e) {}
+    },
+    getExpressCompanyList() {
+      this._apis.order
+        .fetchExpressCompanyList()
+        .then(res => {
+          this.expressCompanyList = res;
+        })
+        .catch(error => {
+          this.visible = false;
+          this.$notify.error({
+            title: "错误",
+            message: error
+          });
+        });
+    },
+    onSubmit(value) {
+      let _list = JSON.parse(JSON.stringify(this.list));
+
+      _list.forEach((val, index) => {
+        _list[index] = Object.assign({}, val, value);
+      });
+
+      this.list = _list;
+    },
+    changeSendInfo() {
+      this.currentDialog = "ReceiveInformationDialog";
+      this.currentData = this.list[0];
+      this.isReceived = false;
+      this.title = "修改发货信息";
+      this.sendGoods = "send";
+      this.dialogVisible = true;
+    },
     getDetail() {
       this._apis.order
         .orderSendDetail({
           ids: this.$route.query.ids.split(",").map(val => +val)
         })
         .then(res => {
-          console.log(res)
+          console.log(res);
           res.forEach(val => {
-              val.checked = false
-              val.expressNos = ''
-              val.orderItemList.forEach(goods => {
-                  goods.checked = false
-              })
-          })
+            val.checked = false;
+            val.expressNos = "";
+            val.orderItemList.forEach(goods => {
+              goods.checked = false;
+            });
+          });
           this.list = res;
+          this._apis.order
+            .fetchOrderAddress({ id: this.cid, cid: this.cid })
+            .then(response => {
+              this.list.forEach(res => {
+                res.sendName = response.senderName
+                res.sendPhone = response.senderPhone
+                res.sendProvinceCode = response.provinceCode
+                res.sendProvinceName = response.province
+                res.sendCityCode = response.cityCode
+                res.sendCityName = response.city
+                res.sendAreaCode = response.areaCode
+                res.sendAreaName = response.area
+                res.sendDetail = response.address
+              })
+            })
+            .catch(error => {
+              this.visible = false;
+              this.$notify.error({
+                title: "错误",
+                message: error
+              });
+            });
         })
         .catch(error => {
           this.visible = false;
@@ -300,7 +350,7 @@ export default {
     }
   },
   components: {
-      ReceiveInformationDialog
+    ReceiveInformationDialog
   }
 };
 </script>
@@ -348,7 +398,8 @@ export default {
             display: inline-block;
             width: 20px;
             height: 20px;
-            background: url(../../assets/images/order/checkbox-checked.png) no-repeat;
+            background: url(../../assets/images/order/checkbox-checked.png)
+              no-repeat;
           }
           .row-margin > .col {
             margin-right: 25px;
@@ -362,35 +413,35 @@ export default {
   }
 
   .table-title {
-  background:#ebeafa;
-  color:#655EFF;
-  height: 46px;
-  padding-left: 15px;
-}
-.table-container {
-  padding-left: 15px;
-  padding-top: 20px;
-  .col:first-child {
-    margin-right: 40px;
+    background: #ebeafa;
+    color: #655eff;
+    height: 46px;
+    padding-left: 15px;
   }
-}
-.goodsItem {
-  padding-bottom: 44px;
-  padding-top: 20px;
-  border-bottom: 1px solid #d3d7d4;
-  &:last-child {
-    border: none;
-    padding-bottom: 0;
+  .table-container {
+    padding-left: 15px;
+    padding-top: 20px;
+    .col:first-child {
+      margin-right: 40px;
+    }
   }
-}
-.goods-specs {
-  color: #9FA29F;
-  margin-top: 10px;
-  font-size: 12px;
-}
-.footer {
-  text-align: center;
-}
+  .goodsItem {
+    padding-bottom: 44px;
+    padding-top: 20px;
+    border-bottom: 1px solid #d3d7d4;
+    &:last-child {
+      border: none;
+      padding-bottom: 0;
+    }
+  }
+  .goods-specs {
+    color: #9fa29f;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  .footer {
+    text-align: center;
+  }
 }
 .container-item {
   margin-top: 20px;
