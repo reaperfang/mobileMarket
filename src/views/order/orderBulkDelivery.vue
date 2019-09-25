@@ -146,6 +146,12 @@ export default {
     this.getDetail();
     this.getExpressCompanyList();
   },
+  computed: {
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
+        }
+    },
   filters: {
     goodsSpecsFilter(value) {
       let _value;
