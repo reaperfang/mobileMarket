@@ -216,7 +216,7 @@ export default {
             if((this.lowprice != '' && this.highprice == '' ) || (this.lowprice == '' && this.highprice != '' )){
                 this.$message.warning('最低金额于最高金额需要同时输入')
                 return
-            }else if(this.lowprice > this.highprice){
+            }else if(this.lowprice - this.highprice > 0){
                 this.$message.warning('最高金额不能低于最低金额')
                 return
             }else if(this.lowprice&&this.highprice){

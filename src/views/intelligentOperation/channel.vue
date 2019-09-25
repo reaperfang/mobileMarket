@@ -126,9 +126,11 @@ export default {
         },
         //查询
         goSearch(){
+            this.form.channel == 'null' && (this.form.channel = null)
+            this.form.changeRatioRange == 'null' && (this.form.changeRatioRange = null)
             this._apis.data.channelConversion(this.form).then(response => {
                 this.listObj = response;
-                console.log(this.listObj.totalSize)
+                // console.log(this.listObj.totalSize)
             })
         },
         // 重置
