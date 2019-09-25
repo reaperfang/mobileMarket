@@ -78,7 +78,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="orderInfoCode"
+                    prop="orderCode"
                     label="订单编号"
                     width="120">
                 </el-table-column>
@@ -351,17 +351,20 @@ export default {
             this._apis.order.orderAfterSaleUpdateStatus({id: row.id, orderAfterSaleStatus: 1}).then((res) => {
                 console.log(res)
                 this.getList()
-                // this.$notify({
-                //     title: '成功',
-                //     message: '审核成功！',
-                //     type: 'success'
-                // });
                 // this.confirm({title: '换货确认', icon: true, text: `是否确认${_title}？`}).then(() => {
                     
                 // })
-                this.currentDialog = 'ExchangeGoodsDialog'
-                this.currentData = row
-                this.dialogVisible = true
+                if(row.type == 2) {
+                    this.currentDialog = 'ExchangeGoodsDialog'
+                    this.currentData = row
+                    this.dialogVisible = true
+                } else {
+                    this.$notify({
+                        title: '成功',
+                        message: '审核成功！',
+                        type: 'success'
+                    });
+                }
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
