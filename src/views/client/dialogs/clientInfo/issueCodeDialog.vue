@@ -38,6 +38,7 @@ export default {
   methods: {
     submit() {
       this._apis.client.distributeCoupon(this.selectList).then((response) => {
+        this.$emit('refreshPage');
         console.log(response);
       }).catch((error) => {
         console.log(error);

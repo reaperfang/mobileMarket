@@ -9,7 +9,8 @@
       <ul>
         <li :class="{active: index == current}" @click="menuHandler(index)" v-if="!item.hidden && item.children" 
           v-for="(item, index) in permission_routers_tree">
-          <i class="icons" :class="{[item.meta.icon]: true}"></i>
+          <i v-if="index != current" class="icons" :class="{[item.meta.icon]: true}"></i>
+          <i v-else class="icons" :class="{[item.meta.activeIcon]: true}"></i>
           <template v-if="!item.iframe">
             <span class="ellipsis">{{item.meta.title}}</span>
           </template>
@@ -203,40 +204,80 @@ export default {
     background: url('../../assets/images/icons/profile.png') no-repeat;
     background-size: cover;
   }
+  .icon_profiles{
+    background: url('../../assets/images/icons/profiles.png') no-repeat;
+    background-size: cover;
+  }
   .icon_shop{
     background: url('../../assets/images/icons/shop.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_shops{
+    background: url('../../assets/images/icons/shops.png') no-repeat;
     background-size: cover;
   }
   .icon_goods{
     background: url('../../assets/images/icons/goods.png') no-repeat;
     background-size: cover;
   }
+  .icon_goodss{
+    background: url('../../assets/images/icons/goodss.png') no-repeat;
+    background-size: cover;
+  }
   .icon_order{
     background: url('../../assets/images/icons/order.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_orders{
+    background: url('../../assets/images/icons/orders.png') no-repeat;
     background-size: cover;
   }
   .icon_client{
     background: url('../../assets/images/icons/client.png') no-repeat;
     background-size: cover;
   }
+  .icon_clients{
+    background: url('../../assets/images/icons/clients.png') no-repeat;
+    background-size: cover;
+  }
   .icon_datum{
     background: url('../../assets/images/icons/datum.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_datums{
+    background: url('../../assets/images/icons/datums.png') no-repeat;
     background-size: cover;
   }
   .icon_opera{
     background: url('../../assets/images/icons/opera.png') no-repeat;
     background-size: cover;
   }
+  .icon_operas{
+    background: url('../../assets/images/icons/operas.png') no-repeat;
+    background-size: cover;
+  }
   .icon_finance{
     background: url('../../assets/images/icons/finance.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_finances{
+    background: url('../../assets/images/icons/finances.png') no-repeat;
     background-size: cover;
   }
   .icon_apply{
     background: url('../../assets/images/icons/apply.png') no-repeat;
     background-size: cover;
   }
+  .icon_applys{
+    background: url('../../assets/images/icons/applys.png') no-repeat;
+    background-size: cover;
+  }
   .icon_set{
     background: url('../../assets/images/icons/set.png') no-repeat;
+    background-size: cover;
+  }
+  .icon_sets{
+    background: url('../../assets/images/icons/sets.png') no-repeat;
     background-size: cover;
   }
 </style>

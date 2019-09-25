@@ -9,8 +9,11 @@
       v-loading="loading"
       >
       <el-table-column
-        prop="sceneName"
         label="获取积分场景">
+        <template slot-scope="scope">
+          <span>{{scope.row.sceneName}}</span>
+          <span v-if="!!scope.row.redirectUrl" class="yy">应用</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="enable"
@@ -73,23 +76,23 @@ export default {
       if(!!row.redirectUrl) {
         window.location.href=row.redirectUrl;
       }else{
-        switch(row.sceneName) {
-          case '登陆': 
+        switch(row.sceneEn) {
+          case 'Login': 
             this.dialogVisible = true;
             this.currentDialog = "loginRegularDialog";
             this.currentData.row = row;
             break;
-          case '购买': 
+          case 'Buy': 
             this.dialogVisible = true;
             this.currentDialog = "buyRegularDialog";
             this.currentData.row = row;
             break;
-          case '复购': 
+          case 'RepeatBuy': 
             this.dialogVisible = true;
             this.currentDialog = "repurchaseRegularDialog";
             this.currentData.row = row;
             break;
-          case '评价': 
+          case 'Comment': 
             this.dialogVisible = true;
             this.currentDialog = "praiseRegularDialog";
             this.currentData.row = row;
@@ -111,18 +114,16 @@ export default {
       this.loading = true;
       this._apis.client.getCreditList({startIndex:startIndex, pageSize: pageSize}).then((response) => {
         this.loading = false;
+        let list = response.list;
         let arr = []
-        response.list.map((v,index) => {
-          v.enable = v.enable == 0?'禁用':'启用';
-          if(index >= 0 && index < 4) {
-            arr.push(v);
-          }
-          if(index > 3 && !!v.redirectUrl) {
-            arr.push(v);
+        list.map((v,index) => {
+          if(!!v.redirectUrl) {
+            v.enable = '--';
+          }else{
+            v.enable = v.enable == 0?'禁用':'启用';
           }
         });
-        this.creditList = [].concat(arr);
-        console.log('ddd',this.creditList);
+        this.creditList = [].concat(list);
         this.total = response.total;
       }).catch((error) => {
         this.loading = false;
@@ -153,6 +154,17 @@ export default {
 }
 .page_styles{
   text-align: center;
+}
+.yy{
+  display: inline-block;
+  text-align: center;
+  width: 52px;
+  height: 25px;
+  line-height: 25px;
+  border-radius:4px;
+  border:1px solid rgba(101,94,255,1);
+  color: #655EFF;
+  margin-left: 10px;
 }
 
 </style>

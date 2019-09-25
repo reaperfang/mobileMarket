@@ -318,6 +318,7 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "sendCardDialog";
             this.currentData.id = this.userId;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
         },
         showChangeCard() {
             this.hackReset = false;
@@ -345,10 +346,6 @@ export default {
                 this.allCoupons = [].concat(response.list);
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         getAllCodes() {
@@ -356,10 +353,6 @@ export default {
                 this.allCodes = [].concat(response.list);
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         getMemberInfo() {
@@ -434,13 +427,8 @@ export default {
                 })
             }
         },
-        getUsedCoupon(status) {
-            let params;
-            if(status == 2) {
-                params = {usedType:"1", couponType: "0", memberId: "1", usedStatus: ""};
-            }else{
-                params = {usedType:"1", couponType: "0", memberId: "1", usedStatus: status};
-            }
+        getUsedCoupon() {
+            let params = {usedType:"1", couponType: "0", memberId: "1"};
             this._apis.client.getUsedCoupon(params).then((response) => {
                 response.map((v) => {
                     this.couponList.push(v.appCoupon);

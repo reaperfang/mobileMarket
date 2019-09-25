@@ -262,6 +262,16 @@ export function getSPUGoodsList(data) {
   })
 }
 
+// 转移商品
+export function transferGoods(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-TRANSFER-PROCESSOR',
+    data
+  })
+}
+
 
 
 

@@ -296,7 +296,7 @@ export function editorElectronicFaceSheet(data) {
   return request({
     apiType: 'order',
     method: 'post',
-    target: 'EDIT-EXPRESS-ELECTRONIC-SHEET',
+    target: 'EDIT-EXPRESS-ELECTRONIC-SHEET-PROCESSOR',
     data
   })
 }
@@ -546,6 +546,16 @@ export function orderSendInfoImportAfterSaleBatchDelever(data) {
   return request({
     //token: '09255c7724fe9b8df952aa2f7e3ec718768b8ae62e74d1ef2214c0aead86a36b',
     target: 'SHOP-API-102-PROCESSOR',
+    method: 'post',
+    apiType: 'manager',
+    data
+  })
+}
+
+ //修改发货地址
+ export function fetchOrderAddress(data) {
+  return request({
+    target: 'SHOP-API-100-PROCESSOR',
     method: 'post',
     apiType: 'manager',
     data
