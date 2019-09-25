@@ -296,7 +296,7 @@ export function editorElectronicFaceSheet(data) {
   return request({
     apiType: 'order',
     method: 'post',
-    target: 'EDIT-EXPRESS-ELECTRONIC-SHEET',
+    target: 'EDIT-EXPRESS-ELECTRONIC-SHEET-PROCESSOR',
     data
   })
 }
