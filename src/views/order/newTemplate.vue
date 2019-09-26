@@ -99,7 +99,7 @@
         </div>-->
       </div>
       <div class="footer">
-        <el-button>取 消</el-button>
+        <el-button @click="$router.go(-1)">取 消</el-button>
         <el-button @click="submit" type="primary">确 定</el-button>
       </div>
     </section>
