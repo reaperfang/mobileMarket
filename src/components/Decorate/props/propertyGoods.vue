@@ -136,6 +136,7 @@ import propertyMixin from '../mixins/mixinProps';
 import DialogBase from "@/components/DialogBase";
 import dialogSelectGoods from '@/views/shop/dialogs/dialogSelectGoods';
 import goodsGroup from '@/views/shop/dialogs/jumpLists/goodsGroup';
+import GOODS_LIST from '@/assets/json/goodsList.json'; 
 export default {
   name: 'propertyGoods',
   mixins: [propertyMixin],
@@ -163,7 +164,7 @@ export default {
       rules: {
 
       },
-      list: [],
+      list: this.$route.path.indexOf('templateEdit') > -1 ? GOODS_LIST: [],
       dialogVisible: false,
       currentDialog: '',
       seletedGroup: null,   //临时选中的商品分类
@@ -225,11 +226,15 @@ export default {
                     }else if(Array.isArray(ids) && ids.length){
                         params = this.setNormalGoodsParams(ids);
                     }else{
+                      if(this.$route.path.indexOf('templateEdit') < 0) {
                         this.list = [];
+                      }
                         return;
                     }
                 }else{
-                    this.list = [];
+                     if(this.$route.path.indexOf('templateEdit') < 0) {
+                        this.list = [];
+                      }
                     return;
                 }
             }else if(componentData.source === 2){
@@ -249,7 +254,9 @@ export default {
                 //     message: error
                 // });
                 console.error(error);
-                this.list = [];
+                 if(this.$route.path.indexOf('templateEdit') < 0) {
+                        this.list = [];
+                      }
                 this.loading = false;
             });
         }

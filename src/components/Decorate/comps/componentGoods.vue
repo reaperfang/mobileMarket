@@ -26,6 +26,7 @@
 <script>
 import componentButton from './componentButton';
 import componentMixin from '../mixins/mixinComps';
+import GOODS_LIST from '@/assets/json/goodsList.json'; 
 export default {
     name:"componentGoods",
     mixins:[componentMixin],
@@ -52,7 +53,7 @@ export default {
             // 上拉加载
             goodListLoading: false,
             goodListFinished: false,
-            list: [],
+            list:  this.$route.path.indexOf('templateEdit') > -1 ? GOODS_LIST: [],
             loading: false
         }
     },
@@ -176,11 +177,15 @@ export default {
                         }else if(Array.isArray(ids) && ids.length){
                             params = this.setNormalGoodsParams(ids);
                         }else{
-                            this.list = [];
+                            if(this.$route.path.indexOf('templateEdit') < 0) {
+                                this.list = [];
+                            }
                             return;
                         }
                     }else{
-                        this.list = [];
+                        if(this.$route.path.indexOf('templateEdit') < 0) {
+                            this.list = [];
+                        }
                         return;
                     }
                 }else if(componentData.source === 2){
@@ -200,7 +205,9 @@ export default {
                     //     message: error
                     // });
                     console.error(error);
-                    this.list = [];
+                    if(this.$route.path.indexOf('templateEdit') < 0) {
+                        this.list = [];
+                    }
                     this.loading = false;
                 });
             }
