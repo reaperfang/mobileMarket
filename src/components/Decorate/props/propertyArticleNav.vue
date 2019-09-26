@@ -113,14 +113,16 @@ export default {
     },
 
     addNav() {
-      this.ruleForm.itemList.push({
-        title: '导航',
-        url: '',
-        linkTo: null
-      });
-      this.currentNav = this.ruleForm.itemList[this.ruleForm.itemList.length - 1];
-      // this.dialogVisible=true; 
-      // this.currentDialog='dialogSelectImageMaterial';
+      if(this.ruleForm.itemList.length <10) {
+        this.ruleForm.itemList.push({
+          title: '导航',
+          url: '',
+          linkTo: null
+        });
+        this.currentNav = this.ruleForm.itemList[this.ruleForm.itemList.length - 1];
+        // this.dialogVisible=true; 
+        // this.currentDialog='dialogSelectImageMaterial';
+      }
     },
 
     /* 弹框选中图片 */
