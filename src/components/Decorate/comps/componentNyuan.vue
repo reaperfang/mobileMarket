@@ -22,7 +22,12 @@
                     <p class="name" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('1')!=-1">{{item.name}}</p>
                     <p class="caption" :class="[{textStyle:textStyle!=1},{textAlign:textAlign!=1}]" v-if="showContents.indexOf('5')!=-1">{{item.setMealPrice}}元任选{{item.goodsTotalNumber}}件商品</p>
                     <div class="limit_line">
-                        <p class="limit" v-if="showContents.indexOf('4')!=-1">限 {{item.joinLimit}}件/人</p>
+                        <p class="limit" v-if="showContents.indexOf('4')!=-1">
+                            <template v-if="item.joinLimit >= 0">
+                                限 {{item.joinLimit}}件/人
+                            </template>
+                            <template v-else>不限制</template>
+                        </p>
                     </div>
                     <div class="price_line">
                         <p class="price" v-if="showContents.indexOf('2')!=-1">￥<font>{{item.setMealPrice}}</font></p>
