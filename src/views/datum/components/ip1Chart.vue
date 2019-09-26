@@ -11,7 +11,6 @@ export default {
     };
   },
   created() {
-  
   },
   methods: {
     con(n){
@@ -23,8 +22,8 @@ export default {
     makeOption(data) {
       this.option = {
         title: {
-         // text: "某站点用户访问来源",
-         // subtext: "纯属虚构",
+        //  text: "某站点用户访问来源",
+        //  subtext: "纯属虚构",
           x: "center"
         },
         tooltip: {

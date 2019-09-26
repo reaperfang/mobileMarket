@@ -7,7 +7,7 @@
           <el-input v-model="ruleForm.memberInfoId" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="ruleForm.businessTypeId" style="width:100px;">
+          <el-select v-model="ruleForm.businessTypeId" style="width:100px;" placeholder="全部">
             <el-option
               v-for="item in idbusinessTypes"
               :key="item.value"
@@ -111,7 +111,7 @@ export default {
       inline:true,
       ruleForm:{
         memberInfoId:'',
-        businessTypeId:1,
+        businessTypeId:'',
         timeValue:''
       },
       dataList:[ ],

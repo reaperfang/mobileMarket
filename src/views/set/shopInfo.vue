@@ -17,7 +17,6 @@
                   <img :src="form.logo">
                   <canvas ref="canvas1" width="80px" height="80px" v-show="false"></canvas>
                 </span>
-
                 <el-upload
                 class="avatar-uploader"
                 :action="uploadUrl"
@@ -28,6 +27,7 @@
                 <i class="el-icon-plus avatar-uploader-icon"></i>
                 <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
                 </el-upload>
+                <p class="note">logo支持jpg、jpeg、png格式内容；建议大小300px*300px图片大小不得大于2M</p>
             </el-form-item>
             <el-form-item label="客服电话:" prop="phone">
                 <!-- <el-input v-model="form.phone" placeholder="区号" style="width:70px;"></el-input>
@@ -200,16 +200,18 @@ export default {
     },
 
     beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
+        const isJPG = file.type === 'image/jpg';
+        const isJPEG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
         const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
+        if (!(isJPG || isJPEG || isPNG)) {
+            this.$message.error('上传头像图片只能是JPG、JPEG、PNG格式!');
         }
         if (!isLt2M) {
             this.$message.error('上传头像图片大小不能超过 2MB!');
         }
-        return isJPG && isLt2M;
+        return isJPG || isJPEG || isPNG && isLt2M;
     }
   }
 }
@@ -274,5 +276,8 @@ export default {
 }
 /deep/ .area-select .area-selected-trigger{
   padding:0 0 0 10px;
+}
+.note{
+  color: #92929B;
 }
 </style>

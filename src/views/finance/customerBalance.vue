@@ -7,7 +7,7 @@
           <el-input v-model="ruleForm.tradeDetailSn" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="交易类型">
-          <el-select v-model="ruleForm.businessType" style="width:100px;">
+          <el-select v-model="ruleForm.businessType" style="width:100px;" placeholder="全部">
             <el-option
               v-for="item in transactionTypes"
               :key="item.value"
@@ -52,7 +52,8 @@
         </el-table-column>
         <el-table-column
           prop="relationSn"
-          label="关联单据编号">
+          label="关联单据编号"
+          :render-header="renderRelationSn">
         </el-table-column>
         <el-table-column
           prop="memberInfoId"
@@ -111,7 +112,7 @@ export default {
       inline:true,
       ruleForm:{
         tradeDetailSn:'',
-        businessType:1,
+        businessType:'',
         timeValue:''
       },
       dataList:[ ],
@@ -127,6 +128,21 @@ export default {
   },
   created() { },
   methods: {
+    renderRelationSn(){
+      return(
+        <div style="height:49px;line-height:49px;">
+          <span style="font-weight:bold;vertical-align:middle;">关联单据编号</span>
+          <el-popover
+            placement="top-start"
+            title=""
+            width="160"
+            trigger="hover"
+            content="订单编号、售后单编号、提现编号">
+            <i slot="reference" class="el-icon-warning-outline" style="vertical-align:middle;"></i>
+          </el-popover>
+        </div>
+      )
+    },
     init(){
       let query = {
         tradeDetailSn:this.ruleForm.tradeDetailSn,

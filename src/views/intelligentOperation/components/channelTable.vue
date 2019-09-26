@@ -34,7 +34,7 @@
                 sortable
             >
             <template slot-scope="scope">
-                <span>{{ scope.row.changeRatio*100+"%"}}</span>
+                <span>{{ (scope.row.changeRatio*100).toFixed(2)}}%</span>
             </template>
             </el-table-column>
         </el-table>

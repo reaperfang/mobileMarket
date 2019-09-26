@@ -14,21 +14,55 @@ export function flowAnalysis(data) {
     data
   })
 }
-
-// 路径转化
-export function pathConversion(data) {
+//平均停留时间
+export function residetime(data) {
   return request({
-    target:'SHOP-CONVERSION-ANALYSIS-PROCESSOR',
+    target: 'ECHART-AVERAGE-RESIDE-TIME',
+    method: 'post',
+    apiType:'data',
+    data
+  })
+}
+//跳出率
+export function bouncerate(data) {
+  return request({
+    target: 'ECHART-BOUNCE-RATE',
+    method: 'post',
+    apiType:'data',
+    data
+  })
+}
+//访问次数
+export function pvady(data) {
+  return request({
+    target: 'ECHART-PV-DAY',
     method: 'post',
     apiType: 'data',
     data
   })
 }
-
-// 客流分析--路径/跳出率
-export function pathOut(data) {
+//访问来源
+export function channel(data) {
   return request({
-    target:'CUSTOMER-SKIP-RATE-ANALYSIS-PROCESSOR',
+    target: 'ECHART-UV-CHANNEL',
+    method: 'post',
+    apiType: 'data',
+    data
+  })
+}
+//小时平均访客数
+export function uvhour(data) {
+  return request({
+    target: 'ECHART-UV-HOUR',
+    method: 'post',
+    apiType: 'data',
+    data
+  })
+}
+//路径转化
+export function transformation(data) {
+  return request({
+    target: 'ECHART-PATH-TRANSFORMATION',
     method: 'post',
     apiType: 'data',
     data
@@ -40,7 +74,7 @@ export function pathOut(data) {
 //身份属性-属性比例
 export function attributeRatio(data) {
     return request({
-      target:'SHOP-ATTRIBUTE-RATIO-PROCESSOR',
+      target:'MEMBER-ANALYSIS-ATTRIBUTE-RATIO-PROCESSOR',
       method: 'post',
       apiType: 'data',
       data
@@ -49,7 +83,7 @@ export function attributeRatio(data) {
 //身份属性-会员趋势 
 export function memberTrend(data) {
     return request({
-      target:'SHOP-VIP-RISE-PROCESSOR',
+      target:'MEMBER-ANALYSIS-INCREASE-MEMBER-PROCESSOR',
       method: 'post',
       apiType: 'data',
       data
@@ -58,7 +92,7 @@ export function memberTrend(data) {
 //身份属性-支付趋势
 export function paymentTrend(data) {
     return request({
-      target:'SHOP-PAY-TIMES-RISE-PROCESSOR',
+      target:'MEMBER-ANALYSIS-ATTRIBUTE-PAY-COUNT-PROCESSOR',
       method: 'post',
       apiType: 'data',
       data
@@ -67,7 +101,7 @@ export function paymentTrend(data) {
 //会员消费
 export function memberConsumption(data) {
     return request({
-      target:'SHOP-MEMBER-CONSUMPTION-DATA-PROCESSOR',
+      target:'MEMBER-CONSUME-ANALYSIS-PROCESSOR',
       method: 'post',
       apiType: 'data',
       data

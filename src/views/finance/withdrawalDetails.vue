@@ -217,10 +217,10 @@ export default {
     //重置
     resetForm(){
       this.ruleForm = {
-        searchType:1,
+        searchType:'tradeDetailSn',
         searchValue:'',
         timeValue:'',
-        status:1,
+        status:'',
         memberSn:''
       }
     },

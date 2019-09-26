@@ -242,9 +242,15 @@ export default {
               message: "发货成功",
               type: "success"
             });
+            // this.$router.push(
+            //   "/order/deliverGoodsSuccess?ids=" +
+            //     this.list.map(val => val.id).join(",") +
+            //     "&type=orderBulkDelivery"
+            // );
+            
             this.$router.push(
               "/order/deliverGoodsSuccess?ids=" +
-                this.list.map(val => val.id).join(",") +
+                res.success.map(val => val.orderInfoId).join(",") +
                 "&type=orderBulkDelivery"
             );
           })
