@@ -145,7 +145,7 @@ export default {
       color: #9596a9;
       font-size:16px;
       ul li {
-        padding: 20px 0 20px 17px;
+        padding: 15px 0 15px 17px;
         display: flex;
         align-items: center;
         cursor: pointer;

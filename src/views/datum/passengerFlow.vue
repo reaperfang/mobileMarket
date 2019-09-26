@@ -48,7 +48,7 @@
             </el-radio-group>
         </div>
         <div>
-            <durationChare  :title="'测试图表'"  ref="dprChart"></durationChare>
+            <durationChare  :title="'测试图表'"  ref="pfChart"></durationChare>
         </div>
   </div>
 </template>
@@ -63,14 +63,13 @@ export default {
       activeName: "first",
       range: "",
       startTime: "",
-      endTime: "",
+      endTime:"",
       visitSourceType: 0, //1 小程序 2 公众号
       analysisType: 1, //数据类型
       dateType: 1, //1 7天 2:15天 3 30天 4：具体日期
       dataChart: {},
       title:'浏览/访问',
       duration:1
-
     };
   },
  
@@ -80,13 +79,15 @@ export default {
       let data = {
         startTime: this.startTime,
         endTime: this.endTime,
+        nearDay:this.nearDay,
+        channel:this.channel,
         visitSourceType: this.visitSourceType,
         analysisType: this.analysisType,
         dateType: this.dateType
       };
-      this._apis.data.flowAnalysis(data).then(response => {
-            this.dataChart = response;
-            this.$refs.prChart.con(response,this.title,this.analysisType,this.visitSourceType)
+      this._apis.data.residetime(data).then(response => {            
+            this.dataChart = response
+            this.$refs.prChart.con(response,this.title,this.startTime,this.endTime,this.channel)
         }).catch(error => {
           this.$message.error(error);
         });
@@ -118,17 +119,17 @@ export default {
         this.analysisType = 1;
         this.getData()
     },
-    // 路径跳出率
+    // 路径
     getPathOut(){
         let data = {
         startTime: this.startTime,
         endTime: this.endTime,
         analysisType: this.duration,
-        dateType: this.dateType
+        dateType: this.dateType,
       };
-      this._apis.data.pathOut(data).then(response => {
+      this._apis.data.bouncerate(data).then(response => {
             this.dataChart = response;
-            this.$refs.dprChart.con(response,this.duration)
+            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
         }).catch(error => {
           this.$message.error(error);
         });
@@ -165,8 +166,8 @@ export default {
         color: #655eff;
       }
       .btn_bor {
-        // margin: 0 10px;
-        // border-radius: 20px;
+        margin: 0 10px;
+        border-radius: 20px;
       }
     }
     .chart_container {

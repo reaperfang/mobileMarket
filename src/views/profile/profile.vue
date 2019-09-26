@@ -56,6 +56,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="p_list">
+                    <div class="p_m_item" v-for="item in activeDataNull" :key="item.id">
+                        <img :src="item.url" alt="" style="height:40px;">
+                        <div>
+                            <p>{{item.title}}</p>
+                            <p>{{item.sub}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- <div class="p_b_r">
                 <p class="p_title marB10">客服消息：</p>
@@ -98,6 +107,9 @@ export default {
         },
         realTimeDataNull(){
             return profileCont.realTimeData
+        },
+        activeDataNull(){
+            return profileCont.activeData
         }
     },
     methods:{
