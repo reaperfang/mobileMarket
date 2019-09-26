@@ -20,7 +20,7 @@
             </template>
           </div>
           <div>
-            已选中：<el-tag v-for="(item, key) of checkList" :key="key" style="margin-right:5px;margin-bottom:5px;">{{item.split(',')[3]}}</el-tag>
+            已选中：<el-tag closable @close="handleClose(item)" v-for="(item, key) of checkList" :key="key" style="margin-right:5px;margin-bottom:5px;">{{item.split(',')[3]}}</el-tag>
           </div>
           <div slot="footer" class="dialog-footer">
             <el-button @click="visible = false">取 消</el-button>
@@ -72,6 +72,9 @@ export default {
       DialogBase
   },
   methods: {
+    handleClose(tag) {
+        this.checkList.splice(this.checkList.indexOf(tag), 1);
+      },
     closeCity(index) {
       let _region = [...this.region]
 
@@ -221,6 +224,9 @@ export default {
 // p.title:hover + .citys{
 // 	display:block;
 // }
+/deep/ .el-tag {
+  padding: 0 5px;
+}
 </style>
 
 
