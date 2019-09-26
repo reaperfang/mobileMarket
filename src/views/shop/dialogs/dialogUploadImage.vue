@@ -2,6 +2,7 @@
   <DialogBase :visible.sync="visible" width="600px" :title="title" @submit="uploadImage">
     <el-form :model="form" class="demo-form-inline" label-width="90px">
         <el-form-item label="本地上传" v-if="title == '上传图片'">
+          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
           <el-upload
             class="avatar-uploader"
             v-loading="loading"
@@ -10,11 +11,11 @@
             :limit="1"
             :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleAvatarSuccess"
+            @on-error="loading = false"
             :before-upload="beforeAvatarUpload">
-            <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-          <p class="note">仅支持jpg,png格式，大小不超过3.0MB</p>
+          <p class="note">仅支持jpg,jpeg,png格式，大小不超过3.0MB</p>
         </el-form-item>
         <el-form-item label="本地上传" v-if="title == '上传视频'">
           <el-upload class="avatar-uploader el-upload--text"
@@ -66,11 +67,12 @@
             :limit="1"
             :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleCoverSuccess"
+            @on-error="loading = false"
             :before-upload="beforeAvatarUpload1">
             <img v-if="form.imageUrls" :src="form.imageUrls" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-          <p class="note">建议尺寸：800*800，支持jpg,png格式，大小不超过3.0MB。</p>
+          <p class="note">建议尺寸：800*800，支持jpg,jpeg,png格式，大小不超过3.0MB。</p>
           <p class="note">如果不添加封面，系统会默认截取视频的第一个画面作为封面</p>
         </el-form-item>
       </el-form>
@@ -189,19 +191,31 @@ export default {
     },
     beforeAvatarUpload(file) {
       this.loading = true
-      const isJPG = file.type === 'image/jpeg';
+      const isJPG = file.type === 'image/jpg';
+      const isJPEG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 3;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+      if (!(isJPG || isJPEG || isPNG)) {
+        this.$message.error('上传图片支持jpg,jpeg,png格式!');
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 3MB!');
       }
-      return isJPG && isLt2M;
+      return isJPG || isJPEG || isPNG && isLt2M;
     },
-    beforeAvatarUpload1(){
+    beforeAvatarUpload1(file){
       this.loading1 = true
+      const isJPG = file.type === 'image/jpg';
+      const isJPEG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 3;
+      if (!(isJPG || isJPEG || isPNG)) {
+        this.$message.error('上传图片支持jpg,jpeg,png格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 3MB!');
+      }
+      return isJPG || isJPEG || isPNG && isLt2M;
     },
 
     //上传成功回调
@@ -239,31 +253,43 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-/deep/.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+<style lang="scss">
+.avatar-uploader{
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+  vertical-align: middle;
 }
-/deep/.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-/deep/.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-/deep/.avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    position: absolute;
+    top:10px;
+    left:10px;
+    z-index: 10;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    object-fit:fill;
+  }
 </style>
 
 

@@ -17,7 +17,7 @@
           <el-input v-model="ruleForm.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="ruleForm.businessType" style="width:210px;">
+          <el-select v-model="ruleForm.businessType" style="width:210px;" placeholder="全部">
             <el-option
               v-for="item in rebusinessTypes"
               :key="item.value"
@@ -27,7 +27,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="支付方式">
-          <el-select v-model="ruleForm.payWay" style="width:210px;">
+          <el-select v-model="ruleForm.payWay" style="width:210px;" placeholder="全部">
             <el-option
               v-for="item in payTypes"
               :key="item.value"
@@ -70,8 +70,9 @@
         :data="dataList"
         class="table"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'tradeTime', order: 'descending'}"
+        @sort-change="sortTable"
         >
+        <!-- :default-sort = "{prop: 'tradeTime', order: 'descending'}" -->
         <el-table-column
           prop="tradeDetailSn"
           label="交易流水号">
@@ -155,8 +156,8 @@ export default {
       ruleForm:{
         searchType:'tradeDetailSn',
         searchValue:'',
-        businessType:1,
-        payWay:0,
+        businessType:'',
+        payWay:'',
         amountMin:'',
         amountMax:'',
         timeValue:'',
@@ -183,18 +184,19 @@ export default {
   },
   created() { },
   methods: {
-    init(){
+    init(orde){
       let query = {
         tradeDetailSn:'',
         relationSn:'',
         wechatTradeSn:'',
-        businessType:1,
+        businessType:'',
         tradeType:'',
-        payWay:1,
+        payWay:'',
         amountMin:'',
         amountMax:'',
         tradeTimeStart:'',
         tradeTimeEnd:'',
+        sort:orde,
         startIndex:this.ruleForm.startIndex,
         pageSize:this.ruleForm.pageSize
       }
@@ -214,10 +216,9 @@ export default {
         query.tradeTimeEnd = utils.formatDate(timeValue[1], "yyyy-MM-dd hh:mm:ss")
       }
       return query;
-    },
-
-    fetch(){
-      let query = this.init();
+    },  
+    fetch(orde){
+      let query = this.init(orde);
       this._apis.finance.getListRe(query).then((response)=>{
         this.dataList = response.list
         this.total = response.total || 0
@@ -228,7 +229,14 @@ export default {
     },
     //搜索
     onSubmit(){
-      this.fetch()
+      let orde = 'desc'
+      this.fetch(orde)
+    },
+    //排序
+    sortTable(column){
+      let obj = column
+      let orde = obj.order == 'descending' ? 'desc' : 'asc'
+      this.fetch(orde)
     },
     //重置
     resetForm(){

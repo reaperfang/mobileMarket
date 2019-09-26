@@ -46,8 +46,9 @@
         :data="dataList"
         style="width: 100%"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-        :default-sort = "{prop: 'createTime', order: 'descending'}"
+        @sort-change="sortTable"
         >
+        <!-- :default-sort = "{prop: 'createTime', order: 'descending'}" -->
         <el-table-column
           prop="memberId"
           label="客户ID">
@@ -104,6 +105,7 @@ export default {
         presentType:0,
         startTime:'',
         stopTime:'',
+        sort:'desc',
         pageSize:10,
         pageNum:1
       },
@@ -135,6 +137,13 @@ export default {
     onSubmit(){
       this.fetch();
     },
+    //排序
+    sortTable(column){
+      let obj = column
+      this.ruleForm.sort = obj.order == 'descending' ? 'desc' : 'asc'
+      this.fetch()
+    },
+
     //重置
     resetForm(){
       this.ruleForm = {
