@@ -9,7 +9,7 @@
             :model="ruleForm"
             :rules="rules"
             ref="ruleForm"
-            label-width="100px"
+            label-width="110px"
             class="ruleForm"
           >
             <el-form-item label="电子面单名称" prop="name">
@@ -44,7 +44,7 @@
             </el-form-item>
             <el-form-item v-if="!$route.query.detail">
                 <el-button @click="$router.go(-1)">取 消</el-button>
-                <el-button type="primary" @click="submit">提 交</el-button>
+                <el-button type="primary" @click="submit('ruleForm')">提 交</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -71,7 +71,24 @@ export default {
                 payType: ''
             },
             rules: {
-
+              name: [
+                { required: true, message: '请输入电子面单名称', trigger: 'blur' },
+                { max: 20, message: '电子面单名称不超过20个字符', trigger: 'blur' }
+              ],
+              expressCompanyCode: [
+                { required: true, message: '请选择快递公司', trigger: 'blur' },
+              ],
+              payType: [
+                { required: true, message: '请选择邮费支付方式', trigger: 'blur' },
+              ],
+              expressCompanyAccount: [
+                { required: true, message: '请输入快递公司账号', trigger: 'blur' },
+                { max: 20, message: '快递公司账号不超过20个字符', trigger: 'blur' }
+              ],
+              expressCompanyPassword: [
+                { required: true, message: '请输入密码', trigger: 'blur' },
+                { max: 20, message: '密码不超过20个字符', trigger: 'blur' }
+              ],
             },
             expressCompanyList: [],
             postagePaymentList: [
@@ -120,7 +137,7 @@ export default {
       },
       editor() {
         let expressCompanyCode = this.ruleForm.expressCompanyCode
-        let expressCompany = this.expressCompanyList.find(val => val.expressCode == expressCompanyCode).expressCompany
+        let expressCompany = this.expressCompanyList.find(val => val.expressCode == expressCompanyCode).expressName
 
         this.ruleForm.expressCompany = expressCompany
         this._apis.order
@@ -143,7 +160,7 @@ export default {
       },
       add() {
         let expressCompanyCode = this.ruleForm.expressCompanyCode
-        let expressCompany = this.expressCompanyList.find(val => val.expressCode == expressCompanyCode).expressCompany
+        let expressCompany = this.expressCompanyList.find(val => val.expressCode == expressCompanyCode).expressName
 
         this.ruleForm.expressCompany = expressCompany
         this._apis.order
@@ -164,12 +181,19 @@ export default {
           });
         });
       },
-      submit() {
-        if(!this.$route.query.id) {
-          this.add()
-        } else {
-          this.editor()
-        }
+      submit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if(!this.$route.query.id) {
+              this.add()
+            } else {
+              this.editor()
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
       },
       getDetail() {
         this._apis.order

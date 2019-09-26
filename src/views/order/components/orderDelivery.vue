@@ -226,7 +226,25 @@ export default {
 
         },
         resetForm(formName) {
-            this.$refs[formName].resetFields();
+            this.listQuery = {
+                startIndex: 1,
+                pageSize: 20,
+                searchType: 'orderCode',
+                searchValue: '',
+                status: '',
+                isAutosend: '',
+                searchType2: 'orderProductName',
+                searchValue2: '',
+                searchTimeType: 'send',
+                orderTimeValue: '',
+                orderCode: '',
+                receivedPhone: '',
+                expressNo: '',
+                memberSn: '',
+                orderProductName: '',
+                expressCompany: '',
+                receivedName: '',
+            }
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
