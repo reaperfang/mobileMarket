@@ -50,6 +50,9 @@
                             <el-table-column
                                 prop="goodsCount"
                                 label="应发数量">
+                                <template slot-scope="scope">
+                                    {{+scope.row.goodsCount - +scope.row.sendCount}}
+                                </template>
                             </el-table-column>
                             <!-- <el-table-column
                                 prop="realityNumber"
