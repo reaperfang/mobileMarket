@@ -42,10 +42,10 @@ export default {
             this.$refs['order'].loading = true
             if(this.params.orderTimeValue && this.params.orderTimeValue.length) {
                 if(this.params.orderTimeValue[0]) {
-                    searchTimeTypeStart = utils.formatDate(this.params.orderTimeValue[0], "yyyy-MM-dd hh:mm:ss")
+                    var searchTimeTypeStart = utils.formatDate(this.params.orderTimeValue[0], "yyyy-MM-dd hh:mm:ss")
                 }
                 if(this.params.orderTimeValue[1]) {
-                    searchTimeTypeEnd = utils.formatDate(this.params.orderTimeValue[1], "yyyy-MM-dd hh:mm:ss")
+                    var searchTimeTypeEnd = utils.formatDate(this.params.orderTimeValue[1], "yyyy-MM-dd hh:mm:ss")
                 }
             }
             _params = Object.assign({}, this.params, {
