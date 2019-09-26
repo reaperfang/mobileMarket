@@ -51,7 +51,7 @@
               </el-table-column>
               <el-table-column :label="one" width="180">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.theFirst"></el-input>件或以内
+                  <el-input v-model="scope.row.theFirst"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}或以内
                 </template>
               </el-table-column>
               <el-table-column label="运费（元）">
@@ -62,7 +62,7 @@
               <el-table-column :label="two" width="180">
                 <template slot-scope="scope">
                   每增加
-                  <el-input v-model="scope.row.superaddition"></el-input>
+                  <el-input v-model="scope.row.superaddition"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}
                 </template>
               </el-table-column>
               <el-table-column label="续费（元）" width="180">
@@ -139,6 +139,17 @@ export default {
 			"superaddition": "",
 			"renew": ""
       })
+    }
+  },
+  filters: {
+    calculationWayFilter(value) {
+      if(value == 1) {
+        return '件'
+      } else if(value == 2) {
+        return 'KG'
+      } else if(value == 3) {
+        return 'm³'
+      }
     }
   },
   computed: {
