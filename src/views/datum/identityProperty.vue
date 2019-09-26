@@ -20,7 +20,7 @@
                             <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.value}}</span></p>
                         </div>
                     </div>
-                    <p class="i_title">会员增长趋势：</p>
+                    <p class="i_title">会员增长趋势:</p>
                     <div class="i_line">
                         <el-radio-group v-model="dateTypeM" @change="changeDayM">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
@@ -76,7 +76,7 @@
                                     <p><span class="color_block" style="background-color:#FD4C2B "></span></p>
                                     </el-col>
                                 <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxisData"> 支付 {{item}} 次 </p></el-col>
-                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxisData">{{item}}人</p></el-col>
+                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxisData"{{item}}人</p></el-col>
                             </el-row>
                         </div>
                     </div>
@@ -107,8 +107,13 @@ export default {
             attrData:{},
             membeData:{},
             payData:{},
+            dataChart:{},
             threeData:{},
-            grandTotal:''
+            grandTotal:'',
+            customerRatio:'',
+            customerNum:1,
+            menmberNum:1,
+            memberRatio:''
         }
     },
     methods:{
@@ -117,31 +122,35 @@ export default {
          */ 
         getAttributeRatio(){
              let data = {
-        visitSourceType: this.visitSourceType,
-      };
-      this._apis.data.attributeRatio(data).then(response => {
-            this.oneData = response;
-            this.grandTotal = response[0].value + response[1].value
-            let oneArr = response;
-            oneArr.forEach(e => {
-                delete e.ratioValue
-            });
-            this.$refs.ip1.con(oneArr)
-        }).catch(error => {
-          this.$message.error(error);
-        });
-        },
+                 visitSourceType:this.visitSourceType,
+            };
+            this._apis.data.attributeRatio(data).then(response => {
+                    this.oneData = response;
+                    this.grandTotal = response[0].value + response[1].value
+                    let oneArr = response;
+                    oneArr.forEach(e => {
+                        delete e.ratioValue
+                    });
+                    this.$refs.ip1.con(oneArr)
+                }).catch(error => {
+                this.$message.error(error);             
+                });
+         },
         /*  
         **会员增长趋势
          */ 
         getMemberTrend(){ 
             let data ={
+                startTime: this.startTime,
+                endTime: this.endTime,
+                nearDay:this.nearDay,
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timeM,
                 dateType: this.dateTypeM == 5 ? 4 : this.dateTypeM
             }
             this._apis.data.memberTrend(data).then(response => {
-                this.$refs.ip2.con(response)
+                this.dataChart = response
+                this.$refs.ip2.con(response,this.title,this.startTime,this.endTime)
             }).catch(error => {
             this.$message.error(error);
             });
@@ -156,11 +165,12 @@ export default {
             }else if(val == 1 || val == 2 || val == 3){
                 this.dateTypeM = val
                 this.getMemberTrend()
-            }
-            
+            }            
         },
         changeTimeM(val){
             this.timeM = val
+            this.startTime = val[0]
+            this.endTime = val[1]
             this.getMemberTrend()
         },
         /*
@@ -170,11 +180,14 @@ export default {
             let data ={
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timePay,
-                dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay
+                dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay,
+                startTime:this.startTime,
+                endTime:this.endTime,
+                nearDay:this.nearDay
             }
             this._apis.data.paymentTrend(data).then(response => {
                 this.threeData = response;
-                this.$refs.ip3.con(response)
+                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime)
             }).catch(error => {
             this.$message.error(error);
             });
