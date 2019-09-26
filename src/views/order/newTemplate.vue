@@ -9,6 +9,7 @@
           ref="ruleForm"
           label-width="100px"
           class="demo-ruleForm"
+          :disabled="$route.query.mode == 'look'"
         >
           <el-form-item label="模板名称" prop="name">
             <el-input v-model="ruleForm.name" placeholder="请输入，不超过20个字符"></el-input>
@@ -51,29 +52,29 @@
               </el-table-column>
               <el-table-column :label="one" width="180">
                 <template slot-scope="scope">
-                  <el-input type="number" min="0" v-model="scope.row.theFirst"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}或以内
+                  <el-input :disabled="$route.query.mode == 'look'" type="number" min="0" v-model="scope.row.theFirst"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}或以内
                 </template>
               </el-table-column>
               <el-table-column label="运费（元）">
                 <template slot-scope="scope">
-                  <el-input type="number" min="0" v-model="scope.row.freight"></el-input>
+                  <el-input :disabled="$route.query.mode == 'look'" type="number" min="0" v-model="scope.row.freight"></el-input>
                 </template>
               </el-table-column>
               <el-table-column :label="two" width="180">
                 <template slot-scope="scope">
                   每增加
-                  <el-input type="number" min="0" v-model="scope.row.superaddition"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}
+                  <el-input :disabled="$route.query.mode == 'look'" type="number" min="0" v-model="scope.row.superaddition"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}
                 </template>
               </el-table-column>
               <el-table-column label="续费（元）" width="180">
                 <template slot-scope="scope">
                   运费增加
-                  <el-input type="number" min="0" v-model="scope.row.renew"></el-input>
+                  <el-input :disabled="$route.query.mode == 'look'" type="number" min="0" v-model="scope.row.renew"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <span @click="deleteRow(scope.$index)" v-if="scope.$index != 0" class="blue">删除</span>
+                  <span @click="deleteRow(scope.$index)" v-if="scope.$index != 0 && $route.query.mode != 'look'" class="blue">删除</span>
                 </template>
               </el-table-column>
             </el-table>
@@ -98,7 +99,7 @@
               </div>
         </div>-->
       </div>
-      <div class="footer">
+      <div v-if="$route.query.mode != 'look'" class="footer">
         <el-button @click="$router.go(-1)">取 消</el-button>
         <el-button @click="submit('ruleForm')" type="primary">确 定</el-button>
       </div>
