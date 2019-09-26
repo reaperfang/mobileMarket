@@ -30,7 +30,7 @@
                             <div class="input_wrap2">
                                 <el-select v-model="form.niceRatioRange">
                                     <el-option label="不限" value="null"></el-option>
-                                    <el-option label="0-1%" value="0.01"></el-option>
+                                    <el-option label="0-1%" value="0-0.01"></el-option>
                                     <el-option label="2-5%" value="0.02-0.05"></el-option>
                                     <el-option label="5%以上" value="0.05"></el-option>
                                 </el-select>
@@ -39,7 +39,7 @@
                             <div class="input_wrap2 marR20">
                                 <el-select v-model="form.badRatioRange">
                                     <el-option label="不限" value="null"></el-option>
-                                    <el-option label="0-1%" value="0.01"></el-option>
+                                    <el-option label="0-1%" value="0-0.01"></el-option>
                                     <el-option label="2-5%" value="0.02-0.05"></el-option>
                                     <el-option label="5%以上" value="0.05"></el-option>
                                 </el-select>
