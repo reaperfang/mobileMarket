@@ -47,16 +47,16 @@
             </div>
             <div class="p_b_m">
                 <p class="p_title">营销活动：</p>
-                <div class="p_list">
+                <div class="p_list" v-if="activeData.length != 0">
                     <div class="p_m_item" v-for="item in activeData" :key="item.id">
-                        <img :src="item.appImage" alt="" style="height:40px;">
+                        <img :src="item.appImage" alt="" style="height:40px;width:40px;">
                         <div>
                             <p>{{item.appName}}</p>
                             <p>{{item.description}}</p>
                         </div>
                     </div>
                 </div>
-                <div class="p_list">
+                <div class="p_list" v-else>
                     <div class="p_m_item" v-for="item in activeDataNull" :key="item.id">
                         <img :src="item.url" alt="" style="height:40px;">
                         <div>
@@ -277,6 +277,12 @@ export default {
         }
         div{
             float: left;
+            p{
+                width:110px; 
+                height:18px; 
+                line-height:18px; 
+                overflow: hidden;
+            }
             p:first-child{
                 margin: 10px 0 0 5px;
             }

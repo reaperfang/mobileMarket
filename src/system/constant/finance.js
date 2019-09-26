@@ -21,6 +21,11 @@ export default {
         { value: 2, label: '余额支付' },
         { value: 3, label: '红包支付' }
     ],
+    //收支明细---收支类型
+    tradeTypes:[
+        { value: 0, label: '收入' },
+        { value: 1, label: '支出' }
+    ],
     //提现明细---提现方式--------------------
     presentations:[
         { value: 'tradeDetailSn', label: '提现编号' },

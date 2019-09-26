@@ -51,7 +51,8 @@
         <!-- :default-sort = "{prop: 'createTime', order: 'descending'}" -->
         <el-table-column
           prop="memberId"
-          label="客户ID">
+          label="客户ID"
+          :render-header="renderMemberId">
         </el-table-column>
         <el-table-column
           prop="presentType"
@@ -125,6 +126,21 @@ export default {
   },
   created() {},
   methods: {
+    renderMemberId(){
+      return(
+        <div style="height:49px;line-height:49px;">
+          <span style="font-weight:bold;vertical-align:middle;">客户ID</span>
+          <el-popover
+            placement="top-start"
+            title=""
+            width="160"
+            trigger="hover"
+            content="所有参与超级海报获得奖励的客户ID">
+            <i slot="reference" class="el-icon-warning-outline" style="vertical-align:middle;"></i>
+          </el-popover>
+        </div>
+      )
+    },
     fetch(){
       this._apis.finance.getListTa(this.ruleForm).then((response)=>{
         this.dataList = response.list

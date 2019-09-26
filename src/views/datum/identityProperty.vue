@@ -107,6 +107,7 @@ export default {
             attrData:{},
             membeData:{},
             payData:{},
+            dataChart:{},
             threeData:{},
             grandTotal:'',
             customerRatio:'',
@@ -140,12 +141,16 @@ export default {
          */ 
         getMemberTrend(){ 
             let data ={
+                startTime: this.startTime,
+                endTime: this.endTime,
+                nearDay:this.nearDay,
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timeM,
                 dateType: this.dateTypeM == 5 ? 4 : this.dateTypeM
             }
             this._apis.data.memberTrend(data).then(response => {
-                this.$refs.ip2.con(response)
+                this.dataChart = response
+                this.$refs.ip2.con(response,this.title,this.startTime,this.endTime)
             }).catch(error => {
             this.$message.error(error);
             });
@@ -164,6 +169,8 @@ export default {
         },
         changeTimeM(val){
             this.timeM = val
+            this.startTime = val[0]
+            this.endTime = val[1]
             this.getMemberTrend()
         },
         /*
@@ -173,12 +180,14 @@ export default {
             let data ={
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timePay,
-                dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay
+                dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay,
+                startTime:this.startTime,
+                endTime:this.endTime,
+                nearDay:this.nearDay
             }
-            console.log(this._apis.data.paymentTrend)
             this._apis.data.paymentTrend(data).then(response => {
                 this.threeData = response;
-                this.$refs.ip3.con(response)
+                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime)
             }).catch(error => {
             this.$message.error(error);
             });
