@@ -26,7 +26,7 @@
             </div>
           </li>
           <li
-            v-else-if="item.status=== 0"
+            v-else-if="currentComponentData.data.hideScrambled===true && (item.status=== 0 || item.status=== 1)"
             :style="item.status===2?imgs1:imgs "
             :key="key"
             >

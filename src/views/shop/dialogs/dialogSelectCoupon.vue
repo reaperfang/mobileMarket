@@ -13,7 +13,8 @@
     </el-form>
     <el-table :data="tableList" stripe ref="multipleTable" @selection-change="handleSelectionChange" v-loading="loading">
         <el-table-column
-          type="selection"  
+          type="selection"
+          :selectable="itemSelectable"
           width="55">
         </el-table-column>
         <el-table-column prop="name" label="优惠券名称"></el-table-column>
@@ -39,7 +40,7 @@
            <template slot-scope="scope">
             <span v-if="scope.row.status === 0">未生效</span>
             <span v-else-if="scope.row.status === 1">生效中</span>
-            <span v-else-if="scope.row.status === 2">已生效</span>
+            <span v-else-if="scope.row.status === 2">已失效</span>
           </template>
         </el-table-column>
       </el-table>
@@ -129,6 +130,12 @@ export default {
     submit() {
       this.$emit('dialogDataSelected',  this.multipleSelection);
     },
+
+    itemSelectable(row, index) {
+      if(row.status !== 2) {
+        return true;
+      }
+    }
   }
 };
 </script>
