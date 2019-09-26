@@ -121,7 +121,7 @@ export default {
       rules: {
           name: [
             { required: true, message: '请输入模板名称', trigger: 'blur' },
-            { max: 5, message: '模板名称不超过20个字符', trigger: 'blur' }
+            { max: 20, message: '模板名称不超过20个字符', trigger: 'blur' }
           ],
           calculationWay: [
             { required: true, message: '请选择计费方式', trigger: 'blur' },
