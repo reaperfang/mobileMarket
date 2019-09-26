@@ -1133,7 +1133,18 @@ export default {
                         fileList: []
                     }
                 })
+                this.ruleForm.goodsInfos.forEach((val, index) => {
+                    let label = val.label
+
+                    if(_results.find(spec => spec.label == label)) {
+                        let specIndex = _results.findIndex(val => val.label == label)
+                        
+                        _results.splice(specIndex, 1, Object.assign({}, this.ruleForm.goodsInfos[index]))
+                    }
+                })
+
                 this.ruleForm.goodsInfos = _results
+
                 console.log(_results)
             } else {
                 this.ruleForm.goodsInfos = []
