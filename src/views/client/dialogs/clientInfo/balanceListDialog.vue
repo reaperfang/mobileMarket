@@ -1,5 +1,5 @@
 <template>
-  <DialogBase :visible.sync="visible" @submit="submit" title="积分记录" :hasCancel="hasCancel">
+  <DialogBase :visible.sync="visible" @submit="submit" title="余额记录" :hasCancel="hasCancel">
     <div class="c_container">
         <div class="marB20"><span>总余额：{{ data.balance }}</span></div>
         <el-table
@@ -52,10 +52,6 @@ export default {
             this.total = response.total;
         }).catch((error) => {
           console.log(error);
-            // this.$notify.error({
-            //     title: "错误",
-            //     message: error
-            // });
         })
     },
     handleSizeChange(val) {
