@@ -38,11 +38,11 @@
                         <div class="input_wrap2 marR20">
                             <el-select v-model="form.changeRatioRange">
                                 <el-option label="不限" value="null"></el-option>
-                                <el-option label="10%以上" value="10"></el-option>
-                                <el-option label="5%-10%" value="5-10"></el-option>
-                                <el-option label="3%-5%" value="3-5"></el-option>
-                                <el-option label="1%-3%" value="1-3"></el-option>
-                                <el-option label="0%-1%" value="0-1"></el-option>
+                                <el-option label="10%以上" value="0.1"></el-option>
+                                <el-option label="5%-10%" value="0.05-0.1"></el-option>
+                                <el-option label="3%-5%" value="0.03-0.05"></el-option>
+                                <el-option label="1%-3%" value="0.01-0.03"></el-option>
+                                <el-option label="0%-1%" value="0-0.01"></el-option>
                             </el-select>
                         </div>
                     </el-form-item>

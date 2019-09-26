@@ -67,7 +67,6 @@
             v-model="listQuery.orderTimeValue"
             type="datetimerange"
             range-separator="-"
-            value-format="yyyy-MM-dd hh:mm:ss"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
           ></el-date-picker>

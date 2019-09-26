@@ -43,7 +43,7 @@
                 <el-input show-password v-model="ruleForm.expressCompanyPassword" placeholder="请输入，不超过20个字符"></el-input>
             </el-form-item>
             <el-form-item v-if="!$route.query.detail">
-                <el-button>取 消</el-button>
+                <el-button @click="$router.go(-1)">取 消</el-button>
                 <el-button type="primary" @click="submit">提 交</el-button>
             </el-form-item>
           </el-form>
