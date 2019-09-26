@@ -108,7 +108,11 @@ export default {
             membeData:{},
             payData:{},
             threeData:{},
-            grandTotal:''
+            grandTotal:'',
+            customerRatio:'',
+            customerNum:1,
+            menmberNum:1,
+            memberRatio:''
         }
     },
     methods:{
