@@ -90,15 +90,19 @@ export default {
     /* 保存数据 */
     saveData() {
       let resultData = this.collectData();
-      resultData['status'] = '1';
-      this.submit(resultData);
+      if(resultData && resultData.name) {
+        resultData['status'] = '1';
+        this.submit(resultData);
+      }
     },
 
     /* 保存并生效数据 */
     saveAndApplyData() {
       let resultData = this.collectData();
-      resultData['status'] = '0';
-      this.submit(resultData, 'saveAndApply');
+      if(resultData && resultData.name) {
+        resultData['status'] = '0';
+        this.submit(resultData, 'saveAndApply');
+      }
     },
 
     /* 保存到模板 */

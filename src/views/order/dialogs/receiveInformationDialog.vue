@@ -6,7 +6,7 @@
                     <el-input v-model="ruleForm.sendName" placeholder="请选择"></el-input>
                 </el-form-item>
                 <el-form-item label="发货人电话" prop="sendPhone">
-                    <el-input v-model="ruleForm.sendPhone" placeholder="请输入快递单号"></el-input>
+                    <el-input v-model="ruleForm.sendPhone" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="发货地址" prop="deliveryAddress">
                     <area-cascader type="code" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>
@@ -32,7 +32,7 @@
                     <el-input v-model="ruleForm.receivedName" placeholder="请选择"></el-input>
                 </el-form-item>
                 <el-form-item label="收货人电话" prop="receivedPhone">
-                    <el-input v-model="ruleForm.receivedPhone" placeholder="请输入快递单号"></el-input>
+                    <el-input v-model="ruleForm.receivedPhone" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="收货地址" prop="deliveryAddress">
                     <area-cascader type="code" :level="1" :data='$pcaa' v-model='ruleForm.deliveryAddress'></area-cascader>

@@ -76,51 +76,53 @@ export default {
     /* 保存数据 */
     saveData() {
       const resultData = this.collectData();
-      const copyResultData = {...resultData};
-      copyResultData['explain'] = utils.compileStr(copyResultData.explain);
-       if(!resultData.name || !resultData.explain) {
-         this.$alert('请填写基础信息后重试，点击确认返回编辑分类信息!', '警告', {
-          confirmButtonText: '确定',
-          callback: action => {
-            //打开基础信息面板
-            this.$store.commit('setCurrentComponentId', this.basePropertyId);
+      if(resultData && resultData.name) {
+        const copyResultData = {...resultData};
+        copyResultData['explain'] = utils.compileStr(copyResultData.explain);
+        if(!resultData.name || !resultData.explain) {
+          this.$alert('请填写基础信息后重试，点击确认返回编辑分类信息!', '警告', {
+            confirmButtonText: '确定',
+            callback: action => {
+              //打开基础信息面板
+              this.$store.commit('setCurrentComponentId', this.basePropertyId);
+              this._globalEvent.$emit('decorateSaveLoading', false, this.id);
+            }
+          });
+          return;
+        }
+        if(this.id) {
+          this._apis.shop.editClassifyInfo(copyResultData).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '编辑成功！',
+              type: 'success'
+            });
+            this._routeTo('pageManageIndex');
+            this._globalEvent.$emit('decorateSaveLoading', true, this.id);
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
             this._globalEvent.$emit('decorateSaveLoading', false, this.id);
-          }
-        });
-        return;
-      }
-      if(this.id) {
-        this._apis.shop.editClassifyInfo(copyResultData).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '编辑成功！',
-            type: 'success'
           });
-          this._routeTo('pageManageIndex');
-          this._globalEvent.$emit('decorateSaveLoading', true, this.id);
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
+        }else{
+          this._apis.shop.createClassify(copyResultData).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '创建成功！',
+              type: 'success'
+            });
+            this._routeTo('pageManageIndex');
+            this._globalEvent.$emit('decorateSaveLoading', true, this.id);
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+            this._globalEvent.$emit('decorateSaveLoading', false, this.id);
           });
-          this._globalEvent.$emit('decorateSaveLoading', false, this.id);
-        });
-      }else{
-        this._apis.shop.createClassify(copyResultData).then((response)=>{
-          this.$notify({
-            title: '成功',
-            message: '创建成功！',
-            type: 'success'
-          });
-          this._routeTo('pageManageIndex');
-          this._globalEvent.$emit('decorateSaveLoading', true, this.id);
-        }).catch((error)=>{
-          this.$notify.error({
-            title: '错误',
-            message: error
-          });
-          this._globalEvent.$emit('decorateSaveLoading', false, this.id);
-        });
+        }
       }
     }
 

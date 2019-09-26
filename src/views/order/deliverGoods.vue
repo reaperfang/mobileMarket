@@ -50,6 +50,9 @@
                             <el-table-column
                                 prop="goodsCount"
                                 label="应发数量">
+                                <template slot-scope="scope">
+                                    {{+scope.row.goodsCount - +scope.row.sendCount}}
+                                </template>
                             </el-table-column>
                             <!-- <el-table-column
                                 prop="realityNumber"
@@ -308,7 +311,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliverGoodsSuccess?id=' + this.orderInfo.id + '&type=deliverGoods')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + res.success[0].orderInfoId + '&type=deliverGoods')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',

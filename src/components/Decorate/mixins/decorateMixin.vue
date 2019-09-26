@@ -40,6 +40,7 @@ export default {
       if(!Array.isArray(pageData)) {
         return;
       }
+      console.log('pageData', JSON.stringify(pageData));
       for (let item of pageData) {
         componentDataIds.push(item.id);
         componentDataMap[item.id] = item;
@@ -66,6 +67,7 @@ export default {
           pageData.push(componentData);
         }
       }
+
       result['pageData'] = utils.compileStr(JSON.stringify(pageData));;
       return result;
     }

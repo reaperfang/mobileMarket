@@ -147,19 +147,27 @@
                         prop="image"
                         label="图片">
                         <template slot-scope="scope">
-                            <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
+                            <!-- <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div> -->
                             <el-upload
                                 class="upload-spec"
                                 :action="uploadUrl"
+                                list-type="picture-card"
+                                :file-list="scope.row.fileList"
+                                :limit="1"
                                 :data="{json: JSON.stringify({cid: cid})}"
-                                :on-remove="specHandleRemove"
+                                :on-preview="handlePictureCardPreview"
+                                :on-remove="function() {
+                                    specHandleRemove(scope.$index)
+                                }"
                                 :on-success="function(response, file, fileList) {
                                     specUploadSuccess(response, file, fileList, scope.$index, scope.row)
-                                }"
-                                :show-file-list="showFileList">
-                                <i class="el-icon-plus"></i>
-                                点击上传
+                                }">
+                                <p v-if="!scope.row.image">
+                                    <i class="el-icon-plus"></i>
+                                    点击上传
+                                </p>
                             </el-upload>
+                            <div v-if="!scope.row.image" style="cursor: pointer;"  @click="currentDialog = 'dialogSelectImageMaterial'; material = true; materialIndex = scope.$index; dialogVisible = true">素材库</div>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -177,7 +185,7 @@
                 <template v-else>
                     <el-table
                     class="spec-information-editor"
-                    :data="ruleForm.goodsInfo"
+                    :data="ruleForm.goodsInfos"
                     :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
                     style="width: 100%">
                         <el-table-column
@@ -234,19 +242,27 @@
                             label="图片">
                             <template slot-scope="scope">
                                 <!-- <img width="66" :src="scope.row.image" alt=""> -->
-                                <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
+                                <!-- <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div> -->
                                 <el-upload
                                     class="upload-spec"
                                     :action="uploadUrl"
+                                    list-type="picture-card"
+                                    :file-list="scope.row.fileList"
+                                    :limit="1"
                                     :data="{json: JSON.stringify({cid: cid})}"
-                                    :on-remove="specHandleRemove"
+                                    :on-preview="handlePictureCardPreview"
+                                    :on-remove="function() {
+                                        specHandleRemove(scope.$index)
+                                    }"
                                     :on-success="function(response, file, fileList) {
                                         specUploadSuccess(response, file, fileList, scope.$index, scope.row)
-                                    }"
-                                    :show-file-list="showFileList">
-                                    <i class="el-icon-plus"></i>
-                                    点击上传
+                                    }">
+                                    <p v-if="!scope.row.image">
+                                        <i class="el-icon-plus"></i>
+                                        点击上传
+                                    </p>
                                 </el-upload>
+                                <div v-if="!scope.row.image" style="cursor: pointer;"  @click="currentDialog = 'dialogSelectImageMaterial'; material = true; materialIndex = scope.$index; dialogVisible = true">素材库</div>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -491,6 +507,7 @@ export default {
                 isShowRelationProduct: 0, // 是否显示关联商品
                 relationProductInfoIds: [], // 关联商品
                 productDetail: '', // 商品详情
+                goodsInfo: [],
                 goodsInfos: [], // sku列表
                 freightTemplateId: '', // 运费模版ID
                 code: '', // 商品编码
@@ -502,6 +519,7 @@ export default {
                 }
                 
             },
+            specFileList: [],
             imageList: [],
             rules: {
                 productCategoryInfoId: [
@@ -581,7 +599,9 @@ export default {
             imageDialogVisible: false,
             specsLength: 0,
             selectSpecificationsCurrentDialog: '',
-            selectSpecificationsDialogVisible: false
+            selectSpecificationsDialogVisible: false,
+            materialIndex: 0,
+            material: false
         }
     },
     created() {
@@ -673,8 +693,10 @@ export default {
 
             console.log(this.ruleForm.goodsInfos)
         },
-        specHandleRemove() {
-
+        specHandleRemove(index) {
+            this.ruleForm.goodsInfos.splice(index, 1, Object.assign({}, this.ruleForm.goodsInfos[index], {
+                image: ''
+            }))
         },
         specUploadSuccess(response, file, fileList, index, row) {
             if(file.status == "success"){
@@ -750,7 +772,7 @@ export default {
                 res.goodsInfo.label = labelArr.join(',')
                 
                 this.ruleForm = Object.assign({}, this.ruleForm, res, {
-                    goodsInfo: [res.goodsInfo]
+                    goodsInfos: [res.goodsInfo]
                 })
                 this.categoryValue = arr
                 this.ruleForm.itemCat = itemCatAr
@@ -762,6 +784,17 @@ export default {
                     })) : []
 
                     console.log(this.fileList)
+                }
+                if(this.ruleForm.goodsInfos && this.ruleForm.goodsInfos.length) {
+                    let goodsInfos = JSON.parse(JSON.stringify(this.ruleForm.goodsInfos))
+
+                    goodsInfos.forEach(val => {
+                        val.fileList = [{
+                            name: '',
+                            url: val.image
+                        }]
+                    })
+                    this.ruleForm.goodsInfos = goodsInfos
                 }
                 if(this.ruleForm.relationProductInfoIds && this.ruleForm.relationProductInfoIds.length) {
                     this._apis.goods.getSPUGoodsList({ids: this.ruleForm.relationProductInfoIds}).then((res) => {
@@ -917,7 +950,7 @@ export default {
 
                         obj.goodsInfos = _goodsInfos
                     } else {
-                        obj.goodsInfos = this.ruleForm.goodsInfo
+                        obj.goodsInfos = this.ruleForm.goodsInfos
                     }
 
                     params = Object.assign({}, this.ruleForm, obj)
@@ -1096,10 +1129,22 @@ export default {
                         weight: '',
                         volume: '',
                         specs: _specs,
-                        image: ''
+                        image: '',
+                        fileList: []
                     }
                 })
+                this.ruleForm.goodsInfos.forEach((val, index) => {
+                    let label = val.label
+
+                    if(_results.find(spec => spec.label == label)) {
+                        let specIndex = _results.findIndex(val => val.label == label)
+                        
+                        _results.splice(specIndex, 1, Object.assign({}, this.ruleForm.goodsInfos[index]))
+                    }
+                })
+
                 this.ruleForm.goodsInfos = _results
+
                 console.log(_results)
             } else {
                 this.ruleForm.goodsInfos = []
@@ -1201,15 +1246,28 @@ export default {
         },
 
         imageSelected(image) {
-            this.fileList.push(Object.assign({}, image, {
-                name: image.fileName,
-                url: image.filePath
-            }))
-
-            if(this.ruleForm.images != '') {
-                this.ruleForm.images += ',' + image.filePath
+            if(this.material) {
+                this.ruleForm.goodsInfos.splice(this.materialIndex, 1, Object.assign({}, this.ruleForm.goodsInfos[this.materialIndex], {
+                    image: image.filePath,
+                    fileList: [
+                        {
+                            name: '',
+                            url: image.filePath
+                        }
+                    ]
+                }))
+                this.material = false
             } else {
-                this.ruleForm.images = image.filePath
+                this.fileList.push(Object.assign({}, image, {
+                    name: image.fileName,
+                    url: image.filePath
+                }))
+
+                if(this.ruleForm.images != '') {
+                    this.ruleForm.images += ',' + image.filePath
+                } else {
+                    this.ruleForm.images = image.filePath
+                }
             }
         }
     },
@@ -1376,7 +1434,8 @@ $blue: #655EFF;
 /deep/ .spec-information thead th:nth-child(2) .cell,
     /deep/ .spec-information thead th:nth-child(3) .cell,
     /deep/ .spec-information thead th:nth-child(4) .cell,
-    /deep/ .spec-information thead th:nth-child(5) .cell {
+    /deep/ .spec-information thead th:nth-child(5) .cell,
+    /deep/ .spec-information thead th:nth-child(8) .cell {
     position: relative;
     &:before {
         content: '*';
@@ -1395,6 +1454,10 @@ $blue: #655EFF;
     height: 30px!important;
     line-height: 30px!important;
     color: #655EFF;
+    border: none;
+    i {
+        font-size: 14px;
+    }
 }
 .spec-operate {
     span {
