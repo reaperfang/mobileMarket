@@ -7,6 +7,7 @@
 <script>
 import Order from './order'
 import Pagination from '@/components/Pagination'
+import utils from "@/utils";
 
 export default {
     data() {
@@ -39,10 +40,18 @@ export default {
             //     target: '.order-container'
             // });
             this.$refs['order'].loading = true
+            if(this.params.orderTimeValue && this.params.orderTimeValue.length) {
+                if(this.params.orderTimeValue[0]) {
+                    var searchTimeTypeStart = utils.formatDate(this.params.orderTimeValue[0], "yyyy-MM-dd hh:mm:ss")
+                }
+                if(this.params.orderTimeValue[1]) {
+                    var searchTimeTypeEnd = utils.formatDate(this.params.orderTimeValue[1], "yyyy-MM-dd hh:mm:ss")
+                }
+            }
             _params = Object.assign({}, this.params, {
                 [this.params.searchType]: this.params.searchValue,
-                [`${this.params.searchTimeType}Start`]: this.params.orderTimeValue ? this.params.orderTimeValue[0] : '',
-                [`${this.params.searchTimeType}End`]: this.params.orderTimeValue ? this.params.orderTimeValue[1] : '',
+                [`${this.params.searchTimeType}Start`]: this.params.orderTimeValue ? searchTimeTypeStart : '',
+                [`${this.params.searchTimeType}End`]: this.params.orderTimeValue ? searchTimeTypeEnd : '',
                 memberInfoId: this.$route.query.id
             }, this.listQuery)
             this._apis.order.fetchOrderList(_params).then((res) => {

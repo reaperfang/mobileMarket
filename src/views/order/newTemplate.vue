@@ -51,24 +51,24 @@
               </el-table-column>
               <el-table-column :label="one" width="180">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.theFirst"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}或以内
+                  <el-input type="number" min="0" v-model="scope.row.theFirst"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}或以内
                 </template>
               </el-table-column>
               <el-table-column label="运费（元）">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.freight"></el-input>
+                  <el-input type="number" min="0" v-model="scope.row.freight"></el-input>
                 </template>
               </el-table-column>
               <el-table-column :label="two" width="180">
                 <template slot-scope="scope">
                   每增加
-                  <el-input v-model="scope.row.superaddition"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}
+                  <el-input type="number" min="0" v-model="scope.row.superaddition"></el-input>{{ruleForm.calculationWay | calculationWayFilter}}
                 </template>
               </el-table-column>
               <el-table-column label="续费（元）" width="180">
                 <template slot-scope="scope">
                   运费增加
-                  <el-input v-model="scope.row.renew"></el-input>
+                  <el-input type="number" min="0" v-model="scope.row.renew"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="操作">
@@ -100,7 +100,7 @@
       </div>
       <div class="footer">
         <el-button @click="$router.go(-1)">取 消</el-button>
-        <el-button @click="submit" type="primary">确 定</el-button>
+        <el-button @click="submit('ruleForm')" type="primary">确 定</el-button>
       </div>
     </section>
     <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="onSubmit"></component>
@@ -118,7 +118,15 @@ export default {
       },
       noDistribution: "",
       noDistributionList: ["新建", "内蒙"],
-      rules: {},
+      rules: {
+          name: [
+            { required: true, message: '请输入模板名称', trigger: 'blur' },
+            { max: 5, message: '模板名称不超过20个字符', trigger: 'blur' }
+          ],
+          calculationWay: [
+            { required: true, message: '请选择计费方式', trigger: 'blur' },
+          ],
+        },
       tableData: [],
       currentDialog: "",
       dialogVisible: false
@@ -222,16 +230,23 @@ export default {
           });
         });
     },
-    submit() {
-      if(this.$route.query.id) {
-        if(this.$route.query.mode == 'copy') {
-          this.add()
-        } else {
-          this.editor()
-        }
-      } else {
-        this.add()
-      }
+    submit(formName) {
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if(this.$route.query.id) {
+              if(this.$route.query.mode == 'copy') {
+                this.add()
+              } else {
+                this.editor()
+              }
+            } else {
+              this.add()
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
     },
     onSubmit(value) {
       console.log(value);
