@@ -68,15 +68,6 @@ export function transformation(data) {
     data
   })
 }
-// 路径转化
-export function pathConversion(data) {
-  return request({
-    target:'SHOP-CONVERSION-ANALYSIS-PROCESSOR',
-    method: 'post',
-    apiType: 'data',
-    data
-  })
-}
 /*
 **客户分析
 */
