@@ -294,7 +294,13 @@ export default {
               areaInfoList.forEach(areaInfo => {
                 let receivedProvinceCode = areaInfo.receivedProvinceCode
                 let receivedCityCode = areaInfo.receivedCityCode
-                let cityName = areaList.find(area => area.code == receivedProvinceCode).citys.find(city => city.code == receivedCityCode).name
+                let cityName = ''
+
+                if(receivedProvinceCode == '' && receivedCityCode == '') {
+                  cityName = '默认运费（全国）'
+                } else {
+                  cityName = areaList.find(area => area.code == receivedProvinceCode).citys.find(city => city.code == receivedCityCode).name
+                }
 
                 areaInfo.cityName = cityName
               })
