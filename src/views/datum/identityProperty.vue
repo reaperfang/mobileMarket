@@ -74,7 +74,7 @@
                                     <p><span class="color_block" style="background-color:#578EFA "></span></p>
                                     <p><span class="color_block" style="background-color:#FD932B "></span></p>
                                     <p><span class="color_block" style="background-color:#FD4C2B "></span></p>
-                                    </el-col>
+                                 </el-col>
                                 <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxisData"> 支付 {{item}} 次 </p></el-col>
                                 <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxisData"{{item}}人</p></el-col>
                             </el-row>
@@ -92,12 +92,14 @@ export default {
     components: { ip1Chart, ip2Chart, ip3Chart },
     data() {
         return {
+            cid:2,
             oneData:[],
             dateM:'month',
             datePay:'month',
             formatM:'yyyy-MM',
             formatPay:'yyyy-MM',
             visitSourceType:0,
+            nearDay:"",
             valueM:'',
             valuePay:'',
             timeM:'',
@@ -110,10 +112,6 @@ export default {
             dataChart:{},
             threeData:{},
             grandTotal:'',
-            customerRatio:'',
-            customerNum:1,
-            menmberNum:1,
-            memberRatio:''
         }
     },
     methods:{
@@ -124,6 +122,7 @@ export default {
              let data = {
                  visitSourceType:this.visitSourceType,
             };
+            console.log(this._apis.data.attributeRatio(data))
             this._apis.data.attributeRatio(data).then(response => {
                     this.oneData = response;
                     this.grandTotal = response[0].value + response[1].value
@@ -183,11 +182,12 @@ export default {
                 dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay,
                 startTime:this.startTime,
                 endTime:this.endTime,
+                chanell :this.chanell,
                 nearDay:this.nearDay
             }
             this._apis.data.paymentTrend(data).then(response => {
                 this.threeData = response;
-                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime)
+                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime,this.chanell)
             }).catch(error => {
             this.$message.error(error);
             });

@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="p_bottom">
                                     <p v-for="(item,index) in dataObj.twoDataArr">{{item.pageDescribe}}</p>
-                                    <!-- <p v-for="(item,index) in dataObj.twoDataArr">{{item.uniqueViewCount}}</p> -->
+                                    <p v-for="(item,index) in dataObj.twoDataArr">{{item.uniqueViewCount}}</p>
                                 </div>
                             </div>
                         </div>
@@ -88,6 +88,7 @@ export default {
         return {
             range: "",
             visitSourceType:0,
+            nearDay:'',
             startTime:'',
             endTime:'',
             dateType:1,
@@ -100,10 +101,8 @@ export default {
             startTime: this.startTime,
             endTime: this.endTime,
             visitSourceType: this.visitSourceType,
-            dateType: this.dateType
-        };
-      this._apis.data.pathConversion(data).then(response => {
-          console.log(response)
+        };      
+      this._apis.data.transformation(data).then(response => {
           this.dataObj = response
         }).catch(error => {
           this.$message.error(error);
@@ -119,7 +118,7 @@ export default {
     },
     changeDay(val){
         if(val != 4){
-                    this.getPathConversion();
+         this.getPathConversion();
         }
     }
     },
