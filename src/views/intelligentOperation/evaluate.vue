@@ -30,18 +30,18 @@
                             <div class="input_wrap2">
                                 <el-select v-model="form.niceRatioRange">
                                     <el-option label="不限" value="null"></el-option>
-                                    <el-option label="0-1%" value="1"></el-option>
-                                    <el-option label="2-5%" value="2"></el-option>
-                                    <el-option label="5%以上" value="3"></el-option>
+                                    <el-option label="0-1%" value="0.01"></el-option>
+                                    <el-option label="2-5%" value="0.02-0.05"></el-option>
+                                    <el-option label="5%以上" value="0.05"></el-option>
                                 </el-select>
                             </div>
                             <span class="span_label">差评率</span>
                             <div class="input_wrap2 marR20">
                                 <el-select v-model="form.badRatioRange">
                                     <el-option label="不限" value="null"></el-option>
-                                    <el-option label="0-1%" value="1"></el-option>
-                                    <el-option label="2-5%" value="2"></el-option>
-                                    <el-option label="5%以上" value="3"></el-option>
+                                    <el-option label="0-1%" value="0.01"></el-option>
+                                    <el-option label="2-5%" value="0.02-0.05"></el-option>
+                                    <el-option label="5%以上" value="0.05"></el-option>
                                 </el-select>
                             </div>
                             <span class="span_label">会员类型</span>
@@ -119,25 +119,9 @@ export default {
         getEvaluation(idx,pageS){
             this.form.pageSize = pageS;
             this.form.startIndex = idx;
-            this.form.memberType = 'null' && (this.form.memberType = null)
-            if(this.form.niceRatioRange == '1'){
-                this.form.niceRatioRange = '0-0.01'
-            }else if(this.form.niceRatioRange == '2'){
-                this.form.niceRatioRange = '0.02-0.05'
-            }else if(this.form.niceRatioRange == '3'){
-                this.form.niceRatioRange = '0.05'
-            }else{
-                this.form.niceRatioRange = null
-            }
-            if(this.form.badRatioRange == '1'){
-                this.form.badRatioRange = '0-0.01'
-            }else if(this.form.badRatioRange == '2'){
-                this.form.badRatioRange = '0.02-0.05'
-            }else if(this.form.badRatioRange == '3'){
-                this.form.badRatioRange = '0.05'
-            }else{
-                this.form.badRatioRange = null
-            }
+            this.form.memberType == 'null' && (this.form.memberType = null)
+            this.form.niceRatioRange == 'null' && (this.form.niceRatioRange = null)
+            this.form.badRatioRange == 'null' && (this.form.badRatioRange = null)
             this._apis.data.evaluation(this.form).then(response => {
                 this.listObj = response;
             })
