@@ -311,7 +311,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliverGoodsSuccess?id=' + this.orderInfo.id + '&type=deliverGoods')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + res.success[0].orderInfoId + '&type=deliverGoods')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
