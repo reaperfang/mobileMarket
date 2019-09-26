@@ -23,7 +23,7 @@
                 </el-tab-pane>
             </el-tabs>
         </div>
-        <div class="goods-list">
+        <!-- <div class="goods-list">
             <p class="header">订单清单</p>
             <el-table
                 :data="orderDetail.orderItems"
@@ -145,7 +145,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-        </div>
+        </div> -->
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
     </div>
 </template>
