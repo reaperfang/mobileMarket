@@ -40,7 +40,8 @@ export default {
             recordList: [],
             sendItemList: [],
             currentDialog: '',
-            dialogVisible: false
+            dialogVisible: false,
+            orderType: ''
         }
     },
     created() {
