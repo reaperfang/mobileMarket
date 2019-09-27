@@ -18,6 +18,10 @@
           <p class="note">仅支持jpg,jpeg,png格式，大小不超过3.0MB</p>
         </el-form-item>
         <el-form-item label="本地上传" v-if="title == '上传视频'">
+          <video v-if="this.videoData.url !=undefined && !videoFlag"  
+            :src="this.videoData.url"
+            class="avatar video-avatar"
+            controls="controls">您的浏览器不支持视频播放</video> 
           <el-upload class="avatar-uploader el-upload--text"
             :action="uploadUrl" 
             :data="{json: JSON.stringify({cid: cid})}"
@@ -26,22 +30,19 @@
             :on-success="handleVideoSuccess" 
             :before-upload="beforeUploadVideo" 
             :on-progress="uploadVideoProcess"> 
-          <video v-if="this.fileData.url !=undefined && !videoFlag"  
-            :src="this.fileData.url"
-            class="avatar video-avatar"
-            controls="controls">您的浏览器不支持视频播放</video> 
-          <i v-else-if="this.fileData.url =='' && !videoFlag"
-            class="el-icon-plus avatar-uploader-icon"></i>  
+            <i class="el-icon-plus avatar-uploader-icon"></i> 
+          <!-- <i v-else-if="this.videoData.url =='' && !videoFlag"
+            class="el-icon-plus avatar-uploader-icon"></i>   -->
           <el-progress v-if="videoFlag == true"
               type="circle"
               :percentage="videoUploadPercent"
               style="width:80px;height:80px;">
           </el-progress>
-          <el-button class="video-btn"
+          <!-- <el-button class="video-btn"
                 slot="trigger"
                 size="small"
                 v-if="isShowUploadVideo"
-                type="primary">选取文件</el-button>
+                type="primary">选取文件</el-button> -->
           </el-upload>
           <p v-if="isShowUploadVideo">视频大小不超过10mb，支持mp4,mov,m4v,flv,x-flv,mkv,wmv,avi,rmvb,3gp格式</p>
         </el-form-item>
@@ -106,6 +107,7 @@ export default {
         imageUrls:''
       },
       fileData:{},
+      videoData:{},
       groupList:[],
       videoFlag:false , //是否显示进度条
 		  videoUploadPercent:"", //进度条的进度，
@@ -164,12 +166,12 @@ export default {
       }else{
         let query ={
           fileGroupInfoId:this.form.groupValue,
-          fileName:this.fileData.original,
-          filePath:this.fileData.url,
-          fileSize:this.fileData.size,
+          fileName:this.videoData.original,
+          filePath:this.videoData.url,
+          fileSize:this.videoData.size,
           name:this.form.name,
-          fileover:this.form.imageUrls,
-          sign:this.fileData.sign,
+          fileCover:this.form.imageUrls,
+          sign:'',
         }
         this.$emit('submit',{uploadVideo:{query:query}})
       }
@@ -224,7 +226,8 @@ export default {
         this.videoFlag = false;
         this.videoUploadPercent = 0;
         if (res.status == "success") {
-            this.fileData.url = res.data.url;
+          console.log('url',res.data)
+            this.videoData = res.data;
         } else {
             this.$message.error('视频上传失败，请重新上传！');
         }

@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     // 数据显示控制
-    dataType(val,l){
+    nearDay(val,l){
       if(val == 1){
         this.option.title.text = "浏览/访问",
         this.option.legend.data = ["浏览量","访客量"],
@@ -98,7 +98,7 @@ export default {
       console.log(n,t,type,l);
       this.flow = n;
       this.type = type;
-      this.dataType(type,l);
+      this.nearDay(type,l);
       this.makeOption(n);
       this.oChart.setOption(this.option, true);
     },
