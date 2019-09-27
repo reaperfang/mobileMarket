@@ -139,7 +139,7 @@ export default {
             }
             else if(this.listStyle=='5'){
                 this.goodMargin = {marginTop:this.goodsMargin + 'px'};
-                var bodyWidth = document.body.clientWidth;
+                var bodyWidth = 370;
                 if('showTemplate' in this.currentComponentData.data){
                     this.showTemplate= this.currentComponentData.data.showTemplate;
                     if(this.showTemplate!=1){
@@ -722,6 +722,7 @@ export default {
             }
             &:nth-of-type(3n+1){
                 overflow:hidden;
+                width:100% !important;
                 .img{
                     padding-bottom:100%;
                     height:0;
@@ -767,6 +768,12 @@ export default {
                 margin-top:15px;
                 width:170px;
                 overflow:hidden;
+                &:nth-of-type(1){
+                    margin-top:0 !important;
+                }
+                &:nth-of-type(2){
+                    margin-top:0 !important;
+                }
                 .img{
                     position:relative;
                     overflow:hidden;
@@ -812,6 +819,12 @@ export default {
                 margin-top:15px;
                 width:170px;
                 overflow:hidden;
+                &:nth-of-type(1){
+                    margin-top:0 !important;
+                }
+                &:nth-of-type(2){
+                    margin-top:0 !important;
+                }
                 .img{
                     position:relative;
                     overflow:hidden;

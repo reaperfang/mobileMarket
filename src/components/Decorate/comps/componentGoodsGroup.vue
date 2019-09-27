@@ -2,8 +2,9 @@
 <!-- 组件-商品分类 -->
     <div class="componentGoodsGroup" :class="{showTemplate:showTemplate!=1}" id="componentGoodsGroup" v-if="currentComponentData && currentComponentData.data" v-loading="loading">
         <div class="componentGoodsGroup_tab" id="componentGoodsGroup_tab" :class="'menuStyle'+menuStyle" :style="{width:componentGoodsGroup_tabWidth}">
-            <p class="active" v-if="showAllGroup==1" @click="currentCatagory=null">全部</p>
-            <p v-for="(item,key) of list" :class="{active:showAllGroup!=1&&key==0}" :key="key" @click="currentCatagory=item">{{item.name}}</p>
+            <p :class="{active:activeGoodId==''&&showAllGroup==1}" v-if="showAllGroup==1" @click="currentCatagory=null;getIdData('')">全部</p>
+            <p v-for="(item,key) of list" :class="{active:showAllGroup!=1&&key==0||activeGoodId==item.id}" :key="key" 
+            @click="currentCatagory=item;getIdData(item.id)">{{item.name}}</p>
         </div>
         <div class="componentGoodsGroup_content">
             <componentGoods :data='currentComponentData' :currentCatagoryId="currentCatagory? currentCatagory.id : 'all'"></componentGoods>
@@ -31,7 +32,12 @@ export default {
         menuPosition: "",
         componentGoodsGroup_tabWidth: "",
         currentCatagory: null,
-        loading: false
+        loading: false,
+        // 当前分类id
+        activeGoodId:'',
+        // 商品请求分类id集合
+        allGoodClassId:[],
+        allGoodClassId1:[]
       }
     },
     components: {
@@ -108,6 +114,16 @@ export default {
           }
           }
         },
+        getIdData(id){
+          this.activeGoodId = id;
+          if(id!=''){
+            this.allGoodClassId = [];  
+            this.allGoodClassId.push(id);
+          }
+          else{
+            this.allGoodClassId = this.allGoodClassId1;
+          }
+        }
 
         // handleScroll(){
         //     let componentGoodsGroupHeight = document.getElementById("componentGoodsGroup").clientHeight;  

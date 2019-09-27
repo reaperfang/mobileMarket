@@ -2,7 +2,7 @@
   <div>
     <div v-if="pageList.length" v-loading="loading">
       <div class="tabs">
-        <el-button type="primary" v-for="(item, key) of pageList" :key="key" :class="{'myActive': !tabsInited && key === 0}" @click="tabClick($event, item)" plain>{{item.name || '页面'}}</el-button>
+        <span type="primary" v-for="(item, key) of pageList" :key="key" :class="{'myActive': item.active === true}" @click="tabClick($event, item)" plain>{{item.name || '页面'}}</span>
       </div>
       <Decorate panelName="页面编辑" :componentConfig="componentConfig" :saveData="saveData" :homePageData="homePageData" v-if="decorateRender"></Decorate>
     </div>
@@ -35,8 +35,7 @@ export default {
       },
       pageList: [],  //页面列表
       pageMaps: {},  //页面数据集合
-      decorateRender: false,  //装修是否渲染
-      tabsInited: false   //tabs是否初始化过（点击过）
+      decorateRender: false  //装修是否渲染
     };
   },
   created() {
@@ -94,6 +93,7 @@ export default {
         for(let item of response) {
           this.pageMaps[item.id] = item;
         }
+        response[0]['active'] = true;
         this.pageId = response[0].id;
         this.fetch(response[0].id);
       }).catch((error)=>{
@@ -153,7 +153,16 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.tabsInited = true;
+        const tempItems = [...this.pageList];
+        for(let i=0;i<tempItems.length;i++) {
+          if(item === tempItems[i]) {
+            tempItems[i].active = true;
+          }else{
+            tempItems[i].active = false;
+          }
+        }
+        this.pageList = tempItems;
+
         this.pageId = item.id;
       }).catch(() => {
         
@@ -194,6 +203,13 @@ export default {
 .tabs{
   margin-bottom:20px;
   padding-bottom:2px;
+  span{
+    border: 1px solid $btnMainHoverColor;
+    padding:5px 10px;
+    border-radius:5px;
+    margin-right:30px;
+    cursor:pointer;
+  }
   .myActive{
     background: #5b55e6;
     border-color: #5b55e6;
