@@ -287,7 +287,7 @@
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
             </el-form-item>
             <el-form-item label="单位计量" prop="productUnit">
-                <el-select v-model="ruleForm.productUnit" placeholder="请选择">
+                <el-select v-model="ruleForm.productUnit" placeholder="请选择" :disabled="ruleForm.other" clearable>
                     <el-option
                         v-for="item in unitList"
                         :key="item.id"
@@ -933,6 +933,32 @@ export default {
                         productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit,
                     }
 
+                    let calculationWay
+                    
+                    if(this.ruleForm.isFreeFreight == 0) {
+                        let id = ruleForm.freightTemplateId
+
+                        calculationWay = this.shippingTemplates.find(val => val.id == id).calculationWay
+
+                        if(calculationWay == 3) {
+                            if(this.ruleForm.goodsInfos.some(val => val.volume == '')) {
+                                this.$message({
+                                    message: '规格信息中体积不能为空',
+                                    type: 'warning'
+                                });
+                                return
+                            }
+                        } else if(calculationWay == 2) {
+                            if(this.ruleForm.goodsInfos.some(val => val.weight == '')) {
+                                this.$message({
+                                    message: '规格信息中重量不能为空',
+                                    type: 'warning'
+                                });
+                                return
+                            }
+                        }
+                    }
+
                     // if(this.ruleForm.productDetail) {
                     //     let _productDetail = ''
 
@@ -1448,6 +1474,21 @@ $blue: #655EFF;
     /deep/ .spec-information thead th:nth-child(4) .cell,
     /deep/ .spec-information thead th:nth-child(5) .cell,
     /deep/ .spec-information thead th:nth-child(8) .cell {
+    position: relative;
+    &:before {
+        content: '*';
+        display: block;
+        color: #FD4C2B;
+        position: absolute;
+        left: 1px;
+        top: 2px;
+    }
+}
+/deep/ .spec-information-editor thead th:nth-child(2) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(3) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(4) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(5) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(8) .cell {
     position: relative;
     &:before {
         content: '*';

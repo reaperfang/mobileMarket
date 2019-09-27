@@ -87,9 +87,6 @@
                 </div>
                 <div class="item righter">
                     <p>待收货</p>
-                    <div>
-                        <span>待收货</span>
-                    </div>
                 </div>
             </template>
             <template v-else-if="orderState == 6">
@@ -208,9 +205,6 @@
                 </div>
                 <div class="item righter">
                     <p>待收货</p>
-                    <div>
-                        <span>待收货</span>
-                    </div>
                 </div>
             </template>
             <template v-else-if="orderState == 6">
