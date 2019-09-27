@@ -179,7 +179,7 @@
             <template v-else-if="orderState == 4">
                 <!-- 部分发货 -->
                 <div class="item lefter">
-                    <el-steps :active="active">
+                    <el-steps active="3">
                         <el-step title="客户下单" :description="orderInfo.createTime"></el-step>
                         <el-step title="客户付款" :description="orderInfo.payComplateTime"></el-step>
                         <el-step title="商户发货" description="客户已完成付款，请尽快完成剩余发货"></el-step>

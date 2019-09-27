@@ -110,12 +110,14 @@ export default {
      /* 保存数据 */
     saveData(triggerType) {
       let resultData = this.collectData(triggerType);
-      resultData['status'] = '1';
-      this.submit(resultData);
+      if(resultData && resultData.name) {
+        resultData['status'] = '1';
+        this.submit(resultData);
+      }
     },
 
     submit(resultData) {
-      if(!resultData.name || !resultData.title || !resultData.explain || !resultData.pageCategoryInfoId || !resultData.colorStyle) {
+      if(!resultData.name || !resultData.title || !resultData.explain) {
          this.$alert('请填写基础信息后重试，点击确认返回编辑页面信息!', '警告', {
           confirmButtonText: '确定',
           callback: action => {
@@ -133,14 +135,16 @@ export default {
           message: '创建成功！',
           type: 'success'
         });
-        this._globalEvent.$emit('decorateSaveLoading', true, this.id);
+        this._globalEvent.$emit('decorateSaveLoading', true);
         // this._routeTo('pageManageIndex');
+        this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
           message: error
         });
-        this._globalEvent.$emit('decorateSaveLoading', false, this.id);
+        this._globalEvent.$emit('decorateSaveLoading', false);
+        this.loading = false;
       });
     },
 
@@ -162,6 +166,19 @@ export default {
       let pageData = [];
       for(let item of triggerType === 'tabChange' ? this.cacheData.componentDataIds: this.componentDataIds) {
         const componentData = triggerType === 'tabChange' ? this.cacheData.componentDataMap[item] : this.componentDataMap[item];
+        if(componentData.type === 'goods') {
+          if(componentData.data.ids && !componentData.data.ids.length) {
+            this.$alert('请在右侧选择真实商品后重试', '提示', {
+              confirmButtonText: '确定',
+              callback: action => {
+                //打开基础信息面板
+                this.$store.commit('setCurrentComponentId', componentData.id);
+                this._globalEvent.$emit('decorateSaveLoading', false);
+              }
+            });
+            return;
+          }
+        }
         if(componentData) {
           pageData.push(componentData);
         }

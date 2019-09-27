@@ -141,7 +141,7 @@ export default {
     //下载视频
     downVideo(filepath,fileName){
       let a = document.createElement('a')
-          a.download = fileName || '图片名称'
+          a.download = fileName || '视频名称'
           a.href = filepath;
           a.click();
     },

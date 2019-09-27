@@ -64,11 +64,21 @@ export default {
                 transferCatalogId: this.productCatalogInfoId
             }).then((res) => {
                 this.$notify({
-                    title: '成功',
-                    message: '转移成功！',
-                    type: 'success'
-                });
-                this.dialogVisible = false
+                        title: '成功',
+                        message: '转移成功！',
+                        type: 'success'
+                    });
+                this._apis.goods.deleteCategory({id: this.data}).then((res) => {
+                    this.$notify({
+                        title: '成功',
+                        message: '删除成功！',
+                        type: 'success'
+                    });
+                    this.onSubmit()
+                    this.dialogVisible = false
+                }).catch(error => {
+                    this.dialogVisible = false
+                })
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
@@ -103,6 +113,9 @@ export default {
             type: Boolean,
             required: true
         },
+        onSubmit: {
+
+        }
     },
     components: {
         DialogBase

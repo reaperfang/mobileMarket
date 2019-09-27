@@ -82,7 +82,6 @@
                         老会员共计<span>{{oldMemberCount || 0}}</span>人；
                         占会员总数的<span>{{(oldMemberRatio*100).toFixed(1) || 0}}%</span>;    
                     </i>
-                    {{repeatPaymentRatio}}
                     <i v-if="repeatPaymentRatio != undefined">复购率为<span>{{repeatPaymentRatio*100}}%</span></i>。
                 </p>
                 <div class="fr marT20">

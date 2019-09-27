@@ -46,7 +46,7 @@ export default {
           {
             type: "category",
             boundaryGap: false,
-            data: this.flow['xAxisData']
+            data: this.flow['xAxis']
           }
         ],
         yAxis: [
@@ -60,7 +60,7 @@ export default {
             name:"访客",
             type: "line",
             stack: "总量",
-            data: this.flow['yAxisData']
+            data: this.flow['yAxis']
           },
         ]
       };
