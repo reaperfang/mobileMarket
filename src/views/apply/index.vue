@@ -31,8 +31,8 @@ export default {
             this.token = getToken('authToken')
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             this.cid = shopInfo && shopInfo.id || ''
-            // this.src = `http://test-omo.aiyouyi.cn/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
-            this.src = `${process.env.DATA_API}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
+            this.src = `http://test-omo.aiyouyi.cn/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
+            // this.src = `${process.env.DATA_API}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
         }
     }
 }
