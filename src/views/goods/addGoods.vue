@@ -1484,6 +1484,21 @@ $blue: #655EFF;
         top: 2px;
     }
 }
+/deep/ .spec-information-editor thead th:nth-child(2) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(3) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(4) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(5) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(8) .cell {
+    position: relative;
+    &:before {
+        content: '*';
+        display: block;
+        color: #FD4C2B;
+        position: absolute;
+        left: 1px;
+        top: 2px;
+    }
+}
 .footer {
     text-align: center;
 }
