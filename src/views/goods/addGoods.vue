@@ -152,6 +152,7 @@
                             <el-upload
                                 class="upload-spec"
                                 :action="uploadUrl"
+                                :class="{hide:scope.row.image}"
                                 list-type="picture-card"
                                 :file-list="scope.row.fileList"
                                 :limit="1"
@@ -247,6 +248,7 @@
                                 <el-upload
                                     class="upload-spec"
                                     :action="uploadUrl"
+                                    :class="{hide:scope.row.image}"
                                     list-type="picture-card"
                                     :file-list="scope.row.fileList"
                                     :limit="1"
