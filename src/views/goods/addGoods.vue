@@ -152,6 +152,7 @@
                             <el-upload
                                 class="upload-spec"
                                 :action="uploadUrl"
+                                :class="{hide:scope.row.image}"
                                 list-type="picture-card"
                                 :file-list="scope.row.fileList"
                                 :limit="1"
@@ -247,6 +248,7 @@
                                 <el-upload
                                     class="upload-spec"
                                     :action="uploadUrl"
+                                    :class="{hide:scope.row.image}"
                                     list-type="picture-card"
                                     :file-list="scope.row.fileList"
                                     :limit="1"
@@ -936,7 +938,7 @@ export default {
                     let calculationWay
                     
                     if(this.ruleForm.isFreeFreight == 0) {
-                        let id = ruleForm.freightTemplateId
+                        let id = this.ruleForm.freightTemplateId
 
                         calculationWay = this.shippingTemplates.find(val => val.id == id).calculationWay
 
