@@ -135,7 +135,7 @@ export default {
           type: 'success'
         });
         this._globalEvent.$emit('decorateSaveLoading', true);
-        this._routeTo('templateManageIndex');
+        // this._routeTo('templateManageIndex');
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
