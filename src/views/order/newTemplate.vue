@@ -33,6 +33,7 @@
                 <span class="des">说明：除指定区域外，其余区域按默认计算。</span>
               </div>
               <div
+                v-if="$route.query.mode != 'look'"
                 @click="currentDialog = 'RegionDialog'; dialogVisible = true"
                 class="col blue pointer"
               >为指定区域设置运费</div>

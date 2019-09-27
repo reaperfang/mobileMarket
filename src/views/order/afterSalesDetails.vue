@@ -141,11 +141,6 @@ export default {
                 this.orderAfterSale = res.orderAfterSale || {}
                 this.recordList = res.recordList
                 this.sendItemList = res.sendItemList
-                this.$notify({
-                    title: '成功',
-                    message: '查询成功！',
-                    type: 'success'
-                });
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({
