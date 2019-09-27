@@ -1,9 +1,9 @@
 <template>
   <div>
     <div v-if="pageList.length" v-loading="loading">
-      <el-tabs v-model="pageId" @tab-click="tabClick">
-        <el-tab-pane v-for="(item, key) of pageList" :key="key" :label="item.name || '页面'" :name="item.id" ></el-tab-pane>
-      </el-tabs>
+      <div class="tabs">
+        <el-button type="primary" v-for="(item, key) of pageList" :key="key" :class="{'myActive': !tabsInited && key === 0}" @click="tabClick($event, item)" plain>{{item.name || '页面'}}</el-button>
+      </div>
       <Decorate panelName="页面编辑" :componentConfig="componentConfig" :saveData="saveData" :homePageData="homePageData" v-if="decorateRender"></Decorate>
     </div>
     <div v-else v-loading="loading" style="padding:50px;">
@@ -35,8 +35,8 @@ export default {
       },
       pageList: [],  //页面列表
       pageMaps: {},  //页面数据集合
-      cacheData: null,   //页签切换前缓存的上一个页面数据
-      decorateRender: false  //装修是否渲染
+      decorateRender: false,  //装修是否渲染
+      tabsInited: false   //tabs是否初始化过（点击过）
     };
   },
   created() {
@@ -48,12 +48,6 @@ export default {
       //异步延迟可以解决一些选中组件的问题
       this.$nextTick(() => {
         this.$nextTick(() => {
-          this.cacheData = {...{
-            baseInfo: this.baseInfo,
-            id: this.newValue,
-            componentDataIds: this.componentDataIds,
-            componentDataMap: this.componentDataMap
-          }};
           this.fetch(newValue);
         })
       })
@@ -113,8 +107,8 @@ export default {
     },
 
      /* 保存数据 */
-    saveData(triggerType) {
-      let resultData = this.collectData(triggerType);
+    saveData() {
+      let resultData = this.collectData();
       if(resultData && Object.prototype.toString.call(resultData) === '[object Object]') {
         resultData['status'] = '1';
         this.submit(resultData);
@@ -128,7 +122,7 @@ export default {
           callback: action => {
             //打开基础信息面板
             this.$store.commit('setCurrentComponentId', this.basePropertyId);
-            this._globalEvent.$emit('decorateSaveLoading', false, this.id);
+            this._globalEvent.$emit('decorateSaveLoading', false);
           }
         });
         return;
@@ -141,7 +135,7 @@ export default {
           type: 'success'
         });
         this._globalEvent.$emit('decorateSaveLoading', true);
-        // this._routeTo('pageManageIndex');
+        this._routeTo('templateManageIndex');
         this.loading = false;
       }).catch((error)=>{
         this.$notify.error({
@@ -153,13 +147,14 @@ export default {
       });
     },
 
-    tabClick() {
-      this.$confirm(`当前编辑内容尚未保存，切换其他页面将会清除本页面编辑数据！是否需要保存？（点击保存后，本页编辑内容将会另存为至微页面）`, '提示', {
-        confirmButtonText: '保存',
+    tabClick(event, item) {
+      this.$confirm(`是否要离开当前页面，离开将不会保存。`, '提示', {
+        confirmButtonText: '离开',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.saveData('tabChange');
+        this.tabsInited = true;
+        this.pageId = item.id;
       }).catch(() => {
         
       })
@@ -167,10 +162,10 @@ export default {
 
      /* 保存前收集装修数据 */
     collectData(triggerType) {
-      let result = triggerType === 'tabChange' ? this.cacheData.baseInfo : this.baseInfo;
+      let result = this.baseInfo;
       let pageData = [];
-      for(let item of triggerType === 'tabChange' ? this.cacheData.componentDataIds: this.componentDataIds) {
-        const componentData = triggerType === 'tabChange' ? this.cacheData.componentDataMap[item] : this.componentDataMap[item];
+      for(let item of this.componentDataIds) {
+        const componentData = this.componentDataMap[item];
         if(componentData.type === 'goods') {
           if(componentData.data.ids && !componentData.data.ids.length) {
             this.$alert('请在右侧选择真实商品后重试', '提示', {
@@ -196,4 +191,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tabs{
+  margin-bottom:20px;
+  padding-bottom:2px;
+  .myActive{
+    background: #5b55e6;
+    border-color: #5b55e6;
+    color: #FFF;
+    outline: 0;
+  }
+}
 </style>
