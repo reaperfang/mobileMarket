@@ -90,7 +90,7 @@ export default {
     /* 保存数据 */
     saveData() {
       let resultData = this.collectData();
-      if(resultData && resultData.name) {
+      if(resultData && Object.prototype.toString.call(resultData) === '[object Object]') {
         resultData['status'] = '1';
         this.submit(resultData);
       }
@@ -99,7 +99,7 @@ export default {
     /* 保存并生效数据 */
     saveAndApplyData() {
       let resultData = this.collectData();
-      if(resultData && resultData.name) {
+      if(resultData && Object.prototype.toString.call(resultData) === '[object Object]') {
         resultData['status'] = '0';
         this.submit(resultData, 'saveAndApply');
       }
@@ -136,7 +136,7 @@ export default {
 
     submit(resultData, type) {
 
-      if(!resultData.name || !resultData.title || !resultData.explain || !resultData.pageCategoryInfoId || !resultData.colorStyle) {
+      if(!resultData.name || !resultData.title || !resultData.explain) {
          this.$alert('请填写基础信息后重试，点击确认返回编辑页面信息!', '警告', {
           confirmButtonText: '确定',
           callback: action => {

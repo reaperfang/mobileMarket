@@ -110,7 +110,7 @@ export default {
      /* 保存数据 */
     saveData(triggerType) {
       let resultData = this.collectData(triggerType);
-      if(resultData && resultData.name) {
+      if(resultData && Object.prototype.toString.call(resultData) === '[object Object]') {
         resultData['status'] = '1';
         this.submit(resultData);
       }
