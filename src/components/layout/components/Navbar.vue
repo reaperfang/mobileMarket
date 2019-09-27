@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="navbar">
-      <div class="navbar-item">{{shopInfo && shopInfo.shopName}}</div>
+      <div class="navbar-item">{{shopName}}</div>
       <!-- <div class="navbar-item"></div> -->
       <div class="right-menu">
         <router-link to="/profile/upgrade" class="set_meal">套餐升级 </router-link> 
@@ -61,7 +61,8 @@ export default {
     return{
       showShopsDialog:false,
       shopList:[],
-      route:'index'
+      route:'index',
+      shopName:''
     }
   },
   components: {
@@ -72,11 +73,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'device',
-      // 'userInfo'
     ]),
-    shopInfo(){
-      return JSON.parse(localStorage.getItem('shopInfos'))
-    },
     userInfo(){
       return JSON.parse(this.$store.getters.userInfo)
     },
@@ -89,19 +86,33 @@ export default {
       return false
     }
   },
-  created(){ },
+  created(){ 
+    this.getShopName()
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },
+    //推出登录
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload()// In order to re-instantiate the vue-router object to avoid bugs
       })
     },
+
+    //监听弹窗关闭
     handleClose(){
       this.showShopsDialog = false
+      this.getShopName()
     },
+
+    //获取店铺名称
+    getShopName(){
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      this.shopName = shopInfo && shopInfo.shopName
+    },
+
+    //切换店铺
     init(){
       let info = JSON.parse(localStorage.getItem('userInfo'))
       let arr = Object.keys(info.shopInfoMap) 
