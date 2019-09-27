@@ -35,7 +35,7 @@ export default {
                     }
                 });
                 let params = {memberInfoId: this.data.id, cardLevelInfoId: levelInfoId, name: levelInfoName};
-                this._apis.client.cardChange(params).then((response) => {
+                this._apis.client.giveCard(params).then((response) => {
                     this.$notify({
                         title: '成功',
                         message: "发放会员成功",
