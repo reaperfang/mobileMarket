@@ -4,7 +4,7 @@
       <el-tabs v-model="pageId" @tab-click="tabClick">
         <el-tab-pane v-for="(item, key) of pageList" :key="key" :label="item.name || '页面'" :name="item.id" ></el-tab-pane>
       </el-tabs>
-      <Decorate panelName="页面编辑" :componentConfig="componentConfig" :saveData="saveData" :homePageData="homePageData"></Decorate>
+      <Decorate panelName="页面编辑" :componentConfig="componentConfig" :saveData="saveData" :homePageData="homePageData" v-if="decorateRender"></Decorate>
     </div>
     <div v-else v-loading="loading" style="padding:50px;">
       暂无可用页面
@@ -35,7 +35,8 @@ export default {
       },
       pageList: [],  //页面列表
       pageMaps: {},  //页面数据集合
-      cacheData: null   //页签切换前缓存的上一个页面数据
+      cacheData: null,   //页签切换前缓存的上一个页面数据
+      decorateRender: false  //装修是否渲染
     };
   },
   created() {
@@ -49,7 +50,7 @@ export default {
         this.$nextTick(() => {
           this.cacheData = {...{
             baseInfo: this.baseInfo,
-            id: this.id,
+            id: this.newValue,
             componentDataIds: this.componentDataIds,
             componentDataMap: this.componentDataMap
           }};
@@ -63,8 +64,12 @@ export default {
     fetch(newValue) {
       if(newValue) {
         this.$store.commit("clearAllData");
-        this.homePageData = this.pageMaps[newValue];
-        this.convertDecorateData(this.pageMaps[newValue]);
+        this.decorateRender = false;
+        this.$nextTick(() => {
+          this.decorateRender = true;
+          this.homePageData = this.pageMaps[newValue];
+          this.convertDecorateData(this.pageMaps[newValue]);
+        })
       }
     },
 
