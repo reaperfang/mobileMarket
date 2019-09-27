@@ -101,6 +101,17 @@ export default {
             }
         }
     },
+    computed: {
+        businessFilter(value) {
+            if(value.memberTeceiveGoodsTime) {
+                return '【客户签收】'
+            } else if(value.sendTime) {
+                return '【商户发货】'
+            } else {
+                return ''
+            }
+        }
+    },
     methods: {
         showLogistics(expressNo) {
             this._apis.order.orderLogistics({expressNo}).then(res => {

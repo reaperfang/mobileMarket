@@ -1,34 +1,37 @@
 <template>
   <DialogBase :visible.sync="visible" @submit="submit" title="余额记录" :hasCancel="hasCancel">
     <div class="c_container">
-        <div class="marB20"><span>总余额：{{ data.balance }}</span></div>
-        <el-table
-            :data="balanceList"
-            style="width: 100%"
-            :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-            :default-sort="{prop: 'date', order: 'descending'}"
-          >
-            <el-table-column prop="createUserName" label="操作人"></el-table-column>
-            <el-table-column prop="createTime" label="操作时间"></el-table-column>
-            <el-table-column prop="businessType" label="交易类型"></el-table-column>
-            <el-table-column prop="changeReason" label="原因"></el-table-column>
-            <el-table-column prop="changeAmount" label="数量"></el-table-column>
-        </el-table>
-        <div class="page_styles">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="Number(startIndex) || 1"
-              :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
-              :page-size="pageSize*1"
-              :total="total*1"
-              layout="total, sizes, prev, pager, next, jumper"
+      <div class="marB20">
+        <span>总余额：{{ data.balance }}</span>
+      </div>
+      <el-table
+        :data="balanceList"
+        style="width: 100%"
+        :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
+        :default-sort="{prop: 'date', order: 'descending'}"
+      >
+        <el-table-column prop="createUserName" label="操作人"></el-table-column>
+        <el-table-column prop="createTime" label="操作时间"></el-table-column>
+        <el-table-column prop="businessType" label="交易类型"></el-table-column>
+        <el-table-column prop="changeReason" label="原因"></el-table-column>
+        <el-table-column prop="changeAmount" label="数量"></el-table-column>
+      </el-table>
+      <div class="page_styles">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="Number(startIndex) || 1"
+          :page-sizes="[5, 10, 20, 50, 100, 200, 500]"
+          :page-size="pageSize*1"
+          :total="total*1"
+          layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
-        </div>
+      </div>
     </div>
   </DialogBase>
 </template>
 <script>
+import utils from "@/utils";
 import DialogBase from "@/components/DialogBase";
 export default {
   props: ["data"],
@@ -43,16 +46,29 @@ export default {
     };
   },
   methods: {
-    submit() {
-      
-    },
+    submit() {},
     getBalanceLists(startIndex, pageSize) {
-        this._apis.client.getBalanceLists({startIndex, pageSize, memberInfoId: this.data.id, sort:'desc'}).then((response) => {
-            this.balanceList = [].concat(response.list);
-            this.total = response.total;
-        }).catch((error) => {
-          console.log(error);
+      this._apis.client
+        .getBalanceLists({
+          startIndex,
+          pageSize,
+          memberInfoId: this.data.id,
+          sort: "desc"
         })
+        .then(response => {
+          let list = response.list;
+          list.map(v => {
+            v.createTime = utils.formatDate(
+              new Date(Number(v.createTime)),
+              "yyyy-MM-dd hh:mm:ss"
+            );
+          });
+          this.balanceList = [].concat(list);
+          this.total = response.total;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     handleSizeChange(val) {
       this.getBalanceLists(this.startIndex, val);
@@ -60,7 +76,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.getBalanceLists(val, this.pageSize);
-    },
+    }
   },
   computed: {
     visible: {
@@ -73,7 +89,7 @@ export default {
     }
   },
   mounted() {
-      this.getBalanceLists(this.startIndex, this.pageSize);
+    this.getBalanceLists(this.startIndex, this.pageSize);
   },
   props: {
     data: {},
@@ -93,11 +109,11 @@ export default {
 }
 .c_container {
   text-align: left;
-  .marB20{
-      margin: 20px 0;
+  .marB20 {
+    margin: 20px 0;
   }
-  .marL20{
-      margin-left: 20px;
+  .marL20 {
+    margin-left: 20px;
   }
 }
 </style>

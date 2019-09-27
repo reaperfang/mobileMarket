@@ -8,28 +8,28 @@
         </el-radio-group>
       </el-form-item>
      <el-form-item label="选择商品" v-if="ruleForm.addType === 1" prop="goods">
-        <div class="goods_list">
-          <ul>
-            <template v-if="ruleForm.addType === 1">
-              <template v-for="(item, key) of list">
-                <li :key="key" v-if="item.status !== 2">
-                  <img :src="item.image" alt="">
-                  <i class="delete_btn" @click.stop="deleteItem(item)"></i>
-                </li>
-              </template>
-            </template>
-            <template v-else-if="ruleForm.addType === 2">
-              <li v-for="(item, key) of []" :key="key">
+      </el-form-item>
+      <div class="goods_list" v-if="ruleForm.addType === 1" prop="goods">
+        <ul>
+          <template v-if="ruleForm.addType === 1">
+            <template v-for="(item, key) of list">
+              <li :key="key" v-if="item.status !== 2">
                 <img :src="item.image" alt="">
                 <i class="delete_btn" @click.stop="deleteItem(item)"></i>
               </li>
             </template>
-            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectMultiPerson'">
-              <i class="inner"></i>
+          </template>
+          <template v-else-if="ruleForm.addType === 2">
+            <li v-for="(item, key) of []" :key="key">
+              <img :src="item.image" alt="">
+              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
             </li>
-          </ul>
-        </div>
-      </el-form-item>
+          </template>
+          <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectMultiPerson'">
+            <i class="inner"></i>
+          </li>
+        </ul>
+      </div>
       <el-form-item label="显示个数" v-if="ruleForm.addType === 2" prop="showNumber">
         <el-input  v-model="ruleForm.showNumber" placeholder="请输入个数"></el-input>
         最多显示30个  
@@ -295,5 +295,20 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/.el-form-item__label{
+  text-align: left;
+}
+/deep/.el-radio-group{
+  margin-top: 9px;
+  /deep/.el-radio {
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
+}
+/deep/.el-checkbox-group{
+  /deep/.el-checkbox{
+    margin-right: 10px;
+  }
+}
 </style>
