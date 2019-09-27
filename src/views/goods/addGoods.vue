@@ -936,7 +936,7 @@ export default {
                     let calculationWay
                     
                     if(this.ruleForm.isFreeFreight == 0) {
-                        let id = ruleForm.freightTemplateId
+                        let id = this.ruleForm.freightTemplateId
 
                         calculationWay = this.shippingTemplates.find(val => val.id == id).calculationWay
 
