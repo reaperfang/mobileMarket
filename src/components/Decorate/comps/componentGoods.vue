@@ -61,6 +61,7 @@ export default {
         componentButton
     },
     created() {
+        const _self = this;
         this._globalEvent.$on('goodsListOfGroupChange', (list, componentId)=>{
             if(this.currentComponentId === componentId) {
                 this.list = list;
@@ -68,8 +69,8 @@ export default {
         })
         this.fetch();
         this._globalEvent.$on('fetchGoods', (componentData, componentId) => {
-            if(this.currentComponentId === componentId) {
-                this.fetch(componentData);
+            if(_self.currentComponentId === componentId) {
+                _self.fetch(componentData);
             }
         });
     },

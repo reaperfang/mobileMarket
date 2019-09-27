@@ -110,7 +110,7 @@ export default {
      /* 保存数据 */
     saveData(triggerType) {
       let resultData = this.collectData(triggerType);
-      if(resultData && resultData.name) {
+      if(resultData && Object.prototype.toString.call(resultData) === '[object Object]') {
         resultData['status'] = '1';
         this.submit(resultData);
       }
@@ -135,7 +135,7 @@ export default {
           message: '创建成功！',
           type: 'success'
         });
-        this._globalEvent.$emit('decorateSaveLoading', true, this.id);
+        this._globalEvent.$emit('decorateSaveLoading', true);
         // this._routeTo('pageManageIndex');
         this.loading = false;
       }).catch((error)=>{
@@ -143,7 +143,7 @@ export default {
           title: '错误',
           message: error
         });
-        this._globalEvent.$emit('decorateSaveLoading', false, this.id);
+        this._globalEvent.$emit('decorateSaveLoading', false);
         this.loading = false;
       });
     },
