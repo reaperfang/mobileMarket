@@ -42,6 +42,7 @@
       </el-form-item>
     </div>
     <div class="block form">
+      添加导航
       <ul class="item_list">
         <li v-for="(item, key) of ruleForm.itemList" :key="key">
           <div class="left" v-if="ruleForm.templateType === 1">
@@ -68,6 +69,7 @@
               </el-button>
             </p>
           </div>
+          <i class="delete_btn" @click.stop="deleteItem(item)" title="移除"></i>
         </li>
       </ul>
       <el-button type="info" plain style="width:100%" @click="addNav">添加一个图文</el-button>
@@ -135,6 +137,29 @@ export default {
     seletedPage(linkTo) {
       this.currentNav.linkTo = linkTo;
     },
+
+    deleteItem(item) {
+      if(this.ruleForm.itemList.length < 2) {
+        this.$notify.warning({
+            title: '警告',
+            message: '最后一个不允许删除'
+        });
+        return;           
+      }
+      this.$confirm(`确定删除此图片广告吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const tempItems = [...this.ruleForm.itemList];
+        for(let i=0;i<tempItems.length;i++) {
+          if(item === tempItems[i]) {
+            tempItems.splice(i, 1);
+          }
+        }
+        this.ruleForm.itemList = tempItems;
+      })
+    }
   }
 }
 </script>
@@ -200,6 +225,7 @@ ul.item_list{
     flex-direction: row;
     justify-content: space-between;
     margin-bottom:20px;
+    position:relative;
     .left{
       margin-right:20px;
     }
@@ -216,6 +242,16 @@ ul.item_list{
           display: inline-block;
         }
       }
+    }
+     i.delete_btn{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:url('../../../assets/images/shop/editor/delete.png') no-repeat 0 0;
+      position:absolute;
+      top: -6px;
+      right: -10px;
+      cursor:pointer;
     }
   }
 }

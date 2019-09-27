@@ -29,16 +29,17 @@
             <el-form-item label="商品图片" prop="images">
                 <!-- <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px"> -->
                 <el-upload
-                    :disabled="imagesLength > 5"
                     :action="uploadUrl"
                     multiple
-                    :limit="6"
+                    :class="{hide:hideUpload}"
                     :file-list="fileList"
                     list-type="picture-card"
+                    :limit="6"
                     :data="{json: JSON.stringify({cid: cid})}"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove"
                     :on-success="centerFileUrl"
+                    :on-change="changeUpload"
                     class="p_imgsCon">
                     <i class="el-icon-plus"></i>
                     <p style="line-height: 21px; margin-top: -39px; color: #92929B;">上传图片</p>
@@ -286,7 +287,7 @@
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
             </el-form-item>
             <el-form-item label="单位计量" prop="productUnit">
-                <el-select v-model="ruleForm.productUnit" placeholder="请选择">
+                <el-select v-model="ruleForm.productUnit" placeholder="请选择" :disabled="ruleForm.other" clearable>
                     <el-option
                         v-for="item in unitList"
                         :key="item.id"
@@ -601,7 +602,8 @@ export default {
             selectSpecificationsCurrentDialog: '',
             selectSpecificationsDialogVisible: false,
             materialIndex: 0,
-            material: false
+            material: false,
+            hideUpload: false,
         }
     },
     created() {
@@ -661,6 +663,9 @@ export default {
         // }
     },
     methods: {
+        changeUpload() {
+            this.hideUpload = this.imagesLength >= 6
+        },
         addCategory() {
             this.currentDialog = 'AddCategoryDialog'
             this.currentData = {level: 0, add: true}
@@ -928,6 +933,32 @@ export default {
                         productUnit: this.ruleForm.other ? this.ruleForm.otherUnit : this.ruleForm.productUnit,
                     }
 
+                    let calculationWay
+                    
+                    if(this.ruleForm.isFreeFreight == 0) {
+                        let id = ruleForm.freightTemplateId
+
+                        calculationWay = this.shippingTemplates.find(val => val.id == id).calculationWay
+
+                        if(calculationWay == 3) {
+                            if(this.ruleForm.goodsInfos.some(val => val.volume == '')) {
+                                this.$message({
+                                    message: '规格信息中体积不能为空',
+                                    type: 'warning'
+                                });
+                                return
+                            }
+                        } else if(calculationWay == 2) {
+                            if(this.ruleForm.goodsInfos.some(val => val.weight == '')) {
+                                this.$message({
+                                    message: '规格信息中重量不能为空',
+                                    type: 'warning'
+                                });
+                                return
+                            }
+                        }
+                    }
+
                     // if(this.ruleForm.productDetail) {
                     //     let _productDetail = ''
 
@@ -1193,6 +1224,13 @@ export default {
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);
+            this.ruleForm.images = fileList.map(val => {
+                if(val.response) {
+                    return val.response.data.url
+                }
+                return val.url
+            }).join(',')
+            this.hideUpload = this.imagesLength >= 6
         },
         centerFileUrl(response, file, fileList){
             if(file.status == "success"){
@@ -1446,6 +1484,21 @@ $blue: #655EFF;
         top: 2px;
     }
 }
+/deep/ .spec-information-editor thead th:nth-child(2) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(3) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(4) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(5) .cell,
+    /deep/ .spec-information-editor thead th:nth-child(8) .cell {
+    position: relative;
+    &:before {
+        content: '*';
+        display: block;
+        color: #FD4C2B;
+        position: absolute;
+        left: 1px;
+        top: 2px;
+    }
+}
 .footer {
     text-align: center;
 }
@@ -1479,6 +1532,9 @@ $blue: #655EFF;
 .autoSaleTime {
     font-size: 12px;
     margin-left: 10px;
+}
+/deep/ .hide .el-upload--picture-card {
+    display: none;
 }
 </style>
 

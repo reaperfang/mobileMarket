@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="navbar">
-      <div class="navbar-item">[ 新零售-电商豪华版 ] 剩余有效期</div>
+      <div class="navbar-item">{{shopName}}</div>
       <!-- <div class="navbar-item"></div> -->
       <div class="right-menu">
         <router-link to="/profile/upgrade" class="set_meal">套餐升级 </router-link> 
@@ -46,7 +46,7 @@
         </el-dropdown>
       </div>
     </div>
-    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList"></shopsDialog>
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList" :route="route"></shopsDialog>
   </div>
 </template>
 
@@ -60,7 +60,9 @@ export default {
   data(){
     return{
       showShopsDialog:false,
-      shopList:[]
+      shopList:[],
+      route:'index',
+      shopName:''
     }
   },
   components: {
@@ -71,7 +73,6 @@ export default {
     ...mapGetters([
       'sidebar',
       'device',
-      // 'userInfo'
     ]),
     userInfo(){
       return JSON.parse(this.$store.getters.userInfo)
@@ -85,19 +86,33 @@ export default {
       return false
     }
   },
-  created(){ },
+  created(){ 
+    this.getShopName()
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },
+    //推出登录
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload()// In order to re-instantiate the vue-router object to avoid bugs
       })
     },
+
+    //监听弹窗关闭
     handleClose(){
       this.showShopsDialog = false
+      this.getShopName()
     },
+
+    //获取店铺名称
+    getShopName(){
+      let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+      this.shopName = shopInfo && shopInfo.shopName
+    },
+
+    //切换店铺
     init(){
       let info = JSON.parse(localStorage.getItem('userInfo'))
       let arr = Object.keys(info.shopInfoMap) 
@@ -186,5 +201,10 @@ export default {
       }
     }
   }
+}
+.navbar-item{
+  font-size: 14px;
+  color: #333333;
+  font-weight: bold;
 }
 </style>

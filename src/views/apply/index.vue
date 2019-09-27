@@ -1,10 +1,6 @@
 /*应用*/
 <template>
-    <div class="main">        
-        <!-- <iframe name="mainframe" id="mainframe" height="100%" width="100%" scrolling="auto" frameborder="no" src="src">
-        </iframe>
-        <iframe name="refreshFrame" id ="refreshFrame" src="" style="display:none;">
-        </iframe> -->
+    <div class="main">       
         <iframe :src="src"></iframe>
     </div>
 </template>
@@ -23,12 +19,20 @@ export default {
     created(){
         this.init()
     },
+    mounted () {
+    // 在外部vue的window上添加postMessage的监听，并且绑定处理函数handleMessage
+        window.addEventListener('marketing_router_path', event => {
+            console.log('event=', event);
+        })
+        // this.iframeWin = this.$refs.iframe.contentWindow
+    },
     methods:{
         init(){
             this.token = getToken('authToken')
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             this.cid = shopInfo && shopInfo.id || ''
-            this.src = `${process.env.UPLOAD_SERVER}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
+            this.src = `http://test-omo.aiyouyi.cn/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
+            // this.src = `${process.env.DATA_API}/vue/marketing/application/appIndex?access=1&token=${this.token}&businessId=1&loginUserId=1&tenantId=${this.tenantId}&cid=${this.cid}`
         }
     }
 }
