@@ -257,9 +257,9 @@ export default {
       this._apis.client
         .getCardInfo({ id: id })
         .then(response => {
-          response.backgroundType = response.backgroundType.toString();
-          response.isSyncWechat = response.isSyncWechat.toString();
-          response.receiveSetting = response.receiveSetting.toString();
+          response.backgroundType = !!response.backgroundType ? response.backgroundType.toString():'';
+          response.isSyncWechat = !!response.isSyncWechat ? response.isSyncWechat.toString():'';
+          response.receiveSetting = !!response.receiveSetting ? response.receiveSetting.toString():'';
           this.ruleForm = Object.assign({}, response);
           delete this.ruleForm.explain;
           delete this.ruleForm.notice;
@@ -268,14 +268,14 @@ export default {
           if (this.ruleForm.levelConditionInfoView) {
             this.currentData.conditionData = {
               name: this.ruleForm.levelConditionInfoView.name,
-              value: this.ruleForm.levelConditionValueView.conditionValue
+              value: this.ruleForm.levelConditionValueView ? this.ruleForm.levelConditionValueView.conditionValue:''
             };
             this.levelConditionValueDto.label = this.ruleForm.levelConditionInfoView.name;
           }
-          this.levelConditionValueDto.conditionValue = this.ruleForm.levelConditionValueView.conditionValue;
-          this.levelConditionValueDto.levelConditionId = this.ruleForm.levelConditionValueView.levelConditionId;
+          this.levelConditionValueDto.conditionValue = this.ruleForm.levelConditionValueView ? this.ruleForm.levelConditionValueView.conditionValue:"";
+          this.levelConditionValueDto.levelConditionId = this.ruleForm.levelConditionValueView ? this.ruleForm.levelConditionValueView.levelConditionId:'';
           //用于回显权益礼包
-          if (this.ruleForm.levelRightsInfoList.length > 0) {
+          if (this.ruleForm.levelRightsInfoList && this.ruleForm.levelRightsInfoList.length > 0) {
             this.ruleForm.levelRightsInfoList.map(v => {
               if (
                 v.rightsInfoId == this.getId(this.rightsList, "积分回馈倍率")
@@ -292,7 +292,7 @@ export default {
           let redArr = [],
             giftArr = [],
             couponArr = [];
-          if (this.ruleForm.upgradeRewardValueList.length > 0) {
+          if (this.ruleForm.upgradeRewardValueList && this.ruleForm.upgradeRewardValueList.length > 0) {
             this.ruleForm.upgradeRewardValueList.map(v => {
               if (
                 v.upgradeRewardInfoId == this.getId(this.rewardList, "赠送积分")
@@ -536,6 +536,7 @@ export default {
           type: "warning"
         });
       } else {
+        console.log(this.ruleForm);
         if (this.ruleForm.id) {
           let formObj = {};
           formObj.id = this.ruleForm.id;
@@ -550,10 +551,14 @@ export default {
           formObj.phone = this.phone;
           formObj.explain = this.ruleForm.explain;
           formObj.levelConditionValueDto = this.levelConditionValueDto;
-          formObj.receiveConditionsRemarks =
+          if(formObj.receiveSetting == '0') {
+            formObj.receiveConditionsRemarks = '可直接领取';
+          }else{
+            formObj.receiveConditionsRemarks =
             "" +
             this.levelConditionValueDto.label +
             this.levelConditionValueDto.conditionValue;
+          }
           if (this.ruleForm.backgroundType == "0") {
             this.colors.map(v => {
               if (v.active == "1") {
@@ -714,6 +719,7 @@ export default {
           formObj.rights = rights;
           formObj.levelRightsInfoDtoList = [].concat(rightsDtoList);
           formObj.upgradeRewardDtoList = [].concat(upgradeRewardDtoList);
+          //console.log('formObj',formObj);
           this._apis.client
             .editCard(formObj)
             .then(response => {
@@ -722,6 +728,7 @@ export default {
                 message: "编辑成功",
                 type: "success"
               });
+              
             })
             .catch(error => {
               console.log(error);

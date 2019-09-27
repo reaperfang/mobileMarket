@@ -4,7 +4,7 @@
             客户发货
         </div>
         <div class="container">
-            <div class="item">
+            <div class="item" :class="{close: !showCustomerContent}">
                 <div class="header">
                     <div class="header-lefter">
                         <div class="header-lefter-item number">1</div>
@@ -17,7 +17,7 @@
                         <div class="header-righter-item">{{orderAfterSale.memberReturnGoodsTime}}</div>
                         <div @click="showCustomerContent = !showCustomerContent">
                             <i v-if="showCustomerContent" class="el-icon-caret-top pointer"></i>
-                            <i v-if="!showCustomerContent" class="el-icon-caret-top pointer"></i>
+                            <i v-if="!showCustomerContent" class="el-icon-caret-bottom pointer"></i>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
             商家发货
         </div>
         <div class="container">
-            <div class="item">
+            <div class="item" :class="{close: !showContent}">
                 <div class="header">
                     <div class="header-lefter">
                         <div class="header-lefter-item number">2</div>
@@ -80,7 +80,7 @@
                         <div class="header-righter-item">{{orderAfterSale.receiveGoodsTime}}</div>
                         <div @click="showContent = !showContent">
                             <i v-if="showContent" class="el-icon-caret-top pointer"></i>
-                            <i v-if="!showContent" class="el-icon-caret-top pointer"></i>
+                            <i v-if="!showContent" class="el-icon-caret-bottom pointer"></i>
                         </div>
                     </div>
                 </div>
@@ -242,6 +242,11 @@ export default {
             .item {
                 border-radius: 10px;
                 border: 1px solid #cacfcb;
+                &.close {
+                    .header {
+                        border-radius: 10px;
+                    }
+                }
                 .header {
                     height: 60px;
                     background-color: rgb(243, 244, 244);
