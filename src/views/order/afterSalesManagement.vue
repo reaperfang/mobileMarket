@@ -349,7 +349,14 @@ export default {
             })
         },
         updateStatus(row) {
-            this._apis.order.orderAfterSaleUpdateStatus({id: row.id, orderAfterSaleStatus: 1}).then((res) => {
+            let _orderAfterSaleStatus
+
+            if(row.type == 3) {
+                _orderAfterSaleStatus = 2
+            } else {
+                _orderAfterSaleStatus = 1
+            }
+            this._apis.order.orderAfterSaleUpdateStatus({id: row.id, orderAfterSaleStatus: _orderAfterSaleStatus}).then((res) => {
                 console.log(res)
                 this.getList()
                 // this.confirm({title: '换货确认', icon: true, text: `是否确认${_title}？`}).then(() => {
