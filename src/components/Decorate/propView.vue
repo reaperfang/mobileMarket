@@ -15,9 +15,9 @@
         <div class="help_blank"></div>
         <div class="buttons">
           <el-button @click="resetLoading = true; resetData.call(parentScope)" v-if="resetData" :loading="resetLoading">重   置</el-button>
-          <el-button @click="saveDataLoading = true; saveData.call(parentScope)" type="primary" :loading="saveDataLoading">{{id ? '保   存' : '创   建'}}</el-button>
+          <el-button @click="saveDataLoading = true; saveData.call(parentScope)" type="primary" :loading="saveDataLoading">保   存</el-button>
           <el-button type="primary" @click="saveAndApplyDataLoading = true; saveAndApplyData.call(parentScope)" v-if="saveAndApplyData && id" :loading="saveAndApplyDataLoading">保存并生效</el-button>
-          <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'">预    览</el-button>
+          <el-button @click="dialogVisible=true; currentDialog='dialogDecoratePreview'" v-if="id">预    览</el-button>
           <!-- <el-button @click="saveToTemplate.call(parentScope)" v-if="saveToTemplate">保存到模板</el-button> -->
         </div>
       </div>
