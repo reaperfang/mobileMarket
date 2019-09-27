@@ -1,6 +1,10 @@
 /*应用*/
 <template>
     <div class="main">        
+        <!-- <iframe name="mainframe" id="mainframe" height="100%" width="100%" scrolling="auto" frameborder="no" src="src">
+        </iframe>
+        <iframe name="refreshFrame" id ="refreshFrame" src="" style="display:none;">
+        </iframe> -->
         <iframe :src="src"></iframe>
     </div>
 </template>
