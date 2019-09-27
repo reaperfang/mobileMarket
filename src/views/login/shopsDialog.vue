@@ -5,6 +5,8 @@
         :visible.sync="showShopsDialog"
         width="40%"
         :before-close="handleClose"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
         style="margin-top:20vh;">
         <span slot="title" class="dialog_title">
             <a>返回官网</a> | <a>创建店铺</a>
