@@ -29,11 +29,12 @@
               </p>
               <div class="img_body">
                 <p class="title">{{item.title}}</p>
-                <video v-if="item.filePath !=''"  
+                <!-- <video v-if="item.filePath !=''"  
                 :src="item.filePath"
                 class="avatar video-avatar"
-                controls="controls">您的浏览器不支持视频播放</video> 
-                <!-- <img :src="item.filePath" class="imgs"> -->
+                controls="controls">您的浏览器不支持视频播放</video>  -->
+                <img :src="item.fileCover" class="imgs">
+                <span class="btn"><i class="el-icon-caret-right"></i></span>
               </div>
               <p class="img_bottom">
                 <!-- <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span> -->
@@ -475,6 +476,7 @@ export default {
           padding:10px 10px;
           font-size: 14px;
           color: #44434B;
+          position: relative;
           .title{
             height: 25px;
             line-height: 25px;
@@ -482,6 +484,24 @@ export default {
           .imgs{
             width: 100%;
             height:85px;
+            object-fit:cover;
+          }
+          .btn{
+            position:absolute;
+            top:55px;
+            left:110px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #fff;
+            border-radius: 20px;
+            text-align: center;
+            i{
+              color: #fff;
+            }
+            &:hover{
+              cursor: pointer;
+            }
           }
         }
         .img_bottom{
