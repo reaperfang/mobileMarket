@@ -60,7 +60,10 @@ export default {
         },
         getLevelList() {
             this._apis.client.getCardList({}).then((response) => {
-                this.levelList = [].concat(response.list);
+                let list = response.list.filter((v) => {
+                    return v.enable == 0
+                })
+                this.levelList = [].concat(list);
             }).catch((error) => {
                 console.log(error);
                 // this.$notify.error({
