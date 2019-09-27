@@ -55,13 +55,13 @@
                     <div class="c_line">
                         <span class="c_title">交易趋势</span>
                         <span class="c_label">筛选日期：</span>
-                        <el-radio-group v-model="dateTypeM" @change="changeDayM">
+                        <el-radio-group v-model="nearDay" @change="changeDayM">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                             <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                             <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
                             <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="dateTypeM == 4">
+                        <div class="input_wrap" v-if="nearDay == 4">
                             <el-date-picker
                                 v-model="range"
                                 type="date"
@@ -84,7 +84,7 @@ export default {
     data() {
         return {
             range: "",
-            dateTypeM:1,
+            nearDay:1,
             visitSourceType:0,
             startTime: "",
             endTime: "",
@@ -102,7 +102,7 @@ export default {
         getTradingOverview(){
             let data ={
                 visitSourceType: this.visitSourceType,
-                dateType:1
+                nearDay:7
             }
             this._apis.data.tradingOverview(data).then(response => {
                 let nums = response.shopTradingSurvey
@@ -164,7 +164,7 @@ export default {
                 // queryTime: this.timeM | 2019-8-9,
                 startTime:this.startTime,
                 endTime:this.endTime,
-                dateType: this.dateTypeM
+                nearDay: this.nearDay
             }
             this._apis.data.tradingTrendchart(data).then(response => {
                 this.$refs.ip4.con(response)
@@ -174,7 +174,7 @@ export default {
         },
         changeDayM(val){
              if(val !=4 ){
-                this.dateTypeM = val
+                this.nearDay = val
                 this.getTradingTrendchart()
             }
         },

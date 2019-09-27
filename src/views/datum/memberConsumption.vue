@@ -74,7 +74,6 @@ export default {
             this.getMemberConsumption()
         },
         changKeyWord(val){
-            console.log(val)
             this.getMemberConsumption(1,10)
         }
     },
