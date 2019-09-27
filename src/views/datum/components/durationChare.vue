@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     // 数据显示控制
-    dataType(val){
+    nearDay(val){
       if(val == 1){
         this.option.title = "平均停留时间",
         this.option.legend.data = ["平均停留时间"],
@@ -75,7 +75,7 @@ export default {
       };
       this.flow = n;
       this.type = type;
-      this.dataType(type);
+      this.nearDay(type);
       this.makeOption(n);
       this.oChart.setOption(this.option, true);
     },
