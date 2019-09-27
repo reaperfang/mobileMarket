@@ -188,23 +188,49 @@ export default {
 
     /* 初始化导航列表 */
     initnavMap() {
-      for(let i=0;i<4;i++) {
-        let navObj = this.createNav();
-        this.ruleForm.navIds.push(navObj.id);
-        this.ruleForm.navMap[navObj.id] = navObj;
-      }
+       let indexNav = this.createNav({
+        navName: '首页',
+        navIcon: require(`@/assets/images/navIcon1.png`),
+        navIconActive: require(`@/assets/images/navIcon1Active.png`),
+      });
+      this.ruleForm.navIds.push(indexNav.id);
+      this.ruleForm.navMap[indexNav.id] = indexNav;
+
+      
+      let classifyNav = this.createNav({
+        navName: '分类',
+        navIcon: require(`@/assets/images/navIcon2.png`),
+        navIconActive: require(`@/assets/images/navIcon2Active.png`),
+      });
+      this.ruleForm.navIds.push(classifyNav.id);
+      this.ruleForm.navMap[classifyNav.id] = classifyNav;
+
+      let shoppingCartNav = this.createNav({
+        navName: '购物车',
+        navIcon: require(`@/assets/images/navIcon3.png`),
+        navIconActive: require(`@/assets/images/navIcon3Active.png`),
+      });
+      this.ruleForm.navIds.push(shoppingCartNav.id);
+      this.ruleForm.navMap[shoppingCartNav.id] = shoppingCartNav;
+
+      let mineNav = this.createNav({
+        navName: '我的',
+        navIcon: require(`@/assets/images/navIcon4.png`),
+        navIconActive: require(`@/assets/images/navIcon4Active.png`),
+      });
+      this.ruleForm.navIds.push(mineNav.id);
+      this.ruleForm.navMap[mineNav.id] = mineNav;
+
       this.selectNav(this.ruleForm.navIds[0]);
     },
 
     /* 创建导航 */
-    createNav() {
-      let num = this.ruleForm.navIds.length;
-      num ++;
+    createNav(params) {
       return {
         id: uuid(),
-        navName: `导航${num}`,
-        navIcon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564824709390&di=f171260fec0b461843d15c732ef5ba92&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2F201306%2F18%2F122658rt90n2d2zy4qnn0q.jpg',
-        navIconActive: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564824709390&di=f171260fec0b461843d15c732ef5ba92&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2F201306%2F18%2F122658rt90n2d2zy4qnn0q.jpg',
+        navName: params && params.navName || '导航',
+        navIcon: params && params.navIcon || '',
+        navIconActive: params && params.navIconActive || '',
         navLinkType: 1,
         systemNavLinkUrl: '1',
         customNavLinkUrl: '',

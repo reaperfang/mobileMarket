@@ -207,7 +207,7 @@ export default {
             else{
                 this.list = datas;
             }
-        },
+        }
 
     },
     beforeDestroy() {

@@ -72,10 +72,10 @@ export default {
           }
         ],
         pageCategoryInfoId: [
-          { required: true, message: "请输入内容", trigger: "change" }
+          { required: false, message: "请输入内容", trigger: "change" }
         ],
         colorStyle: [
-          { required: true, message: "请输入内容", trigger: "change" }
+          { required: false, message: "请输入内容", trigger: "change" }
         ],
       },
     }

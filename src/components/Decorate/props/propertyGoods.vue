@@ -151,7 +151,7 @@ export default {
         goodsMargin: 10,//商品边距
         goodsStyle: 1,//商品样式
         goodsChamfer: 1,//商品倒角
-        goodsRatio: 1,//图片比例
+        goodsRatio: 2,//图片比例
         goodsFill: 2,//图片填充
         textStyle: 1,//文本样式
         textAlign: 1,// 文本对齐

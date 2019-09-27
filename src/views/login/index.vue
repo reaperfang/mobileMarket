@@ -44,7 +44,7 @@
         <el-button @click="dialogVisible = false">暂不创建</el-button>
       </span>
     </el-dialog>
-    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList"></shopsDialog>
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList" :route="route"></shopsDialog>
   </div>
 </template>
 
@@ -87,7 +87,8 @@ export default {
       showShopsDialog:false,
       checked:false,
       shopName:'',
-      shopList:[]
+      shopList:[],
+      route:'login'
     }
   },
   components: {

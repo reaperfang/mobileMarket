@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="navbar">
-      <div class="navbar-item">[ 新零售-电商豪华版 ] 剩余有效期</div>
+      <div class="navbar-item">{{shopInfo && shopInfo.shopName}}</div>
       <!-- <div class="navbar-item"></div> -->
       <div class="right-menu">
         <router-link to="/profile/upgrade" class="set_meal">套餐升级 </router-link> 
@@ -46,7 +46,7 @@
         </el-dropdown>
       </div>
     </div>
-    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList"></shopsDialog>
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList" :route="route"></shopsDialog>
   </div>
 </template>
 
@@ -60,7 +60,8 @@ export default {
   data(){
     return{
       showShopsDialog:false,
-      shopList:[]
+      shopList:[],
+      route:'index'
     }
   },
   components: {
@@ -73,6 +74,9 @@ export default {
       'device',
       // 'userInfo'
     ]),
+    shopInfo(){
+      return JSON.parse(localStorage.getItem('shopInfos'))
+    },
     userInfo(){
       return JSON.parse(this.$store.getters.userInfo)
     },
@@ -186,5 +190,10 @@ export default {
       }
     }
   }
+}
+.navbar-item{
+  font-size: 14px;
+  color: #333333;
+  font-weight: bold;
 }
 </style>

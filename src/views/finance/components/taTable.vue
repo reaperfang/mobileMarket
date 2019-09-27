@@ -167,6 +167,7 @@ export default {
         presentType:0,
         startTime:'',
         stopTime:'',
+        sort:'desc',
         pageNum:1,
         pageSize:10,
       }
