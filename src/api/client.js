@@ -144,8 +144,17 @@ export function identityChange(data) {
         data
     })
 }
-//变换会员卡
+//变更会员卡
 export function cardChange(data) {
+    return request({
+        target:'MEMBERINFO-CHANGECARD-PROCESSOR',
+        method: 'post',
+        apiType: 'member',
+        data
+    })
+}
+//发放会员卡
+export function giveCard(data) {
     return request({
         target:'MEMBERINFO-GRANTCARD-PROCESSOR',
         method: 'post',
