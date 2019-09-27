@@ -34,7 +34,7 @@
                 class="avatar video-avatar"
                 controls="controls">您的浏览器不支持视频播放</video>  -->
                 <img :src="item.fileCover" class="imgs">
-                <span class="btn"><i class="el-icon-caret-right"></i></span>
+                <span class="btn" @click="openVideo(item)"><i class="el-icon-caret-right"></i></span>
               </div>
               <p class="img_bottom">
                 <!-- <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span> -->
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import dialogUploadVideo from '../../../dialogs/dialogUploadVideo';
+import dialogVideo from '../../../dialogs/dialogVideo';
 import dialogUploadImage from '../../../dialogs/dialogUploadImage';
 import dialogSyncVideo from '../../../dialogs/dialogSyncVideo';
 import dialogDelete from '../../../dialogs/dialogDelete';
@@ -84,7 +84,7 @@ import dialogGroups from '../../../dialogs/dialogGroups';
 import dialogGroupsMove from '../../../dialogs/dialogGroupsMove';
 export default {
   name: 'videoMaterial',
-  components: {dialogUploadVideo,dialogUploadImage,dialogSyncVideo,dialogDelete,dialogGroups,dialogGroupsMove},
+  components: {dialogVideo,dialogUploadImage,dialogSyncVideo,dialogDelete,dialogGroups,dialogGroupsMove},
   data () {
     return {
       dialogVisible: false,
@@ -317,6 +317,13 @@ export default {
     syncImage(){
       this.dialogVisible = true;
       this.currentDialog = 'dialogSyncVideo'
+    },
+
+    //播放视频
+    openVideo(item){
+      this.dialogVisible = true;
+      this.currentDialog = 'dialogVideo'
+      this.data = item
     },
 
     handleSyncImage(query){
