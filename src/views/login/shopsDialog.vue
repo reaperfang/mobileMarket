@@ -31,6 +31,7 @@
 
 <script>
 import DialogBase from "@/components/DialogBase";
+import { removeToken } from '@/system/auth'
 export default {
   name: 'shopsDialog',
   data() {
@@ -40,7 +41,7 @@ export default {
           shopLists:[]
       }
   },
-  props:['showShopsDialog','shopList'],
+  props:['showShopsDialog','shopList','route'],
   watch: {
       showShopsDialog(newValue,oldValue){
           this.showDialog = newValue
@@ -63,6 +64,7 @@ export default {
 
     handleClose(){
       this.showDialog = false
+      this.route == 'login' && removeToken()
       this.$emit('handleClose')
     }
   }

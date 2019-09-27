@@ -46,7 +46,7 @@
         </el-dropdown>
       </div>
     </div>
-    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList"></shopsDialog>
+    <shopsDialog :showShopsDialog="showShopsDialog" @handleClose="handleClose" :shopList="shopList" :route="route"></shopsDialog>
   </div>
 </template>
 
@@ -60,7 +60,8 @@ export default {
   data(){
     return{
       showShopsDialog:false,
-      shopList:[]
+      shopList:[],
+      route:'index'
     }
   },
   components: {
