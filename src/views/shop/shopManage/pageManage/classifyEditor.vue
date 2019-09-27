@@ -76,7 +76,7 @@ export default {
     /* 保存数据 */
     saveData() {
       const resultData = this.collectData();
-      if(resultData && resultData.name) {
+      if(resultData && Object.prototype.toString.call(resultData) === '[object Object]') {
         const copyResultData = {...resultData};
         copyResultData['explain'] = utils.compileStr(copyResultData.explain);
         if(!resultData.name || !resultData.explain) {
