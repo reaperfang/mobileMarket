@@ -39,13 +39,14 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="颜色" prop="couponColor">
-        <el-radio-group v-model="ruleForm.couponColor">
+        <!-- <el-radio-group v-model="ruleForm.couponColor">
           <el-radio :label="1">颜色1</el-radio>
           <el-radio :label="2">颜色2</el-radio>
           <el-radio :label="3">颜色3</el-radio>
           <el-radio :label="4">颜色4</el-radio>
           <el-radio :label="5">颜色5</el-radio>
-        </el-radio-group>
+        </el-radio-group> -->
+        <wxColor v-model="ruleForm.couponColor" @input="yuan"></wxColor>
       </el-form-item>
       <el-form-item label="更多设置" prop="hideScrambled">
         <el-checkbox v-model="ruleForm.hideScrambled">隐藏已抢完劵</el-checkbox>
@@ -63,10 +64,11 @@
 <script>
 import propertyMixin from '../mixins/mixinProps';
 import dialogSelectCoupon from '@/views/shop/dialogs/dialogSelectCoupon';
+import wxColor from '@/components/Wxcolor';
 export default {
   name: 'propertyCoupon',
   mixins: [propertyMixin],
-  components: {dialogSelectCoupon},
+  components: {dialogSelectCoupon, wxColor},
   data () {
     return {
       ruleForm: {
@@ -171,6 +173,10 @@ export default {
     createList(datas) {
        this.list = datas;
     },
+
+    yuan(value) {
+      this.ruleForm.couponColor = value.wxhex || '';
+    }
   }
 }
 </script>
