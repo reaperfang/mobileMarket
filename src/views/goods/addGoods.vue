@@ -29,16 +29,17 @@
             <el-form-item label="商品图片" prop="images">
                 <!-- <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px"> -->
                 <el-upload
-                    :disabled="imagesLength > 5"
                     :action="uploadUrl"
                     multiple
-                    :limit="6"
+                    :class="{hide:hideUpload}"
                     :file-list="fileList"
                     list-type="picture-card"
+                    :limit="6"
                     :data="{json: JSON.stringify({cid: cid})}"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove"
                     :on-success="centerFileUrl"
+                    :on-change="changeUpload"
                     class="p_imgsCon">
                     <i class="el-icon-plus"></i>
                     <p style="line-height: 21px; margin-top: -39px; color: #92929B;">上传图片</p>
@@ -601,7 +602,8 @@ export default {
             selectSpecificationsCurrentDialog: '',
             selectSpecificationsDialogVisible: false,
             materialIndex: 0,
-            material: false
+            material: false,
+            hideUpload: false,
         }
     },
     created() {
@@ -661,6 +663,9 @@ export default {
         // }
     },
     methods: {
+        changeUpload() {
+            this.hideUpload = this.imagesLength >= 6
+        },
         addCategory() {
             this.currentDialog = 'AddCategoryDialog'
             this.currentData = {level: 0, add: true}
@@ -1193,6 +1198,13 @@ export default {
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);
+            this.ruleForm.images = fileList.map(val => {
+                if(val.response) {
+                    return val.response.data.url
+                }
+                return val.url
+            }).join(',')
+            this.hideUpload = this.imagesLength >= 6
         },
         centerFileUrl(response, file, fileList){
             if(file.status == "success"){
@@ -1479,6 +1491,9 @@ $blue: #655EFF;
 .autoSaleTime {
     font-size: 12px;
     margin-left: 10px;
+}
+/deep/ .hide .el-upload--picture-card {
+    display: none;
 }
 </style>
 
