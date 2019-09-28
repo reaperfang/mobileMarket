@@ -53,6 +53,7 @@
   </div>
 </template>
 <script>
+	import {GetDateStr} from "@/utils/validate.js"
 import pfChart from "./components/pfChart";
 import durationChare from "./components/durationChare";
 export default {
@@ -69,7 +70,9 @@ export default {
       dateType: 1, //1 7天 2:15天 3 30天 4：具体日期
       dataChart: {},
       title:'浏览/访问',
-      duration:1
+      duration:1,
+      channel:1,
+      type:1
     };
   },
  
@@ -85,9 +88,10 @@ export default {
         analysisType: this.analysisType,
         dateType: this.dateType
       };
-      this._apis.data.residetime(data).then(response => {            
-            this.dataChart = response
-            this.$refs.prChart.con(response,this.title,this.startTime,this.endTime,this.channel)
+ 
+      this._apis.data.pvady(data).then(response => {            
+            this.dataChart = response;
+            this.$refs.prChart.con(response,this.title,this.type)
         }).catch(error => {
           this.$message.error(error);
         });
@@ -100,13 +104,19 @@ export default {
     },
     // 最近时间
     changeDay(val) {
-        if(val != 4){
-        this.getData();
-        }
+    	console.log(val)
+    	switch(val){
+    		case 1: this.startTime=GetDateStr(-7); this.getData();break;
+    		case 2: this.startTime=GetDateStr(-15);this.getData();break;
+    		case 3: this.startTime=GetDateStr(-30);this.getData();break;
+    		default : break;
+    	}
+
     },
     //来源
-    changeType() {
-      this.getData();
+    changeType(e) {
+      this.type = e;
+      this.getData(); 
     },
     // 图标标题
     titleChang(val){
@@ -114,9 +124,10 @@ export default {
             this.title = '直径/跳出率'
         }
     },
-    all(){
+    all(e){
         this.dateType = 1;
         this.analysisType = 1;
+        this.visitSourceType = e;
         this.getData()
     },
     // 路径
@@ -139,8 +150,12 @@ export default {
     }
   },
   created() {
+ 			//默认开始7天
+  	this.startTime=GetDateStr(-7);
+  	this.endTime=GetDateStr(0);
+  	
     this.getData();
-    this.getPathOut()
+   // this.getPathOut()
   }
 };
 </script>

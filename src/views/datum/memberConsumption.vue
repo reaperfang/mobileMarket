@@ -19,12 +19,12 @@
                     </el-select>
                 </div>
                 <div class="input_wrap">
-                    <el-input placeholder="手机号" v-model="keyWords">
-                        <el-button slot="append" icon="el-icon-search" @click="changKeyWord(keyWords)"></el-button>
+                    <el-input placeholder="手机号" v-model="memberPhone">
+                        <el-button slot="append" icon="el-icon-search" @click="changKeyWord(memberPhone)"></el-button>
                     </el-input>
                 </div>
             </div>
-            <mcTable style="margin-top: 50px" :dataObj="dataObj" @getMember="getMemberConsumption"></mcTable>
+            <mcTable style="margin-top: 50px" :list="list" @getMember="getMemberConsumption"></mcTable>
         </div>
     </div>
 </template>
@@ -40,8 +40,8 @@ export default {
             startIndex:1,
             pageSize:15,
             orderSortType:0,
-            keyWords:'',
-            dataObj:{
+            phmemberPhoneone:'',
+            list:{
             }
         }
     },
@@ -57,7 +57,7 @@ export default {
                 keyWords: this.keyWords,
             };
       this._apis.data.memberConsumption(data).then(response => {
-           this.dataObj = response;
+           this.list = response;
         }).catch(error => {
           this.$message.error(error);
         });
@@ -74,7 +74,6 @@ export default {
             this.getMemberConsumption()
         },
         changKeyWord(val){
-            console.log(val)
             this.getMemberConsumption(1,10)
         }
     },

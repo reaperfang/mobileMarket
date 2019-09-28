@@ -17,22 +17,22 @@
                         </div>
                         <div class="chart1_info">
                             <p>累计客户数：{{grandTotal}}</p>
-                            <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.value}}</span></p>
+                            <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.grandTotal}}</span></p>
                         </div>
                     </div>
                     <p class="i_title">会员增长趋势:</p>
                     <div class="i_line">
-                        <el-radio-group v-model="dateTypeM" @change="changeDayM">
+                        <el-radio-group v-model="nearDay" @change="changeDayM">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                             <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                             <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
                             <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
                             <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="dateTypeM == 4 || dateTypeM == 5">
+                        <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
                             <el-date-picker
-                                v-model="valueM"
-                                :type="dateM"
+                                v-model="nearDay"
+                                :type="nearDay"
                                 :value-format="formatM"
                                 placeholder="选择日期"
                                 @change="changeTimeM">
@@ -44,17 +44,17 @@
                     </div>
                     <p class="i_title">支付趋势：</p>
                     <div class="i_line clearfix" >
-                        <el-radio-group v-model="dateTypePay" @change="changeDayPay">
+                        <el-radio-group v-model="nearDay" @change="changeDayPay">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                             <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                             <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
                             <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
                             <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="dateTypePay == 4 || dateTypePay == 5">
+                        <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
                             <el-date-picker
-                                v-model="valuePay"
-                                :type="datePay"
+                                v-model="nearDay"
+                                :type="nearDay"
                                 :value-format="formatPay"
                                 placeholder="选择日期"
                                 @change="changeTimePay">
@@ -75,8 +75,8 @@
                                     <p><span class="color_block" style="background-color:#FD932B "></span></p>
                                     <p><span class="color_block" style="background-color:#FD4C2B "></span></p>
                                  </el-col>
-                                <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxisData"> 支付 {{item}} 次 </p></el-col>
-                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxisData"{{item}}人</p></el-col>
+                                <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxis"> 支付 {{item}} 次 </p></el-col>
+                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxis"{{item}}人</p></el-col>
                             </el-row>
                         </div>
                     </div>
@@ -92,20 +92,17 @@ export default {
     components: { ip1Chart, ip2Chart, ip3Chart },
     data() {
         return {
-            cid:2,
             oneData:[],
             dateM:'month',
             datePay:'month',
             formatM:'yyyy-MM',
             formatPay:'yyyy-MM',
             visitSourceType:0,
-            nearDay:"",
+            nearDay:7,
             valueM:'',
             valuePay:'',
             timeM:'',
             timePay:'',
-            dateTypePay:1,
-            dateTypeM:1,
             attrData:{},
             membeData:{},
             payData:{},
@@ -120,9 +117,8 @@ export default {
          */ 
         getAttributeRatio(){
              let data = {
-                 visitSourceType:this.visitSourceType,
+                   visitSourceType:this.visitSourceType,
             };
-            console.log(this._apis.data.attributeRatio(data))
             this._apis.data.attributeRatio(data).then(response => {
                     this.oneData = response;
                     this.grandTotal = response[0].value + response[1].value
@@ -145,11 +141,11 @@ export default {
                 nearDay:this.nearDay,
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timeM,
-                dateType: this.dateTypeM == 5 ? 4 : this.dateTypeM
+                nearDay: this.nearDay == 5 ? 4 : this.nearDay
             }
             this._apis.data.memberTrend(data).then(response => {
                 this.dataChart = response
-                this.$refs.ip2.con(response,this.title,this.startTime,this.endTime)
+                this.$refs.ip2.con(response,this.title,this.startTime,this.endTime,this.nearDay)
             }).catch(error => {
             this.$message.error(error);
             });
@@ -162,7 +158,7 @@ export default {
                 this.formatM = "yyyy-MM-dd"
                 this.dateM = 'date'
             }else if(val == 1 || val == 2 || val == 3){
-                this.dateTypeM = val
+                this.nearDay = val
                 this.getMemberTrend()
             }            
         },
@@ -179,15 +175,13 @@ export default {
             let data ={
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timePay,
-                dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay,
+                nearDay: this.nearDay == 5 ? 4 : this.nearDay,
                 startTime:this.startTime,
                 endTime:this.endTime,
-                chanell :this.chanell,
-                nearDay:this.nearDay
             }
             this._apis.data.paymentTrend(data).then(response => {
                 this.threeData = response;
-                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime,this.chanell)
+                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime,this.nearDay)
             }).catch(error => {
             this.$message.error(error);
             });
@@ -195,12 +189,12 @@ export default {
         changeDayPay(val){
             if(val == 4){
                 this.formatPay = "yyyy-MM"
-                this.datePay = 'month'
+                this.nearDay = 'month'
             }else if(val == 5){
                 this.formatPay = "yyyy-MM-dd"
-                this.datePay = 'date'
+                this.nearDay = 'date'
             }else if(val == 1 || val == 2 || val == 3){
-                this.dateTypeM = val
+                this.nearDay = val
                 this.getPaymentTrend()
             }
         },
