@@ -123,13 +123,8 @@ export default {
             this.title = '直径/跳出率'
         }
     },
-<<<<<<< HEAD
-    all(e){
-        this.dateType = 1;
-=======
     all(){
         this.nearDay = 1;
->>>>>>> b2198ddf03c08a5e02f521ac93ccb2289f48dd59
         this.analysisType = 1;
         this.visitSourceType = e;
         this.getData()
