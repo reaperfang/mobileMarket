@@ -40,8 +40,10 @@
                 <p class="p_title" style="padding-left: 29px">常用功能：</p>
                 <div class="p_list">
                     <div class="p_l_item clearfix" v-for="item in commonData" :key="item.id">
-                        <img :src="item.url" alt="">
-                        <span>{{item.text}}</span>
+                        <router-link :to="item.url">
+                            <img :src="item.img" alt="">
+                            <span>{{item.text}}</span>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -49,20 +51,24 @@
                 <p class="p_title">营销活动：</p>
                 <div class="p_list" v-if="activeData.length != 0">
                     <div class="p_m_item" v-for="item in activeData" :key="item.id">
-                        <img :src="item.appImage" alt="" style="height:40px;width:40px;">
-                        <div>
-                            <p>{{item.appName}}</p>
-                            <p>{{item.description}}</p>
-                        </div>
+                        <router-link :to="item.url">
+                            <img :src="item.appImage" alt="" style="height:40px;width:40px;">
+                            <div>
+                                <p>{{item.appName}}</p>
+                                <p>{{item.description}}</p>
+                            </div>
+                        </router-link>
                     </div>
                 </div>
                 <div class="p_list" v-else>
                     <div class="p_m_item" v-for="item in activeDataNull" :key="item.id">
-                        <img :src="item.url" alt="" style="height:40px;">
-                        <div>
-                            <p>{{item.title}}</p>
-                            <p>{{item.sub}}</p>
-                        </div>
+                        <router-link :to="item.url">
+                            <img :src="item.img" alt="" style="height:40px;">
+                            <div>
+                                <p>{{item.title}}</p>
+                                <p>{{item.sub}}</p>
+                            </div>
+                        </router-link>
                     </div>
                 </div>
             </div>

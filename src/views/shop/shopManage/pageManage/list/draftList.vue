@@ -62,7 +62,7 @@
             <span class="table-btn" @click="copyPage(scope.row)">复制</span>
             <span class="table-btn" @click="_routeTo('shopEditor', {pageId: scope.row.id})">编辑</span>
             <span class="table-btn" @click="deletePage(scope.row)">删除</span>
-            <!-- <span class="table-btn" @click="setIndex(scope.row)">设为首页</span> -->
+            <span class="table-btn" @click="apply(scope.row)">上架</span>
           </template>
         </el-table-column>
       </el-table>
@@ -144,6 +144,42 @@ export default {
             this.$notify({
               title: '成功',
               message: '删除成功！',
+              type: 'success'
+            });
+            this.fetch();
+          }).catch((error)=>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
+        })
+    },
+
+    /* 上架页面 */
+    apply(item) {
+      this.currentItem = item;
+       this.$confirm(`确定上架 [ ${item.name} ] 吗？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const resultData = {
+            colorStyle: item.colorStyle,
+            explain: item.explain,
+            id: item.id,
+            name: item.name,
+            pageCategoryInfoId: item.pageCategoryInfoId,
+            pageData: item.pageData,
+            pageKey: item.pageKey,
+            title: item.title,
+            status: '0'
+          }
+            
+          this._apis.shop.editPageInfo(resultData).then((response)=>{
+            this.$notify({
+              title: '成功',
+              message: '上架成功！',
               type: 'success'
             });
             this.fetch();
