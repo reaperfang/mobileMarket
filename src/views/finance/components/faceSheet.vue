@@ -17,7 +17,7 @@
           <el-input v-model="ruleForm.searchValue" placeholder="请输入" style="width:226px;"></el-input>
         </el-form-item>
         <el-form-item label="业务类型">
-          <el-select v-model="ruleForm.businessType" style="width:210px;">
+          <el-select v-model="ruleForm.businessType" style="width:210px;" placeholder="全部">
             <el-option
               v-for="item in fsTypes"
               :key="item.value"
@@ -121,7 +121,7 @@ export default {
       ruleForm:{
         searchType:'relationSn',
         searchValue:'',
-        businessType:1,
+        businessType:'',
         expressCompany:'',
         timeValue:''
       },

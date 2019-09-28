@@ -22,8 +22,8 @@ export default {
     makeOption(data) {
       this.option = {
         title: {
-          //text: "未来一周气温变化",
-          //subtext: "纯属虚构"
+          text: "未来一周气温变化",
+          subtext: "纯属虚构"
         },
         tooltip: {
           trigger: "axis"
@@ -32,7 +32,7 @@ export default {
           data: ["最高气温", "最低气温"]
         },
         toolbox: {
-          show: true,
+          show: false,
           feature: {
             mark: { show: true },
             dataView: { show: true, readOnly: false },

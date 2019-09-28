@@ -88,7 +88,11 @@ export default {
       },
     }
   },
-  watch: { },
+  watch: { 
+    flag(){
+      this.getSurvey()
+    }
+  },
   computed:{
     surveyStatus(){
       return financeCons.surveyStatus;

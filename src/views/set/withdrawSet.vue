@@ -1,7 +1,7 @@
 /*提现设置 */
 <template>
     <div class="main">
-      <el-form ref="form" :model="form" label-width="140px">
+      <el-form ref="form" :rules="rules" :model="form" label-width="140px">
         <el-form-item label="是否允许提现:" prop="cashOut">
           <el-radio-group v-model="form.cashOut">
             <el-radio :label="0">不允许</el-radio>
@@ -52,6 +52,20 @@ export default {
         cashOutTimes:0,
         cashOutMoney:0
       },
+      rules: {
+          cashOutUpper: [
+            { required: true, message: '请输入有效数值', trigger: 'blur' },
+          ],
+          cashOutLower: [
+            { required: true, message: '请输入有效数值', trigger: 'blur' },
+          ],
+          cashOutTimes: [
+            { required: true, message: '请输入有效数值', trigger: 'blur' },
+          ],
+          cashOutMoney: [
+            { required: true, message: '请输入有效数值', trigger: 'blur' },
+          ],
+      }
     }
   },
   components: {},

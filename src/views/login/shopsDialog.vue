@@ -64,7 +64,7 @@ export default {
 
     handleClose(){
       this.showDialog = false
-      this.route == 'login' && removeToken()
+      // this.route == 'login' && removeToken()
       this.$emit('handleClose')
     }
   }
