@@ -162,7 +162,7 @@ export default {
     resetForm(){
       this.ruleForm = {
         memberInfoId:'',
-        businessTypeId:1,
+        businessTypeId:'',
         timeValue:''
       }
     },

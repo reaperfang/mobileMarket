@@ -60,7 +60,7 @@
         <div class="groups">
           <p class="groups_head">全部视频</p>
           <p class="item" v-for="item in groupList" :key="item.id">
-            <span @click="getList(item.id)">{{item.name}}</span>
+            <span @click="getList(item.id)" class="group_name">{{item.name}}</span>
             <span v-if="item.id != -1">
               <i class="el-icon-edit" @click="newGroup(item.id,item.name,'edit')"></i>
               <i class="el-icon-delete" @click="deleteImage(item.id,'groupId')"></i>
@@ -532,7 +532,7 @@ export default {
     }
   }
   .groups{
-    width: 200px;
+    width: 300px;
     border: 1px solid #e6e6e6;
     font-size: 14px;
     color: #44434B;
@@ -549,6 +549,12 @@ export default {
       padding:0 20px;
       display: flex;
       justify-content: space-between;
+      .group_name{
+        width:95px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
       i{
         margin: 0 5px;
         cursor: pointer;

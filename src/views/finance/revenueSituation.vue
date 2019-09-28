@@ -27,22 +27,18 @@
           <span class="money">总收入（元）</span>
           <span class="num">
             <em>{{surveyDay.income}}</em>
-            <!-- <i class="el-icon-top red"></i> -->
-            <i class="el-icon-bottom green"></i>
           </span>
         </div>
         <div class="item">
           <span class="money">总支出（元）</span>
           <span class="num">
             <em>{{surveyDay.expend}}</em>
-            <i class="el-icon-top red"></i>
           </span>
         </div>
         <div class="item">
           <span class="money">实际收入（元）</span>
           <span class="num">
             <em>{{surveyDay.realIncome}}</em>
-            <i class="el-icon-top red"></i>
           </span>
         </div>
         <span 
@@ -81,18 +77,33 @@
           <span class="money">总收入（元）</span>
           <span class="num">
             <em>{{survey.income}}</em>
+            <span v-if="survey.chainRatioIncome != null">
+              <i class="el-icon-top red" v-if="survey.chainRatioIncome > 0"></i>
+              <i class="el-icon-top gray" v-else-if="survey.chainRatioIncome = 0"></i>
+              <i class="el-icon-bottom green" v-else></i>
+            </span>
           </span>
         </div>
         <div class="item">
           <span class="money">总支出（元）</span>
           <span class="num">
             <em>{{survey.expend}}</em>
+            <span v-if="survey.chainRatioExpend != null">
+              <i class="el-icon-top red" v-if="survey.chainRatioExpend > 0"></i>
+              <i class="el-icon-top gray" v-else-if="survey.chainRatioExpend = 0"></i>
+              <i class="el-icon-bottom green" v-else></i>
+            </span>
           </span>
         </div>
         <div class="item">
           <span class="money">实际收入（元）</span>
           <span class="num">
             <em>{{survey.realIncome}}</em>
+            <span v-if="survey.chainRatioRealIncome != null">
+              <i class="el-icon-top red" v-if="survey.chainRatioRealIncome > 0"></i>
+              <i class="el-icon-top gray" v-else-if="survey.chainRatioRealIncome = 0"></i>
+              <i class="el-icon-bottom green" v-else></i>
+            </span>
           </span>
         </div>
       </div>
@@ -122,7 +133,10 @@ export default {
       survey:{
         income:0,
         expend:0,
-        realIncome:0
+        realIncome:0,
+        chainRatioExpend:0, 
+        chainRatioIncome:0,
+        chainRatioRealIncome:0 
       },
       dataList:[],
       days:7
@@ -169,9 +183,7 @@ export default {
       }
       this._apis.finance.getDataDateRs(queryDate).then((response)=>{
         if(response){
-          this.survey.expend = response.expend
-          this.survey.income = response.income
-          this.survey.realIncome = response.realIncome
+          this.survey = response
           this.dataList = response.accountList
         }else{
           this.$notify.info({
