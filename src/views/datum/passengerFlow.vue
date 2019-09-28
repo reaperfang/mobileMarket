@@ -12,9 +12,9 @@
         <div class="pane_container">
           <div class="p_line">
             <el-radio-group v-model="nearDay" @change="changeDay">
-              <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
-              <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
-              <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+              <el-radio-button class="btn_bor" label="7">最近7天</el-radio-button>
+              <el-radio-button class="btn_bor" label="15">最近15天</el-radio-button>
+              <el-radio-button class="btn_bor" label="30">最近30天</el-radio-button>
               <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
             </el-radio-group>
             <div class="input_wrap" v-if="nearDay == 4">
@@ -67,7 +67,7 @@ export default {
       endTime:"",
       visitSourceType: 0, //1 小程序 2 公众号
       analysisType: 1, //数据类型
-      nearDay: 7, //1 7天 2:15天 3 30天 4：具体日期
+      nearDay: 7, 
       dataChart: {},
       title:'浏览/访问',
       duration:1,
@@ -75,17 +75,22 @@ export default {
       type:1
     };
   },
- 
+  created() {
+ 			//默认开始7天
+  	this.startTime=GetDateStr(-7);
+  	this.endTime=GetDateStr(0);
+  	
+    this.getData();
+   // this.getPathOut()
+  }, 
   methods: {
     // 获取数据
     getData() {
       let data = {
         startTime: this.startTime,
         endTime: this.endTime,
-        nearDay:this.nearDay,
-        channel:this.channel,
-        visitSourceType: this.visitSourceType,
-        analysisType: this.analysisType,
+        nearDay:this.nearDay == '4' ? null : this.nearDay,
+        channel:this.channel
       };
  
       this._apis.data.pvady(data).then(response => {            
@@ -148,14 +153,6 @@ export default {
         this.getPathOut()
     }
   },
-  created() {
- 			//默认开始7天
-  	this.startTime=GetDateStr(-7);
-  	this.endTime=GetDateStr(0);
-  	
-    this.getData();
-   // this.getPathOut()
-  }
 };
 </script>
 <style lang="scss" scoped>
