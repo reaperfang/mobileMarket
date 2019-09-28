@@ -7,7 +7,7 @@
                 <el-input v-model="form.shopName" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item> -->
             <el-form-item label="角色名称:" prop="roleName">
-                <el-input v-model="form.roleName" style="width:182px;" placeholder="10个汉字"></el-input>
+                <el-input v-model.trim="form.roleName" style="width:182px;" placeholder="10个汉字"></el-input>
             </el-form-item>
             <el-form-item label="角色描述:" prop="roleDesc">
                 <el-input v-model="form.roleDesc" style="width:182px;" placeholder="请输入"></el-input>
@@ -138,17 +138,21 @@ export default {
 
     //确定权限
     handleSubmit(data){
-         this.shopChecked.map(id =>{
+        if(this.form.shops.length){
+            this.form.shops.map((item,index) =>{
+                item.shopId == data.shopId && this.form.shops.splice(index,1)                      
+            })
+        }
+        this.shopChecked.map((id,shopIndex) =>{
             if(id == data.shopId){
-                if(this.form.shops.length){
-                    this.form.shops.map((item,index) =>{
-                        item.id == data.shopId && this.form.shops.splice(index,1)                      
+                if(!data.functions.length){
+                    this.shopChecked.splice(shopIndex,1)
+                }else{
+                    this.form.shops.push(data)
+                    this.shops.map(shop =>{
+                        shop.id == data.shopId && (shop = Object.assign(shop,{functions:data.functions}))
                     })
-                }
-                this.form.shops.push(data)
-                this.shops.map(shop =>{
-                    shop.id == data.shopId && (shop = Object.assign(shop,{functions:data.functions}))
-                })
+                } 
             }
         })
     },
@@ -157,18 +161,25 @@ export default {
     onSubmit(){
         let roleName = this.roleInfo && this.roleInfo.roleName
         let msg = roleName ? '修改成功！' : '添加成功！'
-        this._apis.set.newRole(this.form).then(response =>{
-            this.$notify.success({
-                title: '成功',
-                message: msg
+        if(this.form.shops.length){
+            this._apis.set.newRole(this.form).then(response =>{
+                this.$notify.success({
+                    title: '成功',
+                    message: msg
+                });
+                this.$router.push({path:'roleManage'})
+            }).catch(error =>{
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
+            })
+        }else{
+            this.$notify.warning({
+                title: '提示',
+                message: '创建没有店铺权限的角色无效！'
             });
-            this.$router.push({path:'roleManage'})
-        }).catch(error =>{
-            this.$notify.error({
-                title: '错误',
-                message: error
-            });
-        })
+        }
     },      
   }
 }
