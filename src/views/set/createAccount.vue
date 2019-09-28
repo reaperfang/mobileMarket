@@ -49,6 +49,17 @@
 export default {
   name: 'createAccount',
   data() {
+    var validateMobile = (rule,value,callback) =>{
+      let regFormat = /^[1][3578][0-9]{9}$/; //正确手机号
+      if (!value) {
+        return callback(new Error('不能为空'));
+      }
+      if (!(regFormat.test(value))) {
+        callback(new Error('请输入正确手机号'));
+      } else {
+        callback();
+      }
+    }
     return {
       form: {
           userName: '',
@@ -63,6 +74,7 @@ export default {
         ],
         mobile:[
           { required: true, message: '请输入登录手机号', trigger: 'blur' },
+          { validator: validateMobile, trigger: 'blur' }
         ],
         roleName:[
           { required: true, message: '请选择角色', trigger: 'blur' },

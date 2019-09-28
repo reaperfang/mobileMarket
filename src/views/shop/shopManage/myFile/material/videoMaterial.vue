@@ -39,7 +39,7 @@
               <p class="img_bottom">
                 <!-- <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span> -->
                 <span @click="moveGroup(item.id)"><i class="el-icon-folder"></i></span>
-                <span @click="downVideo(item.filePath,item.fileName)"><i class="el-icon-download"></i></span>
+                <span @click="downVideo(item.filePath,item.fileName)"><i class="el-icon-video-camera"></i></span>
                 <span @click="deleteImage(item.id,'videoId')"><i class="el-icon-delete"></i></span>
               </p>
             </div>
