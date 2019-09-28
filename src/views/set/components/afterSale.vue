@@ -6,31 +6,40 @@
             <h2>自动收货： <span>说明：仅对有物流信息的订单生效，对没有物流信息的订单需要手动确认</span></h2>
             <el-form-item label="买家自动确认收货时间："></el-form-item>
             <el-form-item label="买家物流签收" prop="memberAutoConfirmReceive">
-                <el-input 
+                <el-input-number 
                 v-model="form.memberAutoConfirmReceive" 
+                controls-position="right" 
                 style="width:260px;" 
-                placeholder="请输入整数，清空数值则关闭该功能">
-                </el-input>
+                placeholder="请输入整数，清空数值则关闭该功能"
+                :min="1" 
+                :max="30">
+                </el-input-number>
                 天后，自动确认收货
             </el-form-item>
             <el-form-item label="卖家自动确认收货时间："></el-form-item>
             <el-form-item label="卖家物流签收" prop="shopAutoConfirmReceive">
-                <el-input 
+                <el-input-number 
                 v-model="form.shopAutoConfirmReceive" 
+                controls-position="right" 
                 style="width:260px;" 
-                placeholder="请输入整数，清空数值则关闭该功能">
-                </el-input>
+                placeholder="请输入整数，清空数值则关闭该功能"
+                :min="1" 
+                :max="30">
+                </el-input-number>
                 天后，自动确认收货
             </el-form-item>
         </div>
         <div class="item">
             <h2>售后自动关闭时间：</h2>
             <el-form-item label="订单完成" prop="orderAutoFinished">
-                <el-input 
+                <el-input-number 
                 v-model="form.orderAutoFinished" 
+                controls-position="right" 
                 style="width:260px;" 
-                placeholder="请输入整数，清空数值则关闭该功能">
-                </el-input>
+                placeholder="请输入整数，清空数值则关闭该功能"
+                :min="1" 
+                :max="30">
+                </el-input-number>
                 天后，售后自动关闭
             </el-form-item>
         </div>
@@ -46,11 +55,14 @@
                 </span>
             </el-form-item>
             <el-form-item label="订单完成" prop="orderCommentGood">
-                <el-input 
+                <el-input-number 
                 v-model="form.orderCommentGood" 
+                controls-position="right" 
                 style="width:96px;" 
-                placeholder="请输入整数，清空数值则关闭该功能">
-                </el-input>
+                placeholder="请输入整数，清空数值则关闭该功能"
+                :min="1" 
+                :max="30">
+                </el-input-number>
                 天后,自动评价为好评
             </el-form-item>
         </div>
@@ -98,7 +110,8 @@
             </el-form-item>
         </div>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit('form')" v-permission="['设置', '交易设置', '售后相关', '保存']">保存</el-button>
+            <el-button type="primary" @click="onSubmit('form')" >保存</el-button>
+            <!-- v-permission="['设置', '交易设置', '售后相关', '保存']" -->
         </el-form-item>
     </el-form>
   </div>     

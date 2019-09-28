@@ -178,7 +178,7 @@ export default {
     resetForm(){
       this.ruleForm = {
         tradeDetailSn:'',
-        businessType:1,
+        businessType:'',
         timeValue:''
       }
     },

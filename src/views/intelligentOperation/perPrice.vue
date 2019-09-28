@@ -64,7 +64,7 @@
         label="时间">
       </el-table-column>
       <el-table-column
-        prop="averagePayment"
+        prop="averageOrderPayment"
         label="客单价（元）">
       </el-table-column>
       <el-table-column
@@ -72,7 +72,7 @@
         label="订单量（笔）">
       </el-table-column>
       <el-table-column
-        prop="averageOrderPayment"
+        prop="averagePayment"
         label="人均消费金额（元）"
       >
       </el-table-column>

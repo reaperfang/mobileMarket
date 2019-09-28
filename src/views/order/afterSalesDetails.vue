@@ -20,7 +20,7 @@
                 <el-tab-pane v-permission="['订单', '售后详情', '发货信息']" label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
             </el-tabs>
         </section>
-        <component :is="currentView" :recordList="recordList" :orderAfterSale="orderAfterSale" :itemList="itemList" :sendItemList="sendItemList"></component>
+        <component :is="currentView" :recordList="recordList" :orderAfterSale="orderAfterSale" :itemList="itemList" :sendItemList="sendItemList" :orderType="orderType"></component>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @reject="onReject" title="审核"></component>
     </div>
 </template>
@@ -40,7 +40,8 @@ export default {
             recordList: [],
             sendItemList: [],
             currentDialog: '',
-            dialogVisible: false
+            dialogVisible: false,
+            orderType: ''
         }
     },
     created() {
@@ -141,6 +142,7 @@ export default {
                 this.orderAfterSale = res.orderAfterSale || {}
                 this.recordList = res.recordList
                 this.sendItemList = res.sendItemList
+                this.orderType = res.orderType
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({

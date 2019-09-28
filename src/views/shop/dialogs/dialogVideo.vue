@@ -1,5 +1,13 @@
 <template>
-  <DialogBase :visible.sync="visible" width="816px" :title="'上传视频'">
+  <DialogBase :visible.sync="visible" :showFooter="false" width="816px" :title="'视频'">
+    <video v-if="data.filePath !=''"  
+    :src="data.filePath"
+    controls="controls"
+    width="600"
+    height="300"
+    style="margin-left:80px;">
+    您的浏览器不支持视频播放
+    </video>
   </DialogBase>
 </template>
 
@@ -7,7 +15,7 @@
 import DialogBase from "@/components/DialogBase";
 import utils from "@/utils";
 export default {
-  name: "dialogUploadVideo",
+  name: "dialogVideo",
   components: {DialogBase},
   props: {
       data: {},
@@ -30,8 +38,7 @@ export default {
       }
     }
   },
-  created() {
-  },
+  created() {},
   methods: {
   }
 };

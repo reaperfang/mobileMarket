@@ -58,9 +58,9 @@
             <div class="title-section">
                 <div class="title-section-header">
                     <div class="title-section-header-lefter">
-                        <span>订单编号：{{orderAfterSale.orderinfocode}}</span> | 
-                        <span>{{orderAfterSale.channelType | channelTypeFilter}}</span> | 
-                        <span>{{orderAfterSale.orderType | orderTypeFilter}}</span>
+                        <span>订单编号：{{orderAfterSale.orderCode}}</span> | 
+                        <span>{{orderAfterSale.channelInfoId | channelTypeFilter}}</span> | 
+                        <span>{{orderType | orderTypeFilter}}</span>
                     </div>
                 </div>
                 <div class="content">
@@ -255,7 +255,8 @@
                             退还积分：
                         </div>
                         <div class="col">
-                            <el-input v-model="orderAfterSale.realReturnScore"></el-input>
+                            <el-input v-if="orderAfterSale.orderAfterSaleStatus == 0" v-model="orderAfterSale.realReturnScore"></el-input>
+                            <span v-else>{{orderAfterSale.realReturnScore}}</span>
                         </div>
                     </div>
                     <div class="row align-center">
@@ -263,7 +264,8 @@
                             实退金额：
                         </div>
                         <div class="col">
-                            <el-input min="0" type="number" @change="realReturnMoneyHandler" v-model="orderAfterSale.realReturnMoney"></el-input>
+                            <el-input v-if="orderAfterSale.orderAfterSaleStatus == 0" min="0" type="number" @change="realReturnMoneyHandler" v-model="orderAfterSale.realReturnMoney"></el-input>
+                            <span v-else>{{orderAfterSale.realReturnMoney}}</span>
                         </div>
                     </div>
                     <div class="row align-center">
@@ -354,9 +356,9 @@ export default {
         },
         channelTypeFilter(code) {
             if(code == 1) {
-                return '小程序'
+                return '微信小程序'
             } else if(code == 2) {
-                return '公众号'
+                return '微信公众号'
             }
         },
         orderTypeFilter(code) {
@@ -426,6 +428,9 @@ export default {
         itemList: {
             type: Array,
             default: []
+        },
+        orderType: {
+
         }
     }
 }

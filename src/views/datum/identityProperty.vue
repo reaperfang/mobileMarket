@@ -175,9 +175,11 @@ export default {
             let data ={
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timePay,
-                nearDay: this.nearDay == 5 ? 4 : this.nearDay,
+                nearDay: this.nearDay  == 5 ? 4 : this.nearDay,
                 startTime:this.startTime,
                 endTime:this.endTime,
+                chanell :this.chanell,
+                // nearDay:this.nearDay
             }
             this._apis.data.paymentTrend(data).then(response => {
                 this.threeData = response;

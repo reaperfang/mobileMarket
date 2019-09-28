@@ -2,19 +2,19 @@
   <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px" :style="bodyHeight">
     <div class="block form">
       <el-form-item label="选择商品" prop="goods">
-        <div class="goods_list">
-          <ul>
-            <li v-for="(item, key) of list" :key="key">
-              <img :src="item.goodsImgUrl" alt="">
-              <i class="delete_btn" @click.stop="deleteItem(item)"></i>
-            </li>
-            <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectDiscount'">
-              <i class="inner"></i>
-            </li>
-          </ul>
-        </div>
-        最多添加30个商品
       </el-form-item>
+      <div class="goods_list">
+        <ul>
+          <li v-for="(item, key) of list" :key="key">
+            <img :src="item.goodsImgUrl" alt="">
+            <i class="delete_btn" @click.stop="deleteItem(item)"></i>
+          </li>
+          <li class="add_button" @click="dialogVisible=true; currentDialog='dialogSelectDiscount'">
+            <i class="inner"></i>
+          </li>
+        </ul>
+      </div>
+      最多添加30个商品
       <el-form-item label="列表样式" prop="listStyle">
         <el-radio-group v-model="ruleForm.listStyle">
           <el-radio :label="1">大图模式</el-radio>
@@ -209,6 +209,20 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+/deep/.el-form-item__label{
+  text-align: left;
+}
+/deep/.el-radio-group{
+  margin-top: 9px;
+  /deep/.el-radio {
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
+}
+/deep/.el-checkbox-group{
+  /deep/.el-checkbox{
+    margin-right: 10px;
+  }
+}
 </style>

@@ -11,13 +11,13 @@
       </div>
         <div class="pane_container">
           <div class="p_line">
-            <el-radio-group v-model="dateType" @change="changeDay">
+            <el-radio-group v-model="nearDay" @change="changeDay">
               <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
               <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
               <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
               <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
             </el-radio-group>
-            <div class="input_wrap" v-if="dateType == 4">
+            <div class="input_wrap" v-if="nearDay == 4">
               <el-date-picker
                 v-model="range"
                 type="daterange"
@@ -67,7 +67,7 @@ export default {
       endTime:"",
       visitSourceType: 0, //1 小程序 2 公众号
       analysisType: 1, //数据类型
-      dateType: 1, //1 7天 2:15天 3 30天 4：具体日期
+      nearDay: 7, //1 7天 2:15天 3 30天 4：具体日期
       dataChart: {},
       title:'浏览/访问',
       duration:1,
@@ -86,7 +86,6 @@ export default {
         channel:this.channel,
         visitSourceType: this.visitSourceType,
         analysisType: this.analysisType,
-        dateType: this.dateType
       };
  
       this._apis.data.pvady(data).then(response => {            
@@ -124,8 +123,8 @@ export default {
             this.title = '直径/跳出率'
         }
     },
-    all(e){
-        this.dateType = 1;
+    all(){
+        this.nearDay = 1;
         this.analysisType = 1;
         this.visitSourceType = e;
         this.getData()
@@ -136,7 +135,7 @@ export default {
         startTime: this.startTime,
         endTime: this.endTime,
         analysisType: this.duration,
-        dateType: this.dateType,
+        nearDay: this.nearDay,
       };
       this._apis.data.bouncerate(data).then(response => {
             this.dataChart = response;
