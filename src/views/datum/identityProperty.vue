@@ -17,7 +17,7 @@
                         </div>
                         <div class="chart1_info">
                             <p>累计客户数：{{grandTotal}}</p>
-                            <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.value}}</span></p>
+                            <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.grandTotal}}</span></p>
                         </div>
                     </div>
                     <p class="i_title">会员增长趋势:</p>
@@ -31,7 +31,7 @@
                         </el-radio-group>
                         <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
                             <el-date-picker
-                                v-model="valueM"
+                                v-model="nearDay"
                                 :type="nearDay"
                                 :value-format="formatM"
                                 placeholder="选择日期"
@@ -53,7 +53,7 @@
                         </el-radio-group>
                         <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
                             <el-date-picker
-                                v-model="valuePay"
+                                v-model="nearDay"
                                 :type="nearDay"
                                 :value-format="formatPay"
                                 placeholder="选择日期"
@@ -92,7 +92,6 @@ export default {
     components: { ip1Chart, ip2Chart, ip3Chart },
     data() {
         return {
-            cid:2,
             oneData:[],
             dateM:'month',
             datePay:'month',
@@ -118,7 +117,7 @@ export default {
          */ 
         getAttributeRatio(){
              let data = {
-                 visitSourceType:this.visitSourceType,
+                   visitSourceType:this.visitSourceType,
             };
             this._apis.data.attributeRatio(data).then(response => {
                     this.oneData = response;
@@ -146,7 +145,7 @@ export default {
             }
             this._apis.data.memberTrend(data).then(response => {
                 this.dataChart = response
-                this.$refs.ip2.con(response,this.title,this.startTime,this.endTime)
+                this.$refs.ip2.con(response,this.title,this.startTime,this.endTime,this.nearDay)
             }).catch(error => {
             this.$message.error(error);
             });
@@ -184,7 +183,7 @@ export default {
             }
             this._apis.data.paymentTrend(data).then(response => {
                 this.threeData = response;
-                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime,this.chanell)
+                this.$refs.ip3.con(response,this.title,this.startTime,this.endTime,this.nearDay)
             }).catch(error => {
             this.$message.error(error);
             });

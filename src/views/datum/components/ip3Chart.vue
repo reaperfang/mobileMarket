@@ -31,7 +31,7 @@ export default {
         //   trigger: "item"
         // },
         toolbox: {
-          show: false,
+          show: true,
           feature: {
             dataView: { show: true, readOnly: false },
             restore: { show: true },
@@ -80,7 +80,7 @@ export default {
                 }
               }
             },
-            data: this.flow['xAxisData'],
+            data: this.flow['xAxis'],
             markPoint: {
               tooltip: {
                 // trigger: "item",
