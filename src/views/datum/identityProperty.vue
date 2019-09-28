@@ -22,17 +22,17 @@
                     </div>
                     <p class="i_title">会员增长趋势:</p>
                     <div class="i_line">
-                        <el-radio-group v-model="dateTypeM" @change="changeDayM">
+                        <el-radio-group v-model="nearDay" @change="changeDayM">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                             <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                             <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
                             <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
                             <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="dateTypeM == 4 || dateTypeM == 5">
+                        <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
                             <el-date-picker
                                 v-model="valueM"
-                                :type="dateM"
+                                :type="nearDay"
                                 :value-format="formatM"
                                 placeholder="选择日期"
                                 @change="changeTimeM">
@@ -44,14 +44,14 @@
                     </div>
                     <p class="i_title">支付趋势：</p>
                     <div class="i_line clearfix" >
-                        <el-radio-group v-model="dateTypePay" @change="changeDayPay">
+                        <el-radio-group v-model="nearDay" @change="changeDayPay">
                             <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
                             <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
                             <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
                             <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
                             <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
                         </el-radio-group>
-                        <div class="input_wrap" v-if="dateTypePay == 4 || dateTypePay == 5">
+                        <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
                             <el-date-picker
                                 v-model="valuePay"
                                 :type="datePay"
@@ -99,13 +99,11 @@ export default {
             formatM:'yyyy-MM',
             formatPay:'yyyy-MM',
             visitSourceType:0,
-            nearDay:"",
+            nearDay:7,
             valueM:'',
             valuePay:'',
             timeM:'',
             timePay:'',
-            dateTypePay:1,
-            dateTypeM:1,
             attrData:{},
             membeData:{},
             payData:{},
@@ -145,7 +143,7 @@ export default {
                 nearDay:this.nearDay,
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timeM,
-                dateType: this.dateTypeM == 5 ? 4 : this.dateTypeM
+                nearDay: this.nearDay == 5 ? 4 : this.nearDay
             }
             this._apis.data.memberTrend(data).then(response => {
                 this.dataChart = response
@@ -162,7 +160,7 @@ export default {
                 this.formatM = "yyyy-MM-dd"
                 this.dateM = 'date'
             }else if(val == 1 || val == 2 || val == 3){
-                this.dateTypeM = val
+                this.nearDay = val
                 this.getMemberTrend()
             }            
         },
@@ -179,7 +177,7 @@ export default {
             let data ={
                 visitSourceType: this.visitSourceType,
                 queryTime: this.timePay,
-                dateType: this.dateTypePay  == 5 ? 4 : this.dateTypePay,
+                nearDay: this.nearDay  == 5 ? 4 : this.nearDay,
                 startTime:this.startTime,
                 endTime:this.endTime,
                 chanell :this.chanell,
@@ -200,7 +198,7 @@ export default {
                 this.formatPay = "yyyy-MM-dd"
                 this.datePay = 'date'
             }else if(val == 1 || val == 2 || val == 3){
-                this.dateTypeM = val
+                this.nearDay = val
                 this.getPaymentTrend()
             }
         },
