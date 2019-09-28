@@ -9,11 +9,6 @@
       v-loading="loading"
       >
       <el-table-column
-        type="selection"
-        prop="choose"
-        label="选择">
-      </el-table-column>
-      <el-table-column
         prop="importTime"
         label="导入时间">
       </el-table-column>

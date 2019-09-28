@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-	import {GetDateStr} from "@/utils/validate.js"
+import {GetDateStr} from "@/utils/validate.js"
 import pfChart from "./components/pfChart";
 import durationChare from "./components/durationChare";
 export default {
@@ -70,29 +70,31 @@ export default {
       nearDay: 7, 
       dataChart: {},
       title:'浏览/访问',
-      duration:1,
-      channel:1,
+      duration:'1',
+      channel:0,
       type:1
     };
   },
   created() {
- 			//默认开始7天
-  	this.startTime=GetDateStr(-7);
-  	this.endTime=GetDateStr(0);
-  	
     this.getData();
    // this.getPathOut()
   }, 
   methods: {
+    getDate(num) {
+      var dd = new Date();
+      dd.setDate(dd.getDate()+num);//获取num天后的日期
+      dd = dd.toLocaleString('chinese',{hour12:false});
+      dd = dd.replace(/\//g,'-');
+      return dd;
+    },
     // 获取数据
     getData() {
       let data = {
         startTime: this.startTime,
         endTime: this.endTime,
-        nearDay:this.nearDay == '4' ? null : this.nearDay,
+        nearDay: this.nearDay,
         channel:this.channel
       };
- 
       this._apis.data.pvady(data).then(response => {            
             this.dataChart = response;
             this.$refs.prChart.con(response,this.title,this.type)
@@ -102,20 +104,25 @@ export default {
     },
     // 时间选择
     changeTime(val) {
-      this.startTime = val[0]
-      this.endTime = val[1]
+      this.startTime = this.getDate(val[0])
+      this.endTime = this.getDate(val[1])
+      this.nearDay = "";
       this.getData();
     },
     // 最近时间
     changeDay(val) {
-    	console.log(val)
-    	switch(val){
-    		case 1: this.startTime=GetDateStr(-7); this.getData();break;
-    		case 2: this.startTime=GetDateStr(-15);this.getData();break;
-    		case 3: this.startTime=GetDateStr(-30);this.getData();break;
-    		default : break;
-    	}
-
+      if(val !== 4) {
+        this.nearDay = val;
+        this.startTime = "";
+        this.endTime = "";
+        this.getData();
+      }
+    	// switch(val){
+    	// 	case 15: this.nearDay=GetDateStr(-7); this.getData();break;
+    	// 	case 2: this.startTime=GetDateStr(-15);this.getData();break;
+    	// 	case 3: this.startTime=GetDateStr(-30);this.getData();break;
+    	// 	default : break;
+    	// }
     },
     //来源
     changeType(e) {
@@ -128,18 +135,20 @@ export default {
             this.title = '直径/跳出率'
         }
     },
-    all(){
-        this.nearDay = 1;
-        this.analysisType = 1;
-        this.visitSourceType = e;
-        this.getData()
+    all(e){
+      this.channel = e;
+      this.getData();
+      //   this.nearDay = 1;
+      //   this.analysisType = 1;
+      //   this.visitSourceType = e;
+      //   this.getData()
     },
     // 路径
     getPathOut(){
         let data = {
         startTime: this.startTime,
         endTime: this.endTime,
-        analysisType: this.duration,
+        //analysisType: this.duration,
         nearDay: this.nearDay,
       };
       this._apis.data.bouncerate(data).then(response => {
@@ -149,8 +158,28 @@ export default {
           this.$message.error(error);
         });
     },
-    changeDp(){
-        this.getPathOut()
+    changeDp(val){
+        //this.getPathOut()
+        let data = {
+          startTime: this.startTime,
+          endTime: this.endTime,
+          nearDay: this.nearDay,
+        }
+        if(val == '1') {
+          this._apis.data.bouncerate(data).then(response => {
+            this.dataChart = response;
+            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+          }).catch(error => {
+            this.$message.error(error);
+          });
+        }else{
+          this._apis.data.residetime(data).then(response => {
+            this.dataChart = response;
+            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+          }).catch(error => {
+            this.$message.error(error);
+          });
+        }
     }
   },
 };
