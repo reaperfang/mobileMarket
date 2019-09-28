@@ -5,11 +5,14 @@
         <div class="item">
             <h2>自动关闭未付款订单：</h2>
             <el-form-item label="拍下未付款:" prop="autoCancelUnpayOrder">
-                <el-input 
+                <el-input-number 
                 v-model="form.autoCancelUnpayOrder" 
+                controls-position="right" 
                 style="width:260px;" 
-                placeholder="当前未启动该功能，输入数值即生效">
-                </el-input>
+                placeholder="当前未启动该功能，输入数值即生效"
+                :min="0" 
+                :max="24">
+                </el-input-number>
                 <el-select 
                 v-model="form.acuoType" 
                 placeholder="请选择" 
@@ -50,11 +53,14 @@
         <div class="item">
             <h2>自动发货：<span>开启后立即对所有订单生效，若需要关闭该功能则清空输入框数值</span></h2>
             <el-form-item  prop="orderAutoSend" label="下单">
-                <el-input 
+                <el-input-number 
                 v-model="form.orderAutoSend" 
+                controls-position="right" 
                 style="width:260px;" 
-                placeholder="当前未启动该功能，输入数值即生效">
-                </el-input>
+                placeholder="当前未启动该功能，输入数值即生效"
+                :min="0" 
+                :max="60">
+                </el-input-number>
                 <el-select 
                 v-model="form.oasType" 
                 placeholder="请选择" 
