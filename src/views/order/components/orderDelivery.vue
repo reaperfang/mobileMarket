@@ -45,6 +45,7 @@
                     </el-select>
                     <el-date-picker
                         v-model="listQuery.orderTimeValue"
+                        :disabled-date="disabledDate"
                         type="daterange"
                         range-separator="-"
                         value-format="yyyy-MM-dd hh:mm:ss"
@@ -197,6 +198,12 @@ export default {
         }
     },
     methods: {
+        disabledDate (value) {
+            // if (Date.now() <= value) {
+            //         return true
+            // }
+            return true
+        },
         batchSendGoods() {
             if(!this.multipleSelection.length) {
                 this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
