@@ -163,18 +163,29 @@ export default {
     deleteAccount(id){
       let ids = []
       id ? ids.push(id) : ids = this.multipleSelection
-      this._apis.set.deleteAccount({userIds:ids}).then(response =>{
-        this.$notify.success({
-          title: '成功',
-          message: '删除成功！'
+      this.$confirm('此操作将永久删除该子账号, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this._apis.set.deleteAccount({userIds:ids}).then(response =>{
+            this.$notify.success({
+              title: '成功',
+              message: '删除成功！'
+            });
+            this.getSubAccount()
+          }).catch(error =>{
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          })   
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
         });
-        this.getSubAccount()
-      }).catch(error =>{
-        this.$notify.error({
-          title: '错误',
-          message: error
-        });
-      })
     },
     //批量操作
     handleSelectionChange(val) {
