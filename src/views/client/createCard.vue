@@ -136,8 +136,8 @@
           <el-radio v-model="ruleForm.isSyncWechat" label="1">是</el-radio>
           <el-radio v-model="ruleForm.isSyncWechat" label="0">否</el-radio>
         </el-form-item>
-        <el-form-item label="使用须知：">
-          <div class="input_wrap4" prop="notice">
+        <el-form-item label="使用须知：" prop="notice">
+          <div class="input_wrap4" >
             <el-input
               type="textarea"
               :rows="5"
@@ -147,9 +147,9 @@
             ></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="客户电话：">
+        <el-form-item label="客户电话：" prop="phone">
           <div class="input_wrap">
-            <el-input v-model="phone" placeholder="请输入联系电话"></el-input>
+            <el-input v-model="ruleForm.phone" placeholder="请输入联系电话"></el-input>
           </div>
         </el-form-item>
       </el-form>
@@ -192,9 +192,9 @@ export default {
         receiveSetting: "0",
         isSyncWechat: "",
         explain: "",
-        notice: ""
+        notice: "",
+        phone: ""
       },
-      phone: "",
       rules: {
         name: [
           { required: true, message: "请输入会员卡名称", trigger: "blur" },
@@ -251,19 +251,20 @@ export default {
   methods: {
     getCardInfo() {
       let id = this.$route.query.cardData.id;
-      if (this.$route.query.cardData.level !== 1) {
-        this.getCardPublic();
-      }
       this._apis.client
         .getCardInfo({ id: id })
         .then(response => {
-          response.backgroundType = !!response.backgroundType ? response.backgroundType.toString():'';
-          response.isSyncWechat = !!response.isSyncWechat ? response.isSyncWechat.toString():'';
-          response.receiveSetting = !!response.receiveSetting ? response.receiveSetting.toString():'';
+          response.backgroundType = typeof(response.backgroundType) == 'number' ? response.backgroundType.toString():'';
+          response.isSyncWechat = typeof(response.isSyncWechat) == 'number' ? response.isSyncWechat.toString():'';
+          response.receiveSetting = typeof(response.receiveSetting) == 'number' ? response.receiveSetting.toString():'';
           this.ruleForm = Object.assign({}, response);
-          delete this.ruleForm.explain;
-          delete this.ruleForm.notice;
-          delete this.ruleForm.phone;
+          //公共部分先清空，判读卡等级再去获取公共的部分
+          this.ruleForm.explain = "";
+          this.ruleForm.notice = "";
+          this.ruleForm.phone = "";
+          if (this.$route.query.cardData.level !== 1) {
+            this.getCardPublic();
+          }
           //用于回显领取条件
           if (this.ruleForm.levelConditionInfoView) {
             this.currentData.conditionData = {
@@ -348,10 +349,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     getIndex(arr, val) {
@@ -381,12 +378,7 @@ export default {
       }
     },
     beforeAvatarUpload(file) {
-      //const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
-
-      // if (!isJPG) {
-      //     this.$message.error('上传图片只能是 JPG 格式!');
-      // }
       if (!isLt2M) {
         this.$message.error("上传图片大小不能超过 2MB!");
       }
@@ -407,10 +399,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     getConditionList() {
@@ -428,10 +416,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     getRewardList() {
@@ -548,7 +532,7 @@ export default {
           formObj.receiveSetting = this.ruleForm.receiveSetting;
           formObj.isSyncWechat = this.ruleForm.isSyncWechat;
           formObj.notice = this.ruleForm.notice;
-          formObj.phone = this.phone;
+          formObj.phone = this.ruleForm.phone;
           formObj.explain = this.ruleForm.explain;
           formObj.levelConditionValueDto = this.levelConditionValueDto;
           if(formObj.receiveSetting == '0') {
@@ -750,16 +734,12 @@ export default {
       this._apis.client
         .getCardPublic({})
         .then(response => {
-          this.phone = response.phone;
+          this.ruleForm.phone = response.phone;
           this.ruleForm.explain = response.explain;
           this.ruleForm.notice = response.notice;
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     }
   },

@@ -104,8 +104,6 @@ export default {
             valuePay:'',
             timeM:'',
             timePay:'',
-            dateTypePay:1,
-            dateTypeM:1,
             attrData:{},
             membeData:{},
             payData:{},

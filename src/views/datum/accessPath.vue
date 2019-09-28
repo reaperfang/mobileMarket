@@ -49,7 +49,7 @@
                                 <p>下单（人）</p>
                             </div>
                             <div class="p_r p_2">
-                                <div class="p_top">
+                                <div class="p_top">            
                                     <p  v-for="(item,index) in dataObj.twoDataArr">{{item.inversionRate}}</p>
                                 </div>
                                 <div class="p_bottom">
