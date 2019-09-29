@@ -76,10 +76,10 @@
               </p>
             </el-col>
             <el-col :span="8">
-              <p class="color_block" v-for="(item,index) in threeData.yAxis">支付 {{item}} 次</p>
+              <p class="color_block" v-for="(item,index) in threeData.xAxis">支付 {{item}} 次</p>
             </el-col>
             <el-col :span="6">
-              <p class="color_block" v-for="(item,index) in threeData.xAxis">{{item}}人</p>
+              <p class="color_block" v-for="(item,index) in threeData.yAxis">{{item}}人</p>
             </el-col>
           </el-row>
         </div>
@@ -173,8 +173,7 @@ export default {
       this.startTime2 = arr[0];
       this.endTime2 = arr[1];
       this.nearDay2 = "";
-      console.log()
-      //this.getPaymentTrend();
+      this.getPaymentTrend();
     },
     /*
      **会员增长趋势
