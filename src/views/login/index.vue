@@ -23,13 +23,14 @@
             <!-- <svg-icon icon-class="eye" /> -->
           </span>
         </el-form-item>
+        <p style="color:red">{{errorMsg}}</p>
         <el-form-item class="remember">
           <span>
             <!-- <el-checkbox v-model="checked">记住用户名</el-checkbox>             -->
           </span>
           <!-- <span @click="_routeTo('profile/passwordChange')">修改密码</span> -->
         </el-form-item>
-        <el-button :loading="loading" type="primary" class="btn-login" @click.once.prevent="handleLogin">登 录</el-button>
+        <el-button :loading="loading" type="primary" class="btn-login" @click.prevent="handleLogin">登 录</el-button>
       </div>
     </el-form>
     <el-dialog
@@ -88,6 +89,7 @@ export default {
       checked:false,
       shopName:'',
       shopList:[],
+      errorMsg:'',
       route:'login'
     }
   },
@@ -135,10 +137,7 @@ export default {
               this.showShopsDialog = true
             }
           }).catch(error => {
-            this.$notify.error({
-              title: '失败',
-              message: error
-            })
+            this.errorMsg = error
             this.loading = false
           })
         } else {
