@@ -136,14 +136,14 @@ export default {
             }
         },
         save2() {
-            if(this.scoreUpperCount == '') {
+            if(this.ruleForm.scoreUpperCount=='') {
                 this.$notify({
                     title: '警告',
                     message: '每日最高获得积分数不能为空',
                     type: 'warning'
                 });
             }else{
-                this._apis.client.saveCreditRule({scoreUpper: this.isSwitch?'1':'0', scoreUpperCount: this.scoreUpperCount, id: '7'}).then((response) => {
+                this._apis.client.saveCreditRule({scoreUpper: this.isSwitch?'1':'0', scoreUpperCount: this.ruleForm.scoreUpperCount, id: JSON.parse(localStorage.getItem('shopInfos')).id}).then((response) => {
                     this.$notify({
                         title: '成功',
                         message: '每日最高获得积分数保存成功',

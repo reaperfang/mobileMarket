@@ -145,7 +145,6 @@ export default {
       this._apis.data
         .transformation(data)
         .then(response => {
-
           this.dataObj = response;
         })
         .catch(error => {
