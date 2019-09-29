@@ -13,7 +13,6 @@ export default {
   },
   methods: {
     con(n){
-      console.log(n)
       this.flow = n;
       this.makeOption(n);
       this.oChart.setOption(this.option, true);
@@ -22,8 +21,8 @@ export default {
     makeOption(data) {
       this.option = {
         title: {
-          text: "未来一周气温变化",
-          subtext: "纯属虚构"
+          //text: "未来一周气温变化",
+          //subtext: "纯属虚构"
         },
         tooltip: {
           trigger: "axis"
@@ -31,35 +30,22 @@ export default {
         legend: {
           data: ["最高气温", "最低气温"]
         },
-        toolbox: {
-          show: false,
-          feature: {
-            mark: { show: true },
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ["line", "bar"] },
-            restore: { show: true },
-            saveAsImage: { show: true }
-          }
-        },
         calculable: true,
         xAxis: [
           {
             type: "category",
-            boundaryGap: false,
+           // boundaryGap: false,
             data: this.flow['xAxis']
           }
         ],
         yAxis: [
           {
             type: "value",
-            
           }
         ],
         series: [
           {
-            name:"访客",
-            type: "line",
-            stack: "总量",
+            type: 'line',
             data: this.flow['yAxis']
           },
         ]

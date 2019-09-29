@@ -6,7 +6,7 @@
           <el-radio-button class="btn_bor" label="0" v-permission="['数据', '身份属性', '全部']">全部</el-radio-button>
           <el-radio-button class="btn_bor" label="1" v-permission="['数据', '身份属性', '小程序']">小程序</el-radio-button>
           <el-radio-button class="btn_bor" label="2" v-permission="['数据', '身份属性', '公众号']">公众号</el-radio-button>
-        </el-radio-group> -->
+        </el-radio-group>-->
       </div>
     </div>
     <div class="pane_container">
@@ -20,7 +20,9 @@
           <p>非会员：占比 {{data1.customerRatio}} 人数 {{data1.customerNum}}</p>
           <p>
             会员：占比 {{data1.memberRatio}} 人数 {{data1.memberNum}}
-            <span @click="_routeTo('allClient')">查看详情</span>
+            <span
+              @click="_routeTo('allClient')"
+            >查看详情</span>
           </p>
         </div>
       </div>
@@ -33,12 +35,7 @@
           <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
         </el-radio-group>
         <div class="input_wrap" v-if="nearDay1 == 4">
-          <el-date-picker
-            v-model="date1"
-            type="month"
-            @change="changeDate1"
-            placeholder="选择月">
-         </el-date-picker>
+          <el-date-picker v-model="date1" type="month" @change="changeDate1" placeholder="选择日期"></el-date-picker>
         </div>
       </div>
       <div class="chart2_container">
@@ -53,11 +50,7 @@
           <el-radio-button class="btn_bor" label="4">自定义时间</el-radio-button>
         </el-radio-group>
         <div class="input_wrap" v-if="nearDay2 == 4">
-          <el-date-picker
-            v-model="date1"
-            type="month"
-            placeholder="选择月">
-          </el-date-picker>
+          <el-date-picker v-model="date2" type="month" @change="changeDate2" placeholder="选择日期"></el-date-picker>
         </div>
         <span class="fr" @click="toLink()">会员消费</span>
       </div>
@@ -104,8 +97,8 @@ export default {
   data() {
     return {
       visitSourceType: "0",
-      nearDay1: '7',
-      nearDay2: '7',
+      nearDay1: "7",
+      nearDay2: "7",
       timeM: "",
       timePay: "",
       attrData: {},
@@ -117,16 +110,19 @@ export default {
       //属性比例需要字段如下
       data1: {},
       //会员增长趋势需要字段如下
-      date1: '',
+      date1: "",
       startTime1: "",
-      endTime1: ""
+      endTime1: "",
+      //支付趋势需要字段
+      date2: '',
+      startTime2: "",
+      endTime2: ""
     };
   },
   created() {
     this.getAttributeRatio();
-    // this.getMemberTrend();
-    // this.getPaymentTrend();
-    // this.all();
+    this.getMemberTrend();
+    this.getPaymentTrend();
   },
   methods: {
     /*
@@ -142,10 +138,6 @@ export default {
         .then(response => {
           this.grandTotal = response.memberNum + response.customerNum;
           this.data1 = Object.assign({}, response);
-          //   let oneArr = response;
-          //   oneArr.forEach(e => {
-          //     delete e.ratioValue;
-          //   });
           let arr = [];
           arr.push({ value: 10, name: "非会员" }, { value: 20, name: "会员" });
           //arr.push({value: response.customerNum ,name: '非会员'},{value: response.memberNum ,name: '会员'});
@@ -155,79 +147,77 @@ export default {
           this.$message.error(error);
         });
     },
+    //获取开始日期及结束日期
+    getTimeArr(val) {
+      let curDate = new Date(val);
+      let curDate2 = new Date(val);
+      let curMonth = curDate.getMonth();
+      curDate.setMonth(curMonth + 1);
+      curDate.setDate(0);
+      curDate = curDate.toLocaleString("chinese", { hour12: false });
+      curDate = curDate.replace(/\//g, "-");
+      curDate2.setDate(1);
+      curDate2 = curDate2.toLocaleString("chinese", { hour12: false });
+      curDate2 = curDate2.replace(/\//g, "-");
+      return [curDate2, curDate];
+    },
     changeDate1(val) {
-        let curDate = new Date(val);
-        let curMonth = curDate.getMonth();
-        curDate.setMonth(curMonth + 1);
-        curDate.setDate(0);
-        curDate = curDate.toLocaleString('chinese',{hour12:false});
-        curDate = curDate.replace(/\//g,'-');
-        console.log(curDate);
-        
+      let arr = this.getTimeArr(val);
+      this.startTime1 = arr[0];
+      this.endTime1 = arr[1];
+      this.nearDay1 = "";
+      this.getMemberTrend();
+    },
+    changeDate2(val) {
+      let arr = this.getTimeArr(val);
+      this.startTime2 = arr[0];
+      this.endTime2 = arr[1];
+      this.nearDay2 = "";
+      console.log()
+      //this.getPaymentTrend();
     },
     /*
      **会员增长趋势
      */
 
-    // getMemberTrend() {
-    //   let data = {
-    //     startTime: this.startTime,
-    //     endTime: this.endTime,
-    //     nearDay: this.nearDay,
-    //     visitSourceType: this.visitSourceType,
-    //     queryTime: this.timeM,
-    //     nearDay: this.nearDay == 5 ? 4 : this.nearDay
-    //   };
-    //   this._apis.data
-    //     .memberTrend(data)
-    //     .then(response => {
-    //       this.dataChart = response;
-    //       this.$refs.ip2.con(
-    //         response,
-    //         this.title,
-    //         this.startTime,
-    //         this.endTime,
-    //         this.nearDay
-    //       );
-    //     })
-    //     .catch(error => {
-    //       this.$message.error(error);
-    //     });
-    // },
-    changeDayM(val) {
-        if(val !== 4) {
-            this.nearDay1 = val
-        }
+    getMemberTrend() {
+      let data = {
+        startTime: this.startTime1,
+        endTime: this.endTime1,
+        nearDay: this.nearDay1
+      };
+      this._apis.data
+        .memberTrend(data)
+        .then(response => {
+          this.$refs.ip2.con(response);
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
-    changeTimeM(val) {
-      this.timeM = val;
-      this.startTime = val[0];
-      this.endTime = val[1];
-      this.getMemberTrend();
+    changeDayM(val) {
+      if (val !== 4) {
+        this.nearDay1 = val;
+        this.startTime1 = "";
+        this.endTime1 = "";
+        this.getMemberTrend();
+      }
     },
     /*
      **支付趋势
      */
     getPaymentTrend() {
       let data = {
-        visitSourceType: this.visitSourceType,
-        queryTime: this.timePay,
-        nearDay: this.nearDay == 5 ? 4 : this.nearDay,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        chanell: this.chanell
-        // nearDay:this.nearDay
+        nearDay: this.nearDay2,
+        startTime: this.startTime2,
+        endTime: this.endTime2
       };
       this._apis.data
         .paymentTrend(data)
         .then(response => {
           this.threeData = response;
           this.$refs.ip3.con(
-            response,
-            this.title,
-            this.startTime,
-            this.endTime,
-            this.nearDay
+            response
           );
         })
         .catch(error => {
@@ -235,26 +225,12 @@ export default {
         });
     },
     changeDayPay(val) {
-      if (val == 4) {
-        this.formatPay = "yyyy-MM";
-        this.nearDay = "month";
-      } else if (val == 5) {
-        this.formatPay = "yyyy-MM-dd";
-        this.nearDay = "date";
-      } else if (val == 1 || val == 2 || val == 3) {
-        this.nearDay = val;
+      if (val !== 4) {
+        this.nearDay2 = val;
+        this.startTime2 = "";
+        this.endTime2 = "";
         this.getPaymentTrend();
       }
-    },
-    changeTimePay(val) {
-      this.timePay = val;
-      this.getPaymentTrend();
-    },
-    // 全部
-    all() {
-      //   this.getAttributeRatio();
-      //   this.getMemberTrend();
-      //   this.getPaymentTrend();
     },
     // 会员消费跳转
     toLink() {

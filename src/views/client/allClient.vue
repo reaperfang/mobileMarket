@@ -318,6 +318,7 @@ export default {
         });
         delete newForm.labelName;
         delete newForm.labelValue;
+        delete newForm.channelId;
         this.newForm = Object.assign({},newForm);
     },
     resetForm(formName) {
