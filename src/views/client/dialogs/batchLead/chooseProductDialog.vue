@@ -54,7 +54,7 @@ export default {
       categoryValue: [],
       productLabelName: "",
       name: "",
-      skuList: JSON.parse(localStorage.getItem('skuList')) || [],
+      skuList: [],
       total: 0,
       pageSize: 10,
       startIndex: 1
@@ -111,10 +111,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     getSkuList(startIndex, pageSize) {
@@ -132,14 +128,27 @@ export default {
               v.goodsInfo.specs = v.goodsInfo.specs.replace(/{|}|"|"/g,"");
           })
           this.skuList = [].concat(response.list);
+          let productInfoIds;
+          if(this.data.productInfoIds.indexOf(',') !== -1) {
+            productInfoIds = this.data.productInfoIds.split(',');
+          }else{
+            productInfoIds = [this.data.productInfoIds]
+          }
+          if(productInfoIds.length > 0) {
+            productInfoIds.map((v) => {
+                this.skuList.forEach(row => {
+                    if(row.goodsInfo.id == v) {
+                      this.$nextTick(() => {
+                        this.$refs.skuTable.toggleRowSelection(row);
+                      })
+                    }
+                })
+            })
+          }
           this.total = response.total;
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     handleSearch() {
@@ -164,18 +173,6 @@ export default {
   mounted() {
     this.getProductClass();
     this.getSkuList(1,10);
-    let productInfoIds = this.data.productInfoIds.split(',');
-    this.$nextTick(() => {
-        if(productInfoIds.length > 0) {
-            productInfoIds.map((v) => {
-                this.skuList.forEach(row => {
-                    if(row.goodsInfo.id == v) {
-                        this.$refs.skuTable.toggleRowSelection(row);
-                    }
-                })
-            })
-        }
-    })
   },
   props: {
     data: {},

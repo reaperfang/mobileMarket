@@ -122,7 +122,7 @@ export default {
         return {
             ruleForm: {
                 tagName: "",
-                tagType: "",
+                tagType: "0",
                 anyOrAllCondition:"",
                 isLastConsumeTime: null,
                 consumeTimeType: "",
@@ -172,6 +172,7 @@ export default {
         chooseProduct() {
             this.dialogVisible = true;
             this.currentDialog = "chooseProductDialog";
+            this.currentData.productInfoIds = this.ruleForm.productInfoIds;
         },
         convertUnit(val) {
             if(val) {
@@ -184,6 +185,7 @@ export default {
             this.selectedIds = val;
         },
         saveLabel() {
+            let _this = this;
             let formObj = Object.assign({}, this.ruleForm);
             formObj.consumeTimeStart = formObj.consumeTime ? formObj.consumeTime[0]:"";
             formObj.consumeTimeEnd = formObj.consumeTime ? formObj.consumeTime[1]:"";
@@ -198,20 +200,18 @@ export default {
             if(this.$route.query.id) {
                 if(formObj.tagType == '0') {
                     this._apis.client.updateTag({tagType: formObj.tagType, tagName: formObj.tagName, id: this.$route.query.id}).then((response) => {
+                        this._routeTo('clientLabel');
                         this.$notify({
                             title: '成功',
                             message: "标签编辑成功",
                             type: 'success'
-                        });
+                        });                      
                     }).catch((error) => {
                         console.log(error);
-                        // this.$notify.error({
-                        //     title: '错误',
-                        //     message: error
-                        // });
                     })
                 }else{
                     this._apis.client.updateTag(formObj).then((response) => {
+                        this._routeTo('clientLabel');
                         this.$notify({
                             title: '成功',
                             message: "标签编辑成功",
@@ -219,10 +219,6 @@ export default {
                         });
                     }).catch((error) => {
                         console.log(error);
-                        // this.$notify.error({
-                        //     title: '错误',
-                        //     message: error
-                        // });
                     })
                 }
             }else{
@@ -235,10 +231,6 @@ export default {
                         });
                     }).catch((error) => {
                         console.log(error);
-                        // this.$notify.error({
-                        //     title: '错误',
-                        //     message: error
-                        // });
                     })
                 }else{
                     this._apis.client.addTag(formObj).then((response) => {
@@ -250,10 +242,6 @@ export default {
                         
                     }).catch((error) => {
                         console.log(error);
-                        // this.$notify.error({
-                        //     title: '错误',
-                        //     message: error
-                        // });
                     })
                 }
             }
@@ -263,7 +251,6 @@ export default {
         if(this.$route.query.id) {
             this._apis.client.getLabelInfo({id:this.$route.query.id}).then((response) => {
                 this.ruleForm = Object.assign({}, response);
-                this.currentData.productInfoIds = this.ruleForm.productInfoIds;
                 this.ruleForm.tagType = this.ruleForm.tagType.toString();
                 this.ruleForm.anyOrAllCondition = this.ruleForm.anyOrAllCondition.toString();
                 this.ruleForm.consumeTimeType = this.ruleForm.consumeTimeType.toString();
@@ -273,12 +260,9 @@ export default {
                 this.ruleForm.isPreUnitPrice = Boolean(this.ruleForm.isPreUnitPrice);
                 this.ruleForm.isTotalScore = Boolean(this.ruleForm.isTotalScore);
                 this.ruleForm.isProduct = Boolean(this.ruleForm.isProduct);
+                this.ruleForm.consumeTime = [this.ruleForm.consumeTimeStart, this.ruleForm.consumeTimeEnd];
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                // title: '错误',
-                // message: error
-                // });
             })
         }
     }
