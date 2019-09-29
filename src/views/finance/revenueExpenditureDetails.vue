@@ -314,8 +314,8 @@ export default {
       this.ruleForm = {
         searchType:'tradeDetailSn',
         searchValue:'',
-        businessType:1,
-        payWay:1,
+        businessType:'',
+        payWay:'',
         tradeType:'',
         amountMin:'',
         amountMax:'',

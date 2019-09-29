@@ -190,6 +190,7 @@ export default {
     },
     created(){
         this.goSearch()
+        this.memberInforNum()
     },
     methods: {
         changeDay(){ },
@@ -208,6 +209,15 @@ export default {
                 });
             }
             console.log(this.form)
+        },
+
+        //获取会员和口碑的过滤数据
+        memberInforNum(){
+            this._apis.data.memberInforNum({type:1}).then(res => {
+                console.log('res',res)
+            }).catch(error =>{
+                console.log('error',error)
+            })
         },
 
         //查询
