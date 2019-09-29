@@ -37,7 +37,7 @@
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item class="mtb100">
-                <el-button type="primary" @click.native.prevent="onSubmit">保存</el-button>
+                <el-button type="primary" @click.native.prevent="onSubmit('form')">保存</el-button>
                 <el-button @click="_routeTo('subaccountManage')">返回</el-button>
             </el-form-item>
         </el-form>
@@ -177,7 +177,9 @@ export default {
       })
     },
     //保存
-    onSubmit(){
+    onSubmit(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
         let id = this.accountInfo && this.accountInfo.id
         if(id){//修改子账号
            let query = {
@@ -226,6 +228,8 @@ export default {
                 });
             })
         }
+        }
+      })
     }
   }
 }

@@ -80,7 +80,7 @@ export default {
         // this.init()
         this.getGeneralCondition()
         this.getHotGoods()
-        // this.getProductDetails(1,10)
+        this.getProductDetails()
     },
     methods:{
         // init(){
@@ -135,38 +135,32 @@ export default {
         });
         },
         // 获取商品详情
-        getProductDetails(idx,pages){
-            this.startIndex = idx;
-            this.pageSize = pages;
+        getProductDetails(){
             let data ={
-                visitSourceType:this.visitSourceType,
-                dateType:this.dateType,
-                // queryTime:this.queryTime,
+                channel:this.visitSourceType,
+                nearDay:this.dateType == '4' ? null : this.dateType,
                 startTime:this.startTime,
                 endTime:this.endTime,
-                pageSize:this.pageSize,
-                startIndex:this.startIndex
             }
             this._apis.data.productDetails(data).then(response => {
+                console.log('res3',response)
                 this.listObj = response
         }).catch(error => {
           this.$message.error(error);
         });
         },
-        changeDayM(val){
-            if(val != 4){
-                this.getProductDetails(1,10)
-            }
+        changeDayM(){
+            this.getProductDetails()
         },
         changeTime(val){
             this.startTime = val[0];
             this.endTime = val[1];
-            this.getProductDetails(1,10)
+            this.getProductDetails()
         },
         all(){
             this.getGeneralCondition()
             this.getHotGoods()
-            this.getProductDetails(1,10)
+            this.getProductDetails()
         }
     },
 }
