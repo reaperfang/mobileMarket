@@ -61,6 +61,18 @@
 <script>
 export default {
     data() {
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入电子面单名称'));
+        } else if(/^\s*$/.test(value)) {
+          callback(new Error('电子面单名称不能为空'));
+        } else {
+          if(value.length > 20) {
+            callback(new Error('电子面单名称不超过20个字符'));
+          }
+          callback();
+        }
+      };
         return {
             ruleForm: {
                 name: '',
@@ -72,8 +84,7 @@ export default {
             },
             rules: {
               name: [
-                { required: true, message: '请输入电子面单名称', trigger: 'blur' },
-                { max: 20, message: '电子面单名称不超过20个字符', trigger: 'blur' }
+                { validator: validatePass, trigger: 'blur' },
               ],
               expressCompanyCode: [
                 { required: true, message: '请选择快递公司', trigger: 'blur' },
@@ -245,6 +256,11 @@ export default {
       }
     }
   }
+}
+/deep/ label[for="name"]::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
 }
 </style>
 

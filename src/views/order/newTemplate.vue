@@ -113,6 +113,18 @@ import RegionDialog from "@/views/order/dialogs/regionDialog";
 
 export default {
   data() {
+    var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入模板名称'));
+        } else if(/^\s*$/.test(value)) {
+          callback(new Error('模板名称不能为空'));
+        } else {
+          if(value.length > 20) {
+            callback(new Error('模板名称不超过20个字符'));
+          }
+          callback();
+        }
+      };
     return {
       ruleForm: {
         name: "",
@@ -122,8 +134,7 @@ export default {
       noDistributionList: ["新建", "内蒙"],
       rules: {
           name: [
-            { required: true, message: '请输入模板名称', trigger: 'blur' },
-            { max: 20, message: '模板名称不超过20个字符', trigger: 'blur' }
+            { validator: validatePass, trigger: 'blur' },
           ],
           calculationWay: [
             { required: true, message: '请选择计费方式', trigger: 'blur' },
@@ -386,6 +397,11 @@ export default {
 }
 /deep/ .el-input {
   width: auto;
+}
+/deep/ label[for="name"]::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
 }
 </style>
 
