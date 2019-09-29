@@ -120,12 +120,6 @@ export default {
             }
         }
     },
-    computed:{
-        cid(){
-            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
-            return shopInfo.id
-        }
-    },
     methods: {
         getDetail() {
             let arr = []
@@ -300,8 +294,9 @@ export default {
         contentText() {
             return '是否确认删除？'
         },
-        cid() {
-            return this.$store.getters.cid || 11
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
         }
     },
     props: {

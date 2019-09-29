@@ -5,7 +5,11 @@
         <template v-for="(item, key) of region">
           <div class="province" :key="key">
             <div class="title" @mouseenter="titleMouseover(item)" @mouseleave="closeCity(key)">
-              <el-checkbox  :indeterminate="item.isIndeterminate" @change="checkboxChange(item.checked, key)" v-model="item.checked"></el-checkbox>
+              <el-checkbox
+                :indeterminate="item.isIndeterminate"
+                @change="checkboxChange(item.checked, key)"
+                v-model="item.checked"
+              ></el-checkbox>
               {{item.name}}
               <div
                 class="citys"
@@ -33,9 +37,7 @@
         <el-tag
           closable
           @close="handleClose(item)"
-          v-for="(item, key) of region.reduce((total, val) => {
-  return total.concat(val.checkList)
-}, [])"
+          v-for="(item, key) of checkList"
           :key="key"
           style="margin-right:5px;margin-bottom:5px;"
         >{{item.split(',')[3]}}</el-tag>
@@ -57,10 +59,9 @@ export default {
     return {
       region: [], //地区列表json
       // dialogWidth: '1000px',
-      checkList: [], //选中的地区
       dialogFormVisible: true,
-
-      showFooter: false,
+      checkList: [],
+      showFooter: false
     };
   },
   created() {
@@ -75,7 +76,7 @@ export default {
       set(val) {
         this.$emit("update:dialogVisible", val);
       }
-    }
+    },
   },
   props: {
     data: {},
@@ -84,22 +85,32 @@ export default {
       required: true
     }
   },
+  watch: {
+    region: {
+      deep: true,
+      handler() {
+        this.checkList = this.region.reduce((total, val) => {
+        return total.concat(val.checkList);
+      }, []);
+      }
+    }
+  },
   components: {
     DialogBase
   },
   methods: {
     checkListchange(key) {
-      let _region = this.region[key]
+      let _region = this.region[key];
 
-      if(_region.citys.length == _region.checkList.length) {
-        this.region[key].checked = true
-        this.region[key].isIndeterminate = false
-      } else if(!_region.checkList.length) {
-        this.region[key].checked = false
-        this.region[key].isIndeterminate = false
+      if (_region.citys.length == _region.checkList.length) {
+        this.region[key].checked = true;
+        this.region[key].isIndeterminate = false;
+      } else if (!_region.checkList.length) {
+        this.region[key].checked = false;
+        this.region[key].isIndeterminate = false;
       } else {
-        this.region[key].isIndeterminate = true
-        this.region[key].checked = false
+        this.region[key].isIndeterminate = true;
+        this.region[key].checked = false;
       }
     },
     checkboxChange(checked, key) {
@@ -125,7 +136,8 @@ export default {
         key,
         1,
         Object.assign({}, this.region[key], {
-          checkList
+          checkList,
+          isIndeterminate: false
         })
       );
     },
@@ -147,7 +159,7 @@ export default {
 
       _region.forEach(val => {
         //val.checked = false;
-        val.over = false
+        val.over = false;
       });
 
       this.region = _region;
@@ -158,7 +170,7 @@ export default {
         .getArea()
         .then(response => {
           response.forEach(val => {
-            val.isIndeterminate = false
+            val.isIndeterminate = false;
             val.over = false;
             val.checkList = [];
           });
