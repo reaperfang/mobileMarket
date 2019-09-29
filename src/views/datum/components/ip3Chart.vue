@@ -34,7 +34,6 @@ export default {
         xAxis: [
           {
             type: "category",
-            show: false,
             data: this.flow["xAxis"]
           }
         ],
@@ -50,7 +49,6 @@ export default {
               normal: {
                 //这里是重点
                 color: function(params) {
-                  //注意，如果颜色太少的话，后面颜色不会自动循环，最好多定义几个颜色
                   var colorList = ["#A1E174", "#578EFA", "#FD932B", "#FD4C2B"];
                   return colorList[params.dataIndex];
                 }

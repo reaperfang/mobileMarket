@@ -37,9 +37,25 @@
             <p>访客（人）</p>
           </div>
           <div class="p_r p_1">
-            <div v-for="(item,index) in dataObj.oneDataArr">
-              <p>{{item.pageDescribe}}</p>
-              <p>{{item.uniqueViewCount}}</p>
+            <div>
+              <p>首页</p>
+              <p>{{dataObj.order[1]}}</p>
+            </div>
+            <div>
+              <p>商品列表页</p>
+              <p>{{dataObj.order[2]}}</p>
+            </div>
+            <div>
+              <p>购物车</p>
+              <p>{{dataObj.order[3]}}</p>
+            </div>
+            <div>
+              <p>商品页</p>
+              <p>{{dataObj.order[4]}}</p>
+            </div>
+            <div>
+              <p>其他页</p>
+              <p>{{dataObj.order[5]}}</p>
             </div>
           </div>
         </div>
@@ -50,11 +66,15 @@
           </div>
           <div class="p_r p_2">
             <div class="p_top">
-              <p v-for="(item,index) in dataObj.twoDataArr">{{item.inversionRate}}</p>
+              <p>{{dataObj.orderUvPathTransformation[1]}}</p>
+              <p>{{dataObj.orderUvPathTransformation[2]}}</p>
+              <p>{{dataObj.orderUvPathTransformation[3]}}</p>
+              <p>{{dataObj.orderUvPathTransformation[4]}}</p>
+              <p>{{dataObj.orderUvPathTransformation[5]}}</p>
             </div>
             <div class="p_bottom">
-              <p v-for="(item,index) in dataObj.twoDataArr">{{item.pageDescribe}}</p>
-              <p v-for="(item,index) in dataObj.twoDataArr">{{item.uniqueViewCount}}</p>
+              <p>确认订单</p>
+              <p>{{dataObj.totalOrderCount}}</p>
             </div>
           </div>
         </div>
@@ -65,12 +85,22 @@
           </div>
           <div class="p_r p_3">
             <div class="p_top">
-              <p v-for="(item,index) in dataObj.threeDataArr">{{item.inversionRate}}</p>
+              <p>{{dataObj.payOrderPathTransformation[1]}}</p>
+              <p>{{dataObj.payOrderPathTransformation[2]}}</p>
+              <p>{{dataObj.payOrderPathTransformation[3]}}</p>
             </div>
             <div class="p_bottom">
-              <div v-for="(item,index) in dataObj.threeDataArr">
-                <p>{{item.pageDescribe}}</p>
-                <p>{{item.uniqueViewCount}}</p>
+              <div>
+                <p>支付成功</p>
+                <p>{{dataObj.pay[1]}}</p>
+              </div>
+              <div>
+                <p>直接退出</p>
+                <p>{{dataObj.pay[2]}}</p>
+              </div>
+              <div>
+                <p>其他</p>
+                <p>{{dataObj.pay[3]}}</p>
               </div>
             </div>
           </div>
@@ -220,15 +250,14 @@ export default {
             }
             .p_bottom {
               padding: 0 180px 0 190px;
-              display: flex;
-              flex-wrap: nowrap;
-              justify-content: space-evenly;
-              // p:first-child{
-              //     font-size: 16px;
-              // }
-              // p:last-child{
-              //     font-size: 24px;
-              // }
+              p:first-child{
+                text-align: center;
+                  font-size: 16px;
+              }
+              p:last-child{
+                 text-align: center;
+                  font-size: 24px;
+              }
             }
           }
           &.p_3 {
