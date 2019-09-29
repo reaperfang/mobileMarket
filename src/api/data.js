@@ -131,7 +131,7 @@ export function hotGoods(data) {
 // 商品交易-商品详情 
 export function productDetails(data) {
     return request({
-      target:'SHOP-TRADING-GOODS-SELL-INFO-DATA-PROCESSOR',
+      target:'Echart-Product-Statistics',
       method: 'post',
       apiType: 'data',
       data

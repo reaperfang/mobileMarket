@@ -181,6 +181,7 @@ export default {
     },
     //批量操作
     handleSelectionChange(val) {
+      this.multipleSelection = []
       val.map(item =>{
         this.multipleSelection.push(item.roleName)
       })
