@@ -123,7 +123,6 @@ export default {
       let idList = []
       if (selection.length > 0) {
         selection.map((v) => {
-          v.id = Number(v.id);
           idList.push(v.id)
         });
         this._apis.client.exportToLocal({idList: idList}).then((response) => {
