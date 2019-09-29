@@ -20,7 +20,7 @@
             <div @click="showLogistics(item.expressNo)" class="header-lefter-item blue pointer">查看物流</div>
           </div>
           <div class="header-righter">
-            <div class="header-righter-item">【客户发货】</div>
+            <!-- <div class="header-righter-item">【客户发货】</div> -->
             <div class="header-righter-item">发货人：{{orderDetail.orderSendInfo.sendName}}</div>
             <div class="header-righter-item">{{item.time}}</div>
             <div @click="showContent(index)">
