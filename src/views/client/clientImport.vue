@@ -115,7 +115,7 @@ export default {
     },
     methods: {
         handleDownload() {
-            window.location.href = "https://test-omo.aiyouyi.cn/web-file/0/excel/2e9cd/33383f6acc0044fb8a1299ee991bcd6b.xlsx";
+            window.location.href = `${process.env.UPLOAD_SERVER}/web-file/0/excel/2e9d1/b8861e2467c045b8a162f9ce4ad444b9.xlsx`;
         },
         refreshPage() {
             this.getChannels();

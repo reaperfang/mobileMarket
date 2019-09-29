@@ -77,7 +77,7 @@ export default {
   },
   created() {
     this.getData();
-   // this.getPathOut()
+    this.getPathOut()
   }, 
   methods: {
     getDate(num) {

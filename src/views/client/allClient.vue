@@ -301,7 +301,7 @@ export default {
         }
         channelIds = channelIds.join(',');
         oForm.memberLabels = labelIds;
-        oForm.channelId = channelIds;
+        oForm.channelIds = channelIds;
         if(oForm.memberType.length > 0) {
             oForm.memberType = oForm.memberType[0] == "会员" ? '1':'0';
         }

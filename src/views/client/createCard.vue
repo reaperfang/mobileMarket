@@ -239,7 +239,7 @@ export default {
       selectedGifts: [],
       selectedReds: [],
       levelConditionValueDto: {},
-      colors: JSON.parse(localStorage.getItem("colorUrl")) || []
+      colors: []
     };
   },
   computed: {
