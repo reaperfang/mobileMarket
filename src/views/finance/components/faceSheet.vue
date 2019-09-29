@@ -206,7 +206,7 @@ export default {
       this.ruleForm = {
         searchType:'relationSn',
         searchValue:'',
-        businessType:1,
+        businessType:'',
         expressCompany:'',
         timeValue:''
       }

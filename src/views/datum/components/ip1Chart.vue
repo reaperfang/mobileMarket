@@ -22,8 +22,7 @@ export default {
     makeOption(data) {
       this.option = {
         title: {
-         text: "某站点用户访问来源",
-         subtext: "纯属虚构",
+         text: "属性比例",
           x: "center"
         },
         tooltip: {
@@ -33,28 +32,7 @@ export default {
         legend: {
           orient: "horizontal",
           x: "right",
-         data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"]
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: { show: true },
-            dataView: { show: true, readOnly: true },
-            magicType: {
-              show: true,
-              type: ["pie", "funnel"],
-              option: {
-                funnel: {
-                  x: "25%",
-                  width: "50%",
-                  funnelAlign: "left",
-                  max: 1548
-                }
-              }
-            },
-            restore: { show: true },
-            saveAsImage: { show: true }
-          }
+          data: ["非会员", "会员"]
         },
         calculable: true,
         series: [

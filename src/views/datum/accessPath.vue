@@ -122,15 +122,20 @@ export default {
         });
     },
     changeTime(val) {
-      this.startTime = val[0];
-      this.endTime = val[1];
+      this.startTime = this.getDate(val[0])
+      this.endTime = this.getDate(val[1])
+      this.nearDay = "";
       this.getPathConversion();
     },
-    all() {
+    all(val) {
+      this.channel = val;
       this.getPathConversion();
     },
     changeDay(val) {
       if (val != 4) {
+        this.nearDay = val;
+        this.startTime = "";
+        this.endTime = "";
         this.getPathConversion();
       }
     }

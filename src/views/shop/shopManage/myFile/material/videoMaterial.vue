@@ -34,7 +34,7 @@
                 class="avatar video-avatar"
                 controls="controls">您的浏览器不支持视频播放</video>  -->
                 <img :src="item.fileCover" class="imgs">
-                <span class="btn" @click="openVideo(item)"><i class="el-icon-caret-right"></i></span>
+                <span class="btn" @click="openVideo(item)"></span>
               </div>
               <p class="img_bottom">
                 <!-- <span @click="uploadImage(item.id,'videoId')"><i class="el-icon-edit"></i></span> -->
@@ -499,13 +499,8 @@ export default {
             left:110px;
             width: 40px;
             height: 40px;
-            line-height: 40px;
-            border: 1px solid #fff;
-            border-radius: 20px;
-            text-align: center;
-            i{
-              color: #fff;
-            }
+            background: url('../../../../../assets/images/shop/bofang.png');
+            background-size: cover;
             &:hover{
               cursor: pointer;
             }

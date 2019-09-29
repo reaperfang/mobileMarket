@@ -29,6 +29,7 @@
   </DialogBase>
 </template>
 <script>
+import utils from "@/utils";
 import clientApi from "@/api/client";
 import DialogBase from "@/components/DialogBase";
 export default {
@@ -49,7 +50,14 @@ export default {
     },
     getPointList(startIndex, pageSize) {
         this._apis.client.getPointList({startIndex, pageSize, memberInfoId: this.data.id, sort:'desc'}).then((response) => {
-            this.scoreList = [].concat(response.list);
+          let list = response.list;
+          list.map(v => {
+            v.createTime = utils.formatDate(
+              new Date(Number(v.createTime)),
+              "yyyy-MM-dd hh:mm:ss"
+            );
+          });
+            this.scoreList = [].concat(list);
             this.total = response.total;
         }).catch((error) => {
           console.log(error);

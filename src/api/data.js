@@ -113,7 +113,7 @@ export function memberConsumption(data) {
 // 商品交易-商品总况 
 export function generalCondition(data) {
     return request({
-      target:'SHOP-TRADING-GOODS-SURVEY-DATA-PROCESSOR',
+      target:'Echart-Data-Product-Today-Statistics',
       method: 'post',
       apiType: 'data',
       data
@@ -122,7 +122,7 @@ export function generalCondition(data) {
 // 商品交易-热销商品  
 export function hotGoods(data) {
     return request({
-      target:'SHOP-TRADING-HOT-SELL-GOODS-DATA-PROCESSOR',
+      target:'Echart-Product-Top-Five',
       method: 'post',
       apiType: 'data',
       data
@@ -137,6 +137,15 @@ export function productDetails(data) {
       data
     })
   }
+//店铺交易
+export function tradingTrend(data) {
+  return request({
+    target:'ECHART-DATA-SHOP-TRANSACTION-PROCESSOR',
+    method: 'post',
+    apiType: 'data',
+    data
+  })
+}
 // 店铺交易-交易趋势图 
 export function tradingTrendchart(data) {
     return request({
