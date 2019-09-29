@@ -64,25 +64,25 @@ export default {
         {
             id: "01",
             text: "下单人数",
-            num: 8,
+            num: 0,
             unit: "人"
         },
         {
             id: "02",
             text: "下单订单数",
-            num: 8,
+            num: 0,
             unit: "单"
         },
         {
             id: "03",
             text: "下单（总）金额",
-            num: 8,
+            num: 0,
             unit: "元"
         },
         {
             id: "04",
             text: "访问下单转化率",
-            num: 8,
+            num: 0,
             unit: "%"
         }
     ],
@@ -91,19 +91,19 @@ export default {
         {
             id: "01",
             text: "未支付人数",
-            num: 7,
+            num: 0,
             unit: "人"
         },
         {
             id: "02",
             text: "未支付订单数",
-            num: 7,
+            num: 0,
             unit: "单"
         },
         {
             id: "03",
             text: "未支付订单总金额",
-            num: 7,
+            num: 0,
             unit: "元"
         }
     ],
@@ -112,25 +112,25 @@ export default {
         {
             id: "01",
             text: "支付人数",
-            num: 7,
+            num: 0,
             unit: "人"
         },
         {
             id: "02",
             text: "支付订单数",
-            num: 7,
+            num: 0,
             unit: "单"
         },
         {
             id: "03",
             text: "订单支付（总）金额",
-            num: 200,
+            num: 0,
             unit: "元"
         },
         {
             id: "04",
             text: "下单支付转化率",
-            num: 7,
+            num: 0,
             unit: "%"
         }
     ],
@@ -141,14 +141,14 @@ export default {
             url: require("@/assets/images/datum/c_09.png"),
             color: "#FFBF0E",
             text: "店铺复购率",
-            num: 43
+            num: 0
         },
         {
             id: "002",
             url: require("@/assets/images/datum/c_10.png"),
             color: "#FF7777",
             text: "店铺支付转化率",
-            num: 46
+            num: 0
         }
     ]
 }

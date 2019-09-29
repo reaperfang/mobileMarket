@@ -8,71 +8,71 @@
               <el-radio-button class="btn_bor" label="2" v-permission="['数据', '订单交易', '公众号']">公众号</el-radio-button>
             </el-radio-group>
           </div>
-      </div>
-                <div class="pane_container">
-                    <p class="p_title">交易总况：</p>
-                    <div class="order_list">
-                        <div class="order_line">
-                            <div class="clearfix">
-                                <img src="../../assets/images/datum/icon_order.png" alt="" class="fl order_img">
-                                <span>下单</span>
-                            </div>
-                            <div v-for="item in placeOrderData" :key="item.id">
-                                <span class="marR10">{{item.text}}</span>
-                                <span class="addMainColor">{{item.num}}{{item.unit}}</span>
-                            </div>
-                        </div>
-                        <div class="order_line">
-                            <div class="clearfix">
-                                <img src="../../assets/images/datum/icon_pay.png" alt="" class="fl order_img">
-                                <span>未支付</span>
-                            </div>
-                            <div v-for="item in nonPaymentData" :key="item.id">
-                                <span class="marR10">{{item.text}}</span>
-                                <span class="addMainColor">{{item.num}}{{item.unit}}</span>
-                            </div>
-                        </div>
-                        <div class="order_line">
-                            <div class="clearfix">
-                                <img src="../../assets/images/datum/icon_money.png" alt="" class="fl order_img">
-                                <span>支付</span>
-                            </div>
-                            <div v-for="item in paymentData" :key="item.id">
-                                <span class="marR10">{{item.text}}</span>
-                                <span class="addMainColor">{{item.num}}{{item.unit}}</span>
-                            </div>
-                        </div>
+       </div>
+        <div class="pane_container">
+            <p class="p_title">交易总况：</p>
+            <div class="order_list">
+                <div class="order_line">
+                    <div class="clearfix">
+                        <img src="../../assets/images/datum/icon_order.png" alt="" class="fl order_img">
+                        <span>下单</span>
                     </div>
-                    <div class="p_blocks">
-                        <div class="p_item" v-for="item in orderProbabilityData" :key="item.id" >
-                            <img :src="item.url" alt="" class="fl">
-                            <div class="fr">
-                                <p>{{item.text}}</p>
-                                <p :style="{color: item.color}">{{item.num}}%</p>
-                            </div>
-                        </div>
+                    <div v-for="item in placeOrderData" :key="item.id">
+                        <span class="marR10">{{item.text}}</span>
+                        <span class="addMainColor">{{item.num}}{{item.unit}}</span>
                     </div>
-                    <div class="c_line">
-                        <span class="c_title">交易趋势</span>
-                        <span class="c_label">筛选日期：</span>
-                        <el-radio-group v-model="nearDay" @change="changeDayM">
-                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
-                        </el-radio-group>
-                        <div class="input_wrap" v-if="nearDay == 4">
-                            <el-date-picker
-                                v-model="range"
-                                type="date"
-                                value-format="yyyy-MM-dd"
-                                placeholder="选择日期"
-                                @change="changeTime">
-                            </el-date-picker>
-                        </div>
-                    </div>
-                    <ip4Chart :title="'测试图表'" ref="ip4"></ip4Chart>
                 </div>
+                <div class="order_line">
+                    <div class="clearfix">
+                        <img src="../../assets/images/datum/icon_pay.png" alt="" class="fl order_img">
+                        <span>未支付</span>
+                    </div>
+                    <div v-for="item in nonPaymentData" :key="item.id">
+                        <span class="marR10">{{item.text}}</span>
+                        <span class="addMainColor">{{item.num}}{{item.unit}}</span>
+                    </div>
+                </div>
+                <div class="order_line">
+                    <div class="clearfix">
+                        <img src="../../assets/images/datum/icon_money.png" alt="" class="fl order_img">
+                        <span>支付</span>
+                    </div>
+                    <div v-for="item in paymentData" :key="item.id">
+                        <span class="marR10">{{item.text}}</span>
+                        <span class="addMainColor">{{item.num}}{{item.unit}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p_blocks">
+                <div class="p_item" v-for="item in orderProbabilityData" :key="item.id" >
+                    <img :src="item.url" alt="" class="fl">
+                    <div class="fr">
+                        <p>{{item.text}}</p>
+                        <p :style="{color: item.color}">{{item.num}}%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="c_line">
+                <span class="c_title">交易趋势</span>
+                <span class="c_label">筛选日期：</span>
+                <el-radio-group v-model="nearDay" @change="changeDayM">
+                    <el-radio-button class="btn_bor" label="7">最近7天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="15">最近15天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="30">最近30天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
+                </el-radio-group>
+                <div class="input_wrap" v-if="nearDay == 4">
+                    <el-date-picker
+                        v-model="range"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        @change="changeTime">
+                    </el-date-picker>
+                </div>
+            </div>
+            <ip4Chart :title="'测试图表'" ref="ip4"></ip4Chart>
+        </div>
     </div>
 </template>
 <script>
@@ -84,7 +84,7 @@ export default {
     data() {
         return {
             range: "",
-            nearDay:1,
+            nearDay:7,
             visitSourceType:0,
             startTime: "",
             endTime: "",
@@ -95,103 +95,87 @@ export default {
         }
     },
     components:{ip4Chart},
-    computed: {
+    computed: {  },
+    created(){
+        this.getTradingTrend()
     },
     methods:{
-        // 获取交易总况
-        getTradingOverview(){
-            let data ={
-                visitSourceType: this.visitSourceType,
-                nearDay:7
-            }
-            this._apis.data.tradingOverview(data).then(response => {
-                let nums = response.shopTradingSurvey
-                    datumCont.placeOrderData.forEach(e => {
-                          switch (e.id){
-                        case '01': e.num = nums.submitOrderPersonTotal
-                         break;
-                        case '02': e.num = nums.submitOrderTotal
-                         break;
-                        case '03': e.num = nums.submitOrderAmountTotal
-                         break;
-                        case '04': e.num = nums.visitSubmitOrderConversionRate
-                         break;
-                         }
-                    });
-                    datumCont.nonPaymentData.forEach(e => {
-                          switch (e.id){
-                        case '01': e.num = nums.nonPayOrderPersonTotal
-                         break;
-                        case '02': e.num = nums.nonPayOrderTotal
-                         break;
-                        case '03': e.num = nums.nonPayOrderAmountTotal
-                         break;
-                         }
-                    });
-                    datumCont.paymentData.forEach(e => {
-                          switch (e.id){
-                        case '01': e.num = nums.payOrderPersonTotal
-                         break;
-                        case '02': e.num = nums.payOrderTotal
-                         break;
-                        case '03': e.num = nums.payOrderAmountTotal
-                         break;
-                        case '04': e.num = nums.submitOrderPayAmountConversionRate
-                         break;
-                         }
-                    });
-                    datumCont.orderProbabilityData.forEach(e => {
-                        console.log(e)
-                          switch (e.id){
-                        case '001': e.num = nums.shopRepurchaseRate
-                         break;
-                        case '002': e.num = nums.shopPayConversionRate
-                         break;
-                         }
-                    });
-                    this.placeOrderData = datumCont.placeOrderData;
-                    this.nonPaymentData = datumCont.nonPaymentData;
-                    this.paymentData = datumCont.paymentData;
-                    this.orderProbabilityData = datumCont.orderProbabilityData;
-            }).catch(error => {
-            this.$message.error(error);
-            });
+        //切换数据来源
+        all(){
+            this.getTradingTrend()
         },
-        // 获取交易趋势
-        getTradingTrendchart(){
-            let data ={
-                visitSourceType: this.visitSourceType,
-                // queryTime: this.timeM | 2019-8-9,
-                startTime:this.startTime,
-                endTime:this.endTime,
-                nearDay: this.nearDay
-            }
-            this._apis.data.tradingTrendchart(data).then(response => {
-                this.$refs.ip4.con(response)
-            }).catch(error => {
-            this.$message.error(error);
-            });
+        //切换天数
+        changeDayM(){
+            this.getTradingTrend()
         },
-        changeDayM(val){
-             if(val !=4 ){
-                this.nearDay = val
-                this.getTradingTrendchart()
-            }
-        },
+       //自定义时间改变     
         changeTime(val){
             this.startTime = val[0];
             this.endTime = val[1];
-            this.getTradingTrendchart()
+            this.getTradingTrend()
         },
-        all(){
-            this.getTradingOverview()
-            this.getTradingTrendchart()
-        }
+        //获取交易数据
+        getTradingTrend(){
+            this.placeOrderData = datumCont.placeOrderData
+            this.nonPaymentData = datumCont.nonPaymentData
+            this.paymentData = datumCont.paymentData
+            this.orderProbabilityData = datumCont.orderProbabilityData
+            let query = {
+                channel:this.visitSourceType,
+                nearDay:this.nearDay == '4' ? null : this.nearDay,
+                startTime:this.startTime,
+                endTime:this.endTime,
+            }
+            this._apis.data.tradingTrend(query).then(response => {
+                // console.log('res',response)
+                this.placeOrderData.forEach(e => {
+                    switch (e.id){
+                        case '01': e.num = response.buyerNum
+                            break;
+                        case '02': e.num = response.orderNum
+                            break;
+                        case '03': e.num = response.orderMoneyAmount
+                            break;
+                        case '04': e.num = response.visitOrderRate
+                            break;
+                    }
+                });
+                this.nonPaymentData.forEach(e => {
+                    switch (e.id){
+                        case '01': e.num = response.noPayerNum
+                            break;
+                        case '02': e.num = response.noPayOrderNum
+                            break;
+                        case '03': e.num = response.noPayMoneyAmount
+                            break;
+                    }
+                });
+                this.paymentData.forEach(e => {
+                    switch (e.id){
+                        case '01': e.num = response.payerNum
+                            break;
+                        case '02': e.num = response.orderPayNum
+                            break;
+                        case '03': e.num = response.payMoneyAmount
+                            break;
+                        case '04': e.num = response.orderPayRate
+                            break;
+                    }
+                });
+                this.orderProbabilityData.forEach(e => {
+                    switch (e.id){
+                        case '001': e.num = response.shopRepurchaseRate
+                            break;
+                        case '002': e.num = response.shopPayRate
+                            break;
+                    }
+                });
+                 this.$refs.ip4.con(response.echarts)
+            }).catch(error =>{
+                console.log(error)
+            })
+        },
     },
-    created(){
-        this.getTradingOverview()
-        this.getTradingTrendchart()
-    }
 }
 </script>
 <style lang="scss" scoped>

@@ -79,7 +79,9 @@
             <em>{{survey.income}}</em>
             <span v-if="survey.chainRatioIncome != null">
               <i class="el-icon-top red" v-if="survey.chainRatioIncome > 0"></i>
-              <i class="el-icon-top gray" v-else-if="survey.chainRatioIncome = 0"></i>
+              <i v-else-if="survey.chainRatioIncome = 0">
+                <img src="@/assets/images/finance/gray.png" class="gray">
+              </i>
               <i class="el-icon-bottom green" v-else></i>
             </span>
           </span>
@@ -90,7 +92,9 @@
             <em>{{survey.expend}}</em>
             <span v-if="survey.chainRatioExpend != null">
               <i class="el-icon-top red" v-if="survey.chainRatioExpend > 0"></i>
-              <i class="el-icon-top gray" v-else-if="survey.chainRatioExpend = 0"></i>
+              <i v-else-if="survey.chainRatioExpend = 0">
+                <img src="@/assets/images/finance/gray.png" class="gray">
+              </i>
               <i class="el-icon-bottom green" v-else></i>
             </span>
           </span>
@@ -101,7 +105,9 @@
             <em>{{survey.realIncome}}</em>
             <span v-if="survey.chainRatioRealIncome != null">
               <i class="el-icon-top red" v-if="survey.chainRatioRealIncome > 0"></i>
-              <i class="el-icon-top gray" v-else-if="survey.chainRatioRealIncome = 0"></i>
+              <i v-else-if="survey.chainRatioRealIncome = 0">
+                <img src="@/assets/images/finance/gray.png" class="gray">
+              </i>
               <i class="el-icon-bottom green" v-else></i>
             </span>
           </span>
@@ -149,19 +155,20 @@ export default {
     // },
     days(){
       this.getDataNumRs()
+      this.init(this.days)
     }
   },
   created() {
-    this.init();
+    this.init(7);
     this.getDataDateRs()
     this.getSurveyDay();
   },
   methods: {
     //初始化数据
-    init(){
+    init(day){
       let date = new Date()
       let endDate = utils.formatDate(date, "yyyy-MM-dd")
-      let startDate = utils.countDate(-7)
+      let startDate = utils.countDate(-day)
       this.timeValue = [startDate,endDate]
     },
     //概况
@@ -212,7 +219,7 @@ export default {
             title: '消息',
             message: "查询结果集为空，没有可以显示的数据"
           });
-          this.days = 7
+          // this.days = 7
         }
       }).catch((error)=>{
         this.$notify.error({
@@ -235,6 +242,12 @@ export default {
 }
 .green{
   color:green;
+}
+.gray{
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  // background: url('@/assets/images/finance/gray.png')
 }
 .top_part{
   width: 100%;

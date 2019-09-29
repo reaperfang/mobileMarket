@@ -211,7 +211,7 @@ export default {
             console.log(this.form)
         },
 
-        //获取会员和口碑的过滤数据
+        //获取交易次数
         memberInforNum(){
             this._apis.data.memberInforNum({type:1}).then(res => {
                 console.log('res',res)
