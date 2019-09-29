@@ -8,79 +8,79 @@
               <el-radio-button class="btn_bor" label="2" v-permission="['数据', '身份属性', '公众号']">公众号</el-radio-button>
             </el-radio-group>
           </div>
-      </div>
-                <div class="pane_container">
-                    <p class="i_title">属性比例：</p>
-                    <div class="chart1_container clearfix">
-                        <div class="chart1">
-                            <ip1Chart :title="'测试图表'" ref="ip1"></ip1Chart>
-                        </div>
-                        <div class="chart1_info">
-                            <p>累计客户数：{{grandTotal}}</p>
-                            <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.grandTotal}}</span></p>
-                        </div>
-                    </div>
-                    <p class="i_title">会员增长趋势:</p>
-                    <div class="i_line">
-                        <el-radio-group v-model="nearDay" @change="changeDayM">
-                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
-                            <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
-                        </el-radio-group>
-                        <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
-                            <el-date-picker
-                                v-model="nearDay"
-                                :type="nearDay"
-                                :value-format="formatM"
-                                placeholder="选择日期"
-                                @change="changeTimeM">
-                            </el-date-picker>
-                        </div>
-                    </div>
-                    <div class="chart2_container">
-                        <ip2Chart :title="'测试图表'" ref="ip2"></ip2Chart>
-                    </div>
-                    <p class="i_title">支付趋势：</p>
-                    <div class="i_line clearfix" >
-                        <el-radio-group v-model="nearDay" @change="changeDayPay">
-                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
-                            <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
-                        </el-radio-group>
-                        <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
-                            <el-date-picker
-                                v-model="nearDay"
-                                :type="nearDay"
-                                :value-format="formatPay"
-                                placeholder="选择日期"
-                                @change="changeTimePay">
-                            </el-date-picker>
-                        </div>
-                         <span class="fr" @click="toLink()">会员消费</span>
-                    </div>
-                   
-                    <div class="chart3_container clearfix">
-                        <div class="chart3">
-                            <ip3Chart :title="'测试图表'" ref="ip3"></ip3Chart>
-                        </div>
-                        <div class="chart3_info">
-                            <el-row :gutter="20">
-                                <el-col :span="4">
-                                    <p><span class="color_block" style="background-color:#A1E174 "></span></p>
-                                    <p><span class="color_block" style="background-color:#578EFA "></span></p>
-                                    <p><span class="color_block" style="background-color:#FD932B "></span></p>
-                                    <p><span class="color_block" style="background-color:#FD4C2B "></span></p>
-                                 </el-col>
-                                <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxis"> 支付 {{item}} 次 </p></el-col>
-                                <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxis"{{item}}人</p></el-col>
-                            </el-row>
-                        </div>
-                    </div>
+        </div>
+        <div class="pane_container">
+            <p class="i_title">属性比例：</p>
+            <div class="chart1_container clearfix">
+                <div class="chart1">
+                    <ip1Chart :title="'测试图表'" ref="ip1"></ip1Chart>
                 </div>
+                <div class="chart1_info">
+                    <p>累计客户数：{{grandTotal}}</p>
+                    <p v-for="(item,index) in oneData">{{item.name}} 占比{{item.ratioValue}}<span>{{item.grandTotal}}</span></p>
+                </div>
+            </div>
+            <p class="i_title">会员增长趋势:</p>
+            <div class="i_line">
+                <el-radio-group v-model="nearDay" @change="changeDayM">
+                    <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
+                    <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
+                </el-radio-group>
+                <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
+                    <el-date-picker
+                        v-model="nearDay"
+                        :type="nearDay"
+                        :value-format="formatM"
+                        placeholder="选择日期"
+                        @change="changeTimeM">
+                    </el-date-picker>
+                </div>
+            </div>
+            <div class="chart2_container">
+                <ip2Chart :title="'测试图表'" ref="ip2"></ip2Chart>
+            </div>
+            <p class="i_title">支付趋势：</p>
+            <div class="i_line clearfix" >
+                <el-radio-group v-model="nearDay" @change="changeDayPay">
+                    <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="4">查询月</el-radio-button>
+                    <el-radio-button class="btn_bor" label="5">查询日</el-radio-button>
+                </el-radio-group>
+                <div class="input_wrap" v-if="nearDay == 4 || nearDay == 5">
+                    <el-date-picker
+                        v-model="nearDay"
+                        :type="nearDay"
+                        :value-format="formatPay"
+                        placeholder="选择日期"
+                        @change="changeTimePay">
+                    </el-date-picker>
+                </div>
+                    <span class="fr" @click="toLink()">会员消费</span>
+            </div>
+            
+            <div class="chart3_container clearfix">
+                <div class="chart3">
+                    <ip3Chart :title="'测试图表'" ref="ip3"></ip3Chart>
+                </div>
+                <div class="chart3_info">
+                    <el-row :gutter="20">
+                        <el-col :span="4">
+                            <p><span class="color_block" style="background-color:#A1E174 "></span></p>
+                            <p><span class="color_block" style="background-color:#578EFA "></span></p>
+                            <p><span class="color_block" style="background-color:#FD932B "></span></p>
+                            <p><span class="color_block" style="background-color:#FD4C2B "></span></p>
+                            </el-col>
+                        <el-col :span="8"><p class="color_block" v-for="(item,index) in threeData.yAxis"> 支付 {{item}} 次 </p></el-col>
+                        <el-col :span="6"><p class="color_block" v-for="(item,index) in threeData.xAxis"{{item}}人</p></el-col>
+                    </el-row>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -92,12 +92,13 @@ export default {
     components: { ip1Chart, ip2Chart, ip3Chart },
     data() {
         return {
+            visitSourceType:0,
+
             oneData:[],
             dateM:'month',
             datePay:'month',
             formatM:'yyyy-MM',
             formatPay:'yyyy-MM',
-            visitSourceType:0,
             nearDay:7,
             valueM:'',
             valuePay:'',
@@ -110,6 +111,12 @@ export default {
             threeData:{},
             grandTotal:'',
         }
+    },
+    created(){
+        this.getAttributeRatio();
+        this.getMemberTrend();
+        this.getPaymentTrend();
+        this.all()
     },
     methods:{
         /*
@@ -215,12 +222,6 @@ export default {
             this.$router.push({ path: '/datum/memberConsumption'})
         }
     },
-    created(){
-        this.getAttributeRatio();
-        this.getMemberTrend();
-        this.getPaymentTrend();
-        this.all()
-    }
 }
 </script>
 <style lang="scss" scoped>
