@@ -8,45 +8,45 @@
               <el-radio-button class="btn_bor" label="2" v-permission="['数据', '商品交易', '公众号']">公众号</el-radio-button>
             </el-radio-group>
           </div>
-      </div>
-                <div class="pane_container">
-                    <p class="p_title">商品总况：</p>
-                    <div class="p_blocks">
-                        <div class="p_item" v-for="item in Condition" :key="item.id" >
-                            <img :src="item.url" alt="" class="fl">
-                            <div class="fr">
-                                <p>{{item.text}}</p>
-                                <p :style="{color: item.color}">{{item.num}}</p>
-                            </div>
-                        </div>
+        </div>
+        <div class="pane_container">
+            <p class="p_title">商品总况：</p>
+            <div class="p_blocks">
+                <div class="p_item" v-for="item in Condition" :key="item.id" >
+                    <img :src="item.url" alt="" class="fl">
+                    <div class="fr">
+                        <p>{{item.text}}</p>
+                        <p :style="{color: item.color}">{{item.num}}</p>
                     </div>
-                    <div class="title_line clearfix">
-                        <p class="fl" style="font-size: 16px">热销TOP5商品榜单：</p>
-                    </div>
-                    <ct1Table  :hotData="hotData"></ct1Table>
-                    <div class="c_line">
-                        <span class="c_title">商品详情</span>
-                        <span class="c_label">筛选日期：</span>
-                         <el-radio-group v-model="dateType" @change="changeDayM">
-                            <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
-                            <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
-                        </el-radio-group>
-                        <div class="input_wrap" v-if="dateType == 4">
-                            <el-date-picker
-                                v-model="range"
-                                type="daterange"
-                                range-separator="—"
-                                value-format="yyyy-MM-dd"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                                @change="changeTime"
-                            ></el-date-picker>
-                        </div>
-                    </div>
-                    <ct2Table style="margin-top: 26px" :listObj="listObj" @getProductDetails="getProductDetails"></ct2Table>
                 </div>
+            </div>
+            <div class="title_line clearfix">
+                <p class="fl" style="font-size: 16px">热销TOP5商品榜单：</p>
+            </div>
+            <ct1Table  :hotData="hotData"></ct1Table>
+            <div class="c_line">
+                <span class="c_title">商品详情</span>
+                <span class="c_label">筛选日期：</span>
+                    <el-radio-group v-model="dateType" @change="changeDayM">
+                    <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
+                </el-radio-group>
+                <div class="input_wrap" v-if="dateType == 4">
+                    <el-date-picker
+                        v-model="range"
+                        type="daterange"
+                        range-separator="—"
+                        value-format="yyyy-MM-dd"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        @change="changeTime"
+                    ></el-date-picker>
+                </div>
+            </div>
+            <ct2Table style="margin-top: 26px" :listObj="listObj" @getProductDetails="getProductDetails"></ct2Table>
+        </div>
     </div>
 </template>
 <script>
@@ -58,10 +58,10 @@ export default {
     components: { ct1Table, ct2Table },
     data() {
         return {
+            visitSourceType:0,
             activeName: "first", 
             value:'',
             range: "",
-            visitSourceType:0,
             dateType:1,
             queryTime:'',
             startTime:'',
@@ -75,35 +75,44 @@ export default {
         }
     },
     computed: {},
+    created(){
+        this.getGeneralCondition()
+        // this.getHotGoods()
+        // this.getProductDetails(1,10)
+    },
     methods:{
         //获取商品总况
         getGeneralCondition(){
             let data ={
-                visitSourceType:this.visitSourceType
+                channel:this.visitSourceType,
+                nearDay:null,
+                startTime:'',
+                endTime:'',
             }
             this._apis.data.generalCondition(data).then(response => {
-                let nums = response.shopGoodsSurveyView;
-                datumCont.goodsTotleData.forEach(e => {
-                    switch (e.id){
-                        case '001': e.num = nums.saleGoodsTotal
-                         break;
-                        case '002': e.num = nums.visitGoodsTotal
-                         break;
-                        case '003': e.num = nums.addPurchasesTotal
-                         break;
-                        case '004': e.num = nums.submitOrderTotal
-                         break;
-                        case '005': e.num = nums.rightsGoodsTotal
-                         break;
-                        case '006': e.num = nums.goodsSoldOutTotal
-                         break;
-                        case '007': e.num = nums.payGoodsTotal
-                         break;
-                        case '008': e.num = nums.againBuyGoodsTotal
-                         break;
-                    }                        
-                    this.Condition = datumCont.goodsTotleData
-                });
+                console.log('res',response)
+                // let nums = response.shopGoodsSurveyView;
+                // datumCont.goodsTotleData.forEach(e => {
+                //     switch (e.id){
+                //         case '001': e.num = nums.saleGoodsTotal
+                //          break;
+                //         case '002': e.num = nums.visitGoodsTotal
+                //          break;
+                //         case '003': e.num = nums.addPurchasesTotal
+                //          break;
+                //         case '004': e.num = nums.submitOrderTotal
+                //          break;
+                //         case '005': e.num = nums.rightsGoodsTotal
+                //          break;
+                //         case '006': e.num = nums.goodsSoldOutTotal
+                //          break;
+                //         case '007': e.num = nums.payGoodsTotal
+                //          break;
+                //         case '008': e.num = nums.againBuyGoodsTotal
+                //          break;
+                //     }                        
+                //     this.Condition = datumCont.goodsTotleData
+                // });
         }).catch(error => {
           this.$message.error(error);
         });
@@ -154,11 +163,6 @@ export default {
             this.getProductDetails(1,10)
         }
     },
-    created(){
-        this.getGeneralCondition()
-        this.getHotGoods()
-        this.getProductDetails(1,10)
-    }
 }
 </script>
 <style lang="scss" scoped>
