@@ -404,6 +404,7 @@ export default {
                 applicationDate: '',
                 orderAfterSaleStatus: ''
             }
+            this.getList()
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;

@@ -27,7 +27,7 @@
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item class="mtb200">
-                <el-button type="primary" @click="onSubmit">保存</el-button>
+                <el-button type="primary" @click="onSubmit('form')">保存</el-button>
                 <el-button @click="_routeTo('roleManage')">返回</el-button>
             </el-form-item>
         </el-form>
@@ -59,6 +59,9 @@ export default {
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+        ],
+        roleDesc:[
+            { min: 0, max: 50, message: '长度不超过50个字符', trigger: 'blur' }
         ],
         shops:[
           { required: true, message: '请选择店铺', trigger: 'blur' },
@@ -158,28 +161,32 @@ export default {
     },
 
     //新建角色
-    onSubmit(){
-        let roleName = this.roleInfo && this.roleInfo.roleName
-        let msg = roleName ? '修改成功！' : '添加成功！'
-        if(this.form.shops.length){
-            this._apis.set.newRole(this.form).then(response =>{
-                this.$notify.success({
-                    title: '成功',
-                    message: msg
+    onSubmit(formName){
+        this.$refs[formName].validate((valid) => {
+        if (valid) {
+            let roleName = this.roleInfo && this.roleInfo.roleName
+            let msg = roleName ? '修改成功！' : '添加成功！'
+            if(this.form.shops.length){
+                this._apis.set.newRole(this.form).then(response =>{
+                    this.$notify.success({
+                        title: '成功',
+                        message: msg
+                    });
+                    this.$router.push({path:'roleManage'})
+                }).catch(error =>{
+                    this.$notify.error({
+                        title: '错误',
+                        message: error
+                    });
+                })
+            }else{
+                this.$notify.warning({
+                    title: '提示',
+                    message: '创建没有店铺权限的角色无效！'
                 });
-                this.$router.push({path:'roleManage'})
-            }).catch(error =>{
-                this.$notify.error({
-                    title: '错误',
-                    message: error
-                });
-            })
-        }else{
-            this.$notify.warning({
-                title: '提示',
-                message: '创建没有店铺权限的角色无效！'
-            });
+            }
         }
+      })
     },      
   }
 }

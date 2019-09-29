@@ -122,7 +122,7 @@ export function generalCondition(data) {
 // 商品交易-热销商品  
 export function hotGoods(data) {
     return request({
-      target:'SHOP-TRADING-HOT-SELL-GOODS-DATA-PROCESSOR',
+      target:'Echart-Product-Top-Five',
       method: 'post',
       apiType: 'data',
       data
@@ -131,7 +131,7 @@ export function hotGoods(data) {
 // 商品交易-商品详情 
 export function productDetails(data) {
     return request({
-      target:'SHOP-TRADING-GOODS-SELL-INFO-DATA-PROCESSOR',
+      target:'Echart-Product-Statistics',
       method: 'post',
       apiType: 'data',
       data

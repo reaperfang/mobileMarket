@@ -50,8 +50,8 @@
           label="手机号">
         </el-table-column>
         <el-table-column
-          prop="status"
-          label="添加人">
+          prop="createUserName"
+          label="创建人">
         </el-table-column>
         <el-table-column
           prop="createTime"

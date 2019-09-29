@@ -28,9 +28,9 @@
                 <span class="c_title">商品详情</span>
                 <span class="c_label">筛选日期：</span>
                     <el-radio-group v-model="dateType" @change="changeDayM">
-                    <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
-                    <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
-                    <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="7">最近7天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="15">最近15天</el-radio-button>
+                    <el-radio-button class="btn_bor" label="30">最近30天</el-radio-button>
                     <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
                 </el-radio-group>
                 <div class="input_wrap" v-if="dateType == 4">
@@ -53,6 +53,7 @@
 import datumCont from '@/system/constant/datum';
 import ct1Table from './components/ct1Table'
 import ct2Table from './components/ct2Table'
+import utils from '@/utils';
 export default {
     name: 'commodityTransaction',
     components: { ct1Table, ct2Table },
@@ -62,7 +63,7 @@ export default {
             activeName: "first", 
             value:'',
             range: "",
-            dateType:1,
+            dateType:7,
             queryTime:'',
             startTime:'',
             endTime:'',
@@ -76,18 +77,23 @@ export default {
     },
     computed: {},
     created(){
+        // this.init()
         this.getGeneralCondition()
-        // this.getHotGoods()
-        // this.getProductDetails(1,10)
+        this.getHotGoods()
+        this.getProductDetails()
     },
     methods:{
+        // init(){
+        //     let date = utils.formatDate(new Date(),"yyyy-MM-dd hh:mm:ss")
+        //     this.endTime = date
+        // },
         //获取商品总况
         getGeneralCondition(){
             let data ={
                 channel:this.visitSourceType,
-                nearDay:null,
-                startTime:'',
-                endTime:'',
+                // nearDay:this.dateType == '4' ? null : this.dateType,
+                // startTime:this.startTime,
+                // endTime:this.endTime,
             }
             this._apis.data.generalCondition(data).then(response => {
                 console.log('res',response)
@@ -120,7 +126,7 @@ export default {
         // 获取热销商品
         getHotGoods(){
             let data ={
-                visitSourceType:this.visitSourceType
+                channel:this.visitSourceType
             }
             this._apis.data.hotGoods(data).then(response => {
                 this.hotData = response.shopHotSellGoodsList
@@ -129,38 +135,32 @@ export default {
         });
         },
         // 获取商品详情
-        getProductDetails(idx,pages){
-            this.startIndex = idx;
-            this.pageSize = pages;
+        getProductDetails(){
             let data ={
-                visitSourceType:this.visitSourceType,
-                dateType:this.dateType,
-                // queryTime:this.queryTime,
+                channel:this.visitSourceType,
+                nearDay:this.dateType == '4' ? null : this.dateType,
                 startTime:this.startTime,
                 endTime:this.endTime,
-                pageSize:this.pageSize,
-                startIndex:this.startIndex
             }
             this._apis.data.productDetails(data).then(response => {
+                console.log('res3',response)
                 this.listObj = response
         }).catch(error => {
           this.$message.error(error);
         });
         },
-        changeDayM(val){
-            if(val != 4){
-                this.getProductDetails(1,10)
-            }
+        changeDayM(){
+            this.getProductDetails()
         },
         changeTime(val){
             this.startTime = val[0];
             this.endTime = val[1];
-            this.getProductDetails(1,10)
+            this.getProductDetails()
         },
         all(){
             this.getGeneralCondition()
             this.getHotGoods()
-            this.getProductDetails(1,10)
+            this.getProductDetails()
         }
     },
 }

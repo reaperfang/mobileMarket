@@ -25,7 +25,10 @@
                 </div>
             </div>
             <div class="p_top_r">
-                <p class="p_title">待办提醒：</p>
+                <p class="p_title warn">
+                    <span>待办提醒：</span>
+                    <i class="el-icon-refresh" @click="refresh"></i>    
+                </p>
                 <div class="p_r_list">
                     <p>待办售罄<span>({{toBeSoldOut || 0}})</span></p>
                     <p>待发货订单<span>({{staySendCount || 0}})</span></p>
@@ -142,6 +145,11 @@ export default {
              this.realTimeData = profileCont.realTimeData
          })
          })
+        },
+        //刷新
+        refresh(){
+            this.getOerviewRemind()
+            this.getOverviewSelling()
         },
         // 待办提醒
         getOerviewRemind(){
@@ -348,6 +356,18 @@ export default {
     display: flex;
     .p_b_m {
         flex: 1;
+    }
+}
+.warn{
+    display: flex;
+    justify-content:space-between;
+    span{
+        font-size: 14px;
+        font-weight:500;
+        color: #3D434A;
+    }
+    i{
+        cursor: pointer;
     }
 }
 </style>
