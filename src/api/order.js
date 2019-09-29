@@ -572,6 +572,16 @@ export function orderSendInfoImportAfterSaleBatchDelever(data) {
   })
 }
 
+ //快递鸟-详情
+ export function getIsTrace(data) {
+  return request({
+    target: 'SHOP-KDNIAO-DETAIL-PROCESSOR',
+    method: 'post',
+    apiType: 'order',
+    data
+  })
+}
+
 
 
 

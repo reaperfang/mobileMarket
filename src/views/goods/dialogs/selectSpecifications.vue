@@ -6,7 +6,7 @@
             @change="handleChange"
             clearable>
     </el-cascader> -->
-    <el-button @click="newSpec" type="primary">新增规格</el-button>
+    <el-button @click="newSpec" type="primary">自定义规格</el-button>
     <el-tree
       :data="data"
       ref="tree"
@@ -18,13 +18,13 @@
       :expand-on-click-node="false"
       @check-change="checkChange"
     >
-      <span class="custom-tree-node" slot-scope="{ node, data }">
+      <div class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span>
-          <el-button v-if="data.level == 1" type="text" size="mini" @click="() => append(data)">新增规格值</el-button>
+          <el-button v-if="data.level == 1" type="text" size="mini" @click="() => append(data)">自定义规格值</el-button>
           <el-button v-if="data.type == 'new'" type="text" size="mini" @click="() => remove(node, data)">{{data.level | levelFilter}}</el-button>
         </span>
-      </span>
+      </div>
     </el-tree>
     <div class="footer">
       <el-button @click="submit" type="primary">确认</el-button>
@@ -67,13 +67,13 @@ export default {
   },
   methods: {
       newSpec() {
-          if(count > 2) {
-              this.$message({
-                message: '新增规格不能大于3',
-                type: 'warning'
-                });
-              return
-          }
+          // if(count > 2) {
+          //     this.$message({
+          //       message: '新增规格不能大于3',
+          //       type: 'warning'
+          //       });
+          //     return
+          // }
 
           let data = this.data
 
@@ -183,7 +183,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 ul li {
   margin: 10px 0;
 }
@@ -193,6 +193,13 @@ ul li {
 .footer {
   text-align: center;
   margin-top: 10px;
+}
+.custom-tree-node {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-right: 204px
 }
 </style>
 
