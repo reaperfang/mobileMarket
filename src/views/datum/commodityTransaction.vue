@@ -79,8 +79,8 @@ export default {
     created(){
         // this.init()
         this.getGeneralCondition()
-        this.getHotGoods()
-        this.getProductDetails()
+        // this.getHotGoods()
+        // this.getProductDetails()
     },
     methods:{
         // init(){
