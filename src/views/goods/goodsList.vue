@@ -14,7 +14,7 @@
                     <el-select v-model="listQuery.status" placeholder="请选择商品状态">
                     <el-option label="上架" :value="1"></el-option>
                     <el-option label="下架" :value="0"></el-option>
-                    <el-option label="售罄" :value="2"></el-option>
+                    <el-option label="售罄" :value="-1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="商品分类">
@@ -31,9 +31,9 @@
         </div>
         <div>
             <div class="table-header">
-                <div :class="{active: state === 1}" @click="stateHandler(1)" class="item">出售中</div>
-                <div :class="{active: state === 0}" @click="stateHandler(0)" class="item">仓库中</div>
-                <div :class="{active: state === -1}" @click="stateHandler(-1)" class="item">已售罄</div>
+                <div :class="{active: listQuery.status === 1}" @click="stateHandler(1)" class="item">出售中</div>
+                <div :class="{active: listQuery.status === 0}" @click="stateHandler(0)" class="item">仓库中</div>
+                <div :class="{active: listQuery.status === -1}" @click="stateHandler(-1)" class="item">已售罄</div>
             </div>
             <el-table
                 v-loading="loading"
@@ -422,13 +422,13 @@ export default {
             this.multipleSelection = val;
         },
         stateHandler(val) {
-            if(this.state === val) {
-                this.state = ''
+            if(this.listQuery.status === val) {
+                this.listQuery.status = ''
             } else {
-                this.state = val
+                this.listQuery.status = val
             }
 
-            let param = {status: this.state}
+            let param = {status: this.listQuery.status}
 
             this.getList(param)
         },
@@ -436,7 +436,7 @@ export default {
             this.loading = true
             let _param
             
-            _param = Object.assign({}, this.listQuery, param, {status: this.state})
+            _param = Object.assign({}, this.listQuery, param)
 
             this._apis.goods.fetchGoodsList(_param).then((res) => {
                 this.total = +res.total
