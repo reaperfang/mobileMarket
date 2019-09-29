@@ -5,7 +5,7 @@
       :data="listObj"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
-      :default-sort = "{prop: 'date', order: 'descending'}"
+      :default-sort = "{prop: 'pv', order: 'descending'}"
       >
       <el-table-column
         prop="productName"
@@ -51,6 +51,7 @@
       <el-table-column
         prop="rateOrderPay"
         label="下单支付转化率"
+        width="150"
         sortable
         >
       </el-table-column>

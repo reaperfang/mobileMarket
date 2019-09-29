@@ -45,7 +45,7 @@
                     </el-select>
                     <el-date-picker
                         v-model="listQuery.orderTimeValue"
-                        :disabled-date="disabledDate"
+                        :picker-options="pickerBeginDateBefore"
                         type="daterange"
                         range-separator="-"
                         value-format="yyyy-MM-dd hh:mm:ss"
@@ -145,6 +145,7 @@ import Pagination from '@/components/Pagination'
 
 export default {
     data() {
+
         return {
             multipleSelection: [],
             multipleTable: [
@@ -190,6 +191,13 @@ export default {
     },
     created() {
         this.getList()
+        this.$nextTick(() => {
+      this.pickerBeginDateBefore = {
+        disabledDate(time) {
+          return time.getTime() > new Date().getTime()
+        }
+      };
+    })
     },
     computed:{
         cid(){
@@ -198,11 +206,8 @@ export default {
         }
     },
     methods: {
-        disabledDate (value) {
-            // if (Date.now() <= value) {
-            //         return true
-            // }
-            return true
+        pickerBeginDateBefore (time) {
+            
         },
         batchSendGoods() {
             if(!this.multipleSelection.length) {

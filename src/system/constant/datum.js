@@ -7,56 +7,56 @@ export default {
             url: require("@/assets/images/datum/c_01.png"),
             color: "#FE5E7A",
             text: "在售/上架商品数",
-            num: 43
+            num: 0
         },
         {
             id: "002",
             url: require("@/assets/images/datum/c_02.png"),
             color: "#AB47BC",
             text: "被访问商品数",
-            num: 43
+            num: 0
         },
         {
             id: "003",
             url: require("@/assets/images/datum/c_03.png"),
             color: "#13A5E2",
             text: "加购商品数",
-            num: 43
+            num: 0
         },
         {
             id: "004",
             url: require("@/assets/images/datum/c_04.png"),
             color: "#3D434A",
             text: "下单商品数",
-            num: 43
+            num: 0
         },
         {
             id: "005",
             url: require("@/assets/images/datum/c_05.png"),
             color: "#00D166",
             text: "维权商品数",
-            num: 43
+            num: 0
         },
         {
             id: "006",
             url: require("@/assets/images/datum/c_06.png"),
             color: "#FE506E",
             text: "售罄商品数",
-            num: 43
+            num: 0
         },
         {
             id: "007",
             url: require("@/assets/images/datum/c_07.png"),
             color: "#FFBF0E",
             text: "支付商品数",
-            num: 43
+            num: 0
         },
         {
             id: "008",
             url: require("@/assets/images/datum/c_08.png"),
             color: "#655EFF",
             text: "复购商品数",
-            num: 43
+            num: 0
         }
     ],
     //订单交易-交易总况（下单）

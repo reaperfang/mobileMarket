@@ -109,19 +109,19 @@ export default {
               },
               {
                 label: '现付',
-                value: '1'
+                value: 1
               },
               {
                 label: '到付',
-                value: '2'
+                value: 2
               },
               {
                 label: '月结',
-                value: '3'
+                value: 3
               },
               {
                 label: '第三方支付（仅顺丰支持）',
-                value: '4'
+                value: 4
               },
             ]
         }

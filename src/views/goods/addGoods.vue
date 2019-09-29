@@ -1235,7 +1235,7 @@ export default {
             this.hideUpload = this.imagesLength >= 6
         },
         centerFileUrl(response, file, fileList){
-            if(file.status == "success"){
+            if(response.status == "success"){
                 this.$message.success(response.msg);
                 if(this.ruleForm.images != '') {
                     this.ruleForm.images += ',' + response.data.url;

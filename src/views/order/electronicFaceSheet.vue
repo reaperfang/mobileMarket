@@ -48,7 +48,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <div class="operate-box">
-                <span v-permission="['订单', '电子面单', '默认页', '查看']" @click="$router.push('/order/newElectronicFaceSheet?id=' + scope.row.expressCompanyCode + '&detail=' + true)">查看</span>
+                <span v-permission="['订单', '电子面单', '默认页', '查看']" @click="$router.push('/order/newElectronicFaceSheet?id=' + scope.row.id + '&expressCompanyCode=' + scope.row.expressCompanyCode + '&detail=' + true)">查看</span>
                 <span v-permission="['订单', '电子面单', '默认页', '修改']" @click="$router.push('/order/newElectronicFaceSheet?id=' + scope.row.id + '&expressCompanyCode=' + scope.row.expressCompanyCode)">修改</span>
                 <span v-permission="['订单', '电子面单', '默认页', '删除']" @click="deleteElectronicFaceSheet(scope.row)">删除</span>
               </div>
