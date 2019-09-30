@@ -19,7 +19,7 @@
           <p>累计客户数：{{grandTotal}}</p>
           <p>非会员：占比 {{toPersent(data1.customerRatio)}} 人数 {{data1.customerNum}}</p>
           <p>
-            会员：占比 {{data1.memberRatio}} 人数 {{data1.memberNum}}
+            会员：占比 {{(data1.memberRatio*100).toFixed(2)}}% 人数 {{data1.memberNum}}
             <span
               @click="_routeTo('allClient')"
             >查看详情</span>

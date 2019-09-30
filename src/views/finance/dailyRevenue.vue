@@ -39,15 +39,15 @@
         </el-table-column>
         <el-table-column
           prop="income"
-          label="收入（元）">
+          label="总收入（元）">
         </el-table-column>
         <el-table-column
           prop="expend"
-          label="支出（元）">
+          label="总支出（元）">
         </el-table-column>
         <el-table-column
           prop="realIncome"
-          label="总收入（元）">
+          label="实际收入（元）">
         </el-table-column>
       </el-table>
       <div class="page_styles">
@@ -108,6 +108,7 @@ export default {
     fetch(){
       let query = this.init();
       this._apis.finance.getListDr(query).then((response)=>{
+        this.dataList = []
         response.list.map(item =>{
           item.accountDate = item.accountDate.substring(0,item.accountDate.length-8)
           this.dataList.push(item)
