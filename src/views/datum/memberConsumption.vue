@@ -82,7 +82,7 @@ export default {
     name: 'memberConsumption',
     data() {
         return {
-            order:'',
+            order:'0',
             list:[],
             total:0,
             startIndex:1,
