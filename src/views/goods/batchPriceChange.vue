@@ -26,7 +26,7 @@
             <el-select v-model="listQuery.status" placeholder="请选择商品状态">
               <el-option label="上架" :value="1"></el-option>
               <el-option label="下架" :value="0"></el-option>
-              <el-option label="售罄" :value="2"></el-option>
+              <el-option label="售罄" :value="-1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
