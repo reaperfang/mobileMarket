@@ -149,10 +149,10 @@ export default {
     },
     getList() {
       this.loading = true
-      this._apis.order.fetchTemplatePageList(this.listQuery, {
+      this._apis.order.fetchTemplatePageList(Object.assign({}, this.listQuery, {
         startTime: this.listQuery.time ? this.listQuery.time[0] : '',
         endTime: this.listQuery.time ? this.listQuery.time[1] : '',
-      }).then((res) => {
+      })).then((res) => {
           this.total = +res.total
           this.tableData = res.list
           this.loading = false
