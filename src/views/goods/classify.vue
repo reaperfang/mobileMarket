@@ -143,7 +143,7 @@ export default {
                 return (
                     <div class="treeRow">
                         <span class="td first">{data.categoryName}</span>
-                        <span class="td state">{data.state}</span>
+                        <span class="td state">{data.enable === 1 ? '启用' : '禁用' }</span>
                         <span class="td operate">
                             {
                                 <span class="blue" on-click={() => this.change(node, data)}>修改</span>
