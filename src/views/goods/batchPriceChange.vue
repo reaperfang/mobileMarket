@@ -44,9 +44,9 @@
         >类目改价</el-button>
       </div>
       <div class="table-header">
-        <div :class="{active: state === 1}" @click="stateHandler(1)" class="item">出售中</div>
-        <div :class="{active: state === 0}" @click="stateHandler(0)" class="item">仓库中</div>
-        <div :class="{active: state === -1}" @click="stateHandler(-1)" class="item">已售罄</div>
+        <div :class="{active: listQuery.status === 1}" @click="stateHandler(1)" class="item">出售中</div>
+        <div :class="{active: listQuery.status === 0}" @click="stateHandler(0)" class="item">仓库中</div>
+        <div :class="{active: listQuery.status === -1}" @click="stateHandler(-1)" class="item">已售罄</div>
       </div>
       <el-table
         v-loading="loading"
@@ -277,16 +277,16 @@ export default {
     },
     onSubmit() {},
     stateHandler(val) {
-      if (this.state === val) {
-        this.state = "";
-      } else {
-        this.state = val;
-      }
+            if(this.listQuery.status === val) {
+                this.listQuery.status = ''
+            } else {
+                this.listQuery.status = val
+            }
 
-      let param = { status: this.state };
+            let param = {status: this.listQuery.status}
 
-      this.getList(param);
-    },
+            this.getList(param)
+        },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },

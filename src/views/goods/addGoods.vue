@@ -1230,6 +1230,9 @@ export default {
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);
+            let url = file.url
+
+            this.fileList.splice(this.fileList.findIndex(val => val.url == url), 1)
             this.ruleForm.images = fileList.map(val => {
                 if(val.response) {
                     return val.response.data.url
@@ -1241,6 +1244,10 @@ export default {
         centerFileUrl(response, file, fileList){
             if(response.status == "success"){
                 this.$message.success(response.msg);
+                this.fileList.push({
+                    name: '',
+                    url: response.data.url
+                })
                 if(this.ruleForm.images != '') {
                     this.ruleForm.images += ',' + response.data.url;
                 } else {
@@ -1312,6 +1319,8 @@ export default {
                 } else {
                     this.ruleForm.images = image.filePath
                 }
+
+                this.hideUpload = this.imagesLength >= 6
             }
         }
     },
@@ -1547,6 +1556,9 @@ $blue: #655EFF;
 }
 .description {
     padding-top: 10px;
+}
+/deep/ .el-upload-list__item.is-uploading {
+    display: none;
 }
 </style>
 
