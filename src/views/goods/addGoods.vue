@@ -21,14 +21,15 @@
                 <span class="category-display">您当前的选择是：{{itemCatText}}</span>
             </el-form-item>
             <el-form-item label="商品名称" prop="name">
-                <el-input style="width: 840px;" v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
+                <el-input :disabled="!ruleForm.productCategoryInfoId" style="width: 840px;" v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品描述" prop="description">
-                <el-input style="width: 840px;" type="textarea" :rows="4" v-model="ruleForm.description" maxlength="100" show-word-limit></el-input>
+                <el-input :disabled="!ruleForm.productCategoryInfoId" style="width: 840px;" type="textarea" :rows="4" v-model="ruleForm.description" maxlength="100" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="商品图片" prop="images">
                 <!-- <img v-for="(item, key) of imageList" :key="key" :src="item.src" alt="" style="width:100px;height:100px"> -->
                 <el-upload
+                    :disabled="!ruleForm.productCategoryInfoId"
                     :action="uploadUrl"
                     multiple
                     :class="{hide:hideUpload}"
@@ -47,12 +48,13 @@
                 <el-dialog :visible.sync="imageDialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
-                <span v-if="imagesLength < 6" @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
+                <span :style="{visibility: !ruleForm.productCategoryInfoId ? 'hidden' : 'visible'}" v-if="imagesLength < 6" @click="currentDialog = 'dialogSelectImageMaterial'; dialogVisible = true" class="material">素材库</span>
                 <p class="description prompt">最多支持上传6张商品图片，默认第一张为主图；尺寸建议750x750（正方形模式）或750×1000（长图模式）像素以上，大小2M以下。</p>
             </el-form-item>
             <el-form-item label="商品分类" prop="productCatalogInfoId">
                 <div class="block" style="display: inline-block;margin-left: 5px">
                     <el-cascader
+                        :disabled="!ruleForm.productCategoryInfoId"
                         :options="categoryOptions"
                         v-model="categoryValue"
                         @change="handleChange"
@@ -60,12 +62,12 @@
                         clearable>
                     </el-cascader>
                 </div>
-                <div @click="addCategory" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
+                <div v-if="ruleForm.productCategoryInfoId" @click="addCategory" class="blue pointer" style="display: inline-block; margin-left: 24px;">新增分类</div>
             </el-form-item>
             <el-form-item label="商品标签" prop="productLabelId">
                 <div class="add-tag">
                     <div class="item">
-                        <el-select v-model="ruleForm.productLabelId" placeholder="请选择">
+                        <el-select :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.productLabelId" placeholder="请选择">
                             <el-option
                                 v-for="item in productLabelList"
                                 :key="item.id"
@@ -74,7 +76,7 @@
                             </el-option>
                         </el-select>
                     </div>
-                    <div @click="currentDialog = 'AddTagDialog'; dialogVisible = true" class="item tag">新增标签</div>
+                    <div v-if="ruleForm.productCategoryInfoId" @click="currentDialog = 'AddTagDialog'; dialogVisible = true" class="item tag">新增标签</div>
                     <div @mouseenter="imageVisible = true" @mouseleave="imageVisible = false" class="item example">
                         查看样例
                         <div v-show="imageVisible" class="item images images-example">
@@ -84,13 +86,13 @@
                 </div>
             </el-form-item>
             <el-form-item label="商品编码" prop="code">
-                <el-input v-model="ruleForm.code" minlength="6" maxlength="18" placeholder="请输入商品编码"></el-input>
+                <el-input :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.code" minlength="6" maxlength="18" placeholder="请输入商品编码"></el-input>
             </el-form-item>
         </section>
         <section class="form-section">
             <h2>销售信息</h2>
             <el-form-item label="规格信息" prop="goodsInfos">
-                <el-button v-if="!editor" class="border-button selection-specification" @click="selectSpecificationsCurrentDialog = 'SelectSpecifications'; currentData = specsList; selectSpecificationsDialogVisible = true">选择规格</el-button>
+                <el-button :disabled="!ruleForm.productCategoryInfoId" v-if="!editor" class="border-button selection-specification" @click="selectSpecificationsCurrentDialog = 'SelectSpecifications'; currentData = specsList; selectSpecificationsDialogVisible = true">选择规格</el-button>
                 <template v-if="!editor">
                     <el-table
                     class="spec-information"
@@ -150,6 +152,7 @@
                         <template slot-scope="scope">
                             <!-- <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div> -->
                             <el-upload
+                                :disabled="!ruleForm.productCategoryInfoId"
                                 class="upload-spec"
                                 :action="uploadUrl"
                                 :class="{hide:scope.row.image}"
@@ -169,7 +172,7 @@
                                     点击上传
                                 </p>
                             </el-upload>
-                            <div v-if="!scope.row.image" style="cursor: pointer;"  @click="currentDialog = 'dialogSelectImageMaterial'; material = true; materialIndex = scope.$index; dialogVisible = true">素材库</div>
+                            <div v-if="!scope.row.image && ruleForm.productCategoryInfoId" style="cursor: pointer;"  @click="currentDialog = 'dialogSelectImageMaterial'; material = true; materialIndex = scope.$index; dialogVisible = true">素材库</div>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -246,6 +249,7 @@
                                 <!-- <img width="66" :src="scope.row.image" alt=""> -->
                                 <!-- <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div> -->
                                 <el-upload
+                                    :disabled="!ruleForm.productCategoryInfoId"
                                     class="upload-spec"
                                     :action="uploadUrl"
                                     :class="{hide:scope.row.image}"
@@ -265,13 +269,13 @@
                                         点击上传
                                     </p>
                                 </el-upload>
-                                <div v-if="!scope.row.image" style="cursor: pointer;"  @click="currentDialog = 'dialogSelectImageMaterial'; material = true; materialIndex = scope.$index; dialogVisible = true">素材库</div>
+                                <div v-if="!scope.row.image && ruleForm.productCategoryInfoId" style="cursor: pointer;"  @click="currentDialog = 'dialogSelectImageMaterial'; material = true; materialIndex = scope.$index; dialogVisible = true">素材库</div>
                             </template>
                         </el-table-column>
                     </el-table>
                 </template>
                 <div>
-                    <el-checkbox v-model="ruleForm.isShowStock">商品详情显示剩余库存</el-checkbox>
+                    <el-checkbox :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isShowStock">商品详情显示剩余库存</el-checkbox>
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
                 </div>
                 <!-- <el-button v-if="!editor" class="border-button" @click="currentDialog = 'AddSpecifications'; selectSpecificationsCurrentDialog = ''; dialogVisible = true">新增规格</el-button> -->
@@ -279,17 +283,17 @@
             <el-form-item label="起售数量" prop="number">
                 <div class="input-number">
                     <span style="user-select: none;" class="pointer" @click="reduce">-</span>
-                    <el-input v-model="ruleForm.startSaleNum"></el-input>
+                    <el-input :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.startSaleNum"></el-input>
                     <span style="user-select: none;" class="pointer" @click="increase">+</span>
                 </div>
             </el-form-item>
             <el-form-item label="已售出数量" prop="selfSaleCount">
-                <el-input type="number" v-model="ruleForm.selfSaleCount"></el-input>
-                <el-checkbox v-model="ruleForm.isShowSaleCount">商品详情显示已售出数量</el-checkbox>
+                <el-input :disabled="!ruleForm.productCategoryInfoId" type="number" v-model="ruleForm.selfSaleCount"></el-input>
+                <el-checkbox :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isShowSaleCount">商品详情显示已售出数量</el-checkbox>
                     <span class="prompt">库存为0时，商品会自动放到“已售罄"列表里，保存有效库存数字后，买家看到的商品可售库存同步更新</span>
             </el-form-item>
             <el-form-item label="单位计量" prop="productUnit">
-                <el-select v-model="ruleForm.productUnit" placeholder="请选择" :disabled="ruleForm.other" clearable>
+                <el-select v-model="ruleForm.productUnit" placeholder="请选择" :disabled="ruleForm.other || !ruleForm.productCategoryInfoId" clearable>
                     <el-option
                         v-for="item in unitList"
                         :key="item.id"
@@ -299,12 +303,12 @@
                 </el-select>
                 <!-- <el-button class="border-button new-units">新增单位</el-button> -->
                 <div style="margin-top: 21px;">
-                    <el-checkbox v-model="ruleForm.other">其他</el-checkbox>
-                    <el-input v-model="ruleForm.otherUnit" placeholder="请输入计量单位"></el-input>
+                    <el-checkbox :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.other">其他</el-checkbox>
+                    <el-input :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.otherUnit" placeholder="请输入计量单位"></el-input>
                 </div>
             </el-form-item>
             <el-form-item label="商品品牌" prop="productBrandInfoId">
-                <el-select v-model="ruleForm.productBrandInfoId" placeholder="请选择">
+                <el-select :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.productBrandInfoId" placeholder="请选择">
                     <el-option
                         v-for="item in brandList"
                         :key="item.id"
@@ -319,7 +323,7 @@
             <el-form-item label="上架时间" prop="status">
                 <span>定时上架的商品在上架前请到“仓库中的宝贝”里编辑商品。</span>
                 <div>
-                    <el-radio-group v-model="ruleForm.status">
+                    <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.status">
                         <el-radio :label="0">放入仓库</el-radio>
                         <el-radio :label="1">立即上架</el-radio>
                         <span @click="timelyShelvingHandler"><el-radio :label="2">定时上架</el-radio></span>
@@ -328,7 +332,7 @@
                 </div>
             </el-form-item>
             <el-form-item label="会员打折" prop="isJoinDiscount">
-                <el-radio-group v-model="ruleForm.isJoinDiscount">
+                <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isJoinDiscount">
                     <el-radio :label="1">参与会员打折</el-radio>
                     <el-radio :label="0">不参与会员打折</el-radio>
                 </el-radio-group>
@@ -340,22 +344,22 @@
                 </el-radio-group>
             </el-form-item> -->
             <el-form-item label="开具发票" prop="isSupportInvoice">
-                <el-radio-group v-model="ruleForm.isSupportInvoice">
+                <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isSupportInvoice">
                     <el-radio :label="1">支持</el-radio>
                     <el-radio :label="0">不支持</el-radio>
                 </el-radio-group>
                 <span class="prompt">此功能在交易设置中开启后，可选择是否支持开具发票</span>
             </el-form-item>
             <el-form-item label="是否支持货到付款" prop="isCashOnDelivery">
-                <el-radio-group v-model="ruleForm.isCashOnDelivery">
+                <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isCashOnDelivery">
                     <el-radio :label="1">是</el-radio>
                     <el-radio :label="0">否</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="运费设置" prop="isFreeFreight">
                 <div>
-                    <el-radio v-model="ruleForm.isFreeFreight" :label="0">选择运费模板</el-radio>
-                    <el-select v-model="ruleForm.freightTemplateId" placeholder="请选择">
+                    <el-radio :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isFreeFreight" :label="0">选择运费模板</el-radio>
+                    <el-select :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.freightTemplateId" placeholder="请选择">
                         <el-option
                             v-for="item in shippingTemplates"
                             :key="item.id"
@@ -365,11 +369,11 @@
                         </el-select>
                 </div>
                 <div>
-                    <el-radio v-model="ruleForm.isFreeFreight" :label="1">包邮</el-radio>
+                    <el-radio :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isFreeFreight" :label="1">包邮</el-radio>
                 </div>
             </el-form-item>
             <el-form-item label="是否支持售后维权" prop="isAfterSaleService">
-                <el-radio-group v-model="ruleForm.isAfterSaleService">
+                <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isAfterSaleService">
                     <el-radio :label="1">是</el-radio>
                     <el-radio :label="0">否</el-radio>
                 </el-radio-group>
@@ -378,9 +382,9 @@
         <section class="form-section">
             <h2>详情描述</h2>
             <el-form-item label="是否显示关联商品" prop="isShowRelationProduct">
-                <el-radio v-model="ruleForm.isShowRelationProduct" :label="0">否</el-radio>
-                <el-radio v-model="ruleForm.isShowRelationProduct" :label="1">是</el-radio>
-                <el-button v-if="ruleForm.isShowRelationProduct == 1" class="border-button" @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
+                <el-radio :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isShowRelationProduct" :label="0">否</el-radio>
+                <el-radio :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isShowRelationProduct" :label="1">是</el-radio>
+                <el-button :disabled="!ruleForm.productCategoryInfoId" v-if="ruleForm.isShowRelationProduct == 1" class="border-button" @click="currentDialog = 'ChoosingGoodsDialog'; dialogVisible = true">选择关联商品</el-button>
             </el-form-item>
             <div v-if="ruleForm.isShowRelationProduct == 1" class="associated-goods">
                 <el-table
@@ -411,16 +415,16 @@
                 </el-table>
             </div>
             <el-form-item label="是否勾选为“推荐商品”" prop="isRecommend">
-                <el-radio-group v-model="ruleForm.isRecommend">
+                <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.isRecommend">
                     <el-radio :label="1">是</el-radio>
                     <el-radio :label="0">不是</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="商品详情" prop="productDetail">
-                <RichEditor @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="this.ruleForm.productDetail"></RichEditor>
+                <RichEditor v-if="ruleForm.productCategoryInfoId" @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="this.ruleForm.productDetail"></RichEditor>
             </el-form-item>
             <div class="footer">
-                <el-button @click="submitGoods('ruleForm')" type="primary">保存</el-button>
+                <el-button :disabled="!ruleForm.productCategoryInfoId" @click="submitGoods('ruleForm')" type="primary">保存</el-button>
             </div>
         </section>
     </el-form>
@@ -1537,6 +1541,12 @@ $blue: #655EFF;
 }
 /deep/ .hide .el-upload--picture-card {
     display: none;
+}
+/deep/ .el-form-item__content {
+    line-height: 21px;
+}
+.description {
+    padding-top: 10px;
 }
 </style>
 
