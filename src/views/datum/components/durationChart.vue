@@ -5,19 +5,28 @@ export default {
   name: "durationChart",
   extends: chartBase,
   computed:{},
-  props:{ },
+  props: ['dataChart','type'],
   data() {
     return {
       flow:{},
-      type:1
+      n:{}
     };
   },
   created() { },
+  watch:{
+    dataChart(newValue,oldValue){
+      this.n = newValue
+      this.con()
+    },
+    type(newValue,oldValue){
+      this.nearDay(newValue)
+    },
+  },
   methods: {
     // 数据显示控制
     nearDay(val){
       if(val == 1){
-        this.option.title = "平均停留时间",
+        this.option.title.text = "平均停留时间",
         this.option.legend.data = ["平均停留时间"],
         this.option.series = [{name:"平均停留时间",type: "line",stack: "总量",data: this.flow['yAxis']},
         ]
@@ -28,7 +37,7 @@ export default {
          ]
       }
     },
-    con(n,type){
+    con(){
       this.option = {
         title: {
           text: ["平均停留时间"]
@@ -70,8 +79,8 @@ export default {
         ]
       };
       this.flow = {
-        xAxis:n.xAxis,
-        yAxis:n.series[0].data
+        xAxis:this.n.xAxis,
+        yAxis:this.n.series[0] && this.n.series[0].data
       }
       this.nearDay(this.type);
       this.makeOption(this.flow);

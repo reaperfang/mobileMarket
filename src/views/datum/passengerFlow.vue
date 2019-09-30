@@ -38,17 +38,28 @@
             </el-radio-group>
           </div>
           <div class="chart_container">
-            <pfChart :title="'测试图表'"  ref="prChart"></pfChart>
+            <pfChart 
+            :title="'测试图表'" 
+            ref="prChart"
+            :dataChart="dataChart"
+            :type="analysisType"
+            >
+            </pfChart>
           </div>
         </div>
-        <div class="btn_tabs clearfix">
+        <div class="btn_tabs clearfix" style="margin-top:40px;">
             <el-radio-group class="fr" v-model="duration" @change="changeDp">
               <el-radio-button class="btn_bor" label="1">停留时长</el-radio-button>
               <el-radio-button class="btn_bor" label="2">跳出率</el-radio-button>
             </el-radio-group>
         </div>
         <div>
-            <durationChart  :title="'测试图表'"  ref="dtChart"></durationChart>
+            <durationChart 
+            :title="'测试图表'" 
+            ref="dtChart"
+            :dataChart="dataChart1"
+            :type="duration">
+            </durationChart>
         </div>
   </div>
 </template>
@@ -69,6 +80,7 @@ export default {
       analysisType:'1', //数据类型
       nearDay: 7, 
       dataChart: {},
+      dataChart1:{},
       title:'浏览/访问',
       duration:'1',
       channel:0,
@@ -81,8 +93,7 @@ export default {
   methods: {
     init(){
       this.getFlowAnalysis()
-
-      // this.getResidetime()
+      this.getResidetime()
     },
     //浏览量/访问量
     getFlowAnalysis(){
@@ -93,8 +104,7 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.flowAnalysis(data).then(response => {
-        console.log('data',response)
-        // this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+        this.dataChart = response
       }).catch(error => {
         this.$message.error(error);
       });
@@ -109,8 +119,7 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.uvhour(data).then(response => {
-        // console.log('data',response)
-        // this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+        this.dataChart = response
       }).catch(error => {
         this.$message.error(error);
       });
@@ -125,8 +134,7 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.pvady(data).then(response => {
-        // console.log('data',response)
-        this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+        this.dataChart = response
       }).catch(error => {
         this.$message.error(error);
       });
@@ -140,8 +148,7 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.channel(data).then(response => {
-          console.log('data',response)
-          this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+          this.dataChart = response
         }).catch(error => {
           this.$message.error(error);
         });
@@ -155,8 +162,7 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.residetime(data).then(response => {
-          // console.log('data',response)
-          this.$refs.dtChart.con(response,this.startTime,this.endTime,this.duration)
+          this.dataChart1 = response
         }).catch(error => {
           this.$message.error(error);
         });
@@ -170,7 +176,7 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.bouncerate(data).then(response => {
-            this.$refs.dtChart.con(response,this.startTime,this.endTime,this.duration)
+            this.dataChart1 = response
         }).catch(error => {
           this.$message.error(error);
         });
@@ -179,10 +185,16 @@ export default {
     //浏览量/访客量 or 到店时段 or 访问次数 or 访问来源
     changeType(e) {
       switch (e) {
-          case '3': 
+        case '1':
+          this.getFlowAnalysis()
+          break;
+        case '2':
+          this.getUvhour()
+          break;
+        case '3': 
             this.getPvady()
             break;
-          case '4': 
+        case '4': 
             this.getChannel()
             break;
       }
@@ -218,60 +230,7 @@ export default {
       this.endTime = val[1];
       this.changeType(this.analysisType)
       this.changeDp(this.duration)
-    },
-
-
-
-
-
-    // 获取数据
-    getData() {
-      let data = {
-        startTime: this.startTime,
-        endTime: this.endTime,
-        nearDay: this.nearDay,
-        channel:this.channel
-      };
-      this._apis.data.pvady(data).then(response => {            
-            this.dataChart = response;
-            this.$refs.prChart.con(response,this.title,this.type)
-        }).catch(error => {
-          this.$message.error(error);
-        });
-    },
-    
-   
-    // 图标标题
-    titleChang(val){
-        if(val == 1){
-            this.title = '直径/跳出率'
-        }
-    },
-
-    
-    // changeDp(val){
-    //     //this.getPathOut()
-    //     let data = {
-    //       startTime: this.startTime,
-    //       endTime: this.endTime,
-    //       nearDay: this.nearDay,
-    //     }
-    //     if(val == '1') {
-    //       this._apis.data.bouncerate(data).then(response => {
-    //         this.dataChart = response;
-    //         this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
-    //       }).catch(error => {
-    //         this.$message.error(error);
-    //       });
-    //     }else{
-    //       this._apis.data.residetime(data).then(response => {
-    //         this.dataChart = response;
-    //         this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
-    //       }).catch(error => {
-    //         this.$message.error(error);
-    //       });
-    //     }
-    // }
+    },  
   },
 };
 </script>

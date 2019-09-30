@@ -5,27 +5,27 @@ import chartBase from "@/components/ChartBase";
 export default {
   name: "pfChart",
   extends: chartBase,
-  computed: {
-    // flow(){
-    //     return this.$store._modules.root.state.data.dataChart
-    // }
-  },
-  props: {},
+  computed: { },
+  props: ['dataChart','type'],
   data() {
     return {
       flow: {},
-      type: 1
+      n:{}
     };
   },
-  created() {
-    // this.engine.registerMap("china", chinaMap);
-    //  this.engine.registerMap('world', worldMap);
-    // console.log(this.$store._modules.root.state.data.dataChart)
-    // console.log(this.flow['xAxisData'])
+  created() { },
+  watch:{
+    dataChart(newValue,oldValue){
+      this.n = newValue
+      this.con()
+    },
+    type(newValue,oldValue){
+      this.nearDay(newValue)
+    },
   },
   methods: {
     // 数据显示控制
-    nearDay(val,l){
+    nearDay(val){
       if(val == 1){
         this.option.title.text = "浏览/访问",
         this.option.legend.data = ["浏览量","访客量"],
@@ -49,7 +49,7 @@ export default {
          ]
       }
     },
-    con(n, t, type, l) {
+    con() {
       this.option = {
         title: {
           text: ["浏览/访问"]
@@ -95,11 +95,11 @@ export default {
         ]
       };
       this.flow = {
-        xAxis:n.xAxis,
-        yAxis1:n.series[0] && n.series[0].data,
-        yAxis2:n.series[1] && n.series[1].data,
+        xAxis:this.n.xAxis,
+        yAxis1:this.n.series[0] && this.n.series[0].data,
+        yAxis2:this.n.series[1] && this.n.series[1].data,
       }
-      this.nearDay(this.type,l);
+      this.nearDay(this.type)
       this.makeOption(this.flow);
       this.option.xAxis.data = this.flow.xAxis;
       this.oChart.setOption(this.option, true);
