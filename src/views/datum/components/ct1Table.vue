@@ -8,24 +8,25 @@
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
+        prop="productName"
         label="商品名称">
         <template slot-scope="scope">
           <div  style="height:60px; display:flex">
-            <img :src="scope.row.goodsImgUrl" alt="" style="width:60px;height:60px;display:inline-block" />
-             <span style="line-height:60px;display:inline-block">{{scope.row.goodsName}}</span>
+            <img :src="scope.row.mainImage" alt="" style="width:60px;height:60px;display:inline-block" />
+             <span style="line-height:60px;display:inline-block">{{scope.row.productName}}</span>
             </div>
         </template>
       </el-table-column>
       <el-table-column
-        prop="visitGoodsTotal"
+        prop="uv"
         label="访问人数">
       </el-table-column>
       <el-table-column
-        prop="payOrderTotal"
+        prop="pays"
         label="支付人数">
       </el-table-column>
       <el-table-column
-        prop="conversionRate"
+        prop="rateUvPays"
         label="访问支付转化率"
       >
       </el-table-column>
