@@ -64,6 +64,11 @@
         <el-table-column
           prop="changeScore"
           label="变动积分">
+          <template slot-scope="scope">
+            <span v-if="scope.row.changeType == 0"> + </span>
+            <span v-else> - </span>
+            {{scope.row.changeScore}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="surplusScore"
