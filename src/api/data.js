@@ -5,10 +5,19 @@ import request from '@/system/request'
 /*
 **访问分析
 */
-// 客流分析--浏览访问
+//浏览量/访客量
 export function flowAnalysis(data) {
   return request({
-    target: 'CUSTOMER-FLOW-BROWER-ANALYSIS-PROCESSOR',
+    target: 'ECHART-PV-AND-UV-PROCESSOR',
+    method: 'post',
+    apiType: 'data',
+    data
+  })
+}
+//到店时段
+export function uvhour(data) {
+  return request({
+    target: 'ECHART-UV-HOUR',
     method: 'post',
     apiType: 'data',
     data
@@ -27,15 +36,6 @@ export function pvady(data) {
 export function channel(data) {
   return request({
     target: 'ECHART-UV-CHANNEL',
-    method: 'post',
-    apiType: 'data',
-    data
-  })
-}
-//小时平均访客数
-export function uvhour(data) {
-  return request({
-    target: 'ECHART-UV-HOUR',
     method: 'post',
     apiType: 'data',
     data

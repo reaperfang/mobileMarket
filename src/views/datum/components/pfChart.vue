@@ -29,8 +29,8 @@ export default {
       if(val == 1){
         this.option.title.text = "浏览/访问",
         this.option.legend.data = ["浏览量","访客量"],
-        this.option.series = [{name:"访客",type: "line",stack: "总量",data: this.flow['yAxis']},
-        {name:"浏览",type: "line",stack: "总量",data: this.flow['yAxis']}]
+        this.option.series = [{name:"访客",type: "line",stack: "总量",data: this.flow['yAxis1']},
+        {name:"浏览",type: "line",stack: "总量",data: this.flow['yAxis2']}]
       }else if(val == 2){
          this.option.title.text = "到店时段",
          this.option.legend.data = ["到店时段"],
@@ -44,13 +44,12 @@ export default {
       }else if(val == 4){
          this.option.title.text = "访问来源",
          this.option.legend.data = ["小程序","公众号"],
-         this.option.series = [{name:"小程序",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxis']},
-         {name:"公众号",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxis']},
+         this.option.series = [{name:"小程序",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxis1']},
+         {name:"公众号",type: "line",stack: "总量",areaStyle: {},data: this.flow['yAxis2']},
          ]
       }
     },
     con(n, t, type, l) {
-      console.log('data',n)
       this.option = {
         title: {
           text: ["浏览/访问"]
@@ -85,22 +84,22 @@ export default {
             name: "访客",
             type: "line",
             stack: "总量",
-            data: this.flow['fk']
+            data: this.flow['yAxis']
           },
           {
             name: "浏览",
             type: "line",
             stack: "总量",
-            data: this.flow['ll'] 
+            data: this.flow['yAxis'] 
           }
         ]
       };
       this.flow = {
         xAxis:n.xAxis,
-        fk:n.series[0] && n.series[0].data,
+        yAxis1:n.series[0] && n.series[0].data,
+        yAxis2:n.series[1] && n.series[1].data,
       }
-      this.type = type;
-      this.nearDay(type,l);
+      this.nearDay(this.type,l);
       this.makeOption(this.flow);
       this.option.xAxis.data = this.flow.xAxis;
       this.oChart.setOption(this.option, true);

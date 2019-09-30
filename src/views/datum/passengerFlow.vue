@@ -48,7 +48,7 @@
             </el-radio-group>
         </div>
         <div>
-            <durationChart  :title="'测试图表'"  ref="pfChart"></durationChart>
+            <durationChart  :title="'测试图表'"  ref="dtChart"></durationChart>
         </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
       startTime: "",
       endTime:"",
       visitSourceType: 0, //1 小程序 2 公众号
-      analysisType: 1, //数据类型
+      analysisType:'1', //数据类型
       nearDay: 7, 
       dataChart: {},
       title:'浏览/访问',
@@ -76,26 +76,76 @@ export default {
     };
   },
   created() {
-    // this.getData();
-    // this.getPathOut()
     this.init()
   }, 
   methods: {
     init(){
-      // this.getPathOut()
-      this.getResidetime()
+      this.getFlowAnalysis()
+
+      // this.getResidetime()
     },
     //浏览量/访问量
-
+    getFlowAnalysis(){
+      let data = {
+          channel:this.visitSourceType,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          nearDay: this.nearDay  == '4' ? null : this.nearDay,
+        };
+      this._apis.data.flowAnalysis(data).then(response => {
+        console.log('data',response)
+        // this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+      }).catch(error => {
+        this.$message.error(error);
+      });
+    },
 
     //到店时段
-
+    getUvhour(){
+      let data = {
+          channel:this.visitSourceType,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          nearDay: this.nearDay  == '4' ? null : this.nearDay,
+        };
+      this._apis.data.uvhour(data).then(response => {
+        // console.log('data',response)
+        // this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+      }).catch(error => {
+        this.$message.error(error);
+      });
+    },
 
     //访问次数
-
+    getPvady(){
+      let data = {
+          channel:this.visitSourceType,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          nearDay: this.nearDay  == '4' ? null : this.nearDay,
+        };
+      this._apis.data.pvady(data).then(response => {
+        // console.log('data',response)
+        this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+      }).catch(error => {
+        this.$message.error(error);
+      });
+    },
 
     //访问来源
-
+    getChannel(){
+      let data = {
+          startTime: this.startTime,
+          endTime: this.endTime,
+          nearDay: this.nearDay  == '4' ? null : this.nearDay,
+        };
+      this._apis.data.channel(data).then(response => {
+          console.log('data',response)
+          this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+    },
 
     //停留时长
     getResidetime(){
@@ -105,8 +155,8 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.residetime(data).then(response => {
-          console.log('data',response)
-            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+          // console.log('data',response)
+          this.$refs.dtChart.con(response,this.startTime,this.endTime,this.duration)
         }).catch(error => {
           this.$message.error(error);
         });
@@ -120,26 +170,55 @@ export default {
           nearDay: this.nearDay  == '4' ? null : this.nearDay,
         };
       this._apis.data.bouncerate(data).then(response => {
-            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+            this.$refs.dtChart.con(response,this.startTime,this.endTime,this.duration)
         }).catch(error => {
           this.$message.error(error);
         });
     },
-    //数据源切换
-    all() {
-      this.init()
+
+    //浏览量/访客量 or 到店时段 or 访问次数 or 访问来源
+    changeType(e) {
+      switch (e) {
+          case '3': 
+            this.getPvady()
+            break;
+          case '4': 
+            this.getChannel()
+            break;
+      }
     },
+
+    //停留时长 or 跳出率
+    changeDp(e){
+      switch(e){
+        case '1':
+          this.getResidetime()
+          break;
+        case '2':
+          this.getPathOut()
+          break;
+      }
+    },
+
+    //全部 or  小程序  or  公众号
+    all() {
+      this.changeType(this.analysisType)
+    },
+
+
+    //最近7天 or  最近15天  or 最近30天 or 自定义时间
+    changeDay() {
+      this.changeType(this.analysisType)
+      this.changeDp(this.duration)
+    },
+
     //自定义时间选择
     changeTime(val){
       this.startTime = val[0];
       this.endTime = val[1];
-      this.init()
+      this.changeType(this.analysisType)
+      this.changeDp(this.duration)
     },
-    //天数切换
-    changeDay() {
-      this.init()
-    },
-
 
 
 
@@ -161,11 +240,7 @@ export default {
         });
     },
     
-    //来源
-    changeType(e) {
-      this.type = e;
-      this.getData(); 
-    },
+   
     // 图标标题
     titleChang(val){
         if(val == 1){
@@ -174,29 +249,29 @@ export default {
     },
 
     
-    changeDp(val){
-        //this.getPathOut()
-        let data = {
-          startTime: this.startTime,
-          endTime: this.endTime,
-          nearDay: this.nearDay,
-        }
-        if(val == '1') {
-          this._apis.data.bouncerate(data).then(response => {
-            this.dataChart = response;
-            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
-          }).catch(error => {
-            this.$message.error(error);
-          });
-        }else{
-          this._apis.data.residetime(data).then(response => {
-            this.dataChart = response;
-            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
-          }).catch(error => {
-            this.$message.error(error);
-          });
-        }
-    }
+    // changeDp(val){
+    //     //this.getPathOut()
+    //     let data = {
+    //       startTime: this.startTime,
+    //       endTime: this.endTime,
+    //       nearDay: this.nearDay,
+    //     }
+    //     if(val == '1') {
+    //       this._apis.data.bouncerate(data).then(response => {
+    //         this.dataChart = response;
+    //         this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+    //       }).catch(error => {
+    //         this.$message.error(error);
+    //       });
+    //     }else{
+    //       this._apis.data.residetime(data).then(response => {
+    //         this.dataChart = response;
+    //         this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+    //       }).catch(error => {
+    //         this.$message.error(error);
+    //       });
+    //     }
+    // }
   },
 };
 </script>
