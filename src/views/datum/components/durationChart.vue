@@ -1,34 +1,30 @@
 /* 访问客流分析 */
 <script type='es6'>
 import chartBase from "@/components/ChartBase";
-// import chinaMap from "@/assets/js/chinaMap.js";
-// import worldMap from "@/assets/js/worldMap.js";
 export default {
-  name: "pfChart",
+  name: "durationChart",
   extends: chartBase,
-   computed:{},
-  props:{
-  },
+  computed:{},
+  props:{ },
   data() {
     return {
       flow:{},
       type:1
     };
   },
-  created() {
-  },
+  created() { },
   methods: {
     // 数据显示控制
     nearDay(val){
       if(val == 1){
         this.option.title = "平均停留时间",
         this.option.legend.data = ["平均停留时间"],
-        this.option.series = [{name:"平均停留时间",type: "line",stack: "总量",data: this.flow['xAxis']},
+        this.option.series = [{name:"平均停留时间",type: "line",stack: "总量",data: this.flow['yAxis']},
         ]
       }else if(val == 2){
          this.option.title.text = "跳出率",
          this.option.legend.data = ["跳出率"],
-         this.option.series =[{name:"跳出率",type: "line",stack: "总量",data: this.flow['xAxis']},
+         this.option.series =[{name:"跳出率",type: "line",stack: "总量",data: this.flow['yAxis']},
          ]
       }
     },
@@ -69,15 +65,19 @@ export default {
             name:"平均停留时间",
             type: "line",
             stack: "总量",
-            data: this.flow['xAxis'] 
+            data: this.flow['yAxis'] 
           }
         ]
       };
-      this.flow = n;
-      this.type = type;
-      this.nearDay(type);
-      this.makeOption(n);
+      this.flow = {
+        xAxis:n.xAxis,
+        yAxis:n.series[0].data
+      }
+      this.nearDay(this.type);
+      this.makeOption(this.flow);
+      this.option.xAxis.data = this.flow.xAxis;
       this.oChart.setOption(this.option, true);
+
     },
     //设置图表数据项
     makeOption(data) {

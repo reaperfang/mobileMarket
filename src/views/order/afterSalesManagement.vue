@@ -400,9 +400,10 @@ export default {
                 startIndex: 1,
                 pageSize: 20,
                 searchValue: '',
-                searchType: '',
+                searchType: 'code',
                 applicationDate: '',
-                orderAfterSaleStatus: ''
+                orderAfterSaleStatus: '',
+                type: ''
             }
             this.getList()
         },

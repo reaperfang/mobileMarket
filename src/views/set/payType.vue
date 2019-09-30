@@ -140,7 +140,7 @@ export default {
       let id = this.cid
       let query = Object.assign({id:id},data)
       this._apis.set.updateShopInfo(query).then(response =>{
-        this.$notify.error({
+        this.$notify.success({
           title: '成功',
           message: '保存成功！'
         });

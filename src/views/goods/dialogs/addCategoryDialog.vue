@@ -41,7 +41,7 @@
                         <li @click="currentDialog = 'DialogSelectImageMaterial'; libraryVisible = true" class="upload">
                             <i class="el-icon-plus"><br /><span>上传图片</span></i>
                         </li>
-                        <li v-if="basicForm.image" class="image">
+                        <li v-if="imageVisible" class="image">
                             <div :style="{backgroundImage: `url(${basicForm.image})`}" class="image-div"></div>
                             <i @click="deleteImage" class="el-icon-error"></i>
                         </li>
@@ -73,6 +73,7 @@ export default {
                 sort: 0, // 分类顺序
                 parentId: 0, // 分类父ID
                 imageUrl:'', // 分类图片
+                image: ''
             },
             basicRules:{
                 name: [
@@ -85,14 +86,15 @@ export default {
                 sort: [
                     { required: true, message: '请输入分类排序', trigger: 'blur' },
                 ],
-                // image: [
-                //     { required: true, message: '请上传分类图片', trigger: 'blur' },
-                // ],
+                image: [
+                    { required: true, message: '请上传分类图片', trigger: 'blur' },
+                ],
             },
             categoryData: [],
             currentDialog: '',
             libraryVisible: false,
-            level1Title: ''
+            level1Title: '',
+            imageVisible: false
         }
     },
     created() {
@@ -103,6 +105,9 @@ export default {
                 this.basicForm.enable = res.enable
                 this.basicForm.sort = res.sort
                 this.basicForm.image = res.image
+                if(res.image) {
+                    this.imageVisible = true
+                }
                 
             })
         }
@@ -117,9 +122,11 @@ export default {
     methods: {
         deleteImage() {
             this.basicForm.image =  ''
+            this.imageVisible = false
         },
         imageSelected(image) {
             this.basicForm.image = decodeURIComponent(image.filePath)
+            this.imageVisible = true
         },
         submitCategory(formName) {
             this.$refs[formName].validate((valid) => {
@@ -140,10 +147,18 @@ export default {
                         }
 
                         this._apis.goods.addCategory(param).then(res => {
+                            this.$notify({
+                                title: '成功',
+                                message: '新增成功！',
+                                type: 'success'
+                            });
                             this.$emit('submit')
                             this.onSubmit()
                         }).catch(error => {
-
+                            this.$notify.error({
+                                title: '错误',
+                                message: error
+                            });
                         })
                     } else {
                         let param = Object.assign({}, this.basicForm, {id: this.data.id, parentId: this.data.parentId})
@@ -151,18 +166,26 @@ export default {
                         delete param.parentId
 
                         this._apis.goods.editorCategory(param).then(res => {
+                            this.$notify({
+                                title: '成功',
+                                message: '修改成功！',
+                                type: 'success'
+                            });
                             this.$emit('submit')
                             this.onSubmit()
                         }).catch(error => {
-
+                            this.$notify.error({
+                                title: '错误',
+                                message: error
+                            });
                         })
                     }
+                    this.visible = false
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
-            this.visible = false
         },
         getCategoryDetail(id) {
             return  new Promise((resolve, reject) => {

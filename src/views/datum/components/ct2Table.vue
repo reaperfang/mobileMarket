@@ -81,20 +81,13 @@ import TableBase from "@/components/TableBase";
 export default {
   name: "ct2Table",
   extends: TableBase,
-  props:{
-    listObj:{
-      type:Object,
-      default:[]
-    }
-  },
+  props:['listObj'],
   data() {
     return {
       pageSize:10
     };
   },
-  created() {
-
-  },
+  created() { },
   methods: {
     handleCurrentChange(val){
       this.$emit('getProductDetails',val,this.pageSize)

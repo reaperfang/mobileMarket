@@ -12,7 +12,7 @@
         label="商品名称">
         <template slot-scope="scope">
           <div  style="height:60px; display:flex">
-            <img :src="scope.row.mainImage" alt="" style="width:60px;height:60px;display:inline-block" />
+            <img :src="scope.row.mainImage" alt="" style="width:60px;height:60px;display:inline-block;object-fit:fill;" />
              <span style="line-height:60px;display:inline-block">{{scope.row.productName}}</span>
             </div>
         </template>

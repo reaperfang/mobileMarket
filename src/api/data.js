@@ -5,30 +5,21 @@ import request from '@/system/request'
 /*
 **访问分析
 */
-// 客流分析--浏览访问
+//浏览量/访客量
 export function flowAnalysis(data) {
   return request({
-    target: 'CUSTOMER-FLOW-BROWER-ANALYSIS-PROCESSOR',
+    target: 'ECHART-PV-AND-UV-PROCESSOR',
     method: 'post',
     apiType: 'data',
     data
   })
 }
-//平均停留时间
-export function residetime(data) {
+//到店时段
+export function uvhour(data) {
   return request({
-    target: 'ECHART-AVERAGE-RESIDE-TIME',
+    target: 'ECHART-UV-HOUR',
     method: 'post',
-    apiType:'data',
-    data
-  })
-}
-//跳出率
-export function bouncerate(data) {
-  return request({
-    target: 'ECHART-BOUNCE-RATE',
-    method: 'post',
-    apiType:'data',
+    apiType: 'data',
     data
   })
 }
@@ -50,12 +41,21 @@ export function channel(data) {
     data
   })
 }
-//小时平均访客数
-export function uvhour(data) {
+//平均停留时间
+export function residetime(data) {
   return request({
-    target: 'ECHART-UV-HOUR',
+    target: 'ECHART-AVERAGE-RESIDE-TIME',
     method: 'post',
-    apiType: 'data',
+    apiType:'data',
+    data
+  })
+}
+//跳出率
+export function bouncerate(data) {
+  return request({
+    target: 'ECHART-BOUNCE-RATE',
+    method: 'post',
+    apiType:'data',
     data
   })
 }
