@@ -124,6 +124,7 @@ export default {
           this.loading = true
           this.$store.dispatch('login', this.loginForm).then((response) => {
             this.loading = false
+            this.shopList = []
             let info = JSON.parse(localStorage.getItem('userInfo'))
             let arr = Object.keys(info.shopInfoMap) 
             if(arr.length == 0){

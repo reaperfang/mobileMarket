@@ -239,6 +239,8 @@ export default {
       })
     },
 
+
+
     //添加商户支付信息
     addShopPayInfo(){
       let param = {
@@ -263,10 +265,7 @@ export default {
         param:JSON.stringify(param)
       }
       this._apis.set.addShopPayInfo(query).then(response =>{
-        this.$notify.success({
-          title: '成功',
-          message: '添加成功！'
-        });
+        this.updateWechatBinding()
       }).catch(error =>{
         this.$notify.error({
           title: '错误',
@@ -275,37 +274,24 @@ export default {
       })
     },
 
-    // handleCertFileUrlOk(){
-    //     this.certFileUrlOk = false
-    //     this.loading3  = true
-    // },
-
-    // handlKeyFileUrlOk(){
-    //     this.keyFileUrlOk = false
-    //     this.loading2 = true
-    // },
-    // uploadCertFileUrl(response, file, fileList){
-    //     this.certFileUrlOk = false
-    //     if(file.status == "success"){
-    //       this.form.certFileName = file.name
-    //       this.$message.success(response.msg);
-    //       this.form.certLocalPath = response.data.url;
-    //       this.loading3  = false
-    //     }else{
-    //       this.$message.error(response.msg);
-    //     }
-    //   },
-    // uploadKeyFileUrl(response, file, fileList){
-    //   this.keyFileUrlOk = false
-    //   if(file.status == "success"){
-    //     this.form.keyFileName = file.name
-    //     this.$message.success(response.msg);
-    //     // this.form.keyLocalPath = response.data.url;
-    //     this.loading2 = false
-    //   }else{
-    //     this.$message.error(response.msg);
-    //   }
-    // },
+    updateWechatBinding(){
+      let id = this.cid
+      let query = {
+        id:id,
+        wechatBinding:1
+      }
+      this._apis.set.updateShopInfo(query).then(response =>{
+        this.$notify.success({
+          title: '成功',
+          message: '保存成功！'
+        });
+      }).catch(error =>{
+        this.$notify.error({
+          title: '错误',
+          message: error
+        });
+      })
+    },
   }
 }
 </script>

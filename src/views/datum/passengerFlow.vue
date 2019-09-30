@@ -48,17 +48,17 @@
             </el-radio-group>
         </div>
         <div>
-            <durationChare  :title="'测试图表'"  ref="pfChart"></durationChare>
+            <durationChart  :title="'测试图表'"  ref="pfChart"></durationChart>
         </div>
   </div>
 </template>
 <script>
 import {GetDateStr} from "@/utils/validate.js"
 import pfChart from "./components/pfChart";
-import durationChare from "./components/durationChare";
+import durationChart from "./components/durationChart";
 export default {
   name: "passengerFlow",
-  components: { pfChart,durationChare },
+  components: { pfChart,durationChart },
   data() {
     return {
       activeName: "first",
@@ -76,17 +76,75 @@ export default {
     };
   },
   created() {
-    this.getData();
-    this.getPathOut()
+    // this.getData();
+    // this.getPathOut()
+    this.init()
   }, 
   methods: {
-    getDate(num) {
-      var dd = new Date();
-      dd.setDate(dd.getDate()+num);//获取num天后的日期
-      dd = dd.toLocaleString('chinese',{hour12:false});
-      dd = dd.replace(/\//g,'-');
-      return dd;
+    init(){
+      // this.getPathOut()
+      this.getResidetime()
     },
+    //浏览量/访问量
+
+
+    //到店时段
+
+
+    //访问次数
+
+
+    //访问来源
+
+
+    //停留时长
+    getResidetime(){
+       let data = {
+          startTime: this.startTime,
+          endTime: this.endTime,
+          nearDay: this.nearDay  == '4' ? null : this.nearDay,
+        };
+      this._apis.data.residetime(data).then(response => {
+          console.log('data',response)
+            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+    },
+
+    //跳出率
+    getPathOut(){
+        let data = {
+          startTime: this.startTime,
+          endTime: this.endTime,
+          nearDay: this.nearDay  == '4' ? null : this.nearDay,
+        };
+      this._apis.data.bouncerate(data).then(response => {
+            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
+        }).catch(error => {
+          this.$message.error(error);
+        });
+    },
+    //数据源切换
+    all() {
+      this.init()
+    },
+    //自定义时间选择
+    changeTime(val){
+      this.startTime = val[0];
+      this.endTime = val[1];
+      this.init()
+    },
+    //天数切换
+    changeDay() {
+      this.init()
+    },
+
+
+
+
+
+
     // 获取数据
     getData() {
       let data = {
@@ -102,28 +160,7 @@ export default {
           this.$message.error(error);
         });
     },
-    // 时间选择
-    changeTime(val) {
-      this.startTime = this.getDate(val[0])
-      this.endTime = this.getDate(val[1])
-      this.nearDay = "";
-      this.getData();
-    },
-    // 最近时间
-    changeDay(val) {
-      if(val !== 4) {
-        this.nearDay = val;
-        this.startTime = "";
-        this.endTime = "";
-        this.getData();
-      }
-    	// switch(val){
-    	// 	case 15: this.nearDay=GetDateStr(-7); this.getData();break;
-    	// 	case 2: this.startTime=GetDateStr(-15);this.getData();break;
-    	// 	case 3: this.startTime=GetDateStr(-30);this.getData();break;
-    	// 	default : break;
-    	// }
-    },
+    
     //来源
     changeType(e) {
       this.type = e;
@@ -135,29 +172,8 @@ export default {
             this.title = '直径/跳出率'
         }
     },
-    all(e){
-      this.channel = e;
-      this.getData();
-      //   this.nearDay = 1;
-      //   this.analysisType = 1;
-      //   this.visitSourceType = e;
-      //   this.getData()
-    },
-    // 路径
-    getPathOut(){
-        let data = {
-        startTime: this.startTime,
-        endTime: this.endTime,
-        //analysisType: this.duration,
-        nearDay: this.nearDay,
-      };
-      this._apis.data.bouncerate(data).then(response => {
-            this.dataChart = response;
-            this.$refs.pfChart.con(response,this.startTime,this.endTime,this.duration)
-        }).catch(error => {
-          this.$message.error(error);
-        });
-    },
+
+    
     changeDp(val){
         //this.getPathOut()
         let data = {
@@ -206,7 +222,7 @@ export default {
         color: #655eff;
       }
       .btn_bor {
-        margin: 0 10px;
+        // margin: 0 10px;
         border-radius: 20px;
       }
     }
