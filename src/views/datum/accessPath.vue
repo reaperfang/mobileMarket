@@ -66,11 +66,11 @@
           </div>
           <div class="p_r p_2">
             <div class="p_top">
-              <p>{{dataObj.orderUvPathTransformation[1]}}</p>
-              <p>{{dataObj.orderUvPathTransformation[2]}}</p>
-              <p>{{dataObj.orderUvPathTransformation[3]}}</p>
-              <p>{{dataObj.orderUvPathTransformation[4]}}</p>
-              <p>{{dataObj.orderUvPathTransformation[5]}}</p>
+              <p>{{toPersent(dataObj.orderUvPathTransformation[1])}}</p>
+              <p>{{toPersent(dataObj.orderUvPathTransformation[2])}}</p>
+              <p>{{toPersent(dataObj.orderUvPathTransformation[3])}}</p>
+              <p>{{toPersent(dataObj.orderUvPathTransformation[4])}}</p>
+              <p>{{toPersent(dataObj.orderUvPathTransformation[5])}}</p>
             </div>
             <div class="p_bottom">
               <p>确认订单</p>
@@ -85,9 +85,9 @@
           </div>
           <div class="p_r p_3">
             <div class="p_top">
-              <p>{{dataObj.payOrderPathTransformation[1]}}</p>
-              <p>{{dataObj.payOrderPathTransformation[2]}}</p>
-              <p>{{dataObj.payOrderPathTransformation[3]}}</p>
+              <p>{{toPersent(dataObj.payOrderPathTransformation[1])}}</p>
+              <p>{{toPersent(dataObj.payOrderPathTransformation[2])}}</p>
+              <p>{{toPersent(dataObj.payOrderPathTransformation[3])}}</p>
             </div>
             <div class="p_bottom">
               <div>
@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+import utils from "@/utils";
 import apChart from "./components/apChart";
 export default {
   name: "accessPath",
@@ -127,12 +128,13 @@ export default {
     };
   },
   methods: {
-    getDate(num) {
-      var dd = new Date();
-      dd.setDate(dd.getDate() + num); //获取num天后的日期
-      dd = dd.toLocaleString("chinese", { hour12: false });
-      dd = dd.replace(/\//g, "-");
-      return dd;
+    toPersent(num) {
+      let str = Number(num*100);
+      str+='%';
+      return str;
+    },
+    getDate(date) {
+      return utils.formatDate(new Date(date), "yyyy-MM-dd hh:mm:ss");
     },
     getPathConversion() {
       let data = {

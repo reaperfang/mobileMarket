@@ -248,6 +248,7 @@ export default {
         });
     },
     freshTable() {
+      this.checkAll = false;
       this.getMembers(1, this.pageSize);
     }
   },

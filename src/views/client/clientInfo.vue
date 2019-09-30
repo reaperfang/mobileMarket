@@ -193,12 +193,17 @@ export default {
             allCodes: [],
             couponList: [],
             codeList: [],
-            hackReset: true
+            hackReset: true,
+            level: ""
         }
     },
     methods: {
         refreshPage() {
             this.getMemberInfo();
+        },
+        //根据levelId查询该用户的level等级
+        getLevel() {
+            console.log(this.clientInfoById.levelInfoId);
         },
         changeIdentity() {
             this.hackReset = false;
@@ -366,10 +371,6 @@ export default {
                 this.$set(this.clientInfoById, 'selected',selected);
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         saveInfo() {
