@@ -69,7 +69,7 @@
                     </el-option>
                 </el-select>
                 <el-button type="primary" class="marL20" @click="handleCheck">查 询</el-button>
-                <el-button>重 置</el-button>
+                <el-button @click="handleReset">重 置</el-button>
             </div>
             <ciTable style="margin-top: 68px" :params="params"></ciTable>
         </div>
@@ -114,6 +114,10 @@ export default {
         }
     },
     methods: {
+        handleReset() {
+            this.importTime = "";
+            this.channelId2 = "";
+        }, 
         handleDownload() {
             window.location.href = `${process.env.UPLOAD_SERVER}/web-file/0/excel/2e9d1/b8861e2467c045b8a162f9ce4ad444b9.xlsx`;
         },
@@ -141,10 +145,11 @@ export default {
         },
         handleCheck() {
             let params = {
-                importTimeStart: this.importTime[0],
-                importTimeEnd: this.importTime[1],
+                importTimeStart: new Date(this.importTime[0]),
+                importTimeEnd: new Date(this.importTime[1]),
                 channelId: this.channelId2
             }
+            console.log(params);
             this.params = Object.assign({}, params);
         },
         //获取渠道下拉
@@ -209,16 +214,6 @@ export default {
         }
     },
     computed: {
-        importTimeStart() {
-            if(this.importTime) {
-                return this.importTime[0]
-            }
-        },
-        importTimeEnd() {
-            if(this.importTime) {
-                return this.importTime[1]
-            }
-        },
         cid(){
             let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
             return shopInfo.id

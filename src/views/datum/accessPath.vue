@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+import utils from "@/utils";
 import apChart from "./components/apChart";
 export default {
   name: "accessPath",
@@ -127,12 +128,8 @@ export default {
     };
   },
   methods: {
-    getDate(num) {
-      var dd = new Date();
-      dd.setDate(dd.getDate() + num); //获取num天后的日期
-      dd = dd.toLocaleString("chinese", { hour12: false });
-      dd = dd.replace(/\//g, "-");
-      return dd;
+    getDate(date) {
+      return utils.formatDate(new Date(date), "yyyy-MM-dd hh:mm:ss");
     },
     getPathConversion() {
       let data = {

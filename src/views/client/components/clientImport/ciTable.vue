@@ -109,10 +109,6 @@ export default {
       }).catch((error) => {
         this.loading = false;
         console.log(error);
-        // this.$notify.error({
-        //   title: '错误',
-        //   message: error
-        // });
       })
     },
     addTag(row) {
