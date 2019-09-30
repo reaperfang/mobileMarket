@@ -185,7 +185,6 @@ export default {
             this.selectedIds = val;
         },
         saveLabel() {
-            let _this = this;
             let formObj = Object.assign({}, this.ruleForm);
             formObj.consumeTimeStart = formObj.consumeTime ? formObj.consumeTime[0]:"";
             formObj.consumeTimeEnd = formObj.consumeTime ? formObj.consumeTime[1]:"";

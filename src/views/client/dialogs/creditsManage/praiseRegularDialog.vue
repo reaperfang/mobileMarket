@@ -1,99 +1,103 @@
 <template>
     <DialogBase :visible.sync="visible" @submit="submit" title="评价获取积分规则" :hasCancel="hasCancel">
         <div class="c_container">
-            <div class="clearfix"><span class="fl marR20">评价获取积分规则</span><el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch></div>
-            <div>评价订单五星好评且满足以下条件可获得积分
-                <p>（条件1和条件3可独立启用，条件2需在条件1基础上启用）</p>
+            <div class="clearfix"><span class="fl marR20">评价获取积分规则</span>
+                <el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch>
             </div>
-            <div>
-                <span>条件1：    文字满</span>
-                <div class="input_wrap">
-                    <el-input v-model="fullWord1"></el-input>
+            <div v-if="enable" class="giveBottom">
+                <div>评价订单五星好评且满足以下条件可获得积分
+                    <p>（条件1和条件3可独立启用，条件2需在条件1基础上启用）</p>
                 </div>
-                <span>字</span>
-                <span v-if="distinguish1 == false">获得</span>
-                <div class="input_wrap" v-if="distinguish1 == false">
-                    <el-input v-model="allMember1"></el-input>
+                <div>
+                    <span>条件1：    文字满</span>
+                    <div class="input_wrap">
+                        <el-input v-model="fullWord1"></el-input>
+                    </div>
+                    <span>字</span>
+                    <span v-if="distinguish1 == false">获得</span>
+                    <div class="input_wrap" v-if="distinguish1 == false">
+                        <el-input v-model="allMember1"></el-input>
+                    </div>
+                    <span v-if="distinguish1 == false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <el-checkbox v-model="distinguish1">区分人群奖励</el-checkbox>
                 </div>
-                <span v-if="distinguish1 == false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <el-checkbox v-model="distinguish1">区分人群奖励</el-checkbox>
-            </div>
-            <div v-if="distinguish1 == true">
-                <span>客户</span>
-                <div class="input_wrap">
-                    <el-input v-model="noMember1"></el-input>
+                <div v-if="distinguish1 == true">
+                    <span>客户</span>
+                    <div class="input_wrap">
+                        <el-input v-model="noMember1"></el-input>
+                    </div>
+                    <span>积分</span>
+                    <span>新会员</span>
+                    <div class="input_wrap">
+                        <el-input v-model="newMember1"></el-input>
+                    </div>
+                    <span>积分</span>
+                    <span>老会员</span>
+                    <div class="input_wrap">
+                        <el-input v-model="oldMember1"></el-input>
+                    </div>
+                    <span>积分</span>
                 </div>
-                <span>积分</span>
-                <span>新会员</span>
-                <div class="input_wrap">
-                    <el-input v-model="newMember1"></el-input>
+                <div>
+                    <span>条件2：    满</span>
+                    <div class="input_wrap">
+                        <el-input v-model="fullWord2"></el-input>
+                    </div>
+                    <span>字</span>
+                    <span v-if="distinguish2 == false">额外获得</span>
+                    <div class="input_wrap" v-if="distinguish2 == false">
+                        <el-input v-model="allMember2"></el-input>
+                    </div>
+                    <span v-if="distinguish2 == false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <el-checkbox v-model="distinguish2" :disabled="distinguish1 == false">区分人群奖励</el-checkbox>
                 </div>
-                <span>积分</span>
-                <span>老会员</span>
-                <div class="input_wrap">
-                    <el-input v-model="oldMember1"></el-input>
+                <div v-if="distinguish2 == true">
+                    <span>客户</span>
+                    <div class="input_wrap">
+                        <el-input v-model="noMember2"></el-input>
+                    </div>
+                    <span>积分</span>
+                    <span>新会员</span>
+                    <div class="input_wrap">
+                        <el-input v-model="newMember2"></el-input>
+                    </div>
+                    <span>积分</span>
+                    <span>老会员</span>
+                    <div class="input_wrap">
+                        <el-input v-model="oldMember2"></el-input>
+                    </div>
+                    <span>积分</span>
                 </div>
-                <span>积分</span>
-            </div>
-            <div>
-                <span>条件2：    满</span>
-                <div class="input_wrap">
-                    <el-input v-model="fullWord2"></el-input>
+                <div>
+                    <span>条件3：    图片/视频满</span>
+                    <div class="input_wrap">
+                        <el-input v-model="fullWord3"></el-input>
+                    </div>
+                    <span>张/条</span>
+                    <span v-if="distinguish3==false">可获得</span>
+                    <div class="input_wrap" v-if="distinguish3==false">
+                        <el-input v-model="allMember3"></el-input>
+                    </div>
+                    <span v-if="distinguish3==false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <el-checkbox v-model="distinguish3">区分人群奖励</el-checkbox>
                 </div>
-                <span>字</span>
-                <span v-if="distinguish2 == false">额外获得</span>
-                <div class="input_wrap" v-if="distinguish2 == false">
-                    <el-input v-model="allMember2"></el-input>
+                <div v-if="distinguish3 == true">
+                    <span>客户</span>
+                    <div class="input_wrap">
+                        <el-input v-model="noMember3"></el-input>
+                    </div>
+                    <span>积分</span>
+                    <span>新会员</span>
+                    <div class="input_wrap">
+                        <el-input v-model="newMember3"></el-input>
+                    </div>
+                    <span>积分</span>
+                    <span>老会员</span>
+                    <div class="input_wrap">
+                        <el-input v-model="oldMember3"></el-input>
+                    </div>
+                    <span>积分</span>
                 </div>
-                <span v-if="distinguish2 == false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <el-checkbox v-model="distinguish2" :disabled="distinguish1 == false">区分人群奖励</el-checkbox>
-            </div>
-            <div v-if="distinguish2 == true">
-                <span>客户</span>
-                <div class="input_wrap">
-                    <el-input v-model="noMember2"></el-input>
-                </div>
-                <span>积分</span>
-                <span>新会员</span>
-                <div class="input_wrap">
-                    <el-input v-model="newMember2"></el-input>
-                </div>
-                <span>积分</span>
-                <span>老会员</span>
-                <div class="input_wrap">
-                    <el-input v-model="oldMember2"></el-input>
-                </div>
-                <span>积分</span>
-            </div>
-            <div>
-                <span>条件3：    图片/视频满</span>
-                <div class="input_wrap">
-                    <el-input v-model="fullWord3"></el-input>
-                </div>
-                <span>张/条</span>
-                <span v-if="distinguish3==false">可获得</span>
-                <div class="input_wrap" v-if="distinguish3==false">
-                    <el-input v-model="allMember3"></el-input>
-                </div>
-                <span v-if="distinguish3==false">积分&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <el-checkbox v-model="distinguish3">区分人群奖励</el-checkbox>
-            </div>
-            <div v-if="distinguish3 == true">
-                <span>客户</span>
-                <div class="input_wrap">
-                    <el-input v-model="noMember3"></el-input>
-                </div>
-                <span>积分</span>
-                <span>新会员</span>
-                <div class="input_wrap">
-                    <el-input v-model="newMember3"></el-input>
-                </div>
-                <span>积分</span>
-                <span>老会员</span>
-                <div class="input_wrap">
-                    <el-input v-model="oldMember3"></el-input>
-                </div>
-                <span>积分</span>
             </div>
         </div>
     </DialogBase>
@@ -243,12 +247,17 @@ export default {
 </script>
 <style lang="scss" scoped>
 .c_container{
-    > div{
-        text-align: left;
+    >div{
         margin-bottom: 17px;
-        .input_wrap{
-            width: 80px;
-            display: inline-block;
+    }
+    .giveBottom{
+        > div{
+            text-align: left;
+            margin-bottom: 17px;
+            .input_wrap{
+                width: 80px;
+                display: inline-block;
+            }
         }
     }
     .marR20{

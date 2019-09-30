@@ -2,6 +2,7 @@
     <DialogBase :visible.sync="visible" @submit="submit" title="登录获取积分规则" :hasCancel="hasCancel">
         <div class="c_container">
             <div class="clearfix"><span class="fl marR20">登录获取积分规则</span><el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch></div>
+            <div class="giveBottom" v-if="this.enable"> 
             <div>每天首次进入小程序或微信公众号获取积分</div>
             <div>
                 <span>是否区分人群发放：</span>
@@ -33,6 +34,7 @@
                         <el-input placeholder="请输入整数" v-model="oldMember"></el-input>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </DialogBase>
@@ -127,19 +129,21 @@ export default {
 </script>
 <style lang="scss" scoped>
 .c_container{
-    > div{
-        text-align: left;
+    >div{
         margin-bottom: 17px;
-        .input_wrap{
-            width: 172px;
-            display: inline-block;
+    }
+    .giveBottom{
+        > div{
+            text-align: left;
+            margin-bottom: 17px;
+            .input_wrap{
+                width: 80px;
+                display: inline-block;
+            }
         }
     }
     .marR20{
         margin-right: 20px;
-    }
-    .marB10{
-        margin-bottom: 10px;
     }
 }
 </style>

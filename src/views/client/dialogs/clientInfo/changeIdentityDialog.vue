@@ -22,12 +22,13 @@ export default {
         return {
             hasCancel: true,
             selectLevel:"",
-            levelList: []
+            levelList: [],
+            flag: false
         }
     },
     methods: {
         submit() {
-            if(this.selectLevel.length > 0) {
+            if(this.selectLevel.length > 0 && this.flag) {
                 let id;
                 this.levelList.map((v) => {
                     if(v.id == this.selectLevel) {
@@ -48,21 +49,16 @@ export default {
             }else{
                 this.$notify({
                     title: '警告',
-                    message: '请选择用户等级',
+                    message: '请正确选择用户等级',
                     type: 'warning'
                 });
             }
-            
         },
         getLevelList() {
             this._apis.client.getLevelList({}).then((response) => {
                 this.levelList = [].concat(response);
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         handleChange(val) {
@@ -71,13 +67,15 @@ export default {
                 if(v.id == val) {
                     currentLevel = v.level;
                 }
-            })
-            if(currentLevel < this.data.oldLevel) {
+            });
+            if(currentLevel <= this.data.oldLevel) {
                 this.$notify({
                     title: '警告',
                     message: '只能高于当前身份等级',
                     type: 'warning'
                 });
+            }else{
+                this.flag = true;
             }
         }
     },

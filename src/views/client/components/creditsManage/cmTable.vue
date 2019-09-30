@@ -39,7 +39,7 @@
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
     </div>
-    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData"></component>
+    <component :is="currentDialog" :dialogVisible.sync="dialogVisible" :data="currentData" @refreshPage="refreshPage"></component>
   </div>
 </template>
 
@@ -72,6 +72,9 @@ export default {
 
   },
   methods: {
+    refreshPage() {
+      this.getCreditList(this.startIndex, this.pageSize);
+    },
     editCredit(row) {
       if(!!row.redirectUrl) {
         window.location.href=row.redirectUrl;

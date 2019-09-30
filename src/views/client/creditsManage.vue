@@ -128,10 +128,6 @@ export default {
                     });
                 }).catch((error) => {
                     console.log(error);
-                    // this.$notify.error({
-                    //     title: '错误',
-                    //     message: error
-                    // });
                 })
             }
         },
@@ -151,10 +147,6 @@ export default {
                     });
                 }).catch((error) => {
                     console.log(error);
-                    // this.$notify.error({
-                    //     title: '错误',
-                    //     message: error
-                    // });
                 })
             }
         },
@@ -168,14 +160,10 @@ export default {
                 this.ruleForm.scoreToCashOrderMoney = response.scoreToCashOrderMoney;
                 this.ruleForm.scoreToCashOrderRate = response.scoreToCashOrderRate;
                 this.ruleForm.scoreCleanType = response.scoreCleanType.toString();
-                this.scoreUpperCount = response.scoreUpperCount;
+                this.ruleForm.scoreUpperCount = response.scoreUpperCount;
                 this.isSwitch = response.scoreUpper == 1? true:false;
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         }
     },
