@@ -17,7 +17,7 @@
         </div>
         <div class="chart1_info">
           <p>累计客户数：{{grandTotal}}</p>
-          <p>非会员：占比 {{data1.customerRatio}} 人数 {{data1.customerNum}}</p>
+          <p>非会员：占比 {{toPersent(data1.customerRatio)}} 人数 {{data1.customerNum}}</p>
           <p>
             会员：占比 {{data1.memberRatio}} 人数 {{data1.memberNum}}
             <span
@@ -125,6 +125,11 @@ export default {
     this.getPaymentTrend();
   },
   methods: {
+    toPersent(num) {
+      let str = Number(num*100);
+      str+='%';
+      return str;
+    },
     /*
      **属性比例
      */
@@ -139,8 +144,8 @@ export default {
           this.grandTotal = response.memberNum + response.customerNum;
           this.data1 = Object.assign({}, response);
           let arr = [];
-          arr.push({ value: 10, name: "非会员" }, { value: 20, name: "会员" });
-          //arr.push({value: response.customerNum ,name: '非会员'},{value: response.memberNum ,name: '会员'});
+          //arr.push({ value: 10, name: "非会员" }, { value: 20, name: "会员" });
+          arr.push({value: response.customerNum ,name: '非会员'},{value: response.memberNum ,name: '会员'});
           this.$refs.ip1.con(arr);
         })
         .catch(error => {
