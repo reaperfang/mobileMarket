@@ -14,24 +14,6 @@ export function flowAnalysis(data) {
     data
   })
 }
-//平均停留时间
-export function residetime(data) {
-  return request({
-    target: 'ECHART-AVERAGE-RESIDE-TIME',
-    method: 'post',
-    apiType:'data',
-    data
-  })
-}
-//跳出率
-export function bouncerate(data) {
-  return request({
-    target: 'ECHART-BOUNCE-RATE',
-    method: 'post',
-    apiType:'data',
-    data
-  })
-}
 //访问次数
 export function pvady(data) {
   return request({
@@ -56,6 +38,24 @@ export function uvhour(data) {
     target: 'ECHART-UV-HOUR',
     method: 'post',
     apiType: 'data',
+    data
+  })
+}
+//平均停留时间
+export function residetime(data) {
+  return request({
+    target: 'ECHART-AVERAGE-RESIDE-TIME',
+    method: 'post',
+    apiType:'data',
+    data
+  })
+}
+//跳出率
+export function bouncerate(data) {
+  return request({
+    target: 'ECHART-BOUNCE-RATE',
+    method: 'post',
+    apiType:'data',
     data
   })
 }

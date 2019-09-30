@@ -26,24 +26,27 @@
             <ct1Table  :hotData="hotData"></ct1Table>
             <div class="c_line">
                 <span class="c_title">商品详情</span>
-                <span class="c_label">筛选日期：</span>
+                <span>
+                    <span class="c_label">筛选日期：</span>
                     <el-radio-group v-model="dateType" @change="changeDayM">
-                    <el-radio-button class="btn_bor" label="7">最近7天</el-radio-button>
-                    <el-radio-button class="btn_bor" label="15">最近15天</el-radio-button>
-                    <el-radio-button class="btn_bor" label="30">最近30天</el-radio-button>
-                    <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
-                </el-radio-group>
-                <div class="input_wrap" v-if="dateType == 4">
-                    <el-date-picker
-                        v-model="range"
-                        type="daterange"
-                        range-separator="—"
-                        value-format="yyyy-MM-dd"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        @change="changeTime"
-                    ></el-date-picker>
-                </div>
+                        <el-radio-button class="btn_bor" label="7">最近7天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="15">最近15天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="30">最近30天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="4">自定义</el-radio-button>
+                    </el-radio-group>
+                </span>
+            </div>
+            <div class="input_wrap" v-if="dateType == 4">
+                <span></span>
+                <el-date-picker
+                    v-model="range"
+                    type="daterange"
+                    range-separator="—"
+                    value-format="yyyy-MM-dd"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    @change="changeTime"
+                ></el-date-picker>
             </div>
             <ct2Table style="margin-top: 26px" :listObj="listObj" @getProductDetails="getProductDetails"></ct2Table>
         </div>
@@ -72,21 +75,16 @@ export default {
             dataObj:{},
             Condition:[],
             hotData:[],
-            listObj:{}
+            listObj:[]
         }
     },
     computed: {},
     created(){
-        // this.init()
-        // this.getGeneralCondition()
-        // this.getHotGoods()
+        this.getGeneralCondition()
+        this.getHotGoods()
         this.getProductDetails()
     },
     methods:{
-        // init(){
-        //     let date = utils.formatDate(new Date(),"yyyy-MM-dd hh:mm:ss")
-        //     this.endTime = date
-        // },
         //获取商品总况
         getGeneralCondition(){
             this.Condition = datumCont.goodsTotleData
@@ -118,18 +116,27 @@ export default {
                 this.$message.error(error);
             });
         },
+
         // 获取热销商品
         getHotGoods(){
             let data ={
                 channel:this.visitSourceType
             }
             this._apis.data.hotGoods(data).then(response => {
-                console.log('res2',response)
-                this.hotData = response.shopHotSellGoodsList
-        }).catch(error => {
-          this.$message.error(error);
-        });
+                this.hotData = []
+                let arr = Object.keys(response) 
+                if(arr.length != 0){
+                    let data = response
+                    for(let key in data){
+                        let goodsObj = data[key]
+                        this.hotData.push(goodsObj)
+                    }                
+                }
+            }).catch(error => {
+                this.$message.error(error);
+            });
         },
+
         // 获取商品详情
         getProductDetails(){
             let data ={
@@ -139,8 +146,7 @@ export default {
                 endTime:this.endTime,
             }
             this._apis.data.productDetails(data).then(response => {
-                console.log('res3',response)
-                this.listObj = response
+                response && (this.listObj = response)
         }).catch(error => {
           this.$message.error(error);
         });
@@ -206,22 +212,26 @@ export default {
         .c_line{
             padding-top: 30px;
             border-top: 1px dashed #D3D3D3;
-            .input_wrap{
-                width: 220px;
-                display: inline-block;
-            }
+            display:flex;
+            justify-content:space-between;
             span{
                 color: #655EFF;
-                margin-left: 20px;
+                // margin-left: 20px;
                 &.c_title{
                     font-weight: bold;
                     color: #474C53;
                 }
                 &.c_label{
-                    margin-left: 300px;
+                    // margin-left: 300px;
                     color: #474C53;
                 }
             }
+        }
+        .input_wrap{
+            width: 100%;
+            margin-top:10px;
+            display:flex;
+            justify-content:flex-end;
         }
     }
 }

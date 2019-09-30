@@ -50,6 +50,7 @@ export default {
       }
     },
     con(n, t, type, l) {
+      console.log('data',n)
       this.option = {
         title: {
           text: ["浏览/访问"]
@@ -84,20 +85,23 @@ export default {
             name: "访客",
             type: "line",
             stack: "总量",
-            data: this.flow['yAxis']
+            data: this.flow['fk']
           },
           {
             name: "浏览",
             type: "line",
             stack: "总量",
-            data: this.flow['yAxis'] 
+            data: this.flow['ll'] 
           }
         ]
       };
-      this.flow = n;
+      this.flow = {
+        xAxis:n.xAxis,
+        fk:n.series[0] && n.series[0].data,
+      }
       this.type = type;
       this.nearDay(type,l);
-      this.makeOption(n);
+      this.makeOption(this.flow);
       this.option.xAxis.data = this.flow.xAxis;
       this.oChart.setOption(this.option, true);
     },

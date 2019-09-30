@@ -20,6 +20,7 @@
         ref="skuTable"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
         :default-sort="{prop: 'date', order: 'descending'}"
+        @select="handelSelect"
       >
         <el-table-column type="selection" prop="choose" label="选择"></el-table-column>
         <el-table-column prop="goodsInfo.id" label="SKU"></el-table-column>
@@ -57,10 +58,14 @@ export default {
       skuList: [],
       total: 0,
       pageSize: 10,
-      startIndex: 1
+      startIndex: 1,
+      selections: []
     };
   },
   methods: {
+    handelSelect(val,row) {
+      this.selections.push(row);
+    },
     handleSizeChange(val) {
       this.getSkuList(1, val);
       this.pageSize = val;
@@ -69,11 +74,28 @@ export default {
       this.getSkuList(val, this.pageSize);
     },
     submit() {
-        let selection = this.$refs.skuTable.selection;
         let selectedIds = [];
-        selection.map((v) => {
+        this.selections.map((v) => {
             selectedIds.push(v.goodsInfo.id);
         });
+        // selectedIds = selectedIds.filter((item,index) => {
+        //   return selectedIds.indexOf(item, 0) === index; 
+        // });
+        let tmp = [];
+        selectedIds.concat().sort().sort(function(a,b) {
+　　　　　　if(a==b && tmp.indexOf(a) === -1) 
+           tmp.push(a);
+　　　　});
+        if(tmp.length > 0) {
+          tmp.map((v) => {
+            for(let i = 0; i<selectedIds.length;i++) {
+              if(selectedIds[i] == v) {
+                selectedIds.splice(i,1);
+                i--;
+              }
+            }
+          })
+        }
         selectedIds = selectedIds.join(',');
         this.$emit('getSelected', selectedIds);
     },
@@ -128,6 +150,7 @@ export default {
               v.goodsInfo.specs = v.goodsInfo.specs.replace(/{|}|"|"/g,"");
           })
           this.skuList = [].concat(response.list);
+          this.total = response.total;
           let productInfoIds;
           if(this.data.productInfoIds.indexOf(',') !== -1) {
             productInfoIds = this.data.productInfoIds.split(',');
@@ -145,7 +168,6 @@ export default {
                 })
             })
           }
-          this.total = response.total;
         })
         .catch(error => {
           console.log(error);
