@@ -246,6 +246,66 @@ export default {
     submit(formName) {
       this.$refs[formName].validate((valid) => {
           if (valid) {
+            if(this.tableData.some(val => !/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/.test(val.freight))) {
+                this.$message({
+                  message: '运费仅支持输入正数，允许小数点后两位',
+                  type: 'warning'
+                });
+                return
+              }
+              if(this.tableData.some(val => !/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/.test(val.renew))) {
+                this.$message({
+                  message: '续费仅支持输入正数，允许小数点后两位',
+                  type: 'warning'
+                });
+                return
+              }
+            if(this.ruleForm.calculationWay == 1) {
+              if(this.tableData.some(val => !/^[1-9]\d*$/.test(val.theFirst))) {
+                this.$message({
+                  message: '首件仅支持正整数',
+                  type: 'warning'
+                });
+                return
+              }
+              if(this.tableData.some(val => !/^[1-9]\d*$/.test(val.superaddition))) {
+                this.$message({
+                  message: '续件仅支持正整数',
+                  type: 'warning'
+                });
+                return
+              }
+            } else if(this.ruleForm.calculationWay == 2) {
+              if(this.tableData.some(val => !/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,3})?$/.test(val.theFirst))) {
+                this.$message({
+                  message: '首重仅支持输入正数，允许小数点后三位',
+                  type: 'warning'
+                });
+                return
+              }
+              if(this.tableData.some(val => !/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,3})?$/.test(val.superaddition))) {
+                this.$message({
+                  message: '续重仅支持输入正数，允许小数点后三位',
+                  type: 'warning'
+                });
+                return
+              }
+            } else if(this.ruleForm.calculationWay == 3) {
+              if(this.tableData.some(val => !/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,3})?$/.test(val.theFirst))) {
+                this.$message({
+                  message: '首体积仅支持输入正数，允许小数点后三位',
+                  type: 'warning'
+                });
+                return
+              }
+              if(this.tableData.some(val => !/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,3})?$/.test(val.superaddition))) {
+                this.$message({
+                  message: '续体积仅支持输入正数，允许小数点后三位',
+                  type: 'warning'
+                });
+                return
+              }
+            }
             if(this.$route.query.id) {
               if(this.$route.query.mode == 'copy') {
                 this.add()

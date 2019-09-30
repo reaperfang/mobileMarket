@@ -1,6 +1,21 @@
 <template>
   <div class="electronic-face-sheet">
     <section class="search">
+      <p class="title">
+        电子面单 
+        <i class="el-icon-warning" v-popover:popover></i>
+        <el-popover
+              ref="popover"
+              placement="right"
+              width="400"
+              v-model="popVisible"
+              trigger="hover"
+          >
+              <p class="p_title">说明：</p>
+              <p>电子面单服务和物流轨迹查询服务是与第三方快递鸟合作，开启服务需注册快递鸟会员，相关费用直接与快递鸟结算。</p>
+              <p>目前快递鸟电子面单仅支持以下快递公司：顺丰速运、EMS、宅急送、圆通速递、百世快递、中通快递、韵达速递、申通快递、德邦快递、优速快递、京东快递、信丰物流、安能快递、国通快递、天天快递、跨越速运、邮政快递包裹、中铁快运、邮政国内标快、远成快运、全一快递、速尔快递、品骏快递。</p>
+          </el-popover>
+      </p>
       <el-form :inline="true" :model="formInline" class="form-inline">
         <div class="row justify-between">
           <div class="col">
@@ -86,7 +101,8 @@ export default {
         startTime: '',
         endTime: ''
       },
-      loading: false
+      loading: false,
+      popVisible: false
     };
   },
   created() {
@@ -155,12 +171,19 @@ export default {
     background-color: #fff;
     padding: 20px;
     margin-bottom: 20px;
+    .title {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
     &.search {
       .resetting {
         margin-right: 7px;
       }
     }
   }
+}
+/deep/ .el-icon-warning:before {
+  color: $grayColor;
 }
 </style>
 
