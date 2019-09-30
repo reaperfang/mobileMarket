@@ -194,8 +194,12 @@ export default {
         delete(node, data) {
             this.confirm({title: '立即删除', icon: true, text: '删除后此分类无法展示，确认删除吗？'}).then(() => {
                 this._apis.goods.deleteCategory({id: node.data.id}).then((res) => {
+                    this.$notify({
+                                title: '成功',
+                                message: '删除成功！',
+                                type: 'success'
+                            });
                     this.getList()
-
                     if(res.msg == 'existProduct') {
                         this.confirm({title: '转移商品', icon: false, text: '是否将此分类其下的全部商品转移到其他分类中？'}).then(() => {
                             this.currentData = node.data.id
@@ -204,7 +208,10 @@ export default {
                         })
                     }
                 }).catch(error => {
-
+                    this.$notify.error({
+                                title: '错误',
+                                message: error
+                            });
                 })
             })
         },
