@@ -207,15 +207,6 @@ export function memberInformation(data) {
       data
     })
   }
-//获取会员和口碑的过滤数据
-export function memberInforNum(data) {
-    return request({
-      target:'FILTER-SET-DATA-PROCESSOR',
-      method: 'post',
-      apiType: 'matrix',
-      data
-    })
-  }
 // 积分消耗 
 export function integralconsumption(data) {
     return request({
@@ -345,3 +336,13 @@ export function ownershipReasonQuery(data) {
       data
     })
  }
+//获取会员和口碑的过滤数据
+export function memberInforNum(data) {
+  return request({
+    target:'FILTER-SET-DATA-PROCESSOR',
+    method: 'post',
+    apiType: 'matrix',
+    data
+  })
+}
+

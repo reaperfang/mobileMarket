@@ -28,7 +28,7 @@
                 <el-form-item label="消耗次数">
                     <div class="input_wrap2">
                         <el-select v-model="form.scorePaymentCountRange" @change="getData">
-                            <el-option v-for="item in consumTimes" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                            <el-option v-for="item in consumTimes" :label="item.name" :value="item.value" :key="item.id"></el-option>
                         </el-select>
                     </div>
                 </el-form-item>
@@ -103,23 +103,23 @@ export default {
             listObj:{}, //表格数据
             totalCount:0,//总条数
             consumTimes: [
-                {
-                    id: "1-5",
-                    name: "1-5次"
-                },
-                {
-                    id: "5-10",
-                    name: "5-10次"
-                },{
-                    id: "10-15",
-                    name: "10-15次"
-                },{
-                    id: "15",
-                    name: "15次以上"
-                },{
-                    id: "null",
-                    name: "不限"
-                }
+                // {
+                //     id: "1-5",
+                //     name: "1-5次"
+                // },
+                // {
+                //     id: "5-10",
+                //     name: "5-10次"
+                // },{
+                //     id: "10-15",
+                //     name: "10-15次"
+                // },{
+                //     id: "15",
+                //     name: "15次以上"
+                // },{
+                //     id: "null",
+                //     name: "不限"
+                // }
             ],
             customType: [
                 {
@@ -140,7 +140,8 @@ export default {
         }
     },
     created(){
-        this.goSearch()
+        this.goSearch();
+        this.memberInforNum();
     },
     methods: {
         checkDay(item) {
@@ -187,6 +188,23 @@ export default {
             }).catch(error => {
                 this.$message.error(error);
             });
+        },
+        //消耗次数
+          memberInforNum(){
+            this._apis.data.memberInforNum({type:4}).then(res => { 
+                  let pages = [];
+                  for(let item of res){
+                      pages.push({
+                          id:item.id,
+                          value:item.minNum+'-'+ item.maxNum,
+                          name:item.name
+                      })
+                  }
+                  this.consumTimes = pages;
+                // console.log('res',res)
+            }).catch(error =>{
+                console.log('error',error)
+            })
         },
         // 重置
         reSet(){
