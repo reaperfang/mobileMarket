@@ -171,9 +171,9 @@ export default {
       ruleForm:{
         searchType:'tradeDetailSn',
         searchValue:'',
-        businessType:'',
-        payWay:'',
-        tradeType:'',
+        businessType:0,
+        payWay:-1,
+        tradeType:-1,
         amountMin:'',
         amountMax:'',
         timeValue:'',
@@ -256,15 +256,16 @@ export default {
       )
     },
     init(orde){
+      console.log(this.ruleForm.businessType == 0)
       let query = {
         tradeDetailSn:'',
         relationSn:'',
         wechatTradeSn:'',
-        businessType:'',
-        tradeType:'',
-        payWay:'',
-        amountMin:'',
-        amountMax:'',
+        businessType:this.ruleForm.businessType == 0 ? null : this.ruleForm.businessType,
+        tradeType:this.ruleForm.tradeType == -1 ? null : this.ruleForm.tradeType,
+        payWay:this.ruleForm.payWay == -1 ? null : this.ruleForm.payWay,
+        amountMin:this.ruleForm.amountMin,
+        amountMax:this.ruleForm.amountMax,
         tradeTimeStart:'',
         tradeTimeEnd:'',
         sort:orde,

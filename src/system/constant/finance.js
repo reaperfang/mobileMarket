@@ -8,6 +8,7 @@ export default {
     ],
     //收支明细---业务类型
     rebusinessTypes:[
+        { value: 0, label: '全部'},
         { value: 1, label: '订单收款' },
         { value: 2, label: '售后退款' },
         { value: 3, label: '退还奖励' },
@@ -16,6 +17,7 @@ export default {
     ],
     //收支明细---支付方式
     payTypes:[
+        { value: -1, label: '全部' },
         { value: 0, label: '微信支付' },
         { value: 1, label: '货到付款' },
         { value: 2, label: '余额支付' },
@@ -23,6 +25,7 @@ export default {
     ],
     //收支明细---收支类型
     tradeTypes:[
+        { value: -1, label: '全部' },
         { value: 0, label: '收入' },
         { value: 1, label: '支出' }
     ],
