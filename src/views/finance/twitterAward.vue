@@ -78,7 +78,7 @@ export default {
   components:{ taTable },
   data() {
     return {
-      flag:1,
+      flag:4,
       survey:{
         hongbao:0,
         integrate:0,

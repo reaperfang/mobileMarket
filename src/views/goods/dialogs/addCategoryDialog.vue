@@ -16,13 +16,13 @@
                 </el-form-item> -->
                 <template v-if="data.add && data.level === 1">
                     <el-form-item label="上级分类：">
-                        <span>第一级：{{data.categoryName}}</span>
+                        <span>第一级：{{data.name}}</span>
                     </el-form-item>
                 </template>
                 <template v-else-if="data.add && data.level === 2">
                     <el-form-item label="上级分类：">
                         <span>第一级：{{level1Title}}</span>
-                        <span style="margin-left: 20px;">第二级：{{data.categoryName}}</span>
+                        <span style="margin-left: 20px;">第二级：{{data.name}}</span>
                     </el-form-item>
                 </template>
                 <el-form-item label="分类名称：" prop="name">

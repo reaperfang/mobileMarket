@@ -325,7 +325,7 @@
                 <div>
                     <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.status">
                         <el-radio :label="0">放入仓库</el-radio>
-                        <el-radio disabled :label="1">立即上架</el-radio>
+                        <el-radio :disabled="editor" :label="1">立即上架</el-radio>
                         <span @click="timelyShelvingHandler"><el-radio :label="2">定时上架</el-radio></span>
                         <span class="autoSaleTime">{{ruleForm.autoSaleTime}}</span>
                     </el-radio-group>
