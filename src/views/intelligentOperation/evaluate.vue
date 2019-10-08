@@ -28,20 +28,14 @@
                         </el-form-item>
                         <el-form-item label="满意率">
                             <div class="input_wrap2">
-                                <el-select v-model="form.niceRatioRange">
-                                    <el-option label="不限" value="null"></el-option>
-                                    <el-option label="0-1%" value="0-0.01"></el-option>
-                                    <el-option label="2-5%" value="0.02-0.05"></el-option>
-                                    <el-option label="5%以上" value="0.05"></el-option>
+                                <el-select v-model="form.niceRatioRange" @change="changeTime">
+                                    <el-option v-for="item in satisfaction" :label="item.name" :value="item.value" :key="item.id"></el-option>
                                 </el-select>
                             </div>
                             <span class="span_label">差评率</span>
                             <div class="input_wrap2 marR20">
-                                <el-select v-model="form.badRatioRange">
-                                    <el-option label="不限" value="null"></el-option>
-                                    <el-option label="0-1%" value="0-0.01"></el-option>
-                                    <el-option label="2-5%" value="0.02-0.05"></el-option>
-                                    <el-option label="5%以上" value="0.05"></el-option>
+                                <el-select v-model="form.badRatioRange" @change="changeTime">
+                                    <el-option v-for="item in badreviews" :label="item.name" :value="item.value" :key="item.id"></el-option>
                                 </el-select>
                             </div>
                             <span class="span_label">会员类型</span>
@@ -90,6 +84,8 @@ export default {
             listObj:{
                
             },
+            satisfaction:[],  //满意率
+            badreviews:[],  //差评率
             pickerMinDate: '',
             dateRange: [],
             pickerOptions: {
@@ -126,10 +122,46 @@ export default {
                 this.listObj = response;
             })
         },
-
+        //获取评价满意率
+         memberInforNum(){
+            this._apis.data.memberInforNum({type:5}).then(res => { 
+                let pleased = [];
+                for(let item of res){
+                    pleased.push({
+                        id: item.id,
+                        value: item.minNum+'-'+ item.maxNum,
+                        name: item.name
+                    })
+                }
+                console.log('res',res)
+                console.log(pleased)
+                this.satisfaction = pleased
+            }).catch(error =>{
+                console.log('error',error)
+            })
+        },
+        //获取评价差评率
+          membercha(){
+            this._apis.data.memberInforNum({type:7}).then(res => { 
+                let differences = [];
+                for(let item of res){
+                    differences.push({
+                        id: item.id,
+                        value: item.minNum+'-'+item.maxNum,
+                        name: item.name
+                    })
+                }
+                // console.log('res',res)
+                // console.log(differences)
+                this.badreviews = differences
+            }).catch(error =>{
+                console.log('error',error)
+            })
+        },
         changeTime(val){
             this.form.startTime = val[0]
             this.form.endTime = val[1]
+            console.log(this.form)
         },
         // 重置
         resetAll(){
@@ -174,7 +206,9 @@ export default {
         }
     },
     created(){
-        this.getEvaluation()
+        this.getEvaluation();
+        this.memberInforNum();
+        this.membercha();
     }
 }
 </script>
