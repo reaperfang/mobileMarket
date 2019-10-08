@@ -1,7 +1,8 @@
 <template>
     <div class="c_container">
         <div class="c_top clearfix">
-            <span class="addBlack" @click="showAddBlack">加入黑名单</span>
+            <span class="addBlack" @click="showAddBlack" v-if="clientInfoById.status == 0">加入黑名单</span>
+            <span class="removeBlack" @click="showRemoveBlack" v-else>移除黑名单</span>
             <div class="c_top_l fl">
                 <p>基本信息：</p>
                 <img :src="clientInfoById.headIcon" alt="">
@@ -98,7 +99,7 @@
                 </div>
                 <div class="assets_item">
                     <img src="../../assets/images/client/icon_money.png" alt="" @click="showAdjustBalance" class="pointer">
-                    <p @click="showBalanceList">余额：<span class="p_style">{{clientInfoById.balance}}</span>元</p>
+                    <p @click="showBalanceList">余额：<span class="p_style">{{clientInfoById.balance || 0}}</span>元</p>
                     <span @click="showAdjustBalance">变更</span>
                 </div>
                 <div class="assets_item">
@@ -161,6 +162,7 @@ import discountCouponDialog from './dialogs/clientInfo/discountCouponDialog';
 import issueCouponDialog from './dialogs/clientInfo/issueCouponDialog';
 import issueCodeDialog from './dialogs/clientInfo/issueCodeDialog';
 import addBlackDialog from './dialogs/clientInfo/addBlackDialog';
+import removeBlackDialog from './dialogs/clientInfo/removeBlackDialog';
 import sendCardDialog from './dialogs/clientInfo/sendCardDialog';
 import changeCardDialog from './dialogs/clientInfo/changeCardDialog';
 import scoreListDialog from './dialogs/clientInfo/scoreListDialog';
@@ -174,6 +176,7 @@ export default {
         discountCouponDialog, 
         issueCouponDialog, 
         addBlackDialog,
+        removeBlackDialog,
         sendCardDialog,
         changeCardDialog,
         adjustCreditDialog,
@@ -251,7 +254,7 @@ export default {
             this.dialogVisible = true;
             this.currentDialog = "balanceListDialog";
             this.currentData.balance = this.clientInfoById.balance;
-            this.currentData.id = "1";
+            this.currentData.id = this.userId;
         },
         showAdjustBalance() {
             this.hackReset = false;
@@ -282,7 +285,8 @@ export default {
             })
             this.dialogVisible = true;
             this.currentDialog = "discountCouponDialog";
-            this.currentData.couponType = type;
+            this.currentData.type = type;
+            this.currentData.id = this.userId;
             this.currentData.couponList = [].concat(this.couponList);
             this.currentData.codeList = [].concat(this.codeList);
         },
@@ -312,6 +316,12 @@ export default {
             })
             this.dialogVisible = true;
             this.currentDialog = "addBlackDialog";
+            this.currentData.memberSn = this.clientInfoById.memberSn;
+            this.currentData.id = this.clientInfoById.id;
+        },
+        showRemoveBlack() {
+            this.dialogVisible = true;
+            this.currentDialog = "removeBlackDialog";
             this.currentData.memberSn = this.clientInfoById.memberSn;
             this.currentData.id = this.clientInfoById.id;
         },
@@ -429,21 +439,17 @@ export default {
             }
         },
         getUsedCoupon() {
-            let params = {usedType:"1", couponType: "0", memberId: "1"};
+            let params = {usedType:"1", couponType: "0", memberId: this.userId};
             this._apis.client.getUsedCoupon(params).then((response) => {
                 response.map((v) => {
                     this.couponList.push(v.appCoupon);
                 })
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         getUsedCode() {
-            let params = {usedType:"1", couponType: "1", memberId: "1"};
+            let params = {usedType:"1", couponType: "1", memberId: this.userId};
             this._apis.client.getUsedCoupon(params).then((response) => {
                 response.map((v) => {
                     this.codeList.push(v.appCoupon);
@@ -516,6 +522,18 @@ export default {
             padding-top: 39px;
             color: #655EFF;
             background: url('../../assets/images/client/icon_addblack2.png') 11px 0 no-repeat;
+            left: 980px;
+            top: -3px;
+            cursor: pointer;
+        }
+        .removeBlack{
+            display: block;
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            padding-top: 39px;
+            color: #FD4C2B;
+            background: url('../../assets/images/client/icon_remove2.png') 11px 0 no-repeat;
             left: 980px;
             top: -3px;
             cursor: pointer;
