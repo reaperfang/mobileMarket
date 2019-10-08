@@ -6,15 +6,15 @@
                 <el-form-item label="搜索分类：">
                     <el-input v-model="formInline.name" placeholder="请输入分类名称..."></el-input>
                 </el-form-item>
-                <el-form-item label="分类状态：">
+                <!-- <el-form-item label="分类状态：">
                     <el-select v-model="formInline.enable">
                         <el-option label="所有状态" value=""></el-option>
                         <el-option label="启用" :value="1"></el-option>
                         <el-option label="禁用" :value="0"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item>
-                    <el-button type="primary" @click="getList">查询</el-button>
+                    <el-button type="primary" @click="getTreeList">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -36,7 +36,7 @@
 			:expand-on-click-node="false"
 			:render-content="renderContent">
 		</el-tree>
-        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add" :data="currentData" :onSubmit="getList"></component>
+        <component v-if="dialogVisible" :is="currentDialog" :dialogVisible.sync="dialogVisible" @submit="submit" :add="add" :data="currentData" :onSubmit="getTreeList"></component>
     </div>
 </template>
 <script>
@@ -53,8 +53,8 @@ export default {
             items: [],
             loading:false,
             defaultProps: {
-                children: 'childrenList',
-                label: 'categoryName'
+                children: 'childrenCatalogs',
+                label: 'name'
             },
             categoryData: [],
             currentDialog: '',
@@ -65,9 +65,21 @@ export default {
         }
     },
     created() {
-        this.getList()
+        //this.getList()
+        this.getTreeList()
     },
     methods: {
+        getTreeList() {
+            this.loading = true
+            this._apis.goods.fetchTreeCategoryList({
+                name: this.formInline.name,
+            }).then((res) => {
+                this.categoryData = res
+                this.loading = false
+            }).catch(error => {
+                this.loading = false
+            })
+        },
         onSubmit() {
 
         },
@@ -119,7 +131,7 @@ export default {
             if(node.level < 3) {
                 return (
                     <div class="treeRow">
-                        <span class="td first">{data.categoryName}</span>
+                        <span class="td first">{data.name}</span>
                         <span class="td state">{data.enable === 1 ? '启用' : '禁用' }</span>
                         <span class="td operate">
                             {
@@ -142,7 +154,7 @@ export default {
             } else {
                 return (
                     <div class="treeRow">
-                        <span class="td first">{data.categoryName}</span>
+                        <span class="td first">{data.name}</span>
                         <span class="td state">{data.enable === 1 ? '启用' : '禁用' }</span>
                         <span class="td operate">
                             {
@@ -186,7 +198,7 @@ export default {
                 _enable = 1
             }
             this._apis.goods.enableCategory({id: node.data.id, enable: _enable}).then((res) => {
-                this.getList()
+                this.getTreeList()
             }).catch(error => {
 
             })
@@ -199,7 +211,7 @@ export default {
                                 message: '删除成功！',
                                 type: 'success'
                             });
-                    this.getList()
+                    this.getTreeList()
                     if(res.msg == 'existProduct') {
                         this.confirm({title: '转移商品', icon: false, text: '是否将此分类其下的全部商品转移到其他分类中？'}).then(() => {
                             this.currentData = node.data.id
@@ -216,7 +228,7 @@ export default {
             })
         },
         submit() {
-            this.getList()
+            this.getTreeList()
         },
         getList() {
             this.loading = true
