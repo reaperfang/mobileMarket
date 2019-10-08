@@ -272,6 +272,16 @@ export function transferGoods(data) {
   })
 }
 
+// 商品分类树形列表
+export function fetchTreeCategoryList(data) {
+  return request({
+    apiType: 'goods',
+    method: 'post',
+    target: 'PRODUCT-CATALOG-TREE-LIST-PROCESSOR',
+    data
+  })
+}
+
 
 
 

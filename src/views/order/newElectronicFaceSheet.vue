@@ -37,7 +37,17 @@
             </el-form-item>
             <el-form-item label="快递公司账号" prop="expressCompanyAccount">
                 <el-input v-model="ruleForm.expressCompanyAccount" placeholder="请输入，不超过20个字符"></el-input>
-                <span class="account-explain">查看账号说明</span>
+                <span v-popover:popover class="account-explain">查看账号说明</span>
+                <el-popover
+                    ref="popover"
+                    placement="right"
+                    width="400"
+                    v-model="popVisible"
+                    trigger="hover"
+                >
+                    <p class="p_title">账号说明：</p>
+                    <p>快递公司账号即在已选择的快递公司申请的客户ID和密码，若尚未在该快递公司申请账号。</p>
+                </el-popover>
             </el-form-item>
             <el-form-item label="密码" prop="expressCompanyPassword">
                 <el-input show-password v-model="ruleForm.expressCompanyPassword" placeholder="请输入，不超过20个字符"></el-input>
@@ -74,6 +84,7 @@ export default {
         }
       };
         return {
+          popVisible: false,
             ruleForm: {
                 name: '',
                 expressCompany: '',
@@ -238,8 +249,11 @@ export default {
       width: 50%;
       border-right: 1px solid #cacfcb;
       .account-explain {
-        margin-left: -96px;
+        margin-left: -282px;
+        margin-top: 18px;
         color: $globalMainColor;
+        position: absolute;
+        cursor: pointer;
       }
       /deep/ .el-input {
           width: auto;
