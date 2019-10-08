@@ -120,6 +120,7 @@ export default {
                     message: "加入黑名单成功",
                     type: 'success'
                 });
+                this.$emit('refreshPage');
             }).catch((error) => {
                 console.log(error);
                 // this.$notify.error({

@@ -4,19 +4,20 @@
     <el-button @click="exportToLocal" class="export_btn" v-permission="['客户', '全部客户', '默认页面', '客户导出']">导出</el-button>
     <el-table
       :data="memberList"
+      :row-key="getRowKeys"
       ref="allClientTable"
       style="width: 100%"
       :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
       :default-sort="{prop: 'date', order: 'descending'}"
       v-loading="loading"
     >
-      <el-table-column type="selection"></el-table-column>
+      <el-table-column type="selection" :reserve-selection="true"></el-table-column>
       <el-table-column prop="memberSn" label="客户ID"></el-table-column>
       <el-table-column label="客户信息">
         <template slot-scope="scope">
           <div class="clearfix icon_cont">
-            <span class="fl">{{scope.row.nickName}}</span>
-            <img :src="scope.row.headIcon?scope.row.headIcon:require('../../../../assets/images/client/head_default.png')" alt="" class="headIcon fr">
+            <span class="fl">{{scope.row?scope.row.nickName:""}}</span>
+            <img :src="scope.row?scope.row.headIcon:require('../../../../assets/images/client/head_default.png')" alt="" class="headIcon fr">
           </div>
         </template>
       </el-table-column>
@@ -24,10 +25,10 @@
       <el-table-column label="身份">
         <template slot-scope="scope">
           <div class="clearfix iden_cont">
-            <span class="fl">{{scope.row.memberType}}</span>
+            <span class="fl">{{scope.row?scope.row.memberType:""}}</span>
             <div class="fr">
-              <span>{{scope.row.levelName}}</span>
-              <span>{{scope.row.cardLevelName}}</span>
+              <span>{{scope.row?scope.row.levelName:""}}</span>
+              <span>{{scope.row?scope.row.cardLevelName:""}}</span>
             </div>
           </div>
         </template>
@@ -118,6 +119,9 @@ export default {
     //this.getMembers(1, this.pageSize);
   },
   methods: {
+    getRowKeys(row) {
+      return row.id
+    },
     exportToLocal() {
       let selection = this.$refs.allClientTable.selection;
       let idList = []
@@ -232,7 +236,9 @@ export default {
           this.loading = false;
           let list = response.list;
           list.map((v) => {
-            v.memberType = v.memberType == 1 ? '会员':'客户'
+            if(v) {
+              v.memberType = v.memberType == 1 ? '会员':'客户'
+            }
           })
           this.memberList = [].concat(list);
           this.total = response.total;

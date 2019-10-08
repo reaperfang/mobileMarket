@@ -136,7 +136,6 @@ export default {
                 let i = response.list.findIndex((value,index,arr) => {
                     return value.name == "";
                 });
-                console.log(i)
                 if(i !== -1) {
                     this.$set(response.list[i], 'isGray', false);
                 }else{
