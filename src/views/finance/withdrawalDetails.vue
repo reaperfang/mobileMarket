@@ -147,7 +147,7 @@ export default {
         searchType:'tradeDetailSn',
         searchValue:'',
         timeValue:'',
-        status:'',
+        status:-1,
         memberSn:''
       },
       dataList:[ ],
@@ -180,8 +180,8 @@ export default {
         applyTimeStart:'',
         applyTimeEnd:'',
         status:'',
-        startIndex:this.ruleForm.startIndex,
-        pageSize:this.ruleForm.pageSize
+        startIndex:'',
+        pageSize:''
       }
       for(let key  in query){
         if(this.ruleForm.searchType == key){
@@ -193,6 +193,7 @@ export default {
           }
         }
       }
+      query.status = this.ruleForm.status == -1 ? null : this.ruleForm.status
       let timeValue = this.ruleForm.timeValue
       if(timeValue){
         query.applyTimeStart = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")

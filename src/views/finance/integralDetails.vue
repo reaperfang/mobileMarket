@@ -116,7 +116,7 @@ export default {
       inline:true,
       ruleForm:{
         memberInfoId:'',
-        businessTypeId:'',
+        businessTypeId:-1,
         timeValue:''
       },
       dataList:[ ],
@@ -135,7 +135,7 @@ export default {
     init(){
       let query = {
         memberInfoId:this.ruleForm.memberInfoId,
-        businessTypeId:this.ruleForm.businessTypeId,
+        businessTypeId:this.ruleForm.businessTypeId == -1 ? null : this.ruleForm.businessTypeId,
         startTime:'',
         endTime:'',
         startIndex:this.ruleForm.startIndex,

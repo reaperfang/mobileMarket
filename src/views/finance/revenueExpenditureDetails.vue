@@ -256,21 +256,20 @@ export default {
       )
     },
     init(orde){
-      console.log(this.ruleForm.businessType == 0)
       let query = {
         tradeDetailSn:'',
         relationSn:'',
         wechatTradeSn:'',
-        businessType:this.ruleForm.businessType == 0 ? null : this.ruleForm.businessType,
-        tradeType:this.ruleForm.tradeType == -1 ? null : this.ruleForm.tradeType,
-        payWay:this.ruleForm.payWay == -1 ? null : this.ruleForm.payWay,
-        amountMin:this.ruleForm.amountMin,
-        amountMax:this.ruleForm.amountMax,
+        businessType:'',
+        tradeType:'',
+        payWay:'',
+        amountMin:'',
+        amountMax:'',
         tradeTimeStart:'',
         tradeTimeEnd:'',
-        sort:orde,
-        startIndex:this.ruleForm.startIndex,
-        pageSize:this.ruleForm.pageSize
+        sort:'',
+        startIndex:'',
+        pageSize:''
       }
       for(let key  in query){
         if(this.ruleForm.searchType == key){
@@ -282,6 +281,10 @@ export default {
           }
         }
       }
+      query.businessType = this.ruleForm.businessType == 0 ? null : this.ruleForm.businessType
+      query.tradeType = this.ruleForm.tradeType == -1 ? null : this.ruleForm.tradeType
+      query.payWay = this.ruleForm.payWay == -1 ? null : this.ruleForm.payWay
+      query.sort = orde
       let timeValue = this.ruleForm.timeValue
       if(timeValue){
         query.tradeTimeStart = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
