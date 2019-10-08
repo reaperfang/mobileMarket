@@ -31,7 +31,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="operatorId"
+        prop="createUserName"
         label="操作人"
       >
       </el-table-column>
@@ -80,7 +80,9 @@ export default {
       dialogVisible: false,
       currentData:{},
       hackReset: false,
-      loading: false
+      loading: false,
+      startIndex: 1,
+      pageSize: 10
     };
   },
   computed: {
@@ -94,7 +96,7 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      this.getImportList(1, val);
+      this.getImportList(this.startIndex, val);
       this.pageSize = val;
     },
     handleCurrentChange(val) {

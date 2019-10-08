@@ -65,8 +65,8 @@ export default {
     return {
       hasCancel: true,
       activeName: "first",
-      couponType: '1',
-      codeType: "1",
+      couponType: '2',
+      codeType: "2",
       couponList: [],
       codeList:[],
       reciveMap: 
@@ -104,7 +104,7 @@ export default {
       this.$emit("sendDiscount");
     },
     getUsedCoupon(status) {
-      let params = {usedType:"1", couponType: "0", memberId: "1"};
+      let params = {usedType:"1", couponType: "0", memberId: this.data.id, usedStatus: status || this.couponType};
       if(status !== '2') {
         params.usedStatus = status;
       }
@@ -117,17 +117,10 @@ export default {
           })
       }).catch((error) => {
         console.log(error);
-          // this.$notify.error({
-          //     title: '错误',
-          //     message: error
-          // });
       })
     },
     getUsedCode(status) {
-      let params = {usedType:"1", couponType: "1", memberId: "1"};
-      if(status !== '2') {
-        params.usedStatus = status;
-      }
+      let params = {usedType:"1", couponType: "1", memberId: this.data.id, usedStatus:status || this.codeType};
       this._apis.client.getUsedCoupon(params).then((response) => {
           this.codeList = [];
           response.map((v) => {
@@ -137,17 +130,13 @@ export default {
           })
       }).catch((error) => {
         console.log(error);
-          // this.$notify.error({
-          //     title: '错误',
-          //     message: error
-          // });
       })
     },
-    getStatus(val) {
-      this.getUsedCoupon(val);
+    getStatus(status) {
+      this.getUsedCoupon(status);
     },
-    getCodeStatus(val) {
-      this.getUsedCode(val);
+    getCodeStatus() {
+      this.getUsedCode();
     }
   },
   computed: {
@@ -161,6 +150,11 @@ export default {
     }
   },
   mounted() {
+    if(this.data.type == '0') {
+      this.activeName = "first"
+    }else{
+      this.activeName = "second"
+    }
     this.getUsedCoupon();
     this.getUsedCode();
   },

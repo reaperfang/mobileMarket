@@ -50,6 +50,7 @@
       <div class="total">
         <span>全部 <em>{{total}}</em> 项</span>
         <span>
+         <el-button type="primary" @click="_routeTo('withdrawSet')">提现规则设置</el-button>
           <el-button type="primary" @click="batchCheck" v-permission="['财务', '提现明细', '默认页面', '批量审核']">批量审核</el-button>
           <el-button icon="document" @click='exportToExcel()' v-permission="['财务', '提现明细', '默认页面', '导出']">导出</el-button>
         </span>
@@ -146,7 +147,7 @@ export default {
         searchType:'tradeDetailSn',
         searchValue:'',
         timeValue:'',
-        status:'',
+        status:-1,
         memberSn:''
       },
       dataList:[ ],
@@ -179,8 +180,8 @@ export default {
         applyTimeStart:'',
         applyTimeEnd:'',
         status:'',
-        startIndex:this.ruleForm.startIndex,
-        pageSize:this.ruleForm.pageSize
+        startIndex:'',
+        pageSize:''
       }
       for(let key  in query){
         if(this.ruleForm.searchType == key){
@@ -192,6 +193,7 @@ export default {
           }
         }
       }
+      query.status = this.ruleForm.status == -1 ? null : this.ruleForm.status
       let timeValue = this.ruleForm.timeValue
       if(timeValue){
         query.applyTimeStart = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")

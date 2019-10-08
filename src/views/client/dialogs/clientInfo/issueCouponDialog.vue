@@ -8,10 +8,10 @@
         </div>
         <div class="fl r_block">
           <div class="sel_cont" v-for="(i,index) in selectList" :key="index">
-            <el-select v-model="i.appCouponId" style="margin-bottom: 10px">
+            <el-select v-model="i.appCouponId" style="margin-bottom: 10px" @change="handleChange">
               <el-option v-for="item in data.allCoupons" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
-            <el-input-number v-model="i.couponNum" :min="1"></el-input-number>
+            <el-input-number v-model="i.couponNum" :min="1" :max="10"></el-input-number>
             <span class="addMainColor pointer" @click="handleDelete(index)" style="margin-left: 20px">删除</span>
           </div>
           <span class="add pointer" @click="handleAdd">添加</span>
@@ -38,17 +38,41 @@ export default {
   methods: {
     submit() {
       this._apis.client.distributeCoupon(this.selectList).then((response) => {
-        console.log(response);
         this.$emit('refreshPage');
       }).catch((error) => {
         console.log(error);
       })
     },
     handleAdd() {
-      this.selectList.push({couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1",weChartNickname: this.data.weChartNickname});
+      if(this.selectList.length > 9) {
+        this.$notify({
+            title: '警告',
+            message: '发放优惠券不能超过10种',
+            type: 'warning'
+          });
+      }else{
+        this.selectList.push({couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1",weChartNickname: this.data.weChartNickname});
+      } 
     },
     handleDelete(index) {
       this.selectList.splice(index, 1);
+    },
+    handleChange(val) {
+      let i = 0;
+      if(this.selectList.length > 1) {
+        this.selectList.map((v) => {
+          if(v.appCouponId == val) {
+            i++;
+          }
+        });
+        if(i == 2) {
+          this.$notify({
+            title: '警告',
+            message: '不能选择重复的优惠券',
+            type: 'warning'
+          });
+        }
+      }
     }
   },
   computed: {

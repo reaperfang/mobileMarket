@@ -112,7 +112,7 @@ export default {
       inline:true,
       ruleForm:{
         tradeDetailSn:'',
-        businessType:'',
+        businessType:-1,
         timeValue:''
       },
       dataList:[ ],
@@ -146,7 +146,7 @@ export default {
     init(){
       let query = {
         tradeDetailSn:this.ruleForm.tradeDetailSn,
-        businessType:this.ruleForm.businessType,
+        businessType:this.ruleForm.businessType == -1 ? null : this.ruleForm.businessType,
         startTime:'',
         endTime:'',
         startIndex:this.ruleForm.startIndex,

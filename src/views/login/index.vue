@@ -127,15 +127,26 @@ export default {
             this.shopList = []
             let info = JSON.parse(localStorage.getItem('userInfo'))
             let arr = Object.keys(info.shopInfoMap) 
-            if(arr.length == 0){
+            if(arr.length == 0){//没有店铺时，提示去创建店铺
               this.dialogVisible = true
-            }else{
+            }else{//有店铺时
               let data = info.shopInfoMap
               for(let key in data){
                 let shopObj = data[key]
                 this.shopList.push(shopObj)
               }
-              this.showShopsDialog = true
+              if(this.shopList.length == 1){//一个店铺时，无店铺列表弹窗
+                this.$store.dispatch('getShopInfos',this.shopList[0]).then(() => {
+                  this.$router.push({ path: '/profile/profile' })
+                }).catch(error => {
+                  this.$notify.error({
+                    title: '失败',
+                    message: error
+                  })
+                })
+              }else{//多个店铺时，展示店铺列表弹窗
+                this.showShopsDialog = true
+              }
             }
           }).catch(error => {
             this.errorMsg = error

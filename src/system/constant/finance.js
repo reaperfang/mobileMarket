@@ -8,6 +8,7 @@ export default {
     ],
     //收支明细---业务类型
     rebusinessTypes:[
+        { value: 0, label: '全部'},
         { value: 1, label: '订单收款' },
         { value: 2, label: '售后退款' },
         { value: 3, label: '退还奖励' },
@@ -16,6 +17,7 @@ export default {
     ],
     //收支明细---支付方式
     payTypes:[
+        { value: -1, label: '全部' },
         { value: 0, label: '微信支付' },
         { value: 1, label: '货到付款' },
         { value: 2, label: '余额支付' },
@@ -23,6 +25,7 @@ export default {
     ],
     //收支明细---收支类型
     tradeTypes:[
+        { value: -1, label: '全部' },
         { value: 0, label: '收入' },
         { value: 1, label: '支出' }
     ],
@@ -33,6 +36,7 @@ export default {
     ],
     //提现明细---提现状态
     presentationStatus:[
+        { value: -1, label: '全部' },
         { value: 0, label: '待审核' },
         { value: 1, label: '处理中' },
         { value: 2, label: '成功' },
@@ -45,6 +49,7 @@ export default {
     ],
     //买家余额明细---交易类型
     transactionTypes:[
+        { value: -1, label: '全部' },
         { value: 1, label: '订单付款' },
         { value: 2, label: '售后退款' },
         { value: 3, label: '申请提现' },
@@ -56,6 +61,7 @@ export default {
     ],
     //积分明细---业务类型
     idbusinessTypes:[
+        { value: -1, label: '全部' },
         { value: 1, label: '登录' },
         { value: 2, label: '购买' },
         { value: 3, label: '复购' },
@@ -96,6 +102,7 @@ export default {
     ],
     //物流对账---电子面单---业务类型
     fsTypes:[
+        { value: -1, label: '全部' },
         { value: 0, label: '订单发货' },
         { value: 1, label: '售后发货' },
     ],

@@ -65,8 +65,8 @@
           prop="changeScore"
           label="变动积分">
           <template slot-scope="scope">
-            <span v-if="scope.row.changeType == 0"> + </span>
-            <span v-else> - </span>
+            <span v-if="scope.row.changeType == 1 || scope.row.changeType == 3"> - </span>
+            <span v-else> + </span>
             {{scope.row.changeScore}}
           </template>
         </el-table-column>
@@ -116,7 +116,7 @@ export default {
       inline:true,
       ruleForm:{
         memberInfoId:'',
-        businessTypeId:'',
+        businessTypeId:-1,
         timeValue:''
       },
       dataList:[ ],
@@ -135,7 +135,7 @@ export default {
     init(){
       let query = {
         memberInfoId:this.ruleForm.memberInfoId,
-        businessTypeId:this.ruleForm.businessTypeId,
+        businessTypeId:this.ruleForm.businessTypeId == -1 ? null : this.ruleForm.businessTypeId,
         startTime:'',
         endTime:'',
         startIndex:this.ruleForm.startIndex,
