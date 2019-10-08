@@ -16,13 +16,13 @@
       </div>
       <el-table
         :data="skuList"
+        :row-key="getRowKeys"
         style="width: 100%"
         ref="skuTable"
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
         :default-sort="{prop: 'date', order: 'descending'}"
-        @select="handelSelect"
       >
-        <el-table-column type="selection" prop="choose" label="选择"></el-table-column>
+        <el-table-column type="selection" prop="choose" label="选择" :reserve-selection="true"></el-table-column>
         <el-table-column prop="goodsInfo.id" label="SKU"></el-table-column>
         <el-table-column prop="goodsInfo.name" label="商品名称"></el-table-column>
         <el-table-column prop="goodsInfo.specs" label="规格"></el-table-column>
@@ -58,13 +58,12 @@ export default {
       skuList: [],
       total: 0,
       pageSize: 10,
-      startIndex: 1,
-      selections: []
+      startIndex: 1
     };
   },
   methods: {
-    handelSelect(val,row) {
-      this.selections.push(row);
+    getRowKeys(row) {
+      return row.id
     },
     handleSizeChange(val) {
       this.getSkuList(1, val);
@@ -74,28 +73,11 @@ export default {
       this.getSkuList(val, this.pageSize);
     },
     submit() {
+        let selections = this.$refs.skuTable.selection;
         let selectedIds = [];
-        this.selections.map((v) => {
+        selections.map((v) => {
             selectedIds.push(v.goodsInfo.id);
         });
-        // selectedIds = selectedIds.filter((item,index) => {
-        //   return selectedIds.indexOf(item, 0) === index; 
-        // });
-        let tmp = [];
-        selectedIds.concat().sort().sort(function(a,b) {
-　　　　　　if(a==b && tmp.indexOf(a) === -1) 
-           tmp.push(a);
-　　　　});
-        if(tmp.length > 0) {
-          tmp.map((v) => {
-            for(let i = 0; i<selectedIds.length;i++) {
-              if(selectedIds[i] == v) {
-                selectedIds.splice(i,1);
-                i--;
-              }
-            }
-          })
-        }
         selectedIds = selectedIds.join(',');
         this.$emit('getSelected', selectedIds);
     },

@@ -2,7 +2,7 @@
 <template>
   <div>
     <div class="top_part">
-      <el-form ref="ruleForm" :model="ruleForm" :inline="inline" label-width="70px">
+      <el-form :model="ruleForm" ref="ruleForm" :inline="inline" label-width="70px">
         <el-form-item>
           <el-select v-model="ruleForm.searchType" placeholder="交易流水号" style="width:124px;">
             <el-option
@@ -47,11 +47,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="交易金额">
-          <el-input v-model="ruleForm.amountMin" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input-number v-model="ruleForm.amountMin" :precision="2" :step="0.1" :min="0" placeholder="请输入" style="width:120px;"></el-input-number>
           -
         </el-form-item>
         <el-form-item>
-          <el-input v-model="ruleForm.amountMax" placeholder="请输入" style="width:120px;"></el-input>
+          <el-input-number v-model="ruleForm.amountMax" :precision="2" :step="0.1" :min="0" placeholder="请输入" style="width:120px;"></el-input-number>
         </el-form-item>
         <el-form-item label="交易时间" style="margin-left:25px;">
           <el-date-picker
@@ -171,9 +171,9 @@ export default {
       ruleForm:{
         searchType:'tradeDetailSn',
         searchValue:'',
-        businessType:'',
-        payWay:'',
-        tradeType:'',
+        businessType:0,
+        payWay:-1,
+        tradeType:-1,
         amountMin:'',
         amountMax:'',
         timeValue:'',
@@ -267,9 +267,9 @@ export default {
         amountMax:'',
         tradeTimeStart:'',
         tradeTimeEnd:'',
-        sort:orde,
-        startIndex:this.ruleForm.startIndex,
-        pageSize:this.ruleForm.pageSize
+        sort:'',
+        startIndex:'',
+        pageSize:''
       }
       for(let key  in query){
         if(this.ruleForm.searchType == key){
@@ -281,6 +281,10 @@ export default {
           }
         }
       }
+      query.businessType = this.ruleForm.businessType == 0 ? null : this.ruleForm.businessType
+      query.tradeType = this.ruleForm.tradeType == -1 ? null : this.ruleForm.tradeType
+      query.payWay = this.ruleForm.payWay == -1 ? null : this.ruleForm.payWay
+      query.sort = orde
       let timeValue = this.ruleForm.timeValue
       if(timeValue){
         query.tradeTimeStart = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")
@@ -289,14 +293,18 @@ export default {
       return query;
     },  
     fetch(orde){
-      let query = this.init(orde);
-      this._apis.finance.getListRe(query).then((response)=>{
-        this.dataList = response.list
-        this.total = response.total || 0
-        this.loading = false
-      }).catch((error)=>{
-        this.loading = false
-      })
+      if(this.ruleForm.amountMin > this.ruleForm.amountMax){
+        this.$message('交易金额最小值应该小于最大值')
+      }else{
+        let query = this.init(orde);
+        this._apis.finance.getListRe(query).then((response)=>{
+          this.dataList = response.list
+          this.total = response.total || 0
+          this.loading = false
+        }).catch((error)=>{
+          this.loading = false
+        })
+      }
     },
     //搜索
     onSubmit(){

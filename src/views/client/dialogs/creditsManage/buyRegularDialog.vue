@@ -84,9 +84,9 @@
             ref="skuTable"
             :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
             :default-sort="{prop: 'date', order: 'descending'}"
-            @select="handelSelect"
+            :row-key="getRowKeys"
           >
-            <el-table-column type="selection" prop="choose" label="选择"></el-table-column>
+            <el-table-column type="selection" prop="choose" label="选择" :reserve-selection="true"></el-table-column>
             <el-table-column prop="goodsInfo.id" label="SKU"></el-table-column>
             <el-table-column prop="goodsInfo.name" label="商品名称"></el-table-column>
             <el-table-column prop="goodsInfo.specs" label="规格"></el-table-column>
@@ -141,11 +141,13 @@ export default {
       distinguish: null,
       total: 0,
       pageSize: 10,
-      startIndex: 1,
-      selections: []
+      startIndex: 1
     };
   },
   methods: {
+    getRowKeys(row) {
+      return row.id
+    },
     handelSelect(val,row) {
       this.selections.push(row);
     },
@@ -213,7 +215,6 @@ export default {
           type: "warning"
         });
       } else {
-        console.log(params);
         this._apis.client
           .editCreditRegular(params)
           .then(response => {
@@ -232,16 +233,7 @@ export default {
     showDialog(val) {
       if (val == 1) {
         this.otherVisible = true;
-        // this.$nextTick(() => {
-        //   let sceneRule = JSON.parse(this.data.row.sceneRule);
-        //   sceneRule.selectProducts.map(v => {
-        //     this.skuList.forEach(row => {
-        //       if (row.goodsInfo.id == v.id) {
-        //         this.$refs.skuTable.toggleRowSelection(row);
-        //       }
-        //     });
-        //   });
-        // });
+        this.getSkuList(this.startIndex, this.pageSize);
       }else{
         this.selectProducts = [];
       }
@@ -280,10 +272,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     getSkuList(startIndex, pageSize) {
@@ -302,17 +290,23 @@ export default {
           });
           this.skuList = [].concat(response.list);
           this.total = response.total;
+          let selectProducts = JSON.parse(this.data.row.sceneRule).selectProducts;
+          selectProducts.map(v => {
+              this.skuList.forEach(row => {
+                if (row.goodsInfo.id == v.id) {
+                  this.$nextTick(() => {
+                    this.$refs.skuTable.toggleRowSelection(row);
+                  });
+                }
+              });
+            });
         })
         .catch(error => {
           console.log(error);
-          // this.$notify.error({
-          //   title: "错误",
-          //   message: error
-          // });
         });
     },
     handleSearch() {
-      this.getSkuList(1, 10);
+      this.getSkuList(this.startIndex, this.pageSize);
     },
     reset() {
       this.categoryValue = [];
@@ -321,29 +315,22 @@ export default {
     },
     submit2() {
       this.otherVisible = false;
-      this.selections.map(v => {
-        let obj = {};
-        obj.id = v.goodsInfo.id;
-        obj.name = v.goodsInfo.name;
-        this.selectProducts.push(obj);
-      });
+      let selections = this.$refs.skuTable.selection;
+      if(selections.length > 0) {
+        selections.map(v => {
+          let obj = {};
+          obj.id = v.goodsInfo.id;
+          obj.name = v.goodsInfo.name;
+          this.selectProducts.push(obj);
+        });
+      }
     },
     getInfo() {
       let row = this.data.row;
       if (row.sceneRule.length > 0) {
         let sceneRule = JSON.parse(row.sceneRule);
-        this.enable = row.enable == "启用" ? true : false;
+        this.enable = row.enable == '启用' ? true:false;
         this.isAllProduct = sceneRule.isAllProduct ? "0" : "1";
-        // this.$nextTick(() => {
-        //   sceneRule.selectProducts.map((v) => {
-        //     this.skuList.forEach(row => {
-        //         if(row.goodsInfo.id == v.id) {
-        //           console.log(this.$refs.skuTable);
-        //           this.$refs.skuTable.toggleRowSelection(row);
-        //         }
-        //     })
-        //   });
-        // })
         this.distinguish = sceneRule.distinguish ? "1" : "0";
         this.payAmount1 = sceneRule.noDistinguish.payAmount;
         this.allMember = sceneRule.noDistinguish.allMember;
@@ -365,7 +352,6 @@ export default {
     }
   },
   mounted() {
-    this.getSkuList(1, 10);
     this.getInfo();
     this.getProductClass();
   },

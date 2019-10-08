@@ -77,6 +77,7 @@
     </div>
 </template>
 <script type="es6">
+import utils from "@/utils";
 import Blob from '@/excel/Blob'
 import Export2Excel from '@/excel/Export2Excel.js'
 import ciTable from './components/clientImport/ciTable';
@@ -145,11 +146,10 @@ export default {
         },
         handleCheck() {
             let params = {
-                importTimeStart: new Date(this.importTime[0]),
-                importTimeEnd: new Date(this.importTime[1]),
+                importTimeStart: utils.formatDate(new Date(this.importTime[0].getTime()),"yyyy-MM-dd hh:mm:ss"),
+                importTimeEnd: utils.formatDate(new Date(this.importTime[1].getTime()),"yyyy-MM-dd hh:mm:ss"),
                 channelId: this.channelId2
             }
-            console.log(params);
             this.params = Object.assign({}, params);
         },
         //获取渠道下拉
@@ -158,10 +158,6 @@ export default {
                 this.channelOptions = [].concat(response);
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         handleNew() {

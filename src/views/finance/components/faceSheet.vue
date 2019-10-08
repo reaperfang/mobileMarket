@@ -121,7 +121,7 @@ export default {
       ruleForm:{
         searchType:'relationSn',
         searchValue:'',
-        businessType:'',
+        businessType:-1,
         expressCompany:'',
         timeValue:''
       },
@@ -179,6 +179,7 @@ export default {
           }
         }
       }
+      query.businessType = this.ruleForm.businessType == -1 ? null : this.ruleForm.businessType
       let timeValue = this.ruleForm.timeValue
       if(timeValue){
         query.startTime = utils.formatDate(timeValue[0], "yyyy-MM-dd hh:mm:ss")

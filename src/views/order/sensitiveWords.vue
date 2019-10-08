@@ -81,11 +81,19 @@ export default {
             this._apis.order.addSensitiveWord({names: wordsArr.join(',')}).then((res) => {
                 this.getList()
                 this.visible = false
-                this.$notify({
+                if(!res.length) {
+                    this.$notify({
                     title: '成功',
                     message: '添加成功！',
                     type: 'success'
                 });
+                } else {
+                    this.$notify({
+                    title: '消息',
+                    message: '敏感词重复！',
+                    type: 'warning'
+                });
+                }
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({

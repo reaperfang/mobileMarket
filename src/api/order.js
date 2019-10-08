@@ -26,6 +26,7 @@ export function exportOrders(data) {
   return request({
     apiType: 'order',
     method: 'post',
+    timeout: 22000,
     target: 'ORDER-INFO-EXPORT-PROCESSOR',
     data
   })

@@ -12,6 +12,7 @@
                 </el-form-item>
                 <el-form-item label="商品状态">
                     <el-select v-model="listQuery.status" placeholder="请选择商品状态">
+                        <el-option label="全部" value=""></el-option>
                     <el-option label="上架" :value="1"></el-option>
                     <el-option label="下架" :value="0"></el-option>
                     <el-option label="售罄" :value="-1"></el-option>
@@ -21,7 +22,9 @@
                     <el-cascader
                         v-model="categoryValue"
                         :options="categoryOptions"
-                        @change="handleChange">
+                        @change="handleChange":props="{ multiple: false, checkStrictly: true }"
+                    clearable
+                    filterable>
                     </el-cascader>
                 </el-form-item>
                 <el-form-item>

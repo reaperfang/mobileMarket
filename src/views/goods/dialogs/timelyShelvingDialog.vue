@@ -5,8 +5,7 @@
                 <el-date-picker
                     v-model="ruleForm.time"
                     type="datetime"
-                    placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd hh:mm:ss">
+                    placeholder="选择日期时间">
                 </el-date-picker>
             </el-form-item>
             <el-form-item class="footer">
@@ -18,6 +17,7 @@
 </template>
 <script>
 import DialogBase from '@/components/DialogBase'
+import utils from "@/utils";
 
 export default {
     data() {
@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         onSubmit() {
-           this.$emit('submit', this.ruleForm.time)
+           this.$emit('submit', utils.formatDate(new Date(this.ruleForm.time*1), "yyyy-MM-dd hh:mm:ss"))
            this.visible = false
         }
     },
