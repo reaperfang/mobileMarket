@@ -214,6 +214,14 @@ export default {
                 this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
                 return
             }
+            if(this.multipleSelection.some(val => val.status != 3 && val.status != 4)) {
+            this.confirm({title: '提示', icon: true, text: '请选择待发货或者部分发货的订单'})
+                return
+            }
+            if(this.multipleSelection.some(val => val.isFillUp)) {
+            this.confirm({title: '提示', icon: true, text: '请选择待发货或者部分发货的订单'})
+                return
+            }
             this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderId).join(','))
         },
         batchPrintElectronicForm() {

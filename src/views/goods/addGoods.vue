@@ -977,14 +977,14 @@ export default {
                         });
                         return
                     }
-                    if(this.ruleForm.goodsInfos.some(val => val.salePrice == '')) {
+                    if(!this.editor && this.ruleForm.goodsInfos.some(val => val.salePrice == '')) {
                         this.$message({
                             message: '规格信息中售卖价不能为空',
                             type: 'warning'
                         });
                         return
                     }
-                    if(this.ruleForm.goodsInfos.some(val => val.stock == '')) {
+                    if(!this.editor && this.ruleForm.goodsInfos.some(val => val.stock == '')) {
                         this.$message({
                             message: '规格信息中库存不能为空',
                             type: 'warning'
