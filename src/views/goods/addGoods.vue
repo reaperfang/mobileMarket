@@ -332,7 +332,7 @@
                         <template v-else>
                             <span @click="timelyShelvingHandler"><el-radio :label="2">定时上架</el-radio></span>
                         </template>
-                        <span class="autoSaleTime">{{ruleForm.autoSaleTime}}</span>
+                        <span v-if="ruleForm.status == 2" class="autoSaleTime">{{ruleForm.autoSaleTime}}</span>
                     </el-radio-group>
                 </div>
             </el-form-item>
@@ -968,6 +968,42 @@ export default {
                                 return
                             }
                         }
+                    }
+
+                    if(this.ruleForm.goodsInfos.some(val => val.costPrice == '')) {
+                        this.$message({
+                            message: '规格信息中成本价不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(this.ruleForm.goodsInfos.some(val => val.salePrice == '')) {
+                        this.$message({
+                            message: '规格信息中售卖价不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(this.ruleForm.goodsInfos.some(val => val.stock == '')) {
+                        this.$message({
+                            message: '规格信息中库存不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(this.ruleForm.goodsInfos.some(val => val.wanningStock == '')) {
+                        this.$message({
+                            message: '规格信息中库存预警不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(this.ruleForm.goodsInfos.some(val => val.image == '')) {
+                        this.$message({
+                            message: '规格信息中图片不能为空',
+                            type: 'warning'
+                        });
+                        return
                     }
 
                     // if(this.ruleForm.productDetail) {
