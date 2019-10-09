@@ -80,7 +80,7 @@ export default {
         width: 614px;
         height: 211px;
         &.p1{
-            background: url('../../assets/images/profile/b_1s.png') 0 0 no-repeat;
+            background: url('../../assets/images/profile/b_1s.jpg') 0 0 no-repeat;
             background-size: cover;
         }
         &.p2{
