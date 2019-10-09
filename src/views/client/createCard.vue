@@ -33,7 +33,7 @@
             class="avatar-uploader"
             :action="uploadUrl"
             :show-file-list="false"
-            :limit="1"
+            multiple
             :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
