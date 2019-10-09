@@ -78,11 +78,18 @@
           <span class="num">
             <em>{{survey.income}}</em>
             <span v-if="survey.chainRatioIncome != null">
-              <i class="el-icon-top red" v-if="survey.chainRatioIncome > 0"></i>
-              <i v-else-if="survey.chainRatioIncome = 0">
-                <img src="@/assets/images/finance/gray.png" class="gray">
-              </i>
-              <i class="el-icon-bottom green" v-else></i>
+               <el-popover v-if="survey.chainRatioIncome >= 0" placement="top-start" title="" width="130" trigger="hover">
+                <p>环比上升{{survey.chainRatioIncome}}%</p>
+                <i class="el-icon-top red" slot="reference"></i>
+              </el-popover>              
+              <el-popover v-else-if="survey.chainRatioIncome == 0"  placement="top-start" title="" width="130" trigger="hover">
+                <p>环比持平{{survey.chainRatioIncome}}%</p>
+                  <img src="@/assets/images/finance/gray.png" class="gray" slot="reference">
+              </el-popover>              
+              <el-popover v-else placement="top-start" title="" width="130" trigger="hover">
+                <p>环比下降{{survey.chainRatioIncome}}%</p>
+                <i class="el-icon-bottom green" slot="reference"></i>
+              </el-popover>
             </span>
           </span>
         </div>
@@ -91,11 +98,18 @@
           <span class="num">
             <em>{{survey.expend}}</em>
             <span v-if="survey.chainRatioExpend != null">
-              <i class="el-icon-top red" v-if="survey.chainRatioExpend > 0"></i>
-              <i v-else-if="survey.chainRatioExpend = 0">
-                <img src="@/assets/images/finance/gray.png" class="gray">
-              </i>
-              <i class="el-icon-bottom green" v-else></i>
+              <el-popover v-if="survey.chainRatioExpend >= 0" placement="top-start" title="" width="130" trigger="hover">
+                <p>环比上升{{survey.chainRatioExpend}}%</p>
+                <i class="el-icon-top red" slot="reference"></i>
+              </el-popover>              
+              <el-popover v-else-if="survey.chainRatioExpend == 0"  placement="top-start" title="" width="130" trigger="hover">
+                <p>环比持平{{survey.chainRatioExpend}}%</p>
+                  <img src="@/assets/images/finance/gray.png" class="gray" slot="reference">
+              </el-popover>              
+              <el-popover v-else placement="top-start" title="" width="130" trigger="hover">
+                <p>环比下降{{survey.chainRatioExpend}}%</p>
+                <i class="el-icon-bottom green" slot="reference"></i>
+              </el-popover>
             </span>
           </span>
         </div>
@@ -104,11 +118,18 @@
           <span class="num">
             <em>{{survey.realIncome}}</em>
             <span v-if="survey.chainRatioRealIncome != null">
-              <i class="el-icon-top red" v-if="survey.chainRatioRealIncome > 0"></i>
-              <i v-else-if="survey.chainRatioRealIncome = 0">
-                <img src="@/assets/images/finance/gray.png" class="gray">
-              </i>
-              <i class="el-icon-bottom green" v-else></i>
+              <el-popover v-if="survey.chainRatioRealIncome >= 0" placement="top-start" title="" width="130" trigger="hover">
+                <p>环比上升{{survey.chainRatioRealIncome}}%</p>
+                <i class="el-icon-top red" slot="reference"></i>
+              </el-popover>              
+              <el-popover v-else-if="survey.chainRatioRealIncome == 0"  placement="top-start" title="" width="130" trigger="hover">
+                <p>环比持平{{survey.chainRatioRealIncome}}%</p>
+                  <img src="@/assets/images/finance/gray.png" class="gray" slot="reference">
+              </el-popover>              
+              <el-popover v-else placement="top-start" title="" width="130" trigger="hover">
+                <p>环比下降{{survey.chainRatioRealIncome}}%</p>
+                <i class="el-icon-bottom green" slot="reference"></i>
+              </el-popover>
             </span>
           </span>
         </div>
@@ -190,14 +211,14 @@ export default {
       }
       this._apis.finance.getDataDateRs(queryDate).then((response)=>{
         if(response){
-          this.survey = response
+          this.survey = response   
           this.dataList = response.accountList
         }else{
           this.$notify.info({
             title: '消息',
             message: "查询结果集为空，没有可以显示的数据"
           });
-          this.init()
+          this.init(this.days)
         }
       }).catch((error)=>{
         this.$notify.error({
@@ -210,9 +231,7 @@ export default {
     getDataNumRs(){
       this._apis.finance.getDataNumRs({recentDays:this.days}).then((response)=>{
         if(response){
-          this.survey.expend = response.expend
-          this.survey.income = response.income
-          this.survey.realIncome = response.realIncome
+          this.survey = response
           this.dataList = response.accountList
         }else{
           this.$notify.info({

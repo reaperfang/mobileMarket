@@ -141,7 +141,6 @@ export default {
     },
 
     submit() {
-      //this.$emit('submit','')
       this.$refs.cropper.getCropData((data) => {
         let urlData = data.substring(23, data.length);
         axios.post(this.uploadUrl,"json={\"cid\":\""+ this.cid +"\", \"content\":\""+ encodeURI(urlData).replace(/\+/g,'%2B')+"\"}",{headers: {'Origin':'http'}}).then((response) => {
@@ -163,6 +162,7 @@ export default {
               message: error
             });
           })
+          this.$emit('submit',{imageTailor:{}})
         }).catch((error) => {
           this.$notify.error({
             title: '错误',
@@ -171,48 +171,6 @@ export default {
         })
       })
     },    
-
-     // 点击裁剪，这一步是可以拿到处理后的地址
-    // finish() {
-    //   this.$refs.cropper.getCropData((data) => {
-    //     console.log(data.substring(23,data.length));
-    //     this.uploadData = data;
-    //     //var img = window.URL.createObjectURL(data);
-    //     this.option.img = data;
-    //     this.imgUrl = data
-    //     this.loading = true
-    //   })
-    // }
-
-    //上传图片（点击上传按钮）
-    // finish(type) { 
-    //   console.log('finish')
-    //   let _this = this;
-    //   let formData = new FormData();
-    //   // 输出 
-    //   if (type === 'blob') { 
-    //     this.$refs.cropper.getCropBlob((data) => { 
-    //       let img = window.URL.createObjectURL(data) 
-    //       this.model = true; 
-    //       this.modelSrc = img; 
-    //       formData.append("file", data, this.fileName);
-    //       formData.append("json",JSON.stringify({cid: 222}));
-    //       // formData = Object.assign(formData,{cid: 222})
-    //     this._apis.set.uploadImage(formData).then(response =>{
-    //         console.log('999999',response)
-            
-    //       }).catch(error =>{
-
-    //       })
-    //     }) 
-    //   } else { 
-    //     this.$refs.cropper.getCropData((data) => { 
-    //       this.model = true; 
-    //       this.modelSrc = data; 
-    //     }) 
-    //   } 
-    // }, 
-
   }
 };
 </script>
