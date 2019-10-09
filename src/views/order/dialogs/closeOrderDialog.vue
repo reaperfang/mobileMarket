@@ -51,6 +51,13 @@ export default {
                 operationRemark = '库存不足'
             } else if(this.operationType == 9) {
                 operationRemark = this.operationRemark
+                if(!this.operationRemark) {
+                    this.$message({
+                    message: '请输入关闭原因',
+                    type: 'warning'
+                    });
+                    return
+                }
             }
             this.$emit('submit', {
                 operationType: 6,

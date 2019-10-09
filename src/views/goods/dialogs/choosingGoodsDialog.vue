@@ -5,7 +5,10 @@
                 class="classify"
                 v-model="categoryValue"
                 :options="categoryOptions"
-                @change="handleChange">
+                @change="handleChange"
+                :props="{ multiple: false, checkStrictly: true }"
+                    clearable
+                    filterable>
             </el-cascader>
             <div class="search-box">
                 <el-input v-model="listQuery.name" placeholder="请输入商品关键字"></el-input>

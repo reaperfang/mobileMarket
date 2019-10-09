@@ -203,6 +203,8 @@ export default {
     methods: {
         refreshPage() {
             this.getMemberInfo();
+            this.getUsedCoupon();
+            this.getUsedCode();
         },
         //根据levelId查询该用户的level等级
         getLevel() {
@@ -441,6 +443,7 @@ export default {
         getUsedCoupon() {
             let params = {usedType:"1", couponType: "0", memberId: this.userId};
             this._apis.client.getUsedCoupon(params).then((response) => {
+                this.couponList = [];
                 response.map((v) => {
                     this.couponList.push(v.appCoupon);
                 })
@@ -451,25 +454,27 @@ export default {
         getUsedCode() {
             let params = {usedType:"1", couponType: "1", memberId: this.userId};
             this._apis.client.getUsedCoupon(params).then((response) => {
+                this.codeList = [];
                 response.map((v) => {
                     this.codeList.push(v.appCoupon);
                 })
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         sendCoupon() {
             this.dialogVisible = true;
             this.currentDialog = "issueCouponDialog";
+            this.currentData.id = this.userId;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
             this.currentData.allCoupons = [].concat(this.allCoupons);
         },
         sendCode() {
             this.dialogVisible = true;
             this.currentDialog = "issueCodeDialog";
+            this.currentData.id = this.userId;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
+            this.currentData.weChartNickname = this.clientInfoById.nickName;
             this.currentData.allCodes = [].concat(this.allCodes);
         }
     },

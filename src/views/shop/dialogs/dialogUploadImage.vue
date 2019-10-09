@@ -8,7 +8,6 @@
             v-loading="loading"
             :action="uploadUrl"
             :show-file-list="false"
-            :limit="1"
             :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleAvatarSuccess"
             @on-error="loading = false"
@@ -65,11 +64,10 @@
             v-loading="loading1"
             :action="uploadUrl"
             :show-file-list="false"
-            :limit="1"
             :data="{json: JSON.stringify({cid: cid})}"
-            :on-success="handleCoverSuccess"
             @on-error="loading = false"
             :before-upload="beforeAvatarUpload1">
+            <!-- :on-success="handleCoverSuccess" -->
             <img v-if="form.imageUrls" :src="form.imageUrls" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>

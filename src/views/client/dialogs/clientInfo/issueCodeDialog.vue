@@ -31,13 +31,18 @@ export default {
       hasCancel: true,
       coupon:"",
       selectList: [
-        {couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1",weChartNickname: this.data.weChartNickname}
+        {couponNum: 1,appCouponId:"",memberId:this.data.id,receiveType:"1",receiveActivityId:"1",weChartNickname: this.data.weChartNickname}
       ]
     };
   },
   methods: {
     submit() {
       this._apis.client.distributeCoupon(this.selectList).then((response) => {
+        this.$notify({
+          title: '成功',
+          message: "发放成功",
+          type: 'success'
+        });
         this.$emit('refreshPage');
       }).catch((error) => {
         console.log(error);
@@ -51,7 +56,7 @@ export default {
             type: 'warning'
           });
       }else{
-        this.selectList.push({couponNum: 1,appCouponId:"",memberId:"1",receiveType:"1",receiveActivityId:"1"});
+        this.selectList.push({couponNum: 1,appCouponId:"",memberId:this.data.id,receiveType:"1",receiveActivityId:"1",weChartNickname: this.data.weChartNickname});
       }
     },
     handleDelete(index) {

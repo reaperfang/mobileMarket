@@ -123,8 +123,10 @@ export default {
   },
   watch: {
     timeValue(){
-      this.ruleForm.startTime = utils.formatDate(this.timeValue[0], "yyyy-MM-dd hh:mm:ss")
-      this.ruleForm.endTime = utils.formatDate(this.timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      if(this.timeValue.length != 0){
+        this.ruleForm.startTime = utils.formatDate(this.timeValue[0], "yyyy-MM-dd hh:mm:ss")
+        this.ruleForm.endTime = utils.formatDate(this.timeValue[1], "yyyy-MM-dd hh:mm:ss")
+      }
     }
   },
   created() { },

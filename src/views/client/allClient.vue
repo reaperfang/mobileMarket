@@ -59,7 +59,7 @@
                         </el-checkbox-group>
                     </el-form-item>
                     <el-row>
-                        <el-col :span="6">
+                        <el-col :span="8">
                             <el-form-item label="积分：" prop="scoreMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.scoreMin" placeholder="最小值"></el-input>
@@ -72,7 +72,7 @@
                                 <span>分</span>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="6">
+                        <el-col :span="8">
                             <el-form-item label="累计消费金额：" prop="totalDealMoneyMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.totalDealMoneyMin" placeholder="最小值"></el-input>
@@ -85,7 +85,7 @@
                                 <span>元</span>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="6">
+                        <el-col :span="8">
                             <el-form-item label="购买次数：" prop="dealTimesMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.dealTimesMin" placeholder="最小值"></el-input>
@@ -100,7 +100,7 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="6">
+                        <el-col :span="8">
                             <el-form-item label="客单价：" prop="perUnitPriceMin">
                                 <div class="input_wrap">
                                     <el-input v-model="form.perUnitPriceMin" placeholder="最小值"></el-input>
@@ -133,7 +133,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="上次消费时间：" prop="lastPayTimeStart">
+                            <el-form-item label="上次消费：" prop="lastPayTimeStart">
                                 <div class="input_wrap2">
                                     <el-date-picker
                                         v-model="form.lastPayTimeStart"
@@ -179,7 +179,7 @@ export default {
   data() {
     return {
       form: {
-        labelName:"",
+        labelName:"手机号",
         labelValue:"",
         memberType:[],
         memberLabels: [],

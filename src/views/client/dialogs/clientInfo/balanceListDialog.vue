@@ -10,8 +10,8 @@
         :header-cell-style="{background:'#ebeafa', color:'#655EFF'}"
         :default-sort="{prop: 'date', order: 'descending'}"
       >
-        <el-table-column prop="createUserName" label="操作人"></el-table-column>
-        <el-table-column prop="createTime" label="操作时间"></el-table-column>
+        <el-table-column prop="updateUserName" label="操作人"></el-table-column>
+        <el-table-column prop="tradeTime" label="操作时间"></el-table-column>
         <el-table-column prop="changeReason" label="交易类型"></el-table-column>
         <el-table-column prop="remark" label="原因"></el-table-column>
         <el-table-column prop="changeAmount" label="数量"></el-table-column>
@@ -58,8 +58,8 @@ export default {
         .then(response => {
           let list = response.list;
           list.map(v => {
-            v.createTime = utils.formatDate(
-              new Date(Number(v.createTime)),
+            v.tradeTime = utils.formatDate(
+              new Date(Number(v.tradeTime)),
               "yyyy-MM-dd hh:mm:ss"
             );
           });

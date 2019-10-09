@@ -57,7 +57,7 @@
             <el-option label="完成" :value="6"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label>
+        <el-form-item label  class="searchTimeType">
           <el-select class="date-picker-select" v-model="listQuery.searchTimeType" placeholder>
             <el-option label="下单时间" value="createTime"></el-option>
             <el-option label="完成时间" value="complateTime"></el-option>
@@ -153,15 +153,19 @@ export default {
             this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
             return
         }
-        this.$router.push('/order/orderBulkDelivery?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.orderInfo.id).join(','))
+        if(this.$refs['shop'].list.filter(val => val.checked).some(val => val.orderStatus != 3 && val.orderStatus != 4)) {
+          this.confirm({title: '提示', icon: true, text: '请选择待发货或者部分发货的订单'})
+            return
+        }
+        this.$router.push('/order/orderBulkDelivery?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.id).join(','))
     },
     batchSupplementaryLogistics() {
       if(!this.$refs['shop'].list.filter(val => val.checked).length) {
-          this.confirm({title: '提示', icon: true, text: '请先勾选当前页已自动发货，需要批量补填物流信息订单。'})
+          this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要补填物流信息的订单。'})
           return
       }
       if(this.$refs['shop'].list.filter(val => val.isFillUp != 1).length) {
-        this.confirm({title: '提示', icon: true, text: '您勾选的订单包括非自动发货的订单，请重新选择。'})
+        this.confirm({title: '提示', icon: true, text: '您勾选的订单包括不能补填物流信息的订单，请重新选择。'})
         return
       }
       this.$router.push('/order/batchSupplementaryLogistics?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.id).join(','))
@@ -245,5 +249,8 @@ export default {
 /deep/ .date-picker-select .el-input__inner:focus {
   border-color: #dcdfe6;
 }
+/deep/ .searchTimeType .el-form-item__content {
+        display: flex;
+    }
 </style>
 

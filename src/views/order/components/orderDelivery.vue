@@ -8,7 +8,7 @@
                         <el-select v-model="listQuery.searchType" slot="prepend" placeholder="请输入">
                         <el-option label="订单编号" value="orderCode"></el-option>
                         <el-option label="收货人联系电话" value="receivedPhone"></el-option>
-                        <el-option label="快递单号" value="expressNo"></el-option>
+                        <el-option label="快递单号" value="expressNos"></el-option>
                         <el-option label="客户ID" value="memberSn"></el-option>
                         </el-select>
                     </el-input>
@@ -32,8 +32,8 @@
                 <el-form-item>
                     <el-input placeholder="请输入内容" v-model="listQuery.searchValue2" class="input-with-select">
                         <el-select v-model="listQuery.searchType2" slot="prepend" placeholder="请输入">
-                        <el-option label="商品名称" value="orderProductName"></el-option>
-                        <el-option label="快递公司" value="expressCompany"></el-option>
+                        <el-option label="商品名称" value="orderProductNames"></el-option>
+                        <el-option label="快递公司" value="expressCompanys"></el-option>
                         <el-option label="收货人" value="receivedName"></el-option>
                         </el-select>
                     </el-input>
@@ -159,16 +159,16 @@ export default {
                 searchValue: '',
                 status: '',
                 isAutosend: '',
-                searchType2: 'orderProductName',
+                searchType2: 'orderProductNames',
                 searchValue2: '',
                 searchTimeType: 'send',
                 orderTimeValue: '',
                 orderCode: '',
                 receivedPhone: '',
-                expressNo: '',
+                expressNos: '',
                 memberSn: '',
-                orderProductName: '',
-                expressCompany: '',
+                orderProductNames: '',
+                expressCompanys: '',
                 receivedName: '',
             },
             tableData: [],
@@ -211,7 +211,15 @@ export default {
         },
         batchSendGoods() {
             if(!this.multipleSelection.length) {
-                this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量发货的单据。'})
+                return
+            }
+            if(this.multipleSelection.some(val => val.status != 3 && val.status != 4)) {
+            this.confirm({title: '提示', icon: true, text: '勾选单据包含已完成发货或已关闭的单据，无法批量发货，请重新选择。'})
+                return
+            }
+            if(this.multipleSelection.some(val => val.isFillUp)) {
+            this.confirm({title: '提示', icon: true, text: '勾选单据包含已完成发货或已关闭的单据，无法批量发货，请重新选择。'})
                 return
             }
             this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderId).join(','))
@@ -245,16 +253,16 @@ export default {
                 searchValue: '',
                 status: '',
                 isAutosend: '',
-                searchType2: 'orderProductName',
+                searchType2: 'orderProductNames',
                 searchValue2: '',
                 searchTimeType: 'send',
                 orderTimeValue: '',
                 orderCode: '',
                 receivedPhone: '',
-                expressNo: '',
+                expressNos: '',
                 memberSn: '',
-                orderProductName: '',
-                expressCompany: '',
+                orderProductNames: '',
+                expressCompanys: '',
                 receivedName: '',
             }
         },
@@ -269,8 +277,8 @@ export default {
                 cid:this.cid,
                 [this.listQuery.searchType]: this.listQuery.searchValue,
                 [this.listQuery.searchType2]: this.listQuery.searchValue2,
-                [`${this.listQuery.searchTimeType}StartTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
-                [`${this.listQuery.searchTimeType}EndTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
+                [`${this.listQuery.searchTimeType}TimeStart`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
+                [`${this.listQuery.searchTimeType}TimeEnd`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
             })
             this._apis.order.orderSendPageList(params).then((res) => {
                 this.tableData = res.list
@@ -346,6 +354,9 @@ export default {
     }
     /deep/ .searchTimeType .date-picker-select .el-input {
         width: 100px;
+    }
+    /deep/ .searchTimeType .el-form-item__content {
+        display: flex;
     }
 </style>
 

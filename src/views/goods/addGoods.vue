@@ -126,10 +126,10 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="wanningStock"
+                        prop="warningStock"
                         label="库存预警">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.wanningStock" placeholder="请输入"></el-input>
+                            <el-input v-model="scope.row.warningStock" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -219,11 +219,11 @@
                             label="库存">
                         </el-table-column>
                         <el-table-column
-                            prop="wanningStock"
+                            prop="warningStock"
                             label="库存预警">
                             <template slot-scope="scope">
                                 <!-- <span>¥{{scope.row.costPrice}}</span> -->
-                                <el-input v-model="scope.row.wanningStock" placeholder="请输入库存预警"></el-input>
+                                <el-input v-model="scope.row.warningStock" placeholder="请输入库存预警"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -332,7 +332,7 @@
                         <template v-else>
                             <span @click="timelyShelvingHandler"><el-radio :label="2">定时上架</el-radio></span>
                         </template>
-                        <span class="autoSaleTime">{{ruleForm.autoSaleTime}}</span>
+                        <span v-if="ruleForm.status == 2" class="autoSaleTime">{{ruleForm.autoSaleTime}}</span>
                     </el-radio-group>
                 </div>
             </el-form-item>
@@ -484,6 +484,17 @@ export default {
                 }
             }
         };
+        var isFreeFreightValidator = (rule, value, callback) => {
+            if(this.ruleForm.isFreeFreight == 0) {
+                if(!this.ruleForm.freightTemplateId) {
+                    callback(new Error('请选择运费模板'));
+                } else {
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
         return {
             itemCatText: '',
             categoryValue: [],
@@ -568,7 +579,7 @@ export default {
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
                 isFreeFreight: [
-                    { required: true, message: '请选择', trigger: 'blur' },
+                    { validator: isFreeFreightValidator, trigger: 'blur' },
                 ],
                 isAfterSaleService: [
                     { required: true, message: '请选择', trigger: 'blur' },
@@ -701,7 +712,7 @@ export default {
                 costPrice: '',
                 salePrice: '',
                 stock: '',
-                wanningStock: '',
+                warningStock: '',
                 weight: '',
                 volume: '',
                 image: '',
@@ -970,6 +981,42 @@ export default {
                         }
                     }
 
+                    if(this.ruleForm.goodsInfos.some(val => val.costPrice == '')) {
+                        this.$message({
+                            message: '规格信息中成本价不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(!this.editor && this.ruleForm.goodsInfos.some(val => val.salePrice == '')) {
+                        this.$message({
+                            message: '规格信息中售卖价不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(!this.editor && this.ruleForm.goodsInfos.some(val => val.stock == '')) {
+                        this.$message({
+                            message: '规格信息中库存不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(this.ruleForm.goodsInfos.some(val => val.warningStock == '')) {
+                        this.$message({
+                            message: '规格信息中库存预警不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(this.ruleForm.goodsInfos.some(val => val.image == '')) {
+                        this.$message({
+                            message: '规格信息中图片不能为空',
+                            type: 'warning'
+                        });
+                        return
+                    }
+
                     // if(this.ruleForm.productDetail) {
                     //     let _productDetail = ''
 
@@ -1167,7 +1214,7 @@ export default {
                         costPrice: '',
                         salePrice: '',
                         stock: '',
-                        wanningStock: '',
+                        warningStock: '',
                         weight: '',
                         volume: '',
                         specs: _specs,
@@ -1545,6 +1592,11 @@ $blue: #655EFF;
     }
 }
 /deep/ label[for="productUnit"]::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
+}
+/deep/ label[for="isFreeFreight"]::before {
     content: '*';
     color: #f56c6c;
     margin-right: 4px;

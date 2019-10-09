@@ -68,6 +68,7 @@
                 <span v-permission="['订单', '快递发货', '默认页面', '查看']" @click="$router.push('/order/newTemplate?mode=look&id=' + scope.row.id)">查看</span>
                 <span v-permission="['订单', '快递发货', '默认页面', '复制']" @click="$router.push('/order/newTemplate?mode=copy&id=' + scope.row.id)">复制</span>
                 <span v-permission="['订单', '快递发货', '默认页面', '修改']" @click="$router.push('/order/newTemplate?mode=change&id=' + scope.row.id)">修改</span>
+                <span v-permission="['订单', '快递发货', '默认页面', '删除']" @click="deletequickDelivery(scope.row.id)">删除</span>
               </div>
             </template>
           </el-table-column>
@@ -128,6 +129,27 @@ export default {
     }
   },
   methods: {
+    deletequickDelivery(id) {
+      this._apis.order
+        .editorFreightTemplate({
+          id,
+          deleteFlag: 0
+        })
+        .then(res => {
+          this.$notify({
+            title: "成功",
+            message: "删除成功！",
+            type: "success"
+          });
+          this.getList()
+        })
+        .catch(error => {
+          this.$notify.error({
+            title: "错误",
+            message: error
+          });
+        });
+    },
     getShopInfo() {
       let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
 

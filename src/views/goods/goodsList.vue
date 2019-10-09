@@ -77,7 +77,7 @@
                 <el-table-column
                     label="库存">
                     <template slot-scope="scope">
-                        <span class="store">{{scope.row.goodsInfo.stock}}<i v-permission="['商品', '商品列表', '默认页面', '修改库存']" @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="i-bg pointer"></i></span>
+                        <span :class="{red: scope.row.goodsInfo.warningStock && (scope.row.goodsInfo.stock <= scope.row.goodsInfo.warningStock)}" class="store">{{scope.row.goodsInfo.stock}}<i v-permission="['商品', '商品列表', '默认页面', '修改库存']" @click="(currentDialog = 'EditorStock') && (dialogVisible = true) && (currentData = scope.row)" class="i-bg pointer"></i></span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -225,6 +225,9 @@
 }
 .gray {
     color: #92929B;
+}
+.red {
+    color: #FD4C2B;
 }
 </style>
 
