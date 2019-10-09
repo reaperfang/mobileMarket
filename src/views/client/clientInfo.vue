@@ -203,6 +203,8 @@ export default {
     methods: {
         refreshPage() {
             this.getMemberInfo();
+            this.getUsedCoupon();
+            this.getUsedCode();
         },
         //根据levelId查询该用户的level等级
         getLevel() {
@@ -456,15 +458,13 @@ export default {
                 })
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         sendCoupon() {
             this.dialogVisible = true;
             this.currentDialog = "issueCouponDialog";
+            this.currentData.id = this.userId;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
             this.currentData.allCoupons = [].concat(this.allCoupons);
         },
         sendCode() {

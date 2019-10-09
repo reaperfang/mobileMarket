@@ -57,7 +57,7 @@
             <el-option label="完成" :value="6"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label>
+        <el-form-item label  class="searchTimeType">
           <el-select class="date-picker-select" v-model="listQuery.searchTimeType" placeholder>
             <el-option label="下单时间" value="createTime"></el-option>
             <el-option label="完成时间" value="complateTime"></el-option>
@@ -153,6 +153,10 @@ export default {
             this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
             return
         }
+        if(this.$refs['shop'].list.some(val => val.orderStatus != 3 && val.orderStatus != 4)) {
+          this.confirm({title: '提示', icon: true, text: '请选择待发货或者部分发货的订单'})
+            return
+        }
         this.$router.push('/order/orderBulkDelivery?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.id).join(','))
     },
     batchSupplementaryLogistics() {
@@ -245,5 +249,8 @@ export default {
 /deep/ .date-picker-select .el-input__inner:focus {
   border-color: #dcdfe6;
 }
+/deep/ .searchTimeType .el-form-item__content {
+        display: flex;
+    }
 </style>
 
