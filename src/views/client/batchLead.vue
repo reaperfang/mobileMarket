@@ -223,6 +223,7 @@ export default {
             }else{
                 if(formObj.tagType == '0') {
                     this._apis.client.addTag({tagType: formObj.tagType, tagName: formObj.tagName}).then((response) => {
+                        this._routeTo('clientLabel');
                         this.$notify({
                             title: '成功',
                             message: "添加标签成功",
@@ -233,6 +234,7 @@ export default {
                     })
                 }else{
                     this._apis.client.addTag(formObj).then((response) => {
+                        this._routeTo('clientLabel');
                         this.$notify({
                             title: '成功',
                             message: "添加标签成功",
