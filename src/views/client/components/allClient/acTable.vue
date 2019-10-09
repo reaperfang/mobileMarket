@@ -62,7 +62,7 @@
     </div>
     <div class="a_line">
       <el-checkbox v-model="checkAll" @change="handleChange"></el-checkbox>
-      <el-button type="primary" @click="batchDelete">批量删除</el-button>
+      <!-- <el-button type="primary" @click="batchDelete">批量删除</el-button> -->
       <el-button class="border_btn" @click="batchAddTag" v-permission="['客户', '全部客户', '默认页面', '打标签']">打标签</el-button>
       <el-button class="border_btn" @click="batchAddBlack" v-permission="['客户', '全部客户', '默认页面', '加入/取消黑名单']">加入黑名单</el-button>
       <el-button class="border_btn" @click="batchRemoveBlack" v-permission="['客户', '全部客户', '默认页面', '加入/取消黑名单']">取消黑名单</el-button>
