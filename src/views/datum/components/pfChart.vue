@@ -29,8 +29,8 @@ export default {
       if(val == 1){
         this.option.title.text = "浏览/访问",
         this.option.legend.data = ["浏览量","访客量"],
-        this.option.series = [{name:"访客",type: "line",stack: "总量",data: this.flow['yAxis1']},
-        {name:"浏览",type: "line",stack: "总量",data: this.flow['yAxis2']}]
+        this.option.series = [{name:"访客",type: "line",stack: "总量",data: this.flow['yAxis2']},
+        {name:"浏览",type: "line",stack: "总量",data: this.flow['yAxis1']}]
       }else if(val == 2){
          this.option.title.text = "到店时段",
          this.option.legend.data = ["到店时段"],
