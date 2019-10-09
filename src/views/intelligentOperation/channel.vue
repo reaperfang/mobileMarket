@@ -36,13 +36,8 @@
                         </div>
                         <span class="span_label">（成功）支付转化率</span>
                         <div class="input_wrap2 marR20">
-                            <el-select v-model="form.changeRatioRange">
-                                <el-option label="不限" value="null"></el-option>
-                                <el-option label="10%以上" value="0.1"></el-option>
-                                <el-option label="5%-10%" value="0.05-0.1"></el-option>
-                                <el-option label="3%-5%" value="0.03-0.05"></el-option>
-                                <el-option label="1%-3%" value="0.01-0.03"></el-option>
-                                <el-option label="0%-1%" value="0-0.01"></el-option>
+                            <el-select v-model="form.changeRatioRange" @change="changeTime">
+                                <el-option v-for="item in productiveness" :label="item.name" :value="item.value" :key="item.id"></el-option>
                             </el-select>
                         </div>
                     </el-form-item>
@@ -108,6 +103,9 @@ export default {
                 startIndex:1,
                 pageSize: '10',
             },
+            productiveness:[
+
+            ],
             listObj:{
                 list:[]
             },
@@ -118,11 +116,13 @@ export default {
     },
     mounted(){
         this.goSearch();
+        this.memberInforNum();
     },
     methods: {
         changeTime(val){
             this.form.startTime = val[0]
             this.form.endTime = val[1]
+            console.log(this.form)
         },
         //查询
         goSearch(){
@@ -171,6 +171,24 @@ export default {
                 this.$message.error(err);
             })
         },
+         //获取会员直接购买转化率
+        memberInforNum(){
+            this._apis.data.memberInforNum({type:2}).then(res => {   
+                let vipcake = [];
+                for(let item of res){
+                    vipcake.push({
+                        id:item.id,
+                        value:item.minNum+'-'+item.maxNum,
+                        name:item.name
+                    })                   
+                }
+                // console.log('res',res);
+                // console.log(vipcake);
+                this.productiveness = vipcake
+            }).catch(error =>{
+                console.log('error',error)
+            })
+        },
         //查看详情
         showDetails(){
             this._routeTo('channelDetail',this.form)
@@ -182,7 +200,7 @@ export default {
         currentChange(val){
             this.form.startIndex = val;
             this.goSearch();
-        }
+        },
     }
 }
 </script>

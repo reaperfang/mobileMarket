@@ -35,7 +35,7 @@
                     <span class="span_label">交易次数</span>
                     <div class="input_wrap2 marR20">
                         <el-select v-model="form.tradeCountRange"  @change="getData">
-                            <el-option v-for="item in tradeCount" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                            <el-option v-for="item in tradeCount" :label="item.name" :value="item.value" :key="item.id"></el-option>
                         </el-select>
                     </div>
                     <el-checkbox-group v-model="form.queryRepeatPaymentRatio">
@@ -139,7 +139,7 @@ export default {
             },
             lowprice:'',
             highprice:'',
-            textTips:false,
+            textTips:false, 
             repeatPaymentRatio:'', //复购率
             memberNum:0, //会员人数
             memberCount:0, //会员占比
@@ -162,23 +162,23 @@ export default {
                 }
             ],
             tradeCount: [
-                {
-                    id: null,
-                    name: "不限"
-                },
-                {
-                    id: "0-1",
-                    name: "1次"
-                },{
-                    id: "2-5",
-                    name: "2-5次"
-                },{
-                    id: "6-8",
-                    name: "6-8次"
-                },{
-                    id: "8",
-                    name: "8次以上"
-                }
+                // {
+                //     id: null,
+                //     name: "不限"
+                // },
+                // {
+                //     id: "0-1",
+                //     name: "1次"
+                // },{
+                //     id: "2-5",
+                //     name: "2-5次"
+                // },{
+                //     id: "6-8",
+                //     name: "6-8次"
+                // },{
+                //     id: "8",
+                //     name: "8次以上"
+                // }
             ],
             customerCount:'',
             customerRatio:'',
@@ -193,8 +193,8 @@ export default {
         this.memberInforNum()
     },
     methods: {
-        changeDay(){ },
-        //获取筛选数据
+        changeDay(){ },     
+                //获取筛选数据
         getData(){
             if(this.form.daterange){
                 this.form.timeType = 4;
@@ -213,8 +213,17 @@ export default {
 
         //获取交易次数
         memberInforNum(){
-            this._apis.data.memberInforNum({type:1}).then(res => {
-                console.log('res',res)
+            this._apis.data.memberInforNum({type:1}).then(res => {   
+                   let reviseitem =[];             
+                for(let item of res){                   
+                    reviseitem.push({
+                        id:item.id,
+                        value:item.minNum+'-'+ item.maxNum,
+                        name:item.name
+                    })                  
+                }
+                //   console.log(reviseitem)
+                  this.tradeCount=reviseitem;
             }).catch(error =>{
                 console.log('error',error)
             })
@@ -269,7 +278,6 @@ export default {
                 endTime:null,
                 daterange:null,
                 memberType:null,  //客户是0，新会员是1，老会员是2
-
                 tradeCountRange:null,
                 queryRepeatPaymentRatio: false,
                 queryOrderMoneyType: null, // 单次和总额 0和1

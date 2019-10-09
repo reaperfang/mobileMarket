@@ -324,9 +324,14 @@
                 <span>定时上架的商品在上架前请到“仓库中的宝贝”里编辑商品。</span>
                 <div>
                     <el-radio-group :disabled="!ruleForm.productCategoryInfoId" v-model="ruleForm.status">
-                        <el-radio :label="0">放入仓库</el-radio>
+                        <el-radio :disabled="editor" :label="0">放入仓库</el-radio>
                         <el-radio :disabled="editor" :label="1">立即上架</el-radio>
-                        <span @click="timelyShelvingHandler"><el-radio :label="2">定时上架</el-radio></span>
+                        <template v-if="editor">
+                            <span><el-radio disabled :label="2">定时上架</el-radio></span>
+                        </template>
+                        <template v-else>
+                            <span @click="timelyShelvingHandler"><el-radio :label="2">定时上架</el-radio></span>
+                        </template>
                         <span class="autoSaleTime">{{ruleForm.autoSaleTime}}</span>
                     </el-radio-group>
                 </div>

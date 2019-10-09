@@ -17,7 +17,7 @@
             <div class="container-item" v-for="(order, index) in list" :key="index">
                 <div class="container-item-header">
                     <div class="item">
-                        <el-checkbox @change="checkedChange" v-model="order.checked"></el-checkbox>
+                        <el-checkbox :disabled="order.orderStatus == 2" @change="checkedChange" v-model="order.checked"></el-checkbox>
                         <span class="order-code">
                             <el-tooltip content="自动发货" placement="bottom" effect="light">
                                 <i v-if="order.sendType == 2" class="auto"></i>
