@@ -484,6 +484,17 @@ export default {
                 }
             }
         };
+        var isFreeFreightValidator = (rule, value, callback) => {
+            if(this.ruleForm.isFreeFreight == 0) {
+                if(!this.ruleForm.freightTemplateId) {
+                    callback(new Error('请选择运费模板'));
+                } else {
+                    callback();
+                }
+            } else {
+                callback();
+            }
+        };
         return {
             itemCatText: '',
             categoryValue: [],
@@ -568,7 +579,7 @@ export default {
                     { required: true, message: '请选择', trigger: 'blur' },
                 ],
                 isFreeFreight: [
-                    { required: true, message: '请选择', trigger: 'blur' },
+                    { validator: isFreeFreightValidator, trigger: 'blur' },
                 ],
                 isAfterSaleService: [
                     { required: true, message: '请选择', trigger: 'blur' },
@@ -1581,6 +1592,11 @@ $blue: #655EFF;
     }
 }
 /deep/ label[for="productUnit"]::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
+}
+/deep/ label[for="isFreeFreight"]::before {
     content: '*';
     color: #f56c6c;
     margin-right: 4px;

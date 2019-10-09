@@ -277,8 +277,8 @@ export default {
                 cid:this.cid,
                 [this.listQuery.searchType]: this.listQuery.searchValue,
                 [this.listQuery.searchType2]: this.listQuery.searchValue2,
-                [`${this.listQuery.searchTimeType}StartTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
-                [`${this.listQuery.searchTimeType}EndTime`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
+                [`${this.listQuery.searchTimeType}TimeStart`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[0] : '',
+                [`${this.listQuery.searchTimeType}TimeEnd`]: this.listQuery.orderTimeValue ? this.listQuery.orderTimeValue[1] : ''
             })
             this._apis.order.orderSendPageList(params).then((res) => {
                 this.tableData = res.list
