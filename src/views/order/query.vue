@@ -153,7 +153,7 @@ export default {
             this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
             return
         }
-        if(this.$refs['shop'].list.some(val => val.orderStatus != 3 && val.orderStatus != 4)) {
+        if(this.$refs['shop'].list.filter(val => val.checked).some(val => val.orderStatus != 3 && val.orderStatus != 4)) {
           this.confirm({title: '提示', icon: true, text: '请选择待发货或者部分发货的订单'})
             return
         }
