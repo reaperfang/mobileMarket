@@ -305,6 +305,9 @@ export default {
 /deep/ .searchTimeType .el-input {
         width: 100px;
     }
+    /deep/ .searchTimeType .el-form-item__content {
+        display: flex;
+    }
 </style>
 
 
