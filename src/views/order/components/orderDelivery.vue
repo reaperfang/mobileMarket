@@ -211,15 +211,15 @@ export default {
         },
         batchSendGoods() {
             if(!this.multipleSelection.length) {
-                this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
+                this.confirm({title: '提示', icon: true, text: '请先勾选当前页需要批量发货的单据。'})
                 return
             }
             if(this.multipleSelection.some(val => val.status != 3 && val.status != 4)) {
-            this.confirm({title: '提示', icon: true, text: '请选择待发货或者部分发货的订单'})
+            this.confirm({title: '提示', icon: true, text: '勾选单据包含已完成发货或已关闭的单据，无法批量发货，请重新选择。'})
                 return
             }
             if(this.multipleSelection.some(val => val.isFillUp)) {
-            this.confirm({title: '提示', icon: true, text: '请选择待发货或者部分发货的订单'})
+            this.confirm({title: '提示', icon: true, text: '勾选单据包含已完成发货或已关闭的单据，无法批量发货，请重新选择。'})
                 return
             }
             this.$router.push('/order/orderBulkDelivery?ids=' + this.multipleSelection.map(val => val.orderId).join(','))
