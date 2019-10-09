@@ -188,6 +188,21 @@ export default {
       try {
         let params;
 
+        if(!this.list.reduce((total, val) => {return total.concat(val.orderItemList)}, []).filter(val => val.checked).length) {
+          this.confirm({title: '提示', icon: true, text: '请选择您要进行发货的商品'})
+                return
+        }
+
+        if(this.list.reduce((total, val) => {return total.concat(val.orderItemList)}, []).filter(val => val.checked).some(val => !val.sendCount)) {
+          this.confirm({title: '提示', icon: true, text: '本次发货数量不能为空'})
+                return
+        }
+
+        if(this.list.reduce((total, val) => {return total.concat(val.orderItemList)}, []).filter(val => val.checked).some(val => +val.sendCount > val.goodsCount)) {
+          this.confirm({title: '提示', icon: true, text: '本次发货数量不能大于应发数量'})
+                return
+        }
+
         params = {
           sendInfoDtoList: this.list.map(item => {
             let expressCompanys = "";
