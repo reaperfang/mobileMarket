@@ -39,23 +39,23 @@
           <div class="p_r p_1">
             <div>
               <p>首页</p>
-              <p>{{dataObj.order[1]}}</p>
+              <p>{{dataObj.uv[1]}}</p>
             </div>
             <div>
               <p>商品列表页</p>
-              <p>{{dataObj.order[2]}}</p>
+              <p>{{dataObj.uv[2]}}</p>
             </div>
             <div>
               <p>购物车</p>
-              <p>{{dataObj.order[3]}}</p>
+              <p>{{dataObj.uv[3]}}</p>
             </div>
             <div>
               <p>商品页</p>
-              <p>{{dataObj.order[4]}}</p>
+              <p>{{dataObj.uv[4]}}</p>
             </div>
             <div>
               <p>其他页</p>
-              <p>{{dataObj.order[5]}}</p>
+              <p>{{dataObj.uv[5]}}</p>
             </div>
           </div>
         </div>
