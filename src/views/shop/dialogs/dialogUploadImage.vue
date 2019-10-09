@@ -8,7 +8,6 @@
             v-loading="loading"
             :action="uploadUrl"
             :show-file-list="false"
-            :limit="1"
             :data="{json: JSON.stringify({cid: cid})}"
             :on-success="handleAvatarSuccess"
             @on-error="loading = false"
@@ -65,7 +64,6 @@
             v-loading="loading1"
             :action="uploadUrl"
             :show-file-list="false"
-            :limit="1"
             :data="{json: JSON.stringify({cid: cid})}"
             @on-error="loading = false"
             :before-upload="beforeAvatarUpload1">

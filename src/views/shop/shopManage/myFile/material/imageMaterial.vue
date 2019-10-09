@@ -261,6 +261,9 @@ export default {
           case 'uploadImage':
             this.uploadImage(data.uploadImage.query)
           break;
+          case 'imageTailor':
+            this.getList()
+          break;
         }
       }
     },
@@ -361,7 +364,7 @@ export default {
           title: '成功',
           message: '移动分组成功！'
         });
-        this.getGroups()
+        this.getList()
       }).catch((error)=>{
         this.$notify.error({
           title: '错误',
