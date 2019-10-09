@@ -109,14 +109,14 @@ export default {
         nickColor: '#000000',  //昵称颜色
         memberColumeStyle: 1,  //会员栏样式
         moduleList: {
-          integralMarket: {
-            name: 'integralMarket',
-            title: '积分商城',
-            titleValue: '积分商城',
-            icon: '',
-            defaultIcon: 'userCenter11',
-            color: '#000'
-          },
+          // integralMarket: {
+          //   name: 'integralMarket',
+          //   title: '积分商城',
+          //   titleValue: '积分商城',
+          //   icon: '',
+          //   defaultIcon: 'userCenter11',
+          //   color: '#000'
+          // },
           messageCenter: {
             name: 'messageCenter',
             title: '消息中心',
