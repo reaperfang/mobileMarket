@@ -2,7 +2,7 @@
     <DialogBase :visible.sync="visible" @submit="submit" title="登录获取积分规则" :hasCancel="hasCancel">
         <div class="c_container">
             <div class="clearfix"><span class="fl marR20">登录获取积分规则</span><el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch></div>
-            <div class="giveBottom" v-if="this.enable"> 
+            <div class="giveBottom" v-if="enable"> 
             <div>每天首次进入小程序或微信公众号获取积分</div>
             <div>
                 <span>是否区分人群发放：</span>
@@ -58,19 +58,27 @@ export default {
     methods: {
         submit() {
             this.distinguish = this.distinguish == '0'? false : true;
-            let params = {
-                id: this.data.row.id,
-                enable: this.enable,
-                sceneRule: {
-                    distinguish: this.distinguish,
-                    noDistinguish: {
-                        allMember: this.allMember
-                    },
-                    yesDistinguish: {
-                        noMember: this.noMember,
-                        newMember: this.newMember,
-                        oldMember: this.oldMember
+            let params;
+            if(this.enable) {
+                params = {
+                    id: this.data.row.id,
+                    enable: this.enable,
+                    sceneRule: {
+                        distinguish: this.distinguish,
+                        noDistinguish: {
+                            allMember: this.allMember
+                        },
+                        yesDistinguish: {
+                            noMember: this.noMember,
+                            newMember: this.newMember,
+                            oldMember: this.oldMember
+                        }
                     }
+                }
+            }else{
+                params = {
+                    id: this.data.row.id,
+                    enable: this.enable,
                 }
             }
             this._apis.client.editCreditRegular(params).then((response) => {
@@ -79,12 +87,9 @@ export default {
                     message: "保存成功",
                     type: 'success'
                 });
+                this.$emit('refreshPage');
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         getInfo() {

@@ -5,7 +5,7 @@
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
                 <el-form-item label="标签名称：" prop="tagName">
                     <div class="input_wrap">
-                        <el-input v-model="ruleForm.tagName" placeholder="请输入标签名称"></el-input>
+                        <el-input v-model="ruleForm.tagName" placeholder="请输入标签名称" :maxLength="6"></el-input>
                     </div>
                 </el-form-item>
                 <el-form-item label="标签类型：" prop="tagType">

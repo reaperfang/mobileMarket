@@ -11,7 +11,7 @@
             <el-table-column prop="updateUserName" label="操作人"></el-table-column>
             <el-table-column prop="createTime" label="操作时间"></el-table-column>
             <el-table-column prop="businessTypeName" label="交易类型"></el-table-column>
-            <el-table-column prop="remark" label="原因"></el-table-column>
+            <el-table-column prop="remarks" label="原因"></el-table-column>
             <el-table-column prop="changeScore" label="数量"></el-table-column>
         </el-table>
         <div class="page_styles">
