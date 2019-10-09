@@ -2,6 +2,7 @@
     <DialogBase :visible.sync="visible" @submit="submit" title="复购商品获取积分规则" :hasCancel="hasCancel">
         <div class="c_container">
             <div class="clearfix"><span class="fl marR20">复购商品获取积分规则</span><el-switch class="fl" v-model="enable" active-color="#66CCAC"></el-switch></div>
+            <div v-if="enable" class="giveBottom">
             <div>复购商品，订单确认收货后，除按购买商品的金额奖励的积分外，可额外获得积分</div>
             <div>
                 <span>是否区分人群发放：</span>
@@ -35,6 +36,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     </DialogBase>
 </template>
@@ -57,19 +59,27 @@ export default {
     methods: {
         submit() {
             this.distinguish = this.distinguish == '0'? false : true;
-            let params = {
-                id: this.data.row.id,
-                enable: this.enable,
-                sceneRule: {
-                    distinguish: this.distinguish,
-                    noDistinguish: {
-                        allMember: this.allMember
-                    },
-                    yesDistinguish: {
-                        noMember: this.noMember,
-                        newMember: this.newMember,
-                        oldMember: this.oldMember
+            let params;
+            if(this.enable) {
+                params = {
+                    id: this.data.row.id,
+                    enable: this.enable,
+                    sceneRule: {
+                        distinguish: this.distinguish,
+                        noDistinguish: {
+                            allMember: this.allMember
+                        },
+                        yesDistinguish: {
+                            noMember: this.noMember,
+                            newMember: this.newMember,
+                            oldMember: this.oldMember
+                        }
                     }
+                }
+            }else{
+                params = {
+                    id: this.data.row.id,
+                    enable: this.enable,
                 }
             }
             this._apis.client.editCreditRegular(params).then((response) => {
@@ -78,12 +88,9 @@ export default {
                     message: "保存成功",
                     type: 'success'
                 });
+                this.$emit('refreshPage');
             }).catch((error) => {
                 console.log(error);
-                // this.$notify.error({
-                //     title: '错误',
-                //     message: error
-                // });
             })
         },
         getInfo() {
@@ -129,11 +136,16 @@ export default {
 <style lang="scss" scoped>
 .c_container{
     > div{
-        text-align: left;
         margin-bottom: 17px;
-        .input_wrap{
-            width: 172px;
-            display: inline-block;
+        .giveBottom{
+            > div{
+                text-align: left;
+                margin-bottom: 17px;
+                .input_wrap{
+                    width: 172px;
+                    display: inline-block;
+                }
+            }
         }
     }
     .marR20{

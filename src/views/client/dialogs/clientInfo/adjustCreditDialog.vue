@@ -13,7 +13,7 @@
       <div class="marB20 clearfix">
           <span class="fl">变更原因：</span>
           <div class="input_wrap2 fl">
-              <el-input placeholder="请输入变更原因" v-model="remarks" type="textarea" :row="3" :maxlength="50"></el-input>
+              <el-input placeholder="请输入变更原因" v-model="remark" type="textarea" :row="3" :maxlength="50"></el-input>
           </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ export default {
           currentScore: this.data.score,
           adjustmentScore: this.adjustmentScore,
           adjustmentAfterScore: this.adjustmentAfterScore,
-          remarks: this.remarks
+          remark: this.remark
         }
         this._apis.client.manualChangeCredit(params).then((response) => {
           this.$notify({

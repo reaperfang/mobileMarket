@@ -470,6 +470,9 @@ export default {
         sendCode() {
             this.dialogVisible = true;
             this.currentDialog = "issueCodeDialog";
+            this.currentData.id = this.userId;
+            this.currentData.memberSn = this.clientInfoById.memberSn;
+            this.currentData.weChartNickname = this.clientInfoById.nickName;
             this.currentData.allCodes = [].concat(this.allCodes);
         }
     },

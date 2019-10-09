@@ -19,8 +19,8 @@
                     <div class="item">
                         <el-checkbox :disabled="order.orderStatus == 2" @change="checkedChange" v-model="order.checked"></el-checkbox>
                         <span class="order-code">
-                            <el-tooltip content="自动发货" placement="bottom" effect="light">
-                                <i v-if="order.sendType == 2" class="auto"></i>
+                            <el-tooltip v-if="order.sendType == 2" content="自动发货" placement="bottom" effect="light">
+                                <i class="auto"></i>
                             </el-tooltip>
                             <el-tooltip :content="`${order.memberSn}催发货，请尽快发货`" placement="bottom" effect="light">
                                 <i v-if="order.isUrge == 0" class="el-icon-message-solid"></i>

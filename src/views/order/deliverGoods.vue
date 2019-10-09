@@ -250,18 +250,25 @@ export default {
         sendGoodsHandler() {
             let params
 
-            if(!this.ruleForm.expressCompanyCode) {
-                this.confirm({title: '提示', icon: true, text: '请选择快递公司'})
-                return
-            }
-
+            
             if(!this.multipleSelection.length) {
                 this.confirm({title: '提示', icon: true, text: '请选择需要发货的商品'})
                 return
             }
+            
 
             if(this.multipleSelection.some(val => !val.sendCount)) {
                 this.confirm({title: '提示', icon: true, text: '请填写发货商品数量'})
+                return
+            }
+
+            if(this.multipleSelection.some(val => +val.sendCount > val.goodsCount)) {
+                this.confirm({title: '提示', icon: true, text: '本次发货数量不能大于应发数量'})
+                return
+            }
+
+            if(!this.ruleForm.expressCompanyCode) {
+                this.confirm({title: '提示', icon: true, text: '请选择快递公司'})
                 return
             }
 
