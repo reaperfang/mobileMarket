@@ -153,7 +153,7 @@ export default {
             this.confirm({title: '提示', icon: true, text: '请选择需要发货的订单'})
             return
         }
-        this.$router.push('/order/orderBulkDelivery?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.orderInfo.id).join(','))
+        this.$router.push('/order/orderBulkDelivery?ids=' + this.$refs['shop'].list.filter(val => val.checked).map(val => val.id).join(','))
     },
     batchSupplementaryLogistics() {
       if(!this.$refs['shop'].list.filter(val => val.checked).length) {

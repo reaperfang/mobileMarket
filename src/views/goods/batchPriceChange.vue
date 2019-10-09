@@ -76,7 +76,7 @@
         <el-table-column prop="productCatalogInfoName" label="商品分类"></el-table-column>
         <el-table-column prop="stock" label="库存">
           <template slot-scope="scope">
-            <span>{{scope.row.goodsInfo && scope.row.goodsInfo.stock}}</span>
+            <span :class="{red: scope.row.goodsInfo.warningStock && (scope.row.goodsInfo.stock <= scope.row.goodsInfo.warningStock)}">{{scope.row.goodsInfo && scope.row.goodsInfo.stock}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="salePrice" label="售卖价（元）">
@@ -378,6 +378,9 @@ export default {
 }
 .gray {
   color: #92929b;
+}
+.red {
+    color: #FD4C2B;
 }
 </style>
 
