@@ -29,7 +29,7 @@ export default {
     return {
       hasCancel: true,
       adjustmentScore: null,
-      remarks: ""
+      remark: ""
     };
   },
   methods: {
@@ -46,7 +46,7 @@ export default {
           message: '当前积分为0时不能输入负数',
           type: 'warning'
         });
-      }else if(this.remarks == "") {
+      }else if(this.remark == "") {
         this.$notify({
           title: '警告',
           message: '请输入变更原因',

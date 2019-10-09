@@ -179,7 +179,7 @@ export default {
   data() {
     return {
       form: {
-        labelName:"",
+        labelName:"手机号",
         labelValue:"",
         memberType:[],
         memberLabels: [],
