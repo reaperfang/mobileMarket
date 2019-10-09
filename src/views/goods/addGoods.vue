@@ -126,10 +126,10 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="wanningStock"
+                        prop="warningStock"
                         label="库存预警">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.wanningStock" placeholder="请输入"></el-input>
+                            <el-input v-model="scope.row.warningStock" placeholder="请输入"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -219,11 +219,11 @@
                             label="库存">
                         </el-table-column>
                         <el-table-column
-                            prop="wanningStock"
+                            prop="warningStock"
                             label="库存预警">
                             <template slot-scope="scope">
                                 <!-- <span>¥{{scope.row.costPrice}}</span> -->
-                                <el-input v-model="scope.row.wanningStock" placeholder="请输入库存预警"></el-input>
+                                <el-input v-model="scope.row.warningStock" placeholder="请输入库存预警"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -701,7 +701,7 @@ export default {
                 costPrice: '',
                 salePrice: '',
                 stock: '',
-                wanningStock: '',
+                warningStock: '',
                 weight: '',
                 volume: '',
                 image: '',
@@ -991,7 +991,7 @@ export default {
                         });
                         return
                     }
-                    if(this.ruleForm.goodsInfos.some(val => val.wanningStock == '')) {
+                    if(this.ruleForm.goodsInfos.some(val => val.warningStock == '')) {
                         this.$message({
                             message: '规格信息中库存预警不能为空',
                             type: 'warning'
@@ -1203,7 +1203,7 @@ export default {
                         costPrice: '',
                         salePrice: '',
                         stock: '',
-                        wanningStock: '',
+                        warningStock: '',
                         weight: '',
                         volume: '',
                         specs: _specs,
