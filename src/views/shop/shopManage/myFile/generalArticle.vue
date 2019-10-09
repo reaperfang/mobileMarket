@@ -8,7 +8,7 @@
       <div class="c_right">
         <p class="head">图文信息</p>
         <div class="bodys">
-          <el-input v-model="ruleForm.title" placeholder="标题请勿超过64个字，必填"></el-input>
+          <el-input v-model="ruleForm.title" @change="titleNum" placeholder="标题请勿超过64个字，必填"></el-input>
           <p class="mt10">封面图片</p>
           <img :src="ruleForm.fileCover" class="coverImage" v-if="ruleForm.fileCover">
           <p class="uploadImage">
@@ -87,6 +87,10 @@ export default {
       }
   },
   methods: {
+    titleNum(){
+      let lg = this.ruleForm.title.length
+      lg > 64 && this.$message.error('标题请勿超过64个字!')      
+    },
     getArticle(){
       let query ={
         id:this.$route.query.id,
@@ -108,6 +112,7 @@ export default {
     },
     //保存
     save(){
+      this.titleNum()
       let id = this.$route.query.id
       if(id){
         let query = {

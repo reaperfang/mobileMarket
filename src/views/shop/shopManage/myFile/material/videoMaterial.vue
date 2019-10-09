@@ -119,7 +119,6 @@ export default {
     getList(id){
       let query ={
         fileGroupInfoId:id || '',
-        fileGroupInfoId:'',
         startIndex:this.currentPage,
         pageSize:this.pageSize,
         sourceMaterialType:'2'

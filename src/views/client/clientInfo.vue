@@ -443,6 +443,7 @@ export default {
         getUsedCoupon() {
             let params = {usedType:"1", couponType: "0", memberId: this.userId};
             this._apis.client.getUsedCoupon(params).then((response) => {
+                this.couponList = [];
                 response.map((v) => {
                     this.couponList.push(v.appCoupon);
                 })
@@ -453,6 +454,7 @@ export default {
         getUsedCode() {
             let params = {usedType:"1", couponType: "1", memberId: this.userId};
             this._apis.client.getUsedCoupon(params).then((response) => {
+                this.codeList = [];
                 response.map((v) => {
                     this.codeList.push(v.appCoupon);
                 })
