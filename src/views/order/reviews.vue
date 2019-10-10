@@ -287,9 +287,16 @@ export default {
         onSubmit(value) {
             console.log(value)
             this._apis.order.replyComment({ids: this.multipleSelection.map(val => val.id), replyContent: value}).then((res) => {
-                console.log(res)
+                this.$notify({
+                    title: '成功',
+                    message: '批量回复成功！',
+                    type: 'success'
+                });
             }).catch(error => {
-                
+                this.$notify.error({
+                    title: '错误',
+                    message: error
+                });
             })
         },
         batchAudit() {
