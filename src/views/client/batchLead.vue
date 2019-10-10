@@ -114,6 +114,7 @@
     </div>
 </template>
 <script type="es6">
+import utils from "@/utils";
 import chooseProductDialog from './dialogs/batchLead/chooseProductDialog';
 export default {
     name: 'batchLead',
@@ -186,8 +187,8 @@ export default {
         },
         saveLabel() {
             let formObj = Object.assign({}, this.ruleForm);
-            formObj.consumeTimeStart = formObj.consumeTime ? formObj.consumeTime[0]:"";
-            formObj.consumeTimeEnd = formObj.consumeTime ? formObj.consumeTime[1]:"";
+            formObj.consumeTimeStart = formObj.consumeTime ? utils.formatDate(new Date(formObj.consumeTime[0]).getTime(),"yyyy-MM-dd hh:mm:ss"):"";
+            formObj.consumeTimeEnd = formObj.consumeTime ? utils.formatDate(new Date(formObj.consumeTime[1]).getTime() + 24 * 60 * 60 * 1000 - 1,"yyyy-MM-dd hh:mm:ss"):"";
             delete formObj.consumeTime;
             formObj.isLastConsumeTime = this.convertUnit(formObj.isLastConsumeTime) || '';
             formObj.isTotalConsumeTimes = this.convertUnit(formObj.isTotalConsumeTimes) || '';
