@@ -29,11 +29,11 @@
                 <el-form-item label="评论时间">
                     <el-date-picker
                         v-model="listQuery.orderDate"
-                        type="daterange"
+                        type="datetimerange"
                         range-separator="-"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        value-format="yyyy-MM-dd hh:mm:ss">
+                        :default-time="['12:00:00', '23:59:59']">
                     </el-date-picker>
                 </el-form-item>
                 <div class="buttons">
@@ -146,6 +146,7 @@
 import Pagination from '@/components/Pagination'
 import BatchReplyDialog from '@/views/order/dialogs/batchReplyDialog'
 import AuditDialog from '@/views/order/dialogs/auditDialog'
+import utils from "@/utils";
 
 export default {
     data() {
@@ -352,8 +353,8 @@ export default {
             let _param
             
             _param = Object.assign({}, this.listQuery, param, {
-                createTimeStart: this.listQuery.orderDate[0],
-                creaTetimeEnd: this.listQuery.orderDate[1]
+                createTimeStart: this.listQuery.orderDate[0] ? utils.formatDate(new Date(this.listQuery.orderDate[0] * 1), "yyyy-MM-dd hh:mm:ss") : '',
+                creaTetimeEnd: this.listQuery.orderDate[1] ? utils.formatDate(new Date(this.listQuery.orderDate[1] * 1), "yyyy-MM-dd hh:mm:ss") : ''
             })
 
             this._apis.order.getCommentList(_param).then((res) => {
