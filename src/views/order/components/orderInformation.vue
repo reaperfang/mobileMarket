@@ -20,7 +20,7 @@
             <el-col :span="8"><div class="grid-content center">
                 <div class="item">
                     <div class="label">付款人</div>
-                    <div class="value">{{orderDetail.orderSendInfo && orderDetail.orderSendInfo.sendName}}</div> <!-- <span class="blue">详情</span> -->
+                    <div class="value">{{orderDetail.orderSendInfo && orderDetail.orderSendInfo.memberSn}}</div> <!-- <span class="blue">详情</span> -->
                 </div>
                 <div class="item">
                     <div class="label">付款方式</div>
@@ -233,11 +233,11 @@ export default {
             },
             reducePriceTypeList: [
                 {
-                    label: '协商加减',
+                    label: '协商加价',
                     value: 1
                 },
                 {
-                    label: '协商减减',
+                    label: '协商减价',
                     value: 2
                 }
             ],

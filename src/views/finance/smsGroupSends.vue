@@ -103,7 +103,9 @@ export default {
     }
   },
   watch: {
-
+    flag(){
+      this.getSurvey()
+    }
   },
   created() {
     this.getSurvey();

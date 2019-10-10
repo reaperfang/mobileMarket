@@ -222,7 +222,7 @@ export default {
         searchType:'tradeDetailSn',
         searchValue:'',
         timeValue:'',
-        status:'',
+        status:-1,
         memberSn:''
       }
     },
