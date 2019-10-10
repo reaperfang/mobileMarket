@@ -125,10 +125,10 @@
                             <div class="operate-box">
                                 <span v-permission="['订单', '评价管理', '默认页面', '审核']" v-if="scope.row.auditStatus == 0" class="blue" @click="currentDialog = 'AuditDialog'; title='审核'; batch = false; currentData = scope.row; dialogVisible = true">审核</span>
                             <!-- <span class="blue" @click="setChoiceness(scope.row)">{{scope.row.isChoiceness == 1 ? '取消精选' : '设为精选'}}</span> -->
-                            <template v-if="scope.row.isChoiceness == 1">
+                            <template v-if="scope.row.auditStatus == 1 && scope.row.isChoiceness == 1">
                                 <span v-permission="['订单', '评价管理', '默认页面', '取消精选']" class="blue" @click="setChoiceness(scope.row)">取消精选</span>
                             </template>
-                            <template v-else>
+                            <template v-if="scope.row.auditStatus == 1 && !scope.row.isChoiceness">
                                 <span v-permission="['订单', '评价管理', '默认页面', '设为精选']" class="blue" @click="setChoiceness(scope.row)">设为精选</span>
                             </template>
                             <span v-permission="['订单', '评价管理', '默认页面', '查看']" @click="$router.push({ path: '/order/reviewsDetail?id=' +  scope.row.id})" class="blue">查看</span>
@@ -366,6 +366,11 @@ export default {
 
             this._apis.order.getCommentList(_param).then((res) => {
                 this.total = +res.total
+                res.list.forEach(val => {
+                    if(!val.isChoiceness) {
+                        val.isChoiceness = 0
+                    }
+                })
                 this.tableData = res.list
                 this.loading = false
             }).catch(error => {
