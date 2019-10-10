@@ -51,7 +51,7 @@
                                 prop="goodsCount"
                                 label="应发数量">
                                 <template slot-scope="scope">
-                                    {{+scope.row.goodsCount - +scope.row.sendCount}}
+                                    {{scope.row.goodsCount}}
                                 </template>
                             </el-table-column>
                             <!-- <el-table-column
@@ -62,7 +62,7 @@
                                 prop="sendCount"
                                 label="本次发货数量">
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.sendCount"></el-input>
+                                    <el-input type="number" :max="scope.row.goodsCount" v-model="scope.row.sendCount"></el-input>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -319,7 +319,7 @@ export default {
                     message: '发货成功',
                     type: 'success'
                 });
-                this.$router.push('/order/deliverGoodsSuccess?id=' + res.success[0].orderInfoId + '&type=deliverGoods')
+                this.$router.push('/order/deliverGoodsSuccess?id=' + res.success[0].expressParameter.orderSendInfo.id + '&type=deliverGoods')
             }).catch(error => {
                 this.$notify.error({
                     title: '错误',
