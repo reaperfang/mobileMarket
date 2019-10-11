@@ -346,6 +346,7 @@ export default {
             val.expressCompanyCodes = ''
             val.orderItemList.forEach(goods => {
               goods.checked = false;
+              goods.sendCount = ''
             });
           });
           res.forEach(val => {
