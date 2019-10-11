@@ -337,7 +337,7 @@ export default {
                     message: '添加成功！',
                     type: 'success'
                 });
-                this.getDetail()
+                this.$emit('getDetail')
             }).catch(error => {
                 this.changePriceVisible = false
                 this.$notify.error({
@@ -403,7 +403,25 @@ export default {
             }
 
             return str
-        }
+        },
+        operationTypeFilter(code) {
+            switch(code) {
+                case 1:
+                    return '确认收款'
+                case 2:
+                    return '改价'
+                case 3:
+                    return '继续发货'
+                case 4:
+                    return '补填物流信息'
+                case 5:
+                    return '发货'
+                case 6:
+                    return '关闭订单'
+                case 7:
+                    return '提前关闭订单'
+            }
+        },
     },
     props: {
         orderInfo: {
@@ -522,6 +540,13 @@ export default {
     .orderPayRecordList {
         margin-left: 5px;
     }
+    .goods-detail {
+            display: flex;
+            align-items: center;
+        }
+        .image-box {
+            margin-right: 5px;
+        }
 </style>
 
 
