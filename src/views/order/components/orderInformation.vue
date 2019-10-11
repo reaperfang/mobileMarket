@@ -170,6 +170,14 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col">余额使用:</div>
+                    <div class="col">¥{{orderDetail.orderInfo.consumeBalanceMoney}}</div>
+                </div>
+                <div class="row">
+                    <div class="col">积分抵现:</div>
+                    <div class="col">¥{{orderDetail.orderInfo.consumeScoreConvertMoney}}</div>
+                </div>
+                <div class="row">
                     <div class="col">实收金额:</div>
                     <div class="col">¥{{orderDetail.orderInfo.actualMoney}}</div>
                 </div>
