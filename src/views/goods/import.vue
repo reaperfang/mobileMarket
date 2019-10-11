@@ -158,7 +158,7 @@ export default {
         importGoods() {
             let message = this.$message({
             showClose: true,
-            message: '不能重复操作，上传文件批量导入文件。',
+            message: '导入中...',
             duration: 0
             });
 
