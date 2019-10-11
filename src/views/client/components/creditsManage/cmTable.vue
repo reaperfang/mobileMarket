@@ -50,6 +50,7 @@ import loginRegularDialog from '../../dialogs/creditsManage/loginRegularDialog';
 import buyRegularDialog from '../../dialogs/creditsManage/buyRegularDialog';
 import repurchaseRegularDialog from '../../dialogs/creditsManage/repurchaseRegularDialog';
 import praiseRegularDialog from '../../dialogs/creditsManage/praiseRegularDialog';
+import { mapMutations } from 'vuex'
 export default {
   name: "cmTable",
   extends: TableBase,
@@ -72,6 +73,7 @@ export default {
 
   },
   methods: {
+    ...mapMutations(['SETCURRENT']),
     refreshPage() {
       this.getCreditList(this.startIndex, this.pageSize);
     },
@@ -100,9 +102,22 @@ export default {
             this.currentDialog = "praiseRegularDialog";
             this.currentData.row = row;
             break;
-          case 'Sign':
+          case 'Sign'://签到有礼            
             this.$router.push({name:'apply',params:{paths:'/application/customarket/checkin'}})
             // this.$router.push({path:'apply',query:{paths:'/application/customarket/checkin'}})
+            this.SETCURRENT(8)
+            break;
+          case 'SuperPoster'://超级海报
+            this.$router.push({name:'apply',params:{paths:'/application/feature/posterList'}})
+            this.SETCURRENT(8)
+            break;
+          case 'FullReduction'://满减/满折
+            this.$router.push({name:'apply',params:{paths:'/application/promotion/fullreduce'}})
+            this.SETCURRENT(8)
+            break;
+          case 'Holiday'://节日有礼
+            this.$router.push({name:'apply',params:{paths:'/application/customarket/festival'}})
+            this.SETCURRENT(8)
             break;
           default:
             break;
