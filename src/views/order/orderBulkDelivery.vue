@@ -343,6 +343,7 @@ export default {
           res.forEach(val => {
             val.checked = false;
             val.expressNos = "";
+            val.expressCompanyCodes = ''
             val.orderItemList.forEach(goods => {
               goods.checked = false;
             });
