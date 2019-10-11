@@ -520,7 +520,6 @@ export default {
           type: "warning"
         });
       } else {
-        console.log(this.ruleForm);
         if (this.ruleForm.id) {
           let formObj = {};
           formObj.id = this.ruleForm.id;
@@ -534,7 +533,6 @@ export default {
           formObj.notice = this.ruleForm.notice;
           formObj.phone = this.ruleForm.phone;
           formObj.explain = this.ruleForm.explain;
-          formObj.levelConditionValueDto = this.levelConditionValueDto;
           if(formObj.receiveSetting == '0') {
             formObj.receiveConditionsRemarks = '可直接领取';
           }else{
@@ -542,6 +540,8 @@ export default {
             "" +
             this.levelConditionValueDto.label +
             this.levelConditionValueDto.conditionValue;
+            formObj.levelConditionValueDto = this.levelConditionValueDto;
+            delete formObj.levelConditionValueDto.label;
           }
           if (this.ruleForm.backgroundType == "0") {
             this.colors.map(v => {
@@ -560,7 +560,7 @@ export default {
               });
             }
           }
-          delete formObj.levelConditionValueDto.label;
+          
           let rightsDtoList = [];
           if (this.right1) {
             let rightParam1 = {};
@@ -707,6 +707,7 @@ export default {
           this._apis.client
             .editCard(formObj)
             .then(response => {
+              this._routeTo('cardManage');
               this.$notify({
                 title: "成功",
                 message: "编辑成功",

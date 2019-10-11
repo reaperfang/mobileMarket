@@ -20,7 +20,7 @@
             <el-col :span="8"><div class="grid-content center">
                 <div class="item">
                     <div class="label">付款人</div>
-                    <div class="value">{{orderDetail.orderSendInfo && orderDetail.orderSendInfo.memberSn}}</div> <!-- <span class="blue">详情</span> -->
+                    <div class="value">{{orderDetail.orderPayRecordList | orderPayRecordListFilter}}</div> <!-- <span v-if="orderDetail.orderPayRecordList" class="blue orderPayRecordList">详情</span> -->
                 </div>
                 <div class="item">
                     <div class="label">付款方式</div>
@@ -168,6 +168,14 @@
                         <span class="blue pointer" v-if="!changePriceVisible" @click="changePriceVisible = true">改价</span>
                         <span class="blue pointer" v-if="changePriceVisible" @click="reducePriceHandler">完成</span>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col">余额使用:</div>
+                    <div class="col">¥{{orderDetail.orderInfo.consumeBalanceMoney}}</div>
+                </div>
+                <div class="row">
+                    <div class="col">积分抵现:</div>
+                    <div class="col">¥{{orderDetail.orderInfo.consumeScoreConvertMoney}}</div>
                 </div>
                 <div class="row">
                     <div class="col">实收金额:</div>
@@ -337,7 +345,7 @@ export default {
                     message: '添加成功！',
                     type: 'success'
                 });
-                this.getDetail()
+                this.$emit('getDetail')
             }).catch(error => {
                 this.changePriceVisible = false
                 this.$notify.error({
@@ -392,7 +400,36 @@ export default {
             } else if(code === 2) {
                 return '公司'
             }
-        }
+        },
+        orderPayRecordListFilter(arr) {
+            let str = ''
+            let _arr
+
+            if(arr) {
+                _arr = arr.slice(0, 3)
+                str = _arr.map(val => val.memberName).join(',')
+            }
+
+            return str
+        },
+        operationTypeFilter(code) {
+            switch(code) {
+                case 1:
+                    return '确认收款'
+                case 2:
+                    return '改价'
+                case 3:
+                    return '继续发货'
+                case 4:
+                    return '补填物流信息'
+                case 5:
+                    return '发货'
+                case 6:
+                    return '关闭订单'
+                case 7:
+                    return '提前关闭订单'
+            }
+        },
     },
     props: {
         orderInfo: {
@@ -508,6 +545,16 @@ export default {
         .reduce-price-input {
         width: auto;
     }
+    .orderPayRecordList {
+        margin-left: 5px;
+    }
+    .goods-detail {
+            display: flex;
+            align-items: center;
+        }
+        .image-box {
+            margin-right: 5px;
+        }
 </style>
 
 
