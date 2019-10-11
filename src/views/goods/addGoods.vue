@@ -1010,7 +1010,7 @@ export default {
                         });
                         return
                     }
-                    if(this.ruleForm.goodsInfos.some(val => val.warningStock == '')) {
+                    if(this.ruleForm.goodsInfos.some(val => !val.warningStock)) {
                         this.$message({
                             message: '规格信息中库存预警不能为空',
                             type: 'warning'
