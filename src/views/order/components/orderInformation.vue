@@ -126,7 +126,7 @@
                 </div>
                 <div class="row">
                     <div class="col">应收金额:</div>
-                    <div class="col">¥{{orderDetail.orderInfo.receivableMoney}}</div>
+                    <div class="col">¥{{orderDetail.orderInfo.freight + orderDetail.orderInfo.goodsAmount}}</div>
                 </div>
                 <div class="row">
                     <div class="col">优惠券金额:</div>
