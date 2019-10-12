@@ -134,12 +134,14 @@ export default {
           this.skuList = [].concat(response.list);
           this.total = response.total;
           let productInfoIds;
-          if(this.data.productInfoIds.indexOf(',') !== -1) {
-            productInfoIds = this.data.productInfoIds.split(',');
-          }else{
-            productInfoIds = [this.data.productInfoIds]
+          if(!!this.data.productInfoIds) {
+            if(this.data.productInfoIds.indexOf(',') !== -1) {
+              productInfoIds = this.data.productInfoIds.split(',');
+            }else{
+              productInfoIds = [this.data.productInfoIds]
+            }
           }
-          if(productInfoIds.length > 0) {
+          if(productInfoIds && productInfoIds.length > 0) {
             productInfoIds.map((v) => {
                 this.skuList.forEach(row => {
                     if(row.goodsInfo.id == v) {
@@ -156,7 +158,7 @@ export default {
         });
     },
     handleSearch() {
-        this.getSkuList(1,10);
+        this.getSkuList(this.startIndex, this.pageSize);
     },
     reset() {
         this.categoryValue = [];

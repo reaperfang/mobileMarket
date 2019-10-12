@@ -6,7 +6,7 @@
                     <el-input placeholder="请输入内容" v-model="listQuery.searchValue" class="input-with-select">
                         <el-select v-model="listQuery.searchType" slot="prepend" placeholder="请输入">
                             <el-option label="售后单编号" value="code"></el-option>
-                            <el-option label="订单编号" value="orderInfoCode"></el-option>
+                            <el-option label="订单编号" value="orderCode"></el-option>
                             <el-option label="客户ID" value="memberSn"></el-option>
                         </el-select>
                     </el-input>
@@ -265,7 +265,15 @@ export default {
             // })
         },
         exportOrder() {
-           this._apis.order.orderAfterSaleExport({ids: this.multipleSelection.map(val => val.id)}).then((res) => {
+            let _param
+            
+            _param = Object.assign({}, this.listQuery, {
+                [this.listQuery.searchType]: this.listQuery.searchValue,
+                createTimeStart: this.listQuery.applicationDate && this.listQuery.applicationDate.length ? utils.formatDate(this.listQuery.applicationDate[0], "yyyy-MM-dd hh:mm:ss") : '',
+                createTimeEnd: this.listQuery.applicationDate && this.listQuery.applicationDate.length ? utils.formatDate(this.listQuery.applicationDate[1], "yyyy-MM-dd hh:mm:ss") : '',
+                ids: this.multipleSelection.map(val => val.id)
+            })
+           this._apis.order.orderAfterSaleExport(_param).then((res) => {
                 console.log(res)
                 window.location.href = res
                 this.$notify({
