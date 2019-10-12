@@ -734,7 +734,7 @@ export default {
                         image: response.data.url
                     }))
                 } else {
-                    this.ruleForm.goodsInfo.splice(index, 1, Object.assign({}, this.ruleForm.goodsInfos[index], {
+                    this.ruleForm.goodsInfos.splice(index, 1, Object.assign({}, this.ruleForm.goodsInfos[index], {
                         image: response.data.url
                     }))
                 }
