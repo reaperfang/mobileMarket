@@ -13,9 +13,9 @@
             <div class="row align-center table-title">
               <div class="col" style="width: 660px;">
                 <div class="row align-center row-margin">
-                  <div class="col">
+                  <!-- <div class="col">
                     <i class="checkbox"></i>
-                  </div>
+                  </div> -->
                   <div class="col" style="width: 380px;">商品</div>
                   <div class="col" style="width: 60px;">应发数量</div>
                   <div class="col">本次发货数量</div>
