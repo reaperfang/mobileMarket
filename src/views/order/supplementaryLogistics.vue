@@ -105,7 +105,7 @@
                         </div>
                         <div class="item">
                             <div class="label">发货信息</div>
-                            <div class="value">{{orderInfo.sendRemark}}</div>
+                            <div class="value">{{orderInfo.sendDetail}}</div>
                         </div>
                     </div>
                 </div>
