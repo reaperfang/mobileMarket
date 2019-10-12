@@ -52,7 +52,9 @@
         <span>
          <el-button type="primary" @click="_routeTo('withdrawSet')">提现规则设置</el-button>
           <el-button type="primary" @click="batchCheck" v-permission="['财务', '提现明细', '默认页面', '批量审核']">批量审核</el-button>
-          <el-button icon="document" @click='exportToExcel()' v-permission="['财务', '提现明细', '默认页面', '导出']">导出</el-button>
+          <el-tooltip content="当前最多支持导出1000条数据" placement="top">
+            <el-button class="yellow_btn" icon="el-icon-share"  @click='exportToExcel()' v-permission="['财务', '提现明细', '默认页面', '导出']">导出</el-button>
+          </el-tooltip>
         </span>
       </div>
       <el-table
@@ -252,7 +254,7 @@ export default {
       let isCheck = true
       let ids = []
       if(this.multipleSelection.length == 0){
-        this.currentData.text = "请选择需要审核的数据";
+        this.currentData.text = "请选择需要审核的数据 !";
         this.dialogVisible = true;
         this.currentDialog = "warnDialog";
       }else{
@@ -305,8 +307,17 @@ export default {
       this.dialogVisible = true
       this.currentDialog = auditingDialog
     },
-    handleSubmit(){
-      this.fetch()
+    handleSubmit(datas){
+      this._apis.finance.examineWd(datas).then((response)=>{
+          // this.dialogVisible = false
+          // this.otherVisible = true
+          this.fetch()
+      }).catch((error)=>{
+          this.$notify.error({
+          title: '错误',
+          message: error
+          });
+      })
     }
   }
 }
