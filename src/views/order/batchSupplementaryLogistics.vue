@@ -13,9 +13,9 @@
             <div class="row align-center table-title">
               <div class="col" style="width: 660px;">
                 <div class="row align-center row-margin">
-                  <div class="col">
+                  <!-- <div class="col">
                     <i class="checkbox"></i>
-                  </div>
+                  </div> -->
                   <div class="col" style="width: 380px;">商品</div>
                   <div class="col" style="width: 60px;">应发数量</div>
                   <div class="col">本次发货数量</div>
@@ -35,9 +35,9 @@
                   v-for="(goods, i) in item.orderItemList"
                   :key="i"
                 >
-                  <div class="col">
+                  <!-- <div class="col">
                     <i @click="select(index, i)" class="checkbox" :class="{checked: goods.checked}"></i>
-                  </div>
+                  </div> -->
                   <div class="col" style="width: 380px;">
                     <div class="row align-center">
                       <div class="col">
@@ -51,7 +51,7 @@
                   </div>
                   <div class="col" style="width: 60px;">{{goods.goodsCount}}</div>
                   <div class="col" style="width: 100px;">
-                    <el-input :disabled="true" v-model="goods.goodsCount" placeholder="请输入"></el-input>
+                    <el-input :disabled="true" v-model="goods.sendCount" placeholder="请输入"></el-input>
                   </div>
                 </div>
               </div>
@@ -138,6 +138,12 @@ export default {
     this.getDetail();
     this.getExpressCompanyList()
   },
+  computed: {
+        cid(){
+            let shopInfo = JSON.parse(localStorage.getItem('shopInfos'))
+            return shopInfo.id
+        }
+    },
   methods: {
     printingElectronicForm() {
       this.$router.push('/order/printingElectronicForm?ids=' + this.list.map(val => val.id).join(',') + '&type=batchSupplementaryLogistics')
@@ -158,24 +164,12 @@ export default {
                     }
 
                     return {
-                        createTime: item.createTime,
-                        createUserId: item.createUserId,
-                        createUserName: item.createUserName,
-                        updateTime: item.updateTime,
-                        updateUserId: item.updateUserId,
-                        updateUserName: item.updateUserName,
-                        deleteFlag: item.deleteFlag,
-                        userCache: item.userCache,
-                        commodityCode: item.commodityCode,
-                        id: item.id,
+                        orderId: item.orderId,
+                        memberInfoId: item.memberInfoId,
                         orderCode: item.orderCode,
+                        orderItems: item.orderItemList,
+                        id: item.id,
                         memberSn: item.memberSn,
-                        isAutoSend: item.isAutoSend,
-                        status: item.status,
-                        expressCompanys: expressCompanys,
-                        expressCompanyCodes: item.expressCompanyCode,
-                        expressNos: item.expressNos,
-                        remark: item.remark,
                         receivedName: item.receivedName,
                         receivedPhone: item.receivedPhone,
                         receivedProvinceCode: item.receivedProvinceCode,
@@ -194,11 +188,14 @@ export default {
                         sendAreaCode: item.sendAreaCode,
                         sendAreaName: item.sendAreaName,
                         sendDetail: item.sendDetail,
-                        sendRemark: item.sendRemark,
+                        expressCompanys: expressCompanys,
+                        expressNos: item.expressNos,
+                        expressCompanyCodes: item.expressCompanyCodes,
+                        remark: item.remark
                     }
                 })
             }
-            this._apis.order.orderSendInfoFillUpExpress(params).then((res) => {
+            this._apis.order.orderSendGoods(params).then((res) => {
                 this.$notify({
                     title: '成功',
                     message: '批量补填物流成功',
@@ -279,17 +276,49 @@ export default {
         },
     getDetail() {
       this._apis.order
-        .orderSendInfoFillUpExpressPage({
+        .orderSendDetail({
           ids: this.$route.query.ids.split(",").map(val => +val)
         })
         .then(res => {
           console.log(res)
           res.forEach(val => {
-              val.orderItemList.forEach(goods => {
-                  goods.checked = false
-              })
+            val.checked = false;
+            val.expressNos = "";
+            val.expressCompanyCodes = ''
+            val.orderItemList.forEach(goods => {
+              goods.checked = false;
+              goods.sendCount = goods.goodsCount
+            });
+          });
+          res.forEach(val => {
+            val.orderItemList.forEach(item => {
+              item.cacheSendCount = item.sendCount
+            })
           })
           this.list = res;
+
+          this._apis.order
+            .fetchOrderAddress({ id: this.cid, cid: this.cid })
+            .then(response => {
+              this.list.forEach(res => {
+                res.sendName = response.senderName
+                res.sendPhone = response.senderPhone
+                res.sendProvinceCode = response.provinceCode
+                res.sendProvinceName = response.province
+                res.sendCityCode = response.cityCode
+                res.sendCityName = response.city
+                res.sendAreaCode = response.areaCode
+                res.sendAreaName = response.area
+                res.sendDetail = response.address
+              })
+            })
+            .catch(error => {
+              this.visible = false;
+              this.$notify.error({
+                title: "错误",
+                message: error
+              });
+            });
         })
         .catch(error => {
           this.visible = false;
