@@ -226,7 +226,7 @@ export default {
                 return
         }
 
-        if(express && this.list.reduce((total, val) => {return total.concat(val.orderItemList)}, []).filter(val => val.checked).some(val => !expressNos)) {
+        if(this.express && this.list.reduce((total, val) => {return total.concat(val.orderItemList)}, []).filter(val => val.checked).some(val => !expressNos)) {
           this.confirm({title: '提示', icon: true, text: '快递单号不能为空'})
                 return
         }
