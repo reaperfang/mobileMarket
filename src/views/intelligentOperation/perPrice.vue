@@ -24,9 +24,9 @@
                 <div class="fl gflex">
                     <p >按时间筛选</p>
                      <el-radio-group v-model="timeType" @change="changeDay">
-                        <el-radio-button class="btn_bor" label="1">最近7天</el-radio-button>
-                        <el-radio-button class="btn_bor" label="2">最近15天</el-radio-button>
-                        <el-radio-button class="btn_bor" label="3">最近30天</el-radio-button>
+                        <el-radio-button class="btn_bor" label="1">7天前</el-radio-button>
+                        <el-radio-button class="btn_bor" label="2">15天前</el-radio-button>
+                        <el-radio-button class="btn_bor" label="3">30天前</el-radio-button>
                      </el-radio-group>
                 </div>
                 <div class="fr">
@@ -146,7 +146,7 @@ export default {
             this._apis.data.historyRecord(data).then(response => {
                 this.listObj = response;
                 let arrList = response.list;
-                this.tableData = response.list;
+                this.tableData = response.list.reverse();
                 this.tableCopyTableList = JSON.parse(JSON.stringify(this.tableData));
                 this.tableData = this.paging(this.size, this.index);
                 this.xdata=[];
@@ -155,9 +155,9 @@ export default {
                 this.threeData=[];
                 for(let i = 0; i<arrList.length; i++){
                     this.xdata.push(arrList[i].date)
-                    this.oneData.push(arrList[i].averagePayment)
+                    this.oneData.push(arrList[i].averageOrderPayment)
                     this.twoData.push(arrList[i].orderCount)
-                    this.threeData.push(arrList[i].averageOrderPayment)
+                    this.threeData.push(arrList[i].averagePayment)
             }
                 this.chart()
         }).catch(error => {
@@ -186,7 +186,7 @@ export default {
             }else if(this.preType == 3){
                 xyData.yAxisData = this.threeData
             }
-            this.$refs.pp2.con(xyData)
+            this.$refs.pp2.con(xyData,this.preType)
         },
         changePre(){
             this.chart()
