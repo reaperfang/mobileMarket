@@ -215,6 +215,7 @@ export default {
           type: "warning"
         });
       } else {
+        console.log('params' + JSON.stringify(params));
         this._apis.client
           .editCreditRegular(params)
           .then(response => {
@@ -291,6 +292,7 @@ export default {
           this.skuList = [].concat(response.list);
           this.total = response.total;
           let selectProducts = JSON.parse(this.data.row.sceneRule).selectProducts;
+          console.log(selectProducts);
           selectProducts.map(v => {
               this.skuList.forEach(row => {
                 if (row.goodsInfo.id == v.id) {
@@ -323,6 +325,7 @@ export default {
           obj.name = v.goodsInfo.name;
           this.selectProducts.push(obj);
         });
+        console.log(selections);
       }
     },
     getInfo() {
@@ -411,6 +414,7 @@ export default {
     margin-bottom: 20px;
   }
   .page_styles {
+    overflow-x: auto;
     text-align: center;
   }
 }

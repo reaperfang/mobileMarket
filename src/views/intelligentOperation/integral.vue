@@ -28,7 +28,10 @@
                 <el-form-item label="消耗次数">
                     <div class="input_wrap2">
                         <el-select v-model="form.scorePaymentCountRange" @change="getData">
-                            <el-option v-for="item in consumTimes" :label="item.name" :value="item.value" :key="item.id"></el-option>
+                           <el-option label="1-5次" value="1"></el-option>
+                           <el-option label="5-10次" value="2"></el-option>
+                           <el-option label="10-15次" value="3"></el-option>
+                           <el-option label="15次以上" value="4"></el-option>
                         </el-select>
                     </div>
                 </el-form-item>
@@ -45,7 +48,7 @@
                 </el-form-item>
             </el-form>
             <div class="m_line clearfix">
-                <p class="fl">该筛选条件下：会员共计<span>{{memberCount || 0}}</span>人；占会员总数的<span>{{ratio ? (ratio*100).toFixed(2) : 0}}%</span>
+                <p class="fl">该筛选条件下：会员共计<span>{{memberCount || 0}}</span>人；占客户总数的<span>{{ratio ? (ratio*100).toFixed(2) : 0}}%</span>
                 <div class="fr marT20">
                     <el-button class="minor_btn" @click="reScreening()">重新筛选</el-button>
                     <el-button class="yellow_btn" icon="el-icon-share" @click="exportExl">导出</el-button>
@@ -60,6 +63,11 @@
                 :totalCount="listObj.totalSize">
             </ma3Table>
         </div>
+        <p>运营建议:</p>
+            <p v-if="form.scorePaymentCountRange==1" class="proposal"><b>"消耗次数1-5次："</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange==2" class="proposal"><b>"消耗次数5-10次："</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange==3" class="proposal"><b>"消耗次数10-15次："</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange==4" class="proposal"><b>"消耗次数15次以上："</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
     </div>
 </template>
 <script>
@@ -85,7 +93,7 @@ export default {
                     }
                     return time.getTime() > maxTime
                     }
-                    return time.getTime() > Date.now()
+                    return time.getTime() > Date.now() - 8.64e7
                 }
             },
             daterange:'',
@@ -103,23 +111,7 @@ export default {
             listObj:{}, //表格数据
             totalCount:0,//总条数
             consumTimes: [
-                // {
-                //     id: "1-5",
-                //     name: "1-5次"
-                // },
-                // {
-                //     id: "5-10",
-                //     name: "5-10次"
-                // },{
-                //     id: "10-15",
-                //     name: "10-15次"
-                // },{
-                //     id: "15",
-                //     name: "15次以上"
-                // },{
-                //     id: "null",
-                //     name: "不限"
-                // }
+
             ],
             customType: [
                 {
@@ -271,6 +263,9 @@ export default {
 }
 /deep/.el-checkbox.is-bordered.is-checked{
     background:rgba(101,94,255,0.1);
+}
+.proposal{
+    margin-left: 65px;
 }
 .m_container{
     background-color: #fff;
