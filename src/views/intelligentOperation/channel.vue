@@ -28,7 +28,7 @@
                         
                     <el-form-item label="转化渠道">
                         <div class="input_wrap2">
-                            <el-select v-model="form.channel">
+                            <el-select v-model="form.channel" @change="changeTime">
                                 <el-option label="不限" value="null"></el-option>
                                 <el-option label="直接购买" value="1"></el-option>
                                 <el-option label="活动类型" value="2"></el-option>
@@ -99,7 +99,7 @@ export default {
                     const day90 = (90 - 1) * 24 * 3600 * 1000
                     let maxTime = this.pickerMinDate + day90
                     if (maxTime > new Date()) {
-                        maxTime = new Date()
+                        maxTime = new Date() - 8.64e7
                     }
                     return time.getTime() > maxTime
                     }

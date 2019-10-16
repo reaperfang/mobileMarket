@@ -32,7 +32,7 @@
                         <span>订单类型：{{order.orderType | orderTypeFilter}}</span>
                         <span><i class="memberLevelImg" :style="{background: `url(${order.memberLevelImg})`}"></i>客户ID：{{order.memebrName}}</span>
                         <span>订单来源：{{order.channelName}}</span>
-                        <i v-permission="['订单', '订单查询', '商城订单', '删除订单']" @click="closeOrder(order.id)" v-if="order.orderStatus == 2" class="el-icon-delete"></i>
+                        <!-- <i v-permission="['订单', '订单查询', '商城订单', '删除订单']" @click="closeOrder(order.id)" v-if="order.orderStatus == 2" class="el-icon-delete"></i> -->
                     </div>
                 </div>
                 <div class="container-item-content">
@@ -61,7 +61,7 @@
                     <div class="item" style="width: 120px;">
                         <!-- <p class="pay-amount">实收：¥{{order.actualMoney}}</p>
                         <p class="payment-mode">{{order.channelName}}支付</p> -->
-                        <p>实收：¥{{order.goodsAmount + order.freight}}</p>
+                        <p>实收：¥{{order | netReceiptsFilter}}</p>
                         <p>{{order.channelName}}支付</p>
                     </div>
                     <div class="item" style="width: 120px;">
@@ -176,6 +176,18 @@ export default {
             }
 
             return str
+        },
+        netReceiptsFilter(value) {
+            let goodsAmount
+            let freight
+            let total
+
+            goodsAmount = typeof value.goodsAmount == 'string' ? parseFloat(value.goodsAmount) : value.goodsAmount
+            freight = typeof value.freight == 'string' ? parseFloat(value.freight) : value.freight
+            total = goodsAmount + freight
+            total = total.toFixed(2)
+
+            return total
         }
     },
     methods: {
