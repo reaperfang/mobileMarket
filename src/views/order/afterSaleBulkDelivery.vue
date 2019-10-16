@@ -14,7 +14,7 @@
               <div class="col" style="width: 660px;">
                 <div class="row align-center row-margin">
                   <div class="col">
-                    <i @click="changeAll(item)" class="checkbox"></i>
+                    <i @click="changeAll(item)" class="checkbox" :class="{checked: item.checked}"></i>
                   </div>
                   <div class="col" style="width: 380px;">商品</div>
                   <div class="col" style="width: 60px;">应发数量</div>
@@ -141,6 +141,22 @@ export default {
     this.getExpressCompanyList()
   },
   methods: {
+    checkExpress(index) {
+      this._apis.order
+        .checkExpress()
+        .then(res => {
+          this.list.splice(index, 1, Object.assign({}, this.list[index], {
+            express: res
+          }))
+        })
+        .catch(error => {
+          this.visible = false;
+          this.$notify.error({
+            title: "错误",
+            message: error
+          });
+        });
+    },
     changeAll(item) {
       item.checked = !item.checked;
 
@@ -213,11 +229,21 @@ export default {
         },
       select(index, i) {
           try {
-              let _list = JSON.parse(JSON.stringify(this.list))
+              let _list = JSON.parse(JSON.stringify(this.list));
 
-              _list[index].itemList[i].checked = !_list[index].itemList[i].checked
+              _list[index].itemList[i].checked = !_list[index].itemList[i]
+                .checked;
 
-              this.list = _list
+              this.list = _list;
+
+              if (
+                this.list[index].itemList.filter(val => val.checked).length ==
+                this.list[index].itemList.length
+              ) {
+                this.list[index].checked = true;
+              } else {
+                this.list[index].checked = false;
+              }
           }catch(e) {
 
           }
@@ -288,6 +314,7 @@ export default {
             val.other = "";
             val.checked = false;
             val.expressNos = "";
+            val.orderAfterSaleSendInfo.expressCompanyCodes = ''
             val.orderAfterSaleSendInfo.expressNos = ''
             val.expressCompanyCodes = "";
               val.itemList.forEach(goods => {
