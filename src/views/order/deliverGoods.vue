@@ -124,7 +124,7 @@
             class="demo-ruleForm"
           >
             <el-form-item label="快递公司" prop="expressCompanyCode">
-              <el-select v-model="ruleForm.expressCompanyCode" placeholder="请选择">
+              <el-select @change="checkExpress" v-model="ruleForm.expressCompanyCode" placeholder="请选择">
                 <el-option
                   :label="item.expressCompany"
                   :value="item.expressCompanyCode"
@@ -132,9 +132,10 @@
                   :key="index"
                 ></el-option>
               </el-select>
+              <el-input v-if="ruleForm.expressCompanyCode == 'other'" v-model="ruleForm.other" placeholder="请输入快递公司名称"></el-input>
             </el-form-item>
             <el-form-item label="快递单号" prop="expressNos">
-              <el-input v-model="ruleForm.expressNos"></el-input>
+              <el-input :disabled="!express" v-model="ruleForm.expressNos"></el-input>
             </el-form-item>
             <el-form-item label="物流备注" prop="remark">
               <el-input
@@ -169,6 +170,21 @@ import ReceiveInformationDialog from "@/views/order/dialogs/receiveInformationDi
 
 export default {
   data() {
+    var expressCompanyCodeValidator = (rule, value, callback) => {
+          if(this.ruleForm.expressCompanyCode != 'other') {
+              if(!this.ruleForm.expressCompanyCode) {
+                  callback(new Error('请选择快递公司'));
+              } else {
+                  callback();
+              }
+          } else {
+              if(!this.ruleForm.other || /^\s+$/.test(this.ruleForm.other)) {
+                callback(new Error('请输入快递公司名称'));
+              } else {
+                callback();
+              }
+          }
+      };
     return {
       tableData: [],
       multipleSelection: [],
@@ -177,11 +193,12 @@ export default {
         number: "",
         remark: "",
         expressCompanyCode: "",
-        expressCompany: ""
+        expressCompany: "",
+        other: ''
       },
       rules: {
         expressCompanyCode: [
-          { required: true, message: "请选择快递公司", trigger: "change" }
+          { validator: expressCompanyCodeValidator, trigger: "blur" }
         ]
       },
       orderDetail: {},
@@ -194,7 +211,7 @@ export default {
       expressCompanyList: [],
       sendGoods: "",
       title: "",
-      express: false
+      express: true
     };
   },
   created() {
@@ -234,8 +251,17 @@ export default {
   },
   methods: {
     checkExpress() {
+      let expressName
+
+      if(this.ruleForm.expressCompanyCode == 'other') {
+            expressName = 'other'
+          } else {
+            expressName = this.expressCompanyList.find(
+              val => val.expressCompanyCode == this.ruleForm.expressCompanyCode
+            ).expressCompany;
+          }
       this._apis.order
-        .checkExpress()
+        .checkExpress({expressName})
         .then(res => {
           this.express = res;
           if(this.express) {
@@ -278,6 +304,10 @@ export default {
       this._apis.order
         .fetchExpressCompanyList()
         .then(res => {
+          res.push({
+            expressCompanyCode: 'other',
+            expressCompany: '其他'
+          })
           this.expressCompanyList = res;
         })
         .catch(error => {
@@ -327,9 +357,13 @@ export default {
           //     return
           // }
 
-          this.ruleForm.expressCompany = this.expressCompanyList.find(
-            val => val.expressCompanyCode == this.ruleForm.expressCompanyCode
-          ).expressCompany;
+          if(this.ruleForm.expressCompanyCode == 'other') {
+            this.ruleForm.expressCompany = this.ruleForm.other
+          } else {
+            this.ruleForm.expressCompany = this.expressCompanyList.find(
+              val => val.expressCompanyCode == this.ruleForm.expressCompanyCode
+            ).expressCompany;
+          }
 
           params = {
             sendInfoDtoList: [
@@ -524,6 +558,10 @@ export default {
   text-align: center;
   margin-top: 40px;
 }
-
+/deep/ label[for="expressCompanyCode"]::before {
+    content: '*';
+    color: #f56c6c;
+    margin-right: 4px;
+}
 </style>
 
