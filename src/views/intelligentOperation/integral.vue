@@ -93,7 +93,7 @@ export default {
                     }
                     return time.getTime() > maxTime
                     }
-                    return time.getTime() > Date.now()
+                    return time.getTime() > Date.now() - 8.64e7
                 }
             },
             daterange:'',
