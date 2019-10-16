@@ -268,6 +268,11 @@ export default {
               this.$set(this.rules, "expressNos", [
                 { required: true, message: "请输入快递单号", trigger: "blur" }
               ]);
+          } else {
+            this.$set(this.rules, "expressNos", [
+                { required: false, message: "请输入快递单号", trigger: "blur" }
+              ]);
+
           }
         })
         .catch(error => {
