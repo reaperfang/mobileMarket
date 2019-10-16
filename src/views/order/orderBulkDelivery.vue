@@ -72,7 +72,7 @@
                   <div class="col">
                     <el-form :model="item" label-width="100px" class="demo-ruleForm">
                       <el-form-item label="快递公司" prop="expressCompanys">
-                        <el-select v-model="item.expressCompanyCodes" placeholder="请选择">
+                        <el-select @change="checkExpress(index)" v-model="item.expressCompanyCodes" placeholder="请选择">
                           <el-option
                             :label="item.expressCompany"
                             :value="item.expressCompanyCode"
@@ -88,7 +88,7 @@
                         ></el-input>
                       </el-form-item>
                       <el-form-item label="快递单号" prop="expressNos">
-                        <el-input v-model="item.expressNos"></el-input>
+                        <el-input :disabled="!item.express" v-model="item.expressNos"></el-input>
                       </el-form-item>
                     </el-form>
                   </div>
@@ -153,7 +153,7 @@ export default {
       sendGoods: "",
       title: "",
       expressCompanyList: [],
-      express: false
+      express: true
     };
   },
   created() {
@@ -411,10 +411,10 @@ export default {
       this._apis.order
         .fetchExpressCompanyList()
         .then(res => {
-          // res.push({
-          //   expressCompanyCode: "other",
-          //   expressCompany: "其他"
-          // });
+          res.push({
+            expressCompanyCode: "other",
+            expressCompany: "其他"
+          });
           this.expressCompanyList = res;
         })
         .catch(error => {
@@ -450,6 +450,7 @@ export default {
         .then(res => {
           console.log(res);
           res.forEach(val => {
+            val.express = true
             val.other = "";
             val.checked = false;
             val.expressNos = "";
