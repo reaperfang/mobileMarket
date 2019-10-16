@@ -421,7 +421,8 @@ export default {
                 query: {
                   id: res.success[0].expressParameter.orderSendInfo.id,
                   orderId: res.success[0].expressParameter.orderSendInfo.orderId,
-                  type: 'deliverGoods'
+                  type: 'deliverGoods',
+                  print: this.express
                 }
               })
             })
