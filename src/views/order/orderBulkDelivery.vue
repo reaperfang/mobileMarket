@@ -296,13 +296,17 @@ export default {
         }
 
         if (
-          this.express &&
           this.list
             .reduce((total, val) => {
               return total.concat(val.orderItemList);
             }, [])
             .filter(val => val.checked)
-            .some(val => !expressNos)
+            .some(val => {
+              if(val.express) {
+                return !val.expressNos || /^\s+$/.test(val.expressNos)
+              }
+              return false
+            })
         ) {
           this.confirm({ title: "提示", icon: true, text: "快递单号不能为空" });
           return;

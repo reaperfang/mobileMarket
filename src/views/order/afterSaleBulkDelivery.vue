@@ -185,6 +185,23 @@ export default {
           try {
               let params
 
+              if (
+                this.list
+                  .reduce((total, val) => {
+                    return total.concat(val.itemList);
+                  }, [])
+                  .filter(val => val.checked)
+                  .some(val => {
+                    if(val.express) {
+                      return !val.orderAfterSaleSendInfo.expressNos || /^\s+$/.test(val.orderAfterSaleSendInfo.expressNos)
+                    }
+                    return false
+                  })
+              ) {
+                this.confirm({ title: "提示", icon: true, text: "快递单号不能为空" });
+                return;
+              }
+
             params = {
                 orderAfterSaleSendInfoDtoList: this.list.map(item => {
                     let expressCompanys = ''
