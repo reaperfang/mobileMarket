@@ -200,7 +200,7 @@ export default {
         }
       };
     })
-    this.checkExpress()
+    //this.checkExpress()
     },
     computed:{
         cid(){
@@ -256,6 +256,11 @@ export default {
             }
             if(this.multipleSelection.filter(val => !val.isAutoSend).some(val => (val.status != 4 && val.status != 5 && val.status != 6))) {
                 this.confirm({title: '提示', icon: true, text: '没有完成发货，不能批量打印电子面单。'})
+                return
+            }
+
+            if(this.multipleSelection.some(val => val.isKDBird === null)) {
+                this.confirm({title: '提示', icon: true, text: '不支持打印电子面单。'})
                 return
             }
 
