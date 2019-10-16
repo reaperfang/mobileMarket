@@ -153,7 +153,6 @@ export default {
       sendGoods: "",
       title: "",
       expressCompanyList: [],
-      express: true
     };
   },
   created() {
@@ -186,11 +185,13 @@ export default {
     }
   },
   methods: {
-    checkExpress() {
+    checkExpress(index) {
       this._apis.order
         .checkExpress()
         .then(res => {
-          this.express = res;
+          this.list.splice(index, 1, Object.assign({}, this.list[index], {
+            express: res
+          }))
         })
         .catch(error => {
           this.visible = false;
