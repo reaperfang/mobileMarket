@@ -186,8 +186,19 @@ export default {
   },
   methods: {
     checkExpress(index) {
+      let expressCompanyCodes
+      let expressName
+
+      expressCompanyCodes = this.list[index].expressCompanyCodes
+
+      if(expressCompanyCodes == 'other') {
+        expressName = 'other'
+      } else {
+        expressName = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      }
+
       this._apis.order
-        .checkExpress()
+        .checkExpress({expressName})
         .then(res => {
           this.list.splice(index, 1, Object.assign({}, this.list[index], {
             express: res
@@ -285,13 +296,17 @@ export default {
         }
 
         if (
-          this.express &&
           this.list
             .reduce((total, val) => {
               return total.concat(val.orderItemList);
             }, [])
             .filter(val => val.checked)
-            .some(val => !expressNos)
+            .some(val => {
+              if(val.express) {
+                return !val.expressNos || /^\s+$/.test(val.expressNos)
+              }
+              return false
+            })
         ) {
           this.confirm({ title: "提示", icon: true, text: "快递单号不能为空" });
           return;
