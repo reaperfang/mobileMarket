@@ -205,8 +205,13 @@ export default {
             params = {
                 orderAfterSaleSendInfoDtoList: this.list.map(item => {
                     let expressCompanys = ''
-                    if(this.expressCompanyList.find(val => val.expressCompanyCode == item.orderAfterSaleSendInfo.expressCompanyCodes)) {
+                    
+                    if (item.expressCompanyCodes == "other") {
+                      expressCompanys = item.other;
+                    } else {
+                      if(this.expressCompanyList.find(val => val.expressCompanyCode == item.orderAfterSaleSendInfo.expressCompanyCodes)) {
                         expressCompanys = this.expressCompanyList.find(val => val.expressCompanyCode == item.orderAfterSaleSendInfo.expressCompanyCodes).expressCompany
+                    }
                     }
 
                     return {
