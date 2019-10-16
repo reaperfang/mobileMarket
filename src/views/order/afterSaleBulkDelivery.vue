@@ -62,7 +62,7 @@
                   </div>
                   <div class="col">
                     <el-form :model="item.orderAfterSaleSendInfo" label-width="100px" class="demo-ruleForm">
-                        <el-form-item label="快递公司" prop="orderAfterSaleSendInfo.expressCompanyCodes">
+                        <el-form-item label="快递公司" prop="expressCompanyCodes">
                             <el-select @change="checkExpress(index)" v-model="item.orderAfterSaleSendInfo.expressCompanyCodes" placeholder="请选择">
                                 <el-option :label="item.expressCompany" :value="item.expressCompanyCode" v-for="(item, index) in expressCompanyList" :key="index"></el-option>
                             </el-select>
@@ -73,7 +73,7 @@
                           placeholder="请输入快递公司名称"
                         ></el-input>
                         </el-form-item>
-                        <el-form-item label="快递单号" prop="orderAfterSaleSendInfo.expressNos">
+                        <el-form-item label="快递单号" prop="expressNos">
                             <el-input :disabled="!item.express" v-model="item.orderAfterSaleSendInfo.expressNos"></el-input>
                         </el-form-item>
                     </el-form>
@@ -142,11 +142,19 @@ export default {
   },
   methods: {
     checkExpress(index) {
-      let expressCompanyCodes = this.list[index].orderAfterSaleSendInfo.expressCompanyCodes
-      let expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      let expressCompanyCodes
+      let expressName
+
+      expressCompanyCodes = this.list[index].orderAfterSaleSendInfo.expressCompanyCodes
+      
+      if(expressCompanyCodes == 'other') {
+        expressName = 'other'
+      } else {
+        expressName = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      }
 
       this._apis.order
-        .checkExpress({expressCompany})
+        .checkExpress({expressName})
         .then(res => {
           this.list.splice(index, 1, Object.assign({}, this.list[index], {
             express: res

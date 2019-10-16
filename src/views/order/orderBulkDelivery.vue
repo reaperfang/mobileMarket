@@ -186,8 +186,16 @@ export default {
   },
   methods: {
     checkExpress(index) {
-      let expressCompanyCodes = this.list[index].expressCompanyCodes
-      let expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      let expressCompanyCodes
+      let expressName
+
+      expressCompanyCodes = this.list[index].expressCompanyCodes
+
+      if(expressCompanyCodes == 'other') {
+        expressName = 'other'
+      } else {
+        expressName = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      }
 
       this._apis.order
         .checkExpress({expressName})
