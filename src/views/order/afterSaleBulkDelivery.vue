@@ -62,18 +62,18 @@
                   </div>
                   <div class="col">
                     <el-form :model="item.orderAfterSaleSendInfo" label-width="100px" class="demo-ruleForm">
-                        <el-form-item label="快递公司" prop="expressCompanys">
+                        <el-form-item label="快递公司" prop="orderAfterSaleSendInfo.expressCompanyCodes">
                             <el-select @change="checkExpress(index)" v-model="item.orderAfterSaleSendInfo.expressCompanyCodes" placeholder="请选择">
                                 <el-option :label="item.expressCompany" :value="item.expressCompanyCode" v-for="(item, index) in expressCompanyList" :key="index"></el-option>
                             </el-select>
                             <el-input
                           style="margin-top: 5px;"
-                          v-if="item.expressCompanyCodes == 'other'"
+                          v-if="item.orderAfterSaleSendInfo.expressCompanyCodes == 'other'"
                           v-model="item.other"
                           placeholder="请输入快递公司名称"
                         ></el-input>
                         </el-form-item>
-                        <el-form-item label="快递单号" prop="expressNos">
+                        <el-form-item label="快递单号" prop="orderAfterSaleSendInfo.expressNos">
                             <el-input :disabled="!item.express" v-model="item.orderAfterSaleSendInfo.expressNos"></el-input>
                         </el-form-item>
                     </el-form>
@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     checkExpress(index) {
-      let expressCompanyCodes = this.list[index].expressCompanyCodes
+      let expressCompanyCodes = this.list[index].orderAfterSaleSendInfo.expressCompanyCodes
       let expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
 
       this._apis.order
