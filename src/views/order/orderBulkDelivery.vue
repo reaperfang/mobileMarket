@@ -72,7 +72,7 @@
                   <div class="col">
                     <el-form :model="item" label-width="100px" class="demo-ruleForm">
                       <el-form-item label="快递公司" prop="expressCompanys">
-                        <el-select v-model="item.expressCompanyCodes" placeholder="请选择">
+                        <el-select @change="checkExpress(index)" v-model="item.expressCompanyCodes" placeholder="请选择">
                           <el-option
                             :label="item.expressCompany"
                             :value="item.expressCompanyCode"
@@ -88,7 +88,7 @@
                         ></el-input>
                       </el-form-item>
                       <el-form-item label="快递单号" prop="expressNos">
-                        <el-input v-model="item.expressNos"></el-input>
+                        <el-input :disabled="!item.express" v-model="item.expressNos"></el-input>
                       </el-form-item>
                     </el-form>
                   </div>
@@ -153,13 +153,11 @@ export default {
       sendGoods: "",
       title: "",
       expressCompanyList: [],
-      express: false
     };
   },
   created() {
     this.getDetail();
     this.getExpressCompanyList();
-    this.checkExpress();
   },
   computed: {
     cid() {
@@ -186,11 +184,24 @@ export default {
     }
   },
   methods: {
-    checkExpress() {
+    checkExpress(index) {
+      let expressCompanyCodes
+      let expressName
+
+      expressCompanyCodes = this.list[index].expressCompanyCodes
+
+      if(expressCompanyCodes == 'other') {
+        expressName = 'other'
+      } else {
+        expressName = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      }
+
       this._apis.order
-        .checkExpress()
+        .checkExpress({expressName})
         .then(res => {
-          this.express = res;
+          this.list.splice(index, 1, Object.assign({}, this.list[index], {
+            express: res
+          }))
         })
         .catch(error => {
           this.visible = false;
@@ -284,20 +295,24 @@ export default {
         }
 
         if (
-          this.express &&
           this.list
             .reduce((total, val) => {
               return total.concat(val.orderItemList);
             }, [])
             .filter(val => val.checked)
-            .some(val => !expressNos)
+            .some(val => {
+              if(val.express) {
+                return !val.expressNos || /^\s+$/.test(val.expressNos)
+              }
+              return false
+            })
         ) {
           this.confirm({ title: "提示", icon: true, text: "快递单号不能为空" });
           return;
         }
 
         params = {
-          sendInfoDtoList: this.list.map(item => {
+          sendInfoDtoList: this.list.filter(val => val.checked).map(item => {
             let expressCompanys = "";
             console.log(this.expressCompanyList);
             if (item.expressCompanyCodes == "other") {
@@ -365,6 +380,8 @@ export default {
             //     res.success.map(val => val.orderInfoId).join(",") +
             //     "&type=orderBulkDelivery"
             // );
+            let printIds = this.list.filter(val => !val.express).map(val => val.orderId).join(',')
+
             this.$router.push({
               path: "/order/deliverGoodsSuccess",
               query: {
@@ -374,7 +391,8 @@ export default {
                 orderId: res.success
                   .map(val => val.expressParameter.orderSendInfo.orderId)
                   .join(","),
-                type: "orderBulkDelivery"
+                type: "orderBulkDelivery",
+                printIds
               }
             });
           })
@@ -411,10 +429,10 @@ export default {
       this._apis.order
         .fetchExpressCompanyList()
         .then(res => {
-          // res.push({
-          //   expressCompanyCode: "other",
-          //   expressCompany: "其他"
-          // });
+          res.push({
+            expressCompanyCode: "other",
+            expressCompany: "其他"
+          });
           this.expressCompanyList = res;
         })
         .catch(error => {
@@ -450,6 +468,7 @@ export default {
         .then(res => {
           console.log(res);
           res.forEach(val => {
+            val.express = true
             val.other = "";
             val.checked = false;
             val.expressNos = "";

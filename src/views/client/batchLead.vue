@@ -24,12 +24,12 @@
                     <el-radio v-model="ruleForm.anyOrAllCondition" label="1">必须满足所有条件</el-radio>
                 </el-form-item>
                 <el-form-item label="交易条件：">
-                    <el-checkbox v-model="ruleForm.isLastConsumeTime">最后消费时间</el-checkbox>
+                    <el-checkbox v-model="ruleForm.isLastConsumeTime" @change="handleCheck8">最后消费时间</el-checkbox>
                 </el-form-item>
                 <el-form-item>
                     <el-radio v-model="ruleForm.consumeTimeType" label="0" @change="handleCheck5">最近</el-radio>
                     <div class="input_wrap3">
-                        <el-input v-model="ruleForm.consumeTimeValue"></el-input>
+                        <el-input v-model="ruleForm.consumeTimeValue" @keyup.native="checkZero($event,ruleForm.consumeTimeValue,'consumeTimeValue')"></el-input>
                     </div>
                     <div class="input_wrap2">
                         <el-select v-model="ruleForm.consumeTimeUnit" placeholder="请选择">
@@ -57,44 +57,44 @@
                 <el-form-item>
                     <el-checkbox v-model="ruleForm.isTotalConsumeTimes" @change="handleCheck1">累计消费次数</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.consumeTimesMin"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeTimesMin" @keyup.native="checkZero($event,ruleForm.consumeTimesMin,'consumeTimesMin')"></el-input>
                     </div>
                     <span>次 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.consumeTimesMax"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeTimesMax" @keyup.native="checkZero($event,ruleForm.consumeTimesMax,'consumeTimesMax')"></el-input>
                     </div>
                     <span>次</span>
                 </el-form-item>
                 <el-form-item>
                     <el-checkbox v-model="ruleForm.isTotalConsumeMoney" @change="handleCheck2">累计消费金额</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.consumeMoneyMin"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeMoneyMin" @keyup.native="checkZero($event,ruleForm.consumeMoneyMin,'consumeMoneyMin')"></el-input>
                     </div>
                     <span>元 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.consumeMoneyMax"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.consumeMoneyMax" @keyup.native="checkZero($event,ruleForm.consumeMoneyMax,'consumeMoneyMax')"></el-input>
                     </div>
                     <span>元</span>
                 </el-form-item>
                 <el-form-item>
                     <el-checkbox v-model="ruleForm.isPreUnitPrice" @change="handleCheck3">客单价</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.preUnitPriceMin"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.preUnitPriceMin" @keyup.native="checkZero($event,ruleForm.preUnitPriceMin,'preUnitPriceMin')"></el-input>
                     </div>
                     <span>元 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.preUnitPriceMax"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.preUnitPriceMax" @keyup.native="checkZero($event,ruleForm.preUnitPriceMax,'preUnitPriceMax')"></el-input>
                     </div>
                     <span>元</span>
                 </el-form-item>
                 <el-form-item label="资产条件：">
                     <el-checkbox v-model="ruleForm.isTotalScore" @change="handleCheck4">累计获得积分</el-checkbox>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.totalScoreMin"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.totalScoreMin" @keyup.native="checkZero($event,ruleForm.totalScoreMin,'totalScoreMin')"></el-input>
                     </div>
                     <span>分 — </span>
                     <div class="input_wrap2">
-                        <el-input placeholder="请输入" v-model="ruleForm.totalScoreMax"></el-input>
+                        <el-input placeholder="请输入" v-model="ruleForm.totalScoreMax" @keyup.native="checkZero($event,ruleForm.totalScoreMax,'totalScoreMax')"></el-input>
                     </div>
                     <span>分</span>
                 </el-form-item>
@@ -171,6 +171,11 @@ export default {
         }
     },
     methods: {
+        checkZero(event,val,ele) {
+            val = val.replace(/[^\d]/g,'');
+            val = val.replace(/^0/g,'');
+            this.ruleForm[ele] = val;
+        },
         handleCheck1(val) {
             if(!val) {
                 this.ruleForm.consumeTimesMin = "";
@@ -209,6 +214,15 @@ export default {
         handleCheck7(val) {
             if(!val) {
                 this.selectedIds = "";
+            }
+        },
+        handleCheck8(val) {
+            if(val) {
+                this.ruleForm.consumeTimeType = "0";
+            }else{
+                this.ruleForm.consumeTimeValue = "";
+                this.ruleForm.consumeTimeUnit = "";
+                this.consumeTime = "";
             }
         },
         doubleCheck() {
@@ -334,13 +348,21 @@ export default {
                     let formObj = Object.assign({}, this.ruleForm);
                     formObj.consumeTimeStart = this.consumeTime ? utils.formatDate(new Date(this.consumeTime[0]).getTime(),"yyyy-MM-dd hh:mm:ss"):"";
                     formObj.consumeTimeEnd = this.consumeTime ? utils.formatDate(new Date(this.consumeTime[1]).getTime() + 24 * 60 * 60 * 1000 - 1,"yyyy-MM-dd hh:mm:ss"):"";
-                    formObj.isLastConsumeTime = this.convertUnit(formObj.isLastConsumeTime) || '';
-                    formObj.isTotalConsumeTimes = this.convertUnit(formObj.isTotalConsumeTimes) || '';
-                    formObj.isTotalConsumeMoney = this.convertUnit(formObj.isTotalConsumeMoney) || '';
-                    formObj.isPreUnitPrice = this.convertUnit(formObj.isPreUnitPrice) || '';
-                    formObj.isTotalScore = this.convertUnit(formObj.isTotalScore) || '';
-                    formObj.isProduct = this.convertUnit(formObj.isProduct) || '';
-                    formObj.productInfoIds = this.selectedIds || "";
+                    formObj.isLastConsumeTime = this.convertUnit(formObj.isLastConsumeTime) || 0;
+                    formObj.isTotalConsumeTimes = this.convertUnit(formObj.isTotalConsumeTimes) || 0;
+                    formObj.isTotalConsumeMoney = this.convertUnit(formObj.isTotalConsumeMoney) || 0;
+                    formObj.isPreUnitPrice = this.convertUnit(formObj.isPreUnitPrice) || 0;
+                    formObj.isTotalScore = this.convertUnit(formObj.isTotalScore) || 0;
+                    formObj.isProduct = this.convertUnit(formObj.isProduct) || 0;
+                    formObj.productInfoIds = this.selectedIds || 0;
+                    formObj.consumeTimesMin = formObj.consumeTimesMin == "" ? 0:formObj.consumeTimesMin;
+                    formObj.consumeTimesMax = formObj.consumeTimesMax == "" ? 0:formObj.consumeTimesMax;
+                    formObj.consumeMoneyMin = formObj.consumeMoneyMin == "" ? 0:formObj.consumeMoneyMin;
+                    formObj.consumeMoneyMax = formObj.consumeMoneyMax == "" ? 0:formObj.consumeMoneyMax;
+                    formObj.preUnitPriceMin = formObj.preUnitPriceMin == "" ? 0:formObj.preUnitPriceMin;
+                    formObj.preUnitPriceMax = formObj.preUnitPriceMax == "" ? 0:formObj.preUnitPriceMax;
+                    formObj.totalScoreMin = formObj.totalScoreMin == "" ? 0:formObj.totalScoreMin;
+                    formObj.totalScoreMax = formObj.totalScoreMax == "" ? 0:formObj.totalScoreMax;
                     if(this.$route.query.id) {
                         if(formObj.tagType == '0') {
                             this._apis.client.updateTag({tagType: formObj.tagType, tagName: formObj.tagName, id: this.$route.query.id}).then((response) => {
@@ -413,6 +435,7 @@ export default {
                     this.ruleForm.isPreUnitPrice = Boolean(this.ruleForm.isPreUnitPrice);
                     this.ruleForm.isTotalScore = Boolean(this.ruleForm.isTotalScore);
                     this.ruleForm.isProduct = Boolean(this.ruleForm.isProduct);
+                    this.ruleForm.consumeTimeUnit = this.ruleForm.consumeTimeUnit.toString();
                     this.selectedIds = this.ruleForm.productInfoIds;
                     if(this.ruleForm.consumeTimeStart && this.ruleForm.consumeTimeEnd) {
                         this.consumeTime = [this.ruleForm.consumeTimeStart,this.ruleForm.consumeTimeEnd];

@@ -89,25 +89,31 @@ export default {
     justify-content: space-between;
   }
   .content_main{
+    width: 100%;
     display:flex;
-    // justify-content: space-between;
+    flex-wrap: wrap;
     flex: 1;
     margin:20px 0px 30px 0px;
-    div{
+    .shopItem{
       width: 143px;
-      height: 60px;
+      height: 76px;
       border-radius:4px;
       background:rgba(101,94,255,1);
       opacity:0.5;
-      margin-right:10px;
+      margin:0px 10px 10px 0px;
+      cursor: pointer;
+      display:inline-block;
       span{
+        width: 123px;
+        height:35px;
+        line-height: 25px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         padding:10px;
-        height: 20px;
-        line-height: 20px;
         display: block;
         font-size: 14px;
         color: #FFFFFF;
-        text-align: left;
       }
     }
   }
@@ -120,8 +126,5 @@ export default {
 }
 .dialog_title a:hover{
   text-decoration: underline;
-}
-.shopItem{
-  cursor: pointer;
 }
 </style>
