@@ -158,7 +158,6 @@ export default {
   created() {
     this.getDetail();
     this.getExpressCompanyList();
-    this.checkExpress();
   },
   computed: {
     cid() {
@@ -186,8 +185,16 @@ export default {
   },
   methods: {
     checkExpress(index) {
-      let expressCompanyCodes = this.list[index].expressCompanyCodes
-      let expressCompany = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      let expressCompanyCodes
+      let expressName
+
+      expressCompanyCodes = this.list[index].expressCompanyCodes
+
+      if(expressCompanyCodes == 'other') {
+        expressName = 'other'
+      } else {
+        expressName = this.expressCompanyList.find(val => val.expressCompanyCode == expressCompanyCodes).expressCompany
+      }
 
       this._apis.order
         .checkExpress({expressName})
@@ -288,20 +295,24 @@ export default {
         }
 
         if (
-          this.express &&
           this.list
             .reduce((total, val) => {
               return total.concat(val.orderItemList);
             }, [])
             .filter(val => val.checked)
-            .some(val => !expressNos)
+            .some(val => {
+              if(val.express) {
+                return !val.expressNos || /^\s+$/.test(val.expressNos)
+              }
+              return false
+            })
         ) {
           this.confirm({ title: "提示", icon: true, text: "快递单号不能为空" });
           return;
         }
 
         params = {
-          sendInfoDtoList: this.list.map(item => {
+          sendInfoDtoList: this.list.filter(val => val.checked).map(item => {
             let expressCompanys = "";
             console.log(this.expressCompanyList);
             if (item.expressCompanyCodes == "other") {
@@ -369,6 +380,8 @@ export default {
             //     res.success.map(val => val.orderInfoId).join(",") +
             //     "&type=orderBulkDelivery"
             // );
+            let printIds = this.list.filter(val => !val.express).map(val => val.orderId).join(',')
+
             this.$router.push({
               path: "/order/deliverGoodsSuccess",
               query: {
@@ -378,7 +391,8 @@ export default {
                 orderId: res.success
                   .map(val => val.expressParameter.orderSendInfo.orderId)
                   .join(","),
-                type: "orderBulkDelivery"
+                type: "orderBulkDelivery",
+                printIds
               }
             });
           })

@@ -42,19 +42,22 @@
                                    <el-option label="5%以上" value="3"></el-option>
                                 </el-select>
                             </div>
-                            <span class="span_label">会员类型</span>
+                            <span class="span_label">客户类型</span>
                             <div class="input_wrap2 marR20">
                                 <el-select v-model="form.memberType">
                                     <el-option label="全部" value="null"></el-option>
-                                    <el-option label="非会员" value="1"></el-option>
-                                    <el-option label="新会员" value="2"></el-option>
-                                    <el-option label="老会员" value="3"></el-option>
+                                    <el-option label="非会员" value="0"></el-option>
+                                    <el-option label="新会员" value="1"></el-option>
+                                    <el-option label="老会员" value="2"></el-option>
                                 </el-select>
                             </div>
                             <el-button class="minor_btn" icon="el-icon-search" @click="getEvaluation()">查询</el-button>
                             <el-button class="border_btn" @click="resetAll()">重 置</el-button>
                         </el-form-item>
                     </el-form>
+                    <div class="m_line clearfix">
+                        <p class="fl">该筛选条件下：其中订单总计<span>{{listObj.orderCount}}</span>比，商品总计<span>{{listObj.goodsCount}}</span>个，满意商品数共计<span>{{listObj.niceGoodsCount}}</span>个、满意率<span>{{(listObj.niceGoodsRatio*100).toFixed(2)}}%</span>；差评商品数共计<span>{{listObj.badGoodsCount}}</span>个，差评率<span>{{(listObj.badGoodsRatio*100).toFixed(2)}}</span>%</p>
+                    </div>
                     <div class="m_line clearfix">
                         <div class="fr marT20">
                             <el-button class="minor_btn" @click="rescreen()">重新筛选</el-button>
@@ -66,13 +69,13 @@
                     <ma4Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma4Table>
                 </div>
                 <p>运营建议:</p>
-                <p v-if="form.niceRatioRange==1" class="proposal"><b>"满意率0-1%/满意个数1个："</b>建议针对此类用户客服即时回复，和用户提升互动性，从而来提升满意率。</p>                
-                <p v-if="form.niceRatioRange==2" class="proposal"><b>"满意率2%-5%/满意个数2-5个："</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
-                <p v-if="form.niceRatioRange==3" class="proposal"><b>"满意率5%以上/满意个数5个以上："</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
+                <p v-if="form.niceRatioRange==1" class="proposal"><b>"满意率0-1%/满意个数1个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，从而来提升满意率。</p>                
+                <p v-if="form.niceRatioRange==2" class="proposal"><b>"满意率2%-5%/满意个数2-5个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
+                <p v-if="form.niceRatioRange==3" class="proposal"><b>"满意率5%以上/满意个数5个以上"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
                
-                <p v-if="form.badRatioRange==1"  class="proposal"><b>"差评率0-1%/差评个数1个："</b>建议针对此类用户客服即时回复，发放现金红包补偿，从而降低差评率。</p>                
-                <p v-if="form.badRatioRange==2"  class="proposal"><b>"差评率2%-5%/差评个数2-5个："</b>建议针对此类用户赠送礼品，提升认可度，整体改进，提升售后服务，从而降低差评率。</p>
-                <p v-if="form.badRatioRange==3"  class="proposal"><b>"差评率5%以上/差评个数5个以上："</b>建议针对此类用户进行退换货处理，赠送礼品，提升认可度，整体改进，提升售后服务，发放现金红包补偿，从而降低差评率。</p>
+                <p v-if="form.badRatioRange==1"  class="proposal"><b>"差评率0-1%/差评个数1个"：</b>建议针对此类用户客服即时回复，发放现金红包补偿，从而降低差评率。</p>                
+                <p v-if="form.badRatioRange==2"  class="proposal"><b>"差评率2%-5%/差评个数2-5个"：</b>建议针对此类用户赠送礼品，提升认可度，整体改进，提升售后服务，从而降低差评率。</p>
+                <p v-if="form.badRatioRange==3"  class="proposal"><b>"差评率5%以上/差评个数5个以上"：</b>建议针对此类用户进行退换货处理，赠送礼品，提升认可度，整体改进，提升售后服务，发放现金红包补偿，从而降低差评率。</p>
     </div>
 </template>
 <script>
@@ -194,7 +197,7 @@ export default {
         },
         // 导出
         exportExl(){
-            this._apis.data.exportOfrights(this.form).then(response => {
+            this._apis.data.evaluationExport(this.form).then(response => {
                 window.open(response);
             })
         },

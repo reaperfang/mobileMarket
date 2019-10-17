@@ -37,14 +37,14 @@
                     </el-popover>
                     <img src="../../assets/images/client/icon_ask.png" alt="" v-popover:popover class="pop_img">
                 </el-form-item>
-                <el-form-item label="客户标签：" class="relaPosition" prop="memberLabels">
-                    <div class="group_container">
-                        <el-checkbox-group v-model="form.memberLabels" :style="{width: '506px',height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
+                <el-form-item label="客户标签：" class="relaPosition clearfix" prop="memberLabels">
+                    <div class="group_container fl">
+                        <el-checkbox-group v-model="form.memberLabels" :style="{width: labels.length > 5 ?'506px':'',height: showMoreTag ?'':'37px', overflow: showMoreTag ? 'block':'hidden'}">
                             <el-checkbox v-for="item in labels" :label="item" :key="item" border>{{item}}</el-checkbox>
                         </el-checkbox-group>
                     </div>
-                    <el-button type="primary" class="absoPosition" @click="_routeTo('batchImport')">添 加</el-button>
-                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img" @click="extendTag" v-if="labels.length > 0">
+                    <el-button type="primary" class="absoPosition fl" @click="_routeTo('batchImport')">添 加</el-button>
+                    <img src="../../assets/images/client/icon_down.png" alt="" class="down_img fl" @click="extendTag" v-if="labels.length > 5" :style="{transform: showMoreTag ? 'rotate(180deg)':''}">
                 </el-form-item>
                 <el-form-item label="客户渠道：" class="relaPosition" prop="channelId">
                     <el-checkbox-group v-model="form.channelId">
@@ -62,12 +62,12 @@
                         <el-col :span="8">
                             <el-form-item label="积分：" prop="scoreMin">
                                 <div class="input_wrap">
-                                    <el-input v-model="form.scoreMin" placeholder="最小值"></el-input>
+                                    <el-input v-model="form.scoreMin" placeholder="最小值" @keyup.native="number($event,form.scoreMin,'scoreMin')"></el-input>
                                 </div>
                                 <span>分</span>
                                 <span>-</span>
                                 <div class="input_wrap">
-                                    <el-input v-model="form.scoreMax" placeholder="最大值"></el-input>
+                                    <el-input v-model="form.scoreMax" placeholder="最大值" @keyup.native="number($event,form.scoreMax,'scoreMax')"></el-input>
                                 </div>
                                 <span>分</span>
                             </el-form-item>
@@ -88,12 +88,12 @@
                         <el-col :span="8">
                             <el-form-item label="购买次数：" prop="dealTimesMin">
                                 <div class="input_wrap">
-                                    <el-input v-model="form.dealTimesMin" placeholder="最小值"></el-input>
+                                    <el-input v-model="form.dealTimesMin" placeholder="最小值" @keyup.native="number($event,form.dealTimesMin,'dealTimesMin')"></el-input>
                                 </div>
                                 <span>次</span>
                                 <span>-</span>
                                 <div class="input_wrap">
-                                    <el-input v-model="form.dealTimesMax" placeholder="最大值"></el-input>
+                                    <el-input v-model="form.dealTimesMax" placeholder="最大值" @keyup.native="number($event,form.dealTimesMax,'dealTimesMax')"></el-input>
                                 </div>
                                 <span>次</span>
                             </el-form-item>
@@ -224,6 +224,12 @@ export default {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    number(event,val,ele) {
+        val = val.replace(/[^\.\d]/g,'');
+        val = val.replace('.','');
+        val = val.replace(/^0/g,'');
+        this.form[ele] = val;
+    },
     goToSet() {
         this.$router.push({path:'/set/memberSet'});
     },
@@ -458,11 +464,8 @@ export default {
     font-size: 14px;
     .form_container{
         .relaPosition{
-            position: relative;
             .absoPosition{
-                position: absolute;
-                left: 594px;
-                top: 0;
+                margin-left: 15px;
             }
             .down_img{
                 position: absolute;

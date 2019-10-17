@@ -28,12 +28,12 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="right">
         <el-form-item label="等级称谓：" prop="name">
           <div class="input_wrap">
-            <el-input v-model="ruleForm.name" placeholder="请输入等级名称，比如普通会员"></el-input>
+            <el-input v-model="ruleForm.name" placeholder="请输入等级名称，比如普通会员" :maxLength="15"></el-input>
           </div>
         </el-form-item>
         <el-form-item label="等级说明：">
           <div class="input_wrap">
-            <el-input v-model="ruleForm.explain" placeholder="请输入等级描述"></el-input>
+            <el-input v-model="ruleForm.explain" placeholder="请输入等级描述" :maxLength="25"></el-input>
           </div>
         </el-form-item>
         <div class="line"></div>
@@ -56,7 +56,7 @@
           <div class="radio_line" v-if="getIndex(this.conditionList,'消费金额满') !== -1">
             <el-radio v-model="condition2" label="消费金额满" @change="handleCheck1">消费金额满：</el-radio>
             <div class="input_wrap2">
-              <el-input placeholder="请输入数字" v-model="xfjem"></el-input>
+              <el-input placeholder="请输入数字" v-model="xfjem" @keyup.native="checkZero($event, xfjem,'xfjem')"></el-input>
             </div>
             <span>元</span>
             <span>即可升级</span>
@@ -64,7 +64,7 @@
           <div class="radio_line" v-if="getIndex(this.conditionList,'消费次数满') !== -1">
             <el-radio v-model="condition2" label="消费次数满" @change="handleCheck2">消费次数满：</el-radio>
             <div class="input_wrap2">
-              <el-input placeholder="请输入数字" v-model="xfcsm"></el-input>
+              <el-input placeholder="请输入数字" v-model="xfcsm" @keyup.native="checkZero($event, xfcsm,'xfcsm')"></el-input>
             </div>
             <span>次</span>
             <span>即可升级</span>
@@ -72,7 +72,7 @@
           <div class="radio_line" v-if="getIndex(this.conditionList,'积分获得满') !== -1">
             <el-radio v-model="condition2" label="积分获得满">积分获得满：</el-radio>
             <div class="input_wrap2">
-              <el-input placeholder="请输入数字" v-model="jfhdm"></el-input>
+              <el-input placeholder="请输入数字" v-model="jfhdm" @keyup.native="checkZero($event, jfhdm,'jfhdm')"></el-input>
             </div>
             <span>分</span>
             <span>即可升级</span>
@@ -85,7 +85,7 @@
           <el-checkbox v-model="right1" @change="handleCheck3">满包邮</el-checkbox>
           <span>订单金额满</span>
           <div class="input_wrap3">
-            <el-input placeholder="请输入数字" v-model="mby"></el-input>
+            <el-input placeholder="请输入数字" v-model="mby" @keyup.native="checkZero($event, mby,'mby')"></el-input>
           </div>
           <span>包邮</span>
         </el-form-item>
@@ -105,7 +105,7 @@
           <el-checkbox v-model="upgrade1" @change="handleCheck5">赠送积分</el-checkbox>
           <span>送</span>
           <div class="input_wrap3">
-            <el-input placeholder="填写数字" v-model="zsjf"></el-input>
+            <el-input placeholder="填写数字" v-model="zsjf" @keyup.native="checkZero($event, zsjf,'zsjf')"></el-input>
           </div>
           <span>积分</span>
         </el-form-item>
@@ -182,7 +182,7 @@ export default {
       rules: {
         name: [{ required: true, message: "请输入等级称谓", trigger: "blur" }]
       },
-      condition1: true,
+      condition1: false,
       condition2: "",
       xfjem: "",
       xfcsm: "",
@@ -216,8 +216,11 @@ export default {
         hobby: false
       },
       disabled1: false,
-      conInfos: ["绑定手机号", "姓名"],
-      canSubmit: true
+      conInfos: [],
+      canSubmit: true,
+      mapCondition: {
+        "birthday": "生日", "area": "地区", "gender": "性别", "name": "姓名", "email": "邮箱", "hobby": "爱好", "phone":"绑定手机号"
+      }
     };
   },
   computed: {
@@ -227,6 +230,11 @@ export default {
     }
   },
   methods: {
+    checkZero(event,val,ele) {
+      val = val.replace(/[^\d.]/g,'');
+      val = val.replace(/^0/g,'');
+      this[ele] = val;
+    },
     handleCheck1() {
       if(this.condition2 == "消费金额满") {
         this.xfcsm = "";
@@ -303,6 +311,11 @@ export default {
               ) {
                 this.condition1 = true;
                 this.currentData.info = JSON.parse(v.conditionValue);
+                for(let i in this.currentData.info) {
+                  if(this.currentData.info[i] == true) {
+                    this.conInfos.push(this.mapCondition[i]);
+                  }
+                }
                 this.selectedInfos = this.currentData.info;
               }
               if (

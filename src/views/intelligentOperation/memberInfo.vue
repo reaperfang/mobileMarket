@@ -35,10 +35,7 @@
                     <span class="span_label">交易次数</span>
                     <div class="input_wrap2 marR20">
                         <el-select v-model="form.tradeCountRange"  @change="getData">
-                            <el-option label="1次" value="1"></el-option>
-                            <el-option label="2-5次" value="2"></el-option>
-                            <el-option label="6-8次" value="3"></el-option>
-                            <el-option label="8次以上" value="4"></el-option>
+                            <el-option v-for="item in tradeCount" :label="item.name" :value="item.value" :key="item.id">/></el-option>
                         </el-select>
                     </div>
                     <el-checkbox-group v-model="form.queryRepeatPaymentRatio" style="display:inline-block">
@@ -70,8 +67,8 @@
             <div class="m_line clearfix">
                 <p class="fl">该筛选条件下：
                     <i v-if="form.memberType== null" style="font-style:normal">
-                        全部会员共计<span>{{customerCount + newMemberCount + oldMemberCount || 0}}</span>人；
-                        占客户总数的<span>{{(customerRatio*100 + newMemberRatio*100 + oldMemberRatio*100) != 0 ? (customerRatio*100 + newMemberRatio*100 + oldMemberRatio*100).toFixed(2) : 0}}%</span>;    
+                        全部会员共计<span>{{newMemberCount + oldMemberCount || 0}}</span>人；
+                        占客户总数的<span>{{allRatio}}%</span>;    
                     </i>
                     <i v-if="form.memberType==0" style="font-style:normal">
                         非会员共计<span>{{customerCount || 0}}</span>人；
@@ -100,10 +97,10 @@
             </maTable>
         </div>
         <p>运营建议:</p>
-             <p v-if="form.tradeCountRange==1" class="proposal"><b>"交易次数1次："</b>此用户群体为低频用户，建议提升产品认可度，提升服务质量，有助于提升低频用户交易次数。</p> 
-             <p v-if="form.tradeCountRange==2" class="proposal"><b>"交易次数2-5次："</b>此用户群体为中频用户，建议提升产品认可度，提升服务质量，对商品搞一些营销活动：拼团、砍价、满减，此用户购物可以享受95折，有助于提升低频用户交易次数。</p> 
-             <p v-if="form.tradeCountRange==3" class="proposal"><b>"交易次数6-8次："</b>此用户群体为高频用户，建议针对高频用户可设定分销机制，对商品搞一些营销活动：拼团、砍价、满减，此用户购物可以享受9折，有助于提升低频用户交易次数。</p> 
-             <p v-if="form.tradeCountRange==4" class="proposal"><b>"交易次数8次以上："</b>此用户群体为忠实用户，建议针对高频用户可设定分销机制，对商品搞一些营销活动：拼团、砍价、满减，此用户购物可以享受88折，有助于提升低频用户交易次数。</p> 
+             <p v-if="form.tradeCountRange==1" class="proposal"><b>"交易次数1次"：</b>此用户群体为低频用户，建议提升产品认可度，提升服务质量，有助于提升低频用户交易次数。</p> 
+             <p v-if="form.tradeCountRange==2" class="proposal"><b>"交易次数2-5次"：</b>此用户群体为中频用户，建议提升产品认可度，提升服务质量，对商品搞一些营销活动：拼团、砍价、满减，此用户购物可以享受95折，有助于提升低频用户交易次数。</p> 
+             <p v-if="form.tradeCountRange==3" class="proposal"><b>"交易次数6-8次"：</b>此用户群体为高频用户，建议针对高频用户可设定分销机制，对商品搞一些营销活动：拼团、砍价、满减，此用户购物可以享受9折，有助于提升低频用户交易次数。</p> 
+             <p v-if="form.tradeCountRange==4" class="proposal"><b>"交易次数8次以上"：</b>此用户群体为忠实用户，建议针对高频用户可设定分销机制，对商品搞一些营销活动：拼团、砍价、满减，此用户购物可以享受88折，有助于提升低频用户交易次数。</p> 
         </div>
 </template>
 <script>
@@ -197,6 +194,17 @@ export default {
             oldMemberRatio:'',
         }
     },
+    computed:{
+        allRatio(){
+            if(this.customerRatio && this.newMemberRatio && this.oldMemberRatio){
+                if((this.customerRatio*100 + this.newMemberRatio*100 + this.oldMemberRatio*100) != 0){
+                    return (this.customerRatio*100 + this.newMemberRatio*100 + this.oldMemberRatio*100).toFixed(2)
+                }
+            }else{
+                return 0
+            }
+        },
+    },
     created(){
         this.goSearch()
         this.memberInforNum()
@@ -256,11 +264,11 @@ export default {
                 this.totalCount = res.totalPage * this.form.pageSize;
                 this.textTips = true;
                 this.newMemberCount = res.newMemberCount;
-                this.newMemberRatio = res.newMemberRatio;
+                this.newMemberRatio = res.newMemberRatio || 0;
                 this.oldMemberCount = res.oldMemberCount;
-                this.oldMemberRatio = res.oldMemberRatio;
+                this.oldMemberRatio = res.oldMemberRatio || 0;
                 this.customerCount = res.customerCount;
-                this.customerRatio = res.customerRatio;
+                this.customerRatio = res.customerRatio || 0;
                 // if(memberType == 1){ //新会员
                 //     this.textTips = true;
                 //     this.newMemberCount = res.newMemberCount;
