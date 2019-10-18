@@ -131,14 +131,23 @@
                 <div class="row">
                     <div class="col">优惠券金额:</div>
                     <div class="col">
-                        ¥{{orderDetail.orderInfo.consumeCouponMoney || '0.00'}}
-                        <i @click="currentDialog = 'CouponDialog'; currentData = {usedCouponList, usedPromotionList}; dialogVisible = true" class="coupon-img"></i>
+                        -¥{{orderDetail.orderInfo.consumeCouponMoney || '0.00'}}
+                        <i @click="currentDialog = 'CouponDialog'; currentData = {usedCouponList, usedPromotionList, coupon: true}; dialogVisible = true" class="coupon-img"></i>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">满减/满折:</div>
-                    <div class="col">- ¥{{orderDetail.orderInfo.discountMoney || '0.00'}}</div>
+                    <div class="col">优惠码金额:</div>
+                    <div class="col">
+                        -¥{{orderDetail.orderInfo.consumeCouponCodeMoney || '0.00'}}
+                        <i @click="currentDialog = 'CouponDialog'; currentData = {usedCouponList, usedPromotionList, coupon: false}; dialogVisible = true" class="coupon-img"></i>
+                    </div>
                 </div>
+                <template v-if="orderDetail.orderInfo.activityListJson">
+                    <div class="row" v-for="(item, index) in JSON.parse(orderDetail.orderInfo.activityListJson)" :key="index">
+                        <div class="col">{{item.name}}:</div>
+                        <div class="col">- ¥{{item.reduceMoney || '0.00'}}</div>
+                    </div>
+                </template>
                 <div class="row">
                     <div class="col">会员折扣:</div>
                     <div class="col">- ¥{{orderDetail.orderInfo.memberDiscountMoney || '0.00'}}</div>
