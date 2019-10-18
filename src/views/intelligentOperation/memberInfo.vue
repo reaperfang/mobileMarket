@@ -35,7 +35,7 @@
                     <span class="span_label">交易次数</span>
                     <div class="input_wrap2 marR20">
                         <el-select v-model="form.tradeCountRange"  @change="getData">
-                            <el-option v-for="item in tradeCount" :label="item.name" :value="item.value" :key="item.id">/></el-option>
+                            <el-option v-for="item in tradeCount" :label="item.name" :value="item.value" :key="item.id"></el-option>
                         </el-select>
                     </div>
                     <el-checkbox-group v-model="form.queryRepeatPaymentRatio" style="display:inline-block">
@@ -119,12 +119,12 @@ export default {
                 },
                 disabledDate: (time) => {
                     if (this.pickerMinDate !== '') {
-                    const day90 = (90 - 1) * 24 * 3600 * 1000
-                    let maxTime = this.pickerMinDate + day90
-                    if (maxTime > new Date()) {
-                        maxTime = new Date()- 8.64e7
-                    }
-                    return time.getTime() > maxTime
+                        const day90 = (90 - 1) * 24 * 3600 * 1000
+                        let maxTime = this.pickerMinDate + day90
+                        if (maxTime > new Date()) {
+                            maxTime = new Date()- 8.64e7
+                        }
+                        return time.getTime() > maxTime
                     }
                     return time.getTime() > Date.now() - 8.64e7
                 }
@@ -196,9 +196,9 @@ export default {
     },
     computed:{
         allRatio(){
-            if(this.customerRatio && this.newMemberRatio && this.oldMemberRatio){
-                if((this.customerRatio*100 + this.newMemberRatio*100 + this.oldMemberRatio*100) != 0){
-                    return (this.customerRatio*100 + this.newMemberRatio*100 + this.oldMemberRatio*100).toFixed(2)
+            if(this.newMemberRatio && this.oldMemberRatio){
+                if((this.newMemberRatio*100 + this.oldMemberRatio*100) != 0){
+                    return (this.newMemberRatio*100 + this.oldMemberRatio*100).toFixed(2)
                 }
             }else{
                 return 0
