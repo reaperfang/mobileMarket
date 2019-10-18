@@ -238,6 +238,7 @@ export default {
 
     //拉取点击选中的分类下的商品
     fetchSelectedGoods(callback) {
+      this.loading = true;
       if(this.seletedGroupInfo[this.currentCategory.id] && this.seletedGroupInfo[this.currentCategory.id].length) {
         this._apis.goods.fetchAllSpuGoodsList({
             status: '1',
@@ -245,11 +246,14 @@ export default {
             productCatalogInfoId: this.currentCategory.id
         }).then((response)=>{
             callback && callback(response);
+            this.loading = false;
         }).catch((error)=>{
             callback && callback(false);
+            this.loading = false;
         });
       }else{
         callback([]);
+        this.loading = false;
       }
     },
   }
