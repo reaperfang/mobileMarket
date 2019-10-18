@@ -60,7 +60,6 @@
                     </el-form>
                     <div class="m_line clearfix">
                         <p style="line-height:40px;">该筛选条件下：会员共计<span>{{listObj.memberCount}}</span>人，占客户总数的<span>{{(listObj.ratio*100).toFixed(2)}}</span>%；订单共计<span>{{listObj.orderCount}}</span>个、商品总数共计<span>{{listObj.goodsCount}}</span>个；维权次数共计<span>{{listObj.protectionCount}}</span>次；</p>
-                        <p style="line-height:40px;">其中:退货退款共计 5454 次，占总维次数的 12%；其中因为“卖家缺货”原因维权共计13次、占所有原因的30%。</p>
                     </div>
                     <div class="m_line clearfix">
                         <div class="fr marT20">
