@@ -201,7 +201,17 @@ export default {
         navIds: [],
         navMap: {}
       },
-      rules: {},
+      rules: {
+        navName: [
+          { required: true, message: "请输入导航名称", trigger: "blur" },
+          {
+            min: 1,
+            max: 4,
+            message: "请勿超过4个汉字或8个字母",
+            trigger: "blur"
+          }
+        ]
+      },
       currentNav: null,  //当前导航对象
       currentImg: 'active',  //当前上传图片类型   高亮和普通
       bodyHeight: {},  //内容区高度
@@ -430,27 +440,35 @@ export default {
 
     /* 保存并启用 */
     saveAndApply() {
-      this.saveAndApplyLoading = true,
-      this.$emit('submitNavData',{
-        navigationKey: '',
-        status: '0',
-        navigation_type: '0',
-        navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      }, (status) => {
-        this.saveAndApplyLoading = false;
+      this.$refs.ruleForm.validate( valid => {
+        if(valid) {
+          this.saveAndApplyLoading = true;
+          this.$emit('submitNavData',{
+            navigationKey: '',
+            status: '0',
+            navigation_type: '0',
+            navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+          }, (status) => {
+            this.saveAndApplyLoading = false;
+          })
+        }
       })
     },
 
     /* 保存 */
     save() {
-      this.saveLoading = true,
-      this.$emit('submitNavData', {
-        navigationKey: '',
-        status: '1',
-        navigation_type: '0',
-        navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      }, (status) => {
-        this.saveLoading = false;
+      this.$refs.ruleForm.validate( valid => {
+        if(valid) {
+          this.saveLoading = true;
+          this.$emit('submitNavData', {
+            navigationKey: '',
+            status: '1',
+            navigation_type: '0',
+            navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+          }, (status) => {
+            this.saveLoading = false;
+          })
+        }
       })
     },
 

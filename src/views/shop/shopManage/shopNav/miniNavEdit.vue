@@ -39,7 +39,7 @@
           </div>
           <div class="block form">
             <el-form-item label="导航名称" prop="navName">
-              <el-input @input="setNavName" :value="currentNav.navName" placeholder="请输入导航名称(请勿超过4个汉字或8个字母)"></el-input>
+              <el-input @input="setNavName" :value="currentNav.navName" placeholder="请输入导航名称(请勿超过4个字符)"></el-input>
             </el-form-item>
             <el-form-item label="导航图标" prop="">
               <div class="upload_img_list">
@@ -135,7 +135,17 @@ export default {
         activeColor: '#000',
         unactiveColor: '#ddd'
       },
-      rules: {},
+      rules: {
+        navName: [
+          { required: true, message: "请输入导航名称", trigger: "blur" },
+          {
+            min: 1,
+            max: 4,
+            message: "请勿超过4个字符",
+            trigger: "blur"
+          }
+        ]
+      },
       currentNav: null,  //当前导航对象
       currentImg: 'active',  //当前上传图片类型   高亮和普通
       bodyHeight: {},  //内容区高度
@@ -258,27 +268,35 @@ export default {
 
     /* 保存并启用 */
     saveAndApply() {
-      this.saveAndApplyLoading = true,
-      this.$emit('submitNavData',{
-        navigationKey: '',
-        status: '0',
-        navigation_type: '1',
-        navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      }, (status) => {
-        this.saveAndApplyLoading = false;
+      this.$refs.ruleForm.validate( valid => {
+        if(valid) {
+          this.saveAndApplyLoading = true;
+          this.$emit('submitNavData',{
+            navigationKey: '',
+            status: '0',
+            navigation_type: '1',
+            navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+          }, (status) => {
+            this.saveAndApplyLoading = false;
+          })
+        }
       })
     },
 
     /* 保存 */
     save() {
-      this.saveLoading = true,
-      this.$emit('submitNavData', {
-        navigationKey: '',
-        status: '1',
-        navigation_type: '1',
-        navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
-      }, (status) => {
-        this.saveLoading = false;
+       this.$refs.ruleForm.validate( valid => {
+        if(valid) {
+          this.saveLoading = true;
+          this.$emit('submitNavData', {
+            navigationKey: '',
+            status: '1',
+            navigation_type: '1',
+            navigation_json: utils.compileStr(JSON.stringify(this.ruleForm))
+          }, (status) => {
+            this.saveLoading = false;
+          })
+        }
       })
     },
 
