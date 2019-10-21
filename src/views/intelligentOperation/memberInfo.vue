@@ -114,10 +114,6 @@ export default {
                 onPick: ({ maxDate, minDate }) => {
                     this.pickerMinDate = minDate.getTime()
                     if (maxDate) {
-                        if(maxDate.getTime() == minDate.getTime()){
-                           console.log('1111',this.form.daterange)
-                           this.$message.error('开始日期不能等于结束日期')
-                        }
                         this.pickerMinDate = ''
                     }
                 },
@@ -128,7 +124,7 @@ export default {
                         if (maxTime > new Date()) {
                             maxTime = new Date()- 8.64e7
                         }
-                        return time.getTime() > maxTime
+                        return time.getTime() > maxTime && time.getTime() == this.pickerMinDate
                     }
                     return time.getTime() > Date.now() - 8.64e7
                 }
