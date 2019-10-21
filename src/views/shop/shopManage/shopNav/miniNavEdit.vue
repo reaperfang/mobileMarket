@@ -39,7 +39,7 @@
           </div>
           <div class="block form">
             <el-form-item label="导航名称" prop="navName">
-              <el-input @input="setNavName" :value="currentNav.navName" placeholder="请输入导航名称(请勿超过4个字符)"></el-input>
+              <el-input @input="setNavName" :value="currentNav.navName" placeholder="请输入导航名称(请勿超过4个汉字或8个字母)"></el-input>
             </el-form-item>
             <el-form-item label="导航图标" prop="">
               <div class="upload_img_list">
@@ -121,6 +121,14 @@ export default {
   props: ['apiNavData'],
   components: {dialogSelectImageMaterial},
   data () {
+    let validLength = (RULE, value, callback) => {
+      let regExp = /^([A-z]{1,8}|[\u4e00-\u9fa5]{1,4})$/;
+      if (regExp.test(value) === false) {
+          callback(new Error('请输入4个汉字或8个字母'));
+      } else {
+          callback();
+      }
+    };
     return {
       resetDataLoading: false,  //重置loading
       saveLoading: false,  //保存loading
@@ -139,10 +147,7 @@ export default {
         navName: [
           { required: true, message: "请输入导航名称", trigger: "blur" },
           {
-            min: 1,
-            max: 4,
-            message: "请勿超过4个字符",
-            trigger: "blur"
+            validator: validLength, trigger: 'blur'
           }
         ]
       },

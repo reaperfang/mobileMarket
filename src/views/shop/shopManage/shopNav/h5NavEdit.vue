@@ -185,6 +185,14 @@ export default {
   name: 'shopNav',
   components: {dialogSelectImageMaterial, dialogSelectNavTemplate, DialogBase, microPage, microPageClassify, marketCampaign, goods, goodsGroup},
   data () {
+    let validLength = (RULE, value, callback) => {
+      let regExp = /^([A-z]{1,8}|[\u4e00-\u9fa5]{1,4})$/;
+      if (regExp.test(value) === false) {
+          callback(new Error('请输入4个汉字或8个字母'));
+      } else {
+          callback();
+      }
+    };
     return {
       resetDataLoading: false,  //重置loading
       saveLoading: false,  //保存loading
@@ -205,10 +213,7 @@ export default {
         navName: [
           { required: true, message: "请输入导航名称", trigger: "blur" },
           {
-            min: 1,
-            max: 4,
-            message: "请勿超过4个汉字或8个字母",
-            trigger: "blur"
+            validator: validLength, trigger: 'blur'
           }
         ]
       },
