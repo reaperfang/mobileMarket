@@ -114,7 +114,11 @@ export default {
                 onPick: ({ maxDate, minDate }) => {
                     this.pickerMinDate = minDate.getTime()
                     if (maxDate) {
-                    this.pickerMinDate = ''
+                        if(maxDate.getTime() == minDate.getTime()){
+                           console.log('1111',this.form.daterange)
+                           this.$message.error('开始日期不能等于结束日期')
+                        }
+                        this.pickerMinDate = ''
                     }
                 },
                 disabledDate: (time) => {
