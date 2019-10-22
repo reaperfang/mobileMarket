@@ -89,7 +89,7 @@
                     <el-button class="yellow_btn" icon="el-icon-share" @click="mIexport">导出</el-button>
                 </div>
             </div>
-            <maTable class="marT20" 
+            <maTable class="marT20s" 
                 @sizeChange = "sizeChange"
                 @currentChange = "currentChange"                   
                 :listObj="listObj" 
@@ -374,7 +374,6 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
-    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -404,6 +403,9 @@ export default {
         }
     }
 }
+.marT20s{
+    position: relative;
+}
 .mr10{
     margin-right:10px;
 }
@@ -416,9 +418,13 @@ export default {
     width: 500px;
     height: 500px;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 60%;
+    top: 80%;
     transform: translate(-50%,-50%);
+}
+.loadings>img{
+    width: 220px;
+    height: 220px;
 }
 </style>
 

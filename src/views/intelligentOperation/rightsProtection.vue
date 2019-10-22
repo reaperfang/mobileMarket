@@ -69,7 +69,7 @@
                             </el-tooltip>
                         </div>
                     </div>
-                    <ma2Table class="marT20" :listObj="listObj" @getRightsProtection="getRightsProtection"></ma2Table>
+                    <ma2Table class="marT20s" :listObj="listObj" @getRightsProtection="getRightsProtection"></ma2Table>
                 </div>
                 <h3>运营建议:</h3>
                 <p v-if="form.ProtectionReason==1" class="proposal"><b>"不想要了":</b>建议针对此类用户补偿商品优惠券，发放现金红包，更换升级版商品。</p>                
@@ -224,7 +224,6 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
-    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -254,6 +253,9 @@ export default {
         }
     }
 }
+.marT20s{
+    position: relative;
+}
 .contents{
     width: 100%;
     height: 45px;
@@ -263,8 +265,12 @@ export default {
     width: 500px;
     height: 500px;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 60%;
+    top: 65%;
     transform: translate(-50%,-50%);
+}
+.loadings>img{
+    width: 220px;
+    height: 220px;
 }
 </style>
