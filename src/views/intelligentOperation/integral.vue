@@ -61,10 +61,14 @@
             </ma3Table>
         </div>
         <p>运营建议:</p>
-            <p v-if="form.scorePaymentCountRange==1" class="proposal"><b>"消耗次数1-5次"：</b>建议针对此类用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
-            <p v-if="form.scorePaymentCountRange==2" class="proposal"><b>"消耗次数5-10次"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
-            <p v-if="form.scorePaymentCountRange==3" class="proposal"><b>"消耗次数10-15次"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
-            <p v-if="form.scorePaymentCountRange==4" class="proposal"><b>"消耗次数15次以上"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange == '1-5'" class="proposal"><b>"消耗次数1-5次"：</b>建议针对此类用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange == '5-10'" class="proposal"><b>"消耗次数5-10次"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange == '10-15'" class="proposal"><b>"消耗次数10-15次"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange == '15-10000000'" class="proposal"><b>"消耗次数15次以上"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange == '15-20'" class="proposal"><b>"消耗次数15-20次"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+            <p v-if="form.scorePaymentCountRange == '50-100'" class="proposal"><b>"消耗次数50-100次"：</b>建议1-2个月内进行产品更新换代，让用户有新鲜感，针对此用户推荐“签到有礼”活动，来提升积分的赚取、从而促使其积分的消耗。</p> 
+        <div class="contents"></div>
+        <div v-if ="form.loads == true" class="loadings"><img src="../../assets/images/loading.gif" alt=""></div>
     </div>
 </template>
 <script>
@@ -101,6 +105,7 @@ export default {
                 memberType:null,
                 timeType:1,
                 startIndex:1,
+                loads:false,
                 pageSize:10
             },
             memberCount:0, //会员数
@@ -154,6 +159,7 @@ export default {
         //
         //查询
         goSearch(){
+            this.form.loads = true
             let memberType = this.form.memberType;
             let scorePaymentCountRange = this.form.scorePaymentCountRange;
             this.form.scorePaymentCountRange == 'null' && (this.form.scorePaymentCountRange = null)
@@ -162,6 +168,7 @@ export default {
                 this.ratio = res.ratio;
                 this.listObj = res; //信息列表数据
                 this.totalCount = res.totalPage * this.form.pageSize;
+                this.form.loads = false
                 // if(memberType == 1){ //新会员 
                 //     this.textTips = true;
                 //     this.memberNum = res.newMemberCount;
@@ -268,6 +275,7 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
+    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -296,5 +304,18 @@ export default {
             }
         }
     }
+}
+.contents{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+}
+.loadings{
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }
 </style>

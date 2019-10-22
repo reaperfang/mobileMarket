@@ -75,6 +75,8 @@
                 <p v-if="form.ProtectionReason==1" class="proposal"><b>"不想要了":</b>建议针对此类用户补偿商品优惠券，发放现金红包，更换升级版商品。</p>                
                 <p v-if="form.ProtectionReason==2" class="proposal"><b>"卖家缺货":</b>建议针对此类用户免费调换商品。</p>
                 <p v-if="form.ProtectionReason==3" class="proposal"><b>"拍错了/订单信息错误":</b>建议针对此类用户补偿商品优惠券，发放现金红包，更换升级版商品。</p>
+                <div class="contents"></div>
+                <div v-if ="form.loads == true" class="loadings"><img src="../../assets/images/loading.gif" alt=""></div>
     </div>
 </template>
 <script>
@@ -92,6 +94,7 @@ export default {
                 timeType:1,
                 memberType:null,
                 pageSize:10,
+                loads:false,
                 startIndex:1
             },
             listObj:{
@@ -123,6 +126,7 @@ export default {
     methods: {
         // 获取维权全部数据
         getRightsProtection(idx,pageS){
+            this.form.loads = true
             this.form.pageSize = pageS;
             this.form.startIndex = idx;
             this.form.protectionType == 'null' && (this.form.protectionType = null)
@@ -140,6 +144,7 @@ export default {
             // }
             this._apis.data.rightsProtection(this.form).then(response => {
                 this.listObj = response;
+                this.form.loads = false
             })
         },
         changeTime(val){
@@ -219,6 +224,7 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
+    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -247,5 +253,18 @@ export default {
             }
         }
     }
+}
+.contents{
+    width: 100%;
+    height: 45px;
+    background: #fff;    
+}
+.loadings{
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }
 </style>

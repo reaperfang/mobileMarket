@@ -53,7 +53,7 @@
                     </el-form>
                     <div class="m_line clearfix">
                         <p style="line-height:40px;">该筛选条件下：会员共计<span>{{listObj.memberCount}}</span>人，占客户总数的<span>{{(listObj.ratio*100).toFixed(2)}}</span>%；</p>
-                        <p style="line-height:40px;">其中订单总计<span>{{listObj.orderCount}}</span>比，商品总计<span>{{listObj.goodsCount}}</span>个，满意商品数共计<span>{{listObj.niceGoodsCount}}</span>个,满意率<span>{{(listObj.niceGoodsRatio*100).toFixed(2)}}%</span>；差评商品数共计<span>{{listObj.badGoodsCount}}</span>个，差评率<span>{{(listObj.badGoodsRatio*100).toFixed(2)}}</span>%;</p>
+                        <p style="line-height:40px;">其中订单总计<span>{{listObj.orderCount}}</span>个，商品总计<span>{{listObj.goodsCount}}</span>个，满意商品数共计<span>{{listObj.niceGoodsCount}}</span>个,满意率<span>{{(listObj.niceGoodsRatio*100).toFixed(2)}}%</span>；差评商品数共计<span>{{listObj.badGoodsCount}}</span>个，差评率<span>{{(listObj.badGoodsRatio*100).toFixed(2)}}</span>%;</p>
                     </div>
                     <div class="m_line clearfix">
                         <div class="fr marT20">
@@ -66,13 +66,20 @@
                     <ma4Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma4Table>
                 </div>
                 <p>运营建议:</p>
-                <p v-if="form.niceRatioRange==1" class="proposal"><b>"满意率0-1%/满意个数1个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，从而来提升满意率。</p>                
-                <p v-if="form.niceRatioRange==2" class="proposal"><b>"满意率2%-5%/满意个数2-5个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
-                <p v-if="form.niceRatioRange==3" class="proposal"><b>"满意率5%以上/满意个数5个以上"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
+                <p v-if="form.niceRatioRange == '0.00-1.00'" class="proposal"><b>"满意率0-1%/满意个数1个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，从而来提升满意率。</p>                
+                <p v-if="form.niceRatioRange == '2.00-5.00'" class="proposal"><b>"满意率2%-5%/满意个数2-5个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
+                <p v-if="form.niceRatioRange == '5.00-100.00'" class="proposal"><b>"满意率5%以上/满意个数5个以上"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
+                <p v-if="form.niceRatioRange == '30.00-80.00'" class="proposal"><b>"满意率30%-80%/满意个数30-80个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
+                <p v-if="form.niceRatioRange == '12.00-20.00'" class="proposal"><b>"满意率12%-20%/满意个数12-20个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
+                <p v-if="form.niceRatioRange == '80.00-90.00'" class="proposal"><b>"满意率80%-90%/满意个数80-90个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，还可以赠送商品优惠券，代金券，从而来提升满意率</p>
                
-                <p v-if="form.badRatioRange==1"  class="proposal"><b>"差评率0-1%/差评个数1个"：</b>建议针对此类用户客服即时回复，发放现金红包补偿，从而降低差评率。</p>                
-                <p v-if="form.badRatioRange==2"  class="proposal"><b>"差评率2%-5%/差评个数2-5个"：</b>建议针对此类用户赠送礼品，提升认可度，整体改进，提升售后服务，从而降低差评率。</p>
-                <p v-if="form.badRatioRange==3"  class="proposal"><b>"差评率5%以上/差评个数5个以上"：</b>建议针对此类用户进行退换货处理，赠送礼品，提升认可度，整体改进，提升售后服务，发放现金红包补偿，从而降低差评率。</p>
+                <p v-if="form.badRatioRange == '0.00-1.00'"  class="proposal"><b>"差评率0-1%/差评个数1个"：</b>建议针对此类用户客服即时回复，发放现金红包补偿，从而降低差评率。</p>                
+                <p v-if="form.badRatioRange == '2.00-5.00'"  class="proposal"><b>"差评率2%-5%/差评个数2-5个"：</b>建议针对此类用户赠送礼品，提升认可度，整体改进，提升售后服务，从而降低差评率。</p>
+                <p v-if="form.badRatioRange == '5.00-100.00'"  class="proposal"><b>"差评率5%以上/差评个数5个以上"：</b>建议针对此类用户进行退换货处理，赠送礼品，提升认可度，整体改进，提升售后服务，发放现金红包补偿，从而降低差评率。</p>
+                <p v-if="form.badRatioRange == '10.00-15.00'"  class="proposal"><b>"差评率10%-15%/差评个数10-15个"：</b>建议针对此类用户进行退换货处理，赠送礼品，提升认可度，整体改进，提升售后服务，发放现金红包补偿，从而降低差评率。</p>
+                <p v-if="form.badRatioRange == '70.00-90.00'"  class="proposal"><b>"差评率70%-90%/差评个数70-90个"：</b>建议针对此类用户进行退换货处理，赠送礼品，提升认可度，整体改进，提升售后服务，发放现金红包补偿，从而降低差评率。</p>
+                <div class="contents"></div>
+                <div v-if ="form.loads == true" class="loadings"><img src="../../assets/images/loading.gif" alt=""></div>
     </div>
 </template>
 <script>
@@ -90,6 +97,7 @@ export default {
                 timeType:1,
                 memberType:null,
                 pageSize:10,
+                loads:false,
                 startIndex:1,
             },
             range:'',
@@ -123,8 +131,9 @@ export default {
         }
     },
     methods: {
-        // 获取评价全部数据
+        // 查询
         getEvaluation(idx,pageS){
+            this.form.loads = true
             this.form.pageSize = pageS;
             this.form.startIndex = idx;
             this.form.memberType == 'null' && (this.form.memberType = null)
@@ -132,6 +141,7 @@ export default {
             this.form.badRatioRange == 'null' && (this.form.badRatioRange = null)
             this._apis.data.evaluation(this.form).then(response => {
                 this.listObj = response;
+                this.form.loads = false
             })
         },
         //获取口碑满意率
@@ -250,6 +260,7 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
+    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -278,5 +289,18 @@ export default {
             }
         }
     }
+}
+.contents{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+}
+.loadings{
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }
 </style>
