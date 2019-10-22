@@ -74,6 +74,7 @@
                 <p v-if="form.changeRatioRange == '10.00-100.00'" class="proposal"><b>"转化率10%以上"：</b>建议针对此类用户可设定分销机制，推荐积分商城、积分兑换，充值赠送：如100送30，还可推荐营销活动“活动海报”：推荐3-5人赠送积分或余额、推荐5-10人赠送积分或余额，来提升转化率。</p> 
                 <p v-if="form.changeRatioRange == '20.00-50.00'" class="proposal"><b>"转化率20-60"：</b>建议针对此类用户可设定分销机制，推荐积分商城、积分兑换，充值赠送：如100送30，还可推荐营销活动“活动海报”：推荐3-5人赠送积分或余额、推荐5-10人赠送积分或余额，来提升转化率。</p> 
             <div class="contents"></div>
+           <div v-if ="form.loads == true" class="loadings"><img src="../../assets/images/loading.gif" alt=""></div>
     </div>
 </template>
 <script>
@@ -109,6 +110,7 @@ export default {
                 changeRatioRange:null,
                 timeType:1,
                 startIndex:1,
+                loads:false,
                 pageSize: '10',
             },
             productiveness:[
@@ -133,11 +135,13 @@ export default {
         },
         //查询
         goSearch(){
+            this.form.loads = true
             this.form.channel == 'null' && (this.form.channel = null)
             this.form.changeRatioRange == 'null' && (this.form.changeRatioRange = null)
             this._apis.data.channelConversion(this.form).then(response => {
                 this.listObj = response;
                 // console.log(response)
+                 this.form.loads = false
             })
         },
         // 重置
@@ -236,6 +240,7 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
+    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -273,5 +278,13 @@ export default {
     width: 100%;
     height: 45px;
     background: #fff;
+}
+.loadings{
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }
 </style>
