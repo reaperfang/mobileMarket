@@ -1,5 +1,5 @@
 <template>
-  <DialogBase :visible.sync="visible" width="1000px" :title="'同步微信视频素材'" @submit="submit">
+  <DialogBase :visible.sync="visible" width="1000px" :title="'同步微信视频素材'" :showFooter="false">
       <div class="content">
         <el-checkbox v-model="checkedAll" @change="allChecked">全选</el-checkbox>
         <div class="list_main">
@@ -36,6 +36,10 @@
             </p>
           </div>
         </div>
+        <p class="txt_center">
+            <el-button type="primary" @click="submit()" :disabled="disNum">确 认</el-button>
+            <el-button  @click="visible = false">取 消</el-button>
+        </p>
       </div>
   </DialogBase>
 </template>
@@ -54,6 +58,7 @@ export default {
       currentPage:1,
       pageSize:10,
       total:0,
+      disNum:true
     }
   },
   props: {
@@ -116,11 +121,13 @@ export default {
           datas.push(obj)
         }        
       })
-      let query = {
-        fileGroupInfoId:'-1',
-        data:datas
+      if(this.datas){
+        let query = {
+          fileGroupInfoId:'-1',
+          data:datas
+        }
+        this.$emit('submit',{syncImage:{query:query}})
       }
-      this.$emit('submit',{syncImage:{query:query}})
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){
@@ -137,11 +144,13 @@ export default {
       if(val){
         this.list.map(item =>{
           item.checked = true
+          this.disNum = false
           return this.list
         })
       }else{
         this.list.map(item =>{
           item.checked = false
+          this.disNum = true
           return this.list
         })
       }
@@ -151,8 +160,12 @@ export default {
         this.checkedAll = this.list.every(item => {
           return item.checked == true
         })
+        this.disNum = !this.list.some(item => {
+          return item.checked == true
+        })
       }else{
         this.checkedAll = false
+        this.disNum = true
       }
     },
 
@@ -278,5 +291,10 @@ export default {
 }
 .ml10{
   margin-left: 10px;
+}
+.txt_center{
+  width: 100%;
+  text-align: center;
+  margin-top:20px;
 }
 </style>
