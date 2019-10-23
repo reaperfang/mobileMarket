@@ -43,7 +43,7 @@
                             <div class="marL20">
                                 <br>
                                 <el-radio v-model="ruleForm.scoreCleanType" label="0">不清零</el-radio><br>
-                                <el-radio v-model="ruleForm.scoreCleanType" label="1">自然年清零上一年获得的积分</el-radio><span class="c_warn">每年12月31日清空上一年获得的积分</span>
+                                <el-radio v-model="ruleForm.scoreCleanType" label="1">自然年清零上一年获得的积分</el-radio><span class="c_warn">&nbsp;&nbsp;&nbsp;&nbsp;每年12月31日清空上一年获得的积分</span>
                             </div>
                         </el-form-item>
                     </el-form>
