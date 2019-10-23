@@ -117,14 +117,11 @@ export default {
           datas.push(obj)
         }        
       })
-      if(this.datas){
-        this.disNum = false
-        let query = {
-          fileGroupInfoId:'-1',
-          data:datas
-        }
-        this.$emit('submit',{syncImage:{query:query}})
+      let query = {
+        fileGroupInfoId:'-1',
+        data:datas
       }
+      this.$emit('submit',{syncImage:{query:query}})
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){
@@ -141,11 +138,13 @@ export default {
       if(val){
         this.list.map(item =>{
           item.checked = true
+          this.disNum = false
           return this.list
         })
       }else{
         this.list.map(item =>{
           item.checked = false
+          this.disNum = true
           return this.list
         })
       }
@@ -155,8 +154,12 @@ export default {
         this.checkedAll = this.list.every(item => {
           return item.checked == true
         })
+        this.disNum = !this.list.some(item => {
+          return item.checked == true
+        })
       }else{
         this.checkedAll = false
+        this.disNum = true
       }
     },
 
