@@ -52,7 +52,6 @@ export default {
     //进入店铺
     toShop(shop){
       this._apis.set.getShopInfo({cid:shop.id,id:shop.id}).then(response =>{
-        if(response.enable == 1){
           this.$store.dispatch('setShopInfos',shop).then(() => {
             this.handleClose()
             this.$router.push({ path: '/profile/profile' })
@@ -62,12 +61,6 @@ export default {
               message: error
             })
           })
-        }else{
-          this.$notify.warning({
-            title: '提示',
-            message: '该店铺已停用！'
-          })
-        }
       }).catch(error => {
         console.log(error)
       })
@@ -75,7 +68,6 @@ export default {
 
     handleClose(){
       this.showDialog = false
-      // this.route == 'login' && removeToken()
       this.$emit('handleClose')
     }
   }

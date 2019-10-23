@@ -47,12 +47,26 @@ class Ajax {
             return res
           }
           return res.data;
-        } else if (res.errno === 0) {
-          return res.data;
         }else if(res.status === 'error' && res.code === "10088"){
-            this.$message.warning('该店铺已停用！')
+          MessageBox.alert('该店铺已停用！', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              store.dispatch('LogOut').then(() => {
+                location.reload()
+              })
+            }
+          });
         }else if(res.status === 'error' && res.code === "10089"){
-            this.$message.warning('该店铺已过期！')
+          MessageBox.alert('该店铺已过期！', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              store.dispatch('LogOut').then(() => {
+                location.reload()
+              })
+            }
+          });
+        }else if (res.errno === 0) {
+          return res.data;
         }else {
           return Promise.reject(res.msg)
         }
