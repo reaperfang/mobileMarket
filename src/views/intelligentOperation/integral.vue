@@ -52,7 +52,7 @@
                 </div>
             </div>
             <ma3Table 
-                class="marT20" 
+                class="marT20s" 
                 @sizeChange="sizeChange"
                 @currentChange="currentChange"
                 :pageSize="10"
@@ -275,7 +275,6 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
-    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -305,6 +304,9 @@ export default {
         }
     }
 }
+.marT20s{
+       position: relative;
+}
 .contents{
     width: 100%;
     height: 45px;
@@ -314,8 +316,12 @@ export default {
     width: 500px;
     height: 500px;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 60%;
+    top: 52%;
     transform: translate(-50%,-50%);
+}
+.loadings>img{
+     width: 220px;
+     height: 220px;
 }
 </style>

@@ -63,7 +63,7 @@
                             </el-tooltip>
                         </div>
                     </div>
-                    <ma4Table class="marT20" :listObj="listObj" @getEvaluation="getEvaluation"></ma4Table>
+                    <ma4Table class="marT20s" :listObj="listObj" @getEvaluation="getEvaluation"></ma4Table>
                 </div>
                 <p>运营建议:</p>
                 <p v-if="form.niceRatioRange == '0.00-1.00'" class="proposal"><b>"满意率0-1%/满意个数1个"：</b>建议针对此类用户客服即时回复，和用户提升互动性，从而来提升满意率。</p>                
@@ -260,7 +260,6 @@ export default {
 .m_container{
     background-color: #fff;
     padding: 10px 20px;
-    position: relative;
     .pane_container{
         color:#3D434A;
         padding: 10px;
@@ -290,17 +289,24 @@ export default {
         }
     }
 }
+.marT20s{
+    position: relative;
+}
 .contents{
     width: 100%;
     height: 45px;
     background: #fff;
 }
 .loadings{
-    width: 500px;
-    height: 500px;
+    width: 220px;
+    height: 220px;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 53%;
+    top: 34%;
     transform: translate(-50%,-50%);
+}
+.loadings>img{
+     width: 220px;
+     height: 220px;
 }
 </style>
