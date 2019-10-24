@@ -51,9 +51,6 @@ export default {
 
         }
     },
-    created() {
-        console.log(typeof this.$route.query.print)
-    },
     computed: {
         orderBulkDeliveryPrintIds() {
             let returnIds = this.$route.query.orderId
