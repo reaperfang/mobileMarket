@@ -59,10 +59,10 @@
                 <p class="p_title" style="padding-left: 29px">常用功能：</p>
                 <div class="p_list">
                     <div class="p_l_item clearfix" v-for="item in commonData" :key="item.id">
-                        <router-link :to="item.url">
+                        <div @click="linkTo(item)">
                             <img :src="item.img" alt="">
                             <span>{{item.text}}</span>
-                        </router-link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                 <p class="p_title">营销活动：</p>
                 <div class="p_list" v-if="activeData.length != 0">
                     <div class="p_m_item" v-for="item in activeData" :key="item.id">
-                        <span  @click="linkTo(item)">
+                        <span  @click="linkToApply(item)">
                             <img :src="item.appImage" alt="" style="height:40px;width:40px;">
                             <div>
                                 <p>{{item.appName}}</p>
@@ -199,6 +199,13 @@ export default {
                 this.SETCURRENT(8)
             }else{
                 this.$router.push({path:item.url})
+            }
+        },
+        //营销活动跳转
+        linkToApply(item){
+            if(item.url){
+                this.$router.push({path:'/apply',query:{paths:item.url}})
+                this.SETCURRENT(8)
             }
         }
     },
