@@ -19,6 +19,7 @@
                     filterable>
                 </el-cascader>
                 <span class="category-display">您当前的选择是：{{itemCatText}}</span>
+                <p class="goods-message" v-if="leimuMessage != '' && leimuMessage == true && !itemCatText">历史类目已被禁用或删除，请您重新选择</p>
             </el-form-item>
             <el-form-item label="商品名称" prop="name">
                 <el-input :disabled="!ruleForm.productCategoryInfoId" style="width: 840px;" v-model="ruleForm.name" maxlength="60" show-word-limit></el-input>
@@ -205,7 +206,7 @@
                             width="180">
                             <template slot-scope="scope">
                                 <!-- <span>¥{{scope.row.costPrice}}</span> -->
-                                <el-input v-model="scope.row.costPrice" placeholder="请输入成本价"></el-input>
+                                <el-input :disabled="!ruleForm.productCategoryInfoId" v-model="scope.row.costPrice" placeholder="请输入成本价"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -224,7 +225,7 @@
                             label="库存预警">
                             <template slot-scope="scope">
                                 <!-- <span>¥{{scope.row.costPrice}}</span> -->
-                                <el-input v-model="scope.row.warningStock" placeholder="请输入库存预警"></el-input>
+                                <el-input :disabled="!ruleForm.productCategoryInfoId" v-model="scope.row.warningStock" placeholder="请输入库存预警"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -232,7 +233,7 @@
                             label="重量(kg)">
                             <template slot-scope="scope">
                                 <!-- <span>{{scope.row.weight}}(kg)</span> -->
-                                <el-input v-model="scope.row.weight" placeholder="请输入重量"></el-input>
+                                <el-input :disabled="!ruleForm.productCategoryInfoId" v-model="scope.row.weight" placeholder="请输入重量"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -240,7 +241,7 @@
                             label="体积(m³)">
                             <template slot-scope="scope">
                                 <!-- <span>{{scope.row.volume}}(m³)</span> -->
-                                <el-input v-model="scope.row.volume" placeholder="请输入体积"></el-input>
+                                <el-input :disabled="!ruleForm.productCategoryInfoId" v-model="scope.row.volume" placeholder="请输入体积"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -317,6 +318,7 @@
                         :value="item.id">
                     </el-option>
                 </el-select>
+                <p class="goods-message" v-if="pinpaiMessage != '' && pinpaiMessage == true && ruleForm.productBrandInfoId == ''">历史品牌已被禁用或删除，请您重新选择</p>
             </el-form-item>
         </section>
         <section class="form-section">
@@ -627,6 +629,9 @@ export default {
             materialIndex: 0,
             material: false,
             hideUpload: false,
+            leimuMessage: '',
+            pinpaiMessage: '',
+            catcheProductBrandInfoId: ''
         }
     },
     created() {
@@ -866,6 +871,17 @@ export default {
                 }
                 this.ruleForm.isShowSaleCount = this.ruleForm.isShowSaleCount == 1 ? true : false
                 this.ruleForm.isShowStock = this.ruleForm.isShowStock == 1 ? true : false
+
+                if(!this.itemCatText) {
+                    this.leimuMessage = true
+                    this.ruleForm.productCategoryInfoId = ''
+                }
+
+                if(this.ruleForm.productBrandInfoId && !this.brandList.filter(val => val.enable == 1).find(val => val.id == this.ruleForm.productBrandInfoId)) {
+                    this.catcheProductBrandInfoId = this.ruleForm.productBrandInfoId
+                    this.ruleForm.productBrandInfoId = ''
+                    this.pinpaiMessage = true
+                }
 
                 // if(this.ruleForm.productDetail) {
                 //     let _productDetail = ''
@@ -1669,6 +1685,11 @@ $blue: #655EFF;
 }
 /deep/ .el-upload-list__item.is-uploading {
     display: none;
+}
+.goods-message {
+    color: #FD4C2B;
+    font-size: 12px;
+    margin-top: 5px;
 }
 </style>
 
