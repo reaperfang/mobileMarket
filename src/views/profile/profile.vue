@@ -31,22 +31,22 @@
                 </p>
                 <div class="p_r_list">
                     <p>待办售罄
-                        <router-link to="/goods/goodsList">
+                        <router-link to="/goods/goodsList?status=-1">
                             <span>({{toBeSoldOut || 0}})</span>
                         </router-link>    
                     </p>
                     <p>待发货订单
-                        <router-link to="/goods/goodsList">
+                        <router-link to="/order/deliveryManagement?status=3">
                             <span>({{staySendCount || 0}})</span>
                         </router-link>
                     </p>
                     <p>售后待处理
-                        <router-link to="/order/afterSalesManagement">
+                        <router-link to="/order/afterSalesManagement?orderAfterSaleStatus=2">
                             <span>({{stayProcessedCount || 0}})</span>
                         </router-link>
                     </p>
                     <p>售后单待审核
-                        <router-link to="/order/afterSalesManagement">
+                        <router-link to="/order/afterSalesManagement?orderAfterSaleStatus=0">
                             <span>({{stayAuthCount || 0}})</span>
                         </router-link>
                     </p>
