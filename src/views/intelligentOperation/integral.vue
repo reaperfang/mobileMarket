@@ -32,7 +32,7 @@
                         </el-select>
                     </div>
                 </el-form-item>
-                <el-form-item label="会员类型">
+                <el-form-item label="客户类型">
                     <div class="input_wrap2">
                         <el-select v-model="form.memberType"  @change="getData">
                             <el-option v-for="item in customType" :label="item.name" :value="item.id" :key="item.id"></el-option>
@@ -40,7 +40,7 @@
                     </div>
                 </el-form-item>
                 <el-form-item class="fr marT20">
-                    <el-button class="minor_btn" icon="el-icon-search" @click="goSearch">查询</el-button>
+                    <el-button class="minor_btn" icon="el-icon-search" @click="goSearch()">查询</el-button>
                     <el-button class="border_btn" @click="reSet">重 置</el-button>
                 </el-form-item>
             </el-form>
@@ -94,7 +94,7 @@ export default {
                     }
                     return time.getTime() > maxTime || time.getTime() == this.pickerMinDate
                     }
-                    return time.getTime() > Date.now() - 8.64e7
+                    return time.getTime() > Date.now()
                 }
             },
             daterange:'',
