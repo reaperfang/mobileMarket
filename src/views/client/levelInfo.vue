@@ -56,7 +56,7 @@
           <div class="radio_line" v-if="getIndex(this.conditionList,'消费金额满') !== -1">
             <el-radio v-model="condition2" label="消费金额满" @change="handleCheck1">消费金额满：</el-radio>
             <div class="input_wrap2">
-              <el-input placeholder="请输入数字" v-model="xfjem" @keyup.native="checkZero($event, xfjem,'xfjem')"></el-input>
+              <el-input placeholder="请输入数字" v-model="xfjem" @keyup.native="checkZero($event, xfjem,'xfjem')" @blur="checkLevelValue('xfjem')"></el-input>
             </div>
             <span>元</span>
             <span>即可升级</span>
@@ -64,7 +64,7 @@
           <div class="radio_line" v-if="getIndex(this.conditionList,'消费次数满') !== -1">
             <el-radio v-model="condition2" label="消费次数满" @change="handleCheck2">消费次数满：</el-radio>
             <div class="input_wrap2">
-              <el-input placeholder="请输入数字" v-model="xfcsm" @keyup.native="checkZero($event, xfcsm,'xfcsm')"></el-input>
+              <el-input placeholder="请输入数字" v-model="xfcsm" @keyup.native="checkZero($event, xfcsm,'xfcsm')" @blur="checkLevelValue('xfcsm')"></el-input>
             </div>
             <span>次</span>
             <span>即可升级</span>
@@ -93,7 +93,7 @@
           <el-checkbox v-model="right2" @change="handleCheck4">会员折扣</el-checkbox>
           <span>享受后买商品售价</span>
           <div class="input_wrap">
-            <el-input placeholder="填写数字（如：八折输入8,八五折输入8.5）" v-model="hyzk" @blur="handleBlur"></el-input>
+            <el-input placeholder="填写数字（如：八折输入8,八五折输入8.5）" v-model="hyzk" @blur="handleBlur($event, hyzk, 'hyzk')"></el-input>
           </div>
           <span>折</span>
           <span class="l_warn">（仅对支仅持参加会员折扣的商品生效）</span>
@@ -231,8 +231,30 @@ export default {
   },
   methods: {
     checkZero(event,val,ele) {
-      val = val.replace(/[^\d.]/g,'');
+      val = val.replace(/[^\d]/g,'');
       val = val.replace(/^0/g,'');
+      this[ele] = val;
+    },
+    handleBlur(event,val,ele) {
+      val = val.replace(/[^\d.]/g,'');
+      val = val.replace(/\.{2,}/g,'.');
+      val = val.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+      val = val.replace(/^0/g,'');
+      if(val >= 10) {
+        this.$notify({
+          title: "警告",
+          message: "只能输入10以内数字",
+          type: "warning"
+        });
+        val = "";
+      }else if(val <= 0) {
+        this.$notify({
+          title: "警告",
+          message: "不能输入小于0数字",
+          type: "warning"
+        });
+        val = "";
+      }
       this[ele] = val;
     },
     handleCheck1() {
@@ -258,23 +280,6 @@ export default {
     handleCheck5(val) {
       if(!val) {
         this.zsjf = "";
-      }
-    },
-    handleBlur() {
-      if(this.hyzk >= 10) {
-        this.$notify({
-          title: "警告",
-          message: "只能输入10以内数字",
-          type: "warning"
-        });
-        this.hyzk = "";
-      }else if(this.hyzk <= 0) {
-        this.$notify({
-          title: "警告",
-          message: "不能输入小于0数字",
-          type: "warning"
-        });
-        this.hyzk = "";
       }
     },
     handleAvatarSuccess(res, file) {
@@ -590,6 +595,26 @@ export default {
     getSelectedInfo(obj) {
       this.selectedInfos = Object.assign({}, obj);
     },
+    checkLevelValue(ele) {
+      let params = {
+        level: this.$route.query.level,
+        type: 0,
+        levelConditionId: this.getId(this.conditionList, this.condition2),
+        conditionValue: this[ele]
+      }
+      this._apis.client.checkLevelValue(params).then((response) => {
+        if(response == "no") {
+          this.xfjem = "";
+          this.$notify({
+            title: "警告",
+            message: "高会员卡等级条件数值要大于低会员卡等级的条件数值",
+            type: "warning"
+          });
+        }
+      }).catch((error) => {
+        console.log(error);
+      })
+    },
     save() {
       if (this.ruleForm.name == "") {
         this.$notify({
@@ -607,7 +632,7 @@ export default {
             message: "请选择一项等级权益",
             type: "warning"
           });
-        }else if(this.$route.query.level !== '1' && this.condition2 == "") {
+        }else if(this.$route.query.level !== 1 && this.condition2 == "") {
           this.$notify({
             title: "警告",
             message: "请选择升级条件",
