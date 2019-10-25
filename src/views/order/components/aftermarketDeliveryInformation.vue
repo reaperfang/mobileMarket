@@ -75,7 +75,7 @@
                         <div @click="showLogistics(orderAfterSaleSendInfo.expressNos)" class="header-lefter-item  blue pointer">查看物流</div>
                     </div>
                     <div class="header-righter">
-                        <div class="header-righter-item">{{orderAfterSale | businessFilter}}</div>
+                        <div class="header-righter-item">{{orderAfterSale | businessFilter(orderAfterSaleSendInfo.expressNos)}}</div>
                         <div class="header-righter-item">发货人：{{orderAfterSale.sendName}}</div>
                         <div class="header-righter-item">{{orderAfterSale.receiveGoodsTime}}</div>
                         <div @click="showContent = !showContent">
@@ -183,10 +183,10 @@ export default {
                 return ''
             }
         },
-        businessFilter(value) {
+        businessFilter(value, expressNos) {
             if(value.memberReceiveGoodsTime) {
                 return '【客户签收】'
-            } else if(this.orderAfterSaleSendInfo.expressNo) {
+            } else if(expressNos) {
                 return '【商户发货】'
             } else {
                 return ''
