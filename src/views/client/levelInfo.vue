@@ -595,28 +595,6 @@ export default {
     getSelectedInfo(obj) {
       this.selectedInfos = Object.assign({}, obj);
     },
-    checkLevelValue(event,val,ele) {
-      val = val.replace(/[^\d]/g,'');
-      val = val.replace(/^0/g,'');
-      let flag = true;
-      let params = {
-        level: this.$route.query.level,
-        type: 0,
-        levelConditionId: this.getId(this.conditionList, this.condition2),
-        conditionValue: this[ele]
-      }
-      this._apis.client.checkLevelValue(params).then((response) => {
-          if(response == "no") {
-            this.$notify({
-              title: "警告",
-              message: "高会员卡等级条件数值要大于低会员卡等级的条件数值",
-              type: "warning"
-            });
-          }
-        }).catch((error) => {
-          console.log(error);
-        })
-    },
     save() {
       if (this.ruleForm.name == "") {
         this.$notify({
