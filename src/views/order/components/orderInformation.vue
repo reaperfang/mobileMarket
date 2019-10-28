@@ -345,7 +345,7 @@ export default {
                 return this.orderInfo.memberName
             } else {
                 if(this.orderDetail.orderPayRecordList) {
-                    _arr = arr.slice(0, 3)
+                    _arr = this.orderDetail.orderPayRecordList.slice(0, 3)
                     str = _arr.map(val => val.memberName).join(',')
                 }
             }
