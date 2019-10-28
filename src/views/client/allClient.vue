@@ -415,6 +415,7 @@ export default {
         this.form.perUnitPriceMax = "";
         this.form.becameCustomerTimeEnd = "";
         this.form.lastPayTimeEnd = "";
+        this.newForm = Object.assign({},{});
     }
   },
   mounted() {
