@@ -53,7 +53,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item v-if="ruleForm.payType == 3 || ruleForm.payType == 4" label="邮费月结号" prop="monthCode">
-              <el-input type="number" v-model="ruleForm.monthCode" placeholder="请输入，不超过20个字符"></el-input>
+              <el-input v-model="ruleForm.monthCode" placeholder="请输入，不超过20个字符"></el-input>
             </el-form-item>
             <el-form-item v-if="!$route.query.detail">
                 <el-button @click="$router.go(-1)">取 消</el-button>
@@ -117,7 +117,7 @@ export default {
               ],
               monthCode: [
                 { required: true, message: '请输入月结号', trigger: 'blur' },
-                { type: 'number', min: 10, max: 10, message: '月结号为十位数字', trigger: 'blur' }
+                // { min: 10, max: 10, message: '月结号为十位数字', trigger: 'blur' }
               ],
             },
             expressCompanyList: [],
