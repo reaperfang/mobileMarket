@@ -341,11 +341,11 @@ export default {
 
             if(this.orderInfo.payWay == 2) {
                 return this.orderInfo.receivedName
-            } else if(this.orderInfo.isConsumeBalance == 1 && !this.orderInfo.actualMoney) {
+            } else if(this.orderInfo.isConsumeBalance == 1 && (this.orderInfo.actualMoney == '0.00' || this.orderInfo.actualMoney == null)) {
                 return this.orderInfo.memberName
             } else {
                 if(this.orderDetail.orderPayRecordList) {
-                    _arr = arr.slice(0, 3)
+                    _arr = this.orderDetail.orderPayRecordList.slice(0, 3)
                     str = _arr.map(val => val.memberName).join(',')
                 }
             }
@@ -398,9 +398,15 @@ export default {
             receivableMoney = typeof this.orderInfo.receivableMoney == 'string' ? parseFloat(this.orderInfo.receivableMoney) : this.orderInfo.receivableMoney
 
             if(this.orderInfo.orderStatus == 3) {
-                total = consumeBalanceMoney + consumeScoreConvertMoney + actualMoney
-                total = total.toFixed(2)
-                this.yingshow = total
+                if(this.orderInfo.payWay == 2) {
+                    total = consumeBalanceMoney + consumeScoreConvertMoney + receivableMoney
+                    total = total.toFixed(2)
+                    this.yingshow = total
+                } else {
+                    total = consumeBalanceMoney + consumeScoreConvertMoney + actualMoney
+                    total = total.toFixed(2)
+                    this.yingshow = total
+                }
             } else {
                 total = consumeBalanceMoney + consumeScoreConvertMoney + receivableMoney
                 total = total.toFixed(2)
