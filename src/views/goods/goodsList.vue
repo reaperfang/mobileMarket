@@ -318,6 +318,8 @@ export default {
     methods: {
         resetForm(formName) {
             this.$refs[formName].resetFields();
+            this.categoryValue = ''
+            this.getList()
         },
         allDelete() {
             let ids = this.multipleSelection.map(val => val.goodsInfo.id)
