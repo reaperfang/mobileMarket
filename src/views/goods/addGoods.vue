@@ -1724,6 +1724,9 @@ $blue: #655EFF;
 /deep/ .el-input {
     width: 208px;
 }
+/deep/ .el-radio-group .el-radio {
+    margin-right: 30px;
+}
 </style>
 
 
