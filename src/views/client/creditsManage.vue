@@ -12,7 +12,7 @@
                                 <el-radio v-model="ruleForm.scoreToCash" label="1" @change="openScoreToCash">开启</el-radio><br>
                                 <span>抵现比例：</span>
                                 <div style="width: 140px; display: inline-block">
-                                    <el-input placeholder="请输入整数" v-model="ruleForm.scorePercentage" @keyup.native="checkZero($event,ruleForm.scorePercentage,'scorePercentage')"></el-input>
+                                    <el-input placeholder="请输入整数" v-model="ruleForm.scorePercentage" @keyup.native="checkZero2($event,ruleForm.scorePercentage,'scorePercentage')"></el-input>
                                 </div>
                                 <span>积分</span>
                                 <div style="width: 54px; display: inline-block">
@@ -125,7 +125,7 @@ export default {
             this.ruleForm[ele] = val;
         },
         checkPersent(event,val,ele) {
-            val = val.replace(/[^\d.]/g,'');
+            val = val.replace(/[^\d]/g,'');
             val = val.replace(/^0/g,'');
             val = val.replace(/^100/g,'');
             this.ruleForm[ele] = val;
