@@ -55,8 +55,8 @@
                             商户收货信息
                         </div>
                         <div class="col list-righter">
-                            <p>{{orderAfterSaleSendInfo.sendName}} {{orderAfterSaleSendInfo.sendPhone}}</p>
-                            <p>{{orderAfterSaleSendInfo.sendDetail}}</p>
+                            <p>{{orderSendInfo.sendName}} {{orderSendInfo.sendPhone}}</p>
+                            <p>{{orderSendInfo.sendDetail}}</p>
                         </div>
                     </div>
                 </div>
@@ -458,7 +458,8 @@ export default {
 
         },
         catchRealReturnWalletMoney: {},
-        catchRealReturnBalance: {}
+        catchRealReturnBalance: {},
+        orderSendInfo: {}
     }
 }
 </script>
