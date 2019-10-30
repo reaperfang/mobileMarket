@@ -362,7 +362,7 @@ export default {
         },
         refundwayFilter(code) {
             if(code == 1) {
-                return '线上退款'
+                return '原支付方式返还'
             } else if(code == 2) {
                 return '线下退款'
             }
