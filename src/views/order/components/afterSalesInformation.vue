@@ -360,11 +360,11 @@ export default {
                     return '退款'
             }
         },
-        refundwayFilter(code) {
+        refundwayFilter(code) {// 1线上 2线下
             if(code == 1) {
                 return '原支付方式返还'
             } else if(code == 2) {
-                return '线下退款'
+                return '原支付方式返还'
             }
         },
         channelTypeFilter(code) {
