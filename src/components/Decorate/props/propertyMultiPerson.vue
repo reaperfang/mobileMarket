@@ -131,12 +131,12 @@
           <el-checkbox label="8">购买按钮</el-checkbox>
         </el-checkbox-group>
         <el-radio-group v-if="ruleForm.showContents.includes('8')" v-model="ruleForm.buttonStyle">
-          <el-radio :label="1">样式1</el-radio>
-          <el-radio :label="2">样式2</el-radio>
+          <el-radio :label="1" :disabled="true">样式1</el-radio>
+          <el-radio :label="2" :disabled="true">样式2</el-radio>
           <el-radio :label="3" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式3</el-radio>
           <el-radio :label="4" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式4</el-radio>
-          <el-radio :label="5">样式5</el-radio>
-          <el-radio :label="6">样式6</el-radio>
+          <el-radio :label="5" :disabled="true">样式5</el-radio>
+          <el-radio :label="6" :disabled="true">样式6</el-radio>
           <el-radio :label="7" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式7</el-radio>
           <el-radio :label="8" :disabled="ruleForm.listStyle === 3 || ruleForm.listStyle === 6">样式8</el-radio>
         </el-radio-group>
