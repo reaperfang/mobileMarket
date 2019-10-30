@@ -181,7 +181,7 @@ export default {
         textAlign: 1,//文本对齐
         showContents: ['1', '2', '3', '4', '5', '6', '7', '8'],//显示内容
         hideSaledGoods: true,//隐藏已售罄拼团商品
-        buttonStyle: 1,// 购买按钮样式
+        buttonStyle: 3,// 购买按钮样式
         ids: [],//商品id列表 
         buttonText: '拼团',// 次要按钮文字
         buttonTextPrimary: '开团',//主要按钮文字
@@ -213,7 +213,7 @@ export default {
      //如果新值是一行3个或横向滑动且老值不是这个就把按钮样式改为第一个
     'ruleForm.listStyle'(newValue, oldValue) {
       if([3,6].includes(newValue) && ![3,6].includes(oldValue)) { 
-        this.ruleForm.buttonStyle = 1;
+        this.ruleForm.buttonStyle = 3;
       }
     },
     'ruleForm.addType'(newValue) {
