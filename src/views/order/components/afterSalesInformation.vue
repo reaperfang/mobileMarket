@@ -201,7 +201,7 @@
                             应退金额：
                         </div>
                         <div class="col">
-                            {{orderAfterSale.shouldReturnMoney || 0}}
+                            {{orderAfterSale.shouldReturnMoney || '0.00'}}
                         </div>
                     </div>
                     <div class="row">
@@ -209,7 +209,7 @@
                             应退还余额：
                         </div>
                         <div class="col">
-                            {{orderAfterSale.shouldReturnBalance || 0}}
+                            {{orderAfterSale.shouldReturnBalance || '0.00'}}
                         </div>
                     </div>
                     <div class="row">
@@ -217,7 +217,7 @@
                             应退还第三方支付：
                         </div>
                         <div class="col">
-                            {{orderAfterSale.shouldReturnWalletMoney || 0}}
+                            {{orderAfterSale.shouldReturnWalletMoney || '0.00'}}
                         </div>
                     </div>
                     <!-- <div class="row">
@@ -268,7 +268,7 @@
                             实退积分：
                         </div>
                         <div class="col">
-                            <el-input v-if="orderAfterSale.orderAfterSaleStatus == 0" v-model="orderAfterSale.realReturnScore"></el-input>
+                            <el-input type="number" min="0" v-if="orderAfterSale.orderAfterSaleStatus == 0" v-model="orderAfterSale.realReturnScore"></el-input>
                             <span v-else>{{orderAfterSale.realReturnScore || 0}}</span>
                         </div>
                     </div>
@@ -286,7 +286,7 @@
                             实退余额：
                         </div>
                         <div class="col">
-                            {{orderAfterSale.realReturnBalance || 0}}
+                            {{orderAfterSale.realReturnBalance || '0.00'}}
                         </div>
                     </div>
                     <div class="row align-center">
@@ -294,7 +294,7 @@
                             实退第三方支付：
                         </div>
                         <div class="col">
-                            {{orderAfterSale.realReturnWalletMoney || 0}}
+                            {{orderAfterSale.realReturnWalletMoney || '0.00'}}
                         </div>
                     </div>
                 </div>
@@ -428,14 +428,14 @@ export default {
             //     }
             // }
             if(this.orderAfterSale.shouldReturnBalance == null || this.orderAfterSale.shouldReturnBalance == '0.00' || this.orderAfterSale.shouldReturnBalance == 0) {
-                this.orderAfterSale.realReturnWalletMoney = (+this.orderAfterSale.realReturnMoney).toFixed(2)
+                this.orderAfterSale.realReturnWalletMoney = +this.orderAfterSale.realReturnMoney
             } else {
                 if(+this.orderAfterSale.realReturnMoney > +this.orderAfterSale.shouldReturnBalance) {
-                    this.orderAfterSale.realReturnBalance = +this.orderAfterSale.shouldReturnBalance
+                    this.orderAfterSale.realReturnBalance = (+this.orderAfterSale.shouldReturnBalance).toFixed(2)
                     this.orderAfterSale.realReturnWalletMoney = (+this.orderAfterSale.realReturnMoney - this.orderAfterSale.realReturnBalance).toFixed(2)
                 } else {
                     this.orderAfterSale.realReturnWalletMoney = 0
-                    this.orderAfterSale.realReturnBalance = this.orderAfterSale.realReturnMoney
+                    this.orderAfterSale.realReturnBalance = (+this.orderAfterSale.realReturnMoney).toFixed(2)
                 }
             }
         }
@@ -490,7 +490,7 @@ export default {
             padding-top: 0;
             .list-lefter {
                 margin-right: 20px;
-                width: 80px;
+                width: 90px;
                 text-align: right;
             }
             .list-righter {

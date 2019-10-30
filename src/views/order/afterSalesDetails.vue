@@ -144,6 +144,7 @@ export default {
                 this.orderType = res.orderType
                 this.catchRealReturnWalletMoney = this.orderAfterSale.realReturnWalletMoney
                 this.catchRealReturnBalance = this.orderAfterSale.realReturnBalance
+                this.orderAfterSale.realReturnScore = this.orderAfterSale.shouldReturnScore || 0
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({
