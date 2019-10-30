@@ -41,7 +41,7 @@
                             {{orderAfterSale.memberName}}
                         </div>
                     </div>
-                    <div v-if="orderAfterSale.type == 2" class="row">
+                    <div v-if="orderAfterSale.type == 2 && orderAfterSale.orderAfterSaleStatus != 0" class="row">
                         <div class="col list-lefter">
                             客户收货信息
                         </div>
