@@ -20,7 +20,7 @@
                 <el-tab-pane v-if="orderAfterSale.type != 3 && (orderAfterSale.returnExpressNo || orderAfterSale.expressNo)" v-permission="['订单', '售后详情', '发货信息']" label="发货信息" name="aftermarketDeliveryInformation"></el-tab-pane>
             </el-tabs>
         </section>
-        <component :is="currentView" :recordList="recordList" :orderAfterSale="orderAfterSale" :orderAfterSaleSendInfo="orderAfterSaleSendInfo" :itemList="itemList" :sendItemList="sendItemList" :orderType="orderType"></component>
+        <component :is="currentView" :recordList="recordList" :orderAfterSale="orderAfterSale" :orderAfterSaleSendInfo="orderAfterSaleSendInfo" :itemList="itemList" :sendItemList="sendItemList" :orderType="orderType" :catchRealReturnWalletMoney="catchRealReturnWalletMoney" :catchRealReturnBalance="catchRealReturnBalance" :orderSendInfo="orderSendInfo"></component>
         <component :is="currentDialog" :dialogVisible.sync="dialogVisible" @reject="onReject" title="审核"></component>
     </div>
 </template>
@@ -42,7 +42,10 @@ export default {
             sendItemList: [],
             currentDialog: '',
             dialogVisible: false,
-            orderType: ''
+            orderType: '',
+            catchRealReturnWalletMoney: '',
+            catchRealReturnBalance: '',
+            orderSendInfo: ''
         }
     },
     created() {
@@ -140,6 +143,10 @@ export default {
                 this.recordList = res.recordList
                 this.sendItemList = res.sendItemList
                 this.orderType = res.orderType
+                this.catchRealReturnWalletMoney = this.orderAfterSale.realReturnWalletMoney
+                this.catchRealReturnBalance = this.orderAfterSale.realReturnBalance
+                this.orderAfterSale.realReturnScore = this.orderAfterSale.shouldReturnScore || 0
+                this.orderSendInfo = res.orderSendInfo
             }).catch(error => {
                 this.visible = false
                 this.$notify.error({
@@ -168,7 +175,6 @@ export default {
             line-height: 60px;
             background-color: #fff;
             padding: 0 20px;
-            box-shadow:5px 5px 10px 0px rgba(227,233,228,1);
             .header-righter {
                 text-align: right;
                 color: #b8b8bb;
@@ -177,7 +183,7 @@ export default {
 
         section {
             background-color: #fff;
-            padding: 20px;
+            padding: 20px 40px;
             margin-top: 20px;
             &.container {
                 padding-top: 0;
@@ -191,7 +197,7 @@ export default {
                 font-size: 16px;
             }
             &.flow-path {
-                margin-top: 50px;
+                margin-top: 20px;
             }
             &.information {
                 margin-top: 20px;
