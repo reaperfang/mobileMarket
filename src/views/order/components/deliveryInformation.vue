@@ -17,7 +17,7 @@
           <div class="header-lefter">
             <div class="header-lefter-item number">{{index + 1}}</div>
             <div class="header-lefter-item">快递单号：{{item.expressNo}}</div>
-            <div @click="showLogistics(item.expressNo)" class="header-lefter-item blue pointer">查看物流</div>
+            <div @click="showLogistics(item.expressNo, item.shipperName)" class="header-lefter-item blue pointer">查看物流</div>
           </div>
           <div class="header-righter">
             <div class="header-righter-item">{{item.expressNo | goodsStatus(orderDetail)}}</div>
@@ -59,6 +59,7 @@
       :data="currentData"
       :reject="reject"
       :expressNo="expressNo"
+      :expressCompanys="expressCompanys"
     ></component>
   </div>
 </template>
@@ -81,7 +82,8 @@ export default {
       orderSendItems: [],
       isTrace: 0,
       reject: false,
-      expressNo: ''
+      expressNo: '',
+      expressCompanys: ''
     };
   },
   created() {
@@ -161,12 +163,13 @@ export default {
 
       this.orderSendItems = arr;
     },
-    showLogistics(expressNo) {
+    showLogistics(expressNo, expressCompanys) {
       if (this.isTrace == 0) {
         this.currentDialog = "LogisticsDialog";
         this.currentData = [];
         this.reject = true;
         this.expressNo = expressNo
+        this.expressCompanys = ''
         this.dialogVisible = true;
       } else {
         this.reject = false;
@@ -176,6 +179,7 @@ export default {
           .then(res => {
             this.currentDialog = "LogisticsDialog";
             this.currentData = res.traces;
+            this.expressCompanys = res.shipperName
             this.dialogVisible = true;
           })
           .catch(error => {

@@ -107,15 +107,26 @@ export default {
             })
         },
         auth() {
-            this._apis.order.orderAfterSaleUpdateStatus({
+            let orderAfterSaleStatus
+
+            if(this.orderAfterSale.type == 3) {
+                orderAfterSaleStatus = 2
+            } else {
+                orderAfterSaleStatus = 1
+            }
+            let params = {
                 id: this.orderAfterSale.id,
                 realReturnScore: this.orderAfterSale.realReturnScore,
-                realReturnMoney: this.orderAfterSale.realReturnMoney,
-                realReturnBalance: this.orderAfterSale.realReturnBalance,
-                realReturnWalletMoney: this.orderAfterSale.realReturnWalletMoney,
-                orderAfterSaleStatus: 1
+                //realReturnMoney: this.orderAfterSale.realReturnMoney,
+                //realReturnBalance: this.orderAfterSale.realReturnBalance,
+                //realReturnWalletMoney: this.orderAfterSale.realReturnWalletMoney,
+                orderAfterSaleStatus: orderAfterSaleStatus
+            }
 
-            }).then((res) => {
+            if(this.orderAfterSale.realReturnMoney != this.orderAfterSale.shouldReturnMoney) {
+                params.realReturnMoney = this.orderAfterSale.realReturnMoney
+            }
+            this._apis.order.orderAfterSaleUpdateStatus(params).then((res) => {
                 this.getDetail()
                 this.visible = false
                 this.$notify({
@@ -140,7 +151,7 @@ export default {
                 }
                 this.orderAfterSale = res.orderAfterSale || {}
                 this.orderAfterSaleSendInfo = res.orderAfterSaleSendInfo || {}
-                this.recordList = res.recordList
+                this.recordList = res.recordList.filter(val => val.operationType != 1 && val.operationType != 2 && val.operationType != 5 && val.operationType != 8)
                 this.sendItemList = res.sendItemList
                 this.orderType = res.orderType
                 this.catchRealReturnWalletMoney = this.orderAfterSale.realReturnWalletMoney

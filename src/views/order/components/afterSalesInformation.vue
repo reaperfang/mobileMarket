@@ -277,7 +277,7 @@
                             实退金额：
                         </div>
                         <div class="col">
-                            <el-input v-if="orderAfterSale.orderAfterSaleStatus == 0 && orderAfterSale.type != 2" min="0" type="number" @change="realReturnMoneyHandler" v-model="orderAfterSale.realReturnMoney" @change.native="orderAfterSale.realReturnMoney = (+orderAfterSale.realReturnMoney).toFixed(2)"></el-input>
+                            <el-input v-if="orderAfterSale.orderAfterSaleStatus == 0 && orderAfterSale.type != 2" min="0" type="number" @change="realReturnMoneyHandler" v-model="orderAfterSale.realReturnMoney" @change.native="orderAfterSale.realReturnMoney = (+orderAfterSale.realReturnMoney).toFixed(2) >=0 ? (+orderAfterSale.realReturnMoney).toFixed(2) : 0"></el-input>
                             <span v-else>{{orderAfterSale.realReturnMoney || 0}}</span>
                         </div>
                     </div>
@@ -345,21 +345,21 @@ export default {
         operationTypeFilter(code) {
             switch(code) {
                 case 1:
-                    return '发起售后'
+                    return '发起售后'//
                 case 2:
-                    return '撤销售后申请'
+                    return '撤销售后申请'//
                 case 3:
                     return '同意申请'
                 case 4:
                     return '拒绝申请'
                 case 5:
-                    return '客户发货'
+                    return '客户发货'//
                 case 6:
                     return '商家收货'
                 case 7:
                     return '商家发货'
                 case 8:
-                    return '客户收货'
+                    return '客户收货'//
                 case 9:
                     return '退款'
             }
@@ -431,6 +431,11 @@ export default {
             //         this.orderAfterSale.realReturnWalletMoney = _number.toFixed(2)
             //     }
             // }
+            if(+this.orderAfterSale.realReturnMoney < 0) {
+                this.orderAfterSale.realReturnBalance = '0.00'
+                this.orderAfterSale.realReturnWalletMoney = '0.00'
+                return
+            }
             if(this.orderAfterSale.shouldReturnBalance == null || this.orderAfterSale.shouldReturnBalance == '0.00' || this.orderAfterSale.shouldReturnBalance == 0) {
                 this.orderAfterSale.realReturnWalletMoney = +this.orderAfterSale.realReturnMoney
             } else {
