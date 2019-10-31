@@ -46,8 +46,8 @@
                             客户收货信息
                         </div>
                         <div class="col list-righter">
-                            <p>{{orderAfterSaleSendInfo.receivedName}} {{orderAfterSaleSendInfo.receivedPhone}}</p>
-                            <p>{{orderAfterSaleSendInfo.receivedDetail}}</p>
+                            <p>{{orderSendInfo.receivedName}} {{orderSendInfo.receivedPhone}}</p>
+                            <p>{{orderSendInfo.receivedDetail}}</p>
                         </div>
                     </div>
                     <div v-if="orderAfterSale.type == 1 || orderAfterSale.type == 2" class="row">
@@ -345,18 +345,22 @@ export default {
         operationTypeFilter(code) {
             switch(code) {
                 case 1:
-                    return '修改退还积分'
+                    return '发起售后'//
                 case 2:
-                    return '修改退还金额'
+                    return '撤销售后申请'//
                 case 3:
                     return '同意申请'
                 case 4:
                     return '拒绝申请'
                 case 5:
-                    return '发货'
+                    return '客户发货'//
                 case 6:
-                    return '确认收货'
+                    return '商家收货'
                 case 7:
+                    return '商家发货'
+                case 8:
+                    return '客户收货'//
+                case 9:
                     return '退款'
             }
         },
