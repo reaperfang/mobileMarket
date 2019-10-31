@@ -46,8 +46,8 @@
                             客户收货信息
                         </div>
                         <div class="col list-righter">
-                            <p>{{orderAfterSaleSendInfo.receivedName}} {{orderAfterSaleSendInfo.receivedPhone}}</p>
-                            <p>{{orderAfterSaleSendInfo.receivedDetail}}</p>
+                            <p>{{orderSendInfo.receivedName}} {{orderSendInfo.receivedPhone}}</p>
+                            <p>{{orderSendInfo.receivedDetail}}</p>
                         </div>
                     </div>
                     <div v-if="orderAfterSale.type == 1 || orderAfterSale.type == 2" class="row">
