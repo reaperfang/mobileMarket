@@ -100,6 +100,7 @@ export default {
     },
     submit() {
       let datas = []
+      console.log(1111111);
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
@@ -128,8 +129,8 @@ export default {
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){
-      this.pageSize = val || this.pageSize
-      this.getList()
+      this.pageSize = val || this.pageSize;
+      this.getList();
     },
     handleCurrentChange(pIndex){
       this.currentPage = pIndex || this.currentPage
