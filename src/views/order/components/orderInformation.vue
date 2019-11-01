@@ -51,7 +51,7 @@
                         <p>发票类型 {{orderInfo.invoiceType | invoiceTypeFilter}}</p>
                         <p>发票抬头 {{orderInfo.invoiceTitle}}</p>
                         <p>发票内容 商品明细</p>
-                        <p>电子发票将在订单完成后1-2天内开具</p>
+                        <!-- <p>电子发票将在订单完成后1-2天内开具</p> -->
                     </div>
                 </div>
                 <div class="item">
@@ -110,13 +110,13 @@
                 <el-table-column
                     label="商品单价">
                     <template slot-scope="scope">
-                        ¥{{scope.row.goodsPrice}}
+                        ¥{{scope.row.salePrice}}
                     </template>
                 </el-table-column>
                 <el-table-column
                     label="商品小计">
                     <template slot-scope="scope">
-                        ¥{{scope.row.subtotalMoney}}
+                        ¥{{(+scope.row.salePrice * scope.row.goodsCount).toFixed(2)}}
                     </template>
                 </el-table-column>
             </el-table>
