@@ -32,7 +32,7 @@
                 </div>
                 <div class="item">
                     <div class="label">交易流水号</div>
-                    <div class="value">{{orderInfo.transactionCode}}</div>
+                    <div class="value" style="word-break: break-all;">{{orderDetail.orderPayRecordList | orderPayRecordListFilter}}</div>
                 </div>
                 <div class="item">
                     <div class="label">本单获得</div>
@@ -565,6 +565,13 @@ export default {
                 return val.consumeBalanceMoney + val.consumeScoreConvertMoney + val.receivableMoney
             }
         },
+        orderPayRecordListFilter(value) {
+            if(value && value instanceof Array) {
+                return value.map(val => val.tradeCode).join(',')
+            } else {
+                return ''
+            }
+        }
     },
     props: {
         orderInfo: {
@@ -620,6 +627,9 @@ export default {
                 margin-top: 10px;
                 .label {
                     margin-right: 20px;
+                    flex-shrink: 0;
+                    width: 70px;
+                    text-align: right;
                 }
                 .value {
                     color: #9FA29F;
