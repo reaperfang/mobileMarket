@@ -11,9 +11,8 @@
                 </p>
                 <div class="img_body">
                   <p class="title">{{item.title}}</p>
-                  <img :src="item.url" class="imgs">
-                  <p class="content">
-                    {{item.content}}
+                  <img :src="item.thumb_url" class="imgs">
+                  <p class="content" v-html="item.content">
                   </p>
                 </div>
               </div>
@@ -88,6 +87,7 @@ export default {
         this.list = []
         response.item.map(item => {
           let data = Object.assign({checked:false}, item)
+          data.thumb_url = "http://img01.store.sogou.com/net/a/04/link?appid=100520029&url=" + data.thumb_url;
           this.list.push(data)
         })
         this.total = response.total
@@ -100,6 +100,7 @@ export default {
     },
     submit() {
       let datas = []
+      console.log(1111111);
       this.list.map(item =>{
         if(item.checked == true){
           let obj = {
@@ -113,8 +114,10 @@ export default {
             title:item.title,
             sourceMaterial:item.content,
             isSyncWechat:'1',
+            fileCover: escape(item.thumb_url)
           }
           datas.push(obj)
+          
         }        
       })
       let query = {
@@ -126,8 +129,8 @@ export default {
     },
   /**********************************        分页相关      **********************/
     handleSizeChange(val){
-      this.pageSize = val || this.pageSize
-      this.getList()
+      this.pageSize = val || this.pageSize;
+      this.getList();
     },
     handleCurrentChange(pIndex){
       this.currentPage = pIndex || this.currentPage
