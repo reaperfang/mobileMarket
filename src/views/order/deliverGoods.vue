@@ -326,8 +326,12 @@ export default {
     },
     getExpressCompanyList() {
       this._apis.order
-        .fetchExpressCompanyList()
+        .getElectronicFaceSheetExpressCompanyList({isElectronicSingle: 1})
         .then(res => {
+          res.forEach(val => {
+            val.expressCompanyCode = val.expressCode
+            val.expressCompany = val.expressName
+          })
           res.push({
             expressCompanyCode: 'other',
             expressCompany: '其他'
