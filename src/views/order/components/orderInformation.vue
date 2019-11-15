@@ -348,6 +348,7 @@ export default {
         payMan() {
             let str = ''
             let _arr
+            console.log('方源',this.orderInfo);
             if(this.orderInfo.payWay == 1) {
                 return this.orderInfo.memberName
             } else if(this.orderInfo.payWay == 2) {
