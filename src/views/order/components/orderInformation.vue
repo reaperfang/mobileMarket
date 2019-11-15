@@ -363,7 +363,6 @@ export default {
                     str = _arr.map(val => val.memberName).join(',')
                 }
             }
-
             return str
         },
         wechatLength() {
