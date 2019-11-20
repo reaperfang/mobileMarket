@@ -252,7 +252,7 @@
                             label="图片">
                             <template slot-scope="scope">
                                 <!-- <img width="66" :src="scope.row.image" alt=""> -->
-                                <!-- <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div> -->
+                                <div v-if="scope.row.image" class="image" :style="{backgroundImage: `url(${scope.row.image})`}"></div>
                                 <el-upload
                                     :disabled="!ruleForm.productCategoryInfoId"
                                     class="upload-spec"
@@ -432,7 +432,7 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="商品详情" prop="productDetail">
-                <RichEditor v-if="ruleForm.productCategoryInfoId" @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="ruleForm.productDetail || ''"></RichEditor>
+                <RichEditor v-if="ruleForm.productCategoryInfoId" @editorValueUpdate="editorValueUpdate" :myConfig="myConfig" :richValue="this.ruleForm.productDetail"></RichEditor>
             </el-form-item>
             <div class="footer">
                 <el-button :disabled="!ruleForm.productCategoryInfoId" @click="submitGoods('ruleForm')" type="primary">保存</el-button>
