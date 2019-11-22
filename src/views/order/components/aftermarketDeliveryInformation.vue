@@ -81,7 +81,7 @@
                     <div class="header-righter">
                         <div class="header-righter-item">{{orderAfterSale | businessFilter(orderAfterSaleSendInfo.expressNos)}}</div>
                         <div class="header-righter-item">发货人：{{orderAfterSaleSendInfo.sendName}}</div>
-                        <div class="header-righter-item">{{orderAfterSale.receiveGoodsTime}}</div>
+                        <div class="header-righter-item">{{orderAfterSaleSendInfo.sendTime}}</div>
                         <div @click="showContent = !showContent">
                             <i v-if="showContent" class="el-icon-caret-top pointer"></i>
                             <i v-if="!showContent" class="el-icon-caret-bottom pointer"></i>
