@@ -153,6 +153,7 @@ export default {
             {
               goodsList: this.orderDetail.orderSendItemMap[i],
               expressNo: i,
+              shipperName: this.orderDetail.orderSendItemMap[i] && this.orderDetail.orderSendItemMap[i][0] && this.orderDetail.orderSendItemMap[i][0].expressCompany || '',
               showContent: true
             }
           );
@@ -169,7 +170,7 @@ export default {
         this.currentData = [];
         this.reject = true;
         this.expressNo = expressNo
-        this.expressCompanys = ''
+        this.expressCompanys = expressCompanys
         this.dialogVisible = true;
       } else {
         this.reject = false;
