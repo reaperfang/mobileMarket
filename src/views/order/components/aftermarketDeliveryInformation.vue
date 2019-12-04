@@ -166,15 +166,6 @@ export default {
             reject: false,
         }
     },
-    created() {
-        this.getIsTrace();
-    },
-    computed: {
-        cid() {
-            let shopInfo = JSON.parse(localStorage.getItem("shopInfos"));
-            return shopInfo.id;
-        }
-    },
     filters: {
         goodsSpecsFilter(value) {
             let _value
@@ -211,21 +202,16 @@ export default {
             }
         }
     },
+    computed: {
+        cid() {
+            let shopInfo = JSON.parse(localStorage.getItem("shopInfos"));
+            return shopInfo.id;
+        }
+    },
+    created() {
+        this.getIsTrace();
+    },
     methods: {
-        getIsTrace() {
-            this._apis.order
-                .getIsTrace({ cid: this.cid })
-                .then(res => {
-                console.log(res);
-                this.isTrace = res.isTrace;
-                })
-                .catch(error => {
-                // this.$notify.error({
-                //   title: "错误",
-                //   message: error
-                // });
-            });
-        },
         showLogistics(expressNo, isComstomer) {
             this.expressNo = expressNo
             if(isComstomer) {
@@ -269,6 +255,20 @@ export default {
                     // });
                 });
             }
+        },
+        getIsTrace() {
+            this._apis.order
+                .getIsTrace({ cid: this.cid })
+                .then(res => {
+                console.log(res);
+                this.isTrace = res.isTrace;
+                })
+                .catch(error => {
+                // this.$notify.error({
+                //     title: "错误",
+                //     message: error
+                // });
+            });
         },
     },
     props: {
