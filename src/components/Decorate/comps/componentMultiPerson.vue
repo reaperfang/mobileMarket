@@ -178,14 +178,16 @@ export default {
                 if(componentData.addType == 2) {
                     params = {
                         num: componentData.showNumber,
-                        order: componentData.sortRule
+                        order: componentData.sortRule,
+                        status: 5
                     };
                 }else{
                     const ids = componentData.ids;
                     if(Array.isArray(ids) && ids.length){
                         params = {
                             spuIds: ids.join(','),
-                            order: componentData.sortRule
+                            order: componentData.sortRule,
+                            status: 5
                         };
                     }else{
                         this.list = [];
