@@ -129,16 +129,17 @@ export default {
             this.importUrl = res.data.url;
         },
         beforeAvatarUpload(file) {
-            const isCSV = file.type.indexOf('ms-excel') !== -1 || file.type.indexOf('sheet') !== -1;
+            console.log('file',file, file.type);
+            //const isCSV = file.type.indexOf('ms-excel') !== -1 || file.type.indexOf('sheet') !== -1;
             const isLt10M = file.size / 1024 / 1024 < 10;
 
-            if (!isCSV) {
-                this.$message.error('上传模板只能是 .csv或.xsl 格式!');
-            }
+            // if (!isCSV) {
+            //     this.$message.error('上传模板只能是 .csv或.xsl 格式!');
+            // }
             if (!isLt10M) {
                 this.$message.error("上传模板大小不能超过 10MB!");
             }
-            return isLt10M && isCSV;
+            return isLt10M ;
         },
         handleRemove(file) {
             this.importUrl = "";
